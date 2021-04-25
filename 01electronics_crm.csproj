@@ -55,9 +55,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BASIC_MACROS.cs" />
+    <Compile Include="BASIC_STRUCTS.cs" />
+    <Compile Include="CommonFunctions.cs" />
+    <Compile Include="CommonQueries.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
+    <Compile Include="COMPANY_WORK_MACROS.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="FTPServer.cs" />
+    <Compile Include="IntegrityChecks.cs" />
     <Compile Include="SignInPage.xaml.cs" />
     <Compile Include="SignInWindow.xaml.cs" />
     <Compile Include="SignUpPage.xaml.cs" />
+    <Compile Include="SQLServer.cs" />
     <Compile Include="UserPortalPage.xaml.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -113,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="login_cover.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
+using _01electronics_erp;
 
 namespace _01electronics_crm
 {
@@ -49,8 +50,8 @@ namespace _01electronics_crm
             if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
                 return;
 
-            PortalWindow portalWindowOpen = new PortalWindow(ref loggedInUser);
-            portalWindowOpen.Show();
+            MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
+            mainWindowOpen.Show();
         }
 
         private void OnButtonClickedSignUp(object sender, RoutedEventArgs e)
