@@ -107,6 +107,8 @@ namespace _01electronics_erp
 		on employees_info.employee_id = employees_personal_phones.id 
 		left join erp_system.dbo.employees_initials 
 		on employees_info.employee_id = employees_initials.id 
+		left join erp_system.dbo.employees_educational_qualifications
+		on employees_info.employee_id = employees_educational_qualifications.employee_id
 		left join erp_system.dbo.educational_degrees 
 		left join erp_system.dbo.educational_majors 
         left join erp_system.dbo.employees_salaries

@@ -53,7 +53,8 @@ namespace _01electronics_crm
 
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
-            
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
         }
 
         private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
