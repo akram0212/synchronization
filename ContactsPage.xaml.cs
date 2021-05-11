@@ -17,32 +17,17 @@ using _01electronics_erp;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for UserPortalPage.xaml
+    /// Interaction logic for ContactsPage.xaml
     /// </summary>
-    /// 
-    public partial class UserPortalPage : Page
+    public partial class ContactsPage : Page
     {
-
         private Employee loggedInUser;
 
-        public UserPortalPage(ref Employee mLoggedInUser)
+        public ContactsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
-            loggedInUser = mLoggedInUser;
 
-            InitializeEmployeeDashboard();
-        }
-        
-        private void InitializeEmployeeDashboard()
-        {
-            employeeNameLabel.Content = loggedInUser.GetEmployeeName();
-            employeeBirthdateLabel.Content = loggedInUser.GetEmployeeBirthDate();
-            employeeJoiningDateLabel.Content = loggedInUser.GetEmployeeJoinDate();
-            employeeDepartmentLabel.Content = loggedInUser.GetEmployeeDepartment();
-            employeeTeamLabel.Content = loggedInUser.GetEmployeeTeam();
-            employeeBusinessEmailLabel.Content = loggedInUser.GetEmployeeBusinessEmail();
-            employeePersonalEmailLabel.Content = loggedInUser.GetEmployeePersonalEmail();
         }
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
