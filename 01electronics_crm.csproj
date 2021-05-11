@@ -63,6 +63,9 @@
     <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
     <Compile Include="COMPANY_WORK_MACROS.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="ContactsPage.xaml.cs">
+      <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Employee.cs" />
     <Compile Include="FTPServer.cs" />
     <Compile Include="IntegrityChecks.cs" />
@@ -71,6 +74,10 @@
     <Compile Include="SignUpPage.xaml.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="UserPortalPage.xaml.cs" />
+    <Page Include="ContactsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
