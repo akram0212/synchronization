@@ -70,5 +70,13 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
