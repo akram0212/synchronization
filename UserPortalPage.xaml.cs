@@ -67,7 +67,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-
+            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rfqs);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {

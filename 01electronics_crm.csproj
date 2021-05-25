@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddRFQWindow.xaml.cs">
+      <DependentUpon>AddRFQWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BASIC_MACROS.cs" />
     <Compile Include="BASIC_STRUCTS.cs" />
     <Compile Include="CommonFunctions.cs" />
@@ -69,11 +72,18 @@
     <Compile Include="Employee.cs" />
     <Compile Include="FTPServer.cs" />
     <Compile Include="IntegrityChecks.cs" />
+    <Compile Include="RFQsPage.xaml.cs">
+      <DependentUpon>RFQsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SignInPage.xaml.cs" />
     <Compile Include="SignInWindow.xaml.cs" />
     <Compile Include="SignUpPage.xaml.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="UserPortalPage.xaml.cs" />
+    <Page Include="AddRFQWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContactsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,6 +100,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RFQsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SignInPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

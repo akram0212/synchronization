@@ -27,7 +27,7 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
-
+            loggedInUser = mLoggedInUser;
         }
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
@@ -52,7 +52,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-
+            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rfqs);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -67,6 +68,16 @@ namespace _01electronics_crm
 
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
 
         }
