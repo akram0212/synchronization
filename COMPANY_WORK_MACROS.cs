@@ -204,7 +204,7 @@ namespace _01electronics_erp
             
             public String company_name;
             public String contact_name;
-            
+
             public List<PRODUCT_STRUCT> products_type;
             public List<BRAND_STRUCT> products_brand;
             public List<MODEL_STRUCT> products_model;

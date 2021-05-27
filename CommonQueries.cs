@@ -1193,6 +1193,12 @@ namespace _01electronics_erp
             if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
                 return false;
 
+            if(commonQueriesSqlObject.rows.Count == 0)
+            {
+                MessageBox.Show("There is no existing signup for this email account! Please signup first and then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
             returnValue = commonQueriesSqlObject.rows[0].sql_string[0];
 
             return true;
@@ -2128,7 +2134,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 22;
-            queryColumns.sql_int = 2;
+            queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 20;
 
             if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
@@ -2183,9 +2189,9 @@ namespace _01electronics_erp
                     tempModelItem.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
                     tempModelItem.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                    RFQItem.products_type[j] = tempProductItem;
-                    RFQItem.products_brand[j] = tempBrandItem;
-                    RFQItem.products_model[j] = tempModelItem;
+                    RFQItem.products_type.Add(tempProductItem);
+                    RFQItem.products_brand.Add(tempBrandItem);
+                    RFQItem.products_model.Add(tempModelItem);
                 }
 
                 RFQItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
@@ -2386,6 +2392,10 @@ namespace _01electronics_erp
         
                 COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT offerItem = new COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT();
 
+                offerItem.products_type = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+                offerItem.products_brand = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+                offerItem.products_model = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
+
                 COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProductItem;// = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
                 COMPANY_WORK_MACROS.BRAND_STRUCT tempBrandItem;// = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 COMPANY_WORK_MACROS.MODEL_STRUCT tempModelItem;// = new COMPANY_WORK_MACROS.MODEL_STRUCT();
@@ -2422,17 +2432,17 @@ namespace _01electronics_erp
 
                 if (i > 0 && returnVector.Last().offer_proposer_id == offerItem.offer_proposer_id && returnVector.Last().offer_serial == offerItem.offer_serial && returnVector.Last().offer_version == offerItem.offer_version)
         		{
-                    returnVector.Last().products_type[product_number - 1] = tempProductItem;
-                    returnVector.Last().products_brand[product_number - 1] = tempBrandItem;
-                    returnVector.Last().products_model[product_number - 1] = tempModelItem;
+                    returnVector.Last().products_type.Add(tempProductItem);
+                    returnVector.Last().products_brand.Add(tempBrandItem);
+                    returnVector.Last().products_model.Add(tempModelItem);
         		}
         		else
         		{
-                    offerItem.products_type[product_number - 1] = tempProductItem;
-                    offerItem.products_brand[product_number - 1] = tempBrandItem;
-                    offerItem.products_model[product_number - 1] = tempModelItem;
-        
-        			offerItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    offerItem.products_type.Add(tempProductItem);
+                    offerItem.products_brand.Add(tempBrandItem);
+                    offerItem.products_model.Add(tempModelItem);
+
+                    offerItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
         			offerItem.offer_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
         			offerItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
         
