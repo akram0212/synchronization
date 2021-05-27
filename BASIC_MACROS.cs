@@ -101,6 +101,7 @@ namespace _01electronics_erp
         public const int QNB = 1;
         public const int NBE = 2;
         public const int BMI = 3;
+
     }
 }
 

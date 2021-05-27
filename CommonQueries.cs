@@ -2128,7 +2128,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 22;
-            queryColumns.sql_int = 2;
+            queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 20;
 
             if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
