@@ -2144,9 +2144,7 @@ namespace _01electronics_erp
 	        {
                 COMPANY_WORK_MACROS.RFQ_MAX_STRUCT RFQItem = new COMPANY_WORK_MACROS.RFQ_MAX_STRUCT();
 
-                RFQItem.products_type = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-                RFQItem.products_brand = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-                RFQItem.products_model = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
+                RFQItem.products = new List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT>();
 
                 int numericCount = 0;
 	        	int stringCount = 0;
@@ -2176,22 +2174,25 @@ namespace _01electronics_erp
 
                 for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
                 {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProductItem;// = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrandItem;// = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-                    COMPANY_WORK_MACROS.MODEL_STRUCT tempModelItem;// = new COMPANY_WORK_MACROS.MODEL_STRUCT();
+                    COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT tempProductItem;
 
-                    tempProductItem.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempProductItem.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productType = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
+                    tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
+                    tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                    tempBrandItem.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempBrandItem.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                    tempModelItem.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempModelItem.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                    RFQItem.products_type.Add(tempProductItem);
-                    RFQItem.products_brand.Add(tempBrandItem);
-                    RFQItem.products_model.Add(tempModelItem);
+                    tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                    tempProductItem.productNumber = j;
+                    tempProductItem.productQuantity = 0;
+
+                    RFQItem.products.Add(tempProductItem);
                 }
 
                 RFQItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
@@ -2392,13 +2393,13 @@ namespace _01electronics_erp
         
                 COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT offerItem = new COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT();
 
-                offerItem.products_type = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-                offerItem.products_brand = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-                offerItem.products_model = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
+                offerItem.products = new List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT>();
 
-                COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProductItem;// = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                COMPANY_WORK_MACROS.BRAND_STRUCT tempBrandItem;// = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-                COMPANY_WORK_MACROS.MODEL_STRUCT tempModelItem;// = new COMPANY_WORK_MACROS.MODEL_STRUCT();
+                COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT tempProductItem = new COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT();
+
+                tempProductItem.productType = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
+                tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
+                tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                 offerItem.offer_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
         
@@ -2421,26 +2422,26 @@ namespace _01electronics_erp
         
         		int product_number = (int) commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
-                tempProductItem.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                tempBrandItem.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempBrandItem.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                tempModelItem.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempModelItem.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                tempProductItem.productNumber = product_number;
+                tempProductItem.productQuantity = 0;
 
                 if (i > 0 && returnVector.Last().offer_proposer_id == offerItem.offer_proposer_id && returnVector.Last().offer_serial == offerItem.offer_serial && returnVector.Last().offer_version == offerItem.offer_version)
         		{
-                    returnVector.Last().products_type.Add(tempProductItem);
-                    returnVector.Last().products_brand.Add(tempBrandItem);
-                    returnVector.Last().products_model.Add(tempModelItem);
-        		}
+                    returnVector.Last().products.Add(tempProductItem);
+                    returnVector.Last().products.Sort();
+                }
         		else
         		{
-                    offerItem.products_type.Add(tempProductItem);
-                    offerItem.products_brand.Add(tempBrandItem);
-                    offerItem.products_model.Add(tempModelItem);
+                    offerItem.products.Add(tempProductItem);
 
                     offerItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
         			offerItem.offer_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
@@ -2588,12 +2589,16 @@ namespace _01electronics_erp
         	{
         		int numericCount = 0;
         		int stringCount = 0;
-        
+
                 COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT orderItem = new COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT();
 
-                COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProductItem;// = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                COMPANY_WORK_MACROS.BRAND_STRUCT tempBrandItem;// = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-                COMPANY_WORK_MACROS.MODEL_STRUCT tempModelItem;// = new COMPANY_WORK_MACROS.MODEL_STRUCT();
+                orderItem.products = new List<COMPANY_WORK_MACROS.ORDER_PRODUCT_STRUCT>();
+
+                COMPANY_WORK_MACROS.ORDER_PRODUCT_STRUCT tempProductItem = new COMPANY_WORK_MACROS.ORDER_PRODUCT_STRUCT();
+
+                tempProductItem.productType = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
+                tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
+                tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                 orderItem.order_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
         
@@ -2616,26 +2621,26 @@ namespace _01electronics_erp
         
         		int product_number = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
-                tempProductItem.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                tempBrandItem.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempBrandItem.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-                tempModelItem.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempModelItem.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                tempProductItem.productNumber = product_number;
+                tempProductItem.productQuantity = 0;
 
                 if (i > 0 && returnVector.Last().sales_person_id == orderItem.sales_person_id && returnVector.Last().order_serial == orderItem.order_serial)
         		{
-                    returnVector.Last().products_type[product_number - 1] = tempProductItem;
-                    returnVector.Last().products_brand[product_number - 1] = tempBrandItem;
-                    returnVector.Last().products_model[product_number - 1] = tempModelItem;
-        		}
+                    returnVector.Last().products.Add(tempProductItem);
+                    returnVector.Last().products.Sort();
+                }
         		else
         		{
-                    orderItem.products_type[product_number - 1] = tempProductItem;
-                    orderItem.products_brand[product_number - 1] = tempBrandItem;
-                    orderItem.products_model[product_number - 1] = tempModelItem;
+                    orderItem.products.Add(tempProductItem);
 
                     orderItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
         			orderItem.order_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];

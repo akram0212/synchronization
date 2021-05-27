@@ -27,7 +27,6 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
 
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
-        //private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> offersList;
 
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes;
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes;
@@ -41,7 +40,6 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
 
             rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-            //offersList = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
 
             productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
@@ -98,9 +96,6 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetRFQs(ref rfqsList))
                 return false;
-            
-            //if (!commonQueriesObject.GetWorkOffers(ref offersList))
-            //    return false;
 
             return true;
         }
