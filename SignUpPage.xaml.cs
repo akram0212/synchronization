@@ -69,8 +69,8 @@ namespace _01electronics_crm
 
         bool CheckEmployeePasswordEdits()
         {
-            employeePassword = passwordTextBox.Text;
-            confirmPassword = confirmPasswordTextBox.Text;
+            employeePassword = passwordTextBox.Password;
+            confirmPassword = confirmPasswordTextBox.Password;
 
             if (employeePassword != confirmPassword)
                 return false;
@@ -102,6 +102,8 @@ namespace _01electronics_crm
             if (!InsertIntoEmployeePersonalEmails())
                 return;
 
+            SignInPage signIn = new SignInPage();
+            this.NavigationService.Navigate(signIn);
         }
 
         private bool InsertIntoEmployeesPasswords()
