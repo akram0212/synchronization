@@ -83,25 +83,58 @@ namespace _01electronics_erp
             public int modelId;
         };
 
-        public struct RFQ_PRODUCT_STRUCT
+        public struct RFQ_PRODUCT_STRUCT : IComparable<RFQ_PRODUCT_STRUCT>
         {
             public PRODUCT_STRUCT productType;
             public BRAND_STRUCT productBrand;
             public MODEL_STRUCT productModel;
 
+            public int productNumber;
             public int productQuantity;
+
+            public int CompareTo(RFQ_PRODUCT_STRUCT other)
+            {
+                return this.productNumber.CompareTo(other.productNumber);
+
+                throw new NotImplementedException();
+            }
         };
 
-        public struct OFFER_PRODUCT_STRUCT
+        public struct OFFER_PRODUCT_STRUCT : IComparable<OFFER_PRODUCT_STRUCT>
         {
             public PRODUCT_STRUCT productType;
             public BRAND_STRUCT productBrand;
             public MODEL_STRUCT productModel;
 
+            public int productNumber;
             public int productQuantity;
             public int productPrice;
+
+            public int CompareTo(OFFER_PRODUCT_STRUCT other)
+            {
+                return this.productNumber.CompareTo(other.productNumber);
+
+                throw new NotImplementedException();
+            }
         };
 
+        public struct ORDER_PRODUCT_STRUCT : IComparable<ORDER_PRODUCT_STRUCT>
+        {
+            public PRODUCT_STRUCT productType;
+            public BRAND_STRUCT productBrand;
+            public MODEL_STRUCT productModel;
+
+            public int productNumber;
+            public int productQuantity;
+            public int productPrice;
+
+            public int CompareTo(ORDER_PRODUCT_STRUCT other)
+            {
+                return this.productNumber.CompareTo(other.productNumber);
+
+                throw new NotImplementedException();
+            }
+        };
         public struct RFQ_BASIC_STRUCT
         {
             public String rfq_id;
@@ -170,9 +203,7 @@ namespace _01electronics_erp
             public String company_name;
             public String contact_name;
             
-            public List<PRODUCT_STRUCT> products_type;
-            public List<BRAND_STRUCT> products_brand;
-            public List<MODEL_STRUCT> products_model;
+            public List<RFQ_PRODUCT_STRUCT> products;
         };
 
         public struct WORK_OFFER_MAX_STRUCT
@@ -205,9 +236,7 @@ namespace _01electronics_erp
             public String company_name;
             public String contact_name;
 
-            public List<PRODUCT_STRUCT> products_type;
-            public List<BRAND_STRUCT> products_brand;
-            public List<MODEL_STRUCT> products_model;
+            public List<OFFER_PRODUCT_STRUCT> products;
         };
 
         public struct WORK_ORDER_MAX_STRUCT
@@ -237,9 +266,7 @@ namespace _01electronics_erp
             public String company_name;
             public String contact_name;
             
-            public List<PRODUCT_STRUCT> products_type;
-            public List<BRAND_STRUCT> products_brand;
-            public List<MODEL_STRUCT> products_model;
+            public List<ORDER_PRODUCT_STRUCT> products;
         };
 
         public struct CLIENT_VISIT_STRUCT
@@ -281,6 +308,8 @@ namespace _01electronics_erp
             public String call_purpose;
             public String call_result;
         };
+
+       
     }
 }
 

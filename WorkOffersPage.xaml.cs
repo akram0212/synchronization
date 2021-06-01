@@ -17,9 +17,9 @@ using _01electronics_erp;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for RFQsPage.xaml
+    /// Interaction logic for WorkOffersPage.xaml
     /// </summary>
-    public partial class RFQsPage : Page
+    public partial class WorkOffersPage : Page
     {
         private Employee loggedInUser;
 
@@ -29,13 +29,13 @@ namespace _01electronics_crm
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         bool skipLoopProductFilter;
         bool skipLoopBrandFilter;
-        
-        public RFQsPage(ref Employee mLoggedInUser)
+
+        public WorkOffersPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
@@ -44,10 +44,10 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-           // rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-           // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-           // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-
+            // workOffers = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+         
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
             InitializeStatusComboBox();
@@ -62,8 +62,8 @@ namespace _01electronics_crm
                 return;
 
             if (!InitializeRFQsStackPanel())
-              return;
-            
+                return;
+
         }
 
         private void InitializeYearsComboBox()
@@ -96,7 +96,7 @@ namespace _01electronics_crm
             {
                 employeeCombo.Items.Add(employeesList[i].employee_name);
             }
-            
+
             employeeCombo.IsEnabled = false;
 
             if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
@@ -137,7 +137,7 @@ namespace _01electronics_crm
             //INTENTIONALLY LEFT IT EMPTY FOR YOU TO FILL
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
-            
+
             for (int i = 0; i < brandTypes.Count; i++)
                 brandCombo.Items.Add(brandTypes[i].brandName);
 
@@ -148,28 +148,28 @@ namespace _01electronics_crm
         private void InitializeStatusComboBox()
         {
             //for(int i = 0; i< COMPANY_WORK_MACROS.NO_OF_RFQS_STATUS; i++)
-                //statusCombo.Items.Add(commonFunctionsObject.)
+            //statusCombo.Items.Add(commonFunctionsObject.)
+            statusCombo.Items.Add("Failed");
+            statusCombo.Items.Add("Confirmed");
             statusCombo.Items.Add("Pending");
-            statusCombo.Items.Add("Offered");
-            statusCombo.Items.Add("Rejected");
             statusCombo.IsEnabled = false;
         }
         private bool InitializeRFQsStackPanel()
         {
             RFQsStackPanel.Children.Clear();
-            
-            if (!commonQueriesObject.GetRFQs(ref rfqsList))
-               return false;
-             
-            for (int i = 0; i < rfqsList.Count; i++)
+
+            if (!commonQueriesObject.GetWorkOffers(ref workOffers))
+                return false;
+
+            for (int i = 0; i < workOffers.Count; i++)
             {
                 skipLoopProductFilter = true;
                 skipLoopBrandFilter = true;
 
                 if (yearCheckBox.IsChecked == true)
-                { 
+                {
                     Int32 tempYearComboSelectedItem = Int32.Parse(yearCombo.SelectedItem.ToString());
-                    DateTime tempYearList = DateTime.Parse(rfqsList[i].issue_date);
+                    DateTime tempYearList = DateTime.Parse(workOffers[i].issue_date);
                     Int32 tempYearList1 = Int32.Parse(tempYearList.Year.ToString());
                     if (tempYearComboSelectedItem != tempYearList1)
                         continue;
@@ -182,22 +182,22 @@ namespace _01electronics_crm
                     {
                         if (employeeTeam.team_id == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
                         {
-                            string tempSalesPersonName = rfqsList[i].sales_person_name;
+                            string tempSalesPersonName = workOffers[i].sales_person_name;
 
                             if (employeeCombo.SelectedItem.ToString() != tempSalesPersonName)
                                 continue;
                         }
                         else if (employeeTeam.team_id == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                         {
-                            string tempAssigneeName = rfqsList[i].assignee_name;
+                            string tempAssigneeName = workOffers[i].offer_proposer_name;
 
                             if (tempAssigneeName != employeeCombo.SelectedItem.ToString())
                                 continue;
                         }
                         else
                         {
-                            MessageBox.Show("The employee you chose is not from sales department so he doesnt have any RFQs");
-                            i = rfqsList.Count;
+                            MessageBox.Show("The employee you chose is not from sales department so he doesnt have any work offers");
+                            i = workOffers.Count;
                             continue;
                         }
                     }
@@ -208,9 +208,9 @@ namespace _01electronics_crm
                     DateTime tempQuarterList;
                     Int32 tempMonth;
 
-                    tempQuarterList = DateTime.Parse(rfqsList[i].issue_date);
+                    tempQuarterList = DateTime.Parse(workOffers[i].issue_date);
                     tempMonth = tempQuarterList.Month;
-                   // tempMonth = Int32.Parse(tempQuarterList.Month.ToString());
+                    // tempMonth = Int32.Parse(tempQuarterList.Month.ToString());
 
                     if (quarterCombo.SelectedIndex + 1 == BASIC_MACROS.FIRST_QUARTER)
                     {
@@ -232,44 +232,48 @@ namespace _01electronics_crm
                     {
                         if (tempMonth < BASIC_MACROS.FOURTH_QUARTER_START_MONTH)
                             continue;
-                    } 
+                    }
                 }
 
 
                 if (productCheckBox.IsChecked == true)
                 {
-                    List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> tempType = rfqsList[i].products;
+                    List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> tempType = workOffers[i].products;
 
                     if (productCombo.SelectedItem != null)
                     {
-                        for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
+                        for (int j = 0; j < tempType.Count; j++)
                         {
                             COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType0 = tempType[j].productType;
 
                             if (productCombo.SelectedIndex + 1 == tempType0.typeId)
                             {
                                 skipLoopProductFilter = false;
-                                j = COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS;
+                                j = tempType.Count();
                             }
                         }
+                        if (skipLoopProductFilter == true)
+                            continue;
                     }
                 }
 
                 if (brandCheckBox.IsChecked == true)
                 {
-                    List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> tempBrand = rfqsList[i].products;
-
+                    List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> tempBrand = workOffers[i].products;
+                    
                     if (brandCombo.SelectedItem != null)
                     {
-                        for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
+                        for (int j = 0; j < tempBrand.Count(); j++)
                         {
                             COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand0 = tempBrand[j].productBrand;
                             if (brandCombo.SelectedIndex + 1 == tempBrand0.brandId)
-                            { 
+                            {
                                 skipLoopBrandFilter = false;
-                                j = COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS;
+                                j = tempBrand.Count();
                             }
                         }
+                        if (skipLoopBrandFilter == true)
+                            continue;
                     }
                 }
 
@@ -277,71 +281,73 @@ namespace _01electronics_crm
                 {
                     if (statusCombo.SelectedItem != null)
                     {
-                        string rfqStatus = rfqsList[i].rfq_status;
-                        if (statusCombo.SelectedItem.ToString() != rfqStatus)
+                        int workOfferStatus = workOffers[i].offer_status_id;
+                        if (statusCombo.SelectedIndex != workOfferStatus)
                             continue;
                     }
                 }
-                if (productCheckBox.IsChecked == true)
+               /* if (productCheckBox.IsChecked == true)
                 {
                     if (skipLoopProductFilter == true)
                         continue;
                 }
 
-                if(brandCheckBox.IsChecked == true)
+                if (brandCheckBox.IsChecked == true)
                 {
                     if (skipLoopBrandFilter == true)
                         continue;
-                }
+                }*/
 
                 StackPanel fullStackPanel = new StackPanel();
                 fullStackPanel.Orientation = Orientation.Vertical;
                 //fullStackPanel.Height = 90;
 
-                Label rfqIDLabel = new Label();
-                rfqIDLabel.Content = rfqsList[i].rfq_id;
-                rfqIDLabel.Style = (Style)FindResource("stackPanelItemHeader");
-               
+                Label offerIdLabel = new Label();
+                offerIdLabel.Content = workOffers[i].offer_id;
+                offerIdLabel.Style = (Style)FindResource("stackPanelItemHeader");
+
                 Label salesLabel = new Label();
-                salesLabel.Content = rfqsList[i].sales_person_name;
+                salesLabel.Content = workOffers[i].sales_person_name;
                 salesLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label preSalesLabel = new Label();
-                preSalesLabel.Content = rfqsList[i].assignee_name;
+                preSalesLabel.Content = workOffers[i].offer_proposer_name;
                 preSalesLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label companyAndContactLabel = new Label();
-                companyAndContactLabel.Content = rfqsList[i].company_name + " -" + rfqsList[i].contact_name;
+                companyAndContactLabel.Content = workOffers[i].company_name + " -" + workOffers[i].contact_name;
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
-                for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
+                List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> temp = workOffers[i].products;
+                for (int j = 0; j < temp.Count(); j++)
                 {
-                    List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
+
                     productTypeAndBrandLabel.Content += tempType1.typeName + " -" + tempBrand1.brandName;
-                    if (j != COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS - 1)
+
+                    if (j != temp.Count() - 1)
                         productTypeAndBrandLabel.Content += ", ";
                 }
                 productTypeAndBrandLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label contractTypeLabel = new Label();
-                contractTypeLabel.Content = rfqsList[i].contract_type;
+                contractTypeLabel.Content = workOffers[i].contract_type;
                 contractTypeLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Border borderIcon = new Border();
                 borderIcon.Style = (Style)FindResource("BorderIcon");
-                
+
                 Label rfqStatusLabel = new Label();
-                rfqStatusLabel.Content = rfqsList[i].rfq_status;
+                rfqStatusLabel.Content = workOffers[i].offer_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -352,7 +358,7 @@ namespace _01electronics_crm
 
                 borderIcon.Child = rfqStatusLabel;
 
-                fullStackPanel.Children.Add(rfqIDLabel);
+                fullStackPanel.Children.Add(offerIdLabel);
                 fullStackPanel.Children.Add(salesLabel);
                 fullStackPanel.Children.Add(preSalesLabel);
                 fullStackPanel.Children.Add(companyAndContactLabel);
@@ -372,7 +378,7 @@ namespace _01electronics_crm
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
 
-                RFQsStackPanel.Children.Add(grid); 
+                RFQsStackPanel.Children.Add(grid);
             }
             //if (!commonQueriesObject.GetWorkOffers(ref offersList))
             //    return false;
@@ -496,13 +502,12 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffers);
+
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            //RFQsPage rfqs = new RFQsPage(ref loggedInUser);
-            //this.NavigationService.Navigate(rfqs);
+            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rfqs);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -528,8 +533,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            var addRFQWindow = new AddRFQWindow(ref loggedInUser);
-            addRFQWindow.Show();
+            //var addRFQWindow = new AddRFQWindow(ref loggedInUser);
+            //addRFQWindow.Show();
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
@@ -538,3 +543,4 @@ namespace _01electronics_crm
         }
     }
 }
+
