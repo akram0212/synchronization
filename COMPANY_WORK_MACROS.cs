@@ -308,6 +308,8 @@ namespace _01electronics_erp
             public String call_purpose;
             public String call_result;
         };
+
+       
     }
 }
 

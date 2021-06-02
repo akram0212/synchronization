@@ -215,7 +215,11 @@
             <Setter Property="Height" Value="25" />
             <Setter Property="Width" Value="65" />
             <Setter Property="Margin" Value="6,0" />
-            <Setter Property="Background" Value="#00FF00"/>
+        </Style>
+        
+        <Style x:Key="BorderIconSameh" TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Margin" Value="5" />
         </Style>
 
         <Style x:Key="BorderIconTextLabel" TargetType="{x:Type Label}">
@@ -225,6 +229,16 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
-        
+
+        <Style x:Key="TextBlockSameh" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,15,0"/>
+        </Style>
     </Application.Resources>
 </Application>

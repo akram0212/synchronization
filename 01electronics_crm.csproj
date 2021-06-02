@@ -81,6 +81,12 @@
     <Compile Include="SignUpPage.xaml.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="UserPortalPage.xaml.cs" />
+    <Compile Include="ViewRFQWindow.xaml.cs">
+      <DependentUpon>ViewRFQWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOffersPage.xaml.cs">
+      <DependentUpon>WorkOffersPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="AddRFQWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -120,6 +126,14 @@
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewRFQWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOffersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
