@@ -15,7 +15,7 @@ namespace _01electronics_erp
     {
         private String sqlQuery;
         private SQLServer commonQueriesSqlObject;
-        
+
         public CommonQueries()
         {
             commonQueriesSqlObject = new SQLServer();
@@ -145,11 +145,11 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////////
         //GET BASIC INFO FUNCTIONS
         //////////////////////////////////////////////////////////////////////
-        
+
         public bool GetDepartmentsType(ref List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -237,7 +237,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetDepartmentTeams(int departmentId, ref List<COMPANY_ORGANISATION_MACROS.TEAM_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -278,7 +278,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetPrimaryWorkFields(ref List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -341,7 +341,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetAllCountries(ref List<BASIC_STRUCTS.COUNTRY_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -371,7 +371,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        public bool GetAllCountryStates(int countryId,ref List<BASIC_STRUCTS.STATE_STRUCT> returnVector)
+        public bool GetAllCountryStates(int countryId, ref List<BASIC_STRUCTS.STATE_STRUCT> returnVector)
         {
             returnVector.Clear();
 
@@ -467,7 +467,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetVisitPurposes(ref List<COMPANY_WORK_MACROS.VISIT_PURPOSE_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -671,7 +671,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetContractTypes(ref List<BASIC_STRUCTS.CONTRACT_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -704,7 +704,7 @@ namespace _01electronics_erp
         public bool GetDeliveryPoints(ref List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT> returnVector)
         {
             returnVector.Clear();
-            
+
             String sqlQueryPart1 = "select delivery_points.id, delivery_points.delivery_point from erp_system.dbo.delivery_points order by delivery_points.delivery_point;";
 
             sqlQuery = String.Empty;
@@ -730,7 +730,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetCurrencyTypes(ref List<BASIC_STRUCTS.CURRENCY_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -879,14 +879,14 @@ namespace _01electronics_erp
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
-                
+
                 tempItem.team = new COMPANY_ORGANISATION_MACROS.TEAM_STRUCT();
                 tempItem.department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
                 tempItem.position = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_POSITION_STRUCT();
 
                 tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
                 tempItem.team.team_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                
+
                 tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
@@ -935,119 +935,7 @@ namespace _01electronics_erp
 
             return true;
         }
-         
-        public bool GetEmployeesPayrollInfo(ref List<COMPANY_ORGANISATION_MACROS.PAYROLL_STRUCT> returnVector)
-        {
-            returnVector.Clear();
 
-            String sqlQueryPart1 = @"select employees_info.employee_id,
-                               		employees_payroll_info.bank_id,
-                               		employees_payroll_info.payroll_id,
-                                    employees_payroll_info.branch_code,
-                               		employees_payroll_info.account_id,
-                                    employees_payroll_info.iban_id,
-                               		employees_info.name,
-                               		banks_names.bank_name
-                                from erp_system.dbo.employees_payroll_info
-                               inner join erp_system.dbo.employees_info
-                               on employees_payroll_info.employee_id = employees_info.employee_id
-                               inner join erp_system.dbo.banks_names
-                               on employees_payroll_info.bank_id = banks_names.id
-                               order by employees_info.name, bank_id;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 3;
-            queryColumns.sql_smallint = 1;
-            queryColumns.sql_bigint = 2;
-            queryColumns.sql_string = 2;
-
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
-                return false;
-
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-            {
-                COMPANY_ORGANISATION_MACROS.PAYROLL_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.PAYROLL_STRUCT();
-                tempItem.banksList = new List<COMPANY_ORGANISATION_MACROS.BANK_STRUCT>();
-
-                tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
-
-                if (i > 0 && returnVector.Last().employee_id == tempItem.employee_id)
-                {
-                    COMPANY_ORGANISATION_MACROS.BANK_STRUCT tempBankItem = new COMPANY_ORGANISATION_MACROS.BANK_STRUCT();
-
-                    tempBankItem.bank_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                    tempBankItem.branch_id = commonQueriesSqlObject.rows[i].sql_smallint[0];
-                    tempBankItem.payroll_id = commonQueriesSqlObject.rows[i].sql_int[2];
-                    
-                    tempBankItem.bank_name = commonQueriesSqlObject.rows[i].sql_string[1];
-                    
-                    tempBankItem.account_id = (ulong)commonQueriesSqlObject.rows[i].sql_bigint[0];
-                    tempBankItem.iban_id = (ulong)commonQueriesSqlObject.rows[i].sql_bigint[1];
-
-                    returnVector.Last().banksList.Add(tempBankItem);
-                }
-                else
-                {
-                    COMPANY_ORGANISATION_MACROS.BANK_STRUCT tempBankItem = new COMPANY_ORGANISATION_MACROS.BANK_STRUCT();
-                    
-                    tempBankItem.bank_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                    tempBankItem.branch_id = commonQueriesSqlObject.rows[i].sql_smallint[0];
-                    tempBankItem.payroll_id = commonQueriesSqlObject.rows[i].sql_int[2];
-
-                    tempBankItem.bank_name = commonQueriesSqlObject.rows[i].sql_string[1];
-
-                    tempBankItem.account_id = (ulong)commonQueriesSqlObject.rows[i].sql_bigint[0];
-                    tempBankItem.iban_id = (ulong)commonQueriesSqlObject.rows[i].sql_bigint[1];
-
-                    tempItem.banksList.Add(tempBankItem);
-                    returnVector.Add(tempItem);
-                }
-            }
-
-            return true;
-        }
-        
-        public bool GetEmployeesSalaries(ref List<COMPANY_ORGANISATION_MACROS.SALARY_STRUCT> returnVector)
-        {
-            returnVector.Clear();
-
-            String sqlQueryPart1 = @"select employees_info.employee_id,
-                               		employees_salaries.salary,
-                                    employees_info.name
-                                from erp_system.dbo.employees_salaries
-                               inner join erp_system.dbo.employees_info
-                               on employees_salaries.id = employees_info.employee_id
-                               order by employees_info.name";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_money = 1;
-            queryColumns.sql_string = 1;
-
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
-                return false;
-
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-            {
-                COMPANY_ORGANISATION_MACROS.SALARY_STRUCT tempItem;
-                tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.salary = commonQueriesSqlObject.rows[i].sql_money[0];
-                tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
-
-                returnVector.Add(tempItem);
-            }
-
-            return true;
-        }
         public bool GetEmployeeEmailCount(String employeeEmail, ref int returnValue)
         {
             returnValue = 0;
@@ -1094,7 +982,7 @@ namespace _01electronics_erp
 
             return true;
         }
-               
+
         public bool GetTeamLead(int teamId, ref int returnValue)
         {
             returnValue = 0;
@@ -1130,7 +1018,7 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select employees_info.employee_team 
                                     from erp_system.dbo.employees_info 
         							where employees_info.employee_id = ";
-    
+
 
             String sqlQueryPart2 = ";";
 
@@ -1150,7 +1038,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetEmployeeInitials(int employeeId, ref String returnValue)
         {
             returnValue = String.Empty;
@@ -1193,7 +1081,7 @@ namespace _01electronics_erp
             if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            if(commonQueriesSqlObject.rows.Count == 0)
+            if (commonQueriesSqlObject.rows.Count == 0)
             {
                 MessageBox.Show("There is no existing signup for this email account! Please signup first and then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -1203,11 +1091,11 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////////
         //GET CONTACT INFO FUNCTIONS
         //////////////////////////////////////////////////////////////////////
-        
+
         public bool GetCompanyContacts(int salesPersonId, int addressSerial, ref List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -1290,7 +1178,7 @@ namespace _01electronics_erp
 							on contact_person_info.branch_serial = company_address.address_serial 
 
 							where company_address.address_serial = ";
-                String sqlQueryPart2 = @" and contact_person_info.is_valid = 1 
+            String sqlQueryPart2 = @" and contact_person_info.is_valid = 1 
                                         order by contact_person_info.name; ";
 
             sqlQuery = String.Empty;
@@ -1315,7 +1203,7 @@ namespace _01electronics_erp
                 tempItem.company = new COMPANY_ORGANISATION_MACROS.COMPANY_STRUCT();
                 tempItem.branch = new COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT();
                 tempItem.contact_department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
-                
+
                 tempItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[0];
                 tempItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[0];
 
@@ -1390,11 +1278,11 @@ namespace _01electronics_erp
 							on contact_person_info.branch_serial = company_address.address_serial 
 
 							where contact_person_info.sales_person_id = ";
-    
+
 
             String sqlQueryPart2 = @" and contact_person_info.is_valid = 1 
                                     order by contact_person_info.name; ";
-    
+
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += salesPersonId;
@@ -1445,7 +1333,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetContactBusinessEmailCount(String contactEmail, ref int returnValue)
         {
             returnValue = 0;
@@ -1501,7 +1389,7 @@ namespace _01electronics_erp
 
             return true;
         }
-       
+
         public bool GetContactPhoneCount(String contactPhone, ref int returnValue)
         {
             String sqlQueryPart1 = "select count(contact_person_mobile.mobile) from erp_system.dbo.contact_person_mobile where contact_person_mobile.mobile = '";
@@ -1556,7 +1444,7 @@ namespace _01electronics_erp
             return true;
         }
 
-        
+
         public bool GetContactPersonalEmailCount(String contactEmail, ref int returnValue)
         {
             returnValue = 0;
@@ -1612,7 +1500,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetCompanyDomainCount(String companyDomain, ref int returnValue)
         {
             returnValue = 0;
@@ -1637,11 +1525,11 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////////
         //GET DOMAIN INFO FUNCTIONS
         //////////////////////////////////////////////////////////////////////
-        
+
         public bool GetOriginalTLDs(ref List<String> returnVector)
         {
             returnVector.Clear();
@@ -1662,7 +1550,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         public bool GetCountryTLD(int countryId, ref String returnValue)
         {
             returnValue = String.Empty;
@@ -1686,11 +1574,11 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////////
         //GET PRODUCTS INFO FUNCTIONS
         //////////////////////////////////////////////////////////////////////
-       
+
         public bool GetCompanyProducts(ref List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -1770,12 +1658,12 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select brands_models.model_id, brands_models.brand_model 
                                     from erp_system.dbo.brands_models 
 							        where brands_models.product_id = ";
-    
+
 
             String sqlQueryPart2 = " and brands_models.brand_id = ";
             String sqlQueryPart3 = " and brands_models.model_id > 0 order by brands_models.model_id; ";
-    
-            
+
+
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += product.typeId;
@@ -1810,7 +1698,7 @@ namespace _01electronics_erp
 
             return true;
         }
-       
+
         public bool GetModelApplications(int mProductId, int mBrandId, int mModelId, ref List<String> returnVector)
         {
             returnVector.Clear();
@@ -1850,7 +1738,7 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select model_benefits.benefit 
                                     from erp_system.dbo.model_benefits 
 							        where model_benefits.product_id = ";
-    
+
 
             String sqlQueryPart2 = " and model_benefits.brand_id = ";
             String sqlQueryPart3 = " and model_benefits.model_id = ";
@@ -1884,7 +1772,7 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select model_standard_features.feature 
                                     from erp_system.dbo.model_standard_features 
         							where model_standard_features.product_id = ";
-    
+
 
             String sqlQueryPart2 = " and model_standard_features.brand_id = ";
             String sqlQueryPart3 = " and model_standard_features.model_id = ";
@@ -1911,11 +1799,11 @@ namespace _01electronics_erp
 
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////////
         //GET COMPANY WORK FUNCTIONS
         //////////////////////////////////////////////////////////////////////
-        
+
         public bool GetRFQs(ref List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -2128,8 +2016,8 @@ namespace _01electronics_erp
 
 		    order by rfqs.issue_date desc, employees_initials.employee_initial, rfqs.rfq_serial desc, rfqs.rfq_version desc;";
 
-	        sqlQuery = String.Empty;
-	        sqlQuery += sqlQueryPart1;
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -2141,36 +2029,36 @@ namespace _01electronics_erp
                 return false;
 
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-	        {
+            {
                 COMPANY_WORK_MACROS.RFQ_MAX_STRUCT RFQItem = new COMPANY_WORK_MACROS.RFQ_MAX_STRUCT();
 
                 RFQItem.products = new List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT>();
 
                 int numericCount = 0;
-	        	int stringCount = 0;
+                int stringCount = 0;
 
-	        	RFQItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-	        	RFQItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-	        	RFQItem.assignee_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.assignee_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
-	        	RFQItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-	        	RFQItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                
-	        	
-	        	RFQItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-	        	RFQItem.deadline_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+                RFQItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
 
-	        	RFQItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	
-	        	RFQItem.assignee_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	
-	        	RFQItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+                RFQItem.deadline_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+
+
+                RFQItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                RFQItem.assignee_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                RFQItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
                 for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
                 {
@@ -2196,22 +2084,22 @@ namespace _01electronics_erp
                 }
 
                 RFQItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.rfq_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-	        	RFQItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
                 RFQItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
                 RFQItem.rfq_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
                 RFQItem.failure_reason = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
                 returnVector.Add(RFQItem);
-	        }
+            }
 
-	        return true;
+            return true;
         }
         public bool GetRFQs(int salesPersonId, int assigneeId, int rfqStatus, ref List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT> returnVector)
         {
             returnVector.Clear();
-                    
+
             String sqlQueryPart1 = @"select rfqs.rfq_serial, 
         									rfqs.rfq_version, 
         									rfqs.rfq_id 
@@ -2219,18 +2107,18 @@ namespace _01electronics_erp
         							inner join erp_system.dbo.company_address 
         							on rfqs.branch_serial = company_address.address_serial 
         							where rfqs.sales_person = ";
-        	String sqlQueryPart2 = " and rfqs.assigned_engineer = ";
-        	String sqlQueryPart3 = " and rfqs.rfq_status = ";
-        	String sqlQueryPart4 = " order by rfqs.issue_date;";
-        
-        	sqlQuery = String.Empty;
-        	sqlQuery += sqlQueryPart1;
-        	sqlQuery += salesPersonId;
-        	sqlQuery += sqlQueryPart2;
-        	sqlQuery += assigneeId;
-        	sqlQuery += sqlQueryPart3;
-        	sqlQuery += rfqStatus;
-        	sqlQuery += sqlQueryPart4;
+            String sqlQueryPart2 = " and rfqs.assigned_engineer = ";
+            String sqlQueryPart3 = " and rfqs.rfq_status = ";
+            String sqlQueryPart4 = " order by rfqs.issue_date;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += salesPersonId;
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += assigneeId;
+            sqlQuery += sqlQueryPart3;
+            sqlQuery += rfqStatus;
+            sqlQuery += sqlQueryPart4;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -2241,25 +2129,25 @@ namespace _01electronics_erp
                 return false;
 
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-        	{
+            {
                 COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT tempItem;
-        
-        		tempItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[0];
-        		tempItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[1];
-        		tempItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[0];
-        		
-        		returnVector.Add(tempItem);
-        	}
-        
-        	return true;
+
+                tempItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[0];
+                tempItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[1];
+                tempItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[0];
+
+                returnVector.Add(tempItem);
+            }
+
+            return true;
         }
-        
+
         public bool GetWorkOffers(ref List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> returnVector)
         {
             returnVector.Clear();
 
-        	String sqlQueryPart1 = 
-        		@"with get_company_info	as	(	select company_name.company_serial, 
+            String sqlQueryPart1 =
+                @"with get_company_info	as	(	select company_name.company_serial, 
         		company_address.address_serial, 
         		company_name.company_name 
         		from erp_system.dbo.company_address 
@@ -2373,7 +2261,7 @@ namespace _01electronics_erp
         		on unsucessful_work_offers.failure_reason = offer_failure_reasons.id 
         
         		order by work_offers.issue_date desc, employees_initials.employee_initial, offer_serial, offer_version, product_number;";
-        
+
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
 
@@ -2387,10 +2275,10 @@ namespace _01electronics_erp
                 return false;
 
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-        	{
-        		int numericCount = 0;
-        		int stringCount = 0;
-        
+            {
+                int numericCount = 0;
+                int stringCount = 0;
+
                 COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT offerItem = new COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT();
 
                 offerItem.products = new List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT>();
@@ -2402,25 +2290,25 @@ namespace _01electronics_erp
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                 offerItem.offer_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		offerItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		offerItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		offerItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		offerItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		offerItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-        
-        		offerItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		offerItem.offer_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		offerItem.offer_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		offerItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		offerItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		offerItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		offerItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		int product_number = (int) commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                offerItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                offerItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                offerItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                offerItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                offerItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+
+                offerItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.offer_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.offer_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                offerItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                int product_number = (int)commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
                 tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
@@ -2435,35 +2323,35 @@ namespace _01electronics_erp
                 tempProductItem.productQuantity = 0;
 
                 if (i > 0 && returnVector.Last().offer_proposer_id == offerItem.offer_proposer_id && returnVector.Last().offer_serial == offerItem.offer_serial && returnVector.Last().offer_version == offerItem.offer_version)
-        		{
+                {
                     returnVector.Last().products.Add(tempProductItem);
                     returnVector.Last().products.Sort();
                 }
-        		else
-        		{
+                else
+                {
                     offerItem.products.Add(tempProductItem);
 
                     offerItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        			offerItem.offer_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        			offerItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        			offerItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        			offerItem.offer_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        			offerItem.failure_reason = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        			returnVector.Add(offerItem);
-        		}
-        		
-        	}
-        
-        	return true;
+                    offerItem.offer_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    offerItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                    offerItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    offerItem.offer_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    offerItem.failure_reason = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                    returnVector.Add(offerItem);
+                }
+
+            }
+
+            return true;
         }
         public bool GetWorkOrders(ref List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> returnVector)
         {
             returnVector.Clear();
 
-        	String sqlQueryPart1 =
-        		@"with get_company_info	as	(	select company_name.company_serial, 
+            String sqlQueryPart1 =
+                @"with get_company_info	as	(	select company_name.company_serial, 
         		company_address.address_serial, 
         		company_name.company_name 
         		from erp_system.dbo.company_address 
@@ -2571,10 +2459,10 @@ namespace _01electronics_erp
         		inner join erp_system.dbo.orders_status 
         		on work_orders.order_status = orders_status.id 
         
-        		order by work_orders.issue_date desc, employees_initials.employee_initial, work_orders.order_serial, work_offers_products_info.product_number;"; 
-        
-        	sqlQuery = String.Empty;
-        	sqlQuery += sqlQueryPart1;
+        		order by work_orders.issue_date desc, employees_initials.employee_initial, work_orders.order_serial, work_offers_products_info.product_number;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -2586,9 +2474,9 @@ namespace _01electronics_erp
                 return false;
 
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-        	{
-        		int numericCount = 0;
-        		int stringCount = 0;
+            {
+                int numericCount = 0;
+                int stringCount = 0;
 
                 COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT orderItem = new COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT();
 
@@ -2601,25 +2489,25 @@ namespace _01electronics_erp
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                 orderItem.order_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		orderItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		orderItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		orderItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		orderItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		orderItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-        
-        		orderItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		orderItem.order_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		orderItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		orderItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		orderItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		orderItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		int product_number = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                orderItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                orderItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                orderItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                orderItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                orderItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+
+                orderItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.order_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                orderItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                orderItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                int product_number = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
                 tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
@@ -2634,32 +2522,32 @@ namespace _01electronics_erp
                 tempProductItem.productQuantity = 0;
 
                 if (i > 0 && returnVector.Last().sales_person_id == orderItem.sales_person_id && returnVector.Last().order_serial == orderItem.order_serial)
-        		{
+                {
                     returnVector.Last().products.Add(tempProductItem);
                     returnVector.Last().products.Sort();
                 }
-        		else
-        		{
+                else
+                {
                     orderItem.products.Add(tempProductItem);
 
                     orderItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        			orderItem.order_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        			orderItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        			orderItem.order_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        			returnVector.Add(orderItem);
-        		}		
-        	}
-        
-        	return true;
+                    orderItem.order_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
+                    orderItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    orderItem.order_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                    returnVector.Add(orderItem);
+                }
+            }
+
+            return true;
         }
-        
+
         public bool GetClientVisits(ref List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> returnVector)
         {
             returnVector.Clear();
 
-        	String sqlQueryPart1 = @"with get_company_name	as	(	select company_address.address_serial, 
+            String sqlQueryPart1 = @"with get_company_name	as	(	select company_address.address_serial, 
         																	company_name.company_name 
         															from erp_system.dbo.company_address 
         															inner join erp_system.dbo.company_name 
@@ -2710,9 +2598,9 @@ namespace _01electronics_erp
         							and visit_plans.visit_serial = get_visit_result.visit_serial 
         
         							order by visit_plans.date_of_visit DESC;";
-        
-        	sqlQuery = String.Empty;
-        	sqlQuery += sqlQueryPart1;
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -2724,33 +2612,33 @@ namespace _01electronics_erp
                 return false;
 
             for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-        	{
-        		int numericCount = 0;
-        		int stringCount = 0;
-        
+            {
+                int numericCount = 0;
+                int stringCount = 0;
+
                 COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT visitItem;
-        
-        		visitItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		visitItem.visit_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        		
+
+                visitItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                visitItem.visit_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+
                 visitItem.visit_purpose_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
                 visitItem.visit_result_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-        
-        		visitItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-        		visitItem.visit_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
-        		
-        		visitItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		visitItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		visitItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                visitItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+                visitItem.visit_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+
+                visitItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                visitItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                visitItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
 
                 visitItem.visit_purpose = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        		visitItem.visit_result = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-        
-        		returnVector.Add(visitItem);
-        	}
-        
-        	return true;
+                visitItem.visit_result = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+
+                returnVector.Add(visitItem);
+            }
+
+            return true;
         }
 
         public bool GetClientCalls(ref List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT> returnVector)
@@ -2841,6 +2729,5 @@ namespace _01electronics_erp
             return true;
         }
     }
-    
+
 }
-        
