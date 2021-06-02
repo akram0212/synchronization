@@ -58,6 +58,9 @@
     <Compile Include="AddRFQWindow.xaml.cs">
       <DependentUpon>AddRFQWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddWorkOfferWindow.xaml.cs">
+      <DependentUpon>AddWorkOfferWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BASIC_MACROS.cs" />
     <Compile Include="BASIC_STRUCTS.cs" />
     <Compile Include="CommonFunctions.cs" />
@@ -72,7 +75,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="FTPServer.cs" />
     <Compile Include="IntegrityChecks.cs" />
-    <Compile Include="RFQClass.cs" />
+    <Compile Include="RFQ.cs" />
     <Compile Include="RFQsPage.xaml.cs">
       <DependentUpon>RFQsPage.xaml</DependentUpon>
     </Compile>
@@ -88,6 +91,10 @@
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
     <Page Include="AddRFQWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddWorkOfferWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

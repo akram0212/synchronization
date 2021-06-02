@@ -535,6 +535,8 @@ namespace _01electronics_crm
         {
             //var addRFQWindow = new AddRFQWindow(ref loggedInUser);
             //addRFQWindow.Show();
+            var addWorkOfferWindow = new AddWorkOfferWindow(ref loggedInUser);
+            addWorkOfferWindow.Show();
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
