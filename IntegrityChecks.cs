@@ -27,6 +27,7 @@ namespace _01electronics_erp
         //DOMAIN TLDS
         String countryTld;
         String originalTld;
+        String businessDomain;
 
         //DOMAIN FORM OBJECTS
         BASIC_STRUCTS.DOMAIN_FORM domainAt;
@@ -45,7 +46,7 @@ namespace _01electronics_erp
             outputString = String.Empty;
 
             char[] tempString = new char[BASIC_MACROS.EDIT_BOX_STRING_LENGTH];
-            
+
             int startPoint = 0;
             for (int i = 0; i < inputString.Length; i++)
             {
@@ -74,7 +75,7 @@ namespace _01electronics_erp
                     spaceCount = 0;
                 }
             }
-            
+
             outputString = new String(tempString, 0, inputString.Length - (startPoint + skippedIndeces));
         }
 
@@ -127,6 +128,7 @@ namespace _01electronics_erp
             bool isEmailSpecialCharacter;
             bool isDomainSpecialCharacter;
             bool isPhoneSpecialCharacter;
+            bool isMonetarySpecialCharacter;
 
             for (int i = 0; i < inputString.Length; i++)
             {
@@ -136,6 +138,7 @@ namespace _01electronics_erp
                 isEmailSpecialCharacter = false;
                 isDomainSpecialCharacter = false;
                 isPhoneSpecialCharacter = false;
+                isMonetarySpecialCharacter = false;
 
                 if ((inputString[i] >= '0') && (inputString[i] <= '9'))
                     isNumber = true;
@@ -149,6 +152,8 @@ namespace _01electronics_erp
                     isDomainSpecialCharacter = true;
                 if (inputString[i] == '+' && i == 0)
                     isPhoneSpecialCharacter = true;
+                if (inputString[i] == '.')
+                    isMonetarySpecialCharacter = true;
 
                 if (checkType == BASIC_MACROS.REGULAR_STRING && (isAlphabet || isNumber || isRegularSpecialCharacter))
                     continue;
@@ -157,6 +162,8 @@ namespace _01electronics_erp
                 if (checkType == BASIC_MACROS.DOMAIN_STRING && (isAlphabet || isNumber || isDomainSpecialCharacter))
                     continue;
                 if (checkType == BASIC_MACROS.PHONE_STRING && (isNumber || isPhoneSpecialCharacter))
+                    continue;
+                if (checkType == BASIC_MACROS.MONETARY_STRING && (isNumber || isMonetarySpecialCharacter))
                     continue;
 
                 return false;
@@ -241,10 +248,10 @@ namespace _01electronics_erp
 
                 for (int i = domainThirdDot.charIndex; i < inputString.Length; i++)
                     tempCountryTld[i - (domainThirdDot.charIndex)] = inputString[i];
-                
+
                 for (int i = domainSecondDot.charIndex; i < domainThirdDot.charIndex; i++)
                     tempOriginalTld[i - (domainSecondDot.charIndex)] = inputString[i];
-                
+
                 countryTld = new String(tempCountryTld, 0, inputString.Length - domainThirdDot.charIndex);
                 originalTld = new String(tempOriginalTld, 0, domainThirdDot.charIndex - domainSecondDot.charIndex);
 
@@ -489,7 +496,7 @@ namespace _01electronics_erp
                 {
                     String expectedCountryTld = String.Empty;
 
-                    if(!commonQueries.GetCountryTLD(countryId, ref expectedCountryTld))
+                    if (!commonQueries.GetCountryTLD(countryId, ref expectedCountryTld))
                         return false;
 
                     for (int j = 1; j < 3; j++)
@@ -638,6 +645,39 @@ namespace _01electronics_erp
 
             return false;
         }
+        public bool CheckEmailForm(String inputString, String businessDomain = BASIC_MACROS.COMPANY_DOMAIN)
+        {
+            domainAt.charFound = false;
+            domainFirstDot.charFound = false;
+
+            List<String> domainForms = new List<String>();
+
+            if (!commonQueries.GetOriginalTLDs(ref domainForms))
+                return false;
+
+            for (int i = 0; i < inputString.Length; i++)
+            {
+                if (inputString[i] == '@')
+                {
+                    domainAt.charFound = true;
+                    domainAt.charIndex = i;
+                }
+                else if (domainAt.charFound == true && domainFirstDot.charFound == false && inputString[i] == '.')
+                {
+                    domainFirstDot.charFound = true;
+                    domainFirstDot.charIndex = i;
+                }
+            }
+
+            if (!domainAt.charFound || !domainFirstDot.charFound)
+                return false;
+
+            for (int j = domainAt.charIndex; j < inputString.Length; j++)
+                if (businessDomain[j - domainAt.charIndex] != inputString[j])
+                    return false;
+
+            return true;
+        }
 
         public bool CheckPhoneForm(String inputString)
         {
@@ -697,12 +737,12 @@ namespace _01electronics_erp
         {
             int employeeEmailCount = 0;
 
-            if (!commonQueries.GetEmployeeEmailCount(employeeEmail,ref employeeEmailCount))
+            if (!commonQueries.GetEmployeeEmailCount(employeeEmail, ref employeeEmailCount))
                 return false;
 
             if (employeeEmailCount > 0)
                 return false;
-            
+
             return true;
         }
 
@@ -728,7 +768,19 @@ namespace _01electronics_erp
 
             if (employeePasswordCount > 0)
                 return false;
-            
+
+            return true;
+        }
+        public bool CheckAvailableSignUp(String employeeEmail)
+        {
+            int employeePasswordCount = 0;
+
+            if (!commonQueries.GetEmployeePasswordCount(employeeEmail, ref employeePasswordCount))
+                return false;
+
+            if (employeePasswordCount == 0)
+                return false;
+
             return true;
         }
 
@@ -745,7 +797,7 @@ namespace _01electronics_erp
             return true;
         }
 
-        public bool CheckUpdatedContact(int updatedInfo,ref Contact oldContact,ref Contact newContact)
+        public bool CheckUpdatedContact(int updatedInfo, ref Contact oldContact, ref Contact newContact)
         {
             if ((updatedInfo & BASIC_MACROS.CONTACT_BUSINESS_EMAIL_EDITED) > 0)
             {
@@ -836,6 +888,11 @@ namespace _01electronics_erp
                 MessageBox.Show("The specified email was not found, Please contact your adminstration to complete your employee profile.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
+            if (!CheckAvailableSignUp(outputString))
+            {
+                MessageBox.Show("No existing signup was found for the specified email, Please signup first then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
 
             return true;
         }
@@ -886,7 +943,7 @@ namespace _01electronics_erp
 
             String employeeHashedPassword = employeePasswordBuilder.ToString();
             String employeeServerHashedPassword = String.Empty;
-            
+
             if (!commonQueries.GetEmployeePassword(employeeId, ref employeeServerHashedPassword))
                 return false;
 
@@ -926,7 +983,40 @@ namespace _01electronics_erp
 
             return true;
         }
+        public bool CheckEmployeeBusinessEmailEditBox(String inputString, String businessDomain, ref String outputString)
+        {
+            RemoveExtraSpaces(inputString, ref outputString);
 
+            if (!CheckNonEmptyEditBox(outputString))
+            {
+                MessageBox.Show("A business email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (!CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
+            {
+                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (!CheckInBetweenSpaces(outputString))
+            {
+                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!CheckEmailForm(outputString, businessDomain))
+            {
+                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!CheckUniqueEmployeeEmail(outputString))
+            {
+                MessageBox.Show("The provided business email is already associated with another employee.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
+        }
         public bool CheckCompanyNameEditBox(String inputString, ref String outputString)
         {
             outputString = String.Empty;
@@ -1236,6 +1326,38 @@ namespace _01electronics_erp
 
             RemoveExtraSpaces(inputString, ref outputString);
             CheckCapitalizedInitials(outputString, ref outputString);
+
+            return true;
+        }
+
+        public bool CheckMonetaryEditBox(String inputString, ref String outputString)
+        {
+            outputString = String.Empty;
+
+            if (!CheckNonEmptyEditBox(inputString))
+            {
+                MessageBox.Show("Employee salary must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!CheckInvalidCharacters(inputString, BASIC_MACROS.MONETARY_STRING))
+            {
+                MessageBox.Show("Invalid employee salary.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            RemoveExtraSpaces(inputString, ref outputString);
+
+            return true;
+        }
+
+        public bool CheckFileEditBox(String inputString)
+        {
+            if (!CheckNonEmptyEditBox(inputString))
+            {
+                MessageBox.Show("File must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
 
             return true;
         }

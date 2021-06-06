@@ -37,7 +37,7 @@
                     <Label Grid.Row="1" Grid.Column="1" Content="Sales Person" Style="{StaticResource stackPanelItemBody}"/>
                     <Label Grid.Row="2" Grid.Column="1" Content="RFQ Serial (Optional)" Style="{StaticResource stackPanelItemBody}"/>
                     <ComboBox Name="salesPersonCombo" Grid.Row="1" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="200" SelectionChanged="SalesPersonComboSelectionChanged"/>
-                    <ComboBox Name="rfqSerialCombo" Grid.Row="2" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="200" />
+                    <ComboBox Name="rfqSerialCombo" Grid.Row="2" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="200" SelectionChanged="rfqSerialComboSelectionChanged"/>
                 </Grid>
             </Border>
 
@@ -60,8 +60,8 @@
                         <Label Grid.Row="1" Grid.Column="1" Content="Company Branch" Style="{StaticResource stackPanelItemBody}"/>
                         <Label Grid.Row="2" Grid.Column="1" Content="Contact Name" Style="{StaticResource stackPanelItemBody}"/>
                         <ComboBox Name="companyNameCombo" Grid.Row="0" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}"  Width="180" SelectionChanged="CompanyNameComboSelectionChanged"/>
-                        <ComboBox Name="companyBranchCombo" Grid.Row="1" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="180" />
-                        <ComboBox Name="contactNameCombo" Grid.Row="2" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="180"/>
+                        <ComboBox Name="companyBranchCombo" Grid.Row="1" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="180" SelectionChanged="CompanyBranchComboSelectionChanged" />
+                        <ComboBox Name="contactNameCombo" Grid.Row="2" Grid.Column="2" Style="{StaticResource comboBoxStyleSameh}" Width="180" SelectionChanged="contactNameComboSelectionChanged"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -88,18 +88,18 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <CheckBox Name="product1CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10"/>
                     <Label Grid.Row="0" Grid.Column="0" Content="Product 1" Style="{StaticResource stackPanelItemHeader}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Type" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Brand" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="3" Grid.Column="0" Content="Model" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="4" Grid.Column="0" Content="Quantity" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="5" Grid.Column="0" Content="Price / Item" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
-                    <ComboBox Name="type1Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="brand1Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="model1Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="quantity1Combo" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="pricePerItem1Combo" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
+                    <ComboBox Name="type1Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Type1ComboSelectionChanged"/>
+                    <ComboBox Name="brand1Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Brand1ComboSelectionChanged" />
+                    <ComboBox Name="model1Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Model1ComboSelectionChanged"/>
+                    <TextBox Name="quantity1TextBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="100" Height="25" TextChanged="Quantity1TextBoxTextChanged"/>
+                    <ComboBox Name="pricePerItem1ComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="45" Margin="0,0,60,0" SelectionChanged="PricePerItem1ComboBoxSelectionChanged"/>
+                    <TextBox Name="pricePerItem1TextBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="45" Height="25" TextChanged="PricePerItem1TextBoxTextChanged"/>
                 </Grid>
             </Border>
 
@@ -117,18 +117,19 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <CheckBox Name="product2CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10"/>
+                    <CheckBox Name="product2CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10" Checked="Product2CheckBoxChecked" Unchecked="Product2CheckBoxUnchecked"/>
                     <Label Grid.Row="0" Grid.Column="0" Content="Product 2" Style="{StaticResource stackPanelItemHeader}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Type" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Brand" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="3" Grid.Column="0" Content="Model" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="4" Grid.Column="0" Content="Quantity" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="5" Grid.Column="0" Content="Price / Item" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
-                    <ComboBox Name="type2Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="brand2Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="model2Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="quantity2Combo" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="pricePerItem2Combo" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
+                    <ComboBox Name="type2Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Type2ComboSelectionChanged"/>
+                    <ComboBox Name="brand2Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Brand2ComboSelectionChanged" />
+                    <ComboBox Name="model2Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Model2ComboSelectionChanged"/>
+                    <TextBox Name="quantity2TextBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="100" Height="25" TextChanged="Quantity2TextBoxTextChanged"/>
+                    <ComboBox Name="pricePerItem2ComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="45" Margin="0,0,60,0" SelectionChanged="PricePerItem2ComboBoxSelectionChanged"/>
+                    <TextBox Name="pricePerItem2TextBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="45" Height="25" TextChanged="PricePerItem2TextBoxTextChanged"/>
                 </Grid>
             </Border>
 
@@ -146,18 +147,19 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <CheckBox Name="product3CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10"/>
+                    <CheckBox Name="product3CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10" Checked="Product3CheckBoxChecked" Unchecked="Product3CheckBoxUnchecked"/>
                     <Label Grid.Row="0" Grid.Column="0" Content="Product 3" Style="{StaticResource stackPanelItemHeader}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Type" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Brand" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="3" Grid.Column="0" Content="Model" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="4" Grid.Column="0" Content="Quantity" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="5" Grid.Column="0" Content="Price / Item" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
-                    <ComboBox Name="type3Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="brand3Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="model3Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="quantity3Combo" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="pricePerItem3Combo" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
+                    <ComboBox Name="type3Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Type3ComboSelectionChanged" />
+                    <ComboBox Name="brand3Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Brand3ComboSelectionChanged" />
+                    <ComboBox Name="model3Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Model3ComboSelectionChanged" />
+                    <TextBox Name="quantity3TextBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="100" Height="25" TextChanged="Quantity3TextBoxTextChanged"/>
+                    <ComboBox Name="pricePerItem3ComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="45" Margin="0,0,60,0" SelectionChanged="PricePerItem3ComboBoxSelectionChanged"/>
+                    <TextBox Name="pricePerItem3TextBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="45" Height="25" TextChanged="PricePerItem3TextBoxTextChanged"/>
                 </Grid>
             </Border>
 
@@ -175,18 +177,19 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <CheckBox Name="product4CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10"/>
+                    <CheckBox Name="product4CheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,8,0,10" Checked="Product4CheckBoxChecked" Unchecked="Product4CheckBoxUnchecked"/>
                     <Label Grid.Row="0" Grid.Column="0" Content="Product 4" Style="{StaticResource stackPanelItemHeader}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Type" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="0" Content="Brand" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="3" Grid.Column="0" Content="Model" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="4" Grid.Column="0" Content="Quantity" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
                     <Label Grid.Row="5" Grid.Column="0" Content="Price / Item" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
-                    <ComboBox Name="type4Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="brand4Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="model4Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="quantity4Combo" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
-                    <ComboBox Name="pricePerItem4Combo" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" />
+                    <ComboBox Name="type4Combo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Type4ComboSelectionChanged" />
+                    <ComboBox Name="brand4Combo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Brand4ComboSelectionChanged" />
+                    <ComboBox Name="model4Combo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="100" SelectionChanged="Model4ComboSelectionChanged" />
+                    <TextBox Name="quantity4TextBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="100" Height="25" TextChanged="Quantity4TextBoxTextChanged"/>
+                    <ComboBox Name="pricePerItem4ComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="45" Margin="0,0,60,0" SelectionChanged="PricePerItem4ComboBoxSelectionChanged"/>
+                    <TextBox Name="pricePerItem4TextBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource textBoxStyleSameh}" Width="45" Height="25" TextChanged="PricePerItem4TextBoxTextChanged"/>
                 </Grid>
             </Border>
         </Grid>
@@ -217,15 +220,15 @@
                     <Label Grid.Row="3" Grid.Column="1" Content="% On Installation" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
 
                     <ComboBox Name="totalPriceCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="40" Margin="0,0,70,0"  />
-                    <TextBox Name="totalPriceTextBox" Grid.Row="1" Grid.Column="0" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="totalPriceTextBox" Grid.Row="1" Grid.Column="0" Width="65" Height="20" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
 
-                    <TextBox Name="downPaymentPercentageTextBox" Grid.Row="1" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="downPaymentPercentageTextBox" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="DownPaymentPercentageTextBoxTextChanged" Grid.RowSpan="2"/>
                     <TextBox Name="downPaymentActualTextBox" Grid.Row="1" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
 
-                    <TextBox Name="onDeliveryPercentageTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="onDeliveryPercentageTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="OnDeliveryPercentageTextBoxTextChanged"/>
                     <TextBox Name="onDeliveryActualTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
 
-                    <TextBox Name="onInstallationPercentageTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="onInstallationPercentageTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="OnInstallationPercentageTextBoxTextChanged"/>
                     <TextBox Name="onInstallationActualTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
 
 
@@ -240,13 +243,13 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Content="Drawing Conditions" Style="{StaticResource stackPanelItemHeader}" VerticalAlignment="Top" Margin="20,0,0,0"/>
-                    <CheckBox Name="drawingConditionsCheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,6,0,0"/>
+                    <CheckBox Name="drawingConditionsCheckBox" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,6,0,0" Checked="DrawingConditionsCheckBoxChecked" Unchecked="DrawingConditionsCheckBoxUnchecked"/>
 
                     <Label Grid.Row="1" Grid.Column="0" Content="Drawing Submission Deadline" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Top" Margin="5"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="-" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Bottom" Margin="64,0,6,13"/>
 
-                    <TextBox Name="drawingSubmissionDeadlineDay" Grid.Row="1"  Width="45" Height="20" Margin="16,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
-                    <TextBox Name="drawingSubmissionDeadlineMonth" Grid.Row="1"  Width="45" Height="20" Margin="92,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="drawingSubmissionDeadlineFrom" Grid.Row="1"  Width="45" Height="20" Margin="16,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBox Name="drawingSubmissionDeadlineTo" Grid.Row="1"  Width="45" Height="20" Margin="92,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
                     <ComboBox Name="drawingSubmissionDeadlineCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="45" Height="20" Margin="0,0,50,10" VerticalAlignment="Bottom"/>
 
                 </Grid>
@@ -266,12 +269,12 @@
                     <Label Grid.Row="1" Content="Delivery Time" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Center" Margin="5"/>
                     <Label Content="-" Style="{StaticResource stackPanelItemBody}" Margin="147,27,-147,1" Grid.RowSpan="2" />
 
-                    <TextBox Name="deliveryTimeDayTextBox" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="103,4,0,5"/>
-                    <TextBox Name="deliveryTimeMonthTextBox" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="172,4,0,5"/>
+                    <TextBox Name="deliveryTimeTextBoxFrom" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="103,4,0,5"/>
+                    <TextBox Name="deliveryTimeTextBoxTo" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="172,4,0,5"/>
                     <ComboBox Name="deliveryTimeCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="45" Height="20"  VerticalAlignment="Center" Margin="0,4,34,5"/>
 
                     <Label Grid.Row="2" Content="Delivery Point" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Center" Margin="5"/>
-                    <ComboBox Name="dngSubmissionDadlineCombo" Grid.Row="2" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="185" Height="20"  VerticalAlignment="Center" Margin="0,4,33,4" />
+                    <ComboBox Name="deliveryPointCombo" Grid.Row="2" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="185" Height="20"  VerticalAlignment="Center" Margin="0,4,33,4" />
 
                 </Grid>
 
@@ -302,7 +305,7 @@
 
                 <Label Grid.Row="2" Grid.Column="1" Content="Offer Validity Period" Style="{StaticResource stackPanelItemBody}"/>
                 <ComboBox Name="offerValidityCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="150" />
-                <TextBox Name="offerValidityComboTextBox"  Grid.Row="2" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" />
+                <TextBox Name="offerValidityTextBox"  Grid.Row="2" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" />
 
                 <Label Grid.Row="1" Grid.Column="2" Content="Additional Description" Style="{StaticResource stackPanelItemBody}"/>
                 <Label Grid.Row="2" Grid.Column="2" Content="(Optional)" Style="{StaticResource stackPanelItemBody}"/>

@@ -32,8 +32,14 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-        bool skipLoopProductFilter;
-        bool skipLoopBrandFilter;
+
+        private int selectedYear;
+        private int selectedQuarter;
+        private int selectedEmployee;
+        private int selectedTeam;
+        private int selectedProduct;
+        private int selectedBrand;
+        private int selectedStatus;
 
         public WorkOffersPage(ref Employee mLoggedInUser)
         {
@@ -44,10 +50,9 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            // workOffers = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-            // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-            // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-         
+            if (!GetWorkOffers())
+                return;
+
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
             InitializeStatusComboBox();
@@ -61,65 +66,85 @@ namespace _01electronics_crm
             if (!InitializeBrandsComboBox())
                 return;
 
-            if (!InitializeRFQsStackPanel())
-                return;
+            DisableComboBoxes();
+            ResetComboBoxes();
 
+            ConfigureUIElements();
+
+            SetWorkOffersStackPanel();
         }
 
-        private void InitializeYearsComboBox()
+        private void DisableEmployeeUIElements()
         {
-            int initialYear = 2020;
-            for (; initialYear <= finalYear; initialYear++)
-                yearCombo.Items.Add(initialYear);
-
-            yearCheckBox.IsChecked = true;
-            yearCombo.SelectedItem = finalYear;
-        }
-        private void InitializeQuartersComboBox()
-        {
-            //INSTEAD OF HARD CODING YOUR COMBO, 
-            //THIS FUNCTION IS BETTER SO EVERYTIME IN OUR PROJECT WE NEED TO LIST QUARTERS
-            //WE ARE SURE THAT ALL HAVE THE SAME FORMAT
-            for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
-                quarterCombo.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
-
-            quarterCheckBox.IsChecked = true;
-            quarterCombo.SelectedItem = quarterCombo.Items.GetItemAt(0);
-            //ALSO IF YOU NOTICE, I DIDN'T EVEN USE i < 4, I USED A PRE-DEFINED MACRO INSTEAD, SO THE CODE IS ALWAYS READABLE
-        }
-        private bool InitializeEmployeeComboBox()
-        {
-            if (!commonQueriesObject.GetCompanyEmployees(ref employeesList))
-                return false;
-
-            for (int i = 0; i < employeesList.Count; i++)
-            {
-                employeeCombo.Items.Add(employeesList[i].employee_name);
-            }
-
+            employeeCheckBox.IsChecked = true;
+            employeeCheckBox.IsEnabled = false;
             employeeCombo.IsEnabled = false;
+        }
 
-            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-            {
-                employeeCheckBox.IsChecked = true;
-                employeeCheckBox.IsEnabled = false;
-                employeeCombo.IsEnabled = false;
-                for (int i = 0; i < employeesList.Count; i++)
-                {
-                    if (loggedInUser.GetEmployeeId() == employeesList[i].employee_id)
-                    {
-                        //employeeCombo.Items.Clear();
-                        //employeeCombo.Items.Add(employeesList[i].employee_name);
-                        //employeeCombo.SelectedItem = employeeCombo.Items.GetItemAt(0);
-                        employeeCombo.SelectedItem = employeeCombo.Items.GetItemAt(i);
-                    }
-                }
-            }
+        private void ResetComboBoxes()
+        {
+            yearCombo.SelectedItem = null;
+
+            quarterCombo.SelectedItem = null;
+
+            employeeCombo.SelectedItem = null;
+
+            productCombo.SelectedItem = null;
+
+            brandCombo.SelectedItem = null;
+
+            statusCombo.SelectedItem = null;
+        }
+
+        private void DisableComboBoxes()
+        {
+            yearCombo.IsEnabled = false;
+            quarterCombo.IsEnabled = false;
+            employeeCombo.IsEnabled = false;
+            productCombo.IsEnabled = false;
+            brandCombo.IsEnabled = false;
+            statusCombo.IsEnabled = false;
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //GET DATA FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+
+        private bool GetWorkOffers()
+        {
+            if (!commonQueriesObject.GetWorkOffers(ref workOffers))
+                return false;
             return true;
         }
 
-        //THIS FUNCTIONS ACCESS SQL SERVER, SO YOU SHALL ALWAYS CHECK IF THE QUERY IS COMPLETED SUCCESSFULLY
-        // IF NOT YOU SHALL STOP DATA ACCESS FOR THE CODE NOT TO CRASH
+        /////////////////////////////////////////////////////////////////
+        //INTIALIZATION FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        ///
+
+        private void InitializeYearsComboBox()
+        {
+            for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
+                yearCombo.Items.Add(year);
+
+        }
+        private void InitializeQuartersComboBox()
+        {
+            for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
+                quarterCombo.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
+
+        }
+        private bool InitializeEmployeeComboBox()
+        {
+            if (!commonQueriesObject.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employeesList))
+                return false;
+
+            for (int i = 0; i < employeesList.Count; i++)
+                employeeCombo.Items.Add(employeesList[i].employee_name);
+             
+            return true;
+        }
+
         private bool InitializeProductsComboBox()
         {
             if (!commonQueriesObject.GetCompanyProducts(ref productTypes))
@@ -128,13 +153,12 @@ namespace _01electronics_crm
             for (int i = 0; i < productTypes.Count; i++)
                 productCombo.Items.Add(productTypes[i].typeName);
 
-            productCombo.IsEnabled = false;
             return true;
         }
 
         private bool InitializeBrandsComboBox()
         {
-            //INTENTIONALLY LEFT IT EMPTY FOR YOU TO FILL
+            
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
 
@@ -147,156 +171,98 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            //for(int i = 0; i< COMPANY_WORK_MACROS.NO_OF_RFQS_STATUS; i++)
-            //statusCombo.Items.Add(commonFunctionsObject.)
+           
             statusCombo.Items.Add("Failed");
             statusCombo.Items.Add("Confirmed");
             statusCombo.Items.Add("Pending");
             statusCombo.IsEnabled = false;
         }
-        private bool InitializeRFQsStackPanel()
-        {
-            RFQsStackPanel.Children.Clear();
 
-            if (!commonQueriesObject.GetWorkOffers(ref workOffers))
-                return false;
+        /////////////////////////////////////////////////////////////////
+        //CONFIGURATION FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+
+        private void ConfigureUIElements()
+        {
+            EnableYearUIElements();
+
+            if (loggedInUser.GetEmployeePositionId() >= COMPANY_ORGANISATION_MACROS.JUNIOR_POSTION)
+            {
+                DisableEmployeeUIElements();
+                SetEmployeeComboBox();
+            }
+        }
+        private void EnableYearUIElements()
+        {
+            yearCheckBox.IsChecked = true;
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //SET FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+
+        private void SetYearComboBox()
+        {
+            yearCombo.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
+        }
+        private void SetQuarterComboBox()
+        {
+            quarterCombo.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+        }
+
+        private void SetEmployeeComboBox()
+        {
+            for (int i = 0; i < employeesList.Count; i++)
+                if (loggedInUser.GetEmployeeId() == employeesList[i].employee_id)
+                    employeeCombo.SelectedIndex = i;
+        }
+
+
+        private bool SetWorkOffersStackPanel()
+        {
+            
+            workOffersStackPanel.Children.Clear();
 
             for (int i = 0; i < workOffers.Count; i++)
             {
-                skipLoopProductFilter = true;
-                skipLoopBrandFilter = true;
+                DateTime currentWorkOfferDate = DateTime.Parse(workOffers[i].issue_date);
 
-                if (yearCheckBox.IsChecked == true)
-                {
-                    Int32 tempYearComboSelectedItem = Int32.Parse(yearCombo.SelectedItem.ToString());
-                    DateTime tempYearList = DateTime.Parse(workOffers[i].issue_date);
-                    Int32 tempYearList1 = Int32.Parse(tempYearList.Year.ToString());
-                    if (tempYearComboSelectedItem != tempYearList1)
-                        continue;
-                }
+                bool salesPersonCondition =
+                   selectedTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID &&
+                   selectedEmployee != workOffers[i].sales_person_id;
 
-                if (employeeCheckBox.IsChecked == true)
-                {
-                    COMPANY_ORGANISATION_MACROS.TEAM_STRUCT employeeTeam = employeesList[employeeCombo.SelectedIndex].team;
-                    if (employeeCombo.SelectedItem != null)
-                    {
-                        if (employeeTeam.team_id == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-                        {
-                            string tempSalesPersonName = workOffers[i].sales_person_name;
+                bool assigneeCondition =
+                    selectedTeam == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID &&
+                    selectedEmployee != workOffers[i].offer_proposer_id;
 
-                            if (employeeCombo.SelectedItem.ToString() != tempSalesPersonName)
-                                continue;
-                        }
-                        else if (employeeTeam.team_id == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-                        {
-                            string tempAssigneeName = workOffers[i].offer_proposer_name;
+                bool productCondition = false;
+                for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
+                    if (workOffers[i].products[productNo].productType.typeId == selectedProduct)
+                        productCondition |= true;
 
-                            if (tempAssigneeName != employeeCombo.SelectedItem.ToString())
-                                continue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("The employee you chose is not from sales department so he doesnt have any work offers");
-                            i = workOffers.Count;
-                            continue;
-                        }
-                    }
-                }
+                bool brandCondition = false;
+                for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
+                    if (workOffers[i].products[productNo].productBrand.brandId == selectedBrand)
+                        brandCondition |= true;
 
-                if (quarterCheckBox.IsChecked == true)
-                {
-                    DateTime tempQuarterList;
-                    Int32 tempMonth;
+                
+                if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
+                    continue;
 
-                    tempQuarterList = DateTime.Parse(workOffers[i].issue_date);
-                    tempMonth = tempQuarterList.Month;
-                    // tempMonth = Int32.Parse(tempQuarterList.Month.ToString());
+                if (employeeCheckBox.IsChecked == true && salesPersonCondition && assigneeCondition)
+                    continue;
 
-                    if (quarterCombo.SelectedIndex + 1 == BASIC_MACROS.FIRST_QUARTER)
-                    {
-                        if (tempMonth > BASIC_MACROS.FIRST_QUARTER_END_MONTH)
-                            continue;
-                    }
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOfferDate) != selectedQuarter)
+                    continue;
 
-                    else if (quarterCombo.SelectedIndex + 1 == BASIC_MACROS.SECOND_QUARTER)
-                    {
-                        if (tempMonth < BASIC_MACROS.SECOND_QUARTER_START_MONTH || tempMonth > BASIC_MACROS.SECOND_QUARTER_END_MONTH)
-                            continue;
-                    }
-                    else if (quarterCombo.SelectedIndex + 1 == BASIC_MACROS.THIRD_QUARTER)
-                    {
-                        if (tempMonth < BASIC_MACROS.THIRD_QUARTER_START_MONTH || tempMonth > BASIC_MACROS.THIRD_QUARTER_END_MONTH)
-                            continue;
-                    }
-                    else
-                    {
-                        if (tempMonth < BASIC_MACROS.FOURTH_QUARTER_START_MONTH)
-                            continue;
-                    }
-                }
+                if (productCheckBox.IsChecked == true && !productCondition)
+                    continue;
 
+                if (brandCheckBox.IsChecked == true && !brandCondition)
+                    continue;
 
-                if (productCheckBox.IsChecked == true)
-                {
-                    List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> tempType = workOffers[i].products;
-
-                    if (productCombo.SelectedItem != null)
-                    {
-                        for (int j = 0; j < tempType.Count; j++)
-                        {
-                            COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType0 = tempType[j].productType;
-
-                            if (productCombo.SelectedIndex + 1 == tempType0.typeId)
-                            {
-                                skipLoopProductFilter = false;
-                                j = tempType.Count();
-                            }
-                        }
-                        if (skipLoopProductFilter == true)
-                            continue;
-                    }
-                }
-
-                if (brandCheckBox.IsChecked == true)
-                {
-                    List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> tempBrand = workOffers[i].products;
-                    
-                    if (brandCombo.SelectedItem != null)
-                    {
-                        for (int j = 0; j < tempBrand.Count(); j++)
-                        {
-                            COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand0 = tempBrand[j].productBrand;
-                            if (brandCombo.SelectedIndex + 1 == tempBrand0.brandId)
-                            {
-                                skipLoopBrandFilter = false;
-                                j = tempBrand.Count();
-                            }
-                        }
-                        if (skipLoopBrandFilter == true)
-                            continue;
-                    }
-                }
-
-                if (statusCheckBox.IsChecked == true)
-                {
-                    if (statusCombo.SelectedItem != null)
-                    {
-                        int workOfferStatus = workOffers[i].offer_status_id;
-                        if (statusCombo.SelectedIndex != workOfferStatus)
-                            continue;
-                    }
-                }
-               /* if (productCheckBox.IsChecked == true)
-                {
-                    if (skipLoopProductFilter == true)
-                        continue;
-                }
-
-                if (brandCheckBox.IsChecked == true)
-                {
-                    if (skipLoopBrandFilter == true)
-                        continue;
-                }*/
+                if (statusCheckBox.IsChecked == true && workOffers[i].offer_status_id != selectedStatus)
+                    continue;
 
                 StackPanel fullStackPanel = new StackPanel();
                 fullStackPanel.Orientation = Orientation.Vertical;
@@ -378,49 +344,122 @@ namespace _01electronics_crm
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
 
-                RFQsStackPanel.Children.Add(grid);
+                workOffersStackPanel.Children.Add(grid);
             }
-            //if (!commonQueriesObject.GetWorkOffers(ref offersList))
-            //    return false;
 
             return true;
         }
 
+        /////////////////////////////////////////////////////////////////
+        //SELECTION CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (yearCombo.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            else
+                selectedYear = 0;
+
+            SetWorkOffersStackPanel();
         }
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (quarterCombo.SelectedItem != null)
+                selectedQuarter = quarterCombo.SelectedIndex + 1;
+            else
+                selectedQuarter = 0;
+
+            SetWorkOffersStackPanel();
         }
 
         private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (employeeCombo.SelectedItem != null)
+            {
+                selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
+                selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+            }
+            else
+            {
+                selectedEmployee = 0;
+                selectedTeam = 0;
+            }
+
+            SetWorkOffersStackPanel();
         }
 
         private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (productCombo.SelectedItem != null)
+                selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            else
+                selectedProduct = 0;
+
+            SetWorkOffersStackPanel();
         }
 
         private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (brandCombo.SelectedItem != null)
+                selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            else
+                selectedBrand = 0;
+
+            SetWorkOffersStackPanel();
         }
 
         private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeRFQsStackPanel();
+            if (statusCombo.SelectedItem != null)
+                selectedStatus = statusCombo.SelectedIndex + 1;
+            else
+                selectedStatus = 0;
+
+            SetWorkOffersStackPanel();
         }
+
+        /////////////////////////////////////////////////////////////////
+        //CHECKED HANDLERS
+        /////////////////////////////////////////////////////////////////
 
         private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = true;
-            yearCombo.SelectedItem = finalYear;
+             SetYearComboBox();
         }
+
+        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            quarterCombo.IsEnabled = true;
+            SetQuarterComboBox();
+        }
+
+        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            employeeCombo.IsEnabled = true;
+            SetEmployeeComboBox();
+        }
+
+        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            productCombo.IsEnabled = true;
+             
+        }
+
+        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            brandCombo.IsEnabled = true;
+        }
+
+        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            statusCombo.IsEnabled = true;
+        }
+        /////////////////////////////////////////////////////////////////
+        //UNCHECKED HANDLERS FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+
 
         private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
@@ -428,32 +467,18 @@ namespace _01electronics_crm
             yearCombo.IsEnabled = false;
         }
 
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            quarterCombo.IsEnabled = true;
-            quarterCombo.SelectedItem = quarterCombo.Items.GetItemAt(0);
-        }
-
+        
         private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             quarterCombo.SelectedItem = null;
             quarterCombo.IsEnabled = false;
         }
 
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            employeeCombo.IsEnabled = true;
-        }
 
         private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             employeeCombo.SelectedItem = null;
             employeeCombo.IsEnabled = false;
-        }
-
-        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            productCombo.IsEnabled = true;
         }
 
         private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
@@ -462,20 +487,10 @@ namespace _01electronics_crm
             productCombo.IsEnabled = false;
         }
 
-        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            brandCombo.IsEnabled = true;
-        }
-
         private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             brandCombo.SelectedItem = null;
             brandCombo.IsEnabled = false;
-        }
-
-        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            statusCombo.IsEnabled = true;
         }
 
         private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
@@ -483,6 +498,10 @@ namespace _01electronics_crm
             statusCombo.SelectedItem = null;
             statusCombo.IsEnabled = false;
         }
+
+        /////////////////////////////////////////////////////////////////
+        //BUTTON CLICKED FUNCTIONS
+        /////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
@@ -533,8 +552,6 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            //var addRFQWindow = new AddRFQWindow(ref loggedInUser);
-            //addRFQWindow.Show();
             var addWorkOfferWindow = new AddWorkOfferWindow(ref loggedInUser);
             addWorkOfferWindow.Show();
         }
