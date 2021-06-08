@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _01electronics_erp
 {
-    class WorkOffer : RFQ
+    public class WorkOffer : RFQ
     {
         public const int OFFER_ID_IDENTIFIER_TOKEN = 4;
         public const int OFFER_ID_SERIAL_TOKEN = 4;
@@ -50,11 +50,11 @@ namespace _01electronics_erp
         protected String priceCurrency;
 
         protected int priceCurrencyId;
-        
+
         protected int percentDownPayment;
         protected int percentOnDelivery;
         protected int percentOnInstallation;
-        
+
         protected int totalPriceValue;
         protected int priceValueDownPayment;
         protected int priceValueOnDelivery;
@@ -79,9 +79,9 @@ namespace _01electronics_erp
         protected int deliveryTimeMinimum;
         protected int deliveryTimeMaximum;
         protected int deliveryTimeUnitId;
-        
+
         protected int deliveryPointId;
-        
+
         protected String deliveryTimeUnit;
         protected String deliveryPoint;
 
@@ -90,16 +90,16 @@ namespace _01electronics_erp
         //////////////////////////////////////////////////////////////////////
 
         protected int modifiedContractTypeId;
-        
+
         protected int warrantyPeriod;
         protected int warrantyPeriodTimeUnitId;
-        
+
         protected int offerValidityPeriod;
         protected int offerValidityTimeUnitId;
-        
+
         protected String warrantyPeriodTimeUnit;
         protected String offerValidityTimeUnit;
-        
+
         protected String offerLocalPath;
         protected String offerServerPath;
 
@@ -108,14 +108,14 @@ namespace _01electronics_erp
         //////////////////////////////////////////////////////////////////////
 
         protected COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT[] OfferProductsList;
-        
+
         protected bool modifiedProduct1Valid;
         protected bool modifiedProduct2Valid;
         protected bool modifiedProduct3Valid;
         protected bool modifiedProduct4Valid;
-        
+
         protected bool[] OfferProductsValid;
-        
+
         protected int noOfSavedOfferProducts;
 
         //////////////////////////////////////////////////////////////////////
@@ -125,12 +125,12 @@ namespace _01electronics_erp
 
         protected DateTime offerIssueDate;
         protected DateTime offerRejectionDate;
-        
+
         protected String offerNotes;
-        
+
         protected String offerStatus;
         protected String offerFailureReason;
-        
+
         public WorkOffer()
         {
             new RFQ();
@@ -146,6 +146,13 @@ namespace _01electronics_erp
         public WorkOffer(SQLServer mSqlDatabase)
         {
             new RFQ(mSqlDatabase);
+
+            offerProposer = assignedEngineer;
+            OfferProductsList = new COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT[COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS];
+            OfferProductsValid = new bool[COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS];
+
+            offerIdString = new char[BASE_OFFER_ID_LENGTH + 1];
+            revisedOfferIdString = new char[REVISED_OFFER_ID_LENGTH + 1];
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -183,7 +190,7 @@ namespace _01electronics_erp
 
         }
 
-        bool InitializeSalesWorkOfferInfo(int mOfferSerial, int mOfferVersion)
+        public bool InitializeSalesWorkOfferInfo(int mOfferSerial, int mOfferVersion)
         {
             ResetWorkOfferInfo(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID);
 
@@ -219,7 +226,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 3;
-            
+
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
@@ -436,7 +443,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        bool InitializeSalesWorkOfferInfo(int mOfferSerial, int mOfferVersion, int mOfferProposerId)
+        public bool InitializeSalesWorkOfferInfo(int mOfferSerial, int mOfferVersion, int mOfferProposerId)
         {
             if (!InitializeOfferProposerInfo(mOfferProposerId, COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID))
                 return false;
@@ -446,7 +453,7 @@ namespace _01electronics_erp
             return true;
         }
 
-        bool InitializeTechnicalOfficeWorkOfferInfo(int mOfferSerial, int mOfferVersion)
+        public bool InitializeTechnicalOfficeWorkOfferInfo(int mOfferSerial, int mOfferVersion)
         {
             ResetWorkOfferInfo(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
 
@@ -682,7 +689,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        bool InitializeTechnicalOfficeWorkOfferInfo(int mOfferSerial, int mOfferVersion, int mOfferProposerId)
+        public bool InitializeTechnicalOfficeWorkOfferInfo(int mOfferSerial, int mOfferVersion, int mOfferProposerId)
         {
             if (!InitializeOfferProposerInfo(mOfferProposerId, COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID))
                 return false;
@@ -692,7 +699,7 @@ namespace _01electronics_erp
             return true;
         }
 
-        bool InitializeOfferProposerInfo(int mEmployeeId, int teamId)
+        public bool InitializeOfferProposerInfo(int mEmployeeId, int teamId)
         {
             if (teamId == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 offerProposer = contact.GetSalesPerson();
@@ -1300,130 +1307,130 @@ namespace _01electronics_erp
         //RETURN FUNCTIONS
         //////////////////////////////////////////////////////////////////////
 
-        int GetOfferProposerId()
+        public int GetOfferProposerId()
         {
             return offerProposer.GetEmployeeId();
         }
-        int GetOfferProposerTeamId()
+        public int GetOfferProposerTeamId()
         {
             return offerProposer.GetEmployeeTeamId();
         }
 
-        int GetOfferSerial()
+        public int GetOfferSerial()
         {
             return offerSerial;
         }
-        int GetOfferVersion()
+        public int GetOfferVersion()
         {
             return offerVersion;
         }
 
-        int GetOfferProduct1TypeId()
+        public int GetOfferProduct1TypeId()
         {
             return OfferProductsList[0].productType.typeId;
         }
-        int GetOfferProduct2TypeId()
+        public int GetOfferProduct2TypeId()
         {
             return OfferProductsList[1].productType.typeId;
         }
-        int GetOfferProduct3TypeId()
+        public int GetOfferProduct3TypeId()
         {
             return OfferProductsList[2].productType.typeId;
         }
-        int GetOfferProduct4TypeId()
+        public int GetOfferProduct4TypeId()
         {
             return OfferProductsList[3].productType.typeId;
         }
-        int GetOfferProductTypeId(int i)
+        public int GetOfferProductTypeId(int i)
         {
             return OfferProductsList[i - 1].productType.typeId;
         }
 
-        int GetOfferProduct1BrandId()
+        public int GetOfferProduct1BrandId()
         {
             return OfferProductsList[0].productBrand.brandId;
         }
-        int GetOfferProduct2BrandId()
+        public int GetOfferProduct2BrandId()
         {
             return OfferProductsList[1].productBrand.brandId;
         }
-        int GetOfferProduct3BrandId()
+        public int GetOfferProduct3BrandId()
         {
             return OfferProductsList[2].productBrand.brandId;
         }
-        int GetOfferProduct4BrandId()
+        public int GetOfferProduct4BrandId()
         {
             return OfferProductsList[3].productBrand.brandId;
         }
-        int GetOfferProductBrandId(int i)
+        public int GetOfferProductBrandId(int i)
         {
             return OfferProductsList[i - 1].productBrand.brandId;
         }
 
-        int GetOfferProduct1ModelId()
+        public int GetOfferProduct1ModelId()
         {
             return OfferProductsList[0].productModel.modelId;
         }
-        int GetOfferProduct2ModelId()
+        public int GetOfferProduct2ModelId()
         {
             return OfferProductsList[1].productModel.modelId;
         }
-        int GetOfferProduct3ModelId()
+        public int GetOfferProduct3ModelId()
         {
             return OfferProductsList[2].productModel.modelId;
         }
-        int GetOfferProduct4ModelId()
+        public int GetOfferProduct4ModelId()
         {
             return OfferProductsList[3].productModel.modelId;
         }
-        int GetOfferProductModelId(int i)
+        public int GetOfferProductModelId(int i)
         {
             return OfferProductsList[i - 1].productModel.modelId;
         }
 
-        int GetOfferProduct1Quantity()
+        public int GetOfferProduct1Quantity()
         {
             return OfferProductsList[0].productQuantity;
         }
-        int GetOfferProduct2Quantity()
+        public int GetOfferProduct2Quantity()
         {
             return OfferProductsList[1].productQuantity;
         }
-        int GetOfferProduct3Quantity()
+        public int GetOfferProduct3Quantity()
         {
             return OfferProductsList[2].productQuantity;
         }
-        int GetOfferProduct4Quantity()
+        public int GetOfferProduct4Quantity()
         {
             return OfferProductsList[3].productQuantity;
         }
-        int GetOfferProductQuantity(int i)
+        public int GetOfferProductQuantity(int i)
         {
             return OfferProductsList[i - 1].productQuantity;
         }
 
-        int GetProduct1PriceValue()
+        public int GetProduct1PriceValue()
         {
             return OfferProductsList[0].productPrice;
         }
-        int GetProduct2PriceValue()
+        public int GetProduct2PriceValue()
         {
             return OfferProductsList[1].productPrice;
         }
-        int GetProduct3PriceValue()
+        public int GetProduct3PriceValue()
         {
             return OfferProductsList[2].productPrice;
         }
-        int GetProduct4PriceValue()
+        public int GetProduct4PriceValue()
         {
             return OfferProductsList[4].productPrice;
         }
-        int GetProductPriceValue(int i)
+        public int GetProductPriceValue(int i)
         {
             return OfferProductsList[i - 1].productPrice;
         }
 
-        int GetNoOfOfferSavedProducts()
+        public int GetNoOfOfferSavedProducts()
         {
             return noOfSavedOfferProducts;
         }
@@ -1432,37 +1439,37 @@ namespace _01electronics_erp
         //PAYMENT CONDITIONS
         //////////////////////////////////////////////////////////////////////
 
-        int GetCurrencyId()
+        public int GetCurrencyId()
         {
             return priceCurrencyId;
         }
 
-        int GetPercentDownPayment()
+        public int GetPercentDownPayment()
         {
             return percentDownPayment;
         }
-        int GetPercentOnDelivery()
+        public int GetPercentOnDelivery()
         {
             return percentOnDelivery;
         }
-        int GetPercentOnInstallation()
+        public int GetPercentOnInstallation()
         {
             return percentOnInstallation;
         }
 
-        int GetTotalPriceValue()
+        public int GetTotalPriceValue()
         {
             return totalPriceValue;
         }
-        int GetPriceValueDownPayment()
+        public int GetPriceValueDownPayment()
         {
             return priceValueDownPayment;
         }
-        int GetPriceValueOnDelivery()
+        public int GetPriceValueOnDelivery()
         {
             return priceValueOnDelivery;
         }
-        int GetPriceValueOnInstallation()
+        public int GetPriceValueOnInstallation()
         {
             return priceValueOnInstallation;
         }
@@ -1476,15 +1483,15 @@ namespace _01electronics_erp
             return hasDrawings;
         }
 
-        int GetDrawingSubmissionDeadlineMinimum()
+        public int GetDrawingSubmissionDeadlineMinimum()
         {
             return drawingDeadlineMinimum;
         }
-        int GetDrawingSubmissionDeadlineMaximum()
+        public int GetDrawingSubmissionDeadlineMaximum()
         {
             return drawingDeadlineMaximum;
         }
-        int GetDrawingSubmissionDeadlineTimeUnitId()
+        public int GetDrawingSubmissionDeadlineTimeUnitId()
         {
             return drawingDeadlineTimeUnitId;
         }
@@ -1493,19 +1500,19 @@ namespace _01electronics_erp
         //DELIVERY CONDITIONS
         //////////////////////////////////////////////////////////////////////
 
-        int GetDeliveryTimeMinimum()
+        public int GetDeliveryTimeMinimum()
         {
             return deliveryTimeMinimum;
         }
-        int GetDeliveryTimeMaximum()
+        public int GetDeliveryTimeMaximum()
         {
             return deliveryTimeMaximum;
         }
-        int GetDeliveryTimeUnitId()
+        public int GetDeliveryTimeUnitId()
         {
             return deliveryTimeUnitId;
         }
-        int GetDeliveryPointId()
+        public int GetDeliveryPointId()
         {
             return deliveryPointId;
         }
@@ -1514,133 +1521,133 @@ namespace _01electronics_erp
         //ADDITIONAL OFFER INFO
         //////////////////////////////////////////////////////////////////////
 
-        int GetOfferContractTypeId()
+        public int GetOfferContractTypeId()
         {
             return modifiedContractTypeId;
         }
 
-        int GetWarrantyPeriod()
+        public int GetWarrantyPeriod()
         {
             return warrantyPeriod;
         }
-        int GetWarrantyPeriodTimeUnitId()
+        public int GetWarrantyPeriodTimeUnitId()
         {
             return warrantyPeriodTimeUnitId;
         }
 
-        int GetOfferValidityPeriod()
+        public int GetOfferValidityPeriod()
         {
             return offerValidityPeriod;
         }
-        int GetOfferValidityTimeUnitId()
+        public int GetOfferValidityTimeUnitId()
         {
             return offerValidityTimeUnitId;
         }
 
-        int GetOfferStatusId()
+        public int GetOfferStatusId()
         {
             return offerStatusId;
         }
-        int GetOfferFailureReasonId()
+        public int GetOfferFailureReasonId()
         {
             return offerFailureReasonId;
         }
 
 
-        String GetOfferID()
+        public String GetOfferID()
         {
             return offerId;
         }
 
-        String GetOfferProposerName()
+        public String GetOfferProposerName()
         {
             return offerProposer.GetEmployeeName();
         }
-        String GetOfferProposerTeam()
+        public String GetOfferProposerTeam()
         {
             return offerProposer.GetEmployeeTeam();
         }
-        String GetOfferProposerPosition()
+        public String GetOfferProposerPosition()
         {
             return offerProposer.GetEmployeePosition();
         }
-        String GetOfferProposerbusinessEmail()
+        public String GetOfferProposerbusinessEmail()
         {
             return offerProposer.GetEmployeeBusinessEmail();
         }
-        String GetOfferProposerCompanyPhone()
+        public String GetOfferProposerCompanyPhone()
         {
             return offerProposer.GetEmployeeBusinessPhone();
         }
 
-        String GetCompanyName()
+        public String GetCompanyName()
         {
             return contact.GetCompanyName();
         }
-        String GetContactName()
+        public String GetContactName()
         {
             return contact.GetContactName();
         }
 
-        String GetOfferProduct1Type()
+        public String GetOfferProduct1Type()
         {
             return OfferProductsList[0].productType.typeName;
         }
-        String GetOfferProduct2Type()
+        public String GetOfferProduct2Type()
         {
             return OfferProductsList[1].productType.typeName;
         }
-        String GetOfferProduct3Type()
+        public String GetOfferProduct3Type()
         {
             return OfferProductsList[2].productType.typeName;
         }
-        String GetOfferProduct4Type()
+        public String GetOfferProduct4Type()
         {
             return OfferProductsList[3].productType.typeName;
         }
-        String GetOfferProductType(int i)
+        public String GetOfferProductType(int i)
         {
             return OfferProductsList[i - 1].productType.typeName;
         }
 
-        String GetOfferProduct1Brand()
+        public String GetOfferProduct1Brand()
         {
             return OfferProductsList[0].productBrand.brandName;
         }
-        String GetOfferProduct2Brand()
+        public String GetOfferProduct2Brand()
         {
             return OfferProductsList[1].productBrand.brandName;
         }
-        String GetOfferProduct3Brand()
+        public String GetOfferProduct3Brand()
         {
             return OfferProductsList[2].productBrand.brandName;
         }
-        String GetOfferProduct4Brand()
+        public String GetOfferProduct4Brand()
         {
             return OfferProductsList[3].productBrand.brandName;
         }
-        String GetOfferProductBrand(int i)
+        public String GetOfferProductBrand(int i)
         {
             return OfferProductsList[i - 1].productBrand.brandName;
         }
 
-        String GetOfferProduct1Model()
+        public String GetOfferProduct1Model()
         {
             return OfferProductsList[0].productModel.modelName;
         }
-        String GetOfferProduct2Model()
+        public String GetOfferProduct2Model()
         {
             return OfferProductsList[1].productModel.modelName;
         }
-        String GetOfferProduct3Model()
+        public String GetOfferProduct3Model()
         {
             return OfferProductsList[2].productModel.modelName;
         }
-        String GetOfferProduct4Model()
+        public String GetOfferProduct4Model()
         {
             return OfferProductsList[3].productModel.modelName;
         }
-        String GetOfferProductModel(int i)
+        public String GetOfferProductModel(int i)
         {
             return OfferProductsList[i - 1].productModel.modelName;
         }
@@ -1649,7 +1656,7 @@ namespace _01electronics_erp
         //PAYMENT CONDITIONS
         //////////////////////////////////////////////////////////////////////
 
-        String GetCurrency()
+        public String GetCurrency()
         {
             return priceCurrency;
         }
@@ -1658,7 +1665,7 @@ namespace _01electronics_erp
         //DRAWINGS CONDITIONS
         //////////////////////////////////////////////////////////////////////
 
-        String GetDrawingDeadlineTimeUnit()
+        public String GetDrawingDeadlineTimeUnit()
         {
             return drawingDeadlineTimeUnit;
         }
@@ -1667,11 +1674,11 @@ namespace _01electronics_erp
         //DELIVERY CONDITIONS
         //////////////////////////////////////////////////////////////////////
 
-        String GetDeliveryTimeUnit()
+        public String GetDeliveryTimeUnit()
         {
             return deliveryTimeUnit;
         }
-        String GetDeliveryPoint()
+        public String GetDeliveryPoint()
         {
             return deliveryPoint;
         }
@@ -1680,48 +1687,48 @@ namespace _01electronics_erp
         //ADDITIONAL OFFER INFO
         //////////////////////////////////////////////////////////////////////
 
-        String GetOfferContractType()
+        public String GetOfferContractType()
         {
             return contractType;
         }
-        String GetWarrantyPeriodTimeUnit()
+        public String GetWarrantyPeriodTimeUnit()
         {
             return warrantyPeriodTimeUnit;
         }
-        String GetOfferValidityTimeUnit()
+        public String GetOfferValidityTimeUnit()
         {
             return offerValidityTimeUnit;
         }
 
-        String GetOfferStatus()
+        public String GetOfferStatus()
         {
             return offerStatus;
         }
 
-        String GetOfferFailureReason()
+        public String GetOfferFailureReason()
         {
             return offerFailureReason;
         }
 
-        DateTime GetOfferIssueDate()
+        public DateTime GetOfferIssueDate()
         {
             return offerIssueDate;
         }
-        DateTime GetOfferRejectionDate()
+        public DateTime GetOfferRejectionDate()
         {
             return offerRejectionDate;
         }
 
-        String GetOfferNotes()
+        public String GetOfferNotes()
         {
             return offerNotes;
         }
 
-        String GetLocalOfferFilePath()
+        public String GetLocalOfferFilePath()
         {
             return offerLocalPath;
         }
-        String GetServerOfferFilePath()
+        public String GetServerOfferFilePath()
         {
             return offerServerPath;
         }
@@ -1797,7 +1804,7 @@ namespace _01electronics_erp
             offerRejectionDate = commonFunctions.GetTodaysDate();
         }
 
-        bool GetNewOfferSerial()
+        public bool GetNewOfferSerial()
         {
             String sqlQueryPart1 = "select max(work_offers.offer_serial) from erp_system.dbo.work_offers where work_offers.offer_proposer = ";
             String sqlQueryPart2 = ";";
@@ -1818,7 +1825,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        bool GetNewOfferVersion()
+        public bool GetNewOfferVersion()
         {
             String sqlQueryPart1 = "select max(work_offers.offer_version) from erp_system.dbo.work_offers where work_offers.offer_proposer = ";
             String sqlQueryPart2 = " and work_offers.offer_serial = ";
@@ -1850,6 +1857,12 @@ namespace _01electronics_erp
             String offerSerialString = offerSerial.ToString();
 
             int offerSerialLastIndex = offerSerialString.Length - 1;
+
+            for (int i = 0; i < OFFER_ID_FORMAT.Length; i++)
+                offerIdString[i] = OFFER_ID_FORMAT[i];
+
+            for (int i = 0; i < REVISED_OFFER_ID_FORMAT.Length; i++)
+                revisedOfferIdString[i] = REVISED_OFFER_ID_FORMAT[i];
 
             for (int i = offerSerialLastIndex; i >= 0; i--)
             {
