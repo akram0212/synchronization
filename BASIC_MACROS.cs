@@ -118,6 +118,7 @@ namespace _01electronics_erp
         public const int NBE = 2;
 
         public const String COMPANY_DOMAIN = "@01electronics.net";
+
     }
 }
 

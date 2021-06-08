@@ -31,9 +31,6 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
-        //bool skipLoopProductFilter;
-        //bool skipLoopBrandFilter;
-
         private int selectedYear;
         private int selectedQuarter;
         private int selectedEmployee;
@@ -51,7 +48,18 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            
+            // rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+
+            selectedYear = DateTime.Now.Year;
+            selectedQuarter = commonFunctionsObject.GetCurrentQuarter();
+            selectedEmployee = loggedInUser.GetEmployeeId();
+            selectedTeam = -1;
+            selectedProduct = -1;
+            selectedBrand = -1;
+            selectedStatus = -1;
+
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
 
@@ -75,6 +83,7 @@ namespace _01electronics_crm
                 return;
 
             SetRFQsStackPanel();
+
         }
 
         private void ResetComboBoxes()
@@ -84,6 +93,8 @@ namespace _01electronics_crm
             quarterCombo.SelectedItem = -1;
 
             employeeCombo.SelectedItem = -1;
+            selectedEmployee = -1;
+            selectedTeam = -1;
 
             productCombo.SelectedItem = -1;
 
@@ -128,13 +139,12 @@ namespace _01electronics_crm
         }
         private bool InitializeEmployeeComboBox()
         {
-            if (!commonQueriesObject.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employeesList))
+            if (!commonQueriesObject.GetCompanyEmployees(ref employeesList))
                 return false;
 
             for (int i = 0; i < employeesList.Count; i++)
                 employeeCombo.Items.Add(employeesList[i].employee_name);
 
-            //YOU DON'T SET THE CHECKBOXES AND COMBOXES IN THE INITIALIZATION FUNCTIONS
             return true;
         }
 
@@ -146,7 +156,6 @@ namespace _01electronics_crm
             for (int i = 0; i < productTypes.Count; i++)
                 productCombo.Items.Add(productTypes[i].typeName);
 
-            productCombo.IsEnabled = false;
             return true;
         }
         private bool InitializeBrandsComboBox()
@@ -337,6 +346,7 @@ namespace _01electronics_crm
 
             return true;
         }
+        
 
         /////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
@@ -344,7 +354,6 @@ namespace _01electronics_crm
 
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //YOU SHOULD GET THE SELECTED ITEM AND STORE IT IN A VARIABLE HERE, NOT AT THE TIME OF SETTING THE RFQS STACKPANEL
             selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
             SetRFQsStackPanel();
         }
@@ -377,7 +386,7 @@ namespace _01electronics_crm
 
         private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         /////////////////////////////////////////////////////////////////
@@ -434,6 +443,7 @@ namespace _01electronics_crm
             productCombo.SelectedItem = null;
             productCombo.IsEnabled = false;
         }
+        
         private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             brandCombo.SelectedItem = null;
@@ -448,6 +458,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         //BUTTON CLICKED FUNCTIONS
         /////////////////////////////////////////////////////////////////
+
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -466,7 +477,8 @@ namespace _01electronics_crm
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
-        }
+        } 
+
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
             
