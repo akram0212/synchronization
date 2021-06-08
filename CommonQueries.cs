@@ -14,11 +14,20 @@ namespace _01electronics_erp
     public class CommonQueries
     {
         private String sqlQuery;
-        private SQLServer commonQueriesSqlObject;
+        private SQLServer sqlDatabase;
 
         public CommonQueries()
         {
-            commonQueriesSqlObject = new SQLServer();
+            sqlDatabase = new SQLServer();
+        }
+        public CommonQueries(SQLServer mSqlDatabase)
+        {
+            SetDatabase(mSqlDatabase);
+        }
+
+        public void SetDatabase(SQLServer mSqlDatabase)
+        {
+            sqlDatabase = mSqlDatabase;
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -39,15 +48,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.COMPANY_STRUCT tempItem;
 
-                tempItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.company_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.company_serial = sqlDatabase.rows[i].sql_int[0];
+                tempItem.company_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -100,20 +109,20 @@ namespace _01electronics_erp
             queryColumns.sql_int = 2;
             queryColumns.sql_string = 4;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT tempItem;
 
-                tempItem.address_serial = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.address = commonQueriesSqlObject.rows[i].sql_int[1];
+                tempItem.address_serial = sqlDatabase.rows[i].sql_int[0];
+                tempItem.address = sqlDatabase.rows[i].sql_int[1];
 
-                tempItem.district = commonQueriesSqlObject.rows[i].sql_string[0];
-                tempItem.city = commonQueriesSqlObject.rows[i].sql_string[1];
-                tempItem.state_governorate = commonQueriesSqlObject.rows[i].sql_string[2];
-                tempItem.country = commonQueriesSqlObject.rows[i].sql_string[3];
+                tempItem.district = sqlDatabase.rows[i].sql_string[0];
+                tempItem.city = sqlDatabase.rows[i].sql_string[1];
+                tempItem.state_governorate = sqlDatabase.rows[i].sql_string[2];
+                tempItem.country = sqlDatabase.rows[i].sql_string[3];
 
                 returnVector.Add(tempItem);
             }
@@ -138,10 +147,10 @@ namespace _01electronics_erp
             queryColumns.sql_int = 0;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnVector = commonQueriesSqlObject.rows[0].sql_string[0];
+            returnVector = sqlDatabase.rows[0].sql_string[0];
 
             return true;
         }
@@ -164,15 +173,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT tempItem;
 
-                tempItem.department_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.department_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.department_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.department_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -193,15 +202,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.TEAM_STRUCT tempItem;
 
-                tempItem.team_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.team_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.team_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.team_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -222,15 +231,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_POSITION_STRUCT tempItem;
 
-                tempItem.position_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.position_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.position_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.position_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -263,15 +272,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.TEAM_STRUCT tempItem;
 
-                tempItem.team_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.team_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.team_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.team_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -293,15 +302,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.PRIMARY_FIELD_STRUCT tempItem;
 
-                tempItem.field_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.field_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.field_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.field_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -326,15 +335,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.SECONDARY_FIELD_STRUCT tempItem;
 
-                tempItem.field_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.field_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.field_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.field_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -356,15 +365,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.COUNTRY_STRUCT tempItem;
 
-                tempItem.country_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.country_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.country_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.country_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -388,15 +397,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.STATE_STRUCT tempItem;
 
-                tempItem.state_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.state_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.state_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.state_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -420,15 +429,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.CITY_STRUCT tempItem;
 
-                tempItem.city_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.city_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.city_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.city_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -452,15 +461,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.DISTRICT_STRUCT tempItem;
 
-                tempItem.district_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.district_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.district_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.district_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -482,15 +491,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.VISIT_PURPOSE_STRUCT purposeItem;
 
-                purposeItem.purpose_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                purposeItem.purpose_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                purposeItem.purpose_id = sqlDatabase.rows[i].sql_int[0];
+                purposeItem.purpose_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(purposeItem);
             }
@@ -518,15 +527,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.VISIT_RESULT_STRUCT resultItem;
 
-                resultItem.result_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                resultItem.result_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                resultItem.result_id = sqlDatabase.rows[i].sql_int[0];
+                resultItem.result_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(resultItem);
             }
@@ -555,15 +564,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.CALL_PURPOSE_STRUCT purposeItem;
 
-                purposeItem.purpose_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                purposeItem.purpose_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                purposeItem.purpose_id = sqlDatabase.rows[i].sql_int[0];
+                purposeItem.purpose_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(purposeItem);
             }
@@ -591,15 +600,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.CALL_RESULT_STRUCT resultItem;
 
-                resultItem.result_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                resultItem.result_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                resultItem.result_id = sqlDatabase.rows[i].sql_int[0];
+                resultItem.result_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(resultItem);
             }
@@ -627,15 +636,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT reasonItem;
 
-                reasonItem.reason_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                reasonItem.reason_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                reasonItem.reason_id = sqlDatabase.rows[i].sql_int[0];
+                reasonItem.reason_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(reasonItem);
             }
@@ -656,15 +665,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT reasonItem;
 
-                reasonItem.reason_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                reasonItem.reason_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                reasonItem.reason_id = sqlDatabase.rows[i].sql_int[0];
+                reasonItem.reason_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(reasonItem);
             }
@@ -686,15 +695,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.CONTRACT_STRUCT tempItem;
 
-                tempItem.contractId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.contractName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.contractId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.contractName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -715,15 +724,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.DELIVERY_POINT_STRUCT tempItem;
 
-                tempItem.pointId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.pointName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.pointId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.pointName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -745,15 +754,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.CURRENCY_STRUCT tempItem;
 
-                tempItem.currencyId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.currencyName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.currencyId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.currencyName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -774,15 +783,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 BASIC_STRUCTS.TIMEUNIT_STRUCT tempItem;
 
-                tempItem.timeUnitId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.timeUnit = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.timeUnitId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.timeUnit = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -828,24 +837,24 @@ namespace _01electronics_erp
             queryColumns.sql_int = 4;
             queryColumns.sql_string = 4;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
                 tempItem.team = new COMPANY_ORGANISATION_MACROS.TEAM_STRUCT();
                 tempItem.department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
 
-                tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.team.team_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                tempItem.department.department_id = commonQueriesSqlObject.rows[i].sql_int[2];
-                tempItem.position.position_id = commonQueriesSqlObject.rows[i].sql_int[3];
+                tempItem.employee_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.team.team_id = sqlDatabase.rows[i].sql_int[1];
+                tempItem.department.department_id = sqlDatabase.rows[i].sql_int[2];
+                tempItem.position.position_id = sqlDatabase.rows[i].sql_int[3];
 
-                tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
-                tempItem.team.team_name = commonQueriesSqlObject.rows[i].sql_string[1];
-                tempItem.department.department_name = commonQueriesSqlObject.rows[i].sql_string[2];
-                tempItem.position.position_name = commonQueriesSqlObject.rows[i].sql_string[3];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.team.team_name = sqlDatabase.rows[i].sql_string[1];
+                tempItem.department.department_name = sqlDatabase.rows[i].sql_string[2];
+                tempItem.position.position_name = sqlDatabase.rows[i].sql_string[3];
 
                 returnVector.Add(tempItem);
             }
@@ -873,10 +882,10 @@ namespace _01electronics_erp
             queryColumns.sql_int = 2;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
 
@@ -884,10 +893,10 @@ namespace _01electronics_erp
                 tempItem.department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
                 tempItem.position = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_POSITION_STRUCT();
 
-                tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.team.team_id = commonQueriesSqlObject.rows[i].sql_int[1];
+                tempItem.employee_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.team.team_id = sqlDatabase.rows[i].sql_int[1];
 
-                tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -915,10 +924,10 @@ namespace _01electronics_erp
             queryColumns.sql_int = 2;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
 
@@ -926,9 +935,9 @@ namespace _01electronics_erp
                 tempItem.department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
                 tempItem.position = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_POSITION_STRUCT();
 
-                tempItem.employee_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.team.team_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                tempItem.employee_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.employee_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.team.team_id = sqlDatabase.rows[i].sql_int[1];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -952,10 +961,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -975,10 +984,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1004,10 +1013,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1031,10 +1040,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1055,10 +1064,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_string[0];
 
             return true;
         }
@@ -1078,16 +1087,16 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            if (commonQueriesSqlObject.rows.Count == 0)
+            if (sqlDatabase.rows.Count == 0)
             {
                 MessageBox.Show("There is no existing signup for this email account! Please signup first and then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_string[0];
 
             return true;
         }
@@ -1117,14 +1126,14 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT tempItem;
-                tempItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1191,10 +1200,10 @@ namespace _01electronics_erp
             queryColumns.sql_int = 4;
             queryColumns.sql_string = 8;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.CONTACT_PRO_STRUCT tempItem;
 
@@ -1204,23 +1213,23 @@ namespace _01electronics_erp
                 tempItem.branch = new COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT();
                 tempItem.contact_department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
 
-                tempItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
 
-                tempItem.contact_department.department_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                tempItem.contact_department.department_name = commonQueriesSqlObject.rows[i].sql_string[1];
+                tempItem.contact_department.department_id = sqlDatabase.rows[i].sql_int[1];
+                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_string[1];
 
-                tempItem.sales_person.employee_id = commonQueriesSqlObject.rows[i].sql_int[2];
-                tempItem.sales_person.employee_name = commonQueriesSqlObject.rows[i].sql_string[2];
+                tempItem.sales_person.employee_id = sqlDatabase.rows[i].sql_int[2];
+                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_string[2];
 
-                tempItem.sales_person.team.team_id = commonQueriesSqlObject.rows[i].sql_int[3];
-                tempItem.sales_person.team.team_name = commonQueriesSqlObject.rows[i].sql_string[3];
+                tempItem.sales_person.team.team_id = sqlDatabase.rows[i].sql_int[3];
+                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_string[3];
 
-                tempItem.gender = commonQueriesSqlObject.rows[i].sql_string[4];
-                tempItem.mobile = commonQueriesSqlObject.rows[i].sql_string[5];
+                tempItem.gender = sqlDatabase.rows[i].sql_string[4];
+                tempItem.mobile = sqlDatabase.rows[i].sql_string[5];
 
-                tempItem.business_email = commonQueriesSqlObject.rows[i].sql_string[6];
-                tempItem.personal_email = commonQueriesSqlObject.rows[i].sql_string[7];
+                tempItem.business_email = sqlDatabase.rows[i].sql_string[6];
+                tempItem.personal_email = sqlDatabase.rows[i].sql_string[7];
 
                 returnVector.Add(tempItem);
             }
@@ -1293,10 +1302,10 @@ namespace _01electronics_erp
             queryColumns.sql_int = 6;
             queryColumns.sql_string = 9;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_ORGANISATION_MACROS.CONTACT_PRO_STRUCT tempItem;
 
@@ -1306,27 +1315,27 @@ namespace _01electronics_erp
                 tempItem.branch = new COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT();
                 tempItem.contact_department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
 
-                tempItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
 
-                tempItem.contact_department.department_id = commonQueriesSqlObject.rows[i].sql_int[1];
-                tempItem.contact_department.department_name = commonQueriesSqlObject.rows[i].sql_string[1];
+                tempItem.contact_department.department_id = sqlDatabase.rows[i].sql_int[1];
+                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_string[1];
 
-                tempItem.sales_person.employee_id = commonQueriesSqlObject.rows[i].sql_int[2];
-                tempItem.sales_person.employee_name = commonQueriesSqlObject.rows[i].sql_string[2];
+                tempItem.sales_person.employee_id = sqlDatabase.rows[i].sql_int[2];
+                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_string[2];
 
-                tempItem.sales_person.team.team_id = commonQueriesSqlObject.rows[i].sql_int[3];
-                tempItem.sales_person.team.team_name = commonQueriesSqlObject.rows[i].sql_string[3];
+                tempItem.sales_person.team.team_id = sqlDatabase.rows[i].sql_int[3];
+                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_string[3];
 
-                tempItem.branch.address_serial = commonQueriesSqlObject.rows[i].sql_int[4];
-                tempItem.company.company_serial = commonQueriesSqlObject.rows[i].sql_int[5];
-                tempItem.company.company_name = commonQueriesSqlObject.rows[i].sql_string[4];
+                tempItem.branch.address_serial = sqlDatabase.rows[i].sql_int[4];
+                tempItem.company.company_serial = sqlDatabase.rows[i].sql_int[5];
+                tempItem.company.company_name = sqlDatabase.rows[i].sql_string[4];
 
-                tempItem.gender = commonQueriesSqlObject.rows[i].sql_string[5];
-                tempItem.mobile = commonQueriesSqlObject.rows[i].sql_string[6];
+                tempItem.gender = sqlDatabase.rows[i].sql_string[5];
+                tempItem.mobile = sqlDatabase.rows[i].sql_string[6];
 
-                tempItem.business_email = commonQueriesSqlObject.rows[i].sql_string[7];
-                tempItem.personal_email = commonQueriesSqlObject.rows[i].sql_string[8];
+                tempItem.business_email = sqlDatabase.rows[i].sql_string[7];
+                tempItem.personal_email = sqlDatabase.rows[i].sql_string[8];
 
                 returnVector.Add(tempItem);
             }
@@ -1350,10 +1359,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1382,10 +1391,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1404,10 +1413,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1436,10 +1445,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1461,10 +1470,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1493,10 +1502,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1518,10 +1527,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_int[0];
+            returnValue = sqlDatabase.rows[0].sql_int[0];
 
             return true;
         }
@@ -1543,10 +1552,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnVector = commonQueriesSqlObject.rows[0].sql_string;
+            returnVector = sqlDatabase.rows[0].sql_string;
 
             return true;
         }
@@ -1567,10 +1576,10 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = commonQueriesSqlObject.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_string[0];
 
             return true;
         }
@@ -1593,15 +1602,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.PRODUCT_STRUCT tempItem;
 
-                tempItem.typeId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.typeName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.typeId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.typeName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1629,15 +1638,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.BRAND_STRUCT tempItem;
 
-                tempItem.brandId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.brandName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.brandId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.brandName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1676,15 +1685,15 @@ namespace _01electronics_erp
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.MODEL_STRUCT tempItem;
 
-                tempItem.modelId = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.modelName = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.modelId = sqlDatabase.rows[i].sql_int[0];
+                tempItem.modelName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1723,11 +1732,11 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-                returnVector.Add(commonQueriesSqlObject.rows[i].sql_string[0]);
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
 
             return true;
         }
@@ -1757,11 +1766,11 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-                returnVector.Add(commonQueriesSqlObject.rows[i].sql_string[0]);
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
 
             return true;
         }
@@ -1791,11 +1800,11 @@ namespace _01electronics_erp
 
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
-                returnVector.Add(commonQueriesSqlObject.rows[i].sql_string[0]);
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
 
             return true;
         }
@@ -2025,10 +2034,10 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 20;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.RFQ_MAX_STRUCT RFQItem = new COMPANY_WORK_MACROS.RFQ_MAX_STRUCT();
 
@@ -2037,28 +2046,28 @@ namespace _01electronics_erp
                 int numericCount = 0;
                 int stringCount = 0;
 
-                RFQItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.rfq_id = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                RFQItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                RFQItem.assignee_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.assignee_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                RFQItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                RFQItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-
-
-                RFQItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-                RFQItem.deadline_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+                RFQItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
 
-                RFQItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
+                RFQItem.deadline_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                RFQItem.assignee_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
 
-                RFQItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_version = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                RFQItem.assignee_id = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                RFQItem.company_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.branch_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.contact_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
                 for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
                 {
@@ -2068,14 +2077,14 @@ namespace _01electronics_erp
                     tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                     tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                    tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
+                    tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                    tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
+                    tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                    tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
+                    tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
 
                     tempProductItem.productNumber = j;
                     tempProductItem.productQuantity = 0;
@@ -2083,13 +2092,13 @@ namespace _01electronics_erp
                     RFQItem.products.Add(tempProductItem);
                 }
 
-                RFQItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.rfq_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                RFQItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                RFQItem.contract_type_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.rfq_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                RFQItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                RFQItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                RFQItem.rfq_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                RFQItem.failure_reason = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                RFQItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.rfq_status = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
 
                 returnVector.Add(RFQItem);
             }
@@ -2125,16 +2134,16 @@ namespace _01electronics_erp
             queryColumns.sql_int = 2;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT tempItem;
 
-                tempItem.rfq_serial = commonQueriesSqlObject.rows[i].sql_int[0];
-                tempItem.rfq_version = commonQueriesSqlObject.rows[i].sql_int[1];
-                tempItem.rfq_id = commonQueriesSqlObject.rows[i].sql_string[0];
+                tempItem.rfq_serial = sqlDatabase.rows[i].sql_int[0];
+                tempItem.rfq_version = sqlDatabase.rows[i].sql_int[1];
+                tempItem.rfq_id = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(tempItem);
             }
@@ -2271,10 +2280,10 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 1;
             queryColumns.sql_string = 11;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
                 int stringCount = 0;
@@ -2289,35 +2298,35 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                offerItem.offer_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                offerItem.offer_id = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                offerItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                offerItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                offerItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                offerItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                offerItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                offerItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                offerItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+                offerItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
-                offerItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                offerItem.offer_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                offerItem.offer_version = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.offer_proposer_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                offerItem.offer_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                offerItem.offer_version = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                offerItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                offerItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                offerItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                offerItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                offerItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                offerItem.company_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                offerItem.branch_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                offerItem.contact_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                int product_number = (int)commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                int product_number = (int)sqlDatabase.rows[i].sql_int[numericCount++];
 
-                tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2331,13 +2340,13 @@ namespace _01electronics_erp
                 {
                     offerItem.products.Add(tempProductItem);
 
-                    offerItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    offerItem.offer_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    offerItem.failure_reason_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    offerItem.contract_type_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                    offerItem.offer_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                    offerItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    offerItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                    offerItem.offer_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                    offerItem.failure_reason = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    offerItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
+                    offerItem.offer_status = sqlDatabase.rows[i].sql_string[stringCount++];
+                    offerItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
 
                     returnVector.Add(offerItem);
                 }
@@ -2470,10 +2479,10 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 1;
             queryColumns.sql_string = 10;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
                 int stringCount = 0;
@@ -2488,35 +2497,35 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                orderItem.order_id = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                orderItem.order_id = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                orderItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                orderItem.offer_proposer_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                orderItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                orderItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                orderItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                orderItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                orderItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
+                orderItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
-                orderItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                orderItem.order_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                orderItem.order_serial = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                orderItem.offer_proposer_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.offer_proposer_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                orderItem.company_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                orderItem.branch_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                orderItem.contact_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                orderItem.company_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                orderItem.branch_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+                orderItem.contact_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                int product_number = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                int product_number = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                tempProductItem.productType.typeId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                tempProductItem.productBrand.brandId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                tempProductItem.productModel.modelId = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2530,11 +2539,11 @@ namespace _01electronics_erp
                 {
                     orderItem.products.Add(tempProductItem);
 
-                    orderItem.contract_type_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                    orderItem.order_status_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                    orderItem.contract_type_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                    orderItem.order_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    orderItem.contract_type = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                    orderItem.order_status = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                    orderItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
+                    orderItem.order_status = sqlDatabase.rows[i].sql_string[stringCount++];
 
                     returnVector.Add(orderItem);
                 }
@@ -2608,32 +2617,32 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 5;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
                 int stringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT visitItem;
 
-                visitItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                visitItem.visit_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                visitItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                visitItem.visit_serial = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                visitItem.visit_purpose_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                visitItem.visit_result_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                visitItem.visit_purpose_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                visitItem.visit_result_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                visitItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-                visitItem.visit_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+                visitItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
+                visitItem.visit_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                visitItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                visitItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                visitItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                visitItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                visitItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                visitItem.visit_purpose = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                visitItem.visit_result = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                visitItem.visit_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.visit_result = sqlDatabase.rows[i].sql_string[stringCount++];
 
                 returnVector.Add(visitItem);
             }
@@ -2696,32 +2705,32 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 5;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
                 int stringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT callItem;
 
-                callItem.sales_person_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                callItem.call_serial = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                callItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                callItem.call_serial = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                callItem.call_purpose_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
-                callItem.call_result_id = commonQueriesSqlObject.rows[i].sql_int[numericCount++];
+                callItem.call_purpose_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                callItem.call_result_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                callItem.issue_date = commonQueriesSqlObject.rows[i].sql_datetime[0].ToString();
-                callItem.call_date = commonQueriesSqlObject.rows[i].sql_datetime[1].ToString();
+                callItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
+                callItem.call_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                callItem.sales_person_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                callItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                callItem.company_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                callItem.contact_name = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                callItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
 
-                callItem.call_purpose = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
-                callItem.call_result = commonQueriesSqlObject.rows[i].sql_string[stringCount++];
+                callItem.call_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.call_result = sqlDatabase.rows[i].sql_string[stringCount++];
 
                 returnVector.Add(callItem);
             }

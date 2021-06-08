@@ -31,9 +31,6 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
-        //bool skipLoopProductFilter;
-        //bool skipLoopBrandFilter;
-
         private int selectedYear;
         private int selectedQuarter;
         private int selectedEmployee;
@@ -51,9 +48,9 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-           // rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-           // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-           // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+            // rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
             selectedYear = DateTime.Now.Year;
             selectedQuarter = commonFunctionsObject.GetCurrentQuarter();
@@ -65,7 +62,7 @@ namespace _01electronics_crm
 
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
-            
+
             if (!InitializeEmployeeComboBox())
                 return;
 
@@ -86,6 +83,7 @@ namespace _01electronics_crm
                 return;
 
             SetRFQsStackPanel();
+
         }
 
         private void ResetComboBoxes()
@@ -96,7 +94,7 @@ namespace _01electronics_crm
             quarterCombo.SelectedItem = -1;
             selectedQuarter = -1;
 
-            employeeCombo.SelectedItem = -1; 
+            employeeCombo.SelectedItem = -1;
             selectedEmployee = -1;
             selectedTeam = -1;
 
@@ -146,14 +144,12 @@ namespace _01electronics_crm
         }
         private bool InitializeEmployeeComboBox()
         {
-            //YOU DON'T ADD ALL FIRM EMPLOYEES, ONLY THOSE IN THE DEPARTMENT
-            if (!commonQueriesObject.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employeesList))
+            if (!commonQueriesObject.GetCompanyEmployees(ref employeesList))
                 return false;
 
             for (int i = 0; i < employeesList.Count; i++)
                 employeeCombo.Items.Add(employeesList[i].employee_name);
 
-            //YOU DON'T SET THE CHECKBOXES AND COMBOXES IN THE INITIALIZATION FUNCTIONS
             return true;
         }
 
@@ -172,7 +168,7 @@ namespace _01electronics_crm
             //INTENTIONALLY LEFT IT EMPTY FOR YOU TO FILL
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
-            
+
             for (int i = 0; i < brandTypes.Count; i++)
                 brandCombo.Items.Add(brandTypes[i].brandName);
 
@@ -181,7 +177,7 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            
+
         }
 
         /////////////////////////////////////////////////////////////////
@@ -197,7 +193,7 @@ namespace _01electronics_crm
                 DisableEmployeeUIElements();
                 SetEmployeeComboBox();
             }
-            
+
         }
 
         /////////////////////////////////////////////////////////////////
@@ -232,16 +228,16 @@ namespace _01electronics_crm
         private bool SetRFQsStackPanel()
         {
             RFQsStackPanel.Children.Clear();
-            
+
             for (int i = 0; i < rfqsList.Count; i++)
             {
                 DateTime currentRFQDate = DateTime.Parse(rfqsList[i].issue_date);
 
-                bool salesPersonCondition = 
-                    selectedTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID && 
+                bool salesPersonCondition =
+                    selectedTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID &&
                     selectedEmployee != rfqsList[i].sales_person_id;
 
-                bool assigneeCondition = 
+                bool assigneeCondition =
                     selectedTeam == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID &&
                     selectedEmployee != rfqsList[i].assignee_id;
 
@@ -272,7 +268,7 @@ namespace _01electronics_crm
 
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
                     continue;
-             
+
                 StackPanel fullStackPanel = new StackPanel();
                 fullStackPanel.Orientation = Orientation.Vertical;
                 //fullStackPanel.Height = 90;
@@ -280,7 +276,7 @@ namespace _01electronics_crm
                 Label rfqIDLabel = new Label();
                 rfqIDLabel.Content = rfqsList[i].rfq_id;
                 rfqIDLabel.Style = (Style)FindResource("stackPanelItemHeader");
-               
+
                 Label salesLabel = new Label();
                 salesLabel.Content = rfqsList[i].sales_person_name;
                 salesLabel.Style = (Style)FindResource("stackPanelItemBody");
@@ -311,16 +307,16 @@ namespace _01electronics_crm
 
                 Border borderIcon = new Border();
                 borderIcon.Style = (Style)FindResource("BorderIcon");
-                
+
                 Label rfqStatusLabel = new Label();
                 rfqStatusLabel.Content = rfqsList[i].rfq_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                else if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -351,18 +347,18 @@ namespace _01electronics_crm
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
 
-                RFQsStackPanel.Children.Add(grid); 
+                RFQsStackPanel.Children.Add(grid);
             }
-        
+
             return true;
         }
+        
 
         /////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //YOU SHOULD GET THE SELECTED ITEM AND STORE IT IN A VARIABLE HERE, NOT AT THE TIME OF SETTING THE RFQS STACKPANEL
             selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
             SetRFQsStackPanel();
         }
@@ -452,6 +448,7 @@ namespace _01electronics_crm
             productCombo.SelectedItem = null;
             productCombo.IsEnabled = false;
         }
+        
         private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             brandCombo.SelectedItem = null;
@@ -466,6 +463,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         //BUTTON CLICKED FUNCTIONS
         /////////////////////////////////////////////////////////////////
+
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -485,6 +483,7 @@ namespace _01electronics_crm
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         } 
+
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
             //RFQsPage rfqs = new RFQsPage(ref loggedInUser);
@@ -507,6 +506,11 @@ namespace _01electronics_crm
 
         }
         
+
+        private void OnButtonClickedworkOrders(object sender, MouseButtonEventArgs e)
+        {
+
+        }
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {

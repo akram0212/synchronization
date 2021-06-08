@@ -73,6 +73,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="FTPServer.cs" />
     <Compile Include="IntegrityChecks.cs" />
+    <Compile Include="RFQ.cs" />
     <Compile Include="RFQsPage.xaml.cs">
       <DependentUpon>RFQsPage.xaml</DependentUpon>
     </Compile>
@@ -84,6 +85,7 @@
     <Compile Include="ViewRFQWindow.xaml.cs">
       <DependentUpon>ViewRFQWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkOffer.cs" />
     <Compile Include="WorkOffersPage.xaml.cs">
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
