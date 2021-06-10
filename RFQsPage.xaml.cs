@@ -172,7 +172,10 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-
+            statusCombo.Items.Add("Failed");
+            statusCombo.Items.Add("Confirmed");
+            statusCombo.Items.Add("Pending");
+            statusCombo.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -354,39 +357,64 @@ namespace _01electronics_crm
 
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            if (yearCombo.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            else
+                selectedYear = 0;
             SetRFQsStackPanel();
         }
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedQuarter = quarterCombo.SelectedIndex + 1;
+            if (quarterCombo.SelectedItem != null)
+                selectedQuarter = quarterCombo.SelectedIndex + 1;
+            else
+                selectedQuarter = 0;
             SetRFQsStackPanel();
         }
 
         private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
-            selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+            if (employeeCombo.SelectedItem != null)
+            {
+                selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
+                selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+            }
+            else
+            {
+                selectedEmployee = 0;
+                selectedTeam = 0;
+            }
 
             SetRFQsStackPanel();
         }
 
         private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            if (productCombo.SelectedItem != null)
+                selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            else
+                selectedProduct = 0;
             SetRFQsStackPanel();
         }
 
         private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            if (brandCombo.SelectedItem != null)
+                selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            else
+                selectedBrand = 0;
             SetRFQsStackPanel();
         }
 
         private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (statusCombo.SelectedItem != null)
+                selectedStatus = statusCombo.SelectedIndex + 1;
+            else
+                selectedStatus = 0;
+
+            SetRFQsStackPanel();
         }
 
         /////////////////////////////////////////////////////////////////

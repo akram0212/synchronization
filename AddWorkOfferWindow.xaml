@@ -220,16 +220,16 @@
                     <Label Grid.Row="3" Grid.Column="1" Content="% On Installation" Style="{StaticResource stackPanelItemBody}" HorizontalAlignment="Center"/>
 
                     <ComboBox Name="totalPriceCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="40" Margin="0,0,70,0"  />
-                    <TextBox Name="totalPriceTextBox" Grid.Row="1" Grid.Column="0" Width="65" Height="20" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBlock Name="totalPriceTextBox" Grid.Row="1" Grid.Column="0" Width="65" Height="20" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Background="White"/>
 
                     <TextBox Name="downPaymentPercentageTextBox" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="DownPaymentPercentageTextBoxTextChanged" Grid.RowSpan="2"/>
-                    <TextBox Name="downPaymentActualTextBox" Grid.Row="1" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBlock Name="downPaymentActualTextBox" Grid.Row="1" Grid.Column="1" Width="45" Height="18" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Background="White"/>
 
                     <TextBox Name="onDeliveryPercentageTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="OnDeliveryPercentageTextBoxTextChanged"/>
-                    <TextBox Name="onDeliveryActualTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBlock Name="onDeliveryActualTextBox" Grid.Row="2" Grid.Column="1" Width="45" Height="18" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Background="White"/>
 
                     <TextBox Name="onInstallationPercentageTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="20" Margin="30,0,0,0" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="OnInstallationPercentageTextBoxTextChanged"/>
-                    <TextBox Name="onInstallationActualTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="20" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
+                    <TextBlock Name="onInstallationActualTextBox" Grid.Row="3" Grid.Column="1" Width="45" Height="18" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Background="White"/>
 
 
                 </Grid>
@@ -248,9 +248,9 @@
                     <Label Grid.Row="1" Grid.Column="0" Content="Drawing Submission Deadline" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Top" Margin="5"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="-" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Bottom" Margin="64,0,6,13"/>
 
-                    <TextBox Name="drawingSubmissionDeadlineFrom" Grid.Row="1"  Width="45" Height="20" Margin="16,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
-                    <TextBox Name="drawingSubmissionDeadlineTo" Grid.Row="1"  Width="45" Height="20" Margin="92,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif"/>
-                    <ComboBox Name="drawingSubmissionDeadlineCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="45" Height="20" Margin="0,0,50,10" VerticalAlignment="Bottom"/>
+                    <TextBox Name="drawingSubmissionDeadlineFromTextBox" Grid.Row="1"  Width="45" Height="20" Margin="16,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="DrawingSubmissionDeadlineFromTextChanged"/>
+                    <TextBox Name="drawingSubmissionDeadlineToTextBox" Grid.Row="1"  Width="45" Height="20" Margin="92,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" Foreground="Black" FontFamily="Sans Serif" TextChanged="DrawingSubmissionDeadlineToTextBoxTextChanged"/>
+                    <ComboBox Name="drawingSubmissionDeadlineCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="45" Height="20" Margin="0,0,50,10" VerticalAlignment="Bottom" SelectionChanged="DrawingSubmissionDeadlineComboSelectionChanged"/>
 
                 </Grid>
 
@@ -269,12 +269,12 @@
                     <Label Grid.Row="1" Content="Delivery Time" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Center" Margin="5"/>
                     <Label Content="-" Style="{StaticResource stackPanelItemBody}" Margin="147,27,-147,1" Grid.RowSpan="2" />
 
-                    <TextBox Name="deliveryTimeTextBoxFrom" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="103,4,0,5"/>
-                    <TextBox Name="deliveryTimeTextBoxTo" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="172,4,0,5"/>
+                    <TextBox Name="deliveryTimeTextBoxFrom" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="103,4,0,5" TextChanged="DeliveryTimeTextBoxFromTextChanged"/>
+                    <TextBox Name="deliveryTimeTextBoxTo" Grid.Row="1"  Width="45" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="172,4,0,5" TextChanged="DeliveryTimeTextBoxToTextChanged"/>
                     <ComboBox Name="deliveryTimeCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="45" Height="20"  VerticalAlignment="Center" Margin="0,4,34,5"/>
 
                     <Label Grid.Row="2" Content="Delivery Point" Style="{StaticResource stackPanelItemBody}" VerticalAlignment="Center" Margin="5"/>
-                    <ComboBox Name="deliveryPointCombo" Grid.Row="2" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="185" Height="20"  VerticalAlignment="Center" Margin="0,4,33,4" />
+                    <ComboBox Name="deliveryPointCombo" Grid.Row="2" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="185" Height="20"  VerticalAlignment="Center" Margin="0,4,33,4" SelectionChanged="DeliveryPointComboSelectionChanged"/>
 
                 </Grid>
 
@@ -297,19 +297,19 @@
                 <Label Grid.Row="0" Grid.Column="0" Content="Additional Offer Info" Style="{StaticResource stackPanelItemHeader}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Contract Type" Style="{StaticResource stackPanelItemBody}"/>
-                <ComboBox Name="contractTypeCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="150" />
+                <ComboBox Name="contractTypeCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyleSameh}" Width="150" SelectionChanged="ContractTypeComboSelectionChanged"/>
 
                 <Label Grid.Row="1" Grid.Column="1" Content="Warranty Period" Style="{StaticResource stackPanelItemBody}"/>
-                <ComboBox Name="warrantyPeriodCombo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="150" />
-                <TextBox Name="warrantyPeriodTextBox"  Grid.Row="1" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" />
+                <ComboBox Name="warrantyPeriodCombo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="150" SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
+                <TextBox Name="warrantyPeriodTextBox"  Grid.Row="1" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
 
                 <Label Grid.Row="2" Grid.Column="1" Content="Offer Validity Period" Style="{StaticResource stackPanelItemBody}"/>
-                <ComboBox Name="offerValidityCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="150" />
-                <TextBox Name="offerValidityTextBox"  Grid.Row="2" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" />
+                <ComboBox Name="offerValidityCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyleSameh}" Width="150" SelectionChanged="OfferValidityComboSelectionChanged"/>
+                <TextBox Name="offerValidityTextBox"  Grid.Row="2" Grid.Column="1" Width="70" Height="22" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" TextChanged="OfferValidityTextBoxTextChanged"/>
 
                 <Label Grid.Row="1" Grid.Column="2" Content="Additional Description" Style="{StaticResource stackPanelItemBody}"/>
                 <Label Grid.Row="2" Grid.Column="2" Content="(Optional)" Style="{StaticResource stackPanelItemBody}"/>
-                <TextBox Name="additionalDescriptionTextBox"  Grid.Row="1" Grid.Column="2" Width="230" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" Grid.RowSpan="2" Height="45" VerticalScrollBarVisibility="Visible"/>
+                <TextBox Name="additionalDescriptionTextBox"  Grid.Row="1" Grid.Column="2" Width="230" HorizontalAlignment="left" VerticalAlignment="Center" FontSize="14" Foreground="Black" FontFamily="Sans Serif" Margin="162,1,0,1" Grid.RowSpan="2" Height="45" VerticalScrollBarVisibility="Visible" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
             </Grid>
         </Border>
 

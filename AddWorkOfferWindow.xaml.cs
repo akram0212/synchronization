@@ -97,18 +97,18 @@ namespace _01electronics_crm
 
         private int drawingSubmissionFrom;
         private int drawingSubmissionTo;
-        private int drawingSubmissionType;
+        private string drawingSubmissionType;
 
         private int deliveryTimeFrom;
         private int deliveryTimeTo;
         private int deliveryTimeType;
-        private int deliveryPoint;
+        private string deliveryPoint;
 
-        private int contractType;
+        private string contractType;
         private int warrantyPeriod;
-        private int warrantyPeriodType;
+        private string warrantyPeriodType;
         private int offerValidity;
-        private int offerValidityType;
+        private string offerValidityType;
 
         string additionalDescription;
 
@@ -226,10 +226,10 @@ namespace _01electronics_crm
             onInstallationActualTextBox.IsEnabled = false;
             onInstallationActualTextBox.Text = "0";
 
-            drawingSubmissionDeadlineFrom.IsEnabled = false;
-            drawingSubmissionDeadlineFrom.Text = "0";
-            drawingSubmissionDeadlineTo.IsEnabled = false;
-            drawingSubmissionDeadlineTo.Text = "0";
+            drawingSubmissionDeadlineFromTextBox.IsEnabled = false;
+            drawingSubmissionDeadlineFromTextBox.Text = "0";
+            drawingSubmissionDeadlineToTextBox.IsEnabled = false;
+            drawingSubmissionDeadlineToTextBox.Text = "0";
             drawingSubmissionDeadlineCombo.IsEnabled = false;
 
             deliveryTimeTextBoxFrom.IsEnabled = false;
@@ -427,12 +427,16 @@ namespace _01electronics_crm
             offerValidityCombo.Items.Add("Years");
         }
 
-        private decimal GetPercentage(int percentage, int total)
+        private double GetPercentage(int percentage, int total)
         {
-            decimal percentileValue;
-            decimal temp = percentage / 100;
-            percentileValue = total * temp;
-            return percentileValue;
+            if (percentage != 0)
+            {
+                var value = ((double)percentage / 100) * total;
+                var percentage1 = Convert.ToInt32(Math.Round(value, 0));
+                return percentage1;
+            }
+            else
+                return 0;
         }
         private bool GetCompaniesQuery(int mEmployeeSerial, ref List<Company_Struct> returnVector)
         {
@@ -743,18 +747,155 @@ namespace _01electronics_crm
                 downPaymentPercentage = 0;
                 downPaymentPercentageTextBox.Text = null;
             }
-            decimal temp = GetPercentage(downPaymentPercentage, totalPrice);
-            downPaymentActualTextBox.Text = temp.ToString();
+            if ((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
+            {
+                downPaymentPercentage = 0;
+                downPaymentActualTextBox.Text = "0";
+                MessageBox.Show("You can't exceed 100%");
+            }
+            else
+            {
+                double temp = GetPercentage(downPaymentPercentage, totalPrice);
+                downPaymentActualTextBox.Text = temp.ToString();
+            }
         }
 
         private void OnDeliveryPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-           
+            if (IntegrityChecks.CheckInvalidCharacters(onDeliveryPercentageTextBox.Text, BASIC_MACROS.PHONE_STRING) && onDeliveryPercentageTextBox.Text != "")
+                onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+            else
+            {
+                onDeliveryPercentage = 0;
+                onDeliveryPercentageTextBox.Text = null;
+            }
+            if ((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
+            {
+                onDeliveryPercentage = 0;
+                onDeliveryActualTextBox.Text = "0";
+                MessageBox.Show("You can't exceed 100%");
+            }
+            else
+            {
+                double temp = GetPercentage(onDeliveryPercentage, totalPrice);
+                onDeliveryActualTextBox.Text = temp.ToString();
+            }
         }
 
         private void OnInstallationPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (IntegrityChecks.CheckInvalidCharacters(onInstallationPercentageTextBox.Text, BASIC_MACROS.PHONE_STRING) && onInstallationPercentageTextBox.Text != "")
+                onInstallationPercentage = int.Parse(onInstallationPercentageTextBox.Text);
+            else
+            {
+                onInstallationPercentage = 0;
+                onInstallationPercentageTextBox.Text = null;
+            }
+            if((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
+            {
+                onInstallationPercentage = 0;
+                onInstallationPercentageTextBox.Text = "0";
+                MessageBox.Show("You can't exceed 100%");
+            }
+            else
+            {
+                double temp = GetPercentage(onInstallationPercentage, totalPrice);
+                onInstallationActualTextBox.Text = temp.ToString();
+            }
+        }
 
+        private void DrawingSubmissionDeadlineFromTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(drawingSubmissionDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingSubmissionDeadlineFromTextBox.Text != "")
+                drawingSubmissionFrom = int.Parse(drawingSubmissionDeadlineFromTextBox.Text);
+            else
+            {
+                onInstallationPercentage = 0;
+                onInstallationPercentageTextBox.Text = null;
+            }
+        }
+
+        private void DrawingSubmissionDeadlineToTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(drawingSubmissionDeadlineToTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingSubmissionDeadlineToTextBox.Text != "")
+                drawingSubmissionTo = int.Parse(drawingSubmissionDeadlineToTextBox.Text);
+            else
+            {
+                onInstallationPercentage = 0;
+                drawingSubmissionDeadlineToTextBox.Text = null;
+            }
+        }
+
+        private void DrawingSubmissionDeadlineComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            drawingSubmissionType = drawingSubmissionDeadlineCombo.Text;
+        }
+
+        private void DeliveryTimeTextBoxFromTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxFrom.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxFrom.Text != "")
+                deliveryTimeFrom = int.Parse(deliveryTimeTextBoxFrom.Text);
+            else
+            {
+                onInstallationPercentage = 0;
+                deliveryTimeTextBoxFrom.Text = null;
+            }
+        }
+
+        private void DeliveryTimeTextBoxToTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxTo.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxTo.Text != "")
+                deliveryTimeTo = int.Parse(deliveryTimeTextBoxTo.Text);
+            else
+            {
+                onInstallationPercentage = 0;
+                deliveryTimeTextBoxTo.Text = null;
+            }
+        }
+
+        private void DeliveryPointComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            deliveryPoint = deliveryPointCombo.Text;
+        }
+
+        private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            contractType = contractTypeCombo.Text;
+        }
+
+        private void WarrantyPeriodTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
+                warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
+            else
+            {
+                warrantyPeriod = 0;
+                warrantyPeriodTextBox.Text = null;
+            }
+        }
+
+        private void OfferValidityTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
+                offerValidity = int.Parse(offerValidityTextBox.Text);
+            else
+            {
+                offerValidity = 0;
+                offerValidityTextBox.Text = null;
+            }
+        }
+        private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            warrantyPeriodType = warrantyPeriodCombo.Text;
+        }
+
+        private void OfferValidityComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            offerValidityType = offerValidityCombo.Text;
+        }
+        private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            additionalDescription = additionalDescriptionTextBox.Text;
         }
 
         private void Product2CheckBoxChecked(object sender, RoutedEventArgs e)
@@ -851,22 +992,20 @@ namespace _01electronics_crm
 
         private void DrawingConditionsCheckBoxChecked(object sender, RoutedEventArgs e)
         {
-            drawingSubmissionDeadlineFrom.IsEnabled = true;
-            drawingSubmissionDeadlineTo.IsEnabled = true;
+            drawingSubmissionDeadlineFromTextBox.IsEnabled = true;
+            drawingSubmissionDeadlineToTextBox.IsEnabled = true;
             drawingSubmissionDeadlineCombo.IsEnabled = true;
         }
 
         private void DrawingConditionsCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            drawingSubmissionDeadlineFrom.IsEnabled = false;
-            drawingSubmissionDeadlineTo.IsEnabled = false;
+            drawingSubmissionDeadlineFromTextBox.IsEnabled = false;
+            drawingSubmissionDeadlineToTextBox.IsEnabled = false;
             drawingSubmissionDeadlineCombo.IsEnabled = false;
 
-            drawingSubmissionDeadlineFrom.Text = "0";
-            drawingSubmissionDeadlineTo.Text = "0";
+            drawingSubmissionDeadlineFromTextBox.Text = "0";
+            drawingSubmissionDeadlineToTextBox.Text = "0";
             drawingSubmissionDeadlineCombo.SelectedItem = null;
         }
-
-       
     }
 }
