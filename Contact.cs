@@ -40,6 +40,9 @@ namespace _01electronics_erp
         {
             new Company();
             salesPerson = new Employee();
+
+            contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
+            contactPersonalEmails = new String[COMPANY_ORGANISATION_MACROS.MAX_EMAILS_PER_CONTACT];
         }
         public Contact(SQLServer mSqlDatabase)
         {
