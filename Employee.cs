@@ -183,39 +183,29 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select employees_info.employee_department, 
 		employees_info.employee_team, 
 		employees_info.employee_position, 
-		employees_info.graduation_year, 
 
-		educational_degrees.id, 
-		educational_majors.id,
-
-        banks_names.id,
-        employees_payroll_info.payroll_id,
-        employees_payroll_info.account_id,
-
-        employees_salaries.salary,
+		employees_educational_qualifications.graduation_year, 
+		employees_educational_qualifications.certificate, 
+		employees_educational_qualifications.major, 
 
 		employees_info.birth_date, 
 		employees_info.join_date, 
 
 		employees_info.name, 
 		employees_info.gender, 
-
 		departments_type.department, 
 		teams_type.team, 
 		positions_type.position, 
 
-		employees_business_emails.email, 
+		employees_business_emails.email,
 		employees_personal_emails.email, 
-
 		employees_business_phones.phone, 
 		employees_personal_phones.phone, 
 
 		educational_degrees.educational_degree, 
 		educational_majors.educational_major, 
 
-		employees_initials.employee_initial,
-
-		banks_names.bank_name
+        employees_initials.employee_initial
 
 		from erp_system.dbo.employees_info 
 		inner join erp_system.dbo.departments_type 
@@ -234,19 +224,15 @@ namespace _01electronics_erp
 		on employees_info.employee_id = employees_personal_phones.id 
 		left join erp_system.dbo.employees_initials 
 		on employees_info.employee_id = employees_initials.id 
+		left join erp_system.dbo.employees_educational_qualifications
+		on employees_info.employee_id = employees_educational_qualifications.employee_id
 		left join erp_system.dbo.educational_degrees 
-		on employees_info.educational_degree = educational_degrees.id 
+		on employees_educational_qualifications.certificate = educational_degrees.id 
 		left join erp_system.dbo.educational_majors 
-		on employees_info.major = educational_majors.id 
-        left join erp_system.dbo.employees_salaries
-        on employees_info.employee_id = employees_salaries.id
-        left join erp_system.dbo.employees_payroll_info
-        on employees_info.employee_id = employees_payroll_info.employee_id
-        inner join erp_system.dbo.banks_names
-        on employees_payroll_info.bank_id = banks_names.id
-	where employees_info.employee_id = ";
+		on employees_educational_qualifications.major = educational_majors.id 
+		where employees_info.employee_id = ";
         
-    String sqlQueryPart2 = ";";
+            String sqlQueryPart2 = ";";
 
             sqlQuery = string.Empty;
             sqlQuery += sqlQueryPart1;
@@ -255,11 +241,9 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_int = 8;
-            queryColumns.sql_bigint = 1;
-            queryColumns.sql_money = 1;
+            queryColumns.sql_int = 6;
             queryColumns.sql_datetime = 2;
-            queryColumns.sql_string = 13;
+            queryColumns.sql_string = 12;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
@@ -271,8 +255,6 @@ namespace _01electronics_erp
 
             educationalQualificationId = sqlDatabase.rows[0].sql_int[4];
             majorId = sqlDatabase.rows[0].sql_int[5];
-
-            salary = sqlDatabase.rows[0].sql_money[0];
 
             birthDateStruct = sqlDatabase.rows[0].sql_datetime[0];
             joinDateStruct = sqlDatabase.rows[0].sql_datetime[1];
@@ -298,21 +280,7 @@ namespace _01electronics_erp
 
             initials = sqlDatabase.rows[0].sql_string[11];
 
-            payrollInfo = new List<COMPANY_ORGANISATION_MACROS.BANK_STRUCT>();
-
-            for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            {
-                COMPANY_ORGANISATION_MACROS.BANK_STRUCT tempItem = new COMPANY_ORGANISATION_MACROS.BANK_STRUCT();
-
-                tempItem.bank_id = sqlDatabase.rows[i].sql_int[6];
-                tempItem.payroll_id = sqlDatabase.rows[i].sql_int[7];
-                tempItem.account_id = (ulong) sqlDatabase.rows[i].sql_bigint[0];
-
-                tempItem.bank_name = sqlDatabase.rows[i].sql_string[12];
-
-                payrollInfo.Add(tempItem);
-            }
-
+      
             return true;
         }
 

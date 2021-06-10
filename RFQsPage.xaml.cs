@@ -23,13 +23,14 @@ namespace _01electronics_crm
     {
         private Employee loggedInUser;
 
+        private SQLServer sqlDatabase;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
-        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-        private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList;
+        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
+        private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes;
+        private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes;
 
         private int selectedYear;
         private int selectedQuarter;
@@ -39,18 +40,23 @@ namespace _01electronics_crm
         private int selectedBrand;
         private int selectedStatus;
 
+        private Grid previousSelectedRFQItem;
+        private Grid currentSelectedRFQItem;
+
         public RFQsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
 
+            sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            // rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-            // productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-            // brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+            employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+            rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
             selectedYear = DateTime.Now.Year;
             selectedQuarter = commonFunctionsObject.GetCurrentQuarter();
@@ -266,9 +272,11 @@ namespace _01electronics_crm
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
                     continue;
 
-                StackPanel fullStackPanel = new StackPanel();
-                fullStackPanel.Orientation = Orientation.Vertical;
-                //fullStackPanel.Height = 90;
+                StackPanel currentStackPanel = new StackPanel();
+                currentStackPanel.Orientation = Orientation.Vertical;
+                //currentStackPanel.MouseLeftButtonDown += OnButtonRFQItem;
+
+                //currentStackPanel.Height = 90;
 
                 Label rfqIDLabel = new Label();
                 rfqIDLabel.Content = rfqsList[i].rfq_id;
@@ -309,42 +317,37 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = rfqsList[i].rfq_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
+                BrushConverter brush = new BrushConverter();
                 if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
+                    borderIcon.Background = (Brush)brush.ConvertFrom("#FFA500");
                 else if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
-                }
+                    borderIcon.Background = (Brush)brush.ConvertFrom("#008000");
                 else
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
+                    borderIcon.Background = (Brush)brush.ConvertFrom("#FF0000");
 
                 borderIcon.Child = rfqStatusLabel;
 
-                fullStackPanel.Children.Add(rfqIDLabel);
-                fullStackPanel.Children.Add(salesLabel);
-                fullStackPanel.Children.Add(preSalesLabel);
-                fullStackPanel.Children.Add(companyAndContactLabel);
-                fullStackPanel.Children.Add(productTypeAndBrandLabel);
-                fullStackPanel.Children.Add(contractTypeLabel);
+                currentStackPanel.Children.Add(rfqIDLabel);
+                currentStackPanel.Children.Add(salesLabel);
+                currentStackPanel.Children.Add(preSalesLabel);
+                currentStackPanel.Children.Add(companyAndContactLabel);
+                currentStackPanel.Children.Add(productTypeAndBrandLabel);
+                currentStackPanel.Children.Add(contractTypeLabel);
 
-                Grid grid = new Grid();
+                Grid currentGrid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
                 column2.MaxWidth = 77;
-                grid.ColumnDefinitions.Add(column1);
-                grid.ColumnDefinitions.Add(column2);
+                currentGrid.ColumnDefinitions.Add(column1);
+                currentGrid.ColumnDefinitions.Add(column2);
 
-                Grid.SetColumn(fullStackPanel, 0);
+                Grid.SetColumn(currentStackPanel, 0);
                 Grid.SetColumn(borderIcon, 1);
 
-                grid.Children.Add(fullStackPanel);
-                grid.Children.Add(borderIcon);
-
-                RFQsStackPanel.Children.Add(grid);
+                currentGrid.Children.Add(currentStackPanel);
+                currentGrid.Children.Add(borderIcon);
+                currentGrid.MouseLeftButtonDown += OnButtonRFQItem;
+                RFQsStackPanel.Children.Add(currentGrid);
             }
 
             return true;
@@ -527,7 +530,7 @@ namespace _01electronics_crm
         {
 
         }
-
+        
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
@@ -535,8 +538,55 @@ namespace _01electronics_crm
             addRFQWindow.Show();
         }
 
+        private void OnButtonRFQItem(object sender, RoutedEventArgs e) 
+        {
+            previousSelectedRFQItem = currentSelectedRFQItem;
+            currentSelectedRFQItem = (Grid)sender;
+            BrushConverter brush = new BrushConverter();
+
+            if(previousSelectedRFQItem != null)
+            {
+                previousSelectedRFQItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedRFQItem.Children[0];
+                Border previousSelectedBorder = (Border)previousSelectedRFQItem.Children[1];
+                Label previousStatusLabel = (Label)previousSelectedBorder.Child;
+
+                foreach (Label childLabel in previousSelectedStackPanel.Children)
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+
+                if (rfqsList[RFQsStackPanel.Children.IndexOf(previousSelectedRFQItem)].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
+                else if (rfqsList[RFQsStackPanel.Children.IndexOf(previousSelectedRFQItem)].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
+                else
+                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
+
+                previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            }
+
+            currentSelectedRFQItem.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedRFQItem.Children[0];
+            Border currentSelectedBorder = (Border)currentSelectedRFQItem.Children[1];
+            Label currentStatusLabel = (Label)currentSelectedBorder.Child;
+
+            foreach (Label childLabel in currentSelectedStackPanel.Children)
+                childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+
+            currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+            currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+        }
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
+            RFQ selectedRFQ = new RFQ(sqlDatabase);
+
+            selectedRFQ.InitializeRFQInfo(  rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial, 
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version, 
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ);
+            viewRFQ.Show();
 
         }
     }

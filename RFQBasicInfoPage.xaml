@@ -1,0 +1,108 @@
+﻿<Page x:Class="_01electronics_crm.RFQBasicInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_01electronics_crm"
+      mc:Ignorable="d" 
+      Title="RFQ Basic Info">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="RFQ BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource selectedTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                <Label Content="Basic Info" Style="{StaticResource selectedTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Label Content="Additional Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+            </Border>
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <WrapPanel Grid.Row="0">
+                <WrapPanel Name="rfqSerialWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="RFQ Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="rfqSerialLabel"/>
+                </WrapPanel>
+
+                <WrapPanel Name="issueDateWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Issue Date"/>
+                    <Label Style="{StaticResource tableItemValue}"  Name="issueDateLabel"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="1">
+                <WrapPanel Name="salesPersonWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Sales Person"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel"/>
+                </WrapPanel>
+
+                <WrapPanel Name="assigneeWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Assignee"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="offerProposerLabel"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="2">
+                <WrapPanel Name="companyNameWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel"/>
+                </WrapPanel>
+
+                <WrapPanel Name="companyAddressWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Company Address"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="3">
+                <WrapPanel Name="contactPersonNameWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Contact Person"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel"/>
+                </WrapPanel>
+
+                <WrapPanel Name="contactPersonPhoneWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Contact Phone"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="contactPersonPhoneLabel"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="4">
+
+            </WrapPanel>
+        </Grid>
+
+
+    </Grid>
+
+</Page>
