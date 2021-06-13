@@ -94,24 +94,19 @@ namespace _01electronics_crm
 
         private void ResetComboBoxes()
         {
-            yearCombo.SelectedItem = -1;
-            selectedYear = -1;
+            yearCombo.SelectedItem = null;
 
             quarterCombo.SelectedItem = -1;
-            selectedQuarter = -1;
 
             employeeCombo.SelectedItem = -1;
             selectedEmployee = -1;
             selectedTeam = -1;
 
             productCombo.SelectedItem = -1;
-            selectedProduct = -1;
 
             brandCombo.SelectedItem = -1;
-            selectedBrand = -1;
 
             statusCombo.SelectedItem = -1;
-            selectedStatus = -1;
         }
 
         private void DisableComboBoxes()
@@ -171,7 +166,7 @@ namespace _01electronics_crm
         }
         private bool InitializeBrandsComboBox()
         {
-            //INTENTIONALLY LEFT IT EMPTY FOR YOU TO FILL
+            
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
 
@@ -183,7 +178,10 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-
+            statusCombo.Items.Add("Failed");
+            statusCombo.Items.Add("Confirmed");
+            statusCombo.Items.Add("Pending");
+            statusCombo.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -191,7 +189,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         private void ConfigureUIElements()
         {
-            SetYearComboBox();
+            EnableYearUIElements();
 
             //THE CONDITION HERE IS WRONG, YOU SHOULD CHECK THE POSITION NOT THE TEAM
             if (loggedInUser.GetEmployeePositionId() >= COMPANY_ORGANISATION_MACROS.JUNIOR_POSTION)
@@ -202,27 +200,26 @@ namespace _01electronics_crm
 
         }
 
+        private void EnableYearUIElements()
+        {
+            yearCheckBox.IsChecked = true;
+        }
         /////////////////////////////////////////////////////////////////
         //SET FUNCTIONS
         /////////////////////////////////////////////////////////////////
         private void SetYearComboBox()
         {
             yearCombo.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
-            selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
         }
         private void SetQuarterComboBox()
         {
             quarterCombo.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
-            selectedQuarter = quarterCombo.SelectedIndex + 1;
         }
         private void SetEmployeeComboBox()
         {
             for (int i = 0; i < employeesList.Count; i++)
                 if (loggedInUser.GetEmployeeId() == employeesList[i].employee_id)
                     employeeCombo.SelectedIndex = i;
-
-            selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
-            selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
         }
         private void DisableEmployeeUIElements()
         {
@@ -360,41 +357,67 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////
+
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            if (yearCombo.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            else
+                selectedYear = 0;
             SetRFQsStackPanel();
         }
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedQuarter = quarterCombo.SelectedIndex + 1;
+            if (quarterCombo.SelectedItem != null)
+                selectedQuarter = quarterCombo.SelectedIndex + 1;
+            else
+                selectedQuarter = 0;
             SetRFQsStackPanel();
         }
 
         private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
-            selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+            if (employeeCombo.SelectedItem != null)
+            {
+                selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
+                selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+            }
+            else
+            {
+                selectedEmployee = 0;
+                selectedTeam = 0;
+            }
 
             SetRFQsStackPanel();
         }
 
         private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            if (productCombo.SelectedItem != null)
+                selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            else
+                selectedProduct = 0;
             SetRFQsStackPanel();
         }
 
         private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            if (brandCombo.SelectedItem != null)
+                selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            else
+                selectedBrand = 0;
             SetRFQsStackPanel();
         }
 
         private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (statusCombo.SelectedItem != null)
+                selectedStatus = statusCombo.SelectedIndex + 1;
+            else
+                selectedStatus = 0;
+
+            SetRFQsStackPanel();
         }
 
         /////////////////////////////////////////////////////////////////
@@ -489,8 +512,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            //RFQsPage rfqs = new RFQsPage(ref loggedInUser);
-            //this.NavigationService.Navigate(rfqs);
+            
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -568,4 +590,5 @@ namespace _01electronics_crm
 
         }
     }
+
 }

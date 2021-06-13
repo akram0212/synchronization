@@ -21,13 +21,15 @@ namespace _01electronics_crm
     public partial class AddRFQWindow : Window
     {
         private Employee loggedInUser;
-        
+        private RFQ rfqObject;
+
+
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
        
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
-        private SQLServer commonQueriesSqlObject = new SQLServer();
+        private SQLServer sqlDatabase;
 
         public struct Company_Struct
         {
@@ -46,11 +48,16 @@ namespace _01electronics_crm
         public AddRFQWindow(ref Employee mLoggedInUser)
         {
             InitializeComponent();
-
+            
             loggedInUser = mLoggedInUser;
 
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+            sqlDatabase = new SQLServer();
+
+            rfqObject = new RFQ(sqlDatabase);
+
+            rfqObject.InitializeRFQInfo(1, 1, 3);
 
             InitializeWindow();
 
@@ -494,15 +501,15 @@ namespace _01electronics_crm
             queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
-            if (!commonQueriesSqlObject.GetRows(sqlQuery, queryColumns))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            for (int i = 0; i < commonQueriesSqlObject.rows.Count; i++)
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 Company_Struct temp = new Company_Struct();
 
-                temp.companySerial = commonQueriesSqlObject.rows[i].sql_int[0];
-                temp.companyName = commonQueriesSqlObject.rows[i].sql_string[0];
+                temp.companySerial = sqlDatabase.rows[i].sql_int[0];
+                temp.companyName = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(temp);
             }

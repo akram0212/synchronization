@@ -45,6 +45,7 @@ namespace _01electronics_erp
             contactPersonalEmails = new String[COMPANY_ORGANISATION_MACROS.MAX_EMAILS_PER_CONTACT];
 
             commentsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_COMMENT_STRUCT>();
+
         }
         public Contact(SQLServer mSqlDatabase)
         {

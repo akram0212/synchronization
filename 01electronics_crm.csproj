@@ -59,6 +59,9 @@
     <Compile Include="AddRFQWindow.xaml.cs">
       <DependentUpon>AddRFQWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddWorkOfferWindow.xaml.cs">
+      <DependentUpon>AddWorkOfferWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BASIC_MACROS.cs" />
     <Compile Include="BASIC_STRUCTS.cs" />
     <Compile Include="CommonFunctions.cs" />
@@ -103,6 +106,10 @@
     </Compile>
     <Compile Include="WorkOrder.cs" />
     <Page Include="AddRFQWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddWorkOfferWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
