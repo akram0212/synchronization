@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _01electronics_erp;
 
 namespace _01electronics_crm
 {
@@ -198,11 +199,12 @@ namespace _01electronics_crm
             {
                 BrushConverter brush = new BrushConverter();
                 AllTextBlocks[i].Foreground = (Brush)brush.ConvertFrom("Black");
-            }
+        }
             BrushConverter brushStyle = new BrushConverter();
             selectedTextBlock.Foreground = (Brush)brushStyle.ConvertFrom("#FF105A97");
         }
 
+        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
         {
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
@@ -245,12 +247,16 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(userPortal);
         }
 
+        private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
         {
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
             ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contactsPage);
         }
 
+        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
         private void ViewClick(object sender, RoutedEventArgs e)
         {
 
@@ -318,6 +324,7 @@ namespace _01electronics_crm
             //    }
             //}
         }
+        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
 
         private void CompanyNameCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -336,12 +343,13 @@ namespace _01electronics_crm
                 {
                     companyID = company_name[i].Key;
                 }
-            }
+        }
+        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
 
             commonQueries.GetCompanyContacts((int)companyID, ref employeeContacts);
 
             for (int i = 0; i < company_name.Count; i++)
-            {
+        {
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.Height = new GridLength(30);
 
@@ -369,7 +377,8 @@ namespace _01electronics_crm
                 if (employeeContacts[i].contact_name == " ")
                 {
                     TitleTextblock2.Text = "NONE";
-                }
+        }
+        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
                 else
                 {
                     TitleTextblock2.Text = employeeContacts[i].contact_name;
@@ -385,7 +394,7 @@ namespace _01electronics_crm
                     if (employeeContacts.Count > company_name.Count)
                     {
                         for (int j = 1; j < employeeContacts.Count; j++)
-                        {
+        {
                             RowDefinition rowDef3 = new RowDefinition();
                             rowDef2.Height = new GridLength(30);
 
@@ -395,14 +404,16 @@ namespace _01electronics_crm
                             if (employeeContacts[j].contact_name == " ")
                             {
                                 TitleTextblock3.Text = "NONE";
-                            }
+        }
+        private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
                             else if (employeeContacts[j].contact_name != employeeContacts[j - 1].contact_name)
-                            {
+        {
                                 TitleTextblock3.Text = employeeContacts[j].contact_name;
 
-                            }
+        }
+        private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
                             else
-                            {
+        {
                                 continue;
                             }
 
@@ -427,9 +438,11 @@ namespace _01electronics_crm
 
                     }
 
-                }
+        }
+        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
+        {
 
-            }
         }
     }
+}
 }
