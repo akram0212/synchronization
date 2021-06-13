@@ -12,7 +12,7 @@ namespace _01electronics_erp
         private String sqlQuery;
 
         //SQL OBJECTS
-        private SQLServer initializationObject;
+        private SQLServer sqlDatabase;
          
         //EMPLOYEE INFO
         private int employeeId;
@@ -56,7 +56,17 @@ namespace _01electronics_erp
 
         public Employee()
         {
-            initializationObject = new SQLServer();
+            sqlDatabase = new SQLServer();
+        }
+
+        public Employee(SQLServer mSqlDatabase)
+        {
+            sqlDatabase = mSqlDatabase;
+        }
+
+        public void SetDatabase(SQLServer mSqlDatabase)
+        {
+            sqlDatabase = mSqlDatabase;
         }
 
         public bool InitializeEmployeeInfo(String mBusinessEmail)
@@ -129,39 +139,39 @@ namespace _01electronics_erp
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 11;
 
-            if (!initializationObject.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
 
-            employeeId = initializationObject.rows[0].sql_int[0];
-            departmentId = initializationObject.rows[0].sql_int[1];
-            teamId = initializationObject.rows[0].sql_int[2];
-            positionId = initializationObject.rows[0].sql_int[3];
-            graduationYear = initializationObject.rows[0].sql_int[4];
+            employeeId = sqlDatabase.rows[0].sql_int[0];
+            departmentId = sqlDatabase.rows[0].sql_int[1];
+            teamId = sqlDatabase.rows[0].sql_int[2];
+            positionId = sqlDatabase.rows[0].sql_int[3];
+            graduationYear = sqlDatabase.rows[0].sql_int[4];
 
-            educationalQualificationId = initializationObject.rows[0].sql_int[5];
-            majorId = initializationObject.rows[0].sql_int[6];
+            educationalQualificationId = sqlDatabase.rows[0].sql_int[5];
+            majorId = sqlDatabase.rows[0].sql_int[6];
 
-            birthDateStruct = initializationObject.rows[0].sql_datetime[0];
-            joinDateStruct = initializationObject.rows[0].sql_datetime[1];
+            birthDateStruct = sqlDatabase.rows[0].sql_datetime[0];
+            joinDateStruct = sqlDatabase.rows[0].sql_datetime[1];
 
             joinDate = joinDateStruct.ToString();
             birthDate = birthDateStruct.ToString();
 
-            name = initializationObject.rows[0].sql_string[0];
-            gender = initializationObject.rows[0].sql_string[1];
+            name = sqlDatabase.rows[0].sql_string[0];
+            gender = sqlDatabase.rows[0].sql_string[1];
 
-            department = initializationObject.rows[0].sql_string[2];
-            team = initializationObject.rows[0].sql_string[3];
-            position = initializationObject.rows[0].sql_string[4];
+            department = sqlDatabase.rows[0].sql_string[2];
+            team = sqlDatabase.rows[0].sql_string[3];
+            position = sqlDatabase.rows[0].sql_string[4];
 
-            personalEmail = initializationObject.rows[0].sql_string[5];
-            businessPhone = initializationObject.rows[0].sql_string[6];
-            personalPhone = initializationObject.rows[0].sql_string[7];
+            personalEmail = sqlDatabase.rows[0].sql_string[5];
+            businessPhone = sqlDatabase.rows[0].sql_string[6];
+            personalPhone = sqlDatabase.rows[0].sql_string[7];
             
-            educationalQualification = initializationObject.rows[0].sql_string[8];
-            major = initializationObject.rows[0].sql_string[9];
+            educationalQualification = sqlDatabase.rows[0].sql_string[8];
+            major = sqlDatabase.rows[0].sql_string[9];
 
-            initials = initializationObject.rows[0].sql_string[10];
+            initials = sqlDatabase.rows[0].sql_string[10];
 
             return true;
         }
@@ -173,31 +183,29 @@ namespace _01electronics_erp
             String sqlQueryPart1 = @"select employees_info.employee_department, 
 		employees_info.employee_team, 
 		employees_info.employee_position, 
-	   employees_educational_qualifications.graduation_year, 
-      employees_educational_qualifications.certificate, 
-      employees_educational_qualifications.major,
 
+		employees_educational_qualifications.graduation_year, 
+		employees_educational_qualifications.certificate, 
+		employees_educational_qualifications.major, 
 
 		employees_info.birth_date, 
 		employees_info.join_date, 
 
 		employees_info.name, 
 		employees_info.gender, 
-
 		departments_type.department, 
 		teams_type.team, 
 		positions_type.position, 
 
-		employees_business_emails.email, 
+		employees_business_emails.email,
 		employees_personal_emails.email, 
-
 		employees_business_phones.phone, 
 		employees_personal_phones.phone, 
 
 		educational_degrees.educational_degree, 
 		educational_majors.educational_major, 
 
-		employees_initials.employee_initial
+        employees_initials.employee_initial
 
 		from erp_system.dbo.employees_info 
 		inner join erp_system.dbo.departments_type 
@@ -219,12 +227,12 @@ namespace _01electronics_erp
 		left join erp_system.dbo.employees_educational_qualifications
 		on employees_info.employee_id = employees_educational_qualifications.employee_id
 		left join erp_system.dbo.educational_degrees 
-		on educational_degrees.id = employees_info.employee_id
+		on employees_educational_qualifications.certificate = educational_degrees.id 
 		left join erp_system.dbo.educational_majors 
-		on employees_info.employee_id = educational_majors.id
-	where employees_info.employee_id =  ";
+		on employees_educational_qualifications.major = educational_majors.id 
+		where employees_info.employee_id = ";
         
-    String sqlQueryPart2 = ";";
+            String sqlQueryPart2 = ";";
 
             sqlQuery = string.Empty;
             sqlQuery += sqlQueryPart1;
@@ -234,48 +242,45 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 6;
-            queryColumns.sql_bigint = 0;
-            queryColumns.sql_money = 0;
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 12;
 
-            if (!initializationObject.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
 
-            departmentId = initializationObject.rows[0].sql_int[0];
-            teamId = initializationObject.rows[0].sql_int[1];
-            positionId = initializationObject.rows[0].sql_int[2];
-            graduationYear = initializationObject.rows[0].sql_int[3];
+            departmentId = sqlDatabase.rows[0].sql_int[0];
+            teamId = sqlDatabase.rows[0].sql_int[1];
+            positionId = sqlDatabase.rows[0].sql_int[2];
+            graduationYear = sqlDatabase.rows[0].sql_int[3];
 
-            educationalQualificationId = initializationObject.rows[0].sql_int[4];
-            majorId = initializationObject.rows[0].sql_int[5];
+            educationalQualificationId = sqlDatabase.rows[0].sql_int[4];
+            majorId = sqlDatabase.rows[0].sql_int[5];
 
-            salary = initializationObject.rows[0].sql_money[0];
-
-            birthDateStruct = initializationObject.rows[0].sql_datetime[0];
-            joinDateStruct = initializationObject.rows[0].sql_datetime[1];
+            birthDateStruct = sqlDatabase.rows[0].sql_datetime[0];
+            joinDateStruct = sqlDatabase.rows[0].sql_datetime[1];
 
             joinDate = joinDateStruct.ToString();
             birthDate = birthDateStruct.ToString();
 
-            name = initializationObject.rows[0].sql_string[0];
-            gender = initializationObject.rows[0].sql_string[1];
+            name = sqlDatabase.rows[0].sql_string[0];
+            gender = sqlDatabase.rows[0].sql_string[1];
 
-            department = initializationObject.rows[0].sql_string[2];
-            team = initializationObject.rows[0].sql_string[3];
-            position = initializationObject.rows[0].sql_string[4];
+            department = sqlDatabase.rows[0].sql_string[2];
+            team = sqlDatabase.rows[0].sql_string[3];
+            position = sqlDatabase.rows[0].sql_string[4];
 
-            businessEmail = initializationObject.rows[0].sql_string[5];
-            personalEmail = initializationObject.rows[0].sql_string[6];
+            businessEmail = sqlDatabase.rows[0].sql_string[5];
+            personalEmail = sqlDatabase.rows[0].sql_string[6];
 
-            businessPhone = initializationObject.rows[0].sql_string[7];
-            personalPhone = initializationObject.rows[0].sql_string[8];
+            businessPhone = sqlDatabase.rows[0].sql_string[7];
+            personalPhone = sqlDatabase.rows[0].sql_string[8];
 
-            educationalQualification = initializationObject.rows[0].sql_string[9];
-            major = initializationObject.rows[0].sql_string[10];
+            educationalQualification = sqlDatabase.rows[0].sql_string[9];
+            major = sqlDatabase.rows[0].sql_string[10];
 
-            initials = initializationObject.rows[0].sql_string[11];
+            initials = sqlDatabase.rows[0].sql_string[11];
 
+      
             return true;
         }
 

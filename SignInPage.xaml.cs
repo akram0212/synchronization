@@ -45,7 +45,7 @@ namespace _01electronics_crm
 
             loggedInUser.InitializeEmployeeInfo(employeeEmail);
 
-            employeePassword = employeePasswordTextBox.Text;
+            employeePassword = employeePasswordTextBox.Password;
 
             if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
                 return;
@@ -56,6 +56,8 @@ namespace _01electronics_crm
             currentWindow.Close();
 
             mainWindowOpen.Show();
+
+            Window.GetWindow(this).Close();
         }
 
         private void OnButtonClickedSignUp(object sender, RoutedEventArgs e)
