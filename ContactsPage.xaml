@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
-      Background="#EDEDED"
       Title="ContactsPage">
 
     <Grid>
@@ -56,14 +55,10 @@
 
             <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400">
 
-            <Grid  Grid.Row="2" Background="#FF105A97" Margin="30,0,30,0" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" Grid.Row="2">
-                    <Label Width="270" Name="CompanyNameLabel" Content="Company Name" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Background="#FF105A97" Foreground="white"/>
-                </Grid>
 
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -84,31 +79,31 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
+                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="countryCheckBox_Checked" Unchecked="countryCheckBox_Unchecked"/>
+                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="countryComboBox_SelectionChanged"/>
 
-                    <CheckBox Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
+                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="stateCheckBox_Checked" Unchecked="stateCheckBox_Unchecked"/>
+                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="stateComboBox_SelectionChanged"/>
 
-                    <CheckBox Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}"/>
-                    <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
+                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="cityCheckBox_Checked" Unchecked="cityCheckBox_Unchecked"/>
+                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="cityComboBox_SelectionChanged"/>
 
-                    <CheckBox Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}"/>
-                    <ComboBox Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
+                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="districtCheckBox_Checked" Unchecked="districtCheckBox_Unchecked"/>
+                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="districtComboBox_SelectionChanged"/>
 
-                    <CheckBox Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}"/>
-                    <ComboBox Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
+                    <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="salesPersonCheckBox_Checked"/>
+                    <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyle}"/>
                 </Grid>
-                
+
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
-                    <TreeView>
+                    <TreeView Name="treeViewItem">
 
                     </TreeView>
                 </ScrollViewer>
-                
-                
+
+
             </Grid>
-            
+
         </Grid>
 
     </Grid>
