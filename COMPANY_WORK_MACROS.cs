@@ -51,8 +51,8 @@ namespace _01electronics_erp
         public const int CONFIRMED_WORK_OFFER   = 2;
         public const int PENDING_WORK_OFFER     = 3;
             
-        public const int MAx_NUMBER_OF_OFFER_SERIALS    = 10000;
-        public const int MAx_NUMBER_OF_OFFER_VERSIONS   = 100;
+        public const int MAX_NUMBER_OF_OFFER_SERIALS    = 10000;
+        public const int MAX_NUMBER_OF_OFFER_VERSIONS   = 100;
         
         //RFQS MACROS
         public const int NO_OF_RFQS_STATUS  = 3;

@@ -58,11 +58,17 @@ namespace _01electronics_erp
         public Company()
         {
             sqlDatabase = new SQLServer();
+
+            companyPhones = new List<String>();
+            companyFaxes = new List<String>();
         }
 
         public Company(SQLServer mSqlDatabase)
         {
             sqlDatabase = mSqlDatabase;
+
+            companyPhones = new List<String>();
+            companyFaxes = new List<String>();
         }
 
         public void SetDatabase(SQLServer mSqlDatabase)
