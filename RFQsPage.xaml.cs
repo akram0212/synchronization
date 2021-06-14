@@ -357,7 +357,7 @@ namespace _01electronics_crm
 
                 currentGrid.Children.Add(currentStackPanel);
                 currentGrid.Children.Add(borderIcon);
-                currentGrid.MouseLeftButtonDown += OnButtonRFQItem;
+                currentGrid.MouseLeftButtonDown += OnBtnClickedRFQItem;
                 RFQsStackPanel.Children.Add(currentGrid);
             }
 
@@ -469,32 +469,50 @@ namespace _01electronics_crm
         {
             yearCombo.IsEnabled = false;
             yearCombo.SelectedItem = null;
+            
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
         private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             quarterCombo.IsEnabled = false;
             quarterCombo.SelectedItem = null;
+
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
         private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             employeeCombo.IsEnabled = false;
             employeeCombo.SelectedItem = null;
+
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
         private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             productCombo.SelectedItem = null;
             productCombo.IsEnabled = false;
+
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
         
         private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             brandCombo.SelectedItem = null;
             brandCombo.IsEnabled = false;
+
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
         private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             statusCombo.SelectedItem = null;
             statusCombo.IsEnabled = false;
+
+            currentSelectedRFQItem = null;
+            previousSelectedRFQItem = null;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -551,19 +569,15 @@ namespace _01electronics_crm
             addRFQWindow.Show();
         }
 
-        private void OnButtonRFQItem(object sender, RoutedEventArgs e) 
+        private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
         {
-            
+            EnableViewButton();
+
             previousSelectedRFQItem = currentSelectedRFQItem;
             currentSelectedRFQItem = (Grid)sender;
             BrushConverter brush = new BrushConverter();
 
-            if (currentSelectedRFQItem != null)
-                EnableViewButton();
-            else
-                DisableViewButton();
-
-            if(previousSelectedRFQItem != null)
+            if (previousSelectedRFQItem != null)
             {
                 previousSelectedRFQItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 

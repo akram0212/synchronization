@@ -48,6 +48,7 @@ namespace _01electronics_erp
         public const int MAX_SENIORS             = MAX_NUMBER_OF_TEAMS_PER_DEP;
 
         //COMPANIES STRUCTS
+
         public struct COMPANY_STRUCT
         {
             public String company_name;
@@ -63,6 +64,21 @@ namespace _01electronics_erp
             public String city;
             public String state_governorate;
             public String country;
+        };
+
+        public struct COMPANY_MIN_LIST_STRUCT
+        {
+            public String company_name;
+            public int company_serial;
+            public int address_serial;
+        };
+        
+        public struct COMPANY_MAX_LIST_STRUCT
+        {
+            public String company_name;
+            public int company_serial;
+            public int address_serial;
+            public int address;
         };
 
         //COMPANY ORGANISATIONS STRUCTS
