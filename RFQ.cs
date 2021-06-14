@@ -819,6 +819,24 @@ namespace _01electronics_erp
         //RETURN FUNCTIONS
         //////////////////////////////////////////////////////////////////////
 
+        public Contact GetRFQContact()
+        {
+            return contact;
+        }
+
+        public Company GetRFQCompany()
+        {
+            return contact.GetContactCompany();
+        }
+        public Employee GetRFQSalesPerson()
+        {
+            return salesPerson;
+        }
+
+        public Employee GetRFQAssignee()
+        {
+            return assignedEngineer;
+        }
         public int GetRFQSerial()
         {
             return rfqSerial;
