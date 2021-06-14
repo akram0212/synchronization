@@ -57,8 +57,6 @@ namespace _01electronics_crm
 
             rfqObject = new RFQ(sqlDatabase);
 
-            rfqObject.InitializeRFQInfo(1, 1, 3);
-
             InitializeWindow();
 
             

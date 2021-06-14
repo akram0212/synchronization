@@ -81,6 +81,30 @@
             <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
+        <Style x:Key="AddRFQComboBoxesSameh" TargetType="{x:Type ComboBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="-300,12,12,12"/>
+            <Setter Property="FontFamily" Value="Sans Serif" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
+        </Style>
+
+        <Style x:Key="AddRFQTextBoxesSameh" TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="-300,12,12,12"/>
+            <Setter Property="FontFamily" Value="Sans Serif" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
+        </Style>
+
         <Style x:Key="selectedTabLabelItem" TargetType="{x:Type Label}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />

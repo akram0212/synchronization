@@ -80,6 +80,7 @@ namespace _01electronics_crm
 
             InitializeStatusComboBox();
 
+            DisableViewButton();
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -117,6 +118,16 @@ namespace _01electronics_crm
             productCombo.IsEnabled = false;
             brandCombo.IsEnabled = false;
             statusCombo.IsEnabled = false;
+        }
+
+        private void DisableViewButton()
+        {
+            viewButton.IsEnabled = false;
+        }
+
+        private void EnableViewButton()
+        {
+            viewButton.IsEnabled = true;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -178,9 +189,9 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            statusCombo.Items.Add("Failed");
-            statusCombo.Items.Add("Confirmed");
             statusCombo.Items.Add("Pending");
+            statusCombo.Items.Add("Confirmed");
+            statusCombo.Items.Add("Failed");
             statusCombo.IsEnabled = false;
         }
 
@@ -534,15 +545,23 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            var addRFQWindow = new AddRFQWindow(ref loggedInUser);
+            //var addRFQWindow = new AddRFQWindow(ref loggedInUser);
+            //addRFQWindow.Show();
+            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser);
             addRFQWindow.Show();
         }
 
         private void OnButtonRFQItem(object sender, RoutedEventArgs e) 
         {
+            
             previousSelectedRFQItem = currentSelectedRFQItem;
             currentSelectedRFQItem = (Grid)sender;
             BrushConverter brush = new BrushConverter();
+
+            if (currentSelectedRFQItem != null)
+                EnableViewButton();
+            else
+                DisableViewButton();
 
             if(previousSelectedRFQItem != null)
             {

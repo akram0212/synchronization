@@ -112,13 +112,13 @@ namespace _01electronics_erp
                 return false;
 
             primaryFieldId = sqlDatabase.rows[0].sql_int[0];
-            secondaryFieldId = sqlDatabase.rows[1].sql_int[0];
-            ownerUserId = sqlDatabase.rows[2].sql_int[0];
+            secondaryFieldId = sqlDatabase.rows[0].sql_int[1];
+            ownerUserId = sqlDatabase.rows[0].sql_int[2];
 
             companyName = sqlDatabase.rows[0].sql_string[0];
-            primaryField = sqlDatabase.rows[1].sql_string[0];
-            secondaryField = sqlDatabase.rows[2].sql_string[0];
-            ownerUser = sqlDatabase.rows[3].sql_string[0];
+            primaryField = sqlDatabase.rows[0].sql_string[1];
+            secondaryField = sqlDatabase.rows[0].sql_string[2];
+            ownerUser = sqlDatabase.rows[0].sql_string[3];
 
             addressKnown = false;
 

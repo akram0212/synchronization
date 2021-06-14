@@ -58,6 +58,7 @@
                 <WrapPanel Name="issueDateWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Issue Date"/>
                     <Label Style="{StaticResource tableItemValue}"  Name="issueDateLabel"/>
+                    <DatePicker Name="issueDateDatePicker" Margin="-300,12,12,12" Width="200" Height="25" HorizontalAlignment="Left"/>
                 </WrapPanel>
             </WrapPanel>
 
@@ -70,6 +71,7 @@
                 <WrapPanel Name="assigneeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Assignee"/>
                     <Label Style="{StaticResource tableItemValue}" Name="offerProposerLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="assigneeCombo" SelectionChanged="AssigneeComboSelectionChanged"/>
                 </WrapPanel>
             </WrapPanel>
 
@@ -77,11 +79,13 @@
                 <WrapPanel Name="companyNameWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="companyNameCombo" SelectionChanged="CompanyNameComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Name="companyAddressWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Company Address"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="companyAddressCombo" SelectionChanged="CompanyAddressComboSelectionChanged"/>
                 </WrapPanel>
             </WrapPanel>
 
@@ -89,11 +93,13 @@
                 <WrapPanel Name="contactPersonNameWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Contact Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="contactPersonCombo" SelectionChanged="ContactPersonComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Name="contactPersonPhoneWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Contact Phone"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonPhoneLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="contactPersonPhoneCombo" SelectionChanged="ContactPersonPhoneComboSelectionChanged"/>
                 </WrapPanel>
             </WrapPanel>
 
