@@ -56,6 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCompanyWindow.xaml.cs">
+      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddContactWindow.xaml.cs">
+      <DependentUpon>AddContactWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddRFQWindow.xaml.cs">
       <DependentUpon>AddRFQWindow.xaml</DependentUpon>
     </Compile>
@@ -105,6 +111,14 @@
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOrder.cs" />
+    <Page Include="AddCompanyWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddContactWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="AddRFQWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
