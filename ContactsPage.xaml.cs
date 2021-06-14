@@ -154,14 +154,14 @@ namespace _01electronics_crm
 
             TreeViewItem ParentItem = new TreeViewItem();
             ParentItem.Header = loggedInUser.GetEmployeeName();
-            ParentItem.Tag = employeeID.ToString();
+            ParentItem.Name = employeeID.ToString();
             treeViewItem.Items.Add(ParentItem);
 
-            for (int i = 0; i < companys.Count; i++)
+            for (int i = 0; i < companys.Count(); i++)
             {
                 TreeViewItem ChildItem = new TreeViewItem();
                 ChildItem.Header = companys[i].company_name;
-                ChildItem.Tag = companys[i].company_serial.ToString();
+                ChildItem.Name = companys[i].company_serial.ToString();
                 ParentItem.Items.Add(ChildItem);
             }
             return true;
@@ -211,26 +211,20 @@ namespace _01electronics_crm
                 tmpCompanyStruct.department = initializationObject.rows[i].sql_string[1];
                 employeeContacts.Add(tmpCompanyStruct);
             }
-            foreach(TreeViewItem item in treeViewItem.Items)
+            for (int i = 0; i < employeeContacts.Count(); i++)
             {
-                foreach(TreeViewItem subItem in item.Items)
+                TreeViewItem currentCompany = (TreeViewItem)treeViewItem.FindName(employeeContacts[i].address_serial.ToString());
+                if (currentCompany != null)
                 {
-                    for (int i = 0; i < employeeContacts.Count; i++)
-                    {
-                        if (subItem.Tag.ToString() == employeeContacts[i].address_serial.ToString())
-                        {
-                            TreeViewItem ChildItem = new TreeViewItem();
-                            ChildItem.Header = employeeContacts[i].contact_name;
-                            ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
-                            subItem.Items.Add(ChildItem);
-                   
-                        }
-                   
-                    }
-                   
+                     TreeViewItem ChildItem = new TreeViewItem();
+                     ChildItem.Header = employeeContacts[i].contact_name;
+                     ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                     currentCompany.Items.Add(ChildItem);
+                    
                 }
-            }
-           
+
+            } 
+            
             return true;
         }
 
@@ -327,60 +321,53 @@ namespace _01electronics_crm
 
             stateComboBox.Items.Clear();
             int countryIndex = 0;
-            for (int i = 0; i < countries.Count; i++)
+            for (int i = 0; i < countries.Count(); i++)
             {
                 if (countries[i].country_name == countryComboBox.SelectedItem)
                 {
                     countryIndex = countries[i].country_id;
                 }
             }
-            for (int i = 0; i < states.Count; i++)
+            for (int i = 0; i < states.Count(); i++)
             {
-                if (states[i].state_id/100 == countryIndex)
+                if (states[i].state_id / 100 == countryIndex)
                     stateComboBox.Items.Add(states[i].state_name);
             }
 
             treeViewItem.Items.Clear();
 
             TreeViewItem ParentItem = new TreeViewItem();
-            ParentItem.Tag = employeeID.ToString();
+            ParentItem.Name = employeeID.ToString();
             ParentItem.Header = loggedInUser.GetEmployeeName();
             treeViewItem.Items.Add(ParentItem);
-            
-            for(int i = 0; i < companys.Count(); i++)
+
+            for (int i = 0; i < companys.Count(); i++)
             {
-                if(companys[i].address / 1000000 == countryIndex)
+                if (companys[i].address / 1000000 == countryIndex)
                 {
-                     TreeViewItem ChildItem = new TreeViewItem();
-                     ChildItem.Header = companys[i].company_name;
-                     ChildItem.Tag = companys[i].company_serial.ToString();
-                     ParentItem.Items.Add(ChildItem);
-                    
-                }    
-            }
-
-            foreach (TreeViewItem item in treeViewItem.Items)
-            {
-                foreach (TreeViewItem subItem in item.Items)
-                {
-                    for (int i = 0; i < employeeContacts.Count; i++)
-                    {
-                        if (subItem.Tag.ToString() == employeeContacts[i].address_serial.ToString())
-                        {
-                            if (employeeContacts[i].address / 1000000 == countryIndex)
-                            {
-                                TreeViewItem ChildItem = new TreeViewItem();
-                                ChildItem.Header = employeeContacts[i].contact_name;
-                                ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
-                                subItem.Items.Add(ChildItem);
-                            }
-
-                        }
-
-                    }
+                    TreeViewItem ChildItem = new TreeViewItem();
+                    ChildItem.Header = companys[i].company_name;
+                    ChildItem.Name = companys[i].company_serial.ToString();
+                    ParentItem.Items.Add(ChildItem);
 
                 }
             }
+            for (int i = 0; i < employeeContacts.Count(); i++)
+            {
+                TreeViewItem currentCompany = (TreeViewItem)treeViewItem.FindName(employeeContacts[i].address_serial.ToString());
+                if (currentCompany != null)
+                {
+                    if (employeeContacts[i].address / 1000000 == countryIndex)
+                    {
+                        TreeViewItem ChildItem = new TreeViewItem();
+                        ChildItem.Header = employeeContacts[i].contact_name;
+                        ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                        currentCompany.Items.Add(ChildItem);
+                    }
+                }
+
+            }
+            
         }
 
         private void stateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -394,7 +381,7 @@ namespace _01electronics_crm
 
             cityComboBox.Items.Clear();
             int stateIndex = 0;
-            for (int i = 0; i < states.Count; i++)
+            for (int i = 0; i < states.Count(); i++)
             {
                 if (states[i].state_name == stateComboBox.SelectedItem)
                 {
@@ -410,7 +397,7 @@ namespace _01electronics_crm
             treeViewItem.Items.Clear();
 
             TreeViewItem ParentItem = new TreeViewItem();
-            ParentItem.Tag = employeeID.ToString();
+            ParentItem.Name = employeeID.ToString();
             ParentItem.Header = loggedInUser.GetEmployeeName();
             treeViewItem.Items.Add(ParentItem);
             for (int i = 0; i < companys.Count(); i++)
@@ -419,33 +406,28 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Tag = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].company_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
             }
-            foreach (TreeViewItem item in treeViewItem.Items)
+
+            for (int i = 0; i < employeeContacts.Count(); i++)
             {
-                foreach (TreeViewItem subItem in item.Items)
+                TreeViewItem currentCompany = (TreeViewItem)treeViewItem.FindName(employeeContacts[i].address_serial.ToString());
+                if (currentCompany != null)
                 {
-                    for (int i = 0; i < employeeContacts.Count; i++)
+                    if (employeeContacts[i].address / 10000 == stateIndex)
                     {
-                        if (subItem.Tag.ToString() == employeeContacts[i].address_serial.ToString())
-                        {
-                            if (employeeContacts[i].address / 10000 == stateIndex)
-                            {
-                                TreeViewItem ChildItem = new TreeViewItem();
-                                ChildItem.Header = employeeContacts[i].contact_name;
-                                ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
-                                subItem.Items.Add(ChildItem);
-                            }
-                        }
-
+                        TreeViewItem ChildItem = new TreeViewItem();
+                        ChildItem.Header = employeeContacts[i].contact_name;
+                        ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                        currentCompany.Items.Add(ChildItem);
                     }
-
                 }
 
             }
+
         }
 
         private void cityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -470,7 +452,7 @@ namespace _01electronics_crm
             treeViewItem.Items.Clear();
 
             TreeViewItem ParentItem = new TreeViewItem();
-            ParentItem.Tag = employeeID.ToString();
+            ParentItem.Name = employeeID.ToString();
             ParentItem.Header = loggedInUser.GetEmployeeName();
             treeViewItem.Items.Add(ParentItem);
             for (int i = 0; i < companys.Count(); i++)
@@ -479,33 +461,28 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Tag = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].company_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
             }
-            foreach (TreeViewItem item in treeViewItem.Items)
+
+            for (int i = 0; i < employeeContacts.Count(); i++)
             {
-                foreach (TreeViewItem subItem in item.Items)
+                TreeViewItem currentCompany = (TreeViewItem)treeViewItem.FindName(employeeContacts[i].address_serial.ToString());
+                if (currentCompany != null)
                 {
-                    for (int i = 0; i < employeeContacts.Count; i++)
+                    if (employeeContacts[i].address / 100 == cityIndex)
                     {
-                        if (subItem.Tag.ToString() == employeeContacts[i].address_serial.ToString())
-                        {
-                            if (employeeContacts[i].address / 100 == cityIndex)
-                            {
-                                TreeViewItem ChildItem = new TreeViewItem();
-                                ChildItem.Header = employeeContacts[i].contact_name;
-                                ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
-                                subItem.Items.Add(ChildItem);
-                            }
-                        }
-
+                        TreeViewItem ChildItem = new TreeViewItem();
+                        ChildItem.Header = employeeContacts[i].contact_name;
+                        ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                        currentCompany.Items.Add(ChildItem);
                     }
-
                 }
 
             }
+            
         }
 
         private void districtComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -521,7 +498,7 @@ namespace _01electronics_crm
             treeViewItem.Items.Clear();
 
             TreeViewItem ParentItem = new TreeViewItem();
-            ParentItem.Tag = employeeID.ToString();
+            ParentItem.Name = employeeID.ToString();
             ParentItem.Header = loggedInUser.GetEmployeeName();
             treeViewItem.Items.Add(ParentItem);
             for (int i = 0; i < companys.Count(); i++)
@@ -530,30 +507,24 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Tag = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].company_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
             }
-            foreach (TreeViewItem item in treeViewItem.Items)
+
+            for (int i = 0; i < employeeContacts.Count; i++)
             {
-                foreach (TreeViewItem subItem in item.Items)
+                TreeViewItem currentCompany = (TreeViewItem)treeViewItem.FindName(employeeContacts[i].address_serial.ToString());
+                if (currentCompany != null)
                 {
-                    for (int i = 0; i < employeeContacts.Count; i++)
+                    if (employeeContacts[i].address == districtIndex)
                     {
-                        if (subItem.Tag.ToString() == employeeContacts[i].address_serial.ToString())
-                        {
-                            if (employeeContacts[i].address == districtIndex)
-                            {
-                                TreeViewItem ChildItem = new TreeViewItem();
-                                ChildItem.Header = employeeContacts[i].contact_name;
-                                ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
-                                subItem.Items.Add(ChildItem);
-                            }
-                        }
-
+                        TreeViewItem ChildItem = new TreeViewItem();
+                        ChildItem.Header = employeeContacts[i].contact_name;
+                        ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                        currentCompany.Items.Add(ChildItem);
                     }
-
                 }
 
             }
@@ -620,6 +591,16 @@ namespace _01electronics_crm
             districtComboBox.IsEnabled = false;
             districtComboBox.Items.Clear();
             salesPersonCheckBox.IsEnabled = false;
+        }
+
+        private void OnBtnClickedAddCompany(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnBtnClickedAddContact(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

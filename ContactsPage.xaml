@@ -105,7 +105,8 @@
 
 
             </Grid>
-
+            <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddCompany" Name="AddCompanyBtn"/>
+            <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddContact" Name="addContact"/>
         </Grid>
 
     </Grid>
