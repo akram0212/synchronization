@@ -21,19 +21,7 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="#105A97">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="0.5*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD COMPANY" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="AdvancedButton" Content="Advanced" Style="{StaticResource buttonNegativeStyle}" Click="OnBtnClkAdvanced"/>
-        </Grid>
+        <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD COMPANY" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 

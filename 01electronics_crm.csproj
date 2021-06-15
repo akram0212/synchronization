@@ -56,8 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddCompanyWindow.xaml.cs" />
-    <Compile Include="AddContactWindow.xaml.cs" />
+    <Compile Include="AddCompanyWindow.xaml.cs">
+      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddContactWindow.xaml.cs">
+      <DependentUpon>AddContactWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddRFQWindow.xaml.cs">
       <DependentUpon>AddRFQWindow.xaml</DependentUpon>
     </Compile>
