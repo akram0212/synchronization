@@ -98,7 +98,7 @@
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
-                    <TreeView Name="treeViewItem">
+                    <TreeView Name="treeViewItem" SelectedItemChanged="treeViewItem_SelectedItemChanged">
 
                     </TreeView>
                 </ScrollViewer>
@@ -106,7 +106,7 @@
 
             </Grid>
             <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddCompany" Name="AddCompanyBtn"/>
-            <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddContact" Name="addContact"/>
+            <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddContact" Name="AddContactBtn"/>
         </Grid>
 
     </Grid>

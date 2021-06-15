@@ -62,6 +62,11 @@ namespace _01electronics_crm
             districtComboBox.IsEnabled = false;
             salesPersonComboBox.IsEnabled = false;
 
+            AddCompanyBtn.IsEnabled = false;
+            AddCompanyBtn.Visibility = Visibility.Hidden;
+            AddContactBtn.IsEnabled = false;
+            AddContactBtn.Visibility = Visibility.Hidden;
+
             commonQueries.GetAllCountries(ref countries);
             for (int i = 0; i < countries.Count; i++)
             {
@@ -154,14 +159,14 @@ namespace _01electronics_crm
 
             TreeViewItem ParentItem = new TreeViewItem();
             ParentItem.Header = loggedInUser.GetEmployeeName();
-            ParentItem.Name = employeeID.ToString();
+            ParentItem.Tag = (string)employeeID.ToString();
             treeViewItem.Items.Add(ParentItem);
 
             for (int i = 0; i < companys.Count(); i++)
             {
                 TreeViewItem ChildItem = new TreeViewItem();
                 ChildItem.Header = companys[i].company_name;
-                ChildItem.Name = companys[i].company_serial.ToString();
+                ChildItem.Tag = companys[i].address_serial.ToString();
                 ParentItem.Items.Add(ChildItem);
             }
             return true;
@@ -218,7 +223,7 @@ namespace _01electronics_crm
                 {
                      TreeViewItem ChildItem = new TreeViewItem();
                      ChildItem.Header = employeeContacts[i].contact_name;
-                     ChildItem.Name = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
+                     ChildItem.Tag = (employeeContacts[i].contact_id + employeeContacts[i].address_serial + employeeID).ToString();
                      currentCompany.Items.Add(ChildItem);
                     
                 }
@@ -309,6 +314,11 @@ namespace _01electronics_crm
 
         private void countryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            AddCompanyBtn.IsEnabled = false;
+            AddCompanyBtn.Visibility = Visibility.Hidden;
+            AddContactBtn.IsEnabled = false;
+            AddContactBtn.Visibility = Visibility.Hidden;
+
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
             salesPersonCheckBox.IsEnabled = false;
@@ -347,7 +357,7 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Name = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].address_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
@@ -372,6 +382,11 @@ namespace _01electronics_crm
 
         private void stateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            AddCompanyBtn.IsEnabled = false;
+            AddCompanyBtn.Visibility = Visibility.Hidden;
+            AddContactBtn.IsEnabled = false;
+            AddContactBtn.Visibility = Visibility.Hidden;
+
             cityCheckBox.IsEnabled = true;
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
@@ -406,7 +421,7 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Name = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].address_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
@@ -432,6 +447,11 @@ namespace _01electronics_crm
 
         private void cityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            AddCompanyBtn.IsEnabled = false;
+            AddCompanyBtn.Visibility = Visibility.Hidden;
+            AddContactBtn.IsEnabled = false;
+            AddContactBtn.Visibility = Visibility.Hidden;
+
             districtCheckBox.IsEnabled = true;
             districtCheckBox.IsChecked = false;
             districtComboBox.IsEnabled = false;
@@ -461,7 +481,7 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Name = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].address_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
@@ -487,6 +507,11 @@ namespace _01electronics_crm
 
         private void districtComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            AddCompanyBtn.IsEnabled = false;
+            AddCompanyBtn.Visibility = Visibility.Hidden;
+            AddContactBtn.IsEnabled = false;
+            AddContactBtn.Visibility = Visibility.Hidden;
+
             int districtIndex = 0;
             for (int i = 0; i < districts.Count; i++)
             {
@@ -507,7 +532,7 @@ namespace _01electronics_crm
                 {
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = companys[i].company_name;
-                    ChildItem.Name = companys[i].company_serial.ToString();
+                    ChildItem.Name = companys[i].address_serial.ToString();
                     ParentItem.Items.Add(ChildItem);
 
                 }
@@ -601,6 +626,42 @@ namespace _01electronics_crm
         private void OnBtnClickedAddContact(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void treeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            TreeViewItem selectedItem = (TreeViewItem)treeViewItem.FindName(treeViewItem.SelectedItem.ToString());
+            if(selectedItem != null)
+            {
+                for(int i = 0; i < companys.Count(); i++)
+                {
+                    if (selectedItem.Name == companys[i].address_serial.ToString())
+                    {
+                        AddContactBtn.IsEnabled = false;
+                        AddContactBtn.Visibility = Visibility.Hidden;
+
+                        AddCompanyBtn.IsEnabled = true;
+                        AddCompanyBtn.Visibility = Visibility.Visible;
+                        AddCompanyWindow addCompanyWindow = new AddCompanyWindow();
+                        addCompanyWindow.Show();
+                    }
+
+                }
+                for (int i = 0; i < employeeContacts.Count(); i++)
+                {
+                    if (selectedItem.Name == employeeContacts[i].address_serial.ToString())
+                    {
+                        AddCompanyBtn.IsEnabled = false;
+                        AddCompanyBtn.Visibility = Visibility.Hidden;
+
+                        AddContactBtn.IsEnabled = true;
+                        AddContactBtn.Visibility = Visibility.Visible;
+                        AddContactWindow addContactWindow = new AddContactWindow();
+                        addContactWindow.Show();
+                    }
+
+                }
+            }
         }
     }
 
