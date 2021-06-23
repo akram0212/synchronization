@@ -17,16 +17,16 @@ using _01electronics_erp;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for RFQWindow.xaml
+    /// Interaction logic for WorkOfferWindow.xaml
     /// </summary>
-    public partial class RFQWindow : NavigationWindow
+    public partial class WorkOfferWindow : NavigationWindow
     {
-        public RFQWindow(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
+        public WorkOfferWindow(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
-            RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser,ref mRFQ, mViewAddCondition);
-            this.NavigationService.Navigate(rfqsPage);
+            WorkOfferBasicInfoPage workOfferBasicInfoPage = new WorkOfferBasicInfoPage(ref mLoggedInUser);
+            this.NavigationService.Navigate(workOfferBasicInfoPage);
         }
     }
 }

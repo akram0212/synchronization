@@ -38,65 +38,37 @@ namespace _01electronics_crm
         private int quantity4;
 
         private int viewAddCondition;
+        private int numberOfProductsAdded;
+        
 
-        ////////////ADD CONSTRUCTOR//////////////
-        /////////////////////////////////////////
-        public RFQProductsPage(ref Employee mLoggedInUser)
+        public RFQProductsPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
-
-            InitializeComponent();
+            viewAddCondition = mViewAddCondition;
 
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
             sqlDatabase = new SQLServer();
             rfq = new RFQ(sqlDatabase);
-
-            InitializeProducts();
-            InitializeBrandCombo();
-
-            /////////////VIEW AND ADD CONDITION
-            viewAddCondition = 1;
-        }
-        ////////////VIEW CONSTRUCTOR//////////////////
-        //////////////////////////////////////////////
-        public RFQProductsPage(ref Employee mLoggedInUser, ref RFQ mRFQ)
-        {
-            loggedInUser = mLoggedInUser;
             rfq = mRFQ;
 
             InitializeComponent();
 
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-            sqlDatabase = new SQLServer();
+            numberOfProductsAdded = 0;
 
-            ConfigureViewRFQUIElements();
-            viewAddCondition = 0;
-        }
-        ////////////////UI ELEMENTS CONFIGURATION///////////
-        ////////////////////////////////////////////////////
-        private void ConfigureViewRFQUIElements()
-        {
-            product1TypeCombo.Visibility = Visibility.Hidden;
-            product1BrandCombo.Visibility = Visibility.Hidden;
-            product1ModelCombo.Visibility = Visibility.Hidden;
-            product1QuantityTextBox.Visibility = Visibility.Hidden;
-
-            product2TypeCombo.Visibility = Visibility.Hidden;
-            product2BrandCombo.Visibility = Visibility.Hidden;
-            product2ModelCombo.Visibility = Visibility.Hidden;
-            product2QuantityTextBox.Visibility = Visibility.Hidden;
-
-            product3TypeCombo.Visibility = Visibility.Hidden;
-            product3BrandCombo.Visibility = Visibility.Hidden;
-            product3ModelCombo.Visibility = Visibility.Hidden;
-            product3QuantityTextBox.Visibility = Visibility.Hidden;
-
-            product4TypeCombo.Visibility = Visibility.Hidden;
-            product4BrandCombo.Visibility = Visibility.Hidden;
-            product4ModelCombo.Visibility = Visibility.Hidden;
-            product4QuantityTextBox.Visibility = Visibility.Hidden;
+            if (viewAddCondition == 1)
+            {
+                InitializeProducts();
+                InitializeBrandCombo();
+            }
+            SetUpPageUIElementsAdd();
+            if(viewAddCondition == 0)
+            {
+                SetTypeComboBoxes();
+                SetBrandComboBoxes();
+                SetModelComboBoxes();
+                SetQuantityTextBoxes();
+            }
         }
         //////////INITIALIZE FUNCTIONS//////////
         ////////////////////////////////////////
@@ -104,47 +76,88 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetCompanyProducts(ref products))
                 return;
-            for (int i = 0; i < products.Count(); i++)
-            {
-                COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType;
-                tempType = products[i];
-                product1TypeCombo.Items.Add(tempType.typeName);
-                product2TypeCombo.Items.Add(tempType.typeName);
-                product3TypeCombo.Items.Add(tempType.typeName);
-                product4TypeCombo.Items.Add(tempType.typeName);
-            }
         }
 
         private void InitializeBrandCombo()
         {
             if (!commonQueriesObject.GetCompanyBrands(ref brands))
                 return;
-            for (int i = 0; i < brands.Count(); i++)
+        }
+
+        ////////SET FUNCTIONS////////////////////
+        /////////////////////////////////////////
+        private void SetTypeComboBoxes()
+        {
+            for(int i = 0; i < numberOfProductsAdded; i++)
             {
-                COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = brands[i];
-                product1BrandCombo.Items.Add(tempBrand.brandName);
-                product2BrandCombo.Items.Add(tempBrand.brandName);
-                product3BrandCombo.Items.Add(tempBrand.brandName);
-                product4BrandCombo.Items.Add(tempBrand.brandName);
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                Label currentTypeLabelValue = (Label)currentTypeWrapPanel.Children[1];
+                currentTypeLabelValue.Content = rfq.GetRFQProductType(i + 1);
             }
         }
 
-       //////////////SELECTION CHANGED HANDLERS///////////
-       ///////////////////////////////////////////////////
-
-        private void Product1TypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SetBrandComboBoxes()
         {
-            product1ModelCombo.Items.Clear();
-
-            if (product1TypeCombo.SelectedItem != null)
+            for(int i = 0; i< numberOfProductsAdded; i++)
             {
-                if (product1BrandCombo.SelectedItem != null)
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                Label currentBrandLabelValue = (Label)currentBrandWrapPanel.Children[1];
+                currentBrandLabelValue.Content = rfq.GetRFQProductBrand(i + 1);
+            }
+        }
+
+        private void SetModelComboBoxes()
+        {
+            for(int i = 0; i< numberOfProductsAdded; i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                Label currentModelLabelValue = (Label)currentModelWrapPanel.Children[1];
+                currentModelLabelValue.Content = rfq.GetRFQProductModel(i + 1);
+            }
+        }
+
+        private void SetQuantityTextBoxes()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
+                currentQuantityTextBoxValue.Text= rfq.GetRFQProductQuantity(i + 1).ToString();
+            }
+        }
+       
+        //////////////SELECTION CHANGED HANDLERS///////////
+        ///////////////////////////////////////////////////
+
+        private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            ComboBox currentTypeComboBox = (ComboBox)sender;
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentTypeComboBox.Parent;
+            Grid currentProductGrid = (Grid)currentTypeWrapPanel.Parent;
+
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
+
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+
+            
+            currentModelComboBox.Items.Clear();
+
+            if (currentTypeComboBox.SelectedItem != null)
+            {
+                if (currentBrandComboBox.SelectedItem != null)
                 {
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
 
-                    tempProduct = products[product1TypeCombo.SelectedIndex];
-                    tempBrand = brands[product1BrandCombo.SelectedIndex];
+                    tempProduct = products[currentTypeComboBox.SelectedIndex];
+                    tempBrand = brands[currentBrandComboBox.SelectedIndex];
 
                     if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
                         return;
@@ -152,25 +165,41 @@ namespace _01electronics_crm
                     for (int i = 0; i < models.Count(); i++)
                     {
                         COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product1ModelCombo.Items.Add(temp.modelName);
+                        currentModelComboBox.Items.Add(temp.modelName);
                     }
                 }
-                rfq.SetRFQProduct1Type(product1TypeCombo.SelectedIndex + 1, product1TypeCombo.Text);
+                for(int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if(currentProductGrid == mainWrapPanel.Children[k])
+                        rfq.SetRFQProductType(k+1,currentTypeComboBox.SelectedIndex + 1, currentTypeComboBox.SelectedItem.ToString());
+                }
+               
             }
         }
 
-        private void Product1BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BrandComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            product1ModelCombo.Items.Clear();
-            if (product1BrandCombo.SelectedItem != null)
+            ComboBox currentBrandComboBox = (ComboBox)sender;
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentBrandComboBox.Parent;
+            Grid currentProductGrid = (Grid)currentBrandWrapPanel.Parent;
+
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+
+            currentModelComboBox.Items.Clear();
+
+            if (currentBrandComboBox.SelectedItem != null)
             {
-                if (product1TypeCombo.SelectedItem != null)
+                if (currentTypeComboBox.SelectedItem != null)
                 {
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
 
-                    tempProduct = products[product1TypeCombo.SelectedIndex];
-                    tempBrand = brands[product1BrandCombo.SelectedIndex];
+                    tempProduct = products[currentTypeComboBox.SelectedIndex];
+                    tempBrand = brands[currentBrandComboBox.SelectedIndex];
 
                     if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
                         return;
@@ -178,270 +207,66 @@ namespace _01electronics_crm
                     for (int i = 0; i < models.Count(); i++)
                     {
                         COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product1ModelCombo.Items.Add(temp.modelName);
+                        currentModelComboBox.Items.Add(temp.modelName);
                     }
                 }
-                rfq.SetRFQProduct1Brand(product1BrandCombo.SelectedIndex + 1, product1BrandCombo.Text);
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        rfq.SetRFQProductBrand(k+1 ,currentBrandComboBox.SelectedIndex + 1, currentBrandComboBox.SelectedItem.ToString());
+                }
+                
             }
         }
 
-        private void Product1ModelComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ModelComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (product1ModelCombo.SelectedItem != null)
-                rfq.SetRFQProduct1Model(product1ModelCombo.SelectedIndex + 1, product1ModelCombo.Text);
+            ComboBox currentModelComboBox = (ComboBox)sender;
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentModelComboBox.Parent;
+            Grid currentProductGrid = (Grid)currentModelWrapPanel.Parent;
+            
+            if (currentModelComboBox.SelectedItem != null)
+            {
+                for(int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if(currentProductGrid == mainWrapPanel.Children[k])
+                        rfq.SetRFQProductModel(k+1 ,currentModelComboBox.SelectedIndex + 1, currentModelComboBox.SelectedItem.ToString());
+                }
+                
+            }
+               
         }
 
-        private void Product1QuantityTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void QuantityTextBoxesTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(product1QuantityTextBox.Text, BASIC_MACROS.PHONE_STRING) && product1QuantityTextBox.Text != "")
+            TextBox currentQuantityTextBox = (TextBox)sender;
+            WrapPanel currentQuantityWrapPanel = (WrapPanel)currentQuantityTextBox.Parent;
+            Grid currentProductGrid = (Grid)currentQuantityWrapPanel.Parent;
+
+            if (IntegrityChecks.CheckInvalidCharacters(currentQuantityTextBox.Text, BASIC_MACROS.PHONE_STRING) && currentQuantityTextBox.Text != "")
             {
-                quantity1 = int.Parse(product1QuantityTextBox.Text);
-                rfq.SetRFQProduct1Quantity(quantity1);
+                quantity1 = int.Parse(currentQuantityTextBox.Text);
+                for(int k = 0; k< numberOfProductsAdded; k++)
+                {
+                    if(currentProductGrid == mainWrapPanel.Children[k])
+                        rfq.SetRFQProductQuantity(k+1 ,quantity1);
+                }
             }
             else
             {
-                // //MessageBox.Show("Invalid Character Enterred");
                 quantity1 = 0;
-                product1QuantityTextBox.Text = null;
+                currentQuantityTextBox.Text = null;
             }
         }
 
-        private void Product2TypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product2ModelCombo.Items.Clear();
-
-            if (product2TypeCombo.SelectedItem != null)
-            {
-                if (product2BrandCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product2TypeCombo.SelectedIndex];
-                    tempBrand = brands[product2BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product2ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct2Type(product2TypeCombo.SelectedIndex + 1, product2TypeCombo.Text);
-            }
-        }
-
-        private void Product2BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product2ModelCombo.Items.Clear();
-            if (product2BrandCombo.SelectedItem != null)
-            {
-                if (product2TypeCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product2TypeCombo.SelectedIndex];
-                    tempBrand = brands[product2BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product2ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct2Brand(product2BrandCombo.SelectedIndex + 1, product2BrandCombo.Text);
-            }
-        }
-
-        private void Product2ModelComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (product2ModelCombo.SelectedItem != null)
-                rfq.SetRFQProduct2Model(product2ModelCombo.SelectedIndex + 1, product2ModelCombo.Text);
-        }
-
-        private void Product2QuantityTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(product2QuantityTextBox.Text, BASIC_MACROS.PHONE_STRING) && product2QuantityTextBox.Text != "")
-            { 
-                quantity2 = int.Parse(product2QuantityTextBox.Text);
-                rfq.SetRFQProduct2Quantity(quantity2);
-            }
-            else
-            {
-                // //MessageBox.Show("Invalid Character Enterred");
-                quantity2 = 0;
-                product2QuantityTextBox.Text = null;
-            }
-        }
-
-        private void Product3TypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product3ModelCombo.Items.Clear();
-
-            if (product3TypeCombo.SelectedItem != null)
-            {
-                if (product3BrandCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product3TypeCombo.SelectedIndex];
-                    tempBrand = brands[product3BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product3ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct3Type(product3TypeCombo.SelectedIndex + 1, product3TypeCombo.Text);
-            }
-        }
-
-        private void Product3BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product3ModelCombo.Items.Clear();
-            if (product3BrandCombo.SelectedItem != null)
-            {
-                if (product3TypeCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product3TypeCombo.SelectedIndex];
-                    tempBrand = brands[product3BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product3ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct3Brand(product3BrandCombo.SelectedIndex + 1, product3BrandCombo.Text);
-            }
-        }
-
-        private void Product3ModelComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (product3ModelCombo.SelectedItem != null)
-                rfq.SetRFQProduct3Model(product3ModelCombo.SelectedIndex + 1, product3ModelCombo.Text);
-        }
-
-        private void Product3QuantityTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(product3QuantityTextBox.Text, BASIC_MACROS.PHONE_STRING) && product3QuantityTextBox.Text != "")
-            { 
-                quantity3 = int.Parse(product3QuantityTextBox.Text);
-                rfq.SetRFQProduct3Quantity(quantity3);
-            }
-            else
-            {
-                // //MessageBox.Show("Invalid Character Enterred");
-                quantity3 = 0;
-                product3QuantityTextBox.Text = null;
-            }   
-        }
-
-        private void Product4TypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product4ModelCombo.Items.Clear();
-
-            if (product4TypeCombo.SelectedItem != null)
-            {
-                if (product4BrandCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product4TypeCombo.SelectedIndex];
-                    tempBrand = brands[product4BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product4ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct4Type(product4TypeCombo.SelectedIndex + 1, product4TypeCombo.Text);
-            }
-        }
-
-        private void Product4BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            product4ModelCombo.Items.Clear();
-            if (product4BrandCombo.SelectedItem != null)
-            {
-                if (product4TypeCombo.SelectedItem != null)
-                {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempProduct = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
-
-                    tempProduct = products[product4TypeCombo.SelectedIndex];
-                    tempBrand = brands[product4BrandCombo.SelectedIndex];
-
-                    if (!commonQueriesObject.GetCompanyModels(tempProduct, tempBrand, ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        COMPANY_WORK_MACROS.MODEL_STRUCT temp = models[i];
-                        product4ModelCombo.Items.Add(temp.modelName);
-                    }
-                }
-                rfq.SetRFQProduct4Brand(product4BrandCombo.SelectedIndex + 1, product4BrandCombo.Text);
-            }
-        }
-
-        private void Product4ModelComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (product4ModelCombo.SelectedItem != null)
-                rfq.SetRFQProduct4Model(product4ModelCombo.SelectedIndex + 1, product4ModelCombo.Text);
-        }
-
-        private void Product4QuantityTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(product4QuantityTextBox.Text, BASIC_MACROS.PHONE_STRING) && product4QuantityTextBox.Text != "")
-            { 
-                quantity4 = int.Parse(product4QuantityTextBox.Text);
-                rfq.SetRFQProduct4Quantity(quantity4);
-            }
-            else
-            {
-                // //MessageBox.Show("Invalid Character Enterred");
-                quantity4 = 0;
-                product4QuantityTextBox.Text = null;
-            }
-        }
         ////////////BUTTON CLICKS///////////
         ////////////////////////////////////
         private void OnClickBasicInfo(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == 0)
-            {
-                RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq);
-                NavigationService.Navigate(basicInfoPage);
-            }
-            else
-            {
-                RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser);
-                NavigationService.Navigate(basicInfoPage);
-            }
+            RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            NavigationService.Navigate(basicInfoPage);
         }
+        
 
         private void OnClickProductsInfo(object sender, RoutedEventArgs e)
         {
@@ -451,15 +276,155 @@ namespace _01electronics_crm
 
         private void OnClickAdditionalInfo(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == 0)
+            RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            NavigationService.Navigate(additionalInfoPage);
+        }    
+        public void SetUpPageUIElementsAdd()
+        {
+
+            for (int i = 0; i < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; i++)
             {
-                RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq);
-                NavigationService.Navigate(additionalInfoPage);
-            }
-            else
-            {
-                RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser);
-                NavigationService.Navigate(additionalInfoPage);
+                if (viewAddCondition == 0 && rfq.GetRFQProductTypeId(i + 1) == 0)
+                    continue;
+
+                Grid currentProductGrid = new Grid();
+                RowDefinition row1 = new RowDefinition();
+                RowDefinition row2 = new RowDefinition();
+                RowDefinition row3 = new RowDefinition();
+                RowDefinition row4 = new RowDefinition();
+                RowDefinition row5 = new RowDefinition();
+                currentProductGrid.RowDefinitions.Add(row1);
+                currentProductGrid.RowDefinitions.Add(row2);
+                currentProductGrid.RowDefinitions.Add(row3);
+                currentProductGrid.RowDefinitions.Add(row4);
+                currentProductGrid.RowDefinitions.Add(row5);
+
+                Label mainLabel = new Label();
+                int productNumber = i + 1;
+                mainLabel.Content = "Product " + productNumber;
+                mainLabel.Style = (Style)FindResource("tableHeaderItem");
+                currentProductGrid.Children.Add(mainLabel);
+                Grid.SetRow(mainLabel, 0);
+
+                /////////TYPE WRAPPANEL////////////////
+                ////////////////////////////////////////
+                WrapPanel productTypeWrapPanel = new WrapPanel();
+
+                Label currentTypeLabel = new Label();
+                currentTypeLabel.Content = "Type";
+                currentTypeLabel.Style = (Style)FindResource("tableItemLabel");
+                productTypeWrapPanel.Children.Add(currentTypeLabel);
+
+                if (viewAddCondition == 0)
+                {
+                    Label currentTypeLabelValue = new Label();
+                    currentTypeLabelValue.Style = (Style)FindResource("tableItemValue");
+                    //currentTypeLabelValue.Margin = new Thickness(-300, 12, 12, 12);
+                    currentTypeLabelValue.Content = rfq.GetRFQProductType(i + 1);
+                    productTypeWrapPanel.Children.Add(currentTypeLabelValue);
+                }
+                else
+                {
+                    ComboBox currentTypeCombo = new ComboBox();
+                    currentTypeCombo.Style = (Style)FindResource("comboBoxStyle");
+                    //currentTypeCombo.Margin = new Thickness(-300, 12, 12, 12);
+                    currentTypeCombo.SelectionChanged += new SelectionChangedEventHandler(TypeComboBoxesSelectionChanged);
+                    if (viewAddCondition == 0)
+                        currentTypeCombo.Visibility = Visibility.Collapsed;
+                    for (int j = 0; j < products.Count(); j++)
+                        currentTypeCombo.Items.Add(products[j].typeName);
+                    productTypeWrapPanel.Children.Add(currentTypeCombo);
+                }
+
+                currentProductGrid.Children.Add(productTypeWrapPanel);
+                Grid.SetRow(productTypeWrapPanel, 1);
+                
+                ////////BRAND WRAPPANEL////////////////
+                ////////////////////////////////////////
+                WrapPanel productBrandWrapPanel = new WrapPanel();
+
+                Label currentBrandLabel = new Label();
+                currentBrandLabel.Content = "Brand";
+                currentBrandLabel.Style = (Style)FindResource("tableItemLabel");
+                productBrandWrapPanel.Children.Add(currentBrandLabel);
+
+                if (viewAddCondition == 0)
+                {
+                    Label currentBrandLabelValue = new Label();
+                    currentBrandLabelValue.Style = (Style)FindResource("tableItemValue");
+                    //currentBrandLabelValue.Margin = new Thickness(-300, 12, 12, 12);
+                    currentBrandLabelValue.Content = rfq.GetRFQProductBrand(i + 1);
+                    productBrandWrapPanel.Children.Add(currentBrandLabelValue);
+                }
+
+                else
+                {
+                    ComboBox currentBrandCombo = new ComboBox();
+                    currentBrandCombo.Style = (Style)FindResource("comboBoxStyle");
+                    //currentBrandCombo.Margin = new Thickness(-300, 12, 12, 12);
+                    currentBrandCombo.SelectionChanged += new SelectionChangedEventHandler(BrandComboBoxesSelectionChanged);
+                    for (int j = 0; j < brands.Count(); j++)
+                        currentBrandCombo.Items.Add(brands[j].brandName);
+                    productBrandWrapPanel.Children.Add(currentBrandCombo);
+                }
+                
+                currentProductGrid.Children.Add(productBrandWrapPanel);
+                Grid.SetRow(productBrandWrapPanel, 2);
+
+                //////////MODEL WRAPPANEL/////////////////////////
+                //////////////////////////////////////////////////
+                WrapPanel productModelWrapPanel = new WrapPanel();
+
+                Label currentModelLabel = new Label();
+                currentModelLabel.Content = "Model";
+                currentModelLabel.Style = (Style)FindResource("tableItemLabel");
+                productModelWrapPanel.Children.Add(currentModelLabel);
+
+                if (viewAddCondition == 0)
+                {
+                    Label currentModelLabelValue = new Label();
+                    currentModelLabelValue.Style = (Style)FindResource("tableItemValue");
+                    //currentModelLabelValue.Margin = new Thickness(-300, 12, 12, 12);
+                    currentModelLabelValue.Content = rfq.GetRFQProductModel(i + 1);
+                    productModelWrapPanel.Children.Add(currentModelLabelValue);
+                }
+                else
+                {
+                    ComboBox currentModelCombo = new ComboBox();
+                    currentModelCombo.Style = (Style)FindResource("comboBoxStyle");
+                    //currentModelCombo.Margin = new Thickness(-300, 12, 12, 12);
+                    currentModelCombo.SelectionChanged += new SelectionChangedEventHandler(ModelComboBoxesSelectionChanged);
+                    productModelWrapPanel.Children.Add(currentModelCombo);
+                }
+                currentProductGrid.Children.Add(productModelWrapPanel);
+                Grid.SetRow(productModelWrapPanel, 3);
+                
+                /////////////QUANTITY WRAPPANEL///////////////////////
+                //////////////////////////////////////////////////////
+                WrapPanel productQuantityWrapPanel = new WrapPanel();
+
+                Label currentQuantityLabel = new Label();
+                currentQuantityLabel.Content = "Quantity";
+                currentQuantityLabel.Style = (Style)FindResource("tableItemLabel");
+                productQuantityWrapPanel.Children.Add(currentQuantityLabel);
+
+                TextBox currentQuantityTextBox = new TextBox();
+                currentQuantityTextBox.Style = (Style)FindResource("textBoxStyle");
+                currentQuantityTextBox.TextChanged += new TextChangedEventHandler(QuantityTextBoxesTextChanged);
+                //currentQuantityTextBox.Margin = new Thickness(-300, 12, 12, 12);
+                productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
+
+                //currentQuantityTextBox.Text = rfq.GetRFQProductQuantity(i + 1).ToString();
+
+                if (viewAddCondition == 0)
+                    currentQuantityTextBox.IsEnabled = false;
+                
+                currentProductGrid.Children.Add(productQuantityWrapPanel);
+                Grid.SetRow(productQuantityWrapPanel, 4);
+                
+                mainWrapPanel.Children.Add(currentProductGrid);
+
+                numberOfProductsAdded += 1;
             }
         }
     }

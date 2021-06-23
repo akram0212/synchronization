@@ -28,14 +28,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
-                <Label Content="Products Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource selectedTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
-                <Label Content="Additional Info" Style="{StaticResource selectedTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
             </Border>
         </Grid>
 
@@ -49,13 +49,13 @@
                 <WrapPanel Name="contractWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Contract Type"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contractTypeLabel"/>
-                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="contractTypeCombo" SelectionChanged="ContractTypeComboSelectionChanged"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeCombo" SelectionChanged="ContractTypeComboSelectionChanged" Margin="-300,12,12,12"/>
                 </WrapPanel>
 
                 <WrapPanel Name="deadlineDateWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Deadline Date"/>
                     <Label Style="{StaticResource tableItemValue}"  Name="deadlineDateLabel"/>
-                    <DatePicker Name="deadlineDateDatePicker" Margin="-300,12,12,12" Width="200" Height="25" HorizontalAlignment="Left" IsTodayHighlighted="True" SelectedDateChanged="DeadlineDateDatePickerSelectedDateChanged"/>
+                    <DatePicker Name="deadlineDateDatePicker" Style="{StaticResource datePickerStyle}" IsTodayHighlighted="True" SelectedDateChanged="DeadlineDateDatePickerSelectedDateChanged" Margin="-300,12,12,12"/>
                 </WrapPanel>
             </WrapPanel>
 
@@ -63,9 +63,9 @@
                 <WrapPanel Name="notesWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Notes"/>
                     <Label Style="{StaticResource tableItemValue}" Name="notesLabel"/>
-                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged" Margin="-300,12,12,12"/>
                 </WrapPanel>
-                <Button Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="380,0,0,10" Content="Add RFQ" Click="AddRFQButtonClick"/>
+                <Button Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Bottom" HorizontalAlignment="Right"  Content="Add RFQ" Click="AddRFQButtonClick" Margin="400,12,12,12"/>
             </WrapPanel>
 
         </Grid>

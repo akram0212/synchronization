@@ -563,9 +563,9 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            //var addRFQWindow = new AddRFQWindow(ref loggedInUser);
-            //addRFQWindow.Show();
-            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser);
+            int viewAddCondition = 1;
+            RFQ rfq = new RFQ(sqlDatabase);
+            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
             addRFQWindow.Show();
         }
 
@@ -618,7 +618,8 @@ namespace _01electronics_crm
                                             rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version, 
                                             rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
 
-            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ);
+            int viewAddCondition = 0;
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
             viewRFQ.Show();
 
         }
