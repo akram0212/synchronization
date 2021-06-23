@@ -101,8 +101,14 @@
       <DependentUpon>ViewRFQWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOffer.cs" />
+    <Compile Include="WorkOfferAdditionalInfoPage.xaml.cs">
+      <DependentUpon>WorkOfferAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkOfferBasicInfoPage.xaml.cs">
       <DependentUpon>WorkOfferBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOfferPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>WorkOfferPaymentAndDeliveryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOfferProductsPage.xaml.cs">
       <DependentUpon>WorkOfferProductsPage.xaml</DependentUpon>
@@ -178,7 +184,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WorkOfferAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkOfferBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOfferPaymentAndDeliveryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

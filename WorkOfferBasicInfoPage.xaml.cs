@@ -287,7 +287,11 @@ namespace _01electronics_crm
                 NavigationService.Navigate(workOfferProductsPage);
             }
         }
-
+        private void OnClickPaymentAndDelivery(object sender, MouseButtonEventArgs e)
+        {
+            WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage();
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
 
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
@@ -303,5 +307,7 @@ namespace _01electronics_crm
                 NavigationService.Navigate(additionalInfoPage);
             }*/
         }
+
+       
     }
 }

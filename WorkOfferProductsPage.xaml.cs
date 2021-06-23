@@ -309,5 +309,10 @@ namespace _01electronics_crm
                 NavigationService.Navigate(additionalInfoPage);
             }*/
         }
+
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

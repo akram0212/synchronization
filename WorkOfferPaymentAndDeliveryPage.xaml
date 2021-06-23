@@ -1,0 +1,85 @@
+﻿<Page x:Class="_01electronics_crm.WorkOfferPaymentAndDeliveryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_01electronics_crm"
+      mc:Ignorable="d" 
+      Title="WorkOfferPaymentAndDeliveryPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="WORK OFFER PAYMENT AND DELIVERY" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                <Label Content="Payment and Delivery" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo"/>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+            </Border>
+        </Grid>
+
+        <WrapPanel Grid.Row="2">
+            <WrapPanel >
+                <Label  Grid.Column="0" Content="Total Price" Style="{StaticResource labelStyle}"/>
+                <ComboBox Name="totalPriceCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyle}" Width="100" />
+                <TextBox Name="totalPriceTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel >
+                <TextBox Name="downPaymentPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="DownPaymentPercentageTextBoxTextChanged"/>
+                <Label  Content="% Down Payment" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
+                <TextBox Name="downPaymentActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel >
+                <TextBox Name="onDeliveryPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="OnDeliveryPercentageTextBoxTextChanged"/>
+                <Label  Content="% On Delivery" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
+                <TextBox Name="onDeliverytActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel >
+                <TextBox Name="onInstallationPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="OnInstallationPercentageTextBoxTextChanged"/>
+                <Label  Content="% On Installation" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
+                <TextBox Name="onInstallationtActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+            </WrapPanel>
+        </WrapPanel>
+
+        <WrapPanel Grid.Row="3">
+            <WrapPanel >
+                <Label Grid.Row="1" Content="Delivery Time" Style="{StaticResource labelStyle}" Width="120"/>
+                <TextBox Name="deliveryTimeTextBoxFrom" Style="{StaticResource textBoxStyle}" Width="100" TextChanged="DeliveryTimeTextBoxFromTextChanged" VerticalAlignment="Center"/>
+                <Label Content="-" Style="{StaticResource labelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="20"/>
+                <TextBox Name="deliveryTimeTextBoxTo" Style="{StaticResource textBoxStyle}" Width="100" TextChanged="DeliveryTimeTextBoxToTextChanged" VerticalAlignment="Center"/>
+                <ComboBox Name="deliveryTimeCombo" Style="{StaticResource comboBoxStyle}" Width="100" VerticalAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Delivery Point" Style="{StaticResource labelStyle}" VerticalAlignment="Center" Width="120"/>
+                <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}" Width="150"  VerticalAlignment="Center" SelectionChanged="DeliveryPointComboSelectionChanged"/>
+
+            </WrapPanel>
+        </WrapPanel>
+
+    </Grid>
+</Page>

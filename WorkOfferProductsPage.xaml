@@ -26,6 +26,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
@@ -34,7 +35,10 @@
             <Border Grid.Column="1" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo"/>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
             </Border>
         </Grid>
@@ -42,6 +46,7 @@
         <WrapPanel Grid.Row="2">
             <Grid x:Name="Product1Grid" Margin="24">
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -74,6 +79,12 @@
                     <Label Style="{StaticResource tableItemValue}" Name="product1QuantityLabel"/>
                     <TextBox Style="{StaticResource textBoxStyle}" Name="product1QuantityTextBox" TextChanged="Product1QuantityTextBoxTextChanged" Margin="-300,12,12,12"/>
                 </WrapPanel>
+                <WrapPanel Grid.Row="5" Name="product1PriceWrapPanel">
+                    <Label Style="{StaticResource tableItemLabel}" Content="Price"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="product1Price"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Name="product1PriceTextBox" TextChanged="Product1QuantityTextBoxTextChanged" Margin="-300,12,12,12"/>
+                </WrapPanel>
+                
             </Grid>
 
             <Grid x:Name="Product2Grid" Margin="24">
@@ -86,7 +97,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Content="Product 2" Style="{StaticResource tableHeaderItem}"/>
-                <CheckBox Grid.Row="0" Name="product2CheckBox" Style="{StaticResource checkBoxStyle}" Checked="Product2CheckBoxChecked" Unchecked="Product2CheckBoxUnchecked" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="0" Name="product2CheckBox" Style="{StaticResource checkBoxStyle}" Checked="Product2CheckBoxChecked" Unchecked="Product2CheckBoxUnchecked" HorizontalAlignment="Center"/>
 
                     <WrapPanel Grid.Row="1" Name="product2TypeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Type"/>
