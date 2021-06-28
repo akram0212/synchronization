@@ -72,7 +72,7 @@
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="180"/>
-                        <ColumnDefinition MinWidth="125"/>
+                        <ColumnDefinition MinWidth="180"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -85,22 +85,22 @@
                     </Grid.RowDefinitions>
 
                     <CheckBox Name="yearCheckBox" Grid.Row="0" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="YearCheckBoxChecked" Unchecked="YearCheckBoxUnchecked"/>
-                    <ComboBox Name="yearCombo" Grid.Row="0" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="YearComboSelectionChanged"/>
+                    <ComboBox Name="yearCombo" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="YearComboSelectionChanged"/>
 
                     <CheckBox Name="quarterCheckBox" Grid.Row="1" Grid.Column="0" Content="Quarter" Style="{StaticResource checkBoxStyle}" Checked="QuarterCheckBoxChecked" Unchecked="QuarterCheckBoxUnchecked"/>
-                    <ComboBox Name="quarterCombo" Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="QuarterComboSelectionChanged"/>
+                    <ComboBox Name="quarterCombo" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="QuarterComboSelectionChanged"/>
 
                     <CheckBox Name="employeeCheckBox" Grid.Row="2" Grid.Column="0" Content="Employee" Style="{StaticResource checkBoxStyle}" Checked="EmployeeCheckBoxChecked" Unchecked="EmployeeCheckBoxUnchecked"/>
-                    <ComboBox Name="employeeCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="EmployeeComboSelectionChanged"/>
+                    <ComboBox Name="employeeCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="EmployeeComboSelectionChanged"/>
 
                     <CheckBox Name="productCheckBox" Grid.Row="3" Grid.Column="0" Content="Product" Style="{StaticResource checkBoxStyle}" Checked="ProductCheckBoxChecked" Unchecked="ProductCheckBoxUnchecked"/>
-                    <ComboBox Name="productCombo" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="ProductComboSelectionChanged"/>
+                    <ComboBox Name="productCombo" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="ProductComboSelectionChanged"/>
 
                     <CheckBox Name="brandCheckBox" Grid.Row="4" Grid.Column="0" Content="Brand" Style="{StaticResource checkBoxStyle}" Checked="BrandCheckBoxChecked" Unchecked="BrandCheckBoxUnchecked"/>
-                    <ComboBox Name="brandCombo" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="BrandComboSelectionChanged"/>
+                    <ComboBox Name="brandCombo" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="BrandComboSelectionChanged"/>
 
                     <CheckBox Name="statusCheckBox" Grid.Row="5" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="StatusCheckBoxChecked" Unchecked="StatusCheckBoxUnchecked"/>
-                    <ComboBox Name="statusCombo" Grid.Row="5" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="StatusComboSelectionChanged"/>
+                    <ComboBox Name="statusCombo" Grid.Row="5" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="StatusComboSelectionChanged"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360" Width="500">

@@ -48,5 +48,54 @@ namespace _01electronics_crm
             InitializeComponent();
 
         }
+
+        private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private void OnSelChangedPrimaryWorkField(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedSecondaryWorkField(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedDistrict(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnTextChangedTelephone(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void OnTextChangedFax(object sender, TextChangedEventArgs e)
+        {
+
+        }
+        private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

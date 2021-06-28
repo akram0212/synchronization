@@ -44,7 +44,7 @@
 
                         <WrapPanel Name="LastNameWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Last Name *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox" TextChanged="OnTextChangedFirstName"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox" TextChanged="OnTextChangedLastName"/>
                         </WrapPanel>
                     </WrapPanel>
 
@@ -75,12 +75,12 @@
                     <WrapPanel Grid.Row="3">
                         <WrapPanel Name="ContactBusinessPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Business Phone *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessEmail"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactPersonalPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Phone"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalEmail"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
                         </WrapPanel>
                     </WrapPanel>
 
