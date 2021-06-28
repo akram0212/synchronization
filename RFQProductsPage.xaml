@@ -39,6 +39,6 @@
             </Border>
         </Grid>
 
-        <WrapPanel Name="mainWrapPanel" Grid.Row="2" />
+        <WrapPanel Name="mainWrapPanel" Grid.Row="2" Margin="24"/>
     </Grid>
 </Page>
