@@ -55,6 +55,8 @@ namespace _01electronics_erp
         private int cityId;
         private int districtId;
 
+        private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts;
+        public CommonQueries commonQueries;
         public Company()
         {
             sqlDatabase = new SQLServer();
@@ -85,6 +87,7 @@ namespace _01electronics_erp
 
                                     specific_work_fields.id, 
 									employees_info.employee_id, 
+									address,
 
 									company_name.company_name, 
 									generic_work_fields.generic_work_field, 
@@ -100,6 +103,8 @@ namespace _01electronics_erp
 							on company_field_of_work.work_field = specific_work_fields.id 
 							inner join erp_system.dbo.generic_work_fields 
 							on specific_work_fields.generic_work_field = generic_work_fields.id 
+							inner join erp_system.dbo.company_address
+							on company_name.company_serial = company_address.company_serial
 							where company_name.company_serial = ";
 
             String sqlQueryPart2 = ";";
@@ -111,7 +116,7 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_int = 3;
+            queryColumns.sql_int = 4;
             queryColumns.sql_string = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
@@ -127,7 +132,6 @@ namespace _01electronics_erp
             ownerUser = sqlDatabase.rows[0].sql_string[3];
 
             addressKnown = false;
-
             return true;
         }
 
@@ -193,6 +197,17 @@ namespace _01electronics_erp
 
             addressKnown = true;
 
+            InitializeCompanyContacts();
+            //ownerUserId, companySerial, ref companyContacts
+
+            return true;
+        }
+
+        private bool InitializeCompanyContacts()
+        {
+            if (!commonQueries.GetCompanyContacts(ownerUserId, addressSerial, ref companyContacts))
+                return false;
+
             return true;
         }
 
@@ -250,7 +265,15 @@ namespace _01electronics_erp
             secondaryFieldId = mSecondaryFieldId;
             secondaryField = mSecondaryField;
         }
+        /// <summary>
+        /// set company contacts
+        /// </summary>
+        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
 
+        public void SetCompanyContacts(List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts)
+        {
+            this.companyContacts = companyContacts;
+        }
         public void AddCompanyPhone(String mPhone)
         {
             companyPhones.Add(mPhone);
@@ -434,26 +457,56 @@ namespace _01electronics_erp
 
             return true;
         }
+        /// <summary>
+        /// get company contacts
+        /// </summary>
+        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
+        public List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> GetCompanyContacts()
+        {
+            return companyContacts;
+        }
 
+        /// <summary>
+        /// intialize company contacts
+        /// </summary>
+        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
+
+   
         //////////////////////////////////////////////////////////////////////
         //QUERY FUNCTIONS
         //////////////////////////////////////////////////////////////////////
 
+
         public bool GetCompanyAddress()
         {
-            String sqlQueryPart1 = @"with get_countries_and_states as(select countries.id as country_id, states_governorates.id as state_id, countries.country, states_governorates.state_governorate from erp_system.dbo.states_governorates inner join erp_system.dbo.countries on states_governorates.country = countries.id), get_cities_and_districts as(select cities.state_governorate as state_id, cities.id as city_id, districts.id as district_id, cities.city, districts.district from erp_system.dbo.cities inner join erp_system.dbo.districts on cities.id = districts.city) select get_cities_and_districts.district, get_cities_and_districts.city, get_countries_and_states.state_governorate, get_countries_and_states.country from get_cities_and_districts inner join get_countries_and_states on get_cities_and_districts.state_id = get_countries_and_states.state_id inner join erp_system.dbo.company_address on get_cities_and_districts.district_id = company_address.address where company_address.company_serial = ";
-            String sqlQueryPart2 = @" and get_cities_and_districts.district_id = ";
+            String sqlQueryPart1 = @"with get_countries_and_states as(select countries.id as country_id, states_governorates.id as state_id, countries.country, states_governorates.state_governorate 
+                                     from erp_system.dbo.states_governorates 
+                                     inner join erp_system.dbo.countries 
+                                     on states_governorates.country = countries.id), 
+                                     get_cities_and_districts as(select cities.state_governorate as state_id, cities.id as city_id, districts.id as district_id, cities.city, districts.district 
+                                     from erp_system.dbo.cities 
+                                     inner join erp_system.dbo.districts 
+                                     on cities.id = districts.city) 
+                                     select get_cities_and_districts.district_id,get_cities_and_districts.city_id,get_countries_and_states.state_id, get_countries_and_states.country_id, get_cities_and_districts.district, get_cities_and_districts.city, get_countries_and_states.state_governorate, get_countries_and_states.country 
+                                     from get_cities_and_districts 
+                                     inner join get_countries_and_states 
+                                     on get_cities_and_districts.state_id = get_countries_and_states.state_id 
+                                     inner join erp_system.dbo.company_address 
+                                     on get_cities_and_districts.district_id = company_address.address 
+                                     where company_address.company_serial = ";
+            //String sqlQueryPart2 = @" and get_cities_and_districts.district_id = ";
             String sqlQueryPart3 = @";";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += companySerial;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += districtId;
+           // sqlQuery += sqlQueryPart2;
+            //sqlQuery += districtId;
             sqlQuery += sqlQueryPart3;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
+            queryColumns.sql_int = 4;
             queryColumns.sql_string = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
