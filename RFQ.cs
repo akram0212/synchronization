@@ -1180,7 +1180,9 @@ namespace _01electronics_erp
 
         public void SetRFQIssueDateToToday()
         {
-            rfqIssueDate = commonFunctions.GetTodaysDate();
+            DateTime currentDate = DateTime.Now;
+
+            rfqIssueDate = currentDate;
         }
         public void SetRFQRejectionDateToToday()
         {

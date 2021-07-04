@@ -101,13 +101,13 @@ namespace _01electronics_erp
         employees_initials.employee_initial
 
 		from erp_system.dbo.employees_info 
-		inner join erp_system.dbo.departments_type 
+		left join erp_system.dbo.departments_type 
 		on employees_info.employee_department = departments_type.id 
-		inner join erp_system.dbo.teams_type 
+		left join erp_system.dbo.teams_type 
 		on employees_info.employee_team = teams_type.id 
-		inner join erp_system.dbo.positions_type 
+		left join erp_system.dbo.positions_type 
 		on employees_info.employee_position = positions_type.id 
-		inner join erp_system.dbo.employees_business_emails 
+		left join erp_system.dbo.employees_business_emails 
 		on employees_info.employee_id = employees_business_emails.id 
 		left join erp_system.dbo.employees_personal_emails 
 		on employees_info.employee_id = employees_personal_emails.id 
@@ -181,40 +181,40 @@ namespace _01electronics_erp
             employeeId = mEmployeeId;
 
             String sqlQueryPart1 = @"select employees_info.employee_department, 
-		employees_info.employee_team, 
-		employees_info.employee_position, 
+		    employees_info.employee_team, 
+		    employees_info.employee_position, 
 
-		employees_educational_qualifications.graduation_year, 
-		employees_educational_qualifications.certificate, 
-		employees_educational_qualifications.major, 
+		    employees_educational_qualifications.graduation_year, 
+		    employees_educational_qualifications.certificate, 
+		    employees_educational_qualifications.major, 
 
-		employees_info.birth_date, 
-		employees_info.join_date, 
+		    employees_info.birth_date, 
+		    employees_info.join_date, 
 
-		employees_info.name, 
-		employees_info.gender, 
-		departments_type.department, 
-		teams_type.team, 
-		positions_type.position, 
+		    employees_info.name, 
+		    employees_info.gender, 
+		    departments_type.department, 
+		    teams_type.team, 
+		    positions_type.position, 
 
-		employees_business_emails.email,
-		employees_personal_emails.email, 
-		employees_business_phones.phone, 
-		employees_personal_phones.phone, 
+		    employees_business_emails.email,
+		    employees_personal_emails.email, 
+		    employees_business_phones.phone, 
+		    employees_personal_phones.phone, 
 
-		educational_degrees.educational_degree, 
-		educational_majors.educational_major, 
+		    educational_degrees.educational_degree, 
+		    educational_majors.educational_major, 
 
-        employees_initials.employee_initial
+            employees_initials.employee_initial
 
 		from erp_system.dbo.employees_info 
-		inner join erp_system.dbo.departments_type 
+		left join erp_system.dbo.departments_type 
 		on employees_info.employee_department = departments_type.id 
-		inner join erp_system.dbo.teams_type 
+		left join erp_system.dbo.teams_type 
 		on employees_info.employee_team = teams_type.id 
-		inner join erp_system.dbo.positions_type 
+		left join erp_system.dbo.positions_type 
 		on employees_info.employee_position = positions_type.id 
-		inner join erp_system.dbo.employees_business_emails 
+		left join erp_system.dbo.employees_business_emails 
 		on employees_info.employee_id = employees_business_emails.id 
 		left join erp_system.dbo.employees_personal_emails 
 		on employees_info.employee_id = employees_personal_emails.id 
