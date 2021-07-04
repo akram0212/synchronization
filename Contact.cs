@@ -296,6 +296,10 @@ namespace _01electronics_erp
             commentsList.Add(commentStruct);
         }
 
+        public Company GetContactCompany()
+        {
+            return this;
+        }
         public bool GetNewContactId()
         {
             String sqlQueryPart1 = @"select max(contact_person_info.contact_id) from erp_system.dbo.contact_person_info 

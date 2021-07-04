@@ -21,6 +21,13 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQWindow : NavigationWindow
     {
+        public RFQWindow(ref Employee mLoggedInUser)
+        {
+            InitializeComponent();
+
+            RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser);
+            this.NavigationService.Navigate(rfqsPage);
+        }
         public RFQWindow(ref Employee mLoggedInUser, ref RFQ mRFQ)
         {
             InitializeComponent();
