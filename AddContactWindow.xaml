@@ -44,7 +44,7 @@
 
                         <WrapPanel Name="LastNameWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Last Name *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox" TextChanged="OnTextChangedFirstName"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox" TextChanged="OnTextChangedLastName"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactGender">

@@ -13,7 +13,7 @@ namespace _01electronics_erp
 {
     public class SQLServer
     {
-        private String sqlConnectionString = @"Data Source=DEV-02\SQLEXPRESS;Initial Catalog=erp_system;Integrated Security=True;";
+        private String sqlConnectionString = @"Data Source=AHMED-AYMAN;Initial Catalog=erp_system;Integrated Security=True;";
         private SqlConnection sqlConnection = null;
         private SqlCommand sqlCommand = null;
         private SqlDataReader sqlReader = null;
