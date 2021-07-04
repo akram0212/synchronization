@@ -1,4 +1,4 @@
-﻿<Window x:Class="_01electronics_crm.AddContactWindow"
+﻿<Window x:Class="_01electronics_crm.ViewContactWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="#EDEDED"
         Height="730" Width="700"
-        Title="Add Contact Window" >
+        Title="View Contact Window" >
 
     <Grid>
 
@@ -21,7 +21,7 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD CONTACT" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Label Grid.Column="0" Name="ContactProfileHeader" Content="VIEW CONTACT" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
@@ -38,67 +38,67 @@
 
                     <WrapPanel Grid.Row="0">
                         <WrapPanel Name="FirstNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="First Name *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeFirstNameTextBox" TextChanged="OnTextChangedFirstName"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="First Name"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeFirstNameTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="LastNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Last Name *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox" TextChanged="OnTextChangedFirstName"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Last Name"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactGender">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Gender*"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactGenderComboBox" SelectionChanged="OnSelChangedGender"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Gender"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="contactGenderTextBox"/>
                         </WrapPanel>
-                        
+
                     </WrapPanel>
-                   
+
                     <WrapPanel Grid.Row="1">
                         <WrapPanel Name="CompanyWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Company *"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameComboBox" SelectionChanged="OnSelChangedCompany"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Company"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyNameTextBox"/>
                         </WrapPanel>
-                        
+
                         <WrapPanel Name="BranchWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Branch *"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyBranchComboBox" SelectionChanged="OnSelChangedBranch"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyBranchTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="2">
                         <WrapPanel Name="ContactDepartmentWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Department *"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeDepartmentComboBox" SelectionChanged="OnSelChangedDepartment"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Department"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="departmentTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactTeamWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Team *"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeTeamComboBox" SelectionChanged="OnSelChangedTeam"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Team"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyTeamTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="3">
                         <WrapPanel Name="ContactBusinessPhoneWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Business Phone *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Business Phone"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactPersonalPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Phone"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalPhoneTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="4">
                         <WrapPanel Name="ContactBusinessEmailWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Business Email *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessEmailTextBox" TextChanged="OnTextChangedBusinessEmail"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Business Email"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessEmailTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactPersonalEmailWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Email"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalEmailTextBox" TextChanged="OnTextChangedPersonalEmail"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalEmailTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
                 </Grid>
@@ -107,8 +107,8 @@
 
         </ScrollViewer>
 
-        <Button Grid.Row="2" Content="Save Changes" Name="saveChangesButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+        
 
     </Grid>
-    
+
 </Window>

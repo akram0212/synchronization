@@ -1026,7 +1026,7 @@ namespace _01electronics_erp
 
             bool isEmpty = !CheckNonEmptyEditBox(outputString);
 
-            if (!isEmpty && !CheckNonEmptyEditBox(inputString))
+            if (isEmpty && !CheckNonEmptyEditBox(inputString))
             {
                 MessageBox.Show("Company name must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
