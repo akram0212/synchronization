@@ -40,7 +40,7 @@ namespace _01electronics_crm
         {
             employeeEmail = employeeEmailTextBox.Text;
 
-            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail))
+            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, true))
                 return;
 
             loggedInUser.InitializeEmployeeInfo(employeeEmail);
@@ -51,6 +51,10 @@ namespace _01electronics_crm
                 return;
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
+
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+
             mainWindowOpen.Show();
 
             Window.GetWindow(this).Close();

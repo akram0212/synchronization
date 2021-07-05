@@ -14,40 +14,41 @@ namespace _01electronics_erp
     public class COMPANY_ORGANISATION_MACROS
     {
         //DEPARTMENTS AND TEAMS MACROS
-        public const int MARKETING_AND_SALES_DEPARTMENT_ID          = 102;
-        public const int MARKETING_AND_SALES_DEPARTMENT_MANAGEMENT  = 102;
-        public const int SALES_TEAM_ID                              = 10202;
-        public const int TECHNICAL_OFFICE_TEAM_ID                   = 10203;
+        public const int MARKETING_AND_SALES_DEPARTMENT_ID = 102;
+        public const int MARKETING_AND_SALES_DEPARTMENT_MANAGEMENT = 102;
+        public const int SALES_TEAM_ID = 10202;
+        public const int TECHNICAL_OFFICE_TEAM_ID = 10203;
 
-        public const int HUMAN_RESOURCES_DEPARTMENT_ID          = 104;
-        public const int HUMAN_RESOURCES_DEPARTMENT_MANAGEMENT  = 104;
-        public const int RECTRUITMENT_TEAM_ID                   = 10401;
+        public const int HUMAN_RESOURCES_DEPARTMENT_ID = 104;
+        public const int HUMAN_RESOURCES_DEPARTMENT_MANAGEMENT = 104;
+        public const int RECTRUITMENT_TEAM_ID = 10401;
 
         //DEPARTMENTS AND TEAMS MACROS
-        public const int MANAGER_POSTION        = 8;
-        public const int TEAM_LEAD_POSTION      = 800;
-        public const int SENIOR_POSTION         = 801;
-        public const int JUNIOR_POSTION         = 802;
-        
-                //EMPLOYEMENT LIMITS MACROS
+        public const int MANAGER_POSTION = 8;
+        public const int TEAM_LEAD_POSTION = 800;
+        public const int SENIOR_POSTION = 801;
+        public const int JUNIOR_POSTION = 802;
+
+        //EMPLOYEMENT LIMITS MACROS
         public const int MAX_NUMBER_OF_EMPLOYEES = 100;
-        
-                //CONTACTS LIMITS MACROS
-        public const int MAX_NUMBER_OF_COMPANIES     = 1000;
-        public const int MAX_CONTACTS_PER_COMPANY    = 100;
-        public const int MAX_TELEPHONES_PER_CONTACT  = 3;
-        public const int MAX_EMAILS_PER_CONTACT      = 2;
-        
-        public const int MAX_NUMBER_OF_DEPARTMENTS           = 100;
-        public const int MAX_NUMBER_OF_MANAGING_DEPARTMENTS  = 100;
-        public const int MAX_NUMBER_OF_TEAMS_PER_DEP         = 100;
-        
-        public const int MAX_MANAGEMENT_TEAMS    = MAX_NUMBER_OF_TEAMS_PER_DEP;
+
+        //CONTACTS LIMITS MACROS
+        public const int MAX_NUMBER_OF_COMPANIES = 1000;
+        public const int MAX_CONTACTS_PER_COMPANY = 100;
+        public const int MAX_TELEPHONES_PER_CONTACT = 3;
+        public const int MAX_EMAILS_PER_CONTACT = 2;
+
+        public const int MAX_NUMBER_OF_DEPARTMENTS = 100;
+        public const int MAX_NUMBER_OF_MANAGING_DEPARTMENTS = 100;
+        public const int MAX_NUMBER_OF_TEAMS_PER_DEP = 100;
+
+        public const int MAX_MANAGEMENT_TEAMS = MAX_NUMBER_OF_TEAMS_PER_DEP;
         public const int MAX_DEPARTMENT_MANAGERS = MAX_NUMBER_OF_DEPARTMENTS;
-        public const int MAX_TEAM_LEADS          = MAX_NUMBER_OF_TEAMS_PER_DEP;
-        public const int MAX_SENIORS             = MAX_NUMBER_OF_TEAMS_PER_DEP;
+        public const int MAX_TEAM_LEADS = MAX_NUMBER_OF_TEAMS_PER_DEP;
+        public const int MAX_SENIORS = MAX_NUMBER_OF_TEAMS_PER_DEP;
 
         //COMPANIES STRUCTS
+
         public struct COMPANY_STRUCT
         {
             public String company_name;
@@ -58,11 +59,26 @@ namespace _01electronics_erp
         {
             public int address_serial;
             public int address;
-            
+
             public String district;
             public String city;
             public String state_governorate;
             public String country;
+        };
+
+        public struct COMPANY_MIN_LIST_STRUCT
+        {
+            public String company_name;
+            public int company_serial;
+            public int address_serial;
+        };
+        
+        public struct COMPANY_MAX_LIST_STRUCT
+        {
+            public String company_name;
+            public int company_serial;
+            public int address_serial;
+            public int address;
         };
 
         //COMPANY ORGANISATIONS STRUCTS
@@ -87,7 +103,7 @@ namespace _01electronics_erp
         //PAYROLL AND SALARIES STRUCTS
         public struct BANK_STRUCT
         {
-            public String bank_name;
+            public String payroll_type;
             public int bank_id;
 
             public String branch_name;
@@ -165,6 +181,27 @@ namespace _01electronics_erp
             public String business_email;
             public String personal_email;
         };
+
+        //new added structs by salma
+        public struct LIST_COMPANY_STRUCT
+        {
+            public int company_serial;
+            public int address;
+            public int work_field;
+            public int address_serial;
+            public string company_name;
+        };
+        public struct LIST_CONTACT_STRUCT
+        {
+            public int contact_id;
+            public int company_serial;
+            public int address_serial;
+            public int address;
+            public string contact_name;
+            public string department;
+        };
+
+
     }
 }
 

@@ -56,6 +56,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddBranchWindow.xaml.cs">
+      <DependentUpon>AddBranchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddCompanyWindow.xaml.cs">
+      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddContactWindow.xaml.cs">
+      <DependentUpon>AddContactWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddRFQWindow.xaml.cs">
       <DependentUpon>AddRFQWindow.xaml</DependentUpon>
     </Compile>
@@ -97,6 +106,12 @@
     <Compile Include="SignUpPage.xaml.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="UserPortalPage.xaml.cs" />
+    <Compile Include="ViewCompanyWindow.xaml.cs">
+      <DependentUpon>ViewCompanyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewContactWindow.xaml.cs">
+      <DependentUpon>ViewContactWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewRFQWindow.xaml.cs">
       <DependentUpon>ViewRFQWindow.xaml</DependentUpon>
     </Compile>
@@ -105,6 +120,18 @@
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOrder.cs" />
+    <Page Include="AddBranchWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddCompanyWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddContactWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="AddRFQWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -162,6 +189,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserPortalPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewCompanyWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewContactWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

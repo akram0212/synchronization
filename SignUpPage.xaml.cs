@@ -42,7 +42,7 @@ namespace _01electronics_crm
             String inputString = businessEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString))
+            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString, true))
                 return false;
 
             if (!signupEmployee.InitializeEmployeeInfo(modifiedString))
@@ -58,7 +58,7 @@ namespace _01electronics_crm
             String inputString = personalEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString))
+            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString, true))
                 return false;
 
             signupEmployee.SetEmployeePersonalEmail(modifiedString);

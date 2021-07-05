@@ -54,21 +54,25 @@
                 <WrapPanel Grid.Row="1" Name="product1TypeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Type"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product1TypeLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product1TypeCombo" SelectionChanged="Product1TypeComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Name="product1BrandWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Brand"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product1BrandLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product1BrandCombo" SelectionChanged="Product1BrandComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="3" Name="product1ModelWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Model"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product1ModelLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product1ModelCombo" SelectionChanged="Product1ModelComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="4" Name="product1QuantityWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Quantity"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product1QuantityLabel"/>
+                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="product1QuantityTextBox" TextChanged="Product1QuantityTextBoxTextChanged"/>
                 </WrapPanel>
             </Grid>
 
@@ -86,21 +90,25 @@
                 <WrapPanel Grid.Row="1" Name="product2TypeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Type"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product2TypeLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product2TypeCombo" SelectionChanged="Product2TypeComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Name="product2BrandWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Brand"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product2BrandLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product2BrandCombo" SelectionChanged="Product2BrandComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="3" Name="product2ModelWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Model"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product2ModelLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product2ModelCombo" SelectionChanged="Product2ModelComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="4" Name="product2QuantityWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Quantity"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product2QuantityLabel"/>
+                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="product2QuantityTextBox" TextChanged="Product2QuantityTextBoxTextChanged"/>
                 </WrapPanel>
             </Grid>
 
@@ -118,21 +126,25 @@
                 <WrapPanel Grid.Row="1" Name="product3TypeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Type"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product3TypeLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product3TypeCombo" SelectionChanged="Product3TypeComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Name="product3BrandWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Brand"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product3BrandLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product3BrandCombo" SelectionChanged="Product3BrandComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="3" Name="product3ModelWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Model"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product3ModelLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product3ModelCombo" SelectionChanged="Product3ModelComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="4" Name="product3QuantityWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Quantity"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product3QuantityLabel"/>
+                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="product3QuantityTextBox" TextChanged="Product3QuantityTextBoxTextChanged"/>
                 </WrapPanel>
             </Grid>
 
@@ -150,21 +162,25 @@
                 <WrapPanel Grid.Row="1" Name="product4TypeWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Type"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product4TypeLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product4TypeCombo" SelectionChanged="Product4TypeComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Name="product4BrandWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Brand"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product4BrandLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product4BrandCombo" SelectionChanged="Product4BrandComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="3" Name="product4ModelWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Model"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product4ModelLabel"/>
+                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="product4ModelCombo" SelectionChanged="Product4ModelComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="4" Name="product4QuantityWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Quantity"/>
                     <Label Style="{StaticResource tableItemValue}" Name="product4QuantityLabel"/>
+                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="product4QuantityTextBox" TextChanged="Product4QuantityTextBoxTextChanged"/>
                 </WrapPanel>
             </Grid>
         </WrapPanel>

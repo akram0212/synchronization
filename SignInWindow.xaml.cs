@@ -22,7 +22,10 @@ namespace _01electronics_crm
     {
         public SignInWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            
+            SignInPage signIn = new SignInPage();
+            this.NavigationService.Navigate(signIn);
         }
         
     }
