@@ -26,7 +26,7 @@ namespace _01electronics_crm
         protected int phonesCount;
         protected int faxesCount;
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchesList;
-        public ViewCompanyWindow(ref Employee mLoggedInUser, int branchSerial)
+        public ViewCompanyWindow(ref Employee mLoggedInUser, int companySerial)
         {
             InitializeComponent();
 
@@ -36,7 +36,7 @@ namespace _01electronics_crm
             branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
 
 
-            company.InitializeBranchInfo(branchSerial);
+            company.InitializeCompanyInfo(companySerial);
             commonQueries.GetCompanyAddresses(company.GetCompanySerial(), ref branchesList);
             loggedInUser = mLoggedInUser;
 

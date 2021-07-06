@@ -186,19 +186,23 @@ namespace _01electronics_erp
         public struct LIST_COMPANY_STRUCT
         {
             public int company_serial;
-            public int address;
             public int work_field;
-            public int address_serial;
-            public string company_name;
+            public String company_name;
+            public List<Branch_STRUCT> branchesList;
         };
-        public struct LIST_CONTACT_STRUCT
+        public struct Branch_STRUCT
+        {
+            public int address_serial;
+            public int address;
+        }
+            public struct LIST_CONTACT_STRUCT
         {
             public int contact_id;
             public int company_serial;
             public int address_serial;
             public int address;
-            public string contact_name;
-            public string department;
+            public String contact_name;
+            public String department;
         };
 
 

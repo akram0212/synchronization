@@ -102,7 +102,7 @@ namespace _01electronics_erp
             public int sql_money;
             public int sql_decimal;
             public int sql_datetime;
-            public int sql_string;
+            public int sql_String;
             public int sql_bit;
         };
 
@@ -115,7 +115,7 @@ namespace _01electronics_erp
             public List<Decimal> sql_money;
             public List<Decimal> sql_decimal;
             public List<DateTime> sql_datetime;
-            public List<String> sql_string;
+            public List<String> sql_String;
             public List<Boolean> sql_bit;
         }
     }

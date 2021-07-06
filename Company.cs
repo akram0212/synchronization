@@ -117,7 +117,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 4;
-            queryColumns.sql_string = 4;
+            queryColumns.sql_String = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
@@ -126,10 +126,10 @@ namespace _01electronics_erp
             secondaryFieldId = sqlDatabase.rows[0].sql_int[1];
             ownerUserId = sqlDatabase.rows[0].sql_int[2];
 
-            companyName = sqlDatabase.rows[0].sql_string[0];
-            primaryField = sqlDatabase.rows[0].sql_string[1];
-            secondaryField = sqlDatabase.rows[0].sql_string[2];
-            ownerUser = sqlDatabase.rows[0].sql_string[3];
+            companyName = sqlDatabase.rows[0].sql_String[0];
+            primaryField = sqlDatabase.rows[0].sql_String[1];
+            secondaryField = sqlDatabase.rows[0].sql_String[2];
+            ownerUser = sqlDatabase.rows[0].sql_String[3];
 
             addressKnown = false;
             return true;
@@ -174,7 +174,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 5;
-            queryColumns.sql_string = 4;
+            queryColumns.sql_String = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
@@ -185,10 +185,10 @@ namespace _01electronics_erp
             secondaryFieldId = sqlDatabase.rows[0].sql_int[3];
             ownerUserId = sqlDatabase.rows[0].sql_int[4];
 
-            companyName = sqlDatabase.rows[0].sql_string[0];
-            primaryField = sqlDatabase.rows[0].sql_string[1];
-            secondaryField = sqlDatabase.rows[0].sql_string[2];
-            ownerUser = sqlDatabase.rows[0].sql_string[3];
+            companyName = sqlDatabase.rows[0].sql_String[0];
+            primaryField = sqlDatabase.rows[0].sql_String[1];
+            secondaryField = sqlDatabase.rows[0].sql_String[2];
+            ownerUser = sqlDatabase.rows[0].sql_String[3];
 
             SetCompanyAddressIDs();
 
@@ -507,15 +507,15 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 4;
-            queryColumns.sql_string = 4;
+            queryColumns.sql_String = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
 
-            country = sqlDatabase.rows[0].sql_string[3];
-            state = sqlDatabase.rows[0].sql_string[2];
-            city = sqlDatabase.rows[0].sql_string[1];
-            district = sqlDatabase.rows[0].sql_string[0];
+            country = sqlDatabase.rows[0].sql_String[3];
+            state = sqlDatabase.rows[0].sql_String[2];
+            city = sqlDatabase.rows[0].sql_String[1];
+            district = sqlDatabase.rows[0].sql_String[0];
 
             return true;
         }
@@ -532,13 +532,13 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
-                companyPhones.Add(sqlDatabase.rows[0].sql_string[i]);
+                companyPhones.Add(sqlDatabase.rows[0].sql_String[i]);
 
             return true;
         }
@@ -554,13 +554,13 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
-                companyFaxes.Add(sqlDatabase.rows[0].sql_string[i]);
+                companyFaxes.Add(sqlDatabase.rows[0].sql_String[i]);
 
 
             return true;

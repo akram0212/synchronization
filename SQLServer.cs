@@ -38,7 +38,7 @@ namespace _01electronics_erp
             currentRow.sql_money = new List<Decimal>();
             currentRow.sql_decimal = new List<Decimal>();
             currentRow.sql_datetime = new List<DateTime>();
-            currentRow.sql_string = new List<String>();
+            currentRow.sql_String = new List<String>();
             currentRow.sql_bit = new List<Boolean>();
         }
         public bool GetRows(String sqlQuery, BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT columnCount)
@@ -131,12 +131,12 @@ namespace _01electronics_erp
                         currentColumn++;
                     }
 
-                    for (int i = 0; i < columnCount.sql_string; i++)
+                    for (int i = 0; i < columnCount.sql_String; i++)
                     {
                         if (sqlReader[currentColumn] == DBNull.Value)
-                            currentRow.sql_string.Add(string.Empty);
+                            currentRow.sql_String.Add(String.Empty);
                         else
-                            currentRow.sql_string.Add((String)sqlReader[currentColumn]);
+                            currentRow.sql_String.Add((String)sqlReader[currentColumn]);
 
                     currentColumn++;
                 }
@@ -278,12 +278,12 @@ namespace _01electronics_erp
                         currentColumn++;
                     }
 
-                    for (int i = 0; i < columnCount.sql_string; i++)
+                    for (int i = 0; i < columnCount.sql_String; i++)
                     {
                         if (sqlReader[currentColumn] == DBNull.Value)
-                            currentRow.sql_string.Add(string.Empty);
+                            currentRow.sql_String.Add(String.Empty);
                         else
-                            currentRow.sql_string.Add((String)sqlReader[currentColumn]);
+                            currentRow.sql_String.Add((String)sqlReader[currentColumn]);
 
                         currentColumn++;
                     }

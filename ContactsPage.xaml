@@ -82,19 +82,19 @@
                     </Grid.RowDefinitions>
 
                     <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="countryCheckBoxChecked" Unchecked="countryCheckBoxUnchecked"/>
-                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="countryComboBoxSelectionChanged" Width="100"/>
+                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="countryComboBoxSelectionChanged"/>
 
                     <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="stateCheckBoxChecked" Unchecked="stateCheckBoxUnchecked"/>
-                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="stateComboBoxSelectionChanged" Width="100"/>
+                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="stateComboBoxSelectionChanged"/>
 
                     <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="cityCheckBoxChecked" Unchecked="cityCheckBoxUnchecked"/>
-                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="cityComboBoxSelectionChanged" Width="100"/>
+                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="cityComboBoxSelectionChanged"/>
 
                     <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="districtCheckBoxChecked" Unchecked="districtCheckBoxUnchecked"/>
-                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource comboBoxStyle}" SelectionChanged="districtComboBoxSelectionChanged" Width="100"/>
+                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="districtComboBoxSelectionChanged"/>
 
                     <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="salesPersonCheckBoxChecked"/>
-                    <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource comboBoxStyle}" Width="100"/>
+                    <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">

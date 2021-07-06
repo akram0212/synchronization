@@ -29,7 +29,7 @@ namespace _01electronics_crm
         List<BASIC_STRUCTS.STATE_STRUCT> states;
         List<BASIC_STRUCTS.CITY_STRUCT> cities;
         List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
-        protected string sqlQuery;
+        protected String sqlQuery;
         public AddBranchWindow(ref Employee mloggedInUser, ref Company companyInfo)
         {
             InitializeComponent();
@@ -77,7 +77,7 @@ namespace _01electronics_crm
             stateComboBox.Items.Clear();
             for (int i = 0; i < states.Count(); i++)
             {
-                if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
+                if (countryComboBox.SelectedItem != null && states[i].state_id / BASIC_MACROS.MAXIMUM_STATES_NO == countries[countryComboBox.SelectedIndex].country_id)
                     stateComboBox.Items.Add(states[i].state_name);
             }
         }
@@ -93,7 +93,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < cities.Count; i++)
             {
-                if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                if (stateComboBox.SelectedItem != null && cities[i].city_id / BASIC_MACROS.MAXIMUM_CITIES_NO == states[stateComboBox.SelectedIndex].state_id)
                     cityComboBox.Items.Add(cities[i].city_name);
             }
         }
@@ -108,7 +108,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < districts.Count; i++)
             {
-                if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                if (cityComboBox.SelectedItem != null && districts[i].district_id / BASIC_MACROS.MAXIMUM_DISTRICTS_NO == cities[cityComboBox.SelectedIndex].city_id)
                     districtComboBox.Items.Add(districts[i].district_name);
             }
         }
@@ -152,8 +152,8 @@ namespace _01electronics_crm
         }
         private bool CheckCompanyPhoneEditBox()
         {
-            string inputString = telephoneTextBox.Text;
-            string outputString = telephoneTextBox.Text;
+            String inputString = telephoneTextBox.Text;
+            String outputString = telephoneTextBox.Text;
 
             if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
                 return false;
@@ -165,8 +165,8 @@ namespace _01electronics_crm
         }
         private bool CheckCompanyFaxEditBox()
         {
-            string inputString = faxTextBox.Text;
-            string outputString = faxTextBox.Text;
+            String inputString = faxTextBox.Text;
+            String outputString = faxTextBox.Text;
 
             if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false))
                 return false;
@@ -229,11 +229,11 @@ namespace _01electronics_crm
         }
         private bool AddCompanyAddress()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
@@ -252,13 +252,13 @@ namespace _01electronics_crm
         }
         private bool QueryGetMaxBranchSerial()
         {
-            string sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
-            sqlQuery = string.Empty;
+            String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
+            queryColumns.sql_String = 0;
 
             if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;

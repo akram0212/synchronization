@@ -209,7 +209,7 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < branchInfo.Count; i++)
             {
-                string address;
+                String address;
                 address = branchInfo[i].district + ", " + branchInfo[i].city + ", " + branchInfo[i].state_governorate + ", " + branchInfo[i].country + "\n";
                 companyAddressLabel.Content += address;
             }
@@ -252,7 +252,7 @@ namespace _01electronics_crm
 
                 for (int i = 0; i < branchInfo.Count; i++)
                 {
-                    string address;
+                    String address;
                     address = branchInfo[i].district + ", " + branchInfo[i].city + ", " + branchInfo[i].state_governorate + ", " + branchInfo[i].country + ".";
                     companyAddressCombo.Items.Add(address);
                 }

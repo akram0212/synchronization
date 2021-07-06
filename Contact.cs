@@ -106,15 +106,15 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 3;
-            queryColumns.sql_string = 6;
+            queryColumns.sql_String = 6;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
 
-            contactName = sqlDatabase.rows[0].sql_string[0];
-            gender = sqlDatabase.rows[0].sql_string[1];
-            businessEmail = sqlDatabase.rows[0].sql_string[2];
-            department = sqlDatabase.rows[0].sql_string[3];
+            contactName = sqlDatabase.rows[0].sql_String[0];
+            gender = sqlDatabase.rows[0].sql_String[1];
+            businessEmail = sqlDatabase.rows[0].sql_String[2];
+            department = sqlDatabase.rows[0].sql_String[3];
 
             departmentId = sqlDatabase.rows[0].sql_int[2];
 
@@ -123,7 +123,7 @@ namespace _01electronics_erp
                 numberOfSavedPhones = sqlDatabase.rows[i].sql_int[0];
 
                 if (numberOfSavedPhones > 0)
-                    contactPhones[numberOfSavedPhones - 1] = sqlDatabase.rows[i].sql_string[4];
+                    contactPhones[numberOfSavedPhones - 1] = sqlDatabase.rows[i].sql_String[4];
             }
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
@@ -131,7 +131,7 @@ namespace _01electronics_erp
                 numberOfSavedEmails = sqlDatabase.rows[i].sql_int[1];
 
                 if (numberOfSavedEmails > 0)
-                    contactPersonalEmails[numberOfSavedEmails - 1] = sqlDatabase.rows[i].sql_string[5];
+                    contactPersonalEmails[numberOfSavedEmails - 1] = sqlDatabase.rows[i].sql_String[5];
             }
 
 
@@ -204,7 +204,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_datetime = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
@@ -214,7 +214,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.CONTACT_COMMENT_STRUCT tempItem;
 
                 tempItem.commentDate = sqlDatabase.rows[i].sql_datetime[0].ToString();
-                tempItem.comment = sqlDatabase.rows[i].sql_string[0];
+                tempItem.comment = sqlDatabase.rows[i].sql_String[0];
 
                 commentsList.Add(tempItem);
             }

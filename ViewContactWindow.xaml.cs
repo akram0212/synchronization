@@ -21,10 +21,10 @@ namespace _01electronics_crm
     public partial class ViewContactWindow : Window
     {
         Contact contact;
-        string [] name;
-        string [] phones;
-        string [] personalEmails;
-        string contactName;
+        String [] name;
+        String [] phones;
+        String [] personalEmails;
+        String contactName;
         public ViewContactWindow(ref Employee mLoggedInUser, COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT contactInfo)
         {
             InitializeComponent();

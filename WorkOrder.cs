@@ -92,7 +92,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 4;
             queryColumns.sql_datetime = 1;
-            queryColumns.sql_string = 2;
+            queryColumns.sql_String = 2;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -101,8 +101,8 @@ namespace _01electronics_erp
 
             orderIssueDate = sqlDatabase.rows[0].sql_datetime[0];
 
-            orderId = sqlDatabase.rows[0].sql_string[0];
-            orderStatus = sqlDatabase.rows[0].sql_string[1];
+            orderId = sqlDatabase.rows[0].sql_String[0];
+            orderStatus = sqlDatabase.rows[0].sql_String[1];
 
             if (salesPerson.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {

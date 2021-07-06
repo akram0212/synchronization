@@ -46,7 +46,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -56,7 +56,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.COMPANY_STRUCT tempItem;
 
                 tempItem.company_serial = sqlDatabase.rows[i].sql_int[0];
-                tempItem.company_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.company_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -107,7 +107,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 4;
+            queryColumns.sql_String = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -119,10 +119,10 @@ namespace _01electronics_erp
                 tempItem.address_serial = sqlDatabase.rows[i].sql_int[0];
                 tempItem.address = sqlDatabase.rows[i].sql_int[1];
 
-                tempItem.district = sqlDatabase.rows[i].sql_string[0];
-                tempItem.city = sqlDatabase.rows[i].sql_string[1];
-                tempItem.state_governorate = sqlDatabase.rows[i].sql_string[2];
-                tempItem.country = sqlDatabase.rows[i].sql_string[3];
+                tempItem.district = sqlDatabase.rows[i].sql_String[0];
+                tempItem.city = sqlDatabase.rows[i].sql_String[1];
+                tempItem.state_governorate = sqlDatabase.rows[i].sql_String[2];
+                tempItem.country = sqlDatabase.rows[i].sql_String[3];
 
                 returnVector.Add(tempItem);
             }
@@ -145,12 +145,12 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 0;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnVector = sqlDatabase.rows[0].sql_string[0];
+            returnVector = sqlDatabase.rows[0].sql_String[0];
 
             return true;
         }
@@ -171,7 +171,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -181,7 +181,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT tempItem;
 
                 tempItem.department_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.department_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.department_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -200,7 +200,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -210,7 +210,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.TEAM_STRUCT tempItem;
 
                 tempItem.team_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.team_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.team_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -229,7 +229,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -239,7 +239,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_POSITION_STRUCT tempItem;
 
                 tempItem.position_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.position_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.position_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -270,7 +270,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -280,7 +280,7 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.TEAM_STRUCT tempItem;
 
                 tempItem.team_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.team_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.team_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -300,7 +300,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -310,7 +310,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.PRIMARY_FIELD_STRUCT tempItem;
 
                 tempItem.field_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.field_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.field_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -333,7 +333,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -343,7 +343,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.SECONDARY_FIELD_STRUCT tempItem;
 
                 tempItem.field_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.field_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.field_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -363,7 +363,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -373,7 +373,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.COUNTRY_STRUCT tempItem;
 
                 tempItem.country_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.country_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.country_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -395,7 +395,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -405,7 +405,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.STATE_STRUCT tempItem;
 
                 tempItem.state_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.state_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.state_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -427,7 +427,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -437,7 +437,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.CITY_STRUCT tempItem;
 
                 tempItem.city_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.city_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.city_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -459,7 +459,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -469,7 +469,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.DISTRICT_STRUCT tempItem;
 
                 tempItem.district_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.district_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.district_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -489,7 +489,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -499,7 +499,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.VISIT_PURPOSE_STRUCT purposeItem;
 
                 purposeItem.purpose_id = sqlDatabase.rows[i].sql_int[0];
-                purposeItem.purpose_name = sqlDatabase.rows[i].sql_string[0];
+                purposeItem.purpose_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(purposeItem);
             }
@@ -525,7 +525,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -535,7 +535,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.VISIT_RESULT_STRUCT resultItem;
 
                 resultItem.result_id = sqlDatabase.rows[i].sql_int[0];
-                resultItem.result_name = sqlDatabase.rows[i].sql_string[0];
+                resultItem.result_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(resultItem);
             }
@@ -562,7 +562,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -572,7 +572,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.CALL_PURPOSE_STRUCT purposeItem;
 
                 purposeItem.purpose_id = sqlDatabase.rows[i].sql_int[0];
-                purposeItem.purpose_name = sqlDatabase.rows[i].sql_string[0];
+                purposeItem.purpose_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(purposeItem);
             }
@@ -598,7 +598,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -608,7 +608,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.CALL_RESULT_STRUCT resultItem;
 
                 resultItem.result_id = sqlDatabase.rows[i].sql_int[0];
-                resultItem.result_name = sqlDatabase.rows[i].sql_string[0];
+                resultItem.result_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(resultItem);
             }
@@ -634,7 +634,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -644,7 +644,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT reasonItem;
 
                 reasonItem.reason_id = sqlDatabase.rows[i].sql_int[0];
-                reasonItem.reason_name = sqlDatabase.rows[i].sql_string[0];
+                reasonItem.reason_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(reasonItem);
             }
@@ -663,7 +663,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -673,7 +673,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT reasonItem;
 
                 reasonItem.reason_id = sqlDatabase.rows[i].sql_int[0];
-                reasonItem.reason_name = sqlDatabase.rows[i].sql_string[0];
+                reasonItem.reason_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(reasonItem);
             }
@@ -693,7 +693,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -703,7 +703,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.CONTRACT_STRUCT tempItem;
 
                 tempItem.contractId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.contractName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.contractName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -722,7 +722,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -732,7 +732,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.DELIVERY_POINT_STRUCT tempItem;
 
                 tempItem.pointId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.pointName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.pointName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -752,7 +752,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -762,7 +762,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.CURRENCY_STRUCT tempItem;
 
                 tempItem.currencyId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.currencyName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.currencyName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -781,7 +781,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -791,7 +791,7 @@ namespace _01electronics_erp
                 BASIC_STRUCTS.TIMEUNIT_STRUCT tempItem;
 
                 tempItem.timeUnitId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.timeUnit = sqlDatabase.rows[i].sql_string[0];
+                tempItem.timeUnit = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -835,7 +835,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 4;
-            queryColumns.sql_string = 4;
+            queryColumns.sql_String = 4;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -851,10 +851,10 @@ namespace _01electronics_erp
                 tempItem.department.department_id = sqlDatabase.rows[i].sql_int[2];
                 tempItem.position.position_id = sqlDatabase.rows[i].sql_int[3];
 
-                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
-                tempItem.team.team_name = sqlDatabase.rows[i].sql_string[1];
-                tempItem.department.department_name = sqlDatabase.rows[i].sql_string[2];
-                tempItem.position.position_name = sqlDatabase.rows[i].sql_string[3];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_String[0];
+                tempItem.team.team_name = sqlDatabase.rows[i].sql_String[1];
+                tempItem.department.department_name = sqlDatabase.rows[i].sql_String[2];
+                tempItem.position.position_name = sqlDatabase.rows[i].sql_String[3];
 
                 returnVector.Add(tempItem);
             }
@@ -880,7 +880,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -896,7 +896,7 @@ namespace _01electronics_erp
                 tempItem.employee_id = sqlDatabase.rows[i].sql_int[0];
                 tempItem.team.team_id = sqlDatabase.rows[i].sql_int[1];
 
-                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -922,7 +922,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -937,7 +937,7 @@ namespace _01electronics_erp
 
                 tempItem.employee_id = sqlDatabase.rows[i].sql_int[0];
                 tempItem.team.team_id = sqlDatabase.rows[i].sql_int[1];
-                tempItem.employee_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.employee_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1062,12 +1062,12 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = sqlDatabase.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_String[0];
 
             return true;
         }
@@ -1085,7 +1085,7 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1096,7 +1096,7 @@ namespace _01electronics_erp
                 return false;
             }
 
-            returnValue = sqlDatabase.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_String[0];
 
             return true;
         }
@@ -1124,7 +1124,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1133,7 +1133,7 @@ namespace _01electronics_erp
             {
                 COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT tempItem;
                 tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1198,7 +1198,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 4;
-            queryColumns.sql_string = 8;
+            queryColumns.sql_String = 8;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1214,22 +1214,22 @@ namespace _01electronics_erp
                 tempItem.contact_department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
 
                 tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_String[0];
 
                 tempItem.contact_department.department_id = sqlDatabase.rows[i].sql_int[1];
-                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_string[1];
+                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_String[1];
 
                 tempItem.sales_person.employee_id = sqlDatabase.rows[i].sql_int[2];
-                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_string[2];
+                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_String[2];
 
                 tempItem.sales_person.team.team_id = sqlDatabase.rows[i].sql_int[3];
-                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_string[3];
+                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_String[3];
 
-                tempItem.gender = sqlDatabase.rows[i].sql_string[4];
-                tempItem.mobile = sqlDatabase.rows[i].sql_string[5];
+                tempItem.gender = sqlDatabase.rows[i].sql_String[4];
+                tempItem.mobile = sqlDatabase.rows[i].sql_String[5];
 
-                tempItem.business_email = sqlDatabase.rows[i].sql_string[6];
-                tempItem.personal_email = sqlDatabase.rows[i].sql_string[7];
+                tempItem.business_email = sqlDatabase.rows[i].sql_String[6];
+                tempItem.personal_email = sqlDatabase.rows[i].sql_String[7];
 
                 returnVector.Add(tempItem);
             }
@@ -1266,7 +1266,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1275,11 +1275,14 @@ namespace _01electronics_erp
             {
                 COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT temp = new COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT();
 
-                temp.company_serial = sqlDatabase.rows[i].sql_int[0];
-                temp.address_serial = sqlDatabase.rows[i].sql_int[1];
-                temp.company_name = sqlDatabase.rows[i].sql_string[0];
-
-                returnVector.Add(temp);
+                COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT itemFound = returnVector.Find(companyItem => companyItem.company_serial == sqlDatabase.rows[i].sql_int[0]);
+                if (itemFound.company_serial.Equals(0))
+                {
+                    temp.company_serial = sqlDatabase.rows[i].sql_int[0];
+                    temp.address_serial = sqlDatabase.rows[i].sql_int[1];
+                    temp.company_name = sqlDatabase.rows[i].sql_String[0];
+                    returnVector.Add(temp);
+                }
             }
             return true;
         }
@@ -1313,7 +1316,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1325,7 +1328,7 @@ namespace _01electronics_erp
                 temp.company_serial = sqlDatabase.rows[i].sql_int[0];
                 temp.address_serial = sqlDatabase.rows[i].sql_int[1];
                 temp.address = sqlDatabase.rows[i].sql_int[2];
-                temp.company_name = sqlDatabase.rows[i].sql_string[0];
+                temp.company_name = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(temp);
             }
@@ -1395,7 +1398,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 6;
-            queryColumns.sql_string = 9;
+            queryColumns.sql_String = 9;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1411,26 +1414,26 @@ namespace _01electronics_erp
                 tempItem.contact_department = new COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT();
 
                 tempItem.contact_id = sqlDatabase.rows[i].sql_int[0];
-                tempItem.contact_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.contact_name = sqlDatabase.rows[i].sql_String[0];
 
                 tempItem.contact_department.department_id = sqlDatabase.rows[i].sql_int[1];
-                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_string[1];
+                tempItem.contact_department.department_name = sqlDatabase.rows[i].sql_String[1];
 
                 tempItem.sales_person.employee_id = sqlDatabase.rows[i].sql_int[2];
-                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_string[2];
+                tempItem.sales_person.employee_name = sqlDatabase.rows[i].sql_String[2];
 
                 tempItem.sales_person.team.team_id = sqlDatabase.rows[i].sql_int[3];
-                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_string[3];
+                tempItem.sales_person.team.team_name = sqlDatabase.rows[i].sql_String[3];
 
                 tempItem.branch.address_serial = sqlDatabase.rows[i].sql_int[4];
                 tempItem.company.company_serial = sqlDatabase.rows[i].sql_int[5];
-                tempItem.company.company_name = sqlDatabase.rows[i].sql_string[4];
+                tempItem.company.company_name = sqlDatabase.rows[i].sql_String[4];
 
-                tempItem.gender = sqlDatabase.rows[i].sql_string[5];
-                tempItem.mobile = sqlDatabase.rows[i].sql_string[6];
+                tempItem.gender = sqlDatabase.rows[i].sql_String[5];
+                tempItem.mobile = sqlDatabase.rows[i].sql_String[6];
 
-                tempItem.business_email = sqlDatabase.rows[i].sql_string[7];
-                tempItem.personal_email = sqlDatabase.rows[i].sql_string[8];
+                tempItem.business_email = sqlDatabase.rows[i].sql_String[7];
+                tempItem.personal_email = sqlDatabase.rows[i].sql_String[8];
 
                 returnVector.Add(tempItem);
             }
@@ -1645,12 +1648,12 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnVector = sqlDatabase.rows[0].sql_string;
+            returnVector = sqlDatabase.rows[0].sql_String;
 
             return true;
         }
@@ -1669,12 +1672,12 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
-            returnValue = sqlDatabase.rows[0].sql_string[0];
+            returnValue = sqlDatabase.rows[0].sql_String[0];
 
             return true;
         }
@@ -1695,7 +1698,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1705,7 +1708,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.PRODUCT_STRUCT tempItem;
 
                 tempItem.typeId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.typeName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.typeName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1731,7 +1734,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1741,7 +1744,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.BRAND_STRUCT tempItem;
 
                 tempItem.brandId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.brandName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.brandName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1778,7 +1781,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -1788,7 +1791,7 @@ namespace _01electronics_erp
                 COMPANY_WORK_MACROS.MODEL_STRUCT tempItem;
 
                 tempItem.modelId = sqlDatabase.rows[i].sql_int[0];
-                tempItem.modelName = sqlDatabase.rows[i].sql_string[0];
+                tempItem.modelName = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -1825,13 +1828,13 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
-                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
+                returnVector.Add(sqlDatabase.rows[i].sql_String[0]);
 
             return true;
         }
@@ -1859,13 +1862,13 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
-                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
+                returnVector.Add(sqlDatabase.rows[i].sql_String[0]);
 
             return true;
         }
@@ -1893,13 +1896,13 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
-                returnVector.Add(sqlDatabase.rows[i].sql_string[0]);
+                returnVector.Add(sqlDatabase.rows[i].sql_String[0]);
 
             return true;
         }
@@ -2127,7 +2130,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 22;
             queryColumns.sql_datetime = 2;
-            queryColumns.sql_string = 20;
+            queryColumns.sql_String = 20;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2139,15 +2142,15 @@ namespace _01electronics_erp
                 RFQItem.products = new List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT>();
 
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
-                RFQItem.rfq_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.rfq_id = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                RFQItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.assignee_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                RFQItem.assignee_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                RFQItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                RFQItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
 
                 RFQItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
@@ -2173,13 +2176,13 @@ namespace _01electronics_erp
                     tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                     tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                     tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                     tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                     tempProductItem.productNumber = j;
                     tempProductItem.productQuantity = 0;
@@ -2191,9 +2194,9 @@ namespace _01electronics_erp
                 RFQItem.rfq_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
                 RFQItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                RFQItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.rfq_status = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.contract_type = sqlDatabase.rows[i].sql_String[StringCount++];
+                RFQItem.rfq_status = sqlDatabase.rows[i].sql_String[StringCount++];
+                RFQItem.failure_reason = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 returnVector.Add(RFQItem);
             }
@@ -2227,7 +2230,7 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
-            queryColumns.sql_string = 1;
+            queryColumns.sql_String = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2238,7 +2241,7 @@ namespace _01electronics_erp
 
                 tempItem.rfq_serial = sqlDatabase.rows[i].sql_int[0];
                 tempItem.rfq_version = sqlDatabase.rows[i].sql_int[1];
-                tempItem.rfq_id = sqlDatabase.rows[i].sql_string[0];
+                tempItem.rfq_id = sqlDatabase.rows[i].sql_String[0];
 
                 returnVector.Add(tempItem);
             }
@@ -2373,7 +2376,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 14;
             queryColumns.sql_datetime = 1;
-            queryColumns.sql_string = 11;
+            queryColumns.sql_String = 11;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2381,7 +2384,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT offerItem = new COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT();
 
@@ -2393,13 +2396,13 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                offerItem.offer_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.offer_id = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                offerItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                offerItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                offerItem.offer_proposer_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                offerItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                offerItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                offerItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 offerItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
@@ -2415,13 +2418,13 @@ namespace _01electronics_erp
                 int product_number = (int)sqlDatabase.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2439,9 +2442,9 @@ namespace _01electronics_erp
                     offerItem.offer_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
                     offerItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    offerItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                    offerItem.offer_status = sqlDatabase.rows[i].sql_string[stringCount++];
-                    offerItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
+                    offerItem.contract_type = sqlDatabase.rows[i].sql_String[StringCount++];
+                    offerItem.offer_status = sqlDatabase.rows[i].sql_String[StringCount++];
+                    offerItem.failure_reason = sqlDatabase.rows[i].sql_String[StringCount++];
 
                     returnVector.Add(offerItem);
                 }
@@ -2572,7 +2575,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 12;
             queryColumns.sql_datetime = 1;
-            queryColumns.sql_string = 10;
+            queryColumns.sql_String = 10;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2580,7 +2583,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT orderItem = new COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT();
 
@@ -2592,13 +2595,13 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                orderItem.order_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.order_id = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                orderItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                orderItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                orderItem.offer_proposer_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                orderItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                orderItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                orderItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 orderItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
@@ -2614,13 +2617,13 @@ namespace _01electronics_erp
                 int product_number = sqlDatabase.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2637,8 +2640,8 @@ namespace _01electronics_erp
                     orderItem.contract_type_id = sqlDatabase.rows[i].sql_int[numericCount++];
                     orderItem.order_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    orderItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                    orderItem.order_status = sqlDatabase.rows[i].sql_string[stringCount++];
+                    orderItem.contract_type = sqlDatabase.rows[i].sql_String[StringCount++];
+                    orderItem.order_status = sqlDatabase.rows[i].sql_String[StringCount++];
 
                     returnVector.Add(orderItem);
                 }
@@ -2710,7 +2713,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 4;
             queryColumns.sql_datetime = 2;
-            queryColumns.sql_string = 5;
+            queryColumns.sql_String = 5;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2718,7 +2721,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT visitItem;
 
@@ -2731,13 +2734,13 @@ namespace _01electronics_erp
                 visitItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
                 visitItem.visit_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                visitItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                visitItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                visitItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                visitItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                visitItem.visit_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
-                visitItem.visit_result = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.visit_purpose = sqlDatabase.rows[i].sql_String[StringCount++];
+                visitItem.visit_result = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 returnVector.Add(visitItem);
             }
@@ -2798,7 +2801,7 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 4;
             queryColumns.sql_datetime = 2;
-            queryColumns.sql_string = 5;
+            queryColumns.sql_String = 5;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
@@ -2806,7 +2809,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT callItem;
 
@@ -2819,13 +2822,13 @@ namespace _01electronics_erp
                 callItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
                 callItem.call_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                callItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                callItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                callItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                callItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
 
-                callItem.call_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
-                callItem.call_result = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.call_purpose = sqlDatabase.rows[i].sql_String[StringCount++];
+                callItem.call_result = sqlDatabase.rows[i].sql_String[StringCount++];
 
                 returnVector.Add(callItem);
             }
@@ -2833,7 +2836,6 @@ namespace _01electronics_erp
             return true;
         }
 
-        //queries added by salma
 
     }
 

@@ -26,8 +26,8 @@ namespace _01electronics_erp
         protected const int RFQ_ID_DATE_START_INDEX = RFQ_ID_EMPLOYEE_INITIALS_START_INDEX + RFQ_ID_EMPLOYEE_INITIALS_TOKEN + 1;
         protected const int RFQ_ID_REVISION_SERIAL_START_INDEX = RFQ_ID_DATE_START_INDEX + RFQ_ID_DATE_TOKEN + RFQ_ID_REVISION_OFFSET_TOKEN + 1;
 
-        protected const string RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
-        protected const string REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
+        protected const String RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
+        protected const String REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
 
         protected SQLServer sqlDatabase;
 
@@ -311,13 +311,13 @@ namespace _01electronics_erp
 
             queryColumns.sql_int = 22;
             queryColumns.sql_datetime = 2;
-            queryColumns.sql_string = 17;
+            queryColumns.sql_String = 17;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
                 return false;
 
             int numericColumnsCount = 0;
-            int stringColumnsCount = 0;
+            int StringColumnsCount = 0;
 
             //////////////////////////////////////////////////////////////////////
             //RFQ BASIC INFO
@@ -330,8 +330,8 @@ namespace _01electronics_erp
             rfqIssueDate = sqlDatabase.rows[0].sql_datetime[0];
             rfqDeadlineDate = sqlDatabase.rows[0].sql_datetime[1];
 
-            RFQId = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
-            rfqNotes = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            RFQId = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
+            rfqNotes = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
 
             //////////////////////////////////////////////////////////////////////
             //PRODUCTS NAMES
@@ -339,9 +339,9 @@ namespace _01electronics_erp
 
             for (int i = 0; i < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; i++)
             {
-                RFQProductsList[i].productType.typeName = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
-                RFQProductsList[i].productBrand.brandName = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
-                RFQProductsList[i].productModel.modelName = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+                RFQProductsList[i].productType.typeName = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
+                RFQProductsList[i].productBrand.brandName = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
+                RFQProductsList[i].productModel.modelName = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
             }
 
             //////////////////////////////////////////////////////////////////////
@@ -361,13 +361,13 @@ namespace _01electronics_erp
             //////////////////////////////////////////////////////////////////////
 
             contractTypeId = sqlDatabase.rows[0].sql_int[numericColumnsCount++];
-            contractType = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            contractType = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
 
             rfqStatusId = sqlDatabase.rows[0].sql_int[numericColumnsCount++];
-            rfqStatus = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            rfqStatus = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
 
             rfqFailureReasonId = sqlDatabase.rows[0].sql_int[numericColumnsCount++];
-            rfqFailureReason = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            rfqFailureReason = sqlDatabase.rows[0].sql_String[StringColumnsCount++];
 
             SetNoOfSavedRFQProducts();
 

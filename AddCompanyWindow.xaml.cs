@@ -160,8 +160,8 @@ namespace _01electronics_crm
 
         private bool CheckCompanyNameEditBox()
         {
-            string inputString = companyNameTextBox.Text;
-            string outputString = companyNameTextBox.Text;
+            String inputString = companyNameTextBox.Text;
+            String outputString = companyNameTextBox.Text;
 
             if (!integrityChecker.CheckCompanyNameEditBox(inputString, ref outputString, true))
                 return false;
@@ -174,8 +174,8 @@ namespace _01electronics_crm
 
         private bool CheckCompanyPhoneEditBox()
         {
-            string inputString = telephoneTextBox.Text;
-            string outputString = telephoneTextBox.Text;
+            String inputString = telephoneTextBox.Text;
+            String outputString = telephoneTextBox.Text;
 
             if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
                 return false;
@@ -188,8 +188,8 @@ namespace _01electronics_crm
         
         private bool CheckCompanyFaxEditBox()
         {
-            string inputString = faxTextBox.Text;
-            string outputString = faxTextBox.Text;
+            String inputString = faxTextBox.Text;
+            String outputString = faxTextBox.Text;
 
             if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false))
                 return false;
@@ -324,11 +324,11 @@ namespace _01electronics_crm
         }
         private bool QueryAddCompanyName()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_name values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_name values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
@@ -345,11 +345,11 @@ namespace _01electronics_crm
         }
         private bool QueryAddCompanyAddress()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
@@ -368,11 +368,11 @@ namespace _01electronics_crm
         } 
         private bool QueryAddCompanyWorkField()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_field_of_work values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_field_of_work values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
@@ -389,11 +389,11 @@ namespace _01electronics_crm
         } 
         private bool QueryAddCompanyFax()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_fax values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_fax values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
@@ -410,11 +410,11 @@ namespace _01electronics_crm
         }
         private bool QueryAddCompanyTelephone()
         {
-            string sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
-            string sqlQueryPart2 = ", ";
-            string sqlQueryPart3 = "getdate()) ;";
+            String sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
+            String sqlQueryPart2 = ", ";
+            String sqlQueryPart3 = "getdate()) ;";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
@@ -431,13 +431,13 @@ namespace _01electronics_crm
         }
         private bool QueryGetMaxCompanySerial()
         {
-            string sqlQueryPart1 = "select max(company_serial) from erp_system.dbo.company_name ";
-            sqlQuery = string.Empty;
+            String sqlQueryPart1 = "select max(company_serial) from erp_system.dbo.company_name ";
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
+            queryColumns.sql_String = 0;
 
             if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
@@ -449,13 +449,13 @@ namespace _01electronics_crm
         
         private bool QueryGetMaxBranchSerial()
         {
-            string sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
-            sqlQuery = string.Empty;
+            String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
+            queryColumns.sql_String = 0;
 
             if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
                 return false;
