@@ -143,6 +143,7 @@ namespace _01electronics_crm
             if (!CheckCompanyFaxEditBox())
                 return;
 
+            QueryGetMaxBranchSerial();
             AddCompanyAddress();
 
             MessageBox.Show("Branch Added Successfully");
@@ -234,7 +235,7 @@ namespace _01electronics_crm
 
             sqlQuery = string.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial()+1;
+            sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
@@ -246,6 +247,23 @@ namespace _01electronics_crm
 
             if (!sqlServer.InsertRows(sqlQuery))
                 return false;
+
+            return true;
+        }
+        private bool QueryGetMaxBranchSerial()
+        {
+            string sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
+            sqlQuery = string.Empty;
+            sqlQuery += sqlQueryPart1;
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+            queryColumns.sql_string = 0;
+
+            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            company.SetAddressSerial(1 + sqlServer.rows[0].sql_int[0]);
 
             return true;
         }
