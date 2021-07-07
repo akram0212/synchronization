@@ -98,6 +98,12 @@ namespace _01electronics_crm
 
         private void OnTextChangedFirstName(object sender, TextChangedEventArgs e)
         {
+
+        }
+
+        private void OnTextChangedLastName(object sender, TextChangedEventArgs e)
+        {
+
         }
 
         private void OnSelChangedCompany(object sender, SelectionChangedEventArgs e)
@@ -510,59 +516,8 @@ namespace _01electronics_crm
 
         }
 
-        private void OnTextChangedFirstName(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedLastName(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnSelChangedCompany(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void OnSelChangedDepartment(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void OnSelChangedTeam(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedBusinessPhone(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedPersonalPhone(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedBusinessEmail(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedPersonalEmail(object sender, TextChangedEventArgs e)
-        {
-
-        }
         
-        private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
-        {
 
-        }
+    
     }
 }

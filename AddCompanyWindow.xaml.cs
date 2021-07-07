@@ -190,7 +190,7 @@ namespace _01electronics_crm
             if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
                 return false;
 
-            companyTelephone = outputString;
+            company.AddCompanyPhone(outputString);
             telephoneTextBox.Text = companyTelephone;
 
             return true;
@@ -359,7 +359,7 @@ namespace _01electronics_crm
 
             sqlQuery = string.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += companySerial;
+            sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
             sqlQuery += companySerial;
             sqlQuery += sqlQueryPart2;
@@ -405,7 +405,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += companySerial;
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + faxTextBox.Text + "'";
+            sqlQuery += company.GetCompanyFaxes()[0];
             sqlQuery += sqlQueryPart2;
             sqlQuery += employeeID;
             sqlQuery += sqlQueryPart2;
@@ -426,7 +426,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += companySerial;
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + telephoneTextBox.Text + "'";
+            sqlQuery += company.GetCompanyPhones()[0];
             sqlQuery += sqlQueryPart2;
             sqlQuery += employeeID;
             sqlQuery += sqlQueryPart2;
