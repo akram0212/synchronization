@@ -13,7 +13,7 @@ namespace _01electronics_erp
 {
     public class SQLServer
     {
-        private String sqlConnectionString = "Data Source=192.168.0.203;User ID=sa;Password=P@ssw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private String sqlConnectionString = @"Data Source=DEV-02\SQLEXPRESS;Initial Catalog=erp_system;Integrated Security=True;";
 
         private SqlConnection sqlConnection = null;
         private SqlCommand sqlCommand = null;

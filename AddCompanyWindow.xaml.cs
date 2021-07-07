@@ -321,7 +321,6 @@ namespace _01electronics_crm
                 InsertIntoCompanyFax(i);
 
             this.Hide();
-
         }
         private bool InsertIntoCompanyName()
         {

@@ -1,4 +1,5 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_crm;
+using _01electronics_erp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-<<<<<<< HEAD
-namespace TempCRM
-=======
 namespace _01electronics_crm
->>>>>>> salma
 {
     /// <summary>
     /// Interaction logic for WorkOrdersPage.xaml
@@ -64,8 +61,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
-            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            this.NavigationService.Navigate(statisticsPage);
+            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            //this.NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)

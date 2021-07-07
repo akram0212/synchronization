@@ -2771,61 +2771,46 @@ namespace _01electronics_erp
             return true;
         }
 
+
         public bool GetClientVisits(ref List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> returnVector)
         {
             returnVector.Clear();
 
-            String sqlQueryPart1 = @"with get_company_name	as	(	select company_address.address_serial, 
-        																	company_name.company_name 
-        															from erp_system.dbo.company_address 
-        															inner join erp_system.dbo.company_name 
-        															on company_address.company_serial = company_name.company_serial 
-        															), 
-        							get_visit_result		as	(	select successful_visit_plans.sales_person, 
-        																	successful_visit_plans.visit_serial, 
-        																	visit_plans_result.visit_result 
-        															from erp_system.dbo.successful_visit_plans 
-        															inner join erp_system.dbo.visit_plans_result 
-        															on successful_visit_plans.visit_result = visit_plans_result.id 
-        														) 
-        							select visit_plans.sales_person, 
-        							visit_plans.visit_serial, 
-        							visit_plans.visit_status, 
-        
-        							visit_plans.issue_date, 
-        							visit_plans.date_of_visit, 
-        
-        							employees_info.name, 
-        							get_company_name.company_name, 
-        							contact_person_info.name, 
-        							visit_plans_purpose.visit_purpose, 
-        							visit_plans_status.visit_status, 
-        							get_visit_result.visit_result 
-        
-        							from erp_system.dbo.visit_plans 
-        
-        							inner join erp_system.dbo.employees_info 
-        							on visit_plans.sales_person = employees_info.employee_id 
-        
-        							inner join get_company_name 
-        							on visit_plans.branch_serial = get_company_name.address_serial 
-        
-        							inner join erp_system.dbo.visit_plans_purpose 
-        							on visit_plans.visit_purpose = visit_plans_purpose.id 
-        
-        							inner join erp_system.dbo.contact_person_info 
-        							on visit_plans.sales_person = contact_person_info.sales_person_id 
-        							and visit_plans.branch_serial = contact_person_info.branch_serial 
-        							and visit_plans.contact_id = contact_person_info.contact_id 
-        
-        							inner join erp_system.dbo.visit_plans_status 
-        							on visit_plans.visit_status = visit_plans_status.id 
-        
-        							left join get_visit_result 
-        							on visit_plans.sales_person = get_visit_result.sales_person 
-        							and visit_plans.visit_serial = get_visit_result.visit_serial 
-        
-        							order by visit_plans.date_of_visit DESC;";
+            String sqlQueryPart1 = @"select employees_info.employee_id, 
+                                    client_visits.visit_serial, 
+                                    client_visits.visit_purpose, 
+                                    client_visits.visit_result, 
+
+                                    issue_date, 
+                                    date_of_visit, 
+
+                                    employees_info.name,
+                                    company_name.company_name, 
+                                    contact_person_info.name,
+	                                visits_purpose.visit_purpose, 
+                                    visits_result.visit_result
+                                    from erp_system.dbo.client_visits
+                                    
+                                    inner join erp_system.dbo.contact_person_info 
+                                    on client_visits.branch_serial = contact_person_info.branch_serial
+                                    and client_visits.sales_person = contact_person_info.sales_person_id
+                                    
+                                    inner join erp_system.dbo.company_address
+                                    on client_visits.branch_serial = company_address.address_serial
+                                    
+                                    inner join erp_system.dbo.company_name
+                                    on company_address.company_serial = company_name.company_serial
+                                    
+                                    inner join erp_system.dbo.visits_purpose
+                                    on client_visits.visit_purpose = visits_purpose.id
+                                    
+                                    inner join erp_system.dbo.visits_result
+                                    on client_visits.visit_result = visits_result.id
+                                    
+                                    inner join  erp_system.dbo.employees_info
+                                    on client_visits.sales_person = employees_info.employee_id
+                                    
+                                    order by client_visits.date_of_visit DESC;";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
