@@ -1,4 +1,5 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_crm;
+using _01electronics_erp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TempCRM
+namespace _01electronics_crm
 {
     /// <summary>
     /// Interaction logic for OfficeMeetingsPage.xaml
