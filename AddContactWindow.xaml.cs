@@ -325,22 +325,6 @@ namespace _01electronics_crm
                 QueryGetMaxContactMobileID();
                 QueryAddContactMobile(contact.GetContactPhones()[1]);
             }
-
-            MessageBox.Show("Contact Added Successfully");
-            this.Hide();
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT tmpCompanyStruct;
-
-            tmpCompanyStruct.contact_id = contact.GetContactId();
-            tmpCompanyStruct.company_serial = companies[companyNameComboBox.SelectedIndex].company_serial;
-
-            tmpCompanyStruct.address_serial = contact.GetAddressSerial();
-            tmpCompanyStruct.address = companyAddresses[companyBranchComboBox.SelectedIndex].address;
-
-            tmpCompanyStruct.contact_name = contact.GetContactName();
-            tmpCompanyStruct.department = contact.GetContactDepartment();
-            contactsPage.employeeContacts.Add(tmpCompanyStruct);
-            contactsPage.InitializeCompaniesTree();
         }
 
         private bool QueryAddContactInfo()

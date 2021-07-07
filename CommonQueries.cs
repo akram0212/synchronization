@@ -1331,6 +1331,80 @@ namespace _01electronics_erp
             }
             return true;
         }
+        public bool GetEmployeeCompanies(int salesPersonId, ref List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> returnVector)
+        {
+            returnVector.Clear();
+
+            String sqlQueryPart1 = @"select distinct company_name.company_serial, 
+                                    company_address.address, 
+									company_field_of_work.work_field, 
+									company_address.address_serial, 
+									company_name.company_name
+                            from erp_system.dbo.company_name
+                            inner join erp_system.dbo.company_field_of_work
+                            on company_name.company_serial = company_field_of_work.company_serial
+
+                            inner join erp_system.dbo.company_address
+                            on company_name.company_serial = company_address.company_serial
+
+                            left join erp_system.dbo.contact_person_info
+                            on company_address.address_serial = contact_person_info.branch_serial
+
+                            where contact_person_info.sales_person_id = ";
+
+            String sqlQueryPart2 = " or company_name.added_by = ";
+
+            String sqlQueryPart3 = " order by company_name;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += salesPersonId;
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += salesPersonId;
+            sqlQuery += sqlQueryPart3;
+
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 4;
+            queryColumns.sql_string = 1;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                if (!returnVector.Exists(companyItem => companyItem.company_serial == sqlDatabase.rows[i].sql_int[0]))
+                {
+                    COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT tempCompanyItem = new COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT();
+                    tempCompanyItem.company_serial = sqlDatabase.rows[i].sql_int[0];
+
+                    COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT branchObject = new COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT();
+                    branchObject.address_serial = sqlDatabase.rows[i].sql_int[3];
+                    branchObject.address = sqlDatabase.rows[i].sql_int[1];
+
+                    tempCompanyItem.work_field = sqlDatabase.rows[i].sql_int[2];
+                    tempCompanyItem.company_name = sqlDatabase.rows[i].sql_string[0];
+
+                    tempCompanyItem.branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT>();
+                    tempCompanyItem.branchesList.Add(branchObject);
+                    
+                    returnVector.Add(tempCompanyItem);
+                }
+                else
+                {
+                    COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT branchObject = new COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT();
+                    branchObject.address = sqlDatabase.rows[i].sql_int[1];
+                    branchObject.address_serial = sqlDatabase.rows[i].sql_int[3];
+
+                    returnVector.Find(companyItem => companyItem.company_serial == sqlDatabase.rows[i].sql_int[0]).branchesList.Add(branchObject);
+                }
+
+            }
+
+            return true;
+        }
+
         public bool GetEmployeeContacts(int salesPersonId, ref List<COMPANY_ORGANISATION_MACROS.CONTACT_PRO_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -1436,6 +1510,55 @@ namespace _01electronics_erp
             }
 
             return true;
+        }
+        public bool GetEmployeeContacts(int salesPersonId, ref List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> returnVector)
+        {
+            returnVector.Clear();
+
+            String QueryPart1 = @"select contact_person_info.contact_id, 
+                                    company_address.company_serial, 
+									company_address.address_serial, 
+									company_address.address, 
+									contact_person_info.name, 
+									departments_type.department
+                            from erp_system.dbo.contact_person_info
+                            inner join erp_system.dbo.company_address
+                            on contact_person_info.branch_serial = company_address.address_serial
+
+                            inner join erp_system.dbo.departments_type
+                            on contact_person_info.department = departments_type.id
+
+                            where contact_person_info.sales_person_id = ";
+
+            String QueryPart2 = @" and contact_person_info.is_valid = 1 
+                                  order by company_address.address; ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += QueryPart1;
+            sqlQuery += salesPersonId;
+            sqlQuery += QueryPart2;
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns2 = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns2.sql_int = 4;
+            queryColumns2.sql_string = 2;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns2, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT tempCompanyItem;
+                tempCompanyItem.contact_id = sqlDatabase.rows[i].sql_int[0];
+                tempCompanyItem.company_serial = sqlDatabase.rows[i].sql_int[1];
+                tempCompanyItem.address_serial = sqlDatabase.rows[i].sql_int[2];
+                tempCompanyItem.address = sqlDatabase.rows[i].sql_int[3];
+                tempCompanyItem.contact_name = sqlDatabase.rows[i].sql_string[0];
+                tempCompanyItem.department = sqlDatabase.rows[i].sql_string[1];
+
+                returnVector.Add(tempCompanyItem);
+            }
+
+            return true;   
         }
 
         public bool GetContactBusinessEmailCount(String contactEmail, ref int returnValue)
