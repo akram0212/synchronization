@@ -59,18 +59,26 @@
                             <Label Style="{StaticResource tableItemLabel}" Content="Company *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameComboBox" SelectionChanged="OnSelChangedCompany"/>
                         </WrapPanel>
-                        
+
                         <WrapPanel Name="BranchWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Branch *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyBranchComboBox" SelectionChanged="OnSelChangedBranch"/>
                         </WrapPanel>
-                        <Label Style="{StaticResource tableItemLabel}" Content="Department *"/>
-                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeDepartmentComboBox" SelectionChanged="OnSelChangedDepartment"/>
                     </WrapPanel>
 
-
-
                     <WrapPanel Grid.Row="2">
+                        <WrapPanel Name="ContactDepartmentWrapPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Department *"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeDepartmentComboBox" SelectionChanged="OnSelChangedDepartment"/>
+                        </WrapPanel>
+
+                        <WrapPanel Name="ContactTeamWrapPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Team *"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeTeamComboBox" SelectionChanged="OnSelChangedTeam"/>
+                        </WrapPanel>
+                    </WrapPanel>
+
+                    <WrapPanel Grid.Row="3">
                         <WrapPanel Name="ContactBusinessPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Business Phone *"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
@@ -82,7 +90,7 @@
                         </WrapPanel>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3">
+                    <WrapPanel Grid.Row="4">
                         <WrapPanel Name="ContactBusinessEmailWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Business Email *"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessEmailTextBox" TextChanged="OnTextChangedBusinessEmail"/>

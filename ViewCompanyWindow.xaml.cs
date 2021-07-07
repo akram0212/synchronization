@@ -1,4 +1,3 @@
-﻿using _01electronics_erp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using _01electronics_erp;
 
 namespace _01electronics_crm
 {
@@ -20,11 +20,15 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ViewCompanyWindow : Window
     {
-        Company company;
-        protected CommonQueries commonQueries;
         protected Employee loggedInUser;
+        
+        protected CommonQueries commonQueries;
+
+        protected Company company;
+
         protected int phonesCount;
         protected int faxesCount;
+
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchesList;
         public ViewCompanyWindow(ref Employee mLoggedInUser, int companySerial)
         {

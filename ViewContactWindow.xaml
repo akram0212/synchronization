@@ -71,16 +71,11 @@
                             <Label Style="{StaticResource tableItemLabel}" Content="Department"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="departmentTextBox"/>
                         </WrapPanel>
-
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3" Name="wrapPanel3">
+                    <WrapPanel Grid.Row="3" Name="wrapPanel3"/>
 
-                    </WrapPanel> 
-                    
-                    <WrapPanel Grid.Row="4" Name="wrapPanel4">
-
-                    </WrapPanel>
+                    <WrapPanel Grid.Row="4" Name="wrapPanel4"/>
 
                 </Grid>
 

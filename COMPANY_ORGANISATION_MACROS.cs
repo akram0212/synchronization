@@ -55,6 +55,12 @@ namespace _01electronics_erp
             public int company_serial;
         };
 
+        public struct BRANCH_MIN_STRUCT
+        {
+            public int address_serial;
+            public int address;
+        }
+
         public struct BRANCH_STRUCT
         {
             public int address_serial;
@@ -184,22 +190,21 @@ namespace _01electronics_erp
         //new added structs by salma
         public struct LIST_COMPANY_STRUCT
         {
+            public String company_name;
+
             public int company_serial;
             public int work_field;
-            public String company_name;
-            public List<Branch_STRUCT> branchesList;
+            
+            public List<BRANCH_MIN_STRUCT> branchesList;
         };
-        public struct Branch_STRUCT
-        {
-            public int address_serial;
-            public int address;
-        }
-            public struct LIST_CONTACT_STRUCT
+
+        public struct LIST_CONTACT_STRUCT
         {
             public int contact_id;
             public int company_serial;
             public int address_serial;
             public int address;
+
             public String contact_name;
             public String department;
         };

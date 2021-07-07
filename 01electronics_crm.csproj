@@ -120,10 +120,12 @@
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOrder.cs" />
+
     <Page Include="AddBranchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+
     <Page Include="AddCompanyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -141,8 +143,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContactsPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -197,8 +199,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewContactWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewRFQWindow.xaml">
       <SubType>Designer</SubType>

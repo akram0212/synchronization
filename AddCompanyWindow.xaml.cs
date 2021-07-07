@@ -41,6 +41,7 @@ namespace _01electronics_crm
         public AddCompanyWindow(ref Employee mLoggedInUser)
         {
             loggedInUser = mLoggedInUser;
+
             InitializeComponent();
 
             sqlServer = new SQLServer();
@@ -84,8 +85,10 @@ namespace _01electronics_crm
         private void OnSelChangedPrimaryWorkField(object sender, SelectionChangedEventArgs e)
         {
             secondaryWorkField.Items.Clear();
+
             if (primaryWorkFieldComboBox.SelectedItem != null)
                 commonQueries.GetSecondaryWorkFields(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, secondaryWorkFields);
+
             for (int i = 0; i < secondaryWorkFields.Count; i++)
             {
                 secondaryWorkField.Items.Add(secondaryWorkFields[i].field_name);
@@ -105,6 +108,7 @@ namespace _01electronics_crm
 
             if (countryComboBox.SelectedItem != null)
                 commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states);
+
             stateComboBox.Items.Clear();
             for (int i = 0; i < states.Count(); i++)
             {
@@ -181,6 +185,7 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyPhone(outputString);
+
             telephoneTextBox.Text = company.GetCompanyPhones()[0];
 
             return true;
@@ -299,8 +304,6 @@ namespace _01electronics_crm
             if (!CheckCompanyFaxEditBox())
                 return;
 
-           // address = districts[districtComboBox.SelectedIndex].district_id;
-            
             QueryGetMaxCompanySerial();
             QueryGetMaxBranchSerial(); 
             QueryAddCompanyName();
@@ -317,7 +320,6 @@ namespace _01electronics_crm
                 QueryAddCompanyFax();
             }
 
-         
             MessageBox.Show("Company Added Successfully");
             this.Hide();
 
@@ -332,9 +334,10 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" +company.GetCompanyName()+ "'";
+            sqlQuery += company.GetCompanyName();
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
+
             sqlQuery += sqlQueryPart2;
             sqlQuery += sqlQueryPart3;
 
@@ -379,6 +382,7 @@ namespace _01electronics_crm
             sqlQuery += company.GetCompanySecondaryFieldId();
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
+
             sqlQuery += sqlQueryPart2;
             sqlQuery += sqlQueryPart3;
 
@@ -397,7 +401,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + faxTextBox.Text + "'";
+            sqlQuery += company.GetCompanyFaxes()[0];
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;
@@ -418,7 +422,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + company.GetCompanyPhones()[0] + "'";
+            sqlQuery += company.GetCompanyPhones()[0];
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;
@@ -451,6 +455,7 @@ namespace _01electronics_crm
         {
             String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
             sqlQuery = String.Empty;
+
             sqlQuery += sqlQueryPart1;
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 

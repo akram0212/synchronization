@@ -197,8 +197,7 @@ namespace _01electronics_erp
 
             addressKnown = true;
 
-            //InitializeCompanyContacts();
-            //ownerUserId, companySerial, ref companyContacts
+            InitializeCompanyContacts();
 
             return true;
         }

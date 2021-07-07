@@ -2833,7 +2833,6 @@ namespace _01electronics_erp
             return true;
         }
 
-
     }
 
 }

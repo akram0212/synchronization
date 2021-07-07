@@ -29,6 +29,7 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
         protected IntegrityChecks integrityChecker;
+
         //String address_serial;
         //int address;
         //int loggedInUser.GetEmployeeId();
@@ -55,6 +56,7 @@ namespace _01electronics_crm
         public AddContactWindow(ref Employee mLoggedInUser)
         {
             loggedInUser = mLoggedInUser;
+
             InitializeComponent();
 
             sqlServer = new SQLServer();
@@ -73,21 +75,17 @@ namespace _01electronics_crm
             //this.company = company;
 
             commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companies);
+
             for (int i = 0; i < companies.Count; i++)
             {
                 companyNameComboBox.Items.Add(companies[i].company_name);
             }
+
             commonQueries.GetDepartmentsType(ref departments);
             for (int i = 0; i < departments.Count; i++)
             {
                 employeeDepartmentComboBox.Items.Add(departments[i].department_name);
             }
-
-            //commonQueries.GetTeamsType(ref teams);
-            //for (int i = 0; i < teams.Count; i++)
-            //{
-            //    employeeTeamComboBox.Items.Add(teams[i].team_name);
-            //}
 
             contactGenderComboBox.Items.Add("Male");
             contactGenderComboBox.Items.Add("Female");
@@ -96,6 +94,7 @@ namespace _01electronics_crm
 
         private void OnTextChangedFirstName(object sender, TextChangedEventArgs e)
         {
+
         }
 
         private void OnSelChangedCompany(object sender, SelectionChangedEventArgs e)
@@ -103,7 +102,9 @@ namespace _01electronics_crm
             if (companyNameComboBox.SelectedItem != null)
             {
                 companyBranchComboBox.Items.Clear();
+
                 commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial, ref companyAddresses);
+
                 for (int i = 0; i < companyAddresses.Count; i++)
                 {
                     companyBranchComboBox.Items.Add(companyAddresses[i].country + ",\t" + companyAddresses[i].state_governorate + ",\t" + companyAddresses[i].city + ",\t" + companyAddresses[i].district);
@@ -117,8 +118,7 @@ namespace _01electronics_crm
 
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
-            //address_serial = companyAddresses[companyBranchComboBox.SelectedIndex].address_serial.ToString();
-            //address = companyAddresses[companyBranchComboBox.SelectedIndex].address;
+
         }
 
         private void OnSelChangedDepartment(object sender, SelectionChangedEventArgs e)
@@ -147,6 +147,7 @@ namespace _01electronics_crm
         {
             String inputString = employeeFirstNameTextBox.Text;
             String outputString = employeeFirstNameTextBox.Text;
+
 
             if (!integrityChecker.CheckContactNameEditBox(inputString, ref outputString, true))
                 return false;
@@ -303,6 +304,7 @@ namespace _01electronics_crm
             QueryGetMaxContactID();
 
             contact.SetAddressSerial(companyAddresses[companyBranchComboBox.SelectedIndex].address_serial);
+
             contact.SetSalesPerson(loggedInUser);
             contact.SetContactId(contactID);
 
@@ -315,6 +317,7 @@ namespace _01electronics_crm
             }
 
             QueryGetMaxContactMobileID();
+
             QueryAddContactMobile(contact.GetContactPhones()[0]);
 
             if (employeePersonalPhoneTextBox.Text != "")
@@ -327,10 +330,13 @@ namespace _01electronics_crm
             this.Hide();
             ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
             COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT tmpCompanyStruct;
+
             tmpCompanyStruct.contact_id = contact.GetContactId();
             tmpCompanyStruct.company_serial = companies[companyNameComboBox.SelectedIndex].company_serial;
+
             tmpCompanyStruct.address_serial = contact.GetAddressSerial();
             tmpCompanyStruct.address = companyAddresses[companyBranchComboBox.SelectedIndex].address;
+
             tmpCompanyStruct.contact_name = contact.GetContactName();
             tmpCompanyStruct.department = contact.GetContactDepartment();
             contactsPage.employeeContacts.Add(tmpCompanyStruct);
@@ -425,6 +431,7 @@ namespace _01electronics_crm
 
         private bool QueryGetMaxContactID()
         {
+
             String sqlQueryPart1 = "select max(contact_id) from erp_system.dbo.contact_person_info where branch_serial = ";
             String sqlQueryPart2 = " and sales_person_id = ";
             sqlQuery = String.Empty;
@@ -447,6 +454,7 @@ namespace _01electronics_crm
         } 
         private bool QueryGetMaxPersonalEmailID()
         {
+
             String sqlQueryPart1 = "select max(email_id) from erp_system.dbo.contact_person_personal_emails where branch_serial = ";
             String sqlQueryPart2 = " and sales_person_id = ";
             String sqlQueryPart3 = " and contact_id =  ";
@@ -456,6 +464,7 @@ namespace _01electronics_crm
             sqlQuery += contact.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
+
             sqlQuery += sqlQueryPart3;
             sqlQuery += contactID;
 
@@ -475,6 +484,7 @@ namespace _01electronics_crm
         
         private bool QueryGetMaxContactMobileID()
         {
+
             String sqlQueryPart1 = "select max(telephone_id) from erp_system.dbo.contact_person_mobile where branch_serial = ";
             String sqlQueryPart2 = " and sales_person_id = ";
             String sqlQueryPart3 = " and contact_id =  ";
@@ -506,11 +516,13 @@ namespace _01electronics_crm
 
         }
 
+
      
 
         private void OnTextChangedLastName(object sender, TextChangedEventArgs e)
         {
 
         }
+
     }
 }

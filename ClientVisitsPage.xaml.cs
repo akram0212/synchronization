@@ -14,7 +14,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+<<<<<<< HEAD
 namespace TempCRM
+=======
+namespace _01electronics_crm
+>>>>>>> salma
 {
     /// <summary>
     /// Interaction logic for ClientVisitsPage.xaml

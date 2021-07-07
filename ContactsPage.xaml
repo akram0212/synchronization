@@ -99,7 +99,6 @@
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
                     <TreeView Name="treeViewItem" SelectedItemChanged="treeViewItemSelectedItemChanged" >
-
                     </TreeView>
                 </ScrollViewer>
 

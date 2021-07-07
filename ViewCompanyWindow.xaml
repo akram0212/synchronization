@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Name="ContactProfileHeader" Content="VIEW COMPANY" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
@@ -55,22 +55,19 @@
                         </WrapPanel>
                     </WrapPanel>
 
-                   
                     <WrapPanel Grid.Row="2">
                         <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3" Name="companyPhonesWrapPanel">
-
-                    </WrapPanel>
+                    <WrapPanel Grid.Row="3" Name="companyPhonesWrapPanel"/>
                 </Grid>
 
             </WrapPanel>
 
         </ScrollViewer>
-        <Button Grid.Row="2" Content="Add Branch" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
 
+        <Button Grid.Row="2" Content="Add Branch" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
 
     </Grid>
 

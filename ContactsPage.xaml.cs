@@ -35,7 +35,9 @@ namespace _01electronics_crm
         List<BASIC_STRUCTS.STATE_STRUCT> states;
         List<BASIC_STRUCTS.CITY_STRUCT> cities;
         List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
+
         TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
+
         List<KeyValuePair<COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT, TreeViewItem>> contactsTreeArray = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT, TreeViewItem>>();
 
         public ContactsPage(ref Employee mLoggedInUser)
@@ -83,7 +85,6 @@ namespace _01electronics_crm
         public bool QueryToGetAllCompanies()
         {
             String sqlQueryPart1 = @"select distinct company_name.company_serial, 
-
                                     company_address.address, 
 									company_field_of_work.work_field, 
 									company_address.address_serial, 
@@ -128,32 +129,33 @@ namespace _01electronics_crm
                     COMPANY_ORGANISATION_MACROS.LIST_COMPANY_STRUCT tmpCompanyStruct;
                     tmpCompanyStruct.company_serial = initializationObject.rows[i].sql_int[0];
 
-                    COMPANY_ORGANISATION_MACROS.Branch_STRUCT branchObject;
+                    COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT branchObject;
                     branchObject.address_serial = initializationObject.rows[i].sql_int[3];
                     branchObject.address = initializationObject.rows[i].sql_int[1];
 
                     tmpCompanyStruct.work_field = initializationObject.rows[i].sql_int[2];
                     tmpCompanyStruct.company_name = initializationObject.rows[i].sql_string[0];
 
-                    tmpCompanyStruct.branchesList = new List<COMPANY_ORGANISATION_MACROS.Branch_STRUCT>();
+                    tmpCompanyStruct.branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT>();
                     tmpCompanyStruct.branchesList.Add(branchObject);
                     companies.Add(tmpCompanyStruct);
                 }
                 else
                 {
-                    COMPANY_ORGANISATION_MACROS.Branch_STRUCT branchObject;
+                    COMPANY_ORGANISATION_MACROS.BRANCH_MIN_STRUCT branchObject;
                     branchObject.address_serial = initializationObject.rows[i].sql_int[3];
                     branchObject.address = initializationObject.rows[i].sql_int[1];
                     itemFound.branchesList.Add(branchObject);
                 }
+
             }
+
             return true;
         }
 
         public bool QueryToGetAllContacts()
         {
             String QueryPart1 = @"select contact_person_info.contact_id, 
-
                                     company_address.company_serial, 
 									company_address.address_serial, 
 									company_address.address, 
@@ -271,7 +273,6 @@ namespace _01electronics_crm
         {
             
         }
-
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -305,7 +306,6 @@ namespace _01electronics_crm
         {
             districtComboBox.IsEnabled = true;
         }
-
         private void salesPersonCheckBoxChecked(object sender, RoutedEventArgs e)
         {
 
@@ -378,7 +378,6 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
             
         }
-
         private void districtComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
@@ -389,6 +388,7 @@ namespace _01electronics_crm
         {
             countryComboBox.IsEnabled = false;
             stateComboBox.IsEnabled = false;
+
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
@@ -498,7 +498,6 @@ namespace _01electronics_crm
             {
                 ViewBtn.IsEnabled = false;
             }
-
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
@@ -511,7 +510,7 @@ namespace _01electronics_crm
                 if (companiesTreeArray[i] == selectedItem)
                 {
                     ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, i);
-                    //viewCompanyWindow.Closed += handlerFunction;
+                    
                     viewCompanyWindow.Show();
                     check = true;
                 }
@@ -544,5 +543,6 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
         }
     }
+
 
 }
