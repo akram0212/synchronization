@@ -61,7 +61,7 @@ namespace _01electronics_crm
 
             commonQueries.GetPrimaryWorkFields(ref primaryWorkFields);
 
-            for(int i = 0; i < primaryWorkFields.Count; i++)
+            for (int i = 0; i < primaryWorkFields.Count; i++)
             {
                 primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
             }
@@ -187,12 +187,11 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyPhone(outputString);
-
             telephoneTextBox.Text = company.GetCompanyPhones()[0];
 
             return true;
-        } 
-        
+        }
+
         private bool CheckCompanyFaxEditBox()
         {
             String inputString = faxTextBox.Text;
@@ -216,7 +215,7 @@ namespace _01electronics_crm
             }
 
             company.SetCompanyPrimaryField(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, primaryWorkFieldComboBox.SelectedItem.ToString());
-           
+
             return true;
         }
 
@@ -231,8 +230,8 @@ namespace _01electronics_crm
             company.SetCompanySecondaryField(secondaryWorkFields[secondaryWorkField.SelectedIndex].field_id, secondaryWorkField.SelectedItem.ToString());
 
             return true;
-        } 
-        
+        }
+
         private bool CheckCountryComboBox()
         {
             if (countryComboBox.SelectedItem == null)
@@ -244,8 +243,8 @@ namespace _01electronics_crm
             company.SetCompanyCountry(countries[countryComboBox.SelectedIndex].country_id, countryComboBox.SelectedItem.ToString());
 
             return true;
-        } 
-        
+        }
+
         private bool CheckStateComboBox()
         {
             if (stateComboBox.SelectedItem == null)
@@ -270,7 +269,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         private bool CheckDistrictComboBox()
         {
             if (districtComboBox.SelectedItem == null)
@@ -292,41 +291,39 @@ namespace _01electronics_crm
             if (!CheckPrimaryWorkFieldComboBox())
                 return;
             if (!CheckSecondaryWorkFieldComboBox())
-                return; 
+                return;
             if (!CheckCountryComboBox())
                 return;
             if (!CheckStateComboBox())
-                return; 
+                return;
             if (!CheckCityComboBox())
-                return; 
+                return;
             if (!CheckDistrictComboBox())
                 return;
             if (!CheckCompanyPhoneEditBox())
-                return; 
+                return;
             if (!CheckCompanyFaxEditBox())
                 return;
 
-            QueryGetMaxCompanySerial();
-            QueryGetMaxBranchSerial(); 
-            QueryAddCompanyName();
-            QueryAddCompanyAddress();
-            QueryAddCompanyWorkField();
+            //YOU DON'T NEED TO WRITE A QUERY TO GET NEW SERIAL,
+            //THE COMPANY CLASS HANDLES ALL THAT 
+            company.GetNewCompanySerial();
+            company.GetNewAddressSerial();
 
-            if (telephoneTextBox.Text != "")
-            {
-                QueryAddCompanyTelephone();
-            }
+            InsertIntoCompanyName();
+            InsertIntoCompanyAddress();
+            InsertIntoCompanyWorkField();
 
-            if (faxTextBox.Text != "")
-            {
-                QueryAddCompanyFax();
-            }
+            for (int i = 0; i < company.GetNumberOfSavedCompanyPhones(); i++)
+                InsertIntoCompanyTelephone(i);
 
-            MessageBox.Show("Company Added Successfully");
+            for (int i = 0; i < company.GetNumberOfSavedCompanyFaxes(); i++)
+                InsertIntoCompanyFax(i);
+
             this.Hide();
 
         }
-        private bool QueryAddCompanyName()
+        private bool InsertIntoCompanyName()
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_name values(";
             String sqlQueryPart2 = ", ";
@@ -336,7 +333,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyName();
+            sqlQuery += "'" + company.GetCompanyName() + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
 
@@ -348,7 +345,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        private bool QueryAddCompanyAddress()
+        private bool InsertIntoCompanyAddress()
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
             String sqlQueryPart2 = ", ";
@@ -370,8 +367,8 @@ namespace _01electronics_crm
                 return false;
 
             return true;
-        } 
-        private bool QueryAddCompanyWorkField()
+        }
+        private bool InsertIntoCompanyWorkField()
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_field_of_work values(";
             String sqlQueryPart2 = ", ";
@@ -392,8 +389,8 @@ namespace _01electronics_crm
                 return false;
 
             return true;
-        } 
-        private bool QueryAddCompanyFax()
+        }
+        private bool InsertIntoCompanyFax(int faxId)
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_fax values(";
             String sqlQueryPart2 = ", ";
@@ -403,7 +400,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyFaxes()[0];
+            sqlQuery += "'" + company.GetCompanyFaxes()[faxId] + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;
@@ -414,7 +411,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        private bool QueryAddCompanyTelephone()
+        private bool InsertIntoCompanyTelephone(int telephoneId)
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
             String sqlQueryPart2 = ", ";
@@ -424,7 +421,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyPhones()[0];
+            sqlQuery += "'" + company.GetCompanyPhones()[telephoneId] + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;
@@ -435,41 +432,5 @@ namespace _01electronics_crm
 
             return true;
         }
-        private bool QueryGetMaxCompanySerial()
-        {
-            String sqlQueryPart1 = "select max(company_serial) from erp_system.dbo.company_name ";
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            company.SetCompanySerial(1 + sqlServer.rows[0].sql_int[0]);
-
-            return true;
-        }
-        
-        private bool QueryGetMaxBranchSerial()
-        {
-            String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
-            sqlQuery = String.Empty;
-
-            sqlQuery += sqlQueryPart1;
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            company.SetAddressSerial(1 + sqlServer.rows[0].sql_int[0]);
-
-            return true;
-        }
-        }
+    }
 }
