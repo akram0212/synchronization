@@ -36,6 +36,8 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             visitsInfo = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
+            currentSelectedVisitItem = new Grid();
+            previousSelectedVisitItem = new Grid();
 
             viewButton.IsEnabled = false;
 
@@ -136,7 +138,7 @@ namespace _01electronics_crm
             {
                 previousSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[0];
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[1];
                 Border previousSelectedBorder = (Border)previousSelectedVisitItem.Children[1];
                 Label previousStatusLabel = (Label)previousSelectedBorder.Child;
 
@@ -148,7 +150,7 @@ namespace _01electronics_crm
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[0];
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[1];
             Border currentSelectedBorder = (Border)currentSelectedVisitItem.Children[1];
             Label currentStatusLabel = (Label)currentSelectedBorder.Child;
 
