@@ -30,20 +30,18 @@ namespace _01electronics_crm
         protected int faxesCount;
 
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchesList;
-        public ViewCompanyWindow(ref Employee mLoggedInUser, int companySerial)
+        public ViewCompanyWindow(ref Employee mLoggedInUser, ref Company mCompany)
         {
             InitializeComponent();
 
-            company = new Company();
+            loggedInUser = mLoggedInUser;
+            company = mCompany;
+
             commonQueries = new CommonQueries();
             loggedInUser = new Employee();
             branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
 
-
-            company.InitializeCompanyInfo(companySerial);
-            commonQueries.GetCompanyAddresses(company.GetCompanySerial(), ref branchesList);
-            loggedInUser = mLoggedInUser;
-
+            
             companyNameTextBox.IsEnabled = false;
             primaryWorkFieldTextBox.IsEnabled = false;
             secondaryWorkFieldTextBox.IsEnabled = false;

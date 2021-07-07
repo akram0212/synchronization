@@ -55,7 +55,6 @@ namespace _01electronics_erp
         private int cityId;
         private int districtId;
 
-        private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts;
         public CommonQueries commonQueries;
         public Company()
         {
@@ -197,16 +196,6 @@ namespace _01electronics_erp
 
             addressKnown = true;
 
-            InitializeCompanyContacts();
-
-            return true;
-        }
-
-        private bool InitializeCompanyContacts()
-        {
-            if (!commonQueries.GetCompanyContacts(ownerUserId, addressSerial, ref companyContacts))
-                return false;
-
             return true;
         }
 
@@ -264,15 +253,7 @@ namespace _01electronics_erp
             secondaryFieldId = mSecondaryFieldId;
             secondaryField = mSecondaryField;
         }
-        /// <summary>
-        /// set company contacts
-        /// </summary>
-        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
-
-        public void SetCompanyContacts(List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts)
-        {
-            this.companyContacts = companyContacts;
-        }
+        
         public void AddCompanyPhone(String mPhone)
         {
             companyPhones.Add(mPhone);
@@ -456,21 +437,7 @@ namespace _01electronics_erp
 
             return true;
         }
-        /// <summary>
-        /// get company contacts
-        /// </summary>
-        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
-        public List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> GetCompanyContacts()
-        {
-            return companyContacts;
-        }
-
-        /// <summary>
-        /// intialize company contacts
-        /// </summary>
-        /// <returns>List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> companyContacts</returns>
-
-   
+        
         //////////////////////////////////////////////////////////////////////
         //QUERY FUNCTIONS
         //////////////////////////////////////////////////////////////////////

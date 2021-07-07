@@ -39,11 +39,10 @@ namespace _01electronics_crm
 
         private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
 
-        private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>> contactsTreeArray = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>>();
+        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
 
         public ContactsPage(ref Employee mLoggedInUser)
         {
-            InitializeComponent();
             initializationObject = new SQLServer();
 
             contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
@@ -55,6 +54,8 @@ namespace _01electronics_crm
 
             commonQueries = new CommonQueries();
             loggedInUser = mLoggedInUser;
+
+            InitializeComponent();
 
             countryComboBox.IsEnabled = false; 
             stateComboBox.IsEnabled = false;
@@ -144,14 +145,14 @@ namespace _01electronics_crm
 
         public bool InitializeCompaniesTree()
         {
-            treeViewItem.Items.Clear();
+            contactTreeView.Items.Clear();
             
             TreeViewItem ParentItem = new TreeViewItem();
             
             ParentItem.Header = loggedInUser.GetEmployeeName();
-            ParentItem.Tag = (String)loggedInUser.GetEmployeeId().ToString();
+            ParentItem.Tag = loggedInUser.GetEmployeeId();
 
-            treeViewItem.Items.Add(ParentItem);
+            contactTreeView.Items.Add(ParentItem);
 
             for (int i = 0; i < companiesList.Count(); i++)
             {
@@ -166,7 +167,8 @@ namespace _01electronics_crm
 
                 TreeViewItem ChildItem = new TreeViewItem();
                 ChildItem.Header = companiesList[i].company_name;
-                ChildItem.Tag = companiesList[i].company_serial.ToString();
+                ChildItem.Tag = companiesList[i].company_serial;
+
                 companiesTreeArray[companiesList[i].company_serial] = ChildItem;
 
                 ParentItem.Items.Add(ChildItem);
@@ -181,14 +183,17 @@ namespace _01electronics_crm
 
             for (int i = 0; i < contactsList.Count(); i++)
             {
-                if (companiesTreeArray[contactsList[i].company_serial] != null)
-                {
-                    TreeViewItem ChildItem = new TreeViewItem();
+                TreeViewItem companyTreeItem = companiesTreeArray[contactsList[i].company_serial];
 
-                    ChildItem.Header = contactsList[i].contact_name;
-                    ChildItem.Tag = (contactsList[i].contact_id + contactsList[i].company_serial + loggedInUser.GetEmployeeId()).ToString();
-                    companiesTreeArray[contactsList[i].company_serial].Items.Add(ChildItem);
-                    contactsTreeArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>(contactsList[i], ChildItem));
+                if (companyTreeItem != null)
+                {
+                    TreeViewItem contactTreeItem = new TreeViewItem();
+
+                    contactTreeItem.Header = contactsList[i].contact_name;
+
+                    companyTreeItem.Items.Add(contactTreeItem);
+
+                    contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>(contactTreeItem, contactsList[i]));
                 }
 
             }
@@ -236,6 +241,9 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(contacts);
         }
 
+        //////////////////////////////////////////////////////////
+        /// ON CHECK HANDLERS
+        //////////////////////////////////////////////////////////
         private void OnCheckedCountryCheckBox(object sender, RoutedEventArgs e)
         {
             countryComboBox.IsEnabled = true;
@@ -260,6 +268,10 @@ namespace _01electronics_crm
 
         }
 
+        //////////////////////////////////////////////////////////
+        /// ON SELECTION CHANGED HANDLERS
+        //////////////////////////////////////////////////////////
+        ///
         private void OnSelectionChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = false;
@@ -279,7 +291,6 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
            
         }
-
         private void OnSelectionChangedStateComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = true;
@@ -296,7 +307,6 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
 
         }
-
         private void OnSelectionChangedCityComboBox(object sender, SelectionChangedEventArgs e)
         {
             districtCheckBox.IsEnabled = true;
@@ -316,6 +326,9 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
         }
 
+        //////////////////////////////////////////////////////////
+        /// ON UNCHECKED HANDLERS
+        //////////////////////////////////////////////////////////
         private void OnUncheckedCountryCheckBox(object sender, RoutedEventArgs e)
         {
             countryComboBox.IsEnabled = false;
@@ -340,7 +353,6 @@ namespace _01electronics_crm
             districtCheckBox.IsChecked = false;
 
         }
-
         private void OnUncheckedStateCheckBox(object sender, RoutedEventArgs e)
         {
             stateComboBox.IsEnabled = false;
@@ -359,7 +371,6 @@ namespace _01electronics_crm
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
         }
-
         private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
         {
             cityComboBox.IsEnabled = false;
@@ -375,28 +386,28 @@ namespace _01electronics_crm
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
         }
-
         private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
         {
             districtComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
             districtComboBox.Items.Clear();
             salesPersonCheckBox.IsEnabled = false;
-        }
-        
+        }   
         private void OnUncheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
             
         }
 
+        //////////////////////////////////////////////////////////
+        /// ON BTN CLICKED HANDLERS
+        //////////////////////////////////////////////////////////
         private void OnBtnClickedAddCompany(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
-            TreeViewItem selectedItem = (TreeViewItem)treeViewItem.SelectedItem;
             AddCompanyWindow addCompanyWindow = new AddCompanyWindow(ref loggedInUser);
+            addCompanyWindow.Closed += OnClosedAddCompanyWindow;
             addCompanyWindow.Show();
         }
-
         private void OnBtnClickedAddContact(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
@@ -406,6 +417,13 @@ namespace _01electronics_crm
             addContactWindow.Show();
         }
 
+        private void OnClosedAddCompanyWindow(object sender, EventArgs e)
+        {
+            GetAllCompanies();
+            GetAllContacts();
+
+            InitializeCompaniesTree();
+        }
         private void OnClosedAddContactWindow(object sender, EventArgs e)
         {
             GetAllCompanies();
@@ -415,72 +433,36 @@ namespace _01electronics_crm
         }
         private void OnSelectedItemChangedTreeViewItem(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem selectedItem = (TreeViewItem)treeViewItem.SelectedItem;
-            bool check = false;
-            bool checkContact = false;
-            for (int i = 0; i < companiesTreeArray.Length; i++)
-            {
-                if (companiesTreeArray[i] == selectedItem)
-                {
-                    ViewBtn.IsEnabled = true;
-                    check = true;
-                }
-
-            }
-            if (check == false)
-            {
-                for (int i = 0; i < contactsTreeArray.Count; i++)
-                {
-                    if (contactsTreeArray[i].Value == selectedItem)
-                    {
-                        ViewBtn.IsEnabled = true;
-                        checkContact = true;
-                    }
-
-                }
-
-            }
-            else if(check == false && checkContact == false)
-            {
-                ViewBtn.IsEnabled = false;
-            }
+            //VIEW BUTTON IS ENABLED ONCE ANY ITEM IS SELECTED
+            ViewBtn.IsEnabled = true;
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
-            TreeViewItem selectedItem = (TreeViewItem)treeViewItem.SelectedItem;
-            bool check = false;
-            bool checkContact = false;
+            TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
+            //TreeViewItem parentItem = (TreeViewItem)selectedItem.Parent;
+            //DependencyObject RootItem = selectedItem.Parent;
 
-            for (int i = 0; i < companiesTreeArray.Length; i++)
+            if (!selectedItem.HasItems)
             {
-                if (companiesTreeArray[i] == selectedItem)
-                {
-                    ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, i);
-                    
-                    viewCompanyWindow.Show();
-                    check = true;
-                }
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct;
+                currentContactStruct = contactsTreeArray.Find(current_item => current_item.Key.Tag == selectedItem.Tag).Value;
 
+                Contact selectedContact = new Contact();
+                selectedContact.InitializeContactInfo(currentContactStruct.sales_person_id, currentContactStruct.address_serial, currentContactStruct.contact_id);
+
+                ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
+                viewContactWindow.Show();
             }
-            if (check == false)
+            else 
             {
-                for (int i = 0; i < contactsTreeArray.Count; i++)
-                {
-                    if (contactsTreeArray[i].Value == selectedItem)
-                    {
-                        ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, contactsTreeArray[i].Key);
-                        viewContactWindow.Show();
-                        checkContact = true;
-                    }
+                Company currentCompany = new Company();
+                currentCompany.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
 
-                }
-
+                ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompany);
+                viewCompanyWindow.Show();
             }
-            else if(checkContact == false)
-            {
-                ViewBtn.IsEnabled = false;
-            }
+           
         }
     }
 

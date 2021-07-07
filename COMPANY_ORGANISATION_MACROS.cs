@@ -48,7 +48,6 @@ namespace _01electronics_erp
         public const int MAX_SENIORS = MAX_NUMBER_OF_TEAMS_PER_DEP;
 
         //COMPANIES STRUCTS
-
         public struct COMPANY_STRUCT
         {
             public String company_name;
@@ -84,6 +83,16 @@ namespace _01electronics_erp
             public int company_serial;
             public int address_serial;
             public int address;
+        };
+        
+        public struct COMPANY_LIST_STRUCT
+        {
+            public String company_name;
+
+            public int company_serial;
+            public int work_field;
+
+            public List<BRANCH_MIN_STRUCT> branchesList;
         };
 
         //COMPANY ORGANISATIONS STRUCTS
@@ -163,6 +172,17 @@ namespace _01electronics_erp
             public int contact_id;
         };
 
+        public struct CONTACT_LIST_STRUCT
+        {
+            public int sales_person_id;
+            public int contact_id;
+            public int company_serial;
+            public int address_serial;
+
+            public String contact_name;
+            public String department;
+        };
+
         public struct CONTACT_AMATEUR_STRUCT
         {
             public CONTACT_BASIC_STRUCT contact;
@@ -186,29 +206,6 @@ namespace _01electronics_erp
             public String business_email;
             public String personal_email;
         };
-
-        //new added structs by salma
-        public struct COMPANY_LIST_STRUCT
-        {
-            public String company_name;
-
-            public int company_serial;
-            public int work_field;
-            
-            public List<BRANCH_MIN_STRUCT> branchesList;
-        };
-
-        public struct CONTACT_LIST_STRUCT
-        {
-            public int contact_id;
-            public int company_serial;
-            public int address_serial;
-            public int address;
-
-            public String contact_name;
-            public String department;
-        };
-
 
     }
 }
