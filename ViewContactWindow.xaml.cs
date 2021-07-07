@@ -25,7 +25,7 @@ namespace _01electronics_crm
         String [] phones;
         String [] personalEmails;
         String contactName;
-        public ViewContactWindow(ref Employee mLoggedInUser, COMPANY_ORGANISATION_MACROS.LIST_CONTACT_STRUCT contactInfo)
+        public ViewContactWindow(ref Employee mLoggedInUser, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT contactInfo)
         {
             InitializeComponent();
             contact = new Contact();

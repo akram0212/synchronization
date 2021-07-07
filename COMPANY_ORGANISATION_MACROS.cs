@@ -188,7 +188,7 @@ namespace _01electronics_erp
         };
 
         //new added structs by salma
-        public struct LIST_COMPANY_STRUCT
+        public struct COMPANY_LIST_STRUCT
         {
             public String company_name;
 
@@ -198,7 +198,7 @@ namespace _01electronics_erp
             public List<BRANCH_MIN_STRUCT> branchesList;
         };
 
-        public struct LIST_CONTACT_STRUCT
+        public struct CONTACT_LIST_STRUCT
         {
             public int contact_id;
             public int company_serial;

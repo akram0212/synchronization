@@ -81,24 +81,24 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="countryCheckBoxChecked" Unchecked="countryCheckBoxUnchecked"/>
-                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="countryComboBoxSelectionChanged"/>
+                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCountryCheckBox" Unchecked="OnUncheckedCountryCheckBox"/>
+                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelectionChangedCountryComboBox"/>
 
-                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="stateCheckBoxChecked" Unchecked="stateCheckBoxUnchecked"/>
-                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="stateComboBoxSelectionChanged"/>
+                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedStateCheckBox" Unchecked="OnUncheckedStateCheckBox"/>
+                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelectionChangedStateComboBox"/>
 
-                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="cityCheckBoxChecked" Unchecked="cityCheckBoxUnchecked"/>
-                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="cityComboBoxSelectionChanged"/>
+                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCityCheckBox" Unchecked="OnUncheckedCityCheckBox"/>
+                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelectionChangedCityComboBox"/>
 
-                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="districtCheckBoxChecked" Unchecked="districtCheckBoxUnchecked"/>
-                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="districtComboBoxSelectionChanged"/>
+                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedDistrictCheckBox" Unchecked="OnUncheckedDistrictCheckBox"/>
+                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelectionChangedDistrictComboBox"/>
 
-                    <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="salesPersonCheckBoxChecked"/>
+                    <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedSalesPersonCheckBox" Unchecked="OnUncheckedSalesPersonCheckBox"/>
                     <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
-                    <TreeView Name="treeViewItem" SelectedItemChanged="treeViewItemSelectedItemChanged" >
+                    <TreeView Name="treeViewItem" SelectedItemChanged="OnSelectedItemChangedTreeViewItem" >
                     </TreeView>
                 </ScrollViewer>
 
