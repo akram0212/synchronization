@@ -69,7 +69,7 @@ namespace _01electronics_crm
         }
         private void GetVisits()
         {
-            commonQueries.QueryGetClientVisits(ref visitsInfo);
+            commonQueries.GetClientVisits(ref visitsInfo);
         }
         private void InitializeStackPanel()
         {
@@ -192,8 +192,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
-            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            this.NavigationService.Navigate(statisticsPage);
+            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            //this.NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)

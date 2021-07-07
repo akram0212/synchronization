@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{50523FA8-AED9-4EB6-912A-9360E166B94A}</ProjectGuid>
+    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -24,7 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,44 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddBranchWindow.xaml.cs">
-      <DependentUpon>AddBranchWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddCompanyWindow.xaml.cs">
-      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddContactWindow.xaml.cs">
-      <DependentUpon>AddContactWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddRFQWindow.xaml.cs">
-      <DependentUpon>AddRFQWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddWorkOfferWindow.xaml.cs">
-      <DependentUpon>AddWorkOfferWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BASIC_MACROS.cs" />
-    <Compile Include="BASIC_STRUCTS.cs" />
-    <Compile Include="ClientCallsPage.xaml.cs">
-      <DependentUpon>ClientCallsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ClientVisitsPage.xaml.cs">
-      <DependentUpon>ClientVisitsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CommonFunctions.cs" />
-    <Compile Include="CommonQueries.cs" />
-    <Compile Include="Company.cs" />
-    <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
-    <Compile Include="COMPANY_WORK_MACROS.cs" />
-    <Compile Include="Contact.cs" />
-    <Compile Include="ContactsPage.xaml.cs">
-      <DependentUpon>ContactsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Employee.cs" />
-    <Compile Include="FTPServer.cs" />
-    <Compile Include="IntegrityChecks.cs" />
-    <Compile Include="OfficeMeetingsPage.xaml.cs">
-      <DependentUpon>OfficeMeetingsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -110,14 +71,19 @@
     <Compile Include="RFQWindow.xaml.cs">
       <DependentUpon>RFQWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SignInPage.xaml.cs" />
-    <Compile Include="SignInWindow.xaml.cs" />
-    <Compile Include="SignUpPage.xaml.cs" />
-    <Compile Include="SQLServer.cs" />
-    <Compile Include="StatisticsPage.xaml.cs">
-      <DependentUpon>StatisticsPage.xaml</DependentUpon>
+    <Compile Include="SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserPortalPage.xaml.cs" />
+    <Compile Include="SignInWindow.xaml.cs">
+      <DependentUpon>SignInWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SignUpPage.xaml.cs">
+      <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SQLServer.cs" />
+    <Compile Include="UserPortalPage.xaml.cs">
+      <DependentUpon>UserPortalPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewCompanyWindow.xaml.cs">
       <DependentUpon>ViewCompanyWindow.xaml</DependentUpon>
     </Compile>
@@ -148,14 +114,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AddRFQWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="AddWorkOfferWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClientCallsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -168,9 +130,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ContactsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ContactsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -178,10 +137,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AddBranchWindow.xaml.cs">
+      <DependentUpon>AddBranchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddCompanyWindow.xaml.cs">
+      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddContactWindow.xaml.cs">
+      <DependentUpon>AddContactWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddRFQWindow.xaml.cs">
+      <DependentUpon>AddRFQWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddWorkOfferWindow.xaml.cs">
+      <DependentUpon>AddWorkOfferWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BASIC_MACROS.cs" />
+    <Compile Include="BASIC_STRUCTS.cs" />
+    <Compile Include="ClientCallsPage.xaml.cs">
+      <DependentUpon>ClientCallsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClientVisitsPage.xaml.cs">
+      <DependentUpon>ClientVisitsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CommonFunctions.cs" />
+    <Compile Include="CommonQueries.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
+    <Compile Include="COMPANY_WORK_MACROS.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="ContactsPage.xaml.cs">
+      <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs" />
+    <Compile Include="FTPServer.cs" />
+    <Compile Include="IntegrityChecks.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -191,24 +185,24 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="RFQAdditionalInfoPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="RFQBasicInfoPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="RFQProductsPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="RFQsPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="RFQWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SignInPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -222,10 +216,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StatisticsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -235,16 +225,16 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewContactWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewRFQWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOffersPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOrdersPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -252,6 +242,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OfficeMeetingsPage.xaml.cs">
+      <DependentUpon>OfficeMeetingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

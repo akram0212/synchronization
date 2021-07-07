@@ -322,9 +322,7 @@ namespace _01electronics_crm
                 QueryAddCompanyFax();
             }
 
-            MessageBox.Show("Company Added Successfully");
             this.Hide();
-
         }
         private bool QueryAddCompanyName()
         {
