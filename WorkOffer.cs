@@ -26,8 +26,8 @@ namespace _01electronics_erp
         public const int OFFER_ID_DATE_START_INDEX = OFFER_ID_EMPLOYEE_INITIALS_START_INDEX + OFFER_ID_EMPLOYEE_INITIALS_TOKEN + 1;
         public const int OFFER_ID_REVISION_SERIAL_START_INDEX = OFFER_ID_DATE_START_INDEX + OFFER_ID_DATE_TOKEN + OFFER_ID_REVISION_OFFSET_TOKEN + 1;
 
-        private const string OFFER_ID_FORMAT = "OFFR-0001-XXXX.XXXX-DDMMYYYY";
-        private const string REVISED_OFFER_ID_FORMAT = "OFFR-0001-XXXX.XXXX-DDMMYYYY-REV01";
+        private const String OFFER_ID_FORMAT = "OFFR-0001-XXXX.XXXX-DDMMYYYY";
+        private const String REVISED_OFFER_ID_FORMAT = "OFFR-0001-XXXX.XXXX-DDMMYYYY-REV01";
 
         //WORK OFFER INFO
         protected char[] offerIdString;
@@ -389,14 +389,14 @@ namespace _01electronics_erp
                 return false;
 
             int intColumnsCount = 0;
-            int stringColumnsCount = 0;
+            int StringColumnsCount = 0;
 
             offerIssueDate = sqlDatabase.rows[0].sql_datetime[0];
 
-            offerId = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
-            offerNotes = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            offerId = sqlDatabase.rows[0].sql_string[StringColumnsCount++];
+            offerNotes = sqlDatabase.rows[0].sql_string[StringColumnsCount++];
 
-            SetCurrency(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetCurrency(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetPercentDownPayment(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetPercentOnDelivery(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
@@ -406,32 +406,32 @@ namespace _01electronics_erp
 
             SetDeliveryTimeMinimum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetDeliveryTimeMaximum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetDeliveryTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetDeliveryTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
-            SetDeliveryPoint(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
-            SetOfferContractType(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetDeliveryPoint(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
+            SetOfferContractType(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetWarrantyPeriod(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetWarrantyPeriodTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetWarrantyPeriodTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetOfferValidityPeriod(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetOfferValidityTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetOfferValidityTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
-            SetOfferStatus(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetOfferStatus(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             int productNoColumn = intColumnsCount;
-            int productName = stringColumnsCount;
+            int productName = StringColumnsCount;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int productNumber = sqlDatabase.rows[i].sql_int[productNoColumn];
 
                 intColumnsCount = productNoColumn + 1;
-                stringColumnsCount = productName;
+                StringColumnsCount = productName;
 
-                SetOfferProductType(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
-                SetOfferProductBrand(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
-                SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
+                SetOfferProductType(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
+                SetOfferProductBrand(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
+                SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
 
                 OfferProductsList[i].productQuantity = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
                 OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
@@ -630,14 +630,14 @@ namespace _01electronics_erp
                 return false;
 
             int intColumnsCount = 2;
-            int stringColumnsCount = 0;
+            int StringColumnsCount = 0;
 
             offerIssueDate = sqlDatabase.rows[0].sql_datetime[0];
 
-            offerId = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
-            offerNotes = sqlDatabase.rows[0].sql_string[stringColumnsCount++];
+            offerId = sqlDatabase.rows[0].sql_string[StringColumnsCount++];
+            offerNotes = sqlDatabase.rows[0].sql_string[StringColumnsCount++];
 
-            SetCurrency(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetCurrency(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetPercentDownPayment(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetPercentOnDelivery(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
@@ -647,32 +647,32 @@ namespace _01electronics_erp
 
             SetDeliveryTimeMinimum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetDeliveryTimeMaximum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetDeliveryTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetDeliveryTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
-            SetDeliveryPoint(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
-            SetOfferContractType(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetDeliveryPoint(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
+            SetOfferContractType(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetWarrantyPeriod(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetWarrantyPeriodTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetWarrantyPeriodTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             SetOfferValidityPeriod(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
-            SetOfferValidityTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetOfferValidityTimeUnit(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
-            SetOfferStatus(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[stringColumnsCount++]);
+            SetOfferStatus(sqlDatabase.rows[0].sql_int[intColumnsCount++], sqlDatabase.rows[0].sql_string[StringColumnsCount++]);
 
             int productNoColumn = intColumnsCount;
-            int productName = stringColumnsCount;
+            int productName = StringColumnsCount;
 
             for (int i = 0; i < sqlDatabase.rows[0].sql_int[productNoColumn]; i++)
             {
                 int productNumber = sqlDatabase.rows[i].sql_int[productNoColumn];
 
                 intColumnsCount = productNoColumn + 1;
-                stringColumnsCount = productName;
+                StringColumnsCount = productName;
 
-                SetOfferProductType(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
-                SetOfferProductBrand(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
-                SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[stringColumnsCount++]);
+                SetOfferProductType(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
+                SetOfferProductBrand(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
+                SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
 
                 OfferProductsList[i].productQuantity = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
                 OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];

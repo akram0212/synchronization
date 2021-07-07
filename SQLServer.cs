@@ -13,9 +13,7 @@ namespace _01electronics_erp
 {
     public class SQLServer
     {
-
-        private String sqlConnectionString = "Data Source=AHMED-AYMAN;Initial Catalog=erp_system;Integrated Security=True";
-        //private String sqlConnectionString = "Data Source = localhost; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+        private String sqlConnectionString = "Data Source=192.168.0.203;User ID=sa;Password=P@ssw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         private SqlConnection sqlConnection = null;
         private SqlCommand sqlCommand = null;
@@ -137,7 +135,7 @@ namespace _01electronics_erp
                     for (int i = 0; i < columnCount.sql_string; i++)
                     {
                         if (sqlReader[currentColumn] == DBNull.Value)
-                            currentRow.sql_string.Add(string.Empty);
+                            currentRow.sql_string.Add(String.Empty);
                         else
                             currentRow.sql_string.Add((String)sqlReader[currentColumn]);
 
@@ -284,7 +282,7 @@ namespace _01electronics_erp
                     for (int i = 0; i < columnCount.sql_string; i++)
                     {
                         if (sqlReader[currentColumn] == DBNull.Value)
-                            currentRow.sql_string.Add(string.Empty);
+                            currentRow.sql_string.Add(String.Empty);
                         else
                             currentRow.sql_string.Add((String)sqlReader[currentColumn]);
 

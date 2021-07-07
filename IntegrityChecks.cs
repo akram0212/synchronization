@@ -209,7 +209,7 @@ namespace _01electronics_erp
             domainSecondDot.charFound = false;
             domainThirdDot.charFound = false;
 
-            List<String> domainForms = new List<string>();
+            List<String> domainForms = new List<String>();
 
             if (!commonQueries.GetOriginalTLDs(ref domainForms))
                 return false;
@@ -370,7 +370,7 @@ namespace _01electronics_erp
         {
             domainFirstDot.charFound = false;
 
-            List<String> domainForms = new List<string>();
+            List<String> domainForms = new List<String>();
 
             if (!commonQueries.GetOriginalTLDs(ref domainForms))
                 return false;

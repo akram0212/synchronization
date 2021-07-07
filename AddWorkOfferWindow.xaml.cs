@@ -30,7 +30,7 @@ namespace _01electronics_crm
         public struct Company_Struct
         {
             public int companySerial;
-            public string companyName;
+            public String companyName;
         };
 
         private List<Company_Struct> companyInfo = new List<Company_Struct>();
@@ -77,10 +77,10 @@ namespace _01electronics_crm
         private int price3;
         private int price4;
 
-        private string price1Type;
-        private string price2Type;
-        private string price3Type;
-        private string price4Type;
+        private String price1Type;
+        private String price2Type;
+        private String price3Type;
+        private String price4Type;
 
         private int price1Total;
         private int price2Total;
@@ -97,20 +97,20 @@ namespace _01electronics_crm
 
         private int drawingSubmissionFrom;
         private int drawingSubmissionTo;
-        private string drawingSubmissionType;
+        private String drawingSubmissionType;
 
         private int deliveryTimeFrom;
         private int deliveryTimeTo;
         private int deliveryTimeType;
-        private string deliveryPoint;
+        private String deliveryPoint;
 
-        private string contractType;
+        private String contractType;
         private int warrantyPeriod;
-        private string warrantyPeriodType;
+        private String warrantyPeriodType;
         private int offerValidity;
-        private string offerValidityType;
+        private String offerValidityType;
 
-        string additionalDescription;
+        String additionalDescription;
 
        
 
@@ -257,7 +257,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < employeesList.Count(); i++)
             {
-                string temp = employeesList[i].employee_name;
+                String temp = employeesList[i].employee_name;
                 salesPersonCombo.Items.Add(temp);
             }
         }
@@ -281,7 +281,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < companyInfo.Count; i++)
             {
-                string tempName = companyInfo[i].companyName;
+                String tempName = companyInfo[i].companyName;
                 companyNameCombo.Items.Add(tempName);
             }
         }
@@ -295,7 +295,7 @@ namespace _01electronics_crm
 
                 for (int i = 0; i < branchInfo.Count; i++)
                 {
-                    string address;
+                    String address;
                     address = branchInfo[i].district + ", " + branchInfo[i].city + ", " + branchInfo[i].state_governorate + ", " + branchInfo[i].country + ".";
                     companyBranchCombo.Items.Add(address);
                 }
@@ -442,7 +442,7 @@ namespace _01electronics_crm
         {
             returnVector.Clear();
 
-            string sqlQuery = "SELECT company_serial,company_name FROM erp_system.dbo.company_name WHERE added_by = " + mEmployeeSerial;
+            String sqlQuery = "SELECT company_serial,company_name FROM erp_system.dbo.company_name WHERE added_by = " + mEmployeeSerial;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 

@@ -34,7 +34,7 @@ namespace _01electronics_crm
         public struct Company_Struct
         {
            public int companySerial;
-           public string companyName;
+           public String companyName;
         };
 
         private List<Company_Struct> companyInfo = new List<Company_Struct>();
@@ -65,7 +65,7 @@ namespace _01electronics_crm
             
             for(int i = 0; i < companyInfo.Count; i++)
             {
-                string tempName = companyInfo[i].companyName;
+                String tempName = companyInfo[i].companyName;
                 companyNameCombo.Items.Add(tempName);
             }
 
@@ -123,7 +123,7 @@ namespace _01electronics_crm
                 
                 for(int i = 0; i < branchInfo.Count; i++)
                 {
-                    string address;
+                    String address;
                     address = branchInfo[i].district + ", " + branchInfo[i].city + ", " + branchInfo[i].state_governorate + ", " + branchInfo[i].country + ".";
                     companyBranchCombo.Items.Add(address);
                 }
@@ -492,7 +492,7 @@ namespace _01electronics_crm
         {
             returnVector.Clear();
 
-            string sqlQuery = "SELECT company_serial,company_name FROM erp_system.dbo.company_name WHERE added_by = " + mEmployeeSerial;
+            String sqlQuery = "SELECT company_serial,company_name FROM erp_system.dbo.company_name WHERE added_by = " + mEmployeeSerial;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -581,7 +581,7 @@ namespace _01electronics_crm
 
         private void InserQuerytRFQ()
         {
-            string sqlQuery;
+            String sqlQuery;
             int selectedIndex;
 
             DateTime tempIssueDate;
@@ -653,7 +653,7 @@ namespace _01electronics_crm
             int tempContractType = contractTypes[selectedIndex].contractId;
 
             int tempRFQStatus;
-            string tempRFQNotes;
+            String tempRFQNotes;
 
             sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES ("+ commonFunctionsObject.GetTodaysDate() + "," + tempSalesPersonId + "," + "," + tempRFQVersion + "," + tempAssigneeEngineerId + "," + "," + tempBranchSerial + "," + tempContactId + "," + tempProduct1Type + "," + tempProduct1Brand + "," + tempProduct1Model + "," + tempProduct1Quantity + "," + tempProduct2Type + "," + tempProduct2Brand + "," + tempProduct2Model + "," + tempProduct2Quantity + "," + tempProduct3Type + "," + tempProduct3Brand + "," + tempProduct3Model + "," + tempProduct3Quantity + "," + tempProduct4Type + "," + tempProduct4Brand + "," + tempProduct4Model + "," + tempProduct4Quantity + "," + tempContractType + "," + tempDeadLineDate + "," + "," + ",";
         }

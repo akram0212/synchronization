@@ -1242,7 +1242,6 @@ namespace _01electronics_erp
             returnVector.Clear();
 
             String sqlQueryPart1 = @"select distinct company_name.company_serial, 
-									company_address.address_serial, 
 									company_name.company_name 
 							from erp_system.dbo.company_name 
 							inner join erp_system.dbo.company_field_of_work 
@@ -1265,7 +1264,7 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_int = 2;
+            queryColumns.sql_int = 1;
             queryColumns.sql_string = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
@@ -1276,7 +1275,6 @@ namespace _01electronics_erp
                 COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT temp = new COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT();
 
                 temp.company_serial = sqlDatabase.rows[i].sql_int[0];
-                temp.address_serial = sqlDatabase.rows[i].sql_int[1];
                 temp.company_name = sqlDatabase.rows[i].sql_string[0];
 
                 returnVector.Add(temp);
@@ -1313,6 +1311,8 @@ namespace _01electronics_erp
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
             queryColumns.sql_int = 2;
+            queryColumns.sql_string = 1;
+
             queryColumns.sql_string = 1;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
@@ -2139,15 +2139,15 @@ namespace _01electronics_erp
                 RFQItem.products = new List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT>();
 
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
-                RFQItem.rfq_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.rfq_id = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                RFQItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.assignee_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.sales_person_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                RFQItem.assignee_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                RFQItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.company_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                RFQItem.contact_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
 
                 RFQItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
@@ -2173,13 +2173,13 @@ namespace _01electronics_erp
                     tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
                     tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                     tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                     tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                    tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                    tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                     tempProductItem.productNumber = j;
                     tempProductItem.productQuantity = 0;
@@ -2191,9 +2191,9 @@ namespace _01electronics_erp
                 RFQItem.rfq_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
                 RFQItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                RFQItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.rfq_status = sqlDatabase.rows[i].sql_string[stringCount++];
-                RFQItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
+                RFQItem.contract_type = sqlDatabase.rows[i].sql_string[StringCount++];
+                RFQItem.rfq_status = sqlDatabase.rows[i].sql_string[StringCount++];
+                RFQItem.failure_reason = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 returnVector.Add(RFQItem);
             }
@@ -2381,7 +2381,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT offerItem = new COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT();
 
@@ -2393,13 +2393,13 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                offerItem.offer_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.offer_id = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                offerItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                offerItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.sales_person_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                offerItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                offerItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                offerItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                offerItem.company_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                offerItem.contact_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 offerItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
@@ -2415,13 +2415,13 @@ namespace _01electronics_erp
                 int product_number = (int)sqlDatabase.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2439,9 +2439,9 @@ namespace _01electronics_erp
                     offerItem.offer_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
                     offerItem.failure_reason_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    offerItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                    offerItem.offer_status = sqlDatabase.rows[i].sql_string[stringCount++];
-                    offerItem.failure_reason = sqlDatabase.rows[i].sql_string[stringCount++];
+                    offerItem.contract_type = sqlDatabase.rows[i].sql_string[StringCount++];
+                    offerItem.offer_status = sqlDatabase.rows[i].sql_string[StringCount++];
+                    offerItem.failure_reason = sqlDatabase.rows[i].sql_string[StringCount++];
 
                     returnVector.Add(offerItem);
                 }
@@ -2580,7 +2580,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT orderItem = new COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT();
 
@@ -2592,13 +2592,13 @@ namespace _01electronics_erp
                 tempProductItem.productBrand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
                 tempProductItem.productModel = new COMPANY_WORK_MACROS.MODEL_STRUCT();
 
-                orderItem.order_id = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.order_id = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                orderItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                orderItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.sales_person_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                orderItem.offer_proposer_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                orderItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                orderItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                orderItem.company_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                orderItem.contact_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 orderItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
 
@@ -2614,13 +2614,13 @@ namespace _01electronics_erp
                 int product_number = sqlDatabase.rows[i].sql_int[numericCount++];
 
                 tempProductItem.productType.typeId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productType.typeName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productBrand.brandId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productBrand.brandName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productModel.modelId = sqlDatabase.rows[i].sql_int[numericCount++];
-                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[stringCount++];
+                tempProductItem.productModel.modelName = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 tempProductItem.productNumber = product_number;
                 tempProductItem.productQuantity = 0;
@@ -2637,8 +2637,8 @@ namespace _01electronics_erp
                     orderItem.contract_type_id = sqlDatabase.rows[i].sql_int[numericCount++];
                     orderItem.order_status_id = sqlDatabase.rows[i].sql_int[numericCount++];
 
-                    orderItem.contract_type = sqlDatabase.rows[i].sql_string[stringCount++];
-                    orderItem.order_status = sqlDatabase.rows[i].sql_string[stringCount++];
+                    orderItem.contract_type = sqlDatabase.rows[i].sql_string[StringCount++];
+                    orderItem.order_status = sqlDatabase.rows[i].sql_string[StringCount++];
 
                     returnVector.Add(orderItem);
                 }
@@ -2718,7 +2718,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT visitItem;
 
@@ -2731,13 +2731,13 @@ namespace _01electronics_erp
                 visitItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
                 visitItem.visit_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                visitItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.sales_person_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                visitItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                visitItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.company_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                visitItem.contact_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                visitItem.visit_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
-                visitItem.visit_result = sqlDatabase.rows[i].sql_string[stringCount++];
+                visitItem.visit_purpose = sqlDatabase.rows[i].sql_string[StringCount++];
+                visitItem.visit_result = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 returnVector.Add(visitItem);
             }
@@ -2806,7 +2806,7 @@ namespace _01electronics_erp
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
                 int numericCount = 0;
-                int stringCount = 0;
+                int StringCount = 0;
 
                 COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT callItem;
 
@@ -2819,19 +2819,21 @@ namespace _01electronics_erp
                 callItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
                 callItem.call_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
 
-                callItem.sales_person_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.sales_person_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                callItem.company_name = sqlDatabase.rows[i].sql_string[stringCount++];
-                callItem.contact_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.company_name = sqlDatabase.rows[i].sql_string[StringCount++];
+                callItem.contact_name = sqlDatabase.rows[i].sql_string[StringCount++];
 
-                callItem.call_purpose = sqlDatabase.rows[i].sql_string[stringCount++];
-                callItem.call_result = sqlDatabase.rows[i].sql_string[stringCount++];
+                callItem.call_purpose = sqlDatabase.rows[i].sql_string[StringCount++];
+                callItem.call_result = sqlDatabase.rows[i].sql_string[StringCount++];
 
                 returnVector.Add(callItem);
             }
 
             return true;
         }
+
+
     }
 
 }

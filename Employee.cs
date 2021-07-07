@@ -80,7 +80,7 @@ namespace _01electronics_erp
 
 		employees_educational_qualifications.graduation_year, 
 		employees_educational_qualifications.certificate, 
-		employees_educational_qualifications.major, 
+		employees_educational_qualifications.major,
 
 		employees_info.birth_date, 
 		employees_info.join_date, 
@@ -120,13 +120,13 @@ namespace _01electronics_erp
 		left join erp_system.dbo.employees_educational_qualifications
 		on employees_info.employee_id = employees_educational_qualifications.employee_id
 		left join erp_system.dbo.educational_degrees 
-		on employees_educational_qualifications.certificate = educational_degrees.id 
+		on educational_degrees.id = employees_info.employee_id
 		left join erp_system.dbo.educational_majors 
-		on employees_educational_qualifications.major = educational_majors.id 
+		on employees_info.employee_id = educational_majors.id
 		where employees_business_emails.email = '";
             String sqlQueryPart2 = "';";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += businessEmail;
             sqlQuery += sqlQueryPart2;
@@ -234,7 +234,7 @@ namespace _01electronics_erp
         
             String sqlQueryPart2 = ";";
 
-            sqlQuery = string.Empty;
+            sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += employeeId;
             sqlQuery += sqlQueryPart2;

@@ -28,7 +28,9 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
+
         private string notes;
+
         private DateTime deadlineDate;
 
         ///////////////ADD CONSTRUCTOR///////////

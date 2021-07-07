@@ -51,6 +51,10 @@ namespace _01electronics_crm
                 return;
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
+
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+
             mainWindowOpen.Show();
 
             Window.GetWindow(this).Close();
