@@ -73,6 +73,12 @@
     </Compile>
     <Compile Include="BASIC_MACROS.cs" />
     <Compile Include="BASIC_STRUCTS.cs" />
+    <Compile Include="ClientCallsPage.xaml.cs">
+      <DependentUpon>ClientCallsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClientVisitsPage.xaml.cs">
+      <DependentUpon>ClientVisitsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommonFunctions.cs" />
     <Compile Include="CommonQueries.cs" />
     <Compile Include="Company.cs" />
@@ -85,6 +91,9 @@
     <Compile Include="Employee.cs" />
     <Compile Include="FTPServer.cs" />
     <Compile Include="IntegrityChecks.cs" />
+    <Compile Include="OfficeMeetingsPage.xaml.cs">
+      <DependentUpon>OfficeMeetingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -105,6 +114,9 @@
     <Compile Include="SignInWindow.xaml.cs" />
     <Compile Include="SignUpPage.xaml.cs" />
     <Compile Include="SQLServer.cs" />
+    <Compile Include="StatisticsPage.xaml.cs">
+      <DependentUpon>StatisticsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserPortalPage.xaml.cs" />
     <Compile Include="ViewCompanyWindow.xaml.cs">
       <DependentUpon>ViewCompanyWindow.xaml</DependentUpon>
@@ -120,12 +132,13 @@
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOrder.cs" />
-
+    <Compile Include="WorkOrdersPage.xaml.cs">
+      <DependentUpon>WorkOrdersPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="AddBranchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-
     <Page Include="AddCompanyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -141,6 +154,14 @@
     <Page Include="AddWorkOfferWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClientCallsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ClientVisitsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ContactsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -158,6 +179,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OfficeMeetingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="RFQAdditionalInfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -190,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="StatisticsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -209,6 +238,10 @@
     <Page Include="WorkOffersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrdersPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

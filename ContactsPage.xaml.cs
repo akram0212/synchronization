@@ -259,11 +259,13 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
-           
+            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientVisitsPage);
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
-
+            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientCallsPage);
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
