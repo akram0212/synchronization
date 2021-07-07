@@ -3022,10 +3022,82 @@ namespace _01electronics_erp
                 visitItem.visit_purpose = sqlDatabase.rows[i].sql_string[StringCount++];
                 visitItem.visit_result = sqlDatabase.rows[i].sql_string[StringCount++];
 
+        /// <summary>
+        /// Queries Added By Salma
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        public bool QueryGetClientVisits(ref List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> returnVector)
+        {
+            returnVector.Clear();
+
+            String sqlQueryPart1 = @"select employees_info.employee_id, client_visits.visit_serial, client_visits.visit_purpose, client_visits.visit_result, 
+                                    issue_date, date_of_visit, employees_info.name,
+                                    company_name.company_name, contact_person_info.name,
+	                                visits_purpose.visit_purpose, visits_result.visit_result
+                                    from erp_system.dbo.client_visits
+                                    
+                                    inner join erp_system.dbo.contact_person_info 
+                                    on client_visits.branch_serial = contact_person_info.branch_serial
+                                    and client_visits.sales_person = contact_person_info.sales_person_id
+                                    
+                                    inner join erp_system.dbo.company_address
+                                    on client_visits.branch_serial = company_address.address_serial
+                                    
+                                    inner join erp_system.dbo.company_name
+                                    on company_address.company_serial = company_name.company_serial
+                                    
+                                    inner join erp_system.dbo.visits_purpose
+                                    on client_visits.visit_purpose = visits_purpose.id
+                                    
+                                    inner join erp_system.dbo.visits_result
+                                    on client_visits.visit_result = visits_result.id
+                                    
+                                    inner join  erp_system.dbo.employees_info
+                                    on client_visits.sales_person = employees_info.employee_id
+                                    
+                                    order by client_visits.date_of_visit DESC;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 4;
+            queryColumns.sql_datetime = 2;
+            queryColumns.sql_String = 5;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                int numericCount = 0;
+                int StringCount = 0;
+
+                COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT visitItem;
+
+                visitItem.sales_person_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                visitItem.visit_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                visitItem.visit_purpose_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                visitItem.visit_result_id = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                visitItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
+                visitItem.visit_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
+
+                visitItem.sales_person_name = sqlDatabase.rows[i].sql_String[StringCount++];
+
+                visitItem.company_name = sqlDatabase.rows[i].sql_String[StringCount++];
+                visitItem.contact_name = sqlDatabase.rows[i].sql_String[StringCount++];
+
+                visitItem.visit_purpose = sqlDatabase.rows[i].sql_String[StringCount++];
+                visitItem.visit_result = sqlDatabase.rows[i].sql_String[StringCount++];
+
                 returnVector.Add(visitItem);
             }
 
-            return true;
+             return true;
         }
     }
 

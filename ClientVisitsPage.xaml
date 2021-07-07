@@ -8,7 +8,7 @@
       Background="#EDEDED"
       Title="ClientVisitsPage">
 
-
+    
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -94,7 +94,7 @@
                     <CheckBox Name="employeeCheckBox" Grid.Row="2" Grid.Column="0" Content="Employee" Style="{StaticResource checkBoxStyle}" Checked="EmployeeCheckBoxChecked" Unchecked="EmployeeCheckBoxUnchecked"/>
                     <ComboBox Name="employeeCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="EmployeeComboSelectionChanged"/>
 
-
+                   
 
                     <!--<CheckBox Name="statusCheckBox" Grid.Row="3" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="StatusCheckBoxChecked" Unchecked="StatusCheckBoxUnchecked"/>
                     <ComboBox Name="statusCombo" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="StatusComboSelectionChanged"/>-->
@@ -103,7 +103,7 @@
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360" Width="500">
                     <StackPanel Name="ClientVisitsStackPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF">
 
-
+                       
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
