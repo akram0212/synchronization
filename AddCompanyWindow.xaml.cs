@@ -60,6 +60,7 @@ namespace _01electronics_crm
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
 
             commonQueries.GetPrimaryWorkFields(ref primaryWorkFields);
+
             for(int i = 0; i < primaryWorkFields.Count; i++)
             {
                 primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
@@ -70,6 +71,7 @@ namespace _01electronics_crm
             {
                 countryComboBox.Items.Add(countries[i].country_name);
             }
+
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;

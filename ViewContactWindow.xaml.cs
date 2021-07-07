@@ -20,43 +20,47 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ViewContactWindow : Window
     {
+        protected Employee loggedInUser;
+
+        protected CommonQueries commonQueries;
+
         Contact contact;
+
         String [] name;
-        String [] phones;
-        String [] personalEmails;
-        String contactName;
-        public ViewContactWindow(ref Employee mLoggedInUser, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT contactInfo)
+        public ViewContactWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             InitializeComponent();
-            contact = new Contact();
-            contact.InitializeContactInfo(mLoggedInUser, contactInfo.address_serial, contactInfo.contact_id);
+
+            loggedInUser = mLoggedInUser;
+            contact = mContact;
+
             employeeFirstNameTextBox.IsEnabled = false;
             employeeLastNameTextBox.IsEnabled = false;
             contactGenderTextBox.IsEnabled = false;
             companyNameTextBox.IsEnabled = false;
             companyBranchTextBox.IsEnabled = false;
             departmentTextBox.IsEnabled = false;
-            contactName = contact.GetContactName();
-            name = contactName.Split(' '); 
+
+            name = contact.GetContactName().Split(' '); 
 
             employeeFirstNameTextBox.Text = name[0];
             employeeLastNameTextBox.Text = name[1];
+
             contactGenderTextBox.Text = contact.GetContactGender();
             companyNameTextBox.Text = contact.GetCompanyName();
-            companyBranchTextBox.Text = contact.GetCompanyCountry() + ",\t" + contact.GetCompanyState() + ",\t" + contact.GetCompanyCity() + ",\t" + contact.GetCompanyDistrict();
+
+            companyBranchTextBox.Text = contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict();
             departmentTextBox.Text = contact.GetContactDepartment();
-            phones = contact.GetContactPhones();
-            personalEmails = contact.GetContactPersonalEmails();
 
             AddBusinessEmail();
 
-            if(personalEmails[0] != null)
+            if(contact.GetContactPersonalEmails()[0] != null)
                  AddPersonalEmail();
 
-            if (phones[0] != null)
+            if (contact.GetContactPhones()[0] != null)
                 AddBusinessPhone();
 
-            if (phones[1] != null)
+            if (contact.GetContactPhones()[1] != null)
                 AddPersonalPhone();
 
         }
@@ -71,7 +75,7 @@ namespace _01electronics_crm
              TextBox employeePersonalPhoneTextBox = new TextBox();
              employeePersonalPhoneTextBox.IsEnabled = false;
              employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
-             employeePersonalPhoneTextBox.Text = phones[1];
+             employeePersonalPhoneTextBox.Text = contact.GetContactPhones()[1];
 
              ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabel);
              ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
@@ -90,7 +94,7 @@ namespace _01electronics_crm
             TextBox employeeBusinessPhoneTextBox = new TextBox();
             employeeBusinessPhoneTextBox.IsEnabled = false;
             employeeBusinessPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
-            employeeBusinessPhoneTextBox.Text = phones[0];
+            employeeBusinessPhoneTextBox.Text = contact.GetContactPhones()[0];
 
             ContactBusinessPhoneWrapPanel.Children.Add(BusinessPhoneLabel);
             ContactBusinessPhoneWrapPanel.Children.Add(employeeBusinessPhoneTextBox);
@@ -126,7 +130,7 @@ namespace _01electronics_crm
             TextBox employeePersonalEmailTextBox = new TextBox();
             employeePersonalEmailTextBox.IsEnabled = false;
             employeePersonalEmailTextBox.Style = (Style)FindResource("textBoxStyle");
-            employeePersonalEmailTextBox.Text = personalEmails[0];
+            employeePersonalEmailTextBox.Text = contact.GetContactPersonalEmails()[0];
 
             ContactPersonalEmailWrapPanel.Children.Add(PersonalEmailLabel);
             ContactPersonalEmailWrapPanel.Children.Add(employeePersonalEmailTextBox);

@@ -1518,7 +1518,6 @@ namespace _01electronics_erp
             String QueryPart1 = @"select contact_person_info.contact_id, 
                                     company_address.company_serial, 
 									company_address.address_serial, 
-									company_address.address, 
 									contact_person_info.name, 
 									departments_type.department
                             from erp_system.dbo.contact_person_info
@@ -1539,7 +1538,7 @@ namespace _01electronics_erp
             sqlQuery += QueryPart2;
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns2 = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns2.sql_int = 4;
+            queryColumns2.sql_int = 3;
             queryColumns2.sql_string = 2;
 
             if (!sqlDatabase.GetRows(sqlQuery, queryColumns2, BASIC_MACROS.SEVERITY_HIGH))
@@ -1547,13 +1546,15 @@ namespace _01electronics_erp
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
             {
-                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT tempCompanyItem;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT tempCompanyItem = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
+
+                tempCompanyItem.sales_person_id = salesPersonId;
                 tempCompanyItem.contact_id = sqlDatabase.rows[i].sql_int[0];
                 tempCompanyItem.company_serial = sqlDatabase.rows[i].sql_int[1];
                 tempCompanyItem.address_serial = sqlDatabase.rows[i].sql_int[2];
-                tempCompanyItem.address = sqlDatabase.rows[i].sql_int[3];
                 tempCompanyItem.contact_name = sqlDatabase.rows[i].sql_string[0];
                 tempCompanyItem.department = sqlDatabase.rows[i].sql_string[1];
+
 
                 returnVector.Add(tempCompanyItem);
             }
