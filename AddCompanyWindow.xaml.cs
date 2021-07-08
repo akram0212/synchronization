@@ -334,7 +334,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetCompanySerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyName();
+            sqlQuery += "'" + company.GetCompanyName() + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
 
@@ -401,7 +401,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyFaxes()[0];
+            sqlQuery += "'" + company.GetCompanyFaxes()[0] + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;
@@ -422,7 +422,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += company.GetAddressSerial();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyPhones()[0];
+            sqlQuery += "'" + company.GetCompanyPhones()[0] + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += loggedInUser.GetEmployeeId();
             sqlQuery += sqlQueryPart2;

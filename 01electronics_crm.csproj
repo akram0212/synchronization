@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddClientVisitWindow.xaml.cs">
+      <DependentUpon>AddClientVisitWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -84,6 +87,9 @@
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewClientVisitWindow.xaml.cs">
+      <DependentUpon>ViewClientVisitWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewCompanyWindow.xaml.cs">
       <DependentUpon>ViewCompanyWindow.xaml</DependentUpon>
     </Compile>
@@ -104,6 +110,10 @@
     <Page Include="AddBranchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddClientVisitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddCompanyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +229,10 @@
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewClientVisitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewCompanyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

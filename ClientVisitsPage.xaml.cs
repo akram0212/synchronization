@@ -36,8 +36,6 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             visitsInfo = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
-            currentSelectedVisitItem = new Grid();
-            previousSelectedVisitItem = new Grid();
 
             viewButton.IsEnabled = false;
 
@@ -106,6 +104,10 @@ namespace _01electronics_crm
                     purposeAndResultLabel.Content = visitsInfo[i].visit_purpose + " - " + visitsInfo[i].visit_result;
                     purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                    Label lineLabel = new Label();
+                    lineLabel.Content = "";
+                    lineLabel.Style = (Style)FindResource("stackPanelItemBody");
+                    
                     Label newLineLabel = new Label();
                     newLineLabel.Content = "";
                     newLineLabel.Style = (Style)FindResource("stackPanelItemBody");
@@ -115,11 +117,14 @@ namespace _01electronics_crm
                     currentStackPanel.Children.Add(salesPersonNameLabel);
                     currentStackPanel.Children.Add(companyAndContactLabel);
                     currentStackPanel.Children.Add(purposeAndResultLabel);
+                    currentStackPanel.Children.Add(lineLabel);
 
                     Grid newGrid = new Grid();
                     ColumnDefinition column1 = new ColumnDefinition();
+
                     newGrid.ColumnDefinitions.Add(column1);
                     newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
+                    
                     Grid.SetColumn(currentStackPanel, 0);
 
                     newGrid.Children.Add(currentStackPanel);
@@ -138,27 +143,20 @@ namespace _01electronics_crm
             {
                 previousSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[1];
-                Border previousSelectedBorder = (Border)previousSelectedVisitItem.Children[1];
-                Label previousStatusLabel = (Label)previousSelectedBorder.Child;
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[0];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
                     childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
                 
-                previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
             }
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[1];
-            Border currentSelectedBorder = (Border)currentSelectedVisitItem.Children[1];
-            Label currentStatusLabel = (Label)currentSelectedBorder.Child;
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[0];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
-            currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-            currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
         }
         private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
         {
@@ -251,11 +249,16 @@ namespace _01electronics_crm
         private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = false;
+            yearCombo.SelectedItem = null;
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
         }
 
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitializeStackPanel();
+            viewButton.IsEnabled = false;
         }
 
         private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
@@ -265,12 +268,17 @@ namespace _01electronics_crm
 
         private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            quarterCombo.IsEnabled = false;
+            quarterCombo.IsEnabled = false; 
+            quarterCombo.SelectedItem = null;
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
         }
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitializeStackPanel();
+            viewButton.IsEnabled = false;
         }
 
         private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
@@ -335,7 +343,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
-
+            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow();
+            viewClientVisitWindow.Show();
         }
 
         private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
