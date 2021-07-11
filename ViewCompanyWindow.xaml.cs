@@ -72,6 +72,8 @@ namespace _01electronics_crm
             for (int i = 0; i < branchesList.Count; i++)
                 branchComboBox.Items.Add(branchesList[i].district + ", " + branchesList[i].city + ", " + branchesList[i].state_governorate + ", " + branchesList[i].country);
 
+            branchComboBox.SelectedIndex = 0;
+
             return true;
         }
         private void AddPhone()

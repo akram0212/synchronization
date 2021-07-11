@@ -28,14 +28,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource unSelectedTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
-                <Label Content="Products Info" Style="{StaticResource unselectedTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource selectedTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
-                <Label Content="Additional Info" Style="{StaticResource selectedTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
             </Border>
         </Grid>
 
@@ -43,30 +43,29 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <WrapPanel Grid.Row="0">
-                <WrapPanel Name="contractWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Contract Type"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="contractTypeLabel"/>
-                    <ComboBox Style="{StaticResource AddRFQComboBoxesSameh}" Name="contractTypeCombo" SelectionChanged="ContractTypeComboSelectionChanged"/>
-                </WrapPanel>
-
-                <WrapPanel Name="deadlineDateWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Deadline Date"/>
-                    <Label Style="{StaticResource tableItemValue}"  Name="deadlineDateLabel"/>
-                    <DatePicker Name="deadlineDateDatePicker" Margin="-300,12,12,12" Width="200" Height="25" HorizontalAlignment="Left" IsTodayHighlighted="True" SelectedDateChanged="DeadlineDateDatePickerSelectedDateChanged"/>
-                </WrapPanel>
+            <WrapPanel Grid.Row="0" Name="contractWrapPanel">
+                <Label Style="{StaticResource tableItemLabel}" Content="Contract Type"/>
+                <Label Style="{StaticResource tableItemValue}" Name="contractTypeLabel" Visibility="Collapsed"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeCombo" SelectionChanged="ContractTypeComboSelectionChanged"/>
             </WrapPanel>
 
-            <WrapPanel Grid.Row="1">
-                <WrapPanel Name="notesWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Notes"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="notesLabel"/>
-                    <TextBox Style="{StaticResource AddRFQTextBoxesSameh}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
-                </WrapPanel>
-                <Button Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="380,0,0,10" Content="Add RFQ" Click="AddRFQButtonClick"/>
+            <WrapPanel Grid.Row="1" Name="deadlineDateWrapPanel">
+                <Label Style="{StaticResource tableItemLabel}" Content="Deadline Date"/>
+                <Label Style="{StaticResource tableItemValue}"  Name="deadlineDateLabel" Visibility="Collapsed"/>
+                <DatePicker Style="{StaticResource datePickerStyle}" Name="deadlineDateDatePicker" IsTodayHighlighted="True" SelectedDateChanged="DeadlineDateDatePickerSelectedDateChanged"/>
             </WrapPanel>
+
+            <WrapPanel Grid.Row="2" Name="notesWrapPanel">
+                <Label Style="{StaticResource tableItemLabel}" Content="Notes"/>
+                <Label Style="{StaticResource tableItemValue}" Name="notesLabel" Visibility="Collapsed"/>
+                <TextBox Style="{StaticResource textBoxStyle}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
+            </WrapPanel>
+
+            <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Add RFQ" Click="AddRFQButtonClick"/>
 
         </Grid>
 
