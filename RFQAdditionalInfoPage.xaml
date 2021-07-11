@@ -62,7 +62,8 @@
             <WrapPanel Grid.Row="2" Name="notesWrapPanel">
                 <Label Style="{StaticResource tableItemLabel}" Content="Notes"/>
                 <Label Style="{StaticResource tableItemValue}" Name="notesLabel" Visibility="Collapsed"/>
-                <TextBox Style="{StaticResource textBoxStyle}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
+
             </WrapPanel>
 
             <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Add RFQ" Click="AddRFQButtonClick"/>

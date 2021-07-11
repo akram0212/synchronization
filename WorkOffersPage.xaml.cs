@@ -126,7 +126,6 @@ namespace _01electronics_crm
         {
             for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
                 yearCombo.Items.Add(year);
-
         }
         private void InitializeQuartersComboBox()
         {
@@ -552,8 +551,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            var addWorkOfferWindow = new AddWorkOfferWindow(ref loggedInUser);
-            addWorkOfferWindow.Show();
+            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser);
+            workOfferWindow.Show();
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
