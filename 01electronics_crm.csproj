@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
+    <ProjectGuid>{82EF8421-6C00-4018-826D-0E6EE2F4966C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -55,6 +55,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BASIC_MACROS.cs" />
+    <Compile Include="BASIC_STRUCTS.cs" />
+    <Compile Include="CommonFunctions.cs" />
+    <Compile Include="CommonQueries.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
+    <Compile Include="COMPANY_WORK_MACROS.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="FTPServer.cs" />
+    <Compile Include="IntegrityChecks.cs" />
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -171,26 +182,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BASIC_MACROS.cs" />
-    <Compile Include="BASIC_STRUCTS.cs" />
     <Compile Include="ClientCallsPage.xaml.cs">
       <DependentUpon>ClientCallsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClientVisitsPage.xaml.cs">
       <DependentUpon>ClientVisitsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommonFunctions.cs" />
-    <Compile Include="CommonQueries.cs" />
-    <Compile Include="Company.cs" />
-    <Compile Include="COMPANY_ORGANISATION_MACROS.cs" />
-    <Compile Include="COMPANY_WORK_MACROS.cs" />
-    <Compile Include="Contact.cs" />
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Employee.cs" />
-    <Compile Include="FTPServer.cs" />
-    <Compile Include="IntegrityChecks.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -248,32 +248,32 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOfferAdditionalInfoPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOfferBasicInfoPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOfferPaymentAndDeliveryPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOfferProductsPage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOffersPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WorkOfferWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkOrdersPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WorkOfferWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

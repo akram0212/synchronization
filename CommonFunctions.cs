@@ -40,21 +40,23 @@ namespace _01electronics_erp
 			{
 				if (i < 2)
 				{
-					IDdateString[1 - i] = Convert.ToChar(tempDay % 10);
+					string temp = Convert.ToString(tempDay % 10);
 					tempDay /= 10;
+					IDdateString[1 - i] = Convert.ToChar(temp);
 				}
 				else if (i < 4)
 				{
-					IDdateString[5 - i] = Convert.ToChar(tempMonth % 10);
+					string temp = Convert.ToString(tempMonth % 10);
 					tempMonth /= 10;
+					IDdateString[5 - i] = Convert.ToChar(temp);
 				}
 				else if (i < 8)
 				{
-					IDdateString[11 - i] = Convert.ToChar(tempYear % 10);
+					string temp = Convert.ToString(tempYear % 10);
 					tempYear /= 10;
+					IDdateString[11 - i] = Convert.ToChar(temp);
 				}
-				else
-					IDdateString[i] = '\0';
+					
 			}
 
 			outputString = new String(IDdateString);

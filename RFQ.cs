@@ -1274,7 +1274,7 @@ namespace _01electronics_erp
             if (rfqVersion > 1)
                 RFQId = revisedRFQIdString.ToString();
             else
-                RFQId = RFQIdString.ToString();
+                RFQId = new string (RFQIdString);
 
         }
 

@@ -237,9 +237,10 @@ namespace _01electronics_crm
 
         private void SetContactNumberLabel()
         {
-            for (int i = 0; i < contactPhones.Count(); i++)
-                contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
-            
+            //for (int i = 0; i < contactPhones.Count(); i++)
+              //contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
+              if(rfq.GetRFQContact().GetContactPhones()[0] != null)
+                contactPersonPhoneLabel.Content = rfq.GetRFQContact().GetContactPhones()[0].ToString();
         }
 
         /////////////SELECTION CHANGED//////////////
@@ -306,17 +307,19 @@ namespace _01electronics_crm
 
         private void ContactPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(contactPersonCombo.SelectedItem != null)
+            if (contactPersonCombo.SelectedItem != null)
             {
                 contactPersonPhoneCombo.IsEnabled = true;
                 rfq.InitializeContactInfo(contactInfo[contactPersonCombo.SelectedIndex].contact_id);
             }
-            
+
             //YOU SHALL ACCESS THE CONTACT PHONE LIKE THIS
             for (int i = 0; i < rfq.GetRFQContact().GetNumberOfSavedContactPhones(); i++)
+            {
                 contactPersonPhoneCombo.Items.Add(rfq.GetRFQContact().GetContactPhones()[i]);
+                contactPhones[i] = rfq.GetRFQContact().GetContactPhones()[i];
+            }
         }
-
         private void ContactPersonPhoneComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
