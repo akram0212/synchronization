@@ -35,7 +35,7 @@ namespace _01electronics_erp
 
         public const int SQL_DATE_LENGTH = 11;
         public const int SQL_DATETIME_LENGTH = 20;
-        public const int ID_DATE_LENGTH = 9;
+        public const int ID_DATE_LENGTH = 8;
 
         public const int EDIT_BOX_STRING_LENGTH = 100;
 

@@ -39,11 +39,12 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
 
         String[] contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
 
         private int viewAddCondition;
+        private int companySerial;
+        private int addressSerial;
 
         //NICE WORK HERE, I LIKE YOUR WORK
         //YOUR CODING STYLE IS GETTING BETTER
@@ -81,7 +82,7 @@ namespace _01electronics_crm
 
                 
             }
-            else
+            else if (viewAddCondition == 0)
             {
                 InitializeCompanyInfo();
                 InitializeContactInfo();
@@ -95,6 +96,22 @@ namespace _01electronics_crm
                 SetContactPersonLabel();
                 SetContactNumberLabel();
             }  
+            else
+            {
+               
+
+                ConfigureAddRFQUIElements();
+                InitializeSalesPersonCombo();
+                SetSalesPersonCombo();
+                InitializeAssigneeCombo();
+                SetAssigneeCombo();
+                InitializeCompanyNameCombo();
+                SetCompanyNameCombo();
+                InitializeCompanyInfo();
+                InitializeContactInfo(); 
+                SetContactPersonCombo();
+                SetContactPhoneCombo();
+            }
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////
@@ -150,10 +167,19 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                 return;
         }
-        private void InitializeContactInfo()
+        private bool InitializeContactInfo()
         {
-            if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(),rfq.GetAddressSerial(), ref contactInfo))
-                return;
+            if (viewAddCondition == 1)
+            {
+                if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), rfq.GetAddressSerial(), ref contactInfo))
+                    return false;
+            }
+            else
+            {
+                if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), rfq.GetAddressSerial(), ref contactInfo))
+                    return false;
+            }
+            return true;
         }
         
 
@@ -170,12 +196,19 @@ namespace _01electronics_crm
         //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
-            if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
-                return false;
-
-            //NO NEED FOR TEMP VARIABLES
-            for (int i = 0; i < companiesList.Count(); i++)
-                companyNameCombo.Items.Add(companiesList[i].company_name);
+            if (viewAddCondition == 1)
+            {
+                if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
+                    return false;
+            }
+            else
+            { 
+                if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
+                    return false;
+            }
+                //NO NEED FOR TEMP VARIABLES
+                for (int i = 0; i < companiesList.Count(); i++)
+                    companyNameCombo.Items.Add(companiesList[i].company_name);
 
             return true;
         }
@@ -197,9 +230,32 @@ namespace _01electronics_crm
 
         private void SetSalesPerson()
         {
-            rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+        }
+        private void SetSalesPersonCombo()
+        {
+            salesPersonCombo.SelectedItem = rfq.GetSalesPersonName();
+        }
+        private void SetAssigneeCombo()
+        {
+            assigneeCombo.SelectedItem = rfq.GetAssigneeName();
         }
 
+        private void SetCompanyNameCombo()
+        {
+            companyNameCombo.SelectedItem = rfq.GetRFQCompany().GetCompanyName();
+        }
+        private void SetContactPersonCombo()
+        {
+            contactPersonCombo.SelectedItem = rfq.GetRFQContact().GetContactName().ToString();
+            //contactPersonCombo.Text = contactInfo[0].contact_name;
+        }
+        private void SetContactPhoneCombo()
+        {
+            if(rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
+                contactPersonPhoneCombo.SelectedItem = rfq.GetRFQContact().GetContactPhones()[0].ToString();
+        }
         private void SetSalesPersonLabel()
         {
             salesPersonLabel.Content = rfq.GetSalesPersonName();
@@ -245,9 +301,10 @@ namespace _01electronics_crm
 
         /////////////SELECTION CHANGED//////////////
         ////////////////////////////////////////////
-        private void salesPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SalesPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                rfq.InitializeSalesPersonInfo(salesEmployees[salesPersonCombo.SelectedIndex].employee_id);
         }
         private void AssigneeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -263,7 +320,12 @@ namespace _01electronics_crm
             {
                 companyAddressCombo.IsEnabled = true;
 
-                int companySerial = companyNameCombo.SelectedIndex + 1;
+                for(int i = 0; i < companiesList.Count; i++)
+                {
+                    if (companyNameCombo.SelectedItem.ToString() == companiesList[i].company_name)
+                        companySerial = companiesList[i].company_serial;
+                }
+                //int companySerial = companyNameCombo.SelectedIndex + 1;
 
                 if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                     return;
@@ -290,23 +352,33 @@ namespace _01electronics_crm
             if (companyAddressCombo.SelectedItem != null)
             {
                 contactPersonCombo.IsEnabled = true;
-                int addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
-
-                if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
-                    return;
                 
+                addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
+
+                if (viewAddCondition == 1)
+                {
+                    if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
+                        return;
+                }
+                else
+                {
+                    if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), addressSerial, ref contactInfo))
+                        return;
+                }
+
                 for (int i = 0; i < contactInfo.Count(); i++)
                     contactPersonCombo.Items.Add(contactInfo[i].contact_name);
                 
+                rfq.InitializeBranchInfo(addressSerial);
 
                 if (contactInfo.Count() == 1)
                     contactPersonCombo.Items.GetItemAt(0);
-                rfq.InitializeBranchInfo(addressSerial);
             }
         }
 
         private void ContactPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            contactPersonPhoneCombo.Items.Clear();
             if (contactPersonCombo.SelectedItem != null)
             {
                 contactPersonPhoneCombo.IsEnabled = true;
@@ -319,10 +391,11 @@ namespace _01electronics_crm
                 contactPersonPhoneCombo.Items.Add(rfq.GetRFQContact().GetContactPhones()[i]);
                 contactPhones[i] = rfq.GetRFQContact().GetContactPhones()[i];
             }
+            
         }
         private void ContactPersonPhoneComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         //////////BUTTON CLICKED///////////////////
