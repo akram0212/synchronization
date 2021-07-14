@@ -241,6 +241,7 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(contacts);
         }
 
+
         //////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
         //////////////////////////////////////////////////////////
@@ -249,15 +250,18 @@ namespace _01electronics_crm
             countryComboBox.IsEnabled = true;
         }
 
+
         private void OnCheckedStateCheckBox(object sender, RoutedEventArgs e)
         {
             stateComboBox.IsEnabled = true;
         }
 
+
         private void OnCheckedCityCheckBox(object sender, RoutedEventArgs e)
         {
             cityComboBox.IsEnabled = true; 
         }
+
 
         private void OnCheckedDistrictCheckBox(object sender, RoutedEventArgs e)
         {
@@ -267,6 +271,7 @@ namespace _01electronics_crm
         {
 
         }
+
 
         //////////////////////////////////////////////////////////
         /// ON SELECTION CHANGED HANDLERS
@@ -291,6 +296,7 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
            
         }
+
         private void OnSelectionChangedStateComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = true;
@@ -307,6 +313,7 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
 
         }
+
         private void OnSelectionChangedCityComboBox(object sender, SelectionChangedEventArgs e)
         {
             districtCheckBox.IsEnabled = true;
@@ -320,11 +327,13 @@ namespace _01electronics_crm
             InitializeCompaniesTree();
             
         }
+
         private void OnSelectionChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
             InitializeCompaniesTree();
         }
+
 
         //////////////////////////////////////////////////////////
         /// ON UNCHECKED HANDLERS
@@ -353,6 +362,7 @@ namespace _01electronics_crm
             districtCheckBox.IsChecked = false;
 
         }
+
         private void OnUncheckedStateCheckBox(object sender, RoutedEventArgs e)
         {
             stateComboBox.IsEnabled = false;
@@ -371,6 +381,7 @@ namespace _01electronics_crm
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
         }
+
         private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
         {
             cityComboBox.IsEnabled = false;
@@ -386,6 +397,7 @@ namespace _01electronics_crm
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
         }
+
         private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
         {
             districtComboBox.IsEnabled = false;

@@ -40,7 +40,7 @@ namespace _01electronics_crm
         {
             employeeEmail = employeeEmailTextBox.Text;
 
-            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, true))
+            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, false))
                 return;
 
             loggedInUser.InitializeEmployeeInfo(employeeEmail);

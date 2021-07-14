@@ -1102,15 +1102,15 @@ namespace _01electronics_erp
             return rfqFailureReason;
         }
 
-        DateTime GetRFQIssueDate()
+        public DateTime GetRFQIssueDate()
         {
             return rfqIssueDate;
         }
-        DateTime GetRFQDeadlineDate()
+        public DateTime GetRFQDeadlineDate()
         {
             return rfqDeadlineDate;
         }
-        DateTime GetRFQRejectionDate()
+        public DateTime GetRFQRejectionDate()
         {
             return rfqRejectionDate;
         }
@@ -1180,7 +1180,9 @@ namespace _01electronics_erp
 
         public void SetRFQIssueDateToToday()
         {
-            rfqIssueDate = commonFunctions.GetTodaysDate();
+            DateTime currentDate = DateTime.Now;
+
+            rfqIssueDate = currentDate;
         }
         public void SetRFQRejectionDateToToday()
         {
