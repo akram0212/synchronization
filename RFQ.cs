@@ -27,7 +27,7 @@ namespace _01electronics_erp
         protected const int RFQ_ID_REVISION_SERIAL_START_INDEX = RFQ_ID_DATE_START_INDEX + RFQ_ID_DATE_TOKEN + RFQ_ID_REVISION_OFFSET_TOKEN + 1;
 
         protected const String RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
-        protected const String REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
+        protected const String REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY-REV01";
 
         protected SQLServer sqlDatabase;
 
@@ -1267,14 +1267,16 @@ namespace _01electronics_erp
                 RFQIdString[RFQ_ID_DATE_START_INDEX + i] = rfqDateID[i];
                 revisedRFQIdString[RFQ_ID_DATE_START_INDEX + i] = rfqDateID[i];
             }
-
-            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX] = (char)((rfqVersion - 1) / 10);
-            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX + 1] = (char)((rfqVersion - 1) % 10);
+            string temp = Convert.ToString((rfqVersion - 1) / 10);
+            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX] = Convert.ToChar(temp);
+            temp = Convert.ToString((rfqVersion - 1) % 10);
+            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX + 1] = Convert.ToChar(temp);
 
             if (rfqVersion > 1)
-                RFQId = revisedRFQIdString.ToString();
+                RFQId = new string(revisedRFQIdString);
+
             else
-                RFQId = RFQIdString.ToString();
+                RFQId = new string(RFQIdString);
 
         }
 

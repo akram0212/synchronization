@@ -53,15 +53,24 @@ namespace _01electronics_crm
 
             if(viewAddCondition == 1)
             {
+                ConfigureUIElementsForAdd();
                 InitializeContractTypeCombo();
             }
-            else
+            else if (viewAddCondition == 0)
             {
                 ConfigureUIElementsForView();
 
                 SetContractTypeLabel();
                 SetDeadlineDateDatePicker();
                 SetNotesLabel();
+            }
+            else
+            {
+                ConfigureUIElementsForRevise();
+                InitializeContractTypeCombo();
+                SetContractTypeCombo();
+                SetDeadlineDateDatePicker();
+                SetNotesTextBox();
             }
           
         }
@@ -73,6 +82,32 @@ namespace _01electronics_crm
             deadlineDateDatePicker.IsEnabled = false;
             notesTextBox.Visibility = Visibility.Collapsed;
             addRFQButton.Visibility = Visibility.Collapsed;
+            reviseRFQButton.Visibility = Visibility.Collapsed;
+
+            contractTypeLabel.Visibility = Visibility.Visible;
+            notesLabel.Visibility = Visibility.Visible;
+        }
+        private void ConfigureUIElementsForAdd()
+        {
+            contractTypeCombo.Visibility = Visibility.Visible;
+            deadlineDateDatePicker.IsEnabled = true;
+            notesTextBox.Visibility = Visibility.Visible;
+            addRFQButton.Visibility = Visibility.Visible;
+            reviseRFQButton.Visibility = Visibility.Collapsed;
+
+            contractTypeLabel.Visibility = Visibility.Collapsed;
+            notesLabel.Visibility = Visibility.Collapsed;
+        }
+        private void ConfigureUIElementsForRevise()
+        {
+            contractTypeCombo.Visibility = Visibility.Visible;
+            deadlineDateDatePicker.IsEnabled = true;
+            notesTextBox.Visibility = Visibility.Visible;
+            addRFQButton.Visibility = Visibility.Collapsed;
+            reviseRFQButton.Visibility = Visibility.Visible;
+
+            contractTypeLabel.Visibility = Visibility.Collapsed;
+            notesLabel.Visibility = Visibility.Collapsed;
         }
         //////////INITIALIZE FUNCTIONS/////////
         ///////////////////////////////////////
@@ -90,6 +125,11 @@ namespace _01electronics_crm
 
         //////////SET FUNCTIONS//////////////
         /////////////////////////////////////
+        
+        private void SetContractTypeCombo()
+        {
+            contractTypeCombo.Text = rfq.GetRFQContractType();
+        }
         private void SetContractTypeLabel()
         {
             contractTypeLabel.Content = rfq.GetRFQContractType();
@@ -97,9 +137,13 @@ namespace _01electronics_crm
 
         private void SetDeadlineDateDatePicker()
         {
-            //adlineDateDatePicker.SelectedDate = rfq.getrfq
+            deadlineDateDatePicker.SelectedDate = rfq.GetRFQDeadlineDate();
         }
 
+        private void SetNotesTextBox()
+        {
+            notesTextBox.Text = rfq.GetRFQNotes();
+        }
         private void SetNotesLabel()
         {
             notesLabel.Content = rfq.GetRFQNotes();
@@ -147,20 +191,82 @@ namespace _01electronics_crm
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
             rfq.IssueNewRFQ();
-            DateTime issueDateString = DateTime.Parse(rfq.GetRFQIssueDate().ToShortDateString());
-            DateTime deadlineDateString = DateTime.Parse(rfq.GetRFQDeadlineDate().ToShortDateString());
 
             if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
                 MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
                 string sqlQuery;
-                sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES (" + rfq.GetRFQIssueDate().ToString("yyyy-MM-dd") + "," + rfq.GetSalesPersonId() + "," + rfq.GetRFQSerial() + "," + rfq.GetRFQVersion() + "," + rfq.GetAssigneeId() + ",'" + rfq.GetRFQID() + "'," + rfq.GetAddressSerial() + "," + rfq.GetContactId() + "," + rfq.GetRFQProduct1TypeId() + "," + rfq.GetRFQProduct1BrandId() + "," + rfq.GetRFQProduct1ModelId() + "," + rfq.GetRFQProduct1Quantity() + "," + rfq.GetRFQProduct2TypeId() + "," + rfq.GetRFQProduct2BrandId() + "," + rfq.GetRFQProduct2ModelId() + "," + rfq.GetRFQProduct2Quantity() + "," + rfq.GetRFQProduct3TypeId() + "," + rfq.GetRFQProduct3BrandId() + "," + rfq.GetRFQProduct3ModelId() + "," + rfq.GetRFQProduct3Quantity() + "," + rfq.GetRFQProduct4TypeId() + "," + rfq.GetRFQProduct4BrandId() + "," + rfq.GetRFQProduct4ModelId() + "," + rfq.GetRFQProduct4Quantity() + "," + rfq.GetRFQContractTypeId() + "," + deadlineDateString + "," + rfq.GetRFQStatusId() + ",'" + rfq.GetRFQNotes() + "');";
-                int x = 0;
+                sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES (";
+                sqlQuery += "'" + rfq.GetRFQIssueDate().ToString("yyyy-MM-dd") + "',";
+                sqlQuery += rfq.GetSalesPersonId() + ",";
+                sqlQuery += rfq.GetRFQSerial() + ",";
+                sqlQuery += rfq.GetRFQVersion() + ",";
+                sqlQuery += rfq.GetAssigneeId() + ",";
+                sqlQuery += "'" + rfq.GetRFQID() + "',";
+                sqlQuery += rfq.GetAddressSerial() + ",";
+                sqlQuery += rfq.GetContactId() + ",";
+                sqlQuery += rfq.GetRFQProduct1TypeId() + ",";
+                sqlQuery += rfq.GetRFQProduct1BrandId() + ",";
+                sqlQuery += rfq.GetRFQProduct1ModelId() + ",";
+                sqlQuery += rfq.GetRFQProduct1Quantity() + ",";
+                sqlQuery += rfq.GetRFQProduct2TypeId() + ",";
+                sqlQuery += rfq.GetRFQProduct2BrandId() + ",";
+                sqlQuery += rfq.GetRFQProduct2ModelId() + ",";
+                sqlQuery += rfq.GetRFQProduct2Quantity() + ",";
+                sqlQuery += rfq.GetRFQProduct3TypeId() + ",";
+                sqlQuery += rfq.GetRFQProduct3BrandId() + ",";
+                sqlQuery += rfq.GetRFQProduct3ModelId() + ",";
+                sqlQuery += rfq.GetRFQProduct3Quantity() + ",";
+                sqlQuery += rfq.GetRFQProduct4TypeId() + ",";
+                sqlQuery += rfq.GetRFQProduct4BrandId() + ",";
+                sqlQuery += rfq.GetRFQProduct4ModelId() + ",";
+                sqlQuery += rfq.GetRFQProduct4Quantity() + ",";
+                sqlQuery += rfq.GetRFQContractTypeId() + ",";
+                sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
+                sqlQuery += rfq.GetRFQStatusId() + ",";
+                sqlQuery += "'" + rfq.GetRFQNotes() + "');";
                 sqlDatabase.InsertRows(sqlQuery);
             }
         }
 
-       
+        private void ReviseRFQButtonClick(object sender, RoutedEventArgs e)
+        {
+            rfq.SetRFQNotes(notes);
+            rfq.SetRFQDeadlineDate(deadlineDate);
+            rfq.ReviseRFQ();
+
+            string sqlQuery;
+            sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES (";
+            sqlQuery += "'" + rfq.GetRFQIssueDate().ToString("yyyy-MM-dd") + "',";
+            sqlQuery += rfq.GetSalesPersonId() + ",";
+            sqlQuery += rfq.GetRFQSerial() + ",";
+            sqlQuery += rfq.GetRFQVersion() + ",";
+            sqlQuery += rfq.GetAssigneeId() + ",";
+            sqlQuery += "'" + rfq.GetRFQID() + "',";
+            sqlQuery += rfq.GetAddressSerial() + ",";
+            sqlQuery += rfq.GetContactId() + ",";
+            sqlQuery += rfq.GetRFQProduct1TypeId() + ",";
+            sqlQuery += rfq.GetRFQProduct1BrandId() + ",";
+            sqlQuery += rfq.GetRFQProduct1ModelId() + ",";
+            sqlQuery += rfq.GetRFQProduct1Quantity() + ",";
+            sqlQuery += rfq.GetRFQProduct2TypeId() + ",";
+            sqlQuery += rfq.GetRFQProduct2BrandId() + ",";
+            sqlQuery += rfq.GetRFQProduct2ModelId() + ",";
+            sqlQuery += rfq.GetRFQProduct2Quantity() + ",";
+            sqlQuery += rfq.GetRFQProduct3TypeId() + ",";
+            sqlQuery += rfq.GetRFQProduct3BrandId() + ",";
+            sqlQuery += rfq.GetRFQProduct3ModelId() + ",";
+            sqlQuery += rfq.GetRFQProduct3Quantity() + ",";
+            sqlQuery += rfq.GetRFQProduct4TypeId() + ",";
+            sqlQuery += rfq.GetRFQProduct4BrandId() + ",";
+            sqlQuery += rfq.GetRFQProduct4ModelId() + ",";
+            sqlQuery += rfq.GetRFQProduct4Quantity() + ",";
+            sqlQuery += rfq.GetRFQContractTypeId() + ",";
+            sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
+            sqlQuery += rfq.GetRFQStatusId() + ",";
+            sqlQuery += "'" + rfq.GetRFQNotes() + "');";
+            sqlDatabase.InsertRows(sqlQuery);
+        }
     }
 }
