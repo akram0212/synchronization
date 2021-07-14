@@ -30,19 +30,8 @@ namespace _01electronics_crm
         protected CommonFunctions commonFunctions;
         protected IntegrityChecks integrityChecker;
 
-        //String address_serial;
-        //int address;
-        //int loggedInUser.GetEmployeeId();
-        int contactID;
-        int personalEmailID;
-        int mobileID;
         String firstName;
         String lastName;
-        //String company;
-        //String businessPhone;
-        //String personalPhone;
-        //String businessEmail;
-        String personalEmail;
 
         List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> companies;
         List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> companyAddresses;
@@ -210,6 +199,7 @@ namespace _01electronics_crm
             if (!integrityChecker.CheckContactBusinessEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, true))
                 return false;
 
+            //YOU SHALL USE THIS FUNCTION TO HANDLE IDS AND EMAILS AUTOMATICALLY
             contact.SetContactBusinessEmail(outputString);
             employeeBusinessEmailTextBox.Text = contact.GetContactBusinessEmail();
 
@@ -224,8 +214,9 @@ namespace _01electronics_crm
             if (!integrityChecker.CheckContactPersonalEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, false))
                 return false;
 
-            personalEmail = outputString;
-            employeePersonalEmailTextBox.Text = personalEmail;
+            //YOU SHALL USE THIS FUNCTION TO HANDLE IDS AND EMAILS AUTOMATICALLY
+            contact.AddNewContactEmail(outputString);
+            employeePersonalEmailTextBox.Text = outputString;
 
             return true;
         }
@@ -299,35 +290,29 @@ namespace _01electronics_crm
             if (!CheckContactBusinessEmailEditBox())
                 return;   
             if (!CheckContactPersonalEmailEditBox())
-                return; 
-            
-            QueryGetMaxContactID();
+                return;
+
+            //YOU DON'T NEED TO WRITE A FUNCTION TO GET NEW CONTACT ID, THE CONTACT CLASS HANDLES IT ALREADY
+            contact.GetNewContactId();
 
             contact.SetAddressSerial(companyAddresses[companyBranchComboBox.SelectedIndex].address_serial);
 
             contact.SetSalesPerson(loggedInUser);
-            contact.SetContactId(contactID);
 
-            QueryAddContactInfo();
-            
-            if (personalEmail != "")
-            {
-                QueryGetMaxPersonalEmailID();
-                QueryAddContactPersonalEmail();
-            }
+            InsertIntoContactInfo();
 
-            QueryGetMaxContactMobileID();
+            //YOU DON'T NEED TO GET A NEW EMAIL/PHONE ID, THIS IS A NEW CONTACT, SO THE EMAIL ID SHALL BE 1,
+            //ALSO, YOU SHALL ONLY USE CONTACT.ADDNEWPERSONALEMAIL() / CONTACT.ADDNEWCONTACTPHONE(), 
+            //THIS FUNCTION SHALL HANDLE THE IDs BY ITSELF
 
-            QueryAddContactMobile(contact.GetContactPhones()[0]);
+            for (int i = 0; i < contact.GetNumberOfSavedContactPhones(); i++)
+                InsertIntoContactMobile(i + 1, contact.GetContactPhones()[i]);
 
-            if (employeePersonalPhoneTextBox.Text != "")
-            {
-                QueryGetMaxContactMobileID();
-                QueryAddContactMobile(contact.GetContactPhones()[1]);
-            }
+            for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
+                InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
         }
 
-        private bool QueryAddContactInfo()
+        private bool InsertIntoContactInfo()
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_info values(";
             String sqlQueryPart2 = ", ";
@@ -359,7 +344,7 @@ namespace _01electronics_crm
             return true;
         }
 
-        private bool QueryAddContactPersonalEmail()
+        private bool InsertIntoContactPersonalEmail(int mEmailId, String mContactEmail)
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_personal_emails values(";
             String sqlQueryPart2 = ", ";
@@ -373,9 +358,9 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart2;
             sqlQuery += contact.GetContactId();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += personalEmailID;
+            sqlQuery += mEmailId;
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + personalEmail + "'"; 
+            sqlQuery += "'" + mContactEmail + "'"; 
             sqlQuery += sqlQueryPart2;
             sqlQuery += sqlQueryPart3;
 
@@ -385,7 +370,7 @@ namespace _01electronics_crm
             return true;
         }
         
-        private bool QueryAddContactMobile(String telephone)
+        private bool InsertIntoContactMobile(int mPhoneId, String mContactPhone)
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_mobile values(";
             String sqlQueryPart2 = ", ";
@@ -399,9 +384,9 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart2;
             sqlQuery += contact.GetContactId();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += mobileID;
+            sqlQuery += mPhoneId;
             sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + telephone + "'";
+            sqlQuery += "'" + mContactPhone + "'";
             sqlQuery += sqlQueryPart2;
             sqlQuery += sqlQueryPart3;
 
@@ -412,88 +397,6 @@ namespace _01electronics_crm
             return true;
         } 
         
-
-        private bool QueryGetMaxContactID()
-        {
-
-            String sqlQueryPart1 = "select max(contact_id) from erp_system.dbo.contact_person_info where branch_serial = ";
-            String sqlQueryPart2 = " and sales_person_id = ";
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            contactID = 1 + sqlServer.rows[0].sql_int[0];
-
-            return true;
-        } 
-        private bool QueryGetMaxPersonalEmailID()
-        {
-
-            String sqlQueryPart1 = "select max(email_id) from erp_system.dbo.contact_person_personal_emails where branch_serial = ";
-            String sqlQueryPart2 = " and sales_person_id = ";
-            String sqlQueryPart3 = " and contact_id =  ";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            sqlQuery += sqlQueryPart3;
-            sqlQuery += contactID;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
-                personalEmailID = 1;
-
-            else
-                personalEmailID = 1 + sqlServer.rows[0].sql_int[0];
-
-            return true;
-        }
-        
-        private bool QueryGetMaxContactMobileID()
-        {
-
-            String sqlQueryPart1 = "select max(telephone_id) from erp_system.dbo.contact_person_mobile where branch_serial = ";
-            String sqlQueryPart2 = " and sales_person_id = ";
-            String sqlQueryPart3 = " and contact_id =  ";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart3;
-            sqlQuery += contactID;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
-                mobileID = 1;
-
-            else
-                mobileID = 1 + sqlServer.rows[0].sql_int[0];
-
-            return true;
-        }
 
         private void OnSelChangedGender(object sender, SelectionChangedEventArgs e)
         {

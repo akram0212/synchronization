@@ -23,35 +23,37 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected SQLServer sqlServer;
         protected IntegrityChecks integrityChecker;
-        Company company;
-        Employee loggedInUser;
-        List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
-        List<BASIC_STRUCTS.STATE_STRUCT> states;
-        List<BASIC_STRUCTS.CITY_STRUCT> cities;
-        List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
+
+        protected Company company;
+        protected Employee loggedInUser;
+
+        protected List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
+        protected List<BASIC_STRUCTS.STATE_STRUCT> states;
+        protected List<BASIC_STRUCTS.CITY_STRUCT> cities;
+        protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
+
         protected String sqlQuery;
-        public AddBranchWindow(ref Employee mloggedInUser, ref Company companyInfo)
+        public AddBranchWindow(ref Employee mloggedInUser, ref Company mCompany)
         {
             InitializeComponent();
 
             commonQueries = new CommonQueries();
+
             countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
             states = new List<BASIC_STRUCTS.STATE_STRUCT>();
             cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
-            company = new Company();
-            loggedInUser = new Employee();
+
             sqlServer = new SQLServer();
             integrityChecker = new IntegrityChecks();
 
             loggedInUser = mloggedInUser;
-            this.company = companyInfo;
+            company = mCompany;
 
             commonQueries.GetAllCountries(ref countries);
+
             for (int i = 0; i < countries.Count; i++)
-            {
                 countryComboBox.Items.Add(countries[i].country_name);
-            }
 
             companyNameTextBox.IsEnabled = false;
             primaryWorkFieldTextBox.IsEnabled = false;
@@ -143,10 +145,12 @@ namespace _01electronics_crm
             if (!CheckCompanyFaxEditBox())
                 return;
 
-            QueryGetMaxBranchSerial();
-            AddCompanyAddress();
+            //YOU DON'T NEED TO WRITE A NEW QUERY GET NEW BRANCH SERIAL
+            //COMPANY CLASS HANDLES ALL THAT
+            company.GetNewAddressSerial();
 
-            MessageBox.Show("Branch Added Successfully");
+            InsertIntoCompanyAddress();
+
             this.Hide();
 
         }
@@ -227,7 +231,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        private bool AddCompanyAddress()
+        private bool InsertIntoCompanyAddress()
         {
             String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
             String sqlQueryPart2 = ", ";
@@ -247,23 +251,6 @@ namespace _01electronics_crm
 
             if (!sqlServer.InsertRows(sqlQuery))
                 return false;
-
-            return true;
-        }
-        private bool QueryGetMaxBranchSerial()
-        {
-            String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            company.SetAddressSerial(1 + sqlServer.rows[0].sql_int[0]);
 
             return true;
         }

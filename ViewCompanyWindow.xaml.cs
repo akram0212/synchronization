@@ -21,7 +21,7 @@ namespace _01electronics_crm
     public partial class ViewCompanyWindow : Window
     {
         protected Employee loggedInUser;
-        
+
         protected CommonQueries commonQueries;
 
         protected Company company;
@@ -38,10 +38,8 @@ namespace _01electronics_crm
             company = mCompany;
 
             commonQueries = new CommonQueries();
-            loggedInUser = new Employee();
             branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
 
-            
             companyNameTextBox.IsEnabled = false;
             primaryWorkFieldTextBox.IsEnabled = false;
             secondaryWorkFieldTextBox.IsEnabled = false;
@@ -50,9 +48,9 @@ namespace _01electronics_crm
             primaryWorkFieldTextBox.Text = company.GetCompanyPrimaryField();
             secondaryWorkFieldTextBox.Text = company.GetCompanySecondaryField();
 
-            for(int i = 0; i < branchesList.Count; i++)
-                branchComboBox.Items.Add(branchesList[i].country + ",\t" + branchesList[i].state_governorate + ",\t" + branchesList[i].city + ",\t" + branchesList[i].district);
-            
+            if (!InitializeBranchesComboBox())
+                return;
+
             company.QueryCompanyPhones();
             company.QueryCompanyFaxes();
 
@@ -63,6 +61,18 @@ namespace _01electronics_crm
                 AddPhone();
             if (faxesCount != 0)
                 AddFax();
+        }
+        private bool InitializeBranchesComboBox()
+        {
+            branchComboBox.Items.Clear();
+
+            if (!commonQueries.GetCompanyAddresses(company.GetCompanySerial(), ref branchesList))
+                return false;
+
+            for (int i = 0; i < branchesList.Count; i++)
+                branchComboBox.Items.Add(branchesList[i].district + ", " + branchesList[i].city + ", " + branchesList[i].state_governorate + ", " + branchesList[i].country);
+
+            return true;
         }
         private void AddPhone()
         {
@@ -82,7 +92,7 @@ namespace _01electronics_crm
             companyPhonesWrapPanel.Children.Add(PhoneWrapPanel);
 
         }
-        
+
         private void AddFax()
         {
             WrapPanel FaxWrapPanel = new WrapPanel();
@@ -115,7 +125,12 @@ namespace _01electronics_crm
         private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)
         {
             AddBranchWindow addBranchWindow = new AddBranchWindow(ref loggedInUser, ref company);
+            addBranchWindow.Closed += OnClosedAddBranchWindow;
             addBranchWindow.Show();
+        }
+        private void OnClosedAddBranchWindow(object sender, EventArgs e)
+        {
+            InitializeBranchesComboBox();
         }
     }
 }
