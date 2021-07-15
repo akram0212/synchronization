@@ -222,7 +222,7 @@ namespace _01electronics_crm
 		}
 		public String GetBranch()
 		{
-			return contact.GetCompanyDistrict() + ",\t" + contact.GetCompanyCity() + ",\t" + contact.GetCompanyState() + ",\t" + contact.GetCompanyCountry();
+			return contact.GetCompanyDistrict() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCountry();
 		}
 		public int GetContactId()
 		{
@@ -284,6 +284,9 @@ namespace _01electronics_crm
 			if (!GetNewVisitSerial())
 				return false;
 
+			if (!InsertIntoClientVisit())
+				return false;
+
 			return true;
 		}
 		public void ConfirmVisit(int mVisitResultId, String mVisitResult)
@@ -337,5 +340,41 @@ namespace _01electronics_crm
 			return true;
 		}
 
+		//////////////////////////////////////////////////////////////////////
+		//INSERT FUNCTIONS
+		//////////////////////////////////////////////////////////////////////
+		private bool InsertIntoClientVisit()
+		{
+			String sqlQueryPart1 = @"insert into erp_system.dbo.client_visits 
+                             values(";
+			String comma = ",";
+			String sqlQueryPart3 = " );";
+
+			sqlQuery = String.Empty;
+			sqlQuery += sqlQueryPart1;
+			sqlQuery += "'" + GetIssueDate() + "'";
+			sqlQuery += comma;
+			sqlQuery += GetSalesPersonId();
+			sqlQuery += comma;
+			sqlQuery += GetVisitSerial();
+			sqlQuery += comma;
+			sqlQuery += GetAddressSerial();
+			sqlQuery += comma;
+			sqlQuery += GetContactId();
+			sqlQuery += comma;
+			sqlQuery += GetVisitPurposeId();
+			sqlQuery += comma;
+			sqlQuery += GetVisitResultId();
+			sqlQuery += comma;
+			sqlQuery += "'" + GetVisitNotes() + "'";
+			sqlQuery += comma;
+			sqlQuery += "'" + GetVisitDate() + "'";
+			sqlQuery += sqlQueryPart3;
+
+			if (!sqlDatabase.InsertRows(sqlQuery))
+				return false;
+
+			return true;
+		}
 	}
 }

@@ -55,43 +55,92 @@ namespace _01electronics_crm
             companyBranchComboBox.IsEnabled = false;
             contactComboBox.IsEnabled = false;
 
-            GetAllCompanies();
-            QueryGetBranchInfo();
+            GetEmployeeCompanies();
+            GetCompanyBranches();
 
             InitializeCompanyNameComboBox();
             InitializeVisitPurposes();
             InitializeVisitResults();
 
         }
-        public bool GetAllCompanies()
+        public bool GetEmployeeCompanies()
         {
             if (!commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companies))
                 return false;
 
             return true;
         }
+        private bool GetCompanyBranches()
+        {
+            branches.Clear();
+
+            if (!commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial, ref branches))
+                return false;
+
+            //String sqlQueryPart1 = @"select company_address.address_serial,company_address.address,
+            //     districts.district,cities.city,states_governorates.state_governorate,countries.country
+            //     from erp_system.dbo.company_address
+            //     inner join erp_system.dbo.company_name
+            //     on company_address.company_serial = company_name.company_serial
+            //     inner join erp_system.dbo.districts
+            //     on company_address.address = districts.id
+            //     inner join erp_system.dbo.cities
+            //     on districts.city = cities.id
+            //     inner join erp_system.dbo.states_governorates
+            //     on cities.state_governorate = states_governorates.id
+            //     inner join erp_system.dbo.countries
+            //     on states_governorates.country = countries.id
+            //     where company_name.added_by = ";
+            //
+            //sqlQuery = String.Empty;
+            //sqlQuery += sqlQueryPart1;
+            //sqlQuery += loggedInUser.GetEmployeeId();
+            //
+            //BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+            //
+            //queryColumns.sql_int = 2;
+            //queryColumns.sql_string = 4;
+            //
+            //if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+            //    return false;
+            //
+
+            //for (int i = 0; i < branches.Count; i++)
+            //{
+            //    COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT tempItem;
+            //
+            //    tempItem.address_serial = sqlDatabase.rows[i].sql_int[0];
+            //    tempItem.address = sqlDatabase.rows[i].sql_int[1];
+            //
+            //    tempItem.district = sqlDatabase.rows[i].sql_string[0];
+            //    tempItem.state_governorate = sqlDatabase.rows[i].sql_string[1];
+            //    tempItem.city = sqlDatabase.rows[i].sql_string[2];
+            //    tempItem.country = sqlDatabase.rows[i].sql_string[3];
+            //
+            //    branches.Add(tempItem);
+            //}
+
+            return true;
+        }
+
         private void InitializeCompanyNameComboBox()
         {
             for(int i = 0; i < companies.Count(); i++)
-            {
                 companyNameComboBox.Items.Add(companies[i].company_name);
-            }
 
         }
         private void InitializeCompanyBranchesComboBox()
         {
-            contactComboBox.IsEnabled = false;
             companyBranchComboBox.Items.Clear();
-            commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial,ref branches);
+            
             for (int i = 0; i < branches.Count; i++)
-            {
                 companyBranchComboBox.Items.Add(branches[i].district + ", " + branches[i].city + ", " + branches[i].state_governorate + ", " + branches[i].country);
-            }
 
-            if (branches.Count == 1)
-            {
-                companyBranchComboBox.SelectedItem = branches[0].district + ", " + branches[0].city + ", " + branches[0].state_governorate + ", " + branches[0].country;
-            }
+            //YOU SHALL ALWAYS SELECT FIRST BRANCH ADDRESS, NO NEED TO CHECK FOR NO. OF BRANCHES
+            //YOU SHALL SET THE SELECTED ITEM LIKE THIS, NO NEED TO SELECT DISTRICT, CITY, STATE AND COUNTRY
+            companyBranchComboBox.SelectedIndex = 0;
+
+            contactComboBox.IsEnabled = false;
         }
         private void InitializeCompanyContactsComboBox()
         {
@@ -101,115 +150,42 @@ namespace _01electronics_crm
                 commonQueries.GetCompanyContacts(loggedInUser.GetEmployeeId(), branches[companyBranchComboBox.SelectedIndex].address_serial, ref contacts);
             
             for (int i = 0; i < contacts.Count; i++)
-            {
                 contactComboBox.Items.Add(contacts[i].contact_name);
-            }
 
             if (contacts.Count == 1)
-            {
-                contactComboBox.SelectedItem = contacts[0].contact_name;
-            }
+                contactComboBox.SelectedIndex = 0;
 
         }
-        private void InitializeVisitPurposes()
+        //ANY FUNCTION THAT USES COMMONQUERIES OR MAKES A QUERY ITSELF SHOULD BE BOOL
+        private bool InitializeVisitPurposes()
         {
             visitPurposeComboBox.Items.Clear();
-            commonQueries.GetVisitPurposes(ref visitPurposes);
+
+            //YOU SHALL ALWAYS CHECK THAT COMMONQUERIES FUNCTION IS ALWAYS EXECUTED CORRECTLY
+            if (!commonQueries.GetVisitPurposes(ref visitPurposes))
+                return false;
+
             for (int i = 0; i < visitPurposes.Count; i++)
-            {
                 visitPurposeComboBox.Items.Add(visitPurposes[i].purpose_name);
-            }
+
+            return false;
 
         } 
-        private void InitializeVisitResults()
+        private bool InitializeVisitResults()
         {
             visitResultComboBox.Items.Clear();
-            commonQueries.GetVisitResults(ref visitResults);
+
+            //YOU SHALL ALWAYS CHECK THAT COMMONQUERIES FUNCTION IS ALWAYS EXECUTED CORRECTLY
+            if (!commonQueries.GetVisitResults(ref visitResults))
+                return false;
+
             for (int i = 0; i < visitResults.Count; i++)
-            {
                 visitResultComboBox.Items.Add(visitResults[i].result_name);
-            }
-
-        }
-        private bool QueryGetBranchInfo()
-        {
-            branches.Clear();
-            String sqlQueryPart1 = @"select company_address.address_serial,company_address.address,
-                 districts.district,cities.city,states_governorates.state_governorate,countries.country
-                 from erp_system.dbo.company_address
-                 inner join erp_system.dbo.company_name
-                 on company_address.company_serial = company_name.company_serial
-                 inner join erp_system.dbo.districts
-                 on company_address.address = districts.id
-                 inner join erp_system.dbo.cities
-                 on districts.city = cities.id
-                 inner join erp_system.dbo.states_governorates
-                 on cities.state_governorate = states_governorates.id
-                 inner join erp_system.dbo.countries
-                 on states_governorates.country = countries.id
-                 where company_name.added_by = ";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 2;
-            queryColumns.sql_string = 4;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
-                return false;
-
-            for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            {
-                COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT tempItem;
-
-                tempItem.address_serial = sqlDatabase.rows[i].sql_int[0];
-                tempItem.address = sqlDatabase.rows[i].sql_int[1];
-
-                tempItem.district = sqlDatabase.rows[i].sql_string[0];
-                tempItem.state_governorate = sqlDatabase.rows[i].sql_string[1];
-                tempItem.city = sqlDatabase.rows[i].sql_string[2];
-                tempItem.country = sqlDatabase.rows[i].sql_string[3];
-
-                branches.Add(tempItem);
-            }
-            return true;
-        }
-        private bool QueryAddClientVisit()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.client_visits 
-                             values(";
-            String comma = ",";
-            String sqlQueryPart3 = " );";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += "'" + clientVisit.GetIssueDate() + "'";
-            sqlQuery += comma;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += comma;
-            sqlQuery += clientVisit.GetVisitSerial();
-            sqlQuery += comma;
-            sqlQuery += branches[companyBranchComboBox.SelectedIndex].address_serial;
-            sqlQuery += comma;
-            sqlQuery += contacts[contactComboBox.SelectedIndex].contact_id;
-            sqlQuery += comma;
-            sqlQuery += clientVisit.GetVisitPurposeId();
-            sqlQuery += comma;
-            sqlQuery += clientVisit.GetVisitResultId();
-            sqlQuery += comma;
-            sqlQuery += "'" + clientVisit.GetVisitNotes() + "'"; 
-            sqlQuery += comma;
-            sqlQuery += "'" + clientVisit.GetVisitDate() + "'";
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlDatabase.InsertRows(sqlQuery))
-                return false;
 
             return true;
         }
+        
+        
         private bool CheckCompanyNameComboBox()
         {
             if (companyNameComboBox.SelectedItem == null)
@@ -330,12 +306,24 @@ namespace _01electronics_crm
             if (!CheckVisitResultComboBox())
                 return;
 
-            clientVisit.SetIssueDateToToday();
+            //YOU SHALL INITIALIZE YOUR CLASS OBJECTS WITH THE INITIALIZATION FUNCTIONS
+            clientVisit.InitializeBranchInfo(branches[companyBranchComboBox.SelectedIndex].address_serial);
+            clientVisit.InitializeContactInfo(contacts[contactComboBox.SelectedIndex].contact_id);
+            
+            //THEN SET OTHER PARAMETERS
+            clientVisit.SetVisitDate(Convert.ToDateTime(visitDatePicker.Text));
+
+            clientVisit.SetVisitPurpose(visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_id, visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_name);
+            clientVisit.SetVisitResult(visitResults[visitResultComboBox.SelectedIndex].result_id, visitResults[visitResultComboBox.SelectedIndex].result_name);
+            
+
             clientVisit.SetVisitNotes(additionalDescriptionTextBox.Text.ToString());
-            clientVisit.GetNewVisitSerial();
+            
+            //LASTLY, YOU SHALL CALL THIS FUNCTION, IT GENERATES A NEW SERIAL, ID AND ANY OTHER PARAMETERS
+            //AND INSERTS DATA INTO DATABASE
+            clientVisit.IssueNewVisit();
 
-            QueryAddClientVisit();
-
+            
             this.Hide();
         }
     }
