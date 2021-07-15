@@ -26,6 +26,7 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
         protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> visitsInfo;
+        protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> filteredVisits;
         private Grid previousSelectedVisitItem;
         private Grid currentSelectedVisitItem;
         public ClientVisitsPage(ref Employee mLoggedInUser)
@@ -36,6 +37,7 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             visitsInfo = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
+            filteredVisits = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
 
             viewButton.IsEnabled = false;
 
@@ -50,6 +52,7 @@ namespace _01electronics_crm
 
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
+
             GetVisits();
             InitializeStackPanel();
         }
@@ -72,7 +75,7 @@ namespace _01electronics_crm
         private void InitializeStackPanel()
         {
             ClientVisitsStackPanel.Children.Clear();
-
+            filteredVisits.Clear();
             for (int i = 0; i < visitsInfo.Count; i++)
             {
                 if (visitsInfo[i].sales_person_id == loggedInUser.GetEmployeeId())
@@ -84,6 +87,8 @@ namespace _01electronics_crm
 
                     if (quarterCheckBox.IsChecked == true && (quarterCombo.SelectedItem == null || commonFunctions.GetQuarter(DateTime.Parse(visitsInfo[i].visit_date)) != quarterCombo.SelectedIndex + 1))
                         continue;
+
+                    filteredVisits.Add(visitsInfo[i]);
 
                     StackPanel currentStackPanel = new StackPanel();
                     currentStackPanel.Orientation = Orientation.Vertical;
@@ -291,62 +296,26 @@ namespace _01electronics_crm
 
         }
 
-        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-
+            AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
+            addClientVisitWindow.Closed += OnClosedAddVisitWindow;
+            addClientVisitWindow.Show();
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
-            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow();
+            ClientVisit selectedVisit = new ClientVisit();
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, loggedInUser.GetEmployeeId());
+           
+            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
             viewClientVisitWindow.Show();
         }
-
+        private void OnClosedAddVisitWindow(object sender, EventArgs e)
+        {
+            GetVisits();
+            InitializeStackPanel();
+        }
         private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
 

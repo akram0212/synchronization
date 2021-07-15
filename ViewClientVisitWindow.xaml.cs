@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_erp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,37 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ViewClientVisitWindow : Window
     {
-        public ViewClientVisitWindow()
+        ClientVisit visitInfo;
+        public ViewClientVisitWindow(ref ClientVisit mVisitInfo)
         {
+            visitInfo = mVisitInfo;
             InitializeComponent();
+
+            companyNameTextBox.IsEnabled = false;
+            companyBranchTextBox.IsEnabled = false;
+
+            contactNameTextBox.IsEnabled = false;
+
+            visitDateTextBox.IsEnabled = false;
+            visitPurposeTextBox.IsEnabled = false;
+            visitResultTextBox.IsEnabled = false;
+            
+            additionalDescriptionTextBox.IsEnabled = false;
+
+            
+            companyNameTextBox.Text = visitInfo.GetCompanyName();
+            companyBranchTextBox.Text = visitInfo.GetBranch();
+
+            contactNameTextBox.Text = visitInfo.GetContactName();
+
+            visitDateTextBox.Text = visitInfo.GetVisitDate().ToString();
+
+            visitPurposeTextBox.Text = visitInfo.GetVisitPurpose();
+            visitResultTextBox.Text = visitInfo.GetVisitResult();
+
+            additionalDescriptionTextBox.Text = visitInfo.GetVisitNotes();
+
         }
+      
     }
 }

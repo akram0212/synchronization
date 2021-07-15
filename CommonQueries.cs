@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -2794,6 +2794,7 @@ namespace _01electronics_erp
                                     inner join erp_system.dbo.contact_person_info 
                                     on client_visits.branch_serial = contact_person_info.branch_serial
                                     and client_visits.sales_person = contact_person_info.sales_person_id
+                                    and client_visits.contact_id = contact_person_info.contact_id
                                     
                                     inner join erp_system.dbo.company_address
                                     on client_visits.branch_serial = company_address.address_serial

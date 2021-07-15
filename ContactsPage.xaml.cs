@@ -125,7 +125,7 @@ namespace _01electronics_crm
             if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
+            for (int i = 0; i < cities.Count; i++)
                 cityComboBox.Items.Add(cities[i].city_name);
 
             return true;
@@ -137,7 +137,7 @@ namespace _01electronics_crm
             if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
+            for (int i = 0; i < districts.Count; i++)
                 districtComboBox.Items.Add(districts[i].district_name);
 
             return true;

@@ -1,12 +1,12 @@
-﻿<Window x:Class="_01electronics_crm.ViewClientVisitWindow"
+﻿<Window x:Class="_01electronics_crm.ViewClientCallWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Background="#EDEDED"
-        Title="ViewClientVisitWindow" Height="730" Width="700">
+         Background="#EDEDED"
+        Title="ViewClientCallWindow" Height="450" Width="800">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -19,7 +19,7 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Name="ClientVisitProfileHeader" Content="VIEW CLIENT VISIT" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Label Grid.Column="0" Name="ClientCallProfileHeader" Content="VIEW CLIENT CALL" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
@@ -50,19 +50,19 @@
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="1">
-                        <WrapPanel Name="VisitDatePanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Visit Date"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="visitDateTextBox"/>
+                        <WrapPanel Name="CallDatePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Call Date"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="CallDateTextBox"/>
                         </WrapPanel>
 
-                        <WrapPanel Name="VisitPurposePanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Visit Purpose"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="visitPurposeTextBox"/>
+                        <WrapPanel Name="CallPurposePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Call Purpose"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="CallPurposeTextBox"/>
                         </WrapPanel>
 
-                        <WrapPanel Name="VisitResultPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Visit Result"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="visitResultTextBox"/>
+                        <WrapPanel Name="CallResultPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Call Result"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="CallResultTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="AdditionalDescriptionPanel">
@@ -70,7 +70,7 @@
                             <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
-            
+
                 </Grid>
 
             </WrapPanel>

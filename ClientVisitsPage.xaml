@@ -75,9 +75,6 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <CheckBox Name="yearCheckBox" Grid.Row="0" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="YearCheckBoxChecked" Unchecked="YearCheckBoxUnchecked"/>
