@@ -325,7 +325,7 @@ namespace _01electronics_crm
 
 			sqlQuery = String.Empty;
 			sqlQuery += sqlQueryPart1;
-			sqlQuery += LoggedInUser.GetEmployeeId();
+			sqlQuery += GetSalesPersonId();
 			sqlQuery += sqlQueryPart2;
 
 			BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();

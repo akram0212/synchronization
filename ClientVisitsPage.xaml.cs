@@ -56,6 +56,14 @@ namespace _01electronics_crm
             GetVisits();
             InitializeStackPanel();
         }
+        private void GetVisits()
+        {
+            commonQueries.GetClientVisits(ref visitsInfo);
+        }
+
+        //////////////////////////////////////////////////////////
+        /// INITIALIZATION FUNCTIONS
+        //////////////////////////////////////////////////////////
         private void InitializeYearsComboBox()
         {
             for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
@@ -67,10 +75,6 @@ namespace _01electronics_crm
             for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
                 quarterCombo.Items.Add(commonFunctions.GetQuarterName(i + 1));
 
-        }
-        private void GetVisits()
-        {
-            commonQueries.GetClientVisits(ref visitsInfo);
         }
         private void InitializeStackPanel()
         {
@@ -137,6 +141,10 @@ namespace _01electronics_crm
                 }
             }
         }
+
+        //////////////////////////////////////////////////////////
+        /// ON BTN CLICKED HANDLERS
+        //////////////////////////////////////////////////////////
         private void OnBtnClickedVisitItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
@@ -163,41 +171,6 @@ namespace _01electronics_crm
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
         }
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
-        {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
-        }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
-        {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffersPage);
-        }
-        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
-        {
-            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
-            this.NavigationService.Navigate(rFQsPage);
-        }
-        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
-        {
-            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
-            this.NavigationService.Navigate(clientVisitsPage);
-        }
-        private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
-        {
-            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
-            this.NavigationService.Navigate(clientCallsPage);
-        }
-        private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
-        {
-            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
-            this.NavigationService.Navigate(officeMeetingsPage);
-        }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            //this.NavigationService.Navigate(statisticsPage);
-        }
 
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
@@ -213,39 +186,65 @@ namespace _01electronics_crm
 
         private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
         {
-
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
-
+            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffersPage);
         }
 
         private void OnButtonClickedRFQs(object sender, MouseButtonEventArgs e)
         {
-
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
         }
 
         private void OnButtonClickedVisits(object sender, MouseButtonEventArgs e)
         {
+            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientVisitsPage);
 
         }
 
         private void OnButtonClickedCalls(object sender, MouseButtonEventArgs e)
         {
-
+            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientCallsPage);
         }
 
         private void OnButtonClickedMeetings(object sender, MouseButtonEventArgs e)
         {
-
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
         }
 
         private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
         {
-
+            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            //this.NavigationService.Navigate(statisticsPage);
         }
 
+        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        {
+            AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
+            addClientVisitWindow.Closed += OnClosedAddVisitWindow;
+            addClientVisitWindow.Show();
+        }
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        {
+            ClientVisit selectedVisit = new ClientVisit();
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, loggedInUser.GetEmployeeId());
+
+            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
+            viewClientVisitWindow.Show();
+        }
+
+        //////////////////////////////////////////////////////////
+        /// ON CHECK HANDLERS
+        //////////////////////////////////////////////////////////
         private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = true;
@@ -296,21 +295,6 @@ namespace _01electronics_crm
 
         }
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
-        {
-            AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
-            addClientVisitWindow.Closed += OnClosedAddVisitWindow;
-            addClientVisitWindow.Show();
-        }
-
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
-        {
-            ClientVisit selectedVisit = new ClientVisit();
-            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, loggedInUser.GetEmployeeId());
-           
-            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
-            viewClientVisitWindow.Show();
-        }
         private void OnClosedAddVisitWindow(object sender, EventArgs e)
         {
             GetVisits();

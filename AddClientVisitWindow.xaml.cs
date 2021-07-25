@@ -22,15 +22,12 @@ namespace _01electronics_crm
     {
         CommonQueries commonQueries;
         Employee loggedInUser;
-        SQLServer sqlDatabase;
-        String sqlQuery;
         ClientVisit clientVisit;
         List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> companies;
         List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contacts;
         List<COMPANY_WORK_MACROS.VISIT_PURPOSE_STRUCT> visitPurposes;
         List<COMPANY_WORK_MACROS.VISIT_RESULT_STRUCT> visitResults;
         List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branches;
-
 
         public AddClientVisitWindow(ref Employee mloggedInUser)
         {
@@ -45,7 +42,6 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             companies = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
 
-            sqlDatabase = new SQLServer();
             branches = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
             contacts = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
             
@@ -56,7 +52,6 @@ namespace _01electronics_crm
             contactComboBox.IsEnabled = false;
 
             GetEmployeeCompanies();
-            GetCompanyBranches();
 
             InitializeCompanyNameComboBox();
             InitializeVisitPurposes();
@@ -236,8 +231,6 @@ namespace _01electronics_crm
                 return false;
             }
 
-            clientVisit.SetVisitPurpose(visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_id, visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_name);
-
             return true;
         }  
         private bool CheckVisitResultComboBox()
@@ -247,8 +240,6 @@ namespace _01electronics_crm
                 MessageBox.Show("Visit Result must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
-            clientVisit.SetVisitResult(visitResults[visitResultComboBox.SelectedIndex].result_id, visitResults[visitResultComboBox.SelectedIndex].result_name);
 
             return true;
         }
@@ -288,6 +279,7 @@ namespace _01electronics_crm
             companyBranchComboBox.IsEnabled = true;
             contactComboBox.IsEnabled = false;
             contactComboBox.Items.Clear();
+            GetCompanyBranches();
             InitializeCompanyBranchesComboBox();
         }
 
@@ -307,6 +299,7 @@ namespace _01electronics_crm
                 return;
 
             //YOU SHALL INITIALIZE YOUR CLASS OBJECTS WITH THE INITIALIZATION FUNCTIONS
+            clientVisit.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
             clientVisit.InitializeBranchInfo(branches[companyBranchComboBox.SelectedIndex].address_serial);
             clientVisit.InitializeContactInfo(contacts[contactComboBox.SelectedIndex].contact_id);
             

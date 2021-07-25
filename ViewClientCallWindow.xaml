@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
          Background="#EDEDED"
-        Title="ViewClientCallWindow" Height="450" Width="800">
+        Title="ViewClientCallWindow"  Height="730" Width="700">
     <Grid>
 
         <Grid.ColumnDefinitions>
