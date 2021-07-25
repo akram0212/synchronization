@@ -2944,7 +2944,8 @@ namespace _01electronics_erp
 
         public bool GetOfficeMeetings(ref List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT> returnVector)
         {
-            String sqlQueryPart1 = @"select employees_info.employee_id, 
+            String sqlQueryPart1 = @"select office_meetings.meeting_serial,
+employees_info.employee_id, 
 
             office_meetings.meeting_purpose, 
 
@@ -2970,7 +2971,7 @@ namespace _01electronics_erp
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_int = 2;
+            queryColumns.sql_int = 3;
             queryColumns.sql_datetime = 2;
             queryColumns.sql_string = 3;
 

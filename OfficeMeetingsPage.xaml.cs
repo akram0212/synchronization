@@ -27,8 +27,8 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
 
-        protected List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT> officeMeetings;
-        protected List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT> filteredMeetings;
+        protected List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT> officeMeetings;
+        protected List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT> filteredMeetings;
 
         private Grid previousSelectedCallItem;
         private Grid currentSelectedCallItem;
@@ -42,8 +42,8 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
 
-            officeMeetings = new List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT>();
-            filteredMeetings = new List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT>();
+            officeMeetings = new List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT>();
+            filteredMeetings = new List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT>();
 
             viewButton.IsEnabled = false;
 
@@ -65,7 +65,7 @@ namespace _01electronics_crm
 
         private void GetMeetings()
         {
-           // commonQueries.GetMeetings(ref officeMeetings);
+            commonQueries.GetOfficeMeetings(ref officeMeetings);
         }
 
         //////////////////////////////////////////////////////////
@@ -89,14 +89,14 @@ namespace _01electronics_crm
             filteredMeetings.Clear();
             for (int i = 0; i < officeMeetings.Count; i++)
             {
-                if (officeMeetings[i].sales_person_id == loggedInUser.GetEmployeeId())
+                if (officeMeetings[i].meeting_caller.employee_id == loggedInUser.GetEmployeeId())
                 {
-                    DateTime currentCallDate = DateTime.Parse(officeMeetings[i].call_date);
+                    DateTime currentCallDate = DateTime.Parse(officeMeetings[i].meeting_date);
 
                     if (yearCheckBox.IsChecked == true && (yearCombo.SelectedItem == null || currentCallDate.Year != int.Parse(yearCombo.SelectedItem.ToString())))
                         continue;
 
-                    if (quarterCheckBox.IsChecked == true && (quarterCombo.SelectedItem == null || commonFunctions.GetQuarter(DateTime.Parse(officeMeetings[i].call_date)) != quarterCombo.SelectedIndex + 1))
+                    if (quarterCheckBox.IsChecked == true && (quarterCombo.SelectedItem == null || commonFunctions.GetQuarter(DateTime.Parse(officeMeetings[i].meeting_date)) != quarterCombo.SelectedIndex + 1))
                         continue;
 
                     filteredMeetings.Add(officeMeetings[i]);
@@ -104,21 +104,17 @@ namespace _01electronics_crm
                     StackPanel currentStackPanel = new StackPanel();
                     currentStackPanel.Orientation = Orientation.Vertical;
 
-                    Label dateOfCallLabel = new Label();
-                    dateOfCallLabel.Content = officeMeetings[i].call_date;
-                    dateOfCallLabel.Style = (Style)FindResource("stackPanelItemBody");
+                    Label dateOfMeetingLabel = new Label();
+                    dateOfMeetingLabel.Content = officeMeetings[i].meeting_date;
+                    dateOfMeetingLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                     Label salesPersonNameLabel = new Label();
-                    salesPersonNameLabel.Content = officeMeetings[i].sales_person_name;
+                    salesPersonNameLabel.Content = officeMeetings[i].meeting_caller.employee_name;
                     salesPersonNameLabel.Style = (Style)FindResource("stackPanelItemBody");
 
-                    Label companyAndContactLabel = new Label();
-                    companyAndContactLabel.Content = officeMeetings[i].company_name + " - " + officeMeetings[i].contact_name;
-                    companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
-
-                    Label purposeAndResultLabel = new Label();
-                    purposeAndResultLabel.Content = officeMeetings[i].call_purpose + " - " + officeMeetings[i].call_result;
-                    purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
+                    Label purposeLabel = new Label();
+                    purposeLabel.Content = officeMeetings[i].meeting_purpose.purpose_name;
+                    purposeLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                     Label lineLabel = new Label();
                     lineLabel.Content = "";
@@ -129,10 +125,9 @@ namespace _01electronics_crm
                     newLineLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                     currentStackPanel.Children.Add(newLineLabel);
-                    currentStackPanel.Children.Add(dateOfCallLabel);
+                    currentStackPanel.Children.Add(dateOfMeetingLabel);
                     currentStackPanel.Children.Add(salesPersonNameLabel);
-                    currentStackPanel.Children.Add(companyAndContactLabel);
-                    currentStackPanel.Children.Add(purposeAndResultLabel);
+                    currentStackPanel.Children.Add(purposeLabel);
                     currentStackPanel.Children.Add(lineLabel);
 
                     Grid newGrid = new Grid();
@@ -235,7 +230,7 @@ namespace _01electronics_crm
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
             OfficeMeeting selectedMeeting = new OfficeMeeting();
-            selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial);
+            selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_serial);
 
             ViewOfficeMeetingWindow viewOfficeMeetingWindow = new ViewOfficeMeetingWindow(ref selectedMeeting);
             viewOfficeMeetingWindow.Show();
