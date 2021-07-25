@@ -635,6 +635,44 @@ namespace _01electronics_erp
 
             return true;
         }
+
+        public bool GetMeetingPurposes(ref List<COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT> returnVector)
+        {
+            returnVector.Clear();
+
+            String sqlQueryPart1 = "select meetings_purpose.id, meetings_purpose.meeting_purpose from erp_system.dbo.meetings_purpose where meetings_purpose.id > 0 order by meetings_purpose.id;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+            queryColumns.sql_string = 1;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT purposeItem = new COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT();
+
+                purposeItem.purpose_id = sqlDatabase.rows[i].sql_int[0];
+                purposeItem.purpose_name = sqlDatabase.rows[i].sql_string[0];
+
+                returnVector.Add(purposeItem);
+            }
+
+            COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT tempItem = new COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT();
+
+            tempItem.purpose_id = 0;
+            tempItem.purpose_name = "Other";
+
+            returnVector.Add(tempItem);
+
+            return true;
+        }
+
         public bool GetRFQFailureReasons(ref List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -2957,6 +2995,8 @@ namespace _01electronics_erp
 
         public bool GetOfficeMeetings(ref List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT> returnVector)
         {
+            returnVector.Clear();
+
             String sqlQueryPart1 = @"select office_meetings.meeting_serial,
 employees_info.employee_id, 
 
