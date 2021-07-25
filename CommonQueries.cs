@@ -251,21 +251,34 @@ namespace _01electronics_erp
         {
             returnVector.Clear();
 
-            String sqlQueryPart1 = @"select teams_type.id, teams_type.team from erp_system.dbo.teams_type 
-                                    where(teams_type.id > ";
-            String sqlQueryPart2 = " and teams_type.id <= ";
-            String sqlQueryPart3 = @") 
-                                    or teams_type.id = ";
-            String sqlQueryPart4 = "order by teams_type.id;";
+            String sqlQueryPart1 = @"select teams_type.id, teams_type.team 
+                                    from erp_system.dbo.teams_type 
+                                    where 
+                                    (teams_type.id >= ";
+            String sqlQueryPart2 = @" and teams_type.id < ";
+            String sqlQueryPart3 = @") or
+                                    (teams_type.id >= ";
+            String sqlQueryPart4 = @" and teams_type.id < ";
+            String sqlQueryPart5 = @") or
+                                    (teams_type.id >= ";
+            String sqlQueryPart6 = @" and teams_type.id < ";
+            String sqlQueryPart7 = @");";
+
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP;
             sqlQuery += sqlQueryPart2;
-            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP - 1;
+            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP;
             sqlQuery += sqlQueryPart3;
-            sqlQuery += departmentId;
+            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM;
             sqlQuery += sqlQueryPart4;
+            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM;
+            sqlQuery += sqlQueryPart5;
+            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM;
+            sqlQuery += sqlQueryPart6;
+            sqlQuery += departmentId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_TEAMS_PER_DEP * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM;
+            sqlQuery += sqlQueryPart7;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 

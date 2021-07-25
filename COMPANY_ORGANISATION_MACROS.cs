@@ -49,6 +49,8 @@ namespace _01electronics_erp
         public const int MAX_NUMBER_OF_DEPARTMENTS = 100;
         public const int MAX_NUMBER_OF_MANAGING_DEPARTMENTS = 100;
         public const int MAX_NUMBER_OF_TEAMS_PER_DEP = 100;
+        public const int MAX_NUMBER_OF_SUBTEAMS_PER_TEAM = 100;
+        public const int MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM = 100;
 
         public const int MAX_MANAGEMENT_TEAMS = MAX_NUMBER_OF_TEAMS_PER_DEP;
         public const int MAX_DEPARTMENT_MANAGERS = MAX_NUMBER_OF_DEPARTMENTS;
