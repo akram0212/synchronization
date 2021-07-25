@@ -77,7 +77,8 @@ namespace _01electronics_crm
 		{
 			callSerial = mCallSerial;
 
-			String sqlQueryPart1 = @"select client_calls.branch_serial,
+			String sqlQueryPart1 = @"select client_calls.branch_serial,
+
 									client_calls.contact_id, 
 
 									calls_purpose.id, 

@@ -61,8 +61,12 @@
     <Compile Include="AddClientVisitWindow.xaml.cs">
       <DependentUpon>AddClientVisitWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddOfficeMeetingWindow.xaml.cs">
+      <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClientCall.cs" />
     <Compile Include="ClientVisit.cs" />
+    <Compile Include="OfficeMeeting.cs" />
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -103,6 +107,9 @@
     </Compile>
     <Compile Include="ViewContactWindow.xaml.cs">
       <DependentUpon>ViewContactWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewOfficeMeetingWindow.xaml.cs">
+      <DependentUpon>ViewOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewRFQWindow.xaml.cs">
       <DependentUpon>ViewRFQWindow.xaml</DependentUpon>
@@ -149,6 +156,10 @@
     <Page Include="AddContactWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddOfficeMeetingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddRFQWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -272,6 +283,10 @@
     <Page Include="ViewContactWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewOfficeMeetingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewRFQWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
