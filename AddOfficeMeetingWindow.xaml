@@ -4,9 +4,58 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
+         Background="#EDEDED"
         mc:Ignorable="d"
-        Title="AddOfficeMeetingWindow" Height="450" Width="800">
+        Title="AddOfficeMeetingWindow" Height="530" Width="700">
     <Grid>
-        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Name="OfficeMeetingProfileHeader" Content="CREATE OFFICE MEETING" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+            <WrapPanel>
+
+                <Grid Name="MeetingGrid" Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <WrapPanel Grid.Row="0">
+                        <WrapPanel Name="MeetingDatePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Date Of Meeting"/>
+                            <DatePicker Style="{StaticResource datePickerStyle}" Name="MeetingDatePicker" SelectedDateChanged="OnSelChangedMeetingDate"/>
+                        </WrapPanel>
+
+                        <WrapPanel Name="MeetingPurposePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Meeting Purpose"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="MeetingPurposeComboBox" SelectionChanged="OnSelChangedMeetingPurpose"/>
+                        </WrapPanel>
+                        </WrapPanel>
+                    <WrapPanel Grid.Row="1">
+                        <WrapPanel Name="AdditionalDescriptionPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Additional Description"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox" SelectionChanged="OnSelChangedadditionalDescription" Height="100"/>
+                        </WrapPanel>
+                    </WrapPanel>
+
+                </Grid>
+
+            </WrapPanel>
+
+        </ScrollViewer>
+        <Button Grid.Row="2" Content="Save Changes" Name="saveChangesButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+
     </Grid>
 </Window>

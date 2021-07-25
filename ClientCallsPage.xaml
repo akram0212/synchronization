@@ -52,15 +52,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="Client Calls" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400">
+            <Grid Grid.Row="1" Margin="48,24">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="400"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
@@ -68,11 +68,11 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0" Margin="48,24,48,48">
+                <Grid Grid.Column="0" Margin="0,0,24,0">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition MinWidth="180"/>
-                        <ColumnDefinition MinWidth="180"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
