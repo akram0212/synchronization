@@ -154,6 +154,12 @@ namespace _01electronics_erp
             public String result_name;
         };
 
+        public struct MEETING_PURPOSE_STRUCT
+        {
+            public int purpose_id;
+            public String purpose_name;
+        };
+
         public struct CALL_PURPOSE_STRUCT
         {
             public int purpose_id;
@@ -309,7 +315,33 @@ namespace _01electronics_erp
             public String call_result;
         };
 
-       
+        public struct OFFICE_MEETING_BASIC_STRUCT
+        {
+            public COMPANY_ORGANISATION_MACROS.EMPLOYEE_MIN_STRUCT meeting_caller;
+            
+            public MEETING_PURPOSE_STRUCT meeting_purpose;
+            
+            public int meeting_serial;
+            
+            public String issue_date;
+            public String meeting_date;
+            
+            public String meeting_note;
+        };
+
+        public struct OFFICE_MEETING_MAX_STRUCT
+        {
+            public COMPANY_ORGANISATION_MACROS.EMPLOYEE_MIN_STRUCT meeting_caller;
+            
+            public MEETING_PURPOSE_STRUCT meeting_purpose;
+            
+            public int meeting_serial;
+            
+            public String issue_date;
+            public String meeting_date;
+            
+            public String meeting_note;
+        };
     }
 }
 

@@ -23,6 +23,14 @@ namespace _01electronics_erp
         public const int HUMAN_RESOURCES_DEPARTMENT_MANAGEMENT = 104;
         public const int RECTRUITMENT_TEAM_ID = 10401;
 
+        public const int PRODUCT_SUPPORT_DEPARTMENT_ID = 107;
+        public const int PRODUCT_SUPPORT_DEPARTMENT_MANAGEMENT = 107;
+
+        public const int OPERATIONS_DEPARTMENT_ID = 101;
+        public const int FRONT_DESK_TEAM_ID = 10105;
+
+        public const int TECHNOLOGY_DEPARTMENT_ID = 108;
+
         //DEPARTMENTS AND TEAMS MACROS
         public const int MANAGER_POSTION = 8;
         public const int TEAM_LEAD_POSTION = 800;
@@ -47,7 +55,6 @@ namespace _01electronics_erp
         public const int MAX_TEAM_LEADS = MAX_NUMBER_OF_TEAMS_PER_DEP;
         public const int MAX_SENIORS = MAX_NUMBER_OF_TEAMS_PER_DEP;
 
-        //COMPANIES STRUCTS
         public struct COMPANY_STRUCT
         {
             public String company_name;
@@ -76,7 +83,7 @@ namespace _01electronics_erp
             public String company_name;
             public int company_serial;
         };
-        
+
         public struct COMPANY_MAX_LIST_STRUCT
         {
             public String company_name;
@@ -84,7 +91,7 @@ namespace _01electronics_erp
             public int address_serial;
             public int address;
         };
-        
+
         public struct COMPANY_LIST_STRUCT
         {
             public String company_name;
@@ -145,6 +152,12 @@ namespace _01electronics_erp
         };
 
         //EMPLOYEES STRUCT
+        public struct EMPLOYEE_MIN_STRUCT
+        {
+            public String employee_name;
+            public int employee_id;
+
+        };
         public struct EMPLOYEE_STRUCT
         {
             public String employee_name;
@@ -157,6 +170,13 @@ namespace _01electronics_erp
             public Decimal salary;
             public List<BANK_STRUCT> payroll_info;
 
+        };
+
+        public struct EMPLOYEE_EXCLUDED_ATTENDANCE_STRUCT
+        {
+            public String employee_name;
+            public int employee_id;
+            public bool is_excluded;
         };
 
         //CONTACTS STRUCTS
@@ -178,6 +198,7 @@ namespace _01electronics_erp
             public int contact_id;
             public int company_serial;
             public int address_serial;
+            public int address;
 
             public String contact_name;
             public String department;

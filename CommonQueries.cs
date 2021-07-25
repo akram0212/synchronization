@@ -2854,7 +2854,6 @@ namespace _01electronics_erp
 
             return true;
         }
-
         public bool GetClientCalls(ref List<COMPANY_WORK_MACROS.CLIENT_CALL_STRUCT> returnVector)
         {
             returnVector.Clear();
@@ -2943,6 +2942,68 @@ namespace _01electronics_erp
             return true;
         }
 
+        public bool GetOfficeMeetings(ref List<COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT> returnVector)
+        {
+            String sqlQueryPart1 = @"select employees_info.employee_id, 
+
+            office_meetings.meeting_purpose, 
+
+		    office_meetings.date_of_meeting, 
+		    office_meetings.issue_date, 
+
+		    employees_info.name, 
+		    meetings_purpose.meeting_purpose, 
+		    office_meetings.meeting_note 
+
+		    from erp_system.dbo.office_meetings 
+
+		    inner join erp_system.dbo.employees_info 
+		    on office_meetings.called_by = employees_info.employee_id 
+
+		    inner join erp_system.dbo.meetings_purpose 
+		    on office_meetings.meeting_purpose = meetings_purpose.id 
+
+		    order by office_meetings.date_of_meeting DESC; ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 2;
+            queryColumns.sql_datetime = 2;
+            queryColumns.sql_string = 3;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+                return false;
+
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                int numericCount = 0;
+                int stringCount = 0;
+
+                COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT meetingItem = new COMPANY_WORK_MACROS.OFFICE_MEETING_BASIC_STRUCT();
+                meetingItem.meeting_purpose = new COMPANY_WORK_MACROS.MEETING_PURPOSE_STRUCT();
+
+                meetingItem.meeting_serial = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                meetingItem.meeting_caller.employee_id = sqlDatabase.rows[i].sql_int[numericCount++];
+                meetingItem.meeting_purpose.purpose_id = sqlDatabase.rows[i].sql_int[numericCount++];
+
+                meetingItem.issue_date = sqlDatabase.rows[i].sql_datetime[0].ToString();
+                meetingItem.meeting_date = sqlDatabase.rows[i].sql_datetime[1].ToString();
+                
+                meetingItem.meeting_caller.employee_name = sqlDatabase.rows[i].sql_string[stringCount++];
+                meetingItem.meeting_purpose.purpose_name = sqlDatabase.rows[i].sql_string[stringCount++];
+
+                meetingItem.meeting_note = sqlDatabase.rows[i].sql_string[stringCount++];
+
+                returnVector.Add(meetingItem);
+            }
+
+            return true;
+        }
     }
 
 }
