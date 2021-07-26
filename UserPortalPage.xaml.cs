@@ -83,7 +83,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
-
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {

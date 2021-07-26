@@ -45,14 +45,39 @@ namespace _01electronics_crm
         {
             MeetingPurposeComboBox.Items.Clear();
 
-            //if (!commonQueries.GetMeetingPurposes(ref meetingPurposes))
-            //    return false;
+            if (!commonQueries.GetMeetingPurposes(ref meetingPurposes))
+               return false;
 
             for (int i = 0; i < meetingPurposes.Count; i++)
                 MeetingPurposeComboBox.Items.Add(meetingPurposes[i].purpose_name);
 
             return false;
 
+        }
+
+        private bool CheckMeetingDatePicker()
+        {
+            if (MeetingDatePicker.SelectedDate == null)
+            {
+                MessageBox.Show("Meeting Date must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            officeMeeting.SetMeetingDate(DateTime.Parse(MeetingDatePicker.SelectedDate.ToString()));
+
+            return true;
+        }
+        private bool CheckMeetingPurposeComboBox()
+        {
+            if (MeetingPurposeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Meeting Purpose must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            officeMeeting.SetMeetingPurpose(meetingPurposes[MeetingPurposeComboBox.SelectedIndex].purpose_id, meetingPurposes[MeetingPurposeComboBox.SelectedIndex].purpose_name);
+            
+            return true;
         }
         private void OnSelChangedMeetingDate(object sender, SelectionChangedEventArgs e)
         {
@@ -71,7 +96,16 @@ namespace _01electronics_crm
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
+            if (!CheckMeetingDatePicker())
+                return;
+            if (!CheckMeetingPurposeComboBox())
+                return;
 
+            officeMeeting.SetMeetingCaller(loggedInUser);
+            officeMeeting.SetMeetingNotes(additionalDescriptionTextBox.Text.ToString());
+            officeMeeting.IssueNewMeeting();
+
+            this.Hide();
         }
     }
 }

@@ -194,8 +194,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
-            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
-            this.NavigationService.Navigate(officeMeetingsPage);
+            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientCallsPage);
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {

@@ -513,15 +513,6 @@ namespace _01electronics_crm
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
-
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
             RFQsPage rfqs = new RFQsPage(ref loggedInUser);
@@ -529,15 +520,18 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
-
+            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientVisitsPage);
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
-
+            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientCallsPage);
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
-
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
@@ -546,7 +540,8 @@ namespace _01electronics_crm
 
         private void OnButtonClickedworkOrders(object sender, MouseButtonEventArgs e)
         {
-
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
@@ -558,6 +553,12 @@ namespace _01electronics_crm
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void OnButtonClickedOffers(object sender, MouseButtonEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
         }
     }
 }

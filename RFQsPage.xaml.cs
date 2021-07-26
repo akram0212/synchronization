@@ -529,19 +529,15 @@ namespace _01electronics_crm
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
-        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
-        {
-
-        }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
-        } 
-
+        }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -555,7 +551,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
-
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
@@ -624,6 +621,12 @@ namespace _01electronics_crm
             RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
             viewRFQ.Show();
 
+        }
+
+        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
     }
 

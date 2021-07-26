@@ -19,9 +19,24 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ViewOfficeMeetingWindow : Window
     {
+        OfficeMeeting officeMeeting;
         public ViewOfficeMeetingWindow(ref OfficeMeeting selectedMeeting)
         {
             InitializeComponent();
+            officeMeeting = selectedMeeting;
+
+            MeetingDatePicker.IsEnabled = false;
+            SalesEngineerTextBox.IsEnabled = false;
+            MeetingPurposeTextBox.IsEnabled = false;
+            additionalDescriptionTextBox.IsEnabled = false;
+
+            MeetingDatePicker.SelectedDate = DateTime.Parse(officeMeeting.GetIssueDate().ToString());
+
+            SalesEngineerTextBox.Text = officeMeeting.GetMeetingCallerName().ToString();
+
+            MeetingPurposeTextBox.Text = officeMeeting.GetMeetingPurpose().ToString();
+
+            additionalDescriptionTextBox.Text = officeMeeting.GetMeetingNotes().ToString();
         }
     }
 }

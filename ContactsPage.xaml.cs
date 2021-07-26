@@ -206,10 +206,13 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
         {
+            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffersPage);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -223,7 +226,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
-           
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {

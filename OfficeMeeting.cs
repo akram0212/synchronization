@@ -73,7 +73,8 @@ namespace _01electronics_crm
 
 			meetingSerial = mMeetingSerial;
 
-			String sqlQueryPart1 = @"select employees_info.employee_id,
+			String sqlQueryPart1 = @"select employees_info.employee_id,
+
 				office_meetings.meeting_purpose,
 
 				office_meetings.date_of_meeting,
@@ -274,7 +275,7 @@ namespace _01electronics_crm
 		//////////////////////////////////////////////////////////////////////
 		private bool InsertIntoOfficeMeeting()
 		{
-			String sqlQueryPart1 = @"insert into erp_system.dbo.client_Calls 
+			String sqlQueryPart1 = @"insert into erp_system.dbo.office_meetings 
                              values(";
 			String comma = ",";
 			String sqlQueryPart3 = " );";
