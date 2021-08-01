@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_erp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,39 +13,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_erp;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for UserPortalPage.xaml
+    /// Interaction logic for ProductsPage.xaml
     /// </summary>
-    /// 
-    public partial class UserPortalPage : Page
+    public partial class ProductsPage : Page
     {
-
         private Employee loggedInUser;
-
-        public UserPortalPage(ref Employee mLoggedInUser)
+        public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
-
             loggedInUser = mLoggedInUser;
-
-            InitializeEmployeeDashboard();
         }
-        
-        private void InitializeEmployeeDashboard()
-        {
-            employeeNameLabel.Content = loggedInUser.GetEmployeeName();
-            employeeBirthdateLabel.Content = loggedInUser.GetEmployeeBirthDate();
-            employeeJoiningDateLabel.Content = loggedInUser.GetEmployeeJoinDate();
-            employeeDepartmentLabel.Content = loggedInUser.GetEmployeeDepartment();
-            employeeTeamLabel.Content = loggedInUser.GetEmployeeTeam();
-            employeeBusinessEmailLabel.Content = loggedInUser.GetEmployeeBusinessEmail();
-            employeePersonalEmailLabel.Content = loggedInUser.GetEmployeePersonalEmail();
-        }
-
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -74,7 +56,7 @@ namespace _01electronics_crm
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
             ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
-            this.NavigationService.Navigate(clientVisitsPage); 
+            this.NavigationService.Navigate(clientVisitsPage);
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
@@ -96,5 +78,35 @@ namespace _01electronics_crm
             ProductsPage productsPage = new ProductsPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
+
+        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void GeneratorsImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("done");
+        } 
+        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("done");
+        }
+         private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("done");
+        }
+
+        //private void UPSImageMouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    Storyboard story = (Storyboard)FindResource("expandStoryboard");
+        //    Image image = sender as Image;
+        //    image.BeginStoryboard(story);
+        //}
+
+        //private void UPSImageMouseLeave(object sender, MouseEventArgs e)
+        //{
+
+        //}
     }
 }

@@ -64,9 +64,15 @@
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BorriUPSPage.xaml.cs">
+      <DependentUpon>BorriUPSPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClientCall.cs" />
     <Compile Include="ClientVisit.cs" />
     <Compile Include="OfficeMeeting.cs" />
+    <Compile Include="ProductsPage.xaml.cs">
+      <DependentUpon>ProductsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -93,6 +99,9 @@
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQLServer.cs" />
+    <Compile Include="UPSPage.xaml.cs">
+      <DependentUpon>UPSPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
     </Compile>
@@ -169,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="BorriUPSPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ClientCallsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -232,6 +245,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RFQAdditionalInfoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -263,6 +280,10 @@
     <Page Include="SignUpPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UPSPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
