@@ -959,16 +959,31 @@ namespace _01electronics_erp
             returnVector.Clear();
 
             String sqlQueryPart1 = @"select employees_info.employee_id, 
-                                        employees_info.employee_team, 
-										employees_info.name 
-								from erp_system.dbo.employees_info 
-								where employees_info.employee_team = ";
-            String sqlQueryPart2 = " order by employees_info.name; ";
+                                            employees_info.employee_team, 
+								    		employees_info.name 
+								    from erp_system.dbo.employees_info 
+								    where employees_info.employee_team = ";
+            String sqlQueryPart2 = @" or (employees_info.employee_team >= ";
+            String sqlQueryPart3 = @" and employees_info.employee_team < ";
+            String sqlQueryPart4 = @")
+								    or (employees_info.employee_team >= ";
+            String sqlQueryPart5 = @"and employees_info.employee_team < ";
+            String sqlQueryPart6 = @")
+								    and employees_info.currently_enrolled = 1 
+                                     order by employees_info.name; ";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += teamId;
             sqlQuery += sqlQueryPart2;
+            sqlQuery += teamId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM;
+            sqlQuery += sqlQueryPart3;
+            sqlQuery += teamId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM;
+            sqlQuery += sqlQueryPart4;
+            sqlQuery += teamId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM;
+            sqlQuery += sqlQueryPart5;
+            sqlQuery += teamId * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM + COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_SUBTEAMS_PER_TEAM * COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_DIVISIONS_PER_SUBTEAM;
+            sqlQuery += sqlQueryPart6;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
@@ -1143,7 +1158,7 @@ namespace _01electronics_erp
 
             if (sqlDatabase.rows.Count == 0)
             {
-                MessageBox.Show("There is no existing signup for this email account! Please signup first and then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("There is no existing signup for this email account! Please signup first and then try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

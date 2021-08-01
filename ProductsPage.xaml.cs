@@ -1,6 +1,4 @@
-﻿using _01electronics_crm;
-using _01electronics_erp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _01electronics_erp;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOrdersPage.xaml
+    /// Interaction logic for ProductsPage.xaml
     /// </summary>
-    public partial class WorkOrdersPage : Page
+    public partial class ProductsPage : Page
     {
         private Employee loggedInUser;
-        public WorkOrdersPage(ref Employee mLoggedInUser)
+        public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
+
             loggedInUser = mLoggedInUser;
         }
 
@@ -86,5 +86,14 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////
+        ///
+        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        {
+            
+        }
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

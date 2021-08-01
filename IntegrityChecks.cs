@@ -700,7 +700,7 @@ namespace _01electronics_erp
 
             if (contactBusinessEmailCount > 0)
             {
-                MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -713,7 +713,7 @@ namespace _01electronics_erp
 
                 if (contactPhoneCount > 0)
                 {
-                    MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.Forms.MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
@@ -727,7 +727,7 @@ namespace _01electronics_erp
 
                 if (contactPersonalEmailCount > 0)
                 {
-                    MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.Forms.MessageBox.Show("The contact specified is already associated with another sales person, please contact your team leader for support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
@@ -851,12 +851,12 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Employee name must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Employee name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!CheckInvalidCharacters(inputString, BASIC_MACROS.REGULAR_STRING))
             {
-                MessageBox.Show("Invalid employee name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid employee name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -872,27 +872,27 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckAvailableEmployeeEmail(outputString))
             {
-                MessageBox.Show("The specified email was not found, Please contact your adminstration to complete your employee profile.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("The specified email was not found, Please contact your adminstration to complete your employee profile.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckAvailableSignUp(outputString))
             {
-                MessageBox.Show("No existing signup was found for the specified email, Please signup first then try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("No existing signup was found for the specified email, Please signup first then try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -906,27 +906,27 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckAvailableEmployeeEmail(outputString))
             {
-                MessageBox.Show("The specified email was not found, Please contact your adminstration to complete your employee profile.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("The specified email was not found, Please contact your adminstration to complete your employee profile.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckUniqueSignUp(outputString))
             {
-                MessageBox.Show("An existing signup is already associated with the email specificed, Please contact your adminstration for help.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("An existing signup is already associated with the email specificed, Please contact your adminstration for help.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -951,7 +951,7 @@ namespace _01electronics_erp
 
             if (employeeHashedPassword != employeeServerHashedPassword)
             {
-                MessageBox.Show("Incorrect Password", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Incorrect Password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -965,22 +965,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("A Personal email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("A Personal email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckEmailForm(outputString))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -994,27 +994,27 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Business Email must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Business Email must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckEmailForm(outputString, businessDomain))
             {
-                MessageBox.Show("Invalid business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckUniqueEmployeeEmail(outputString))
             {
-                MessageBox.Show("The provided business email is already associated with another employee.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("The provided business email is already associated with another employee.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1028,12 +1028,12 @@ namespace _01electronics_erp
 
             if (isEmpty && !CheckNonEmptyEditBox(inputString))
             {
-                MessageBox.Show("Company name must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(inputString, BASIC_MACROS.REGULAR_STRING))
             {
-                MessageBox.Show("Invalid company name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid company name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1049,22 +1049,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Domain name must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Domain name must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.DOMAIN_STRING))
             {
-                MessageBox.Show("Invalid domain name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid domain name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid domain name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid domain name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckDomainForm(outputString, countryId))
             {
-                MessageBox.Show("Invalid domain name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid domain name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckUniqueDomainName(outputString))
@@ -1079,7 +1079,7 @@ namespace _01electronics_erp
                 messageString += existingCompanyName;
                 messageString += ".";
 
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1094,22 +1094,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Company phone must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company phone must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.PHONE_STRING))
             {
-                MessageBox.Show("Invalid phone number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid phone number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid phone number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid phone number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckPhoneForm(outputString))
             {
-                MessageBox.Show("Invalid phone number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid phone number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1123,22 +1123,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Company fax must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company fax must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.PHONE_STRING))
             {
-                MessageBox.Show("Invalid fax number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid fax number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid fax number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid fax number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckPhoneForm(outputString))
             {
-                MessageBox.Show("Invalid fax number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid fax number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1153,12 +1153,12 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Contact name must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(inputString, BASIC_MACROS.REGULAR_STRING))
             {
-                MessageBox.Show("Invalid contact name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid contact name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1176,22 +1176,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Contact business email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact business email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckEmailForm(outputString, countryId))
             {
-                MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid contact business email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1205,22 +1205,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Contact email must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckEmailForm(outputString, countryId))
             {
-                MessageBox.Show("Invalid personal email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid personal email.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1241,22 +1241,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.EMAIL_STRING))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckEmailForm(outputString, countryId))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1271,22 +1271,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Contact Phone must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact Phone must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.PHONE_STRING))
             {
-                MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckPhoneForm(outputString))
             {
-                MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid Contact Phone.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1306,22 +1306,22 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(outputString, BASIC_MACROS.PHONE_STRING))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInBetweenSpaces(outputString))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckPhoneForm(outputString))
             {
-                MessageBox.Show(messageString, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show(messageString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1336,12 +1336,12 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("District name must be specified", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("District name must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(inputString, BASIC_MACROS.REGULAR_STRING))
             {
-                MessageBox.Show("Invalid district name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid district name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1358,12 +1358,12 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("Employee salary must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Employee salary must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (!isEmpty && !CheckInvalidCharacters(inputString, BASIC_MACROS.MONETARY_STRING))
             {
-                MessageBox.Show("Invalid employee salary.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid employee salary.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1377,13 +1377,13 @@ namespace _01electronics_erp
 
             if (isRequired && isEmpty)
             {
-                MessageBox.Show("National ID must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("National ID must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             if (!isEmpty && !CheckInvalidCharacters(inputString, BASIC_MACROS.NUMERIC_STRING))
             {
-                MessageBox.Show("Invalid National ID.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Invalid National ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1393,7 +1393,7 @@ namespace _01electronics_erp
         {
             if (!CheckNonEmptyEditBox(inputString))
             {
-                MessageBox.Show("File must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("File must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

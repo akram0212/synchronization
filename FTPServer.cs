@@ -30,7 +30,7 @@ namespace _01electronics_erp
             }
             catch (WebException exception)
             {
-                MessageBox.Show("File upload failed! Please check your internet connection and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("File upload failed! Please check your internet connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -48,7 +48,7 @@ namespace _01electronics_erp
             }
             catch (WebException exception)
             {
-                MessageBox.Show("File download failed! Please check your internet connection and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("File download failed! Please check your internet connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

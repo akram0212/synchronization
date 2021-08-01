@@ -172,12 +172,12 @@ namespace _01electronics_crm
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
         }
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrdersPage);
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffersPage);

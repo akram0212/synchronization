@@ -541,7 +541,7 @@ namespace _01electronics_crm
                 quantity1 = int.Parse(quantity1TextBox.Text);
             else
             {
-               // //MessageBox.Show("Invalid Character Enterred");
+               // //System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 quantity1 = 0;
                 quantity1TextBox.Text = null;
             }
@@ -560,7 +560,7 @@ namespace _01electronics_crm
                 price1 = int.Parse(pricePerItem1TextBox.Text);
             else
             {
-                ////MessageBox.Show("Invalid Character Enterred");
+                ////System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 price1 = 0;
                 pricePerItem1TextBox.Text = null;
             }
@@ -596,7 +596,7 @@ namespace _01electronics_crm
                 quantity2 = int.Parse(quantity2TextBox.Text);
             else
             {
-                ////MessageBox.Show("Invalid Character Enterred");
+                ////System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 quantity2 = 0;
                 quantity2TextBox.Text = null;
             }
@@ -616,7 +616,7 @@ namespace _01electronics_crm
                     price2 = int.Parse(pricePerItem2TextBox.Text);
             else
             {
-                ////MessageBox.Show("Invalid Character Enterred");
+                ////System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 price2 = 0;
                 pricePerItem2TextBox.Text = null;
             }
@@ -653,7 +653,7 @@ namespace _01electronics_crm
                 quantity3 = int.Parse(quantity3TextBox.Text);
             else
             {
-               // //MessageBox.Show("Invalid Character Enterred");
+               // //System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 quantity3 = 0;
                 quantity3TextBox.Text = null;
             }
@@ -673,7 +673,7 @@ namespace _01electronics_crm
                 price3 = int.Parse(pricePerItem3TextBox.Text);
             else
             {
-                ////MessageBox.Show("Invalid Character Enterred");
+                ////System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 price3 = 0;
                 pricePerItem3TextBox.Text = null;
             }
@@ -710,7 +710,7 @@ namespace _01electronics_crm
                 quantity4 = int.Parse(quantity4TextBox.Text);
             else
             {
-               // //MessageBox.Show("Invalid Character Enterred");
+               // //System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 quantity4 = 0;
                 quantity4TextBox.Text = null;
             }
@@ -730,7 +730,7 @@ namespace _01electronics_crm
                 price4 = int.Parse(pricePerItem4TextBox.Text);
             else
             {
-               // //MessageBox.Show("Invalid Character Enterred");
+               // //System.Windows.Forms.MessageBox.Show("Invalid Character Enterred");
                 price4 = 0;
                 pricePerItem4TextBox.Text = null;
             }
@@ -751,7 +751,7 @@ namespace _01electronics_crm
             {
                 downPaymentPercentage = 0;
                 downPaymentActualTextBox.Text = "0";
-                MessageBox.Show("You can't exceed 100%");
+                System.Windows.Forms.MessageBox.Show("You can't exceed 100%");
             }
             else
             {
@@ -773,7 +773,7 @@ namespace _01electronics_crm
             {
                 onDeliveryPercentage = 0;
                 onDeliveryActualTextBox.Text = "0";
-                MessageBox.Show("You can't exceed 100%");
+                System.Windows.Forms.MessageBox.Show("You can't exceed 100%");
             }
             else
             {
@@ -795,7 +795,7 @@ namespace _01electronics_crm
             {
                 onInstallationPercentage = 0;
                 onInstallationPercentageTextBox.Text = "0";
-                MessageBox.Show("You can't exceed 100%");
+                System.Windows.Forms.MessageBox.Show("You can't exceed 100%");
             }
             else
             {

@@ -185,7 +185,7 @@ namespace _01electronics_crm
         {
             if (companyNameComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Company must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -195,7 +195,7 @@ namespace _01electronics_crm
         {
             if (companyBranchComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Branch must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Branch must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -205,7 +205,7 @@ namespace _01electronics_crm
         {
             if (contactComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Contact must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -215,7 +215,7 @@ namespace _01electronics_crm
         {
             if (visitDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Visit Date must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Visit Date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -227,7 +227,7 @@ namespace _01electronics_crm
         {
             if (visitPurposeComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Visit Purpose must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Visit Purpose must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -237,7 +237,7 @@ namespace _01electronics_crm
         {
             if (visitResultComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Visit Result must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Visit Result must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

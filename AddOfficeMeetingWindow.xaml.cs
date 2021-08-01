@@ -59,7 +59,7 @@ namespace _01electronics_crm
         {
             if (MeetingDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Meeting Date must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Meeting Date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -71,7 +71,7 @@ namespace _01electronics_crm
         {
             if (MeetingPurposeComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Meeting Purpose must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Meeting Purpose must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

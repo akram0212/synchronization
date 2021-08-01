@@ -180,61 +180,64 @@ namespace _01electronics_crm
             GetCalls();
             InitializeStackPanel();
         }
-        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+
+        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contactsPage);
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
         }
-
-        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
         }
-
-        private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffersPage);
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
         }
-
-        private void OnButtonClickedRFQs(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
+        }
+        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
             RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
             this.NavigationService.Navigate(rFQsPage);
         }
-
-        private void OnButtonClickedVisits(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
             ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientVisitsPage);
-
         }
-
-        private void OnButtonClickedCalls(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
             ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientCallsPage);
         }
-
-        private void OnButtonClickedMeetings(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-
-        private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
-            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            //this.NavigationService.Navigate(statisticsPage);
+
         }
 
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
             AddClientCallWindow addClientCallWindow = new AddClientCallWindow(ref loggedInUser);

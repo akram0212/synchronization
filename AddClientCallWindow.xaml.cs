@@ -140,7 +140,7 @@ namespace _01electronics_crm
         {
             if (companyNameComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Company must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -150,7 +150,7 @@ namespace _01electronics_crm
         {
             if (companyBranchComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Branch must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Branch must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -160,7 +160,7 @@ namespace _01electronics_crm
         {
             if (contactComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Contact must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -170,7 +170,7 @@ namespace _01electronics_crm
         {
             if (CallDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Call Date must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Call Date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -182,7 +182,7 @@ namespace _01electronics_crm
         {
             if (CallPurposeComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Call Purpose must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Call Purpose must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -192,7 +192,7 @@ namespace _01electronics_crm
         {
             if (CallResultComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Call Result must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Call Result must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -151,7 +152,7 @@ namespace _01electronics_crm
             DateTime deadlineDateString = DateTime.Parse(rfq.GetRFQDeadlineDate().ToShortDateString());
 
             if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
-                MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 string sqlQuery;

@@ -499,7 +499,7 @@ namespace _01electronics_crm
         }
 
         /////////////////////////////////////////////////////////////////
-        //BUTTON CLICKED FUNCTIONS
+        //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
@@ -507,16 +507,30 @@ namespace _01electronics_crm
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
-
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
+        {
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
+        }
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
+        }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
-            this.NavigationService.Navigate(rfqs);
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -538,11 +552,10 @@ namespace _01electronics_crm
 
         }
 
-        private void OnButtonClickedworkOrders(object sender, MouseButtonEventArgs e)
-        {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
-        }
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
+
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
@@ -555,7 +568,7 @@ namespace _01electronics_crm
 
         }
 
-        private void OnButtonClickedOffers(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);

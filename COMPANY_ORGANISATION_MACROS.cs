@@ -18,13 +18,11 @@ namespace _01electronics_erp
         public const int MARKETING_AND_SALES_DEPARTMENT_MANAGEMENT = 102;
         public const int SALES_TEAM_ID = 10202;
         public const int TECHNICAL_OFFICE_TEAM_ID = 10203;
+        public const int PRODUCT_SUPPORT_TEAM_ID = 10204;
 
         public const int HUMAN_RESOURCES_DEPARTMENT_ID = 104;
         public const int HUMAN_RESOURCES_DEPARTMENT_MANAGEMENT = 104;
         public const int RECTRUITMENT_TEAM_ID = 10401;
-
-        public const int PRODUCT_SUPPORT_DEPARTMENT_ID = 107;
-        public const int PRODUCT_SUPPORT_DEPARTMENT_MANAGEMENT = 107;
 
         public const int OPERATIONS_DEPARTMENT_ID = 101;
         public const int FRONT_DESK_TEAM_ID = 10105;

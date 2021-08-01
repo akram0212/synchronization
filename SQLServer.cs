@@ -13,7 +13,7 @@ namespace _01electronics_erp
 {
     public class SQLServer
     {
-        private String sqlConnectionString = @"Data Source=DEV-02\SQLEXPRESS;Initial Catalog=erp_system;Integrated Security=True;";
+        private String sqlConnectionString = "Data Source=01electronics.ddns.net;User ID=sa;Password=P@ssw0rd;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         private SqlConnection sqlConnection = null;
         private SqlCommand sqlCommand = null;
@@ -159,7 +159,7 @@ namespace _01electronics_erp
             }
             catch (Exception sqlException)
             {
-                MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
                 sqlConnection.Close();
 
@@ -187,7 +187,7 @@ namespace _01electronics_erp
 
                 if (severityLevel == BASIC_MACROS.SEVERITY_HIGH && !sqlReader.HasRows)
                 {
-                    MessageBox.Show("SQL Query returned null rows. Please report this to your system adminstrator.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.Forms.MessageBox.Show("SQL Query returned null rows. Please report this to your system adminstrator.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     sqlReader.Close();
                     sqlConnection.Close();
@@ -306,7 +306,7 @@ namespace _01electronics_erp
             }
             catch (Exception sqlException)
             {
-                MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 sqlConnection.Close();
 
                 return false;
@@ -332,7 +332,7 @@ namespace _01electronics_erp
             }
             catch (Exception sqlException)
             {
-                MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Server connection failed! Please check your internet connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 sqlConnection.Close();
 

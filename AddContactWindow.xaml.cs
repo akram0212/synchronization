@@ -101,7 +101,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Company name must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -225,7 +225,7 @@ namespace _01electronics_crm
         {
             if (contactGenderComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Contact gender must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Contact gender must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             contact.SetContactGender(contactGenderComboBox.SelectedItem.ToString());
@@ -236,7 +236,7 @@ namespace _01electronics_crm
         {
             if (companyNameComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Company must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -249,7 +249,7 @@ namespace _01electronics_crm
         {
             if (companyBranchComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Company branch must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company branch must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true; 
@@ -259,7 +259,7 @@ namespace _01electronics_crm
         {
             if (employeeDepartmentComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Employee Department must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Employee Department must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

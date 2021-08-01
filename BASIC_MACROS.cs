@@ -95,8 +95,8 @@ namespace _01electronics_erp
 
         //FTP MACROS
         public const String FTP_SERVER_IP = "01electronics.net";
-        public const String FTP_SERVER_USERNAME = "agent@01electronics.net";
-        public const String FTP_SERVER_PASSWORD = "A7mad0layainmO";
+        public const String FTP_SERVER_USERNAME = "salma.omran@01electronics.net";
+        public const String FTP_SERVER_PASSWORD = "!01#elec@SALOMR";
 
         public const int FTP_SERVER_PORT = 21;
 

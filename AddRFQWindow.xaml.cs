@@ -445,7 +445,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Please make sure that product 4 is unchecked first");
+                System.Windows.Forms.MessageBox.Show("Please make sure that product 4 is unchecked first");
                 product3CheckBox.IsChecked = true;
             }
         }
@@ -483,7 +483,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Please make sure that products 3 and 4 are unchecked first");
+                System.Windows.Forms.MessageBox.Show("Please make sure that products 3 and 4 are unchecked first");
                 product2CheckBox.IsChecked = true;
             }
         }

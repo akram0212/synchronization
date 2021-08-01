@@ -516,7 +516,7 @@ namespace _01electronics_crm
         }
 
         /////////////////////////////////////////////////////////////////
-        //BUTTON CLICKED FUNCTIONS
+        //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
@@ -528,6 +528,16 @@ namespace _01electronics_crm
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
+        {
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
@@ -558,7 +568,10 @@ namespace _01electronics_crm
         {
 
         }
-        
+
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
@@ -566,6 +579,19 @@ namespace _01electronics_crm
             RFQ rfq = new RFQ(sqlDatabase);
             RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
             addRFQWindow.Show();
+        }
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        {
+            RFQ selectedRFQ = new RFQ(sqlDatabase);
+
+            selectedRFQ.InitializeRFQInfo(rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+
+            int viewAddCondition = 0;
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
+            viewRFQ.Show();
+
         }
 
         private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
@@ -609,20 +635,6 @@ namespace _01electronics_crm
             currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
             currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
-        {
-            RFQ selectedRFQ = new RFQ(sqlDatabase);
-
-            selectedRFQ.InitializeRFQInfo(  rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial, 
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version, 
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
-
-            int viewAddCondition = 0;
-            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
-            viewRFQ.Show();
-
-        }
-
         private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
         {
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);

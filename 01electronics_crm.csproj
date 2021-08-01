@@ -67,6 +67,9 @@
     <Compile Include="ClientCall.cs" />
     <Compile Include="ClientVisit.cs" />
     <Compile Include="OfficeMeeting.cs" />
+    <Compile Include="ProductsPage.xaml.cs">
+      <DependentUpon>ProductsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQ.cs" />
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -231,6 +234,10 @@
     <Page Include="OfficeMeetingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RFQAdditionalInfoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
