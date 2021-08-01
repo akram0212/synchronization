@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using System.Collections;
-using System.Windows;
+using System.Windows.Forms;
 using System.Security.Cryptography;
 
 namespace _01electronics_erp

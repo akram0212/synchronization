@@ -1,4 +1,4 @@
-
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,57 +14,44 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using _01electronics_library;
-
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for ProductsPage.xaml
+    /// Interaction logic for UPSPage.xaml
     /// </summary>
-    public partial class ProductsPage : Page
+    public partial class UPSPage : Page
     {
         private Employee loggedInUser;
-        public ProductsPage(ref Employee mLoggedInUser)
+        public UPSPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
-
             loggedInUser = mLoggedInUser;
         }
-
-        /////////////////////////////////////////////////////////////////
-        //EXTERNAL TABS
-        /////////////////////////////////////////////////////////////////
-
-
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
+
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
-        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+
+        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
         {
-            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
-            this.NavigationService.Navigate(productsPage);
+
         }
-        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
-        {
-            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrders);
-        }
-        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
-            this.NavigationService.Navigate(rFQsPage);
+            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rfqs);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -86,34 +73,20 @@ namespace _01electronics_crm
 
         }
 
-        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
-        private void GeneratorsImageMouseDown(object sender, MouseButtonEventArgs e)
+
+        private void BorriUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Windows.Forms.MessageBox.Show("done");
-        } 
-        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
+            BorriUPSPage productsPage = new BorriUPSPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void LegrandUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
-         private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
-
-        //private void UPSImageMouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    Storyboard story = (Storyboard)FindResource("expandStoryboard");
-        //    Image image = sender as Image;
-        //    image.BeginStoryboard(story);
-        //}
-
-        //private void UPSImageMouseLeave(object sender, MouseEventArgs e)
-        //{
-
-        //}
     }
 }

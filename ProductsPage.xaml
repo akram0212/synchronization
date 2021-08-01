@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
+
       Background="#EDEDED"
       Title="Products Page">
 
@@ -40,7 +41,7 @@
             <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
             <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
             <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
-            
+
         </Grid>
 
         <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -52,30 +53,73 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,15" Content="PRODUCTS" Style="{StaticResource primaryHeaderTextStyle}"/>
+            <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="PRODUCTS" Style="{StaticResource primaryHeaderTextStyle}"/>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                  </Grid.RowDefinitions>
 
-            <WrapPanel Grid.Row="1" Margin="48,24">
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Image Source="D:\Images\Cover images\UPS.jpg"  Mouse.MouseDown="UPSImageMouseDown" Width="300">
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="Image.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Image.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
+                            </EventTrigger>
+                        </Image.Triggers>
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </Image.RenderTransform>
+                        
+                    </Image>
 
-                <Grid Margin="24">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="UPS" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
-                <Border Grid.Column="0"></Border>
-            </WrapPanel>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Image Source="D:\Images\Cover images\Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300"/>
+                    <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Generators" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                </Grid>
 
-            <Button Grid.Row="2" HorizontalAlignment="Left"  Margin="200,0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Image Source="D:\Images\Cover images\Batteries.jpg"  Mouse.MouseDown="BatteriesImageMouseDown" Width="300"/>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Batteries" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                </Grid>
 
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Image Source="D:\Images\Cover images\Panels.png"  Mouse.MouseDown="PanelsImageMouseDown" Width="250"/>
+                    <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Panels" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                </Grid>
+
+            </Grid>
         </Grid>
 
-
     </Grid>
-
+    
 </Page>

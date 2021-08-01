@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,6 +65,9 @@
     </Compile>
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BorriUPSPage.xaml.cs">
+      <DependentUpon>BorriUPSPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClientCall.cs" />
     <Compile Include="ClientVisit.cs" />
@@ -96,6 +101,9 @@
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQLServer.cs" />
+    <Compile Include="UPSPage.xaml.cs">
+      <DependentUpon>UPSPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
     </Compile>
@@ -171,6 +179,10 @@
     <Page Include="AddWorkOfferWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BorriUPSPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClientCallsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -271,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UPSPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -359,6 +375,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="login_cover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
+      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
+      <Name>01electronics_library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
