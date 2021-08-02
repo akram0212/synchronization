@@ -226,7 +226,11 @@ namespace _01electronics_crm
                 sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
                 sqlQuery += rfq.GetRFQStatusId() + ",";
                 sqlQuery += "'" + rfq.GetRFQNotes() + "');";
-                sqlDatabase.InsertRows(sqlQuery);
+
+                if (sqlDatabase.InsertRows(sqlQuery))
+                    MessageBox.Show("Your RFQ has been Added succefully");
+                else
+                    MessageBox.Show("An error has occurred please contact your system administrator");
             }
         }
 
@@ -266,7 +270,11 @@ namespace _01electronics_crm
             sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
             sqlQuery += rfq.GetRFQStatusId() + ",";
             sqlQuery += "'" + rfq.GetRFQNotes() + "');";
-            sqlDatabase.InsertRows(sqlQuery);
+
+            if (sqlDatabase.InsertRows(sqlQuery))
+                MessageBox.Show("Your RFQ has been revised succefully");
+            else
+                MessageBox.Show("An error has occurred please contact your system administrator");
         }
     }
 }

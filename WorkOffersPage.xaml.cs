@@ -42,6 +42,7 @@ namespace _01electronics_crm
         private int selectedProduct;
         private int selectedBrand;
         private int selectedStatus;
+        private int salesPersonTeam;
 
         private Grid previousSelectedOfferItem;
         private Grid currentSelectedOfferItem;
@@ -75,6 +76,7 @@ namespace _01electronics_crm
             DisableComboBoxes();
             ResetComboBoxes();
             DisableViewBtn();
+            DisableReviseBtn();
 
             ConfigureUIElements();
 
@@ -120,6 +122,16 @@ namespace _01electronics_crm
         private void EnableViewBtn()
         {
             viewButton.IsEnabled = true;
+        }
+
+        private void DisableReviseBtn()
+        {
+            reviseButton.IsEnabled = false;
+        }
+        
+        private void EnableReviseButton()
+        {
+            reviseButton.IsEnabled = true;
         }
         /////////////////////////////////////////////////////////////////
         //GET DATA FUNCTIONS
@@ -374,6 +386,9 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (yearCombo.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
             else
@@ -384,6 +399,9 @@ namespace _01electronics_crm
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (quarterCombo.SelectedItem != null)
                 selectedQuarter = quarterCombo.SelectedIndex + 1;
             else
@@ -394,6 +412,9 @@ namespace _01electronics_crm
 
         private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (employeeCombo.SelectedItem != null)
             {
                 selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
@@ -410,6 +431,9 @@ namespace _01electronics_crm
 
         private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (productCombo.SelectedItem != null)
                 selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
             else
@@ -420,6 +444,9 @@ namespace _01electronics_crm
 
         private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (brandCombo.SelectedItem != null)
                 selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
             else
@@ -430,6 +457,9 @@ namespace _01electronics_crm
 
         private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DisableViewBtn();
+            DisableReviseBtn();
+
             if (statusCombo.SelectedItem != null)
                 selectedStatus = statusCombo.SelectedIndex + 1;
             else
@@ -594,16 +624,55 @@ namespace _01electronics_crm
         {
             WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
 
-            selectedWorkOffer.InitializeSalesWorkOfferInfo( workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
-                                                            workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version);
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
+
+            
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+            }
+            else
+            {
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+            }
 
             int viewAddCondition = 0;
             WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
             viewOffer.Show();
         }
+
+        private void OnBtnClickedReviseOffer(object sender, RoutedEventArgs e)
+        {
+            WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
+
+
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+            }
+            else
+            {
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+            }
+
+            int viewAddCondition = 2;
+            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
+            reviseOffer.Show();
+        }
         private void OnBtnClickedWorkOfferItem(object sender, RoutedEventArgs e)
         {
             EnableViewBtn();
+            EnableReviseButton();
             previousSelectedOfferItem = currentSelectedOfferItem;
             currentSelectedOfferItem = (Grid)sender;
             BrushConverter brush = new BrushConverter();

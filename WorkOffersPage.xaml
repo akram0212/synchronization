@@ -104,6 +104,7 @@
             </Grid>
             <Button Grid.Row="2" HorizontalAlignment="Left"  Margin="200,0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
             <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+            <Button Grid.Row="2" HorizontalAlignment="Center" Margin="200,0" Content="Revise Offer" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseOffer" Name="reviseButton"/>
         </Grid>
 
     </Grid>

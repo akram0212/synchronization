@@ -84,6 +84,7 @@ namespace _01electronics_crm
 
             DisableViewButton();
             DisableReviseButton();
+            DisableResolveButton();
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -140,6 +141,16 @@ namespace _01electronics_crm
         private void EnableReviseButton()
         {
             reviseButton.IsEnabled = true;
+        }
+
+        private void EnableResolveButton()
+        {
+            resolveButton.IsEnabled = true;
+        }
+
+        private void DisableResolveButton()
+        {
+            resolveButton.IsEnabled = false;
         }
         /////////////////////////////////////////////////////////////////
         //GET DATA FUNCTIONS
@@ -254,6 +265,7 @@ namespace _01electronics_crm
         {
             DisableReviseButton();
             DisableViewButton();
+            DisableResolveButton();
             RFQsStackPanel.Children.Clear();
             if(rfqsListAfterFiltering.Count() != 0)
                 rfqsListAfterFiltering.Clear();
@@ -610,6 +622,7 @@ namespace _01electronics_crm
         {
             EnableViewButton();
             EnableReviseButton();
+            EnableResolveButton();
 
             previousSelectedRFQItem = currentSelectedRFQItem;
             currentSelectedRFQItem = (Grid)sender;
@@ -673,6 +686,20 @@ namespace _01electronics_crm
             int viewAddCondition = 2;
             RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
             reviseRFQ.Show();
+        }
+
+        private void ResolveButtonClick(object sender, RoutedEventArgs e)
+        {
+            RFQ selectedRFQ = new RFQ(sqlDatabase);
+            WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
+
+            resolveWorkOffer.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+            resolveWorkOffer.LinkRFQInfo();
+            int viewAddCondition = 3;
+            WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition);
+            resolveOffer.Show();
         }
     }
 
