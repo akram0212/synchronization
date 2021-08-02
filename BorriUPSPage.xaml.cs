@@ -26,6 +26,12 @@ namespace _01electronics_crm
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;
+
+            FillProductsSummaryPoints();
+        }
+        public void FillProductsSummaryPoints()
+        {
+          //  Product1TextBlock.Text = 
         }
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {

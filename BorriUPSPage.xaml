@@ -63,17 +63,21 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Image Source="D:\Images\2\1\9.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="300" Height="300"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="INGENIO ECS-BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Name="Product1TextBlock" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
                 </Grid>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Image Source="D:\Images\2\1\2.jpg"  Mouse.MouseDown="BorriUPS2ImageMouseDown" Width="300" Height="300"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B8033FXS-BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Name="Product2TextBlock" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
                 </Grid>
             </Grid>
         </Grid>
