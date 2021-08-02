@@ -1,4 +1,4 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +86,7 @@ namespace _01electronics_crm
         }
         private void LegrandUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("done");
+            System.Windows.Forms.MessageBox.Show("done");
         }
     }
 }

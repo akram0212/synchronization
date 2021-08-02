@@ -1,10 +1,11 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -59,7 +60,7 @@ namespace _01electronics_crm
         {
             if (MeetingDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Meeting Date must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Meeting Date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -71,7 +72,7 @@ namespace _01electronics_crm
         {
             if (MeetingPurposeComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Meeting Purpose must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Meeting Purpose must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

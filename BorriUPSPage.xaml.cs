@@ -1,4 +1,4 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,11 +85,11 @@ namespace _01electronics_crm
         } 
         private void BorriUPS2ImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("done");
+            System.Windows.Forms.MessageBox.Show("done");
         }
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("done");
+            System.Windows.Forms.MessageBox.Show("done");
         }
     }
 }

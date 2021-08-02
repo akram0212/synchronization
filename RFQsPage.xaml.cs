@@ -1,4 +1,4 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,7 @@ namespace _01electronics_crm
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList;
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
+        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsListAfterFiltering;
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes;
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes;
 
@@ -55,6 +56,7 @@ namespace _01electronics_crm
 
             employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
             rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            rfqsListAfterFiltering = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
             productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
@@ -81,6 +83,7 @@ namespace _01electronics_crm
             InitializeStatusComboBox();
 
             DisableViewButton();
+            DisableReviseButton();
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -130,6 +133,14 @@ namespace _01electronics_crm
             viewButton.IsEnabled = true;
         }
 
+        private void DisableReviseButton()
+        {
+            reviseButton.IsEnabled = false;
+        }
+        private void EnableReviseButton()
+        {
+            reviseButton.IsEnabled = true;
+        }
         /////////////////////////////////////////////////////////////////
         //GET DATA FUNCTIONS
         /////////////////////////////////////////////////////////////////
@@ -241,7 +252,11 @@ namespace _01electronics_crm
 
         private bool SetRFQsStackPanel()
         {
+            DisableReviseButton();
+            DisableViewButton();
             RFQsStackPanel.Children.Clear();
+            if(rfqsListAfterFiltering.Count() != 0)
+                rfqsListAfterFiltering.Clear();
 
             for (int i = 0; i < rfqsList.Count; i++)
             {
@@ -268,8 +283,23 @@ namespace _01electronics_crm
                 if (yearCheckBox.IsChecked == true && currentRFQDate.Year != selectedYear)
                     continue;
 
-                if (employeeCheckBox.IsChecked == true && salesPersonCondition && assigneeCondition)
-                    continue;
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                {
+                    if (employeeCheckBox.IsChecked == true && salesPersonCondition)
+                        continue;
+                }
+
+                else if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                {
+                    if (employeeCheckBox.IsChecked == true && assigneeCondition)
+                        continue;
+                }
+               
+                else
+                {
+                    if (employeeCheckBox.IsChecked == true && employeeCombo.SelectedItem != null  && employeeCombo.SelectedItem.ToString() != rfqsList[i].sales_person_name)
+                        continue;
+                }
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentRFQDate) != selectedQuarter)
                     continue;
@@ -283,6 +313,7 @@ namespace _01electronics_crm
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
                     continue;
 
+                rfqsListAfterFiltering.Add(rfqsList[i]);
                 StackPanel currentStackPanel = new StackPanel();
                 currentStackPanel.Orientation = Orientation.Vertical;
                 //currentStackPanel.MouseLeftButtonDown += OnButtonRFQItem;
@@ -375,6 +406,7 @@ namespace _01electronics_crm
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
             else
                 selectedYear = 0;
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -384,6 +416,7 @@ namespace _01electronics_crm
                 selectedQuarter = quarterCombo.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -399,7 +432,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
                 selectedTeam = 0;
             }
-
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -409,6 +442,7 @@ namespace _01electronics_crm
                 selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -418,6 +452,7 @@ namespace _01electronics_crm
                 selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -427,7 +462,7 @@ namespace _01electronics_crm
                 selectedStatus = statusCombo.SelectedIndex + 1;
             else
                 selectedStatus = 0;
-
+            currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
@@ -516,7 +551,7 @@ namespace _01electronics_crm
         }
 
         /////////////////////////////////////////////////////////////////
-        //BUTTON CLICKED FUNCTIONS
+        //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
@@ -528,6 +563,16 @@ namespace _01electronics_crm
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
@@ -558,7 +603,10 @@ namespace _01electronics_crm
         {
 
         }
-        
+
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
@@ -567,10 +615,36 @@ namespace _01electronics_crm
             RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
             addRFQWindow.Show();
         }
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        {
+            RFQ selectedRFQ = new RFQ(sqlDatabase);
+
+            selectedRFQ.InitializeRFQInfo(rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+
+            int viewAddCondition = 0;
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
+            viewRFQ.Show();
+
+        }
+        private void OnBtnClickedReviseRFQ(object sender, RoutedEventArgs e)
+        {
+            RFQ selectedRFQ = new RFQ(sqlDatabase);
+
+            selectedRFQ.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+
+            int viewAddCondition = 2;
+            RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
+            reviseRFQ.Show();
+        }
 
         private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
         {
             EnableViewButton();
+            EnableReviseButton();
 
             previousSelectedRFQItem = currentSelectedRFQItem;
             currentSelectedRFQItem = (Grid)sender;
@@ -608,25 +682,6 @@ namespace _01electronics_crm
 
             currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
             currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-        }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
-        {
-            RFQ selectedRFQ = new RFQ(sqlDatabase);
-
-            selectedRFQ.InitializeRFQInfo(  rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial, 
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version, 
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
-
-            int viewAddCondition = 0;
-            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
-            viewRFQ.Show();
-
-        }
-
-        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
-        {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
         }
     }
 

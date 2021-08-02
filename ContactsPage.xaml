@@ -26,17 +26,19 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MyProfileLabel" Text="My Profile" MouseLeftButtonDown="OnButtonClickedMyProfile"/>
             <TextBlock Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ContactsLabel" Text="Contacts" MouseLeftButtonDown="OnButtonClickedContacts"/>
-            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedOrders"/>
-            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Work Offers" MouseLeftButtonDown="OnButtonClickedOffers"/>
-            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs"/>
-            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
-            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
-            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
-            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
+            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ProductsLabel" Text="Products" MouseLeftButtonDown="OnButtonClickedProducts"/>
+            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedWorkOrders"/>
+            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Work Offers" MouseLeftButtonDown="OnButtonClickedWorkOffers"/>
+            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs"/>
+            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
+            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
+            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
+            <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
 
         </Grid>
 

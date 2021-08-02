@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -21,11 +21,12 @@ namespace _01electronics_crm
     /// </summary>
     public partial class WorkOfferWindow : NavigationWindow
     {
-        public WorkOfferWindow(ref Employee mLoggedInUser)
+        int viewAddCondition;
+        public WorkOfferWindow(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
             InitializeComponent();
-
-            WorkOfferBasicInfoPage workOfferBasicInfoPage = new WorkOfferBasicInfoPage(ref mLoggedInUser);
+            viewAddCondition = mViewAddCondition;
+            WorkOfferBasicInfoPage workOfferBasicInfoPage = new WorkOfferBasicInfoPage(ref mLoggedInUser, ref mWorkOffer, viewAddCondition);
             this.NavigationService.Navigate(workOfferBasicInfoPage);
         }
     }

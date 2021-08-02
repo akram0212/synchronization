@@ -46,23 +46,23 @@
         <WrapPanel Grid.Row="2">
             <WrapPanel >
                 <Label  Grid.Column="0" Content="Total Price" Style="{StaticResource labelStyle}"/>
-                <ComboBox Name="totalPriceCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyle}" Width="100" />
-                <TextBox Name="totalPriceTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+                <ComboBox Name="totalPriceCombo" Grid.Row="1" Grid.Column="0" Style="{StaticResource comboBoxStyle}" Width="100" IsEnabled="False"/>
+                <TextBox Name="totalPriceTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" IsReadOnly="True"/>
             </WrapPanel>
             <WrapPanel >
                 <TextBox Name="downPaymentPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="DownPaymentPercentageTextBoxTextChanged"/>
                 <Label  Content="% Down Payment" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
-                <TextBox Name="downPaymentActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+                <TextBox Name="downPaymentActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" IsReadOnly="True"/>
             </WrapPanel>
             <WrapPanel >
                 <TextBox Name="onDeliveryPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="OnDeliveryPercentageTextBoxTextChanged"/>
                 <Label  Content="% On Delivery" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
-                <TextBox Name="onDeliverytActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+                <TextBox Name="onDeliveryActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" IsReadOnly="True"/>
             </WrapPanel>
             <WrapPanel >
                 <TextBox Name="onInstallationPercentageTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" TextChanged="OnInstallationPercentageTextBoxTextChanged"/>
                 <Label  Content="% On Installation" Style="{StaticResource labelStyle}" Width="150" VerticalAlignment="Center"/>
-                <TextBox Name="onInstallationtActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center"/>
+                <TextBox Name="onInstallationActualTextBox" Style="{StaticResource textBoxStyle}" Width="100" VerticalAlignment="Center" IsReadOnly="True"/>
             </WrapPanel>
         </WrapPanel>
 
@@ -72,7 +72,7 @@
                 <TextBox Name="deliveryTimeTextBoxFrom" Style="{StaticResource textBoxStyle}" Width="100" TextChanged="DeliveryTimeTextBoxFromTextChanged" VerticalAlignment="Center"/>
                 <Label Content="-" Style="{StaticResource labelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="20"/>
                 <TextBox Name="deliveryTimeTextBoxTo" Style="{StaticResource textBoxStyle}" Width="100" TextChanged="DeliveryTimeTextBoxToTextChanged" VerticalAlignment="Center"/>
-                <ComboBox Name="deliveryTimeCombo" Style="{StaticResource comboBoxStyle}" Width="100" VerticalAlignment="Center"/>
+                <ComboBox Name="deliveryTimeCombo" Style="{StaticResource comboBoxStyle}" Width="100" VerticalAlignment="Center" SelectionChanged="DeliveryTimeComboSelectionChanged"/>
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Delivery Point" Style="{StaticResource labelStyle}" VerticalAlignment="Center" Width="120"/>

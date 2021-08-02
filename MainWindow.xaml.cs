@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 using _01electronics_crm;
 
 namespace _01electronics_crm

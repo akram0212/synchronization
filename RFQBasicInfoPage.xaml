@@ -53,7 +53,7 @@
                 <WrapPanel Name="salesPersonWrapPanel">
                     <Label Style="{StaticResource tableItemLabel}" Content="Sales Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="salesPersonComboSelectionChanged"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="SalesPersonComboSelectionChanged"/>
                 </WrapPanel>
 
                 <WrapPanel Name="assigneeWrapPanel">

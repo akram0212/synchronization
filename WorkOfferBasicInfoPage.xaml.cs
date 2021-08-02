@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -37,13 +37,13 @@ namespace _01electronics_crm
         private int viewAddCondition;
         private int salesPersonID;
         private int salesPersonTeamID;
-
+        
         //////////////ADD CONSTRUCTOR////////////////
         /////////////////////////////////////////////
-        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser)
+        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer,int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
-
+            viewAddCondition = mViewAddCondition;
             InitializeComponent();
 
             sqlDatabase = new SQLServer();
@@ -51,31 +51,23 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
 
             workOffer = new WorkOffer(sqlDatabase);
-
-            ConfigureUIElemenetsForAdd();
-            InitializeSalesPersonCombo();
-
-            viewAddCondition = 1;
-        }
-        //////////////VIEW CONSTRUCTOR///////////////
-        /////////////////////////////////////////////
-        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer)
-        {
-            loggedInUser = mLoggedInUser;
             workOffer = mWorkOffer;
-
-            InitializeComponent();
-
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-
-            workOffer = new WorkOffer(sqlDatabase);
-
-            ConfigureUIElemenetsForAdd();
-            InitializeSalesPersonCombo();
-
-            viewAddCondition = 0;
+            ///////////////////////////
+            ////ADD
+            ///////////////////////////
+            if (viewAddCondition == 1)
+            {
+                ConfigureUIElemenetsForAdd();
+                InitializeSalesPersonCombo();
+            }
+            ////////////////////////////
+            ///VIEW
+            ////////////////////////////
+            else if (viewAddCondition == 0)
+            {
+                ConfigureUIElementsForView();
+                InitializeSalesPersonCombo();
+            }
         }
 
         ///////////////INITIALIZE FUNCTIONS///////////////
@@ -87,8 +79,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < employeesList.Count(); i++)
             {
-                string temp = employeesList[i].employee_name;
-                salesPersonCombo.Items.Add(temp);
+                salesPersonCombo.Items.Add(employeesList[i].employee_name);
             }
             return true;
         }
@@ -112,7 +103,7 @@ namespace _01electronics_crm
         {
             if (!GetCompaniesQuery(salesPersonID, ref companiesList))
                 return;
-
+            
             for (int i = 0; i < companiesList.Count; i++)
                 companyNameCombo.Items.Add(companiesList[i].company_name);
 
@@ -187,7 +178,21 @@ namespace _01electronics_crm
             companyAddressCombo.IsEnabled = false;
             contactPersonNameCombo.IsEnabled = false;
         }
+        private void ConfigureUIElementsForView()
+        {
+            salesPersonLabel.Visibility = Visibility.Visible;
+            RFQSerialLabel.Visibility = Visibility.Visible;
+            companyNameLabel.Visibility = Visibility.Visible;
+            companyAddressLabel.Visibility = Visibility.Visible;
+            contactPersonNameLabel.Visibility = Visibility.Visible;
 
+            salesPersonCombo.Visibility = Visibility.Collapsed;
+            RFQSerialCombo.Visibility = Visibility.Collapsed;
+            companyNameCombo.Visibility = Visibility.Collapsed;
+            companyAddressCombo.Visibility = Visibility.Collapsed;
+            contactPersonNameCombo.Visibility = Visibility.Collapsed;
+
+        }
         ///////////GET FUNCTIONS////////////////////////////
         ////////////////////////////////////////////////////
 
@@ -243,7 +248,7 @@ namespace _01electronics_crm
         }
         private void RFQSerialComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            workOffer.SetRFQSerial(int.Parse(RFQSerialCombo.SelectedItem.ToString()));
         }
 
         private void CompanyNameComboSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -276,21 +281,13 @@ namespace _01electronics_crm
 
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            if(viewAddCondition == 0)
-            {
-                WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer);
-                NavigationService.Navigate(workOfferProductsPage);
-            }
-            else
-            {
-                WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser);
-                NavigationService.Navigate(workOfferProductsPage);
-            }
+            WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(workOfferProductsPage);
         }
         private void OnClickPaymentAndDelivery(object sender, MouseButtonEventArgs e)
         {
-            WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage();
-            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+            WorkOfferPaymentAndDeliveryPage paymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(paymentAndDeliveryPage);
         }
 
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
