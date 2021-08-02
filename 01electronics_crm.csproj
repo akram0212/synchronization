@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{82EF8421-6C00-4018-826D-0E6EE2F4966C}</ProjectGuid>
+    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>MAIN_LOGO.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -307,6 +310,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="login_cover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MAIN_LOGO.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
