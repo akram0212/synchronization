@@ -1,0 +1,15 @@
+﻿<Window x:Class="MyExcel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyExcel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0,0,0,13">
+        <DataGrid Name="dataGrid" Background="White" Foreground="Black" Width="772" HorizontalAlignment="Center" Margin="10,10,10,159" />
+        <Button Name="button1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="52" Width="81" Margin="370,0,341,0" Content="wala 7aga" Click="button1_Click"/>
+        
+   
+    </Grid>
+</Window>
