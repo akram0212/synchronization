@@ -1,10 +1,10 @@
-﻿using _01electronics_erp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -184,7 +185,7 @@ namespace _01electronics_crm
         {
             if (countryComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Country must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Country must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -197,7 +198,7 @@ namespace _01electronics_crm
         {
             if (stateComboBox.SelectedItem == null)
             {
-                MessageBox.Show("State must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("State must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             company.SetCompanyState(states[stateComboBox.SelectedIndex].state_id, stateComboBox.SelectedItem.ToString());
@@ -209,7 +210,7 @@ namespace _01electronics_crm
         {
             if (cityComboBox.SelectedItem == null)
             {
-                MessageBox.Show("City must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("City must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -222,7 +223,7 @@ namespace _01electronics_crm
         {
             if (districtComboBox.SelectedItem == null)
             {
-                MessageBox.Show("District must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("District must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

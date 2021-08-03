@@ -1,4 +1,5 @@
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,25 +13,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using _01electronics_library;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOrdersPage.xaml
+    /// Interaction logic for ProductsPage.xaml
     /// </summary>
-    public partial class WorkOrdersPage : Page
+    public partial class ProductsPage : Page
     {
         private Employee loggedInUser;
-        public WorkOrdersPage(ref Employee mLoggedInUser)
+        public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
+
             loggedInUser = mLoggedInUser;
         }
 
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////
+
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
@@ -82,8 +86,34 @@ namespace _01electronics_crm
 
         }
 
-        /////////////////////////////////////////////////////////////////
-        //BTN CLICKED HANDLERS
-        /////////////////////////////////////////////////////////////////
+        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void GeneratorsImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("done");
+        } 
+        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("done");
+        }
+         private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("done");
+        }
+
+        //private void UPSImageMouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    Storyboard story = (Storyboard)FindResource("expandStoryboard");
+        //    Image image = sender as Image;
+        //    image.BeginStoryboard(story);
+        //}
+
+        //private void UPSImageMouseLeave(object sender, MouseEventArgs e)
+        //{
+
+        //}
     }
 }

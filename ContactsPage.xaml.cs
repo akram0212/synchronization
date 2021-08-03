@@ -1,4 +1,4 @@
-﻿using _01electronics_erp;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -125,7 +125,7 @@ namespace _01electronics_crm
             if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
+            for (int i = 0; i < cities.Count; i++)
                 cityComboBox.Items.Add(cities[i].city_name);
 
             return true;
@@ -137,7 +137,7 @@ namespace _01electronics_crm
             if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
+            for (int i = 0; i < districts.Count; i++)
                 districtComboBox.Items.Add(districts[i].district_name);
 
             return true;
@@ -200,47 +200,6 @@ namespace _01electronics_crm
 
             return true;
         }
-
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
-        {
-        }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
-        {
-        }
-        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
-        {
-            
-        }
-        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
-        {
-            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
-            this.NavigationService.Navigate(clientVisitsPage);
-        }
-        private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
-        {
-            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
-            this.NavigationService.Navigate(clientCallsPage);
-        }
-        private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
-        {
-           
-        }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-            
-        }
-        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
-        {
-            ContactsPage contacts = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contacts);
-        }
-
 
         //////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
@@ -476,6 +435,64 @@ namespace _01electronics_crm
             }
            
         }
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+
+        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
+        {
+            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
+            this.NavigationService.Navigate(userPortal);
+        }
+        private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
+        {
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
+        {
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
+        }
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
+        }
+        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
+        {
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
+        }
+        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
+        {
+            ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientVisitsPage);
+        }
+        private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
+        {
+            ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
+            this.NavigationService.Navigate(clientCallsPage);
+        }
+        private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
+        {
+            OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
+            this.NavigationService.Navigate(officeMeetingsPage);
+        }
+        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
     }
 
 

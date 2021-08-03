@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -12,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -193,7 +194,7 @@ namespace _01electronics_crm
             rfq.IssueNewRFQ();
 
             if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
-                MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 string sqlQuery;
@@ -228,9 +229,9 @@ namespace _01electronics_crm
                 sqlQuery += "'" + rfq.GetRFQNotes() + "');";
 
                 if (sqlDatabase.InsertRows(sqlQuery))
-                    MessageBox.Show("Your RFQ has been Added succefully");
+                    System.Windows.Forms.MessageBox.Show("Your RFQ has been Added succefully");
                 else
-                    MessageBox.Show("An error has occurred please contact your system administrator");
+                    System.Windows.Forms.MessageBox.Show("An error has occurred please contact your system administrator");
             }
         }
 
@@ -272,9 +273,9 @@ namespace _01electronics_crm
             sqlQuery += "'" + rfq.GetRFQNotes() + "');";
 
             if (sqlDatabase.InsertRows(sqlQuery))
-                MessageBox.Show("Your RFQ has been revised succefully");
+                System.Windows.Forms.MessageBox.Show("Your RFQ has been revised succefully");
             else
-                MessageBox.Show("An error has occurred please contact your system administrator");
+                System.Windows.Forms.MessageBox.Show("An error has occurred please contact your system administrator");
         }
     }
 }

@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -51,16 +51,6 @@ namespace _01electronics_crm
             if (!InitializeBranchesComboBox())
                 return;
 
-            company.QueryCompanyPhones();
-            company.QueryCompanyFaxes();
-
-            phonesCount = company.GetNumberOfSavedCompanyPhones();
-            faxesCount = company.GetNumberOfSavedCompanyFaxes();
-
-            if (phonesCount != 0)
-                AddPhone();
-            if (faxesCount != 0)
-                AddFax();
         }
         private bool InitializeBranchesComboBox()
         {
@@ -121,7 +111,18 @@ namespace _01electronics_crm
 
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
+            companyPhonesWrapPanel.Children.Clear();
+            company.InitializeBranchInfo(branchesList[branchComboBox.SelectedIndex].address_serial);
+            company.QueryCompanyPhones();
+            company.QueryCompanyFaxes();
 
+            phonesCount = company.GetNumberOfSavedCompanyPhones();
+            faxesCount = company.GetNumberOfSavedCompanyFaxes();
+
+            if (phonesCount != 0)
+                AddPhone();
+            if (faxesCount != 0)
+                AddFax();
         }
 
         private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)

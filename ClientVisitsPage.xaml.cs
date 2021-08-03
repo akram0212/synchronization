@@ -1,5 +1,5 @@
 ﻿using _01electronics_crm;
-using _01electronics_erp;
+using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +26,7 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
         protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> visitsInfo;
+        protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> filteredVisits;
         private Grid previousSelectedVisitItem;
         private Grid currentSelectedVisitItem;
         public ClientVisitsPage(ref Employee mLoggedInUser)
@@ -36,8 +37,7 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             visitsInfo = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
-            currentSelectedVisitItem = new Grid();
-            previousSelectedVisitItem = new Grid();
+            filteredVisits = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
 
             viewButton.IsEnabled = false;
 
@@ -52,9 +52,18 @@ namespace _01electronics_crm
 
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
+
             GetVisits();
             InitializeStackPanel();
         }
+        private void GetVisits()
+        {
+            commonQueries.GetClientVisits(ref visitsInfo);
+        }
+
+        //////////////////////////////////////////////////////////
+        /// INITIALIZATION FUNCTIONS
+        //////////////////////////////////////////////////////////
         private void InitializeYearsComboBox()
         {
             for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
@@ -67,14 +76,10 @@ namespace _01electronics_crm
                 quarterCombo.Items.Add(commonFunctions.GetQuarterName(i + 1));
 
         }
-        private void GetVisits()
-        {
-            commonQueries.GetClientVisits(ref visitsInfo);
-        }
         private void InitializeStackPanel()
         {
             ClientVisitsStackPanel.Children.Clear();
-
+            filteredVisits.Clear();
             for (int i = 0; i < visitsInfo.Count; i++)
             {
                 if (visitsInfo[i].sales_person_id == loggedInUser.GetEmployeeId())
@@ -86,6 +91,8 @@ namespace _01electronics_crm
 
                     if (quarterCheckBox.IsChecked == true && (quarterCombo.SelectedItem == null || commonFunctions.GetQuarter(DateTime.Parse(visitsInfo[i].visit_date)) != quarterCombo.SelectedIndex + 1))
                         continue;
+
+                    filteredVisits.Add(visitsInfo[i]);
 
                     StackPanel currentStackPanel = new StackPanel();
                     currentStackPanel.Orientation = Orientation.Vertical;
@@ -106,6 +113,10 @@ namespace _01electronics_crm
                     purposeAndResultLabel.Content = visitsInfo[i].visit_purpose + " - " + visitsInfo[i].visit_result;
                     purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                    Label lineLabel = new Label();
+                    lineLabel.Content = "";
+                    lineLabel.Style = (Style)FindResource("stackPanelItemBody");
+                    
                     Label newLineLabel = new Label();
                     newLineLabel.Content = "";
                     newLineLabel.Style = (Style)FindResource("stackPanelItemBody");
@@ -115,11 +126,14 @@ namespace _01electronics_crm
                     currentStackPanel.Children.Add(salesPersonNameLabel);
                     currentStackPanel.Children.Add(companyAndContactLabel);
                     currentStackPanel.Children.Add(purposeAndResultLabel);
+                    currentStackPanel.Children.Add(lineLabel);
 
                     Grid newGrid = new Grid();
                     ColumnDefinition column1 = new ColumnDefinition();
+
                     newGrid.ColumnDefinitions.Add(column1);
                     newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
+                    
                     Grid.SetColumn(currentStackPanel, 0);
 
                     newGrid.Children.Add(currentStackPanel);
@@ -127,6 +141,10 @@ namespace _01electronics_crm
                 }
             }
         }
+
+        //////////////////////////////////////////////////////////
+        /// ON BTN CLICKED HANDLERS
+        //////////////////////////////////////////////////////////
         private void OnBtnClickedVisitItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
@@ -138,37 +156,50 @@ namespace _01electronics_crm
             {
                 previousSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[1];
-                Border previousSelectedBorder = (Border)previousSelectedVisitItem.Children[1];
-                Label previousStatusLabel = (Label)previousSelectedBorder.Child;
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[0];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
                     childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
                 
-                previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
             }
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[1];
-            Border currentSelectedBorder = (Border)currentSelectedVisitItem.Children[1];
-            Label currentStatusLabel = (Label)currentSelectedBorder.Child;
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[0];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
-            currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-            currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
         }
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+
+        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
+            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
+            this.NavigationService.Navigate(userPortal);
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffersPage);
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
+        {
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
+        }
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
@@ -192,57 +223,31 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
-            //StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            //this.NavigationService.Navigate(statisticsPage);
+
         }
 
-        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
+
+        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
+            AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
+            addClientVisitWindow.Closed += OnClosedAddVisitWindow;
+            addClientVisitWindow.Show();
         }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
+        private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contactsPage);
+            ClientVisit selectedVisit = new ClientVisit();
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, loggedInUser.GetEmployeeId());
+
+            ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
+            viewClientVisitWindow.Show();
         }
 
-        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedRFQs(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedVisits(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedCalls(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedMeetings(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
+        //////////////////////////////////////////////////////////
+        /// ON CHECK HANDLERS
+        //////////////////////////////////////////////////////////
         private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = true;
@@ -251,11 +256,16 @@ namespace _01electronics_crm
         private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = false;
+            yearCombo.SelectedItem = null;
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
         }
 
         private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitializeStackPanel();
+            viewButton.IsEnabled = false;
         }
 
         private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
@@ -265,12 +275,17 @@ namespace _01electronics_crm
 
         private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            quarterCombo.IsEnabled = false;
+            quarterCombo.IsEnabled = false; 
+            quarterCombo.SelectedItem = null;
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
         }
 
         private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitializeStackPanel();
+            viewButton.IsEnabled = false;
         }
 
         private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
@@ -283,61 +298,11 @@ namespace _01electronics_crm
 
         }
 
-        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnClosedAddVisitWindow(object sender, EventArgs e)
         {
-
+            GetVisits();
+            InitializeStackPanel();
         }
-
-        private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
 

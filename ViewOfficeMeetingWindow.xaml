@@ -1,0 +1,63 @@
+﻿<Window x:Class="_01electronics_crm.ViewOfficeMeetingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_01electronics_crm"
+         Background="#EDEDED"
+        mc:Ignorable="d"
+        Title="ViewOfficeMeetingWindow"  Height="730" Width="700">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Name="OfficeMeetingProfileHeader" Content="VIEW OFFICE MEETING" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+            <WrapPanel>
+
+                <Grid Name="MeetingGrid" Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <WrapPanel Grid.Row="0">
+                        <WrapPanel Name="MeetingDatePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Date Of Meeting"/>
+                            <DatePicker Style="{StaticResource datePickerStyle}" Name="MeetingDatePicker"/>
+                        </WrapPanel>
+                        <WrapPanel Name="SalesEngineerPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Sales Engineer"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="SalesEngineerTextBox"/>
+                        </WrapPanel>
+                        <WrapPanel Name="MeetingPurposePanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Meeting Purpose"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="MeetingPurposeTextBox"/>
+                        </WrapPanel>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1">
+                        <WrapPanel Name="AdditionalDescriptionPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Additional Description"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox" Height="100"/>
+                        </WrapPanel>
+                    </WrapPanel>
+
+                </Grid>
+
+            </WrapPanel>
+
+        </ScrollViewer>
+       
+    </Grid>
+</Window>
