@@ -72,8 +72,8 @@ namespace _01electronics_crm
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
 
-                if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
-                    drawingConditionsCheckBox.IsChecked = true;
+                //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
+                //    drawingConditionsCheckBox.IsChecked = true;
                 
                 ConfigureUIElementsView();
                 SetDrawingSubmissionValues();
@@ -98,8 +98,8 @@ namespace _01electronics_crm
                 SetWarrantyPeriodValues();
                 SetValidityPeriodValues();
                 SetAdditionalDescriptionValue();
-                if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
-                    drawingConditionsCheckBox.IsChecked = true;
+                //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
+                //    drawingConditionsCheckBox.IsChecked = true;
                 HideAddOfferButton();
             }
             ////////////////////////
@@ -134,7 +134,7 @@ namespace _01electronics_crm
 
         private void ConfigureUIElementsView()
         {
-            drawingConditionsCheckBox.IsEnabled = false;
+            //drawingConditionsCheckBox.IsEnabled = false;
             drawingDeadlineFromTextBox.IsEnabled = false;
             drawingDeadlineToTextBox.IsEnabled = false;
             drawingDeadlineDateComboBox.IsEnabled = false;
