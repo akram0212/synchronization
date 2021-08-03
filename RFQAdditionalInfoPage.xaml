@@ -48,21 +48,21 @@
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0" Name="contractWrapPanel">
-                <Label Style="{StaticResource tableItemLabel}" Content="Contract Type"/>
+                <Label Style="{StaticResource labelStyle}" Content="Contract &#x0a;Type"/>
                 <Label Style="{StaticResource tableItemValue}" Name="contractTypeLabel" Visibility="Collapsed"/>
                 <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeCombo" SelectionChanged="ContractTypeComboSelectionChanged"/>
             </WrapPanel>
 
             <WrapPanel Grid.Row="1" Name="deadlineDateWrapPanel">
-                <Label Style="{StaticResource tableItemLabel}" Content="Deadline Date"/>
+                <Label Style="{StaticResource labelStyle}" Content="Deadline &#x0a;Date"/>
                 <Label Style="{StaticResource tableItemValue}"  Name="deadlineDateLabel" Visibility="Collapsed"/>
                 <DatePicker Style="{StaticResource datePickerStyle}" Name="deadlineDateDatePicker" IsTodayHighlighted="True" SelectedDateChanged="DeadlineDateDatePickerSelectedDateChanged"/>
             </WrapPanel>
 
             <WrapPanel Grid.Row="2" Name="notesWrapPanel">
-                <Label Style="{StaticResource tableItemLabel}" Content="Notes"/>
+                <Label Style="{StaticResource labelStyle}" Content="Notes"/>
                 <Label Style="{StaticResource tableItemValue}" Name="notesLabel" Visibility="Collapsed"/>
-                <TextBox Style="{StaticResource textBoxStyle}" Name="notesTextBox" Height="80" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextChanged="NotesTextBoxTextChanged"/>
+                <TextBox Style="{StaticResource commentsTextBoxStyle}" Name="notesTextBox" TextChanged="NotesTextBoxTextChanged"/>
 
             </WrapPanel>
 
