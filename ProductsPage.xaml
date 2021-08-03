@@ -72,7 +72,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="D:\Images\Cover images\UPS.jpg"  Mouse.MouseDown="UPSImageMouseDown" Width="300">
+                    <Image Source="Images\Cover images\UPS.jpg"  Mouse.MouseDown="UPSImageMouseDown" Width="300">
                         <Image.Triggers>
                             <EventTrigger RoutedEvent="Image.MouseEnter">
                                 <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
@@ -95,7 +95,14 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="D:\Images\Cover images\Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300"/>
+                    <Button Style="{StaticResource buttonStyle}" Width="300" Height="300" Background="Transparent" BorderThickness="0">
+                        <StackPanel>
+                            <Image Source="Images\Cover images\Generators.jpg" />
+                        </StackPanel>
+                        
+                    </Button>
+
+                    <!--<Image Source="Images\Cover images\Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300"/>-->
                     <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Generators" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
@@ -104,7 +111,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="D:\Images\Cover images\Batteries.jpg"  Mouse.MouseDown="BatteriesImageMouseDown" Width="300"/>
+                    <Image Source="Images\Cover images\Batteries.jpg"  Mouse.MouseDown="BatteriesImageMouseDown" Width="300"/>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Batteries" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
@@ -113,7 +120,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="D:\Images\Cover images\Panels.png"  Mouse.MouseDown="PanelsImageMouseDown" Width="250"/>
+                    <Image Source="Images\Cover images\Panels.png"  Mouse.MouseDown="PanelsImageMouseDown" Width="250"/>
                     <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Panels" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Grid>
 
