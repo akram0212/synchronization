@@ -328,52 +328,8 @@ namespace _01electronics_crm
             workOffer.SetWarrantyPeriod(warrantyPeriod);
             workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             workOffer.SetOfferNotes(additionalDescription);
-            //workOffer.SetOfferIssueDate(commonFunctionsObject.GetTodaysDate());
 
-            workOffer.GetNewOfferVersion();
             workOffer.IssueNewOffer();
-            //workOffer.GetNewOfferID();
-            //workOffer.GetNewOfferSerial();
-            
-
-
-            ////////////EVERYTHING IS WORKING HERE EXCEPT OFFER_STATUS_ID IS WRONG AND PRICE CURRENCY JUST WAITING FOR THE MINI TEXT BOXES
-            string sqlQuery;
-            sqlQuery = "INSERT INTO erp_system.dbo.work_offers VALUES (";
-            sqlQuery += "'" + workOffer.GetOfferIssueDate().ToString("yyyy-MM-dd") + "',";
-            sqlQuery += workOffer.GetOfferProposerId() + ",";
-            sqlQuery += workOffer.GetOfferSerial() + ",";
-            sqlQuery += workOffer.GetOfferVersion() + ",";
-            sqlQuery += workOffer.GetSalesPersonId() + ",";
-            sqlQuery += workOffer.GetAddressSerial() + ",";
-            sqlQuery += workOffer.GetContactId() + ",";
-            sqlQuery += "'" + workOffer.GetOfferID() + "',";
-
-            ////keep it this way until price combo boxes are done
-            //sqlQuery += workOffer.GetCurrencyId() + ",";
-            sqlQuery += 1 + ",";
-            
-            sqlQuery += workOffer.GetTotalPriceValue() + ",";
-            sqlQuery += workOffer.GetPercentDownPayment() + ",";
-            sqlQuery += workOffer.GetPercentOnDelivery() + ",";
-            sqlQuery += workOffer.GetPercentOnInstallation() + ",";
-            sqlQuery += isDrawing + ",";
-            sqlQuery += workOffer.GetDeliveryTimeMinimum() + ",";
-            sqlQuery += workOffer.GetDeliveryTimeMaximum() + ",";
-            sqlQuery += workOffer.GetDeliveryTimeUnitId() + ",";
-            sqlQuery += workOffer.GetDeliveryPointId() + ",";
-            sqlQuery += workOffer.GetOfferContractTypeId() + ",";
-            sqlQuery += workOffer.GetWarrantyPeriod() + ",";
-            sqlQuery += workOffer.GetWarrantyPeriodTimeUnitId() + ",";
-            sqlQuery += workOffer.GetOfferValidityPeriod() + ",";
-            sqlQuery += workOffer.GetOfferValidityTimeUnitId() + ",";
-            sqlQuery += workOffer.GetOfferStatusId() + ",";
-            sqlQuery += "'" + workOffer.GetOfferNotes() + "');";
-
-            if (sqlDatabase.InsertRows(sqlQuery))
-                MessageBox.Show("Your Work Offer has been added successfully!");
-            else
-                MessageBox.Show("An error has occurred, please try again later");
         }
 
         private void ReviseOfferButtonClick(object sender, RoutedEventArgs e)
@@ -383,48 +339,8 @@ namespace _01electronics_crm
             workOffer.SetWarrantyPeriod(warrantyPeriod);
             workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             workOffer.SetOfferNotes(additionalDescription);
-            //workOffer.SetOfferIssueDate(commonFunctionsObject.GetTodaysDate());
-            //workOffer.GetNewOfferVersion();
+            
             workOffer.ReviseOffer();
-            //workOffer.GetNewOfferSerial();
-           
-
-            string sqlQuery;
-            sqlQuery = "INSERT INTO erp_system.dbo.work_offers VALUES (";
-            sqlQuery += "'" + workOffer.GetOfferIssueDate().ToString("yyyy-MM-dd") + "',";
-            sqlQuery += workOffer.GetOfferProposerId() + ",";
-            sqlQuery += workOffer.GetOfferSerial() + ",";
-            sqlQuery += workOffer.GetOfferVersion() + ",";
-            sqlQuery += workOffer.GetSalesPersonId() + ",";
-            sqlQuery += workOffer.GetAddressSerial() + ",";
-            sqlQuery += workOffer.GetContactId() + ",";
-            sqlQuery += "'" + workOffer.GetOfferID() + "',";
-
-            ////keep it this way until price combo boxes are done
-            //sqlQuery += workOffer.GetCurrencyId() + ",";
-            sqlQuery += 1 + ",";
-
-            sqlQuery += workOffer.GetTotalPriceValue() + ",";
-            sqlQuery += workOffer.GetPercentDownPayment() + ",";
-            sqlQuery += workOffer.GetPercentOnDelivery() + ",";
-            sqlQuery += workOffer.GetPercentOnInstallation() + ",";
-            sqlQuery += isDrawing + ",";
-            sqlQuery += workOffer.GetDeliveryTimeMinimum() + ",";
-            sqlQuery += workOffer.GetDeliveryTimeMaximum() + ",";
-            sqlQuery += workOffer.GetDeliveryTimeUnitId() + ",";
-            sqlQuery += workOffer.GetDeliveryPointId() + ",";
-            sqlQuery += workOffer.GetOfferContractTypeId() + ",";
-            sqlQuery += workOffer.GetWarrantyPeriod() + ",";
-            sqlQuery += workOffer.GetWarrantyPeriodTimeUnitId() + ",";
-            sqlQuery += workOffer.GetOfferValidityPeriod() + ",";
-            sqlQuery += workOffer.GetOfferValidityTimeUnitId() + ",";
-            sqlQuery += workOffer.GetOfferStatusId() + ",";
-            sqlQuery += "'" + workOffer.GetOfferNotes() + "');";
-
-            if (sqlDatabase.InsertRows(sqlQuery))
-                MessageBox.Show("Your Work Offer has been revised successfully!");
-            else
-                MessageBox.Show("An error has occurred, please try again later");
         }
     }
 }
