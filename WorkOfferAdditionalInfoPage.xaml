@@ -18,6 +18,10 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="WORK OFFER PAYMENT AND DELIVERY" Style="{StaticResource secondaryHeaderTextStyle}"/>
@@ -45,26 +49,37 @@
             </Grid>
 
             <WrapPanel Grid.Row="2">
-                <WrapPanel>
-                    <Label Content="Contract Type" Style="{StaticResource labelStyle}" Width="150"/>
-                    <ComboBox Name="contractTypeCombo" Style="{StaticResource comboBoxStyle}" Width="150" SelectionChanged="ContractTypeComboSelectionChanged"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label  Content="Warranty Period" Style="{StaticResource labelStyle}" Width="150"/>
-                    <TextBox Name="warrantyPeriodTextBox" Style="{StaticResource textBoxStyle}"  Width="100" VerticalAlignment="Center" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
-                    <ComboBox Name="warrantyPeriodCombo"  Style="{StaticResource comboBoxStyle}" Width="150" SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label Content="Offer Validity Period" Style="{StaticResource labelStyle}" Width="150"/>
-                    <ComboBox Name="offerValidityCombo" Style="{StaticResource comboBoxStyle}" Width="150" SelectionChanged="OfferValidityComboSelectionChanged"/>
-                    <TextBox Name="offerValidityTextBox" Style="{StaticResource textBoxStyle}" VerticalAlignment="Center" Width="150" TextChanged="OfferValidityTextBoxTextChanged"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label Content="Additional Description" Style="{StaticResource labelStyle}" Width="180"/>
-                    <Label Content="(Optional)" Style="{StaticResource labelStyle}"/>
-                    <TextBox Name="additionalDescriptionTextBox" Style="{StaticResource textBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Center" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
-                </WrapPanel>
+                <Label Content="Drawing &#x0a;Submission &#x0a;Deadline" Style="{StaticResource labelStyle}"/>
+                <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DrawingDeadlineFromTextBoxTextChanged" Name="drawingDeadlineFromTextBox"/>
+                <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center"/>
+                <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineToTextBox" TextChanged="DrawingDeadlineToTextBoxTextChanged" />
+                <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="drawingDeadlineDateComboBox" SelectionChanged="DrawingDeadlineDateComboBoxSelectionChanged"/>
             </WrapPanel>
+           
+                <WrapPanel  Grid.Row="3">
+                <Label Content="Contract &#x0a;Type" Style="{StaticResource labelStyle}"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeComboBox" SelectionChanged="ContractTypeComboSelectionChanged"/>
+                </WrapPanel>
+            
+                <WrapPanel  Grid.Row="4">
+                    <Label Content="Warranty &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
+                <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
+                </WrapPanel>
+            
+            <WrapPanel Grid.Row="5">
+                <Label Content="Validity &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="offerValidityTextBox" TextChanged="OfferValidityTextBoxTextChanged"/>
+                <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="offerValidityCombo" SelectionChanged="OfferValidityComboSelectionChanged"/>
+                </WrapPanel>
+            
+            <WrapPanel Grid.Row="6">
+                <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
+                <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                </WrapPanel>
+            
+            <Button Grid.Row="7" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="Add Offer" Click="AddOfferButtonClick"/>
+            <Button Grid.Row="7" Name="reviseOfferButton" Style="{StaticResource buttonStyle}" Content="Revise Offer" Click="ReviseOfferButtonClick"/>
         </Grid>
     </Grid>
 </Page>

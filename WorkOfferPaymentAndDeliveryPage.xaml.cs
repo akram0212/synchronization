@@ -34,7 +34,7 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT> deliveryPoints = new List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT>();
 
         private int viewAddCondition;
-        private int totalPrice;
+        private Decimal totalPrice;
         private int downPaymentPercentage;
         private int onDeliveryPercentage;
         private int onInstallationPercentage;
@@ -53,7 +53,9 @@ namespace _01electronics_crm
             workOffer = mWorkOffer;
 
             totalPrice = 0;
-
+            //////////////////////
+            ///ADD OFFER
+            //////////////////////
             if(viewAddCondition == 1)
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -63,8 +65,75 @@ namespace _01electronics_crm
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
+            //////////////////////
+            ///VIEW OFFER
+            //////////////////////
+            else if (viewAddCondition == 0)
+            {
+                InitializeTotalPriceCurrencyComboBox();
+                InitializeDeliveryTimeComboBox();
+                InitializeDeliveryPointComboBox();
+
+                ConfigureViewUIElements();
+                SetPriceValues();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
+            }
+            /////////////////////////
+            ///REVISE OFFER
+            /////////////////////////
+            else if(viewAddCondition == 2)
+            {
+                InitializeTotalPriceCurrencyComboBox();
+                InitializeDeliveryTimeComboBox();
+                InitializeDeliveryPointComboBox();
+
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
+            }
+            //////////////////////////
+            ///RESOLVE RFQ
+            //////////////////////////
+            else
+            {
+                InitializeTotalPriceCurrencyComboBox();
+                InitializeDeliveryTimeComboBox();
+                InitializeDeliveryPointComboBox();
+
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+            }
+        }
+        ///////////////////////////////////////////
+        ///CONFIGURE UI ELEMENTS
+        ///////////////////////////////////////////
+        private void ConfigureViewUIElements()
+        {
+            totalPriceCombo.IsEnabled = false;
+            totalPriceTextBox.IsEnabled = false;
+            downPaymentPercentageTextBox.IsEnabled = false;
+            downPaymentActualTextBox.IsEnabled = false;
+            onDeliveryPercentageTextBox.IsEnabled = false;
+            onDeliveryActualTextBox.IsEnabled = false;
+            onInstallationPercentageTextBox.IsEnabled = false;
+            onInstallationActualTextBox.IsEnabled = false;
+            deliveryTimeCombo.IsEnabled = false;
+            deliveryTimeTextBoxFrom.IsEnabled = false;
+            deliveryTimeTextBoxTo.IsEnabled = false;
+            deliveryPointCombo.IsEnabled = false;
         }
 
+        ///////////////////////////////////////////
+        ///INITIALIZATION FUNCTIONS
+        ///////////////////////////////////////////
         private void InitializeTotalPriceCurrencyComboBox()
         {
             commonQueriesObject.GetCurrencyTypes(ref currencies);
@@ -72,7 +141,27 @@ namespace _01electronics_crm
                 totalPriceCombo.Items.Add(currencies[i].currencyName);
             
         }
+        private bool InitializeDeliveryTimeComboBox()
+        {
+            if (!commonQueriesObject.GetTimeUnits(ref timeUnits))
+                return false;
+            for (int i = 0; i < timeUnits.Count(); i++)
+                deliveryTimeCombo.Items.Add(timeUnits[i].timeUnit);
+            return true;
+        }
 
+        private bool InitializeDeliveryPointComboBox()
+        {
+            if (!commonQueriesObject.GetDeliveryPoints(ref deliveryPoints))
+                return false;
+
+            for (int i = 0; i < deliveryPoints.Count; i++)
+                deliveryPointCombo.Items.Add(deliveryPoints[i].pointName);
+            return true;
+        }
+        ///////////////////////////////////////////////
+        ///SET FUNCTIONS
+        ///////////////////////////////////////////////
         private void SetTotalPriceCurrencyComboBox()
         {
             totalPriceCombo.Text = workOffer.GetCurrency();
@@ -87,20 +176,57 @@ namespace _01electronics_crm
             workOffer.SetTotalValues();
         }
 
-        private void InitializeDeliveryTimeComboBox()
+        private void SetPercentAndValuesInDataBase()
         {
-            commonQueriesObject.GetTimeUnits(ref timeUnits);
+            workOffer.SetPercentOnInstallation(onInstallationPercentage);
+            workOffer.SetPercentDownPayment(downPaymentPercentage);
+            workOffer.SetPercentOnDelivery(onDeliveryPercentage);
+            workOffer.SetPercentValues();
         }
 
-        private void InitializeDeliveryPointComboBox()
+        private void SetPriceValues()
         {
-            commonQueriesObject.GetDeliveryPoints(ref deliveryPoints);
+            totalPriceCombo.Text = workOffer.GetCurrency().ToString();
+            totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
         }
-        private double GetPercentage(int percentage, int total)
+
+        private void SetDownPaymentValues()
+        {
+            downPaymentPercentageTextBox.Text = workOffer.GetPercentDownPayment().ToString();
+            downPaymentActualTextBox.Text = workOffer.GetPriceValueDownPayment().ToString();
+        }
+
+        private void SetOnDeliveryValues()
+        {
+            onDeliveryPercentageTextBox.Text = workOffer.GetPercentOnDelivery().ToString();
+            onDeliveryActualTextBox.Text = workOffer.GetPriceValueOnDelivery().ToString();
+        }
+
+        private void SetOnInstallationValues()
+        {
+            onInstallationPercentageTextBox.Text = workOffer.GetPercentOnInstallation().ToString();
+            onInstallationActualTextBox.Text = workOffer.GetPriceValueOnInstallation().ToString();
+        }
+
+        private void SetDeliveryTimeValues()
+        {
+            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMaximum().ToString();
+            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+            deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
+        }
+
+        private void SetDeliveryPointValue()
+        {
+            deliveryPointCombo.Text = workOffer.GetDeliveryPoint();
+        }
+        ////////////////////////////////////////////////
+        ///GET FUNCTIONS
+        ////////////////////////////////////////////////
+        private double GetPercentage(Decimal percentage, Decimal total)
         {
             if (percentage != 0)
             {
-                var value = ((double)percentage / 100) * total;
+                var value = (percentage / 100) * total;
                 var percentage1 = Convert.ToInt32(Math.Round(value, 0));
                 return percentage1;
             }
@@ -108,27 +234,9 @@ namespace _01electronics_crm
                 return 0;
             
         }
-        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(basicInfoPage);
-        }
-
-        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(workOfferProductsPage);
-        }
-
-        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
-        {
-
-        }
+        //////////////////////////////////////////////////
+        ///SELECTION AND TEXT CHANGED HANDLERS
+        //////////////////////////////////////////////////
 
         private void DownPaymentPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -142,12 +250,12 @@ namespace _01electronics_crm
             if ((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
             {
                 downPaymentPercentage = 0;
-                downPaymentActualTextBox.Text = "0";
+                downPaymentActualTextBox.Text = "";
                 MessageBox.Show("You can't exceed 100%");
             }
             else
                 downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
-            
+
         }
 
         private void OnDeliveryPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -162,7 +270,7 @@ namespace _01electronics_crm
             if ((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
             {
                 onDeliveryPercentage = 0;
-                onDeliveryPercentageTextBox.Text = "0";
+                onDeliveryPercentageTextBox.Text = "";
                 MessageBox.Show("You can't exceed 100%");
             }
             else
@@ -184,12 +292,12 @@ namespace _01electronics_crm
             if ((onInstallationPercentage + onDeliveryPercentage + downPaymentPercentage) > 100)
             {
                 onInstallationPercentage = 0;
-                onInstallationPercentageTextBox.Text = "0";
+                onInstallationPercentageTextBox.Text = "";
                 MessageBox.Show("You can't exceed 100%");
             }
             else
                 onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
-            
+
         }
 
         private void DeliveryPointComboSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -217,5 +325,39 @@ namespace _01electronics_crm
         {
             workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
+
+        //////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////
+        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(basicInfoPage);
+
+            SetPercentAndValuesInDataBase();
+        }
+
+        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(workOfferProductsPage);
+
+            SetPercentAndValuesInDataBase();
+        }
+
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOfferAdditionalInfoPage offerAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(offerAdditionalInfoPage);
+
+            SetPercentAndValuesInDataBase();
+        }
+
+       
     }
 }

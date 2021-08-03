@@ -191,43 +191,15 @@ namespace _01electronics_crm
         {
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
-            rfq.IssueNewRFQ();
+            
 
+            //YOUR MESSAGE MUST BE SPECIFIC
+            //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
             if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
                 System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                string sqlQuery;
-                sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES (";
-                sqlQuery += "'" + rfq.GetRFQIssueDate().ToString("yyyy-MM-dd") + "',";
-                sqlQuery += rfq.GetSalesPersonId() + ",";
-                sqlQuery += rfq.GetRFQSerial() + ",";
-                sqlQuery += rfq.GetRFQVersion() + ",";
-                sqlQuery += rfq.GetAssigneeId() + ",";
-                sqlQuery += "'" + rfq.GetRFQID() + "',";
-                sqlQuery += rfq.GetAddressSerial() + ",";
-                sqlQuery += rfq.GetContactId() + ",";
-                sqlQuery += rfq.GetRFQProduct1TypeId() + ",";
-                sqlQuery += rfq.GetRFQProduct1BrandId() + ",";
-                sqlQuery += rfq.GetRFQProduct1ModelId() + ",";
-                sqlQuery += rfq.GetRFQProduct1Quantity() + ",";
-                sqlQuery += rfq.GetRFQProduct2TypeId() + ",";
-                sqlQuery += rfq.GetRFQProduct2BrandId() + ",";
-                sqlQuery += rfq.GetRFQProduct2ModelId() + ",";
-                sqlQuery += rfq.GetRFQProduct2Quantity() + ",";
-                sqlQuery += rfq.GetRFQProduct3TypeId() + ",";
-                sqlQuery += rfq.GetRFQProduct3BrandId() + ",";
-                sqlQuery += rfq.GetRFQProduct3ModelId() + ",";
-                sqlQuery += rfq.GetRFQProduct3Quantity() + ",";
-                sqlQuery += rfq.GetRFQProduct4TypeId() + ",";
-                sqlQuery += rfq.GetRFQProduct4BrandId() + ",";
-                sqlQuery += rfq.GetRFQProduct4ModelId() + ",";
-                sqlQuery += rfq.GetRFQProduct4Quantity() + ",";
-                sqlQuery += rfq.GetRFQContractTypeId() + ",";
-                sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
-                sqlQuery += rfq.GetRFQStatusId() + ",";
-                sqlQuery += "'" + rfq.GetRFQNotes() + "');";
-                sqlDatabase.InsertRows(sqlQuery);
+                rfq.IssueNewRFQ();
             }
         }
 
@@ -236,38 +208,6 @@ namespace _01electronics_crm
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
             rfq.ReviseRFQ();
-
-            string sqlQuery;
-            sqlQuery = "INSERT INTO erp_system.dbo.rfqs VALUES (";
-            sqlQuery += "'" + rfq.GetRFQIssueDate().ToString("yyyy-MM-dd") + "',";
-            sqlQuery += rfq.GetSalesPersonId() + ",";
-            sqlQuery += rfq.GetRFQSerial() + ",";
-            sqlQuery += rfq.GetRFQVersion() + ",";
-            sqlQuery += rfq.GetAssigneeId() + ",";
-            sqlQuery += "'" + rfq.GetRFQID() + "',";
-            sqlQuery += rfq.GetAddressSerial() + ",";
-            sqlQuery += rfq.GetContactId() + ",";
-            sqlQuery += rfq.GetRFQProduct1TypeId() + ",";
-            sqlQuery += rfq.GetRFQProduct1BrandId() + ",";
-            sqlQuery += rfq.GetRFQProduct1ModelId() + ",";
-            sqlQuery += rfq.GetRFQProduct1Quantity() + ",";
-            sqlQuery += rfq.GetRFQProduct2TypeId() + ",";
-            sqlQuery += rfq.GetRFQProduct2BrandId() + ",";
-            sqlQuery += rfq.GetRFQProduct2ModelId() + ",";
-            sqlQuery += rfq.GetRFQProduct2Quantity() + ",";
-            sqlQuery += rfq.GetRFQProduct3TypeId() + ",";
-            sqlQuery += rfq.GetRFQProduct3BrandId() + ",";
-            sqlQuery += rfq.GetRFQProduct3ModelId() + ",";
-            sqlQuery += rfq.GetRFQProduct3Quantity() + ",";
-            sqlQuery += rfq.GetRFQProduct4TypeId() + ",";
-            sqlQuery += rfq.GetRFQProduct4BrandId() + ",";
-            sqlQuery += rfq.GetRFQProduct4ModelId() + ",";
-            sqlQuery += rfq.GetRFQProduct4Quantity() + ",";
-            sqlQuery += rfq.GetRFQContractTypeId() + ",";
-            sqlQuery += "'" + rfq.GetRFQDeadlineDate().ToString("yyyy-MM-dd") + "',";
-            sqlQuery += rfq.GetRFQStatusId() + ",";
-            sqlQuery += "'" + rfq.GetRFQNotes() + "');";
-            sqlDatabase.InsertRows(sqlQuery);
         }
     }
 }
