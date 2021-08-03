@@ -95,7 +95,14 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="D:\Images\Cover images\Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300"/>
+                    <Button Style="{StaticResource buttonStyle}" Width="300" Height="300" Background="Transparent" BorderThickness="0">
+                        <StackPanel>
+                            <Image Source="D:\Images\Cover images\Generators.jpg" />
+                        </StackPanel>
+                        
+                    </Button>
+
+                    <!--<Image Source="D:\Images\Cover images\Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300"/>-->
                     <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Generators" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
