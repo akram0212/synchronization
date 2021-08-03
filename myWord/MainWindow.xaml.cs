@@ -36,7 +36,7 @@ namespace myWord
             
             paragraph.AppendText("ahmed sameh3");
             doc.Sections[0].Paragraphs.Insert(0, paragraph);
-            doc.Replace("Evaluation", "", true, true);
+            
 
 
             doc.SaveToFile("D:/01electronics_crm/MyExcel/1_sameh.doc");
