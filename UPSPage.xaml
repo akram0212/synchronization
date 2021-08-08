@@ -64,7 +64,19 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="BorriUPS.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="300" Height="300"/>
+                    <Image Source="BorriUPS.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="150">
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="Image.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Image.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
+                            </EventTrigger>
+                        </Image.Triggers>
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </Image.RenderTransform>
+                    </Image>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
                 <Grid Grid.Column="1">
@@ -72,7 +84,19 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="LegrandUPS.jpg"  Mouse.MouseDown="LegrandUPSImageMouseDown" Width="300" Height="300"/>
+                    <Image Source="LegrandUPS.jpg"  Mouse.MouseDown="LegrandUPSImageMouseDown" Width="300">
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="Image.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Image.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
+                            </EventTrigger>
+                        </Image.Triggers>
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </Image.RenderTransform>
+                    </Image>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="LEGRAND" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
             </Grid>

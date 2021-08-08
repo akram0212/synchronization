@@ -24,12 +24,28 @@ namespace _01electronics_crm
     public partial class ProductsPage : Page
     {
         private Employee loggedInUser;
+        //private CommonQueries commonQueries;
+        //private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
         public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
+            //commonQueries = new CommonQueries();
+            //products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+
+            //InitializeProducts();
         }
+        //private void InitializeProducts()
+        //{
+        //    if (!commonQueries.GetCompanyProducts(ref products))
+        //        return;
+        //}
+
+        //public void SetUpPageUIElements()
+        //{
+
+        //}
 
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
@@ -99,21 +115,10 @@ namespace _01electronics_crm
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
-         private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
+        private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
 
-        //private void UPSImageMouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    Storyboard story = (Storyboard)FindResource("expandStoryboard");
-        //    Image image = sender as Image;
-        //    image.BeginStoryboard(story);
-        //}
-
-        //private void UPSImageMouseLeave(object sender, MouseEventArgs e)
-        //{
-
-        //}
     }
 }

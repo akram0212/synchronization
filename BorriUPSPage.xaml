@@ -55,29 +55,51 @@
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="BORRI UPS" Style="{StaticResource primaryHeaderTextStyle}"/>
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Image Source="Images\2\1\9.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="300" Height="300"/>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="INGENIO ECS-BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Name="Product1TextBlock" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
-                </Grid>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Image Source="Images\2\1\2.jpg"  Mouse.MouseDown="BorriUPS2ImageMouseDown" Width="300" Height="300"/>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B8033FXS-BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Name="Product2TextBlock" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Source="BorriCommercialUPS.jpg"  Mouse.MouseDown="BorriCommercialUPSImageMouseDown" Width="155">
+                            <Image.Triggers>
+                                <EventTrigger RoutedEvent="Image.MouseEnter">
+                                    <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="Image.MouseLeave">
+                                    <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
+                                </EventTrigger>
+                            </Image.Triggers>
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="Commercial UPS" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Source="BorriIndustrialUPS.jpg"  Mouse.MouseDown="BorriIndustrialUPSImageMouseDown" Width="155">
+                            <Image.Triggers>
+                                <EventTrigger RoutedEvent="Image.MouseEnter">
+                                    <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="Image.MouseLeave">
+                                    <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
+                                </EventTrigger>
+                            </Image.Triggers>
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="Industrial UPS" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

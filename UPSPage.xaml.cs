@@ -81,7 +81,9 @@ namespace _01electronics_crm
 
         private void BorriUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            BorriUPSPage productsPage = new BorriUPSPage(ref loggedInUser);
+            Product selectedProduct = new Product();
+            selectedProduct.SetBrandID(1);
+            BorriUPSPage productsPage = new BorriUPSPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(productsPage);
         }
         private void LegrandUPSImageMouseDown(object sender, MouseButtonEventArgs e)

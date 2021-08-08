@@ -17,27 +17,66 @@ using System.Windows.Shapes;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for BorriUPSPage.xaml
+    /// Interaction logic for BorriCommercialUPSPage.xaml
     /// </summary>
-    public partial class BorriUPSPage : Page
+    public partial class BorriCommercialUPSPage : Page
     {
         private Employee loggedInUser;
         protected CommonQueries commonQueries;
-        protected List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productsTypes;
+        protected List<COMPANY_WORK_MACROS.MODEL_STRUCT> productModels;
         private Product selectedProduct;
-        public BorriUPSPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
+        public BorriCommercialUPSPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
+
             loggedInUser = mLoggedInUser;
             selectedProduct = mSelectedProduct;
-
             commonQueries = new CommonQueries();
+            productModels = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
 
-            FillProductsSummaryPoints();
+            InitializeProducts();
         }
-        public void FillProductsSummaryPoints()
+        private void InitializeProducts()
         {
-            //if(!commonQueries.GetCompanyModels())
+            COMPANY_WORK_MACROS.PRODUCT_STRUCT product = new COMPANY_WORK_MACROS.PRODUCT_STRUCT();
+            product.typeId = 2;
+
+            COMPANY_WORK_MACROS.BRAND_STRUCT brand = new COMPANY_WORK_MACROS.BRAND_STRUCT();
+            brand.brandId = 1;
+
+            if (!commonQueries.GetCompanyModels(product, brand,ref productModels))
+                return;
+        }
+
+        public void SetUpPageUIElements()
+        {
+            for(int i = 0; i < productModels.Count(); i++)
+            {
+                Grid currentProductGrid = new Grid();
+                currentProductGrid.Margin = new Thickness(24);
+
+                RowDefinition row1 = new RowDefinition();
+                RowDefinition row2 = new RowDefinition();
+                RowDefinition row3 = new RowDefinition();
+                RowDefinition row4 = new RowDefinition();
+                RowDefinition row5 = new RowDefinition();
+                RowDefinition row6 = new RowDefinition();
+
+                currentProductGrid.RowDefinitions.Add(row1);
+                currentProductGrid.RowDefinitions.Add(row2);
+                currentProductGrid.RowDefinitions.Add(row3);
+                currentProductGrid.RowDefinitions.Add(row4);
+                currentProductGrid.RowDefinitions.Add(row5);
+                currentProductGrid.RowDefinitions.Add(row6);
+
+                Label mainLabel = new Label();
+                int productNumber = i + 1;
+                mainLabel.Content = "Product " + productNumber;
+                mainLabel.Style = (Style)FindResource("tableHeaderItem");
+                currentProductGrid.Children.Add(mainLabel);
+                Grid.SetRow(mainLabel, 0);
+            }
+
         }
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
@@ -84,17 +123,19 @@ namespace _01electronics_crm
         {
 
         }
-        private void BorriCommercialUPSImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            selectedProduct.SetProductID(2);
-            BorriCommercialUPSPage borriCommercialUPSPage = new BorriCommercialUPSPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(borriCommercialUPSPage);
-        } 
-        private void BorriIndustrialUPSImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
+
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+
+        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void LegrandUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
