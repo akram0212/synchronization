@@ -27,6 +27,11 @@ namespace _01electronics_crm
             InitializeComponent();
             loggedInUser = mLoggedInUser;
         }
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -39,11 +44,11 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(contacts);
         }
 
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
 
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
@@ -79,6 +84,10 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(productsPage);
         }
 
+        /////////////////////////////////////////////////////////////////
+        //MOUSE DOWN HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void BorriUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             Product selectedProduct = new Product();

@@ -388,5 +388,16 @@
     <Resource Include="BorriCommercialUPS.jpg" />
     <Resource Include="BorriIndustrialUPS.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="borri_logo.jpg" />
+    <Resource Include="elcos.jpg" />
+    <Resource Include="legrand_logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ups_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="generators_cover_photo.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

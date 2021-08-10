@@ -78,31 +78,40 @@ namespace _01electronics_crm
             }
 
         }
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
-
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
-
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
+        }
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            RFQsPage rfqs = new RFQsPage(ref loggedInUser);
-            this.NavigationService.Navigate(rfqs);
+            RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
+            this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
@@ -124,12 +133,9 @@ namespace _01electronics_crm
 
         }
 
-        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
-        {
-            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
-            this.NavigationService.Navigate(productsPage);
-        }
-
+        /////////////////////////////////////////////////////////////////
+        //MOUSE DOWN HANDLERS
+        /////////////////////////////////////////////////////////////////
         private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             UPSPage productsPage = new UPSPage(ref loggedInUser);
