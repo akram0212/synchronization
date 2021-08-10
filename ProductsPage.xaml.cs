@@ -102,6 +102,10 @@ namespace _01electronics_crm
 
         }
 
+        /////////////////////////////////////////////////////////////////
+        //MOUSE DOWN HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             UPSPage productsPage = new UPSPage(ref loggedInUser);

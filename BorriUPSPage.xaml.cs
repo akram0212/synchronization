@@ -39,6 +39,11 @@ namespace _01electronics_crm
         {
             //if(!commonQueries.GetCompanyModels())
         }
+
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -51,11 +56,11 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(contacts);
         }
 
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
 
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
@@ -84,6 +89,11 @@ namespace _01electronics_crm
         {
 
         }
+
+        /////////////////////////////////////////////////////////////////
+        //MOUSE DOWN HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void BorriCommercialUPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             selectedProduct.SetProductID(2);
