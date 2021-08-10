@@ -379,7 +379,6 @@
   <ItemGroup>
     <Resource Include="Batteries.jpg" />
     <Resource Include="BorriUPS.jpg" />
-    <Resource Include="Generators.jpg" />
     <Resource Include="LegrandUPS.jpg" />
     <Resource Include="Panels.png" />
     <Resource Include="UPS.jpg" />
@@ -387,6 +386,19 @@
   <ItemGroup>
     <Resource Include="BorriCommercialUPS.jpg" />
     <Resource Include="BorriIndustrialUPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="NiCdBatteries.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Generators.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Borri.png" />
+    <Resource Include="Legrand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LeadAcidBatteries.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

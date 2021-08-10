@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="BorriCommercialUPSPage">
 
     <Grid>
@@ -56,91 +55,183 @@
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="BORRI COMMERCIAL UPS" Style="{StaticResource primaryHeaderTextStyle}"/>
             <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <WrapPanel Grid.Row="1" Name="BorriCommercialUPSWrapPanel">
-                    <Grid Margin="40,24,24,24">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="250"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
-                            <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="200"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Row="0">
-                                <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
-                                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Grid.Row="0" Name="BorriCommercialUPSWrapPanel">
+                        <Grid Margin="40,24,24,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="250"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
+                                <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
                             </Grid>
-                            <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
-                            <Grid Grid.Row="1">
+                            <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition/>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="200"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Style="{StaticResource tableSubItemLabel}"
-                                       Content="From 400 to 800 KVA"/>
-                                <Label Grid.Row="1" Style="{StaticResource tableSubItemLabel}"
-                                       Content="Three-phase"/>
-                                <Label Grid.Row="2" Style="{StaticResource tableSubItemLabel}"
-                                       Content="Full IGBT technology and&#x0a;electronic PFC ensuring 0.99&#x0a;input PFC and THDI &lt;3%"/>
-                                <Label Grid.Row="3" Style="{StaticResource tableSubItemLabel}"
-                                       Content="Output Isolation transformer"/>
-                                <Label Grid.Row="4" Style="{StaticResource tableSubItemLabel}"
-                                       Content="On-line Double Conversion UPS"/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid Margin="15,24,24,24">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="250"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
-                            <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="200"/>
-                            </Grid.RowDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
-                                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                                <Grid Grid.Row="0">
+                                    <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
+                                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                                </Grid>
+                                <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Style="{StaticResource tableSubItemLabel}"
+                                       Content="From 400 to 800 KVA"/>
+                                    <Label Grid.Row="1" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Three-phase"/>
+                                    <Label Grid.Row="2" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Full IGBT technology and&#x0a;electronic PFC ensuring 0.99&#x0a;input PFC and THDI &lt;3%"/>
+                                    <Label Grid.Row="3" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Output Isolation transformer"/>
+                                    <Label Grid.Row="4" Style="{StaticResource tableSubItemLabel}"
+                                       Content="On-line Double Conversion UPS"/>
+                                </Grid>
                             </Grid>
-                            <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
-                            <Grid Grid.Row="1">
+                        </Grid>
+                        <Grid Margin="15,24,24,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="250"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
+                                <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition/>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="200"/>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Style="{StaticResource selectedMainTabLabelItem}"
+
+                                <Grid Grid.Row="0">
+                                    <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
+                                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                                </Grid>
+                                <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Style="{StaticResource selectedMainTabLabelItem}"
                                        Content="From 400 to 800 KVA"/>
-                                <Label Grid.Row="1" Style="{StaticResource selectedMainTabLabelItem}"
+                                    <Label Grid.Row="1" Style="{StaticResource selectedMainTabLabelItem}"
                                        Content="Three-phase"/>
-                                <Label Grid.Row="2" Style="{StaticResource selectedMainTabLabelItem}"
+                                    <Label Grid.Row="2" Style="{StaticResource selectedMainTabLabelItem}"
                                        Content="Full IGBT technology and&#x0a;electronic PFC ensuring 0.99&#x0a;input PFC and THDI &lt;3%"/>
-                                <Label Grid.Row="3" Style="{StaticResource selectedMainTabLabelItem}"
+                                    <Label Grid.Row="3" Style="{StaticResource selectedMainTabLabelItem}"
                                        Content="Output Isolation transformer"/>
-                                <Label Grid.Row="4" Style="{StaticResource selectedMainTabLabelItem}"
+                                    <Label Grid.Row="4" Style="{StaticResource selectedMainTabLabelItem}"
                                        Content="On-line Double Conversion UPS"/>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </WrapPanel>
-           </ScrollViewer>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Name="BorriCommercialUPS2WrapPanel">
+                        <Grid Margin="40,24,24,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="250"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
+                                <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="200"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
+                                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                                </Grid>
+                                <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
+                                <WrapPanel Grid.Row="1">
+                                    <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Style="{StaticResource tableSubItemLabel}"
+                                       Content="From 400 to 800 KVA"/>
+                                    <Label Grid.Row="1" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Three-phase"/>
+                                    <Label Grid.Row="2" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Full IGBT technology and&#x0a;electronic PFC ensuring 0.99&#x0a;input PFC and THDI &lt;3%"/>
+                                    <Label Grid.Row="3" Style="{StaticResource tableSubItemLabel}"
+                                       Content="Output Isolation transformer"/>
+                                    <Label Grid.Row="4" Style="{StaticResource tableSubItemLabel}"
+                                       Content="On-line Double Conversion UPS"/>
+                                    </Grid>
+                                </WrapPanel>
+                            </Grid>
+                        </Grid>
+                        <Grid Margin="15,24,24,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="250"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Border Width="200" Height="230" BorderThickness="3" BorderBrush="#105A97" Background="White"/>
+                                <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="190"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="200"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Border BorderThickness="3" BorderBrush="#105A97" Background="Transparent"/>
+                                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="B9600FXS" Style="{StaticResource tableSubHeaderItem}"/>
+                                </Grid>
+                                <Border Grid.Row="1" BorderThickness="0,0,3,3" BorderBrush="#105A97" Background="Transparent"/>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Style="{StaticResource selectedMainTabLabelItem}"
+                                       Content="From 400 to 800 KVA"/>
+                                    <Label Grid.Row="1" Style="{StaticResource selectedMainTabLabelItem}"
+                                       Content="Three-phase"/>
+                                    <Label Grid.Row="2" Style="{StaticResource selectedMainTabLabelItem}"
+                                       Content="Full IGBT technology and&#x0a;electronic PFC ensuring 0.99&#x0a;input PFC and THDI &lt;3%"/>
+                                    <Label Grid.Row="3" Style="{StaticResource selectedMainTabLabelItem}"
+                                       Content="Output Isolation transformer"/>
+                                    <Label Grid.Row="4" Style="{StaticResource selectedMainTabLabelItem}"
+                                       Content="On-line Double Conversion UPS"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </WrapPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
 
     </Grid>

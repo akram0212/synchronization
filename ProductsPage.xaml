@@ -43,7 +43,7 @@
             <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
 
         </Grid>
-
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
             <Grid.ColumnDefinitions>
@@ -59,102 +59,73 @@
             <!--<Border Grid.Row="1" BorderThickness="3" BorderBrush="#105A97" Margin="24">-->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                   </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0">
+                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="300">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
+                    <Image Source="UPS.jpg" Mouse.MouseDown="UPSImageMouseDown" Width="600">
+                        
                     </Image>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="UPS" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
-                <Grid Grid.Row="0" Grid.Column="1">
+                <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="300">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
+                        <Image Source="Generators.jpg"  Mouse.MouseDown="GeneratorsImageMouseDown" Width="600">
+                       
                     </Image>
                     <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Generators" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="0">
+                <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="Batteries.jpg"  Mouse.MouseDown="BatteriesImageMouseDown" Width="300">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
+                        <Image Source="NiCdBatteries.jpg"  Mouse.MouseDown="NiCdBatteriesImageMouseDown" Width="600">
+                        
                     </Image>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Batteries" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Ni-Cd Batteries" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Image Source="Panels.png"  Mouse.MouseDown="PanelsImageMouseDown" Width="300">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
-                    </Image>
-                    <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Panels" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
-                </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Source="LeadAcidBatteries.png"  Mouse.MouseDown="LeadAcidBatteriesImageMouseDown" Width="600">
 
-            </Grid>
+                        </Image>
+                        <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Lead-Acid Batteries" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Source="Panels.png"  Mouse.MouseDown="PanelsImageMouseDown" Width="600">
+
+                        </Image>
+                        <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="Panels" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                    </Grid>
+                </Grid>
                 <!--</Border>-->
         </Grid>
-
+        </ScrollViewer>
     </Grid>
     
 </Page>

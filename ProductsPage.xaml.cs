@@ -111,11 +111,15 @@ namespace _01electronics_crm
         {
             System.Windows.Forms.MessageBox.Show("done");
         } 
-        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
+        private void NiCdBatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
         private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("done");
+        }
+        private void LeadAcidBatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }

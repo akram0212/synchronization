@@ -64,7 +64,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="BorriUPS.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="150">
+                    <Image Source="Borri.png"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="200">
                         <Image.Triggers>
                             <EventTrigger RoutedEvent="Image.MouseEnter">
                                 <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
@@ -84,7 +84,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Source="LegrandUPS.jpg"  Mouse.MouseDown="LegrandUPSImageMouseDown" Width="300">
+                    <Image Source="Legrand.png"  Mouse.MouseDown="LegrandUPSImageMouseDown" Width="200">
                         <Image.Triggers>
                             <EventTrigger RoutedEvent="Image.MouseEnter">
                                 <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
