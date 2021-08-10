@@ -17,12 +17,12 @@ using System.Windows.Shapes;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for UPSPage.xaml
+    /// Interaction logic for BrandsPage.xaml
     /// </summary>
-    public partial class UPSPage : Page
+    public partial class BrandsPage : Page
     {
         private Employee loggedInUser;
-        public UPSPage(ref Employee mLoggedInUser)
+        public BrandsPage(ref Employee mLoggedInUser, String tmp)
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;

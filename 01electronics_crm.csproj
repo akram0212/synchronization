@@ -75,6 +75,9 @@
     <Compile Include="BorriUPSPage.xaml.cs">
       <DependentUpon>BorriUPSPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BrandsPage.xaml.cs">
+      <DependentUpon>BrandsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommericalUPSPage.xaml.cs">
       <DependentUpon>CommericalUPSPage.xaml</DependentUpon>
     </Compile>
@@ -111,9 +114,6 @@
     </Compile>
     <Compile Include="SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UPSPage.xaml.cs">
-      <DependentUpon>UPSPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
@@ -183,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BorriUPSPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BrandsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,10 +284,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -377,10 +377,8 @@
     <Resource Include="MAIN_LOGO.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Batteries.jpg" />
     <Resource Include="BorriUPS.jpg" />
     <Resource Include="LegrandUPS.jpg" />
-    <Resource Include="Panels.png" />
     <Resource Include="UPS.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -393,10 +391,19 @@
     <Resource Include="legrand_logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ups_cover_photo.jpg" />
+    <Resource Include="UPS_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="generators_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="NiCdBatteries.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Batteries_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Panels_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

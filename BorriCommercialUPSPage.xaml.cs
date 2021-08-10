@@ -138,7 +138,8 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            String tmp = "0";
+            BrandsPage productsPage = new BrandsPage(ref loggedInUser , tmp);
             this.NavigationService.Navigate(productsPage);
         }
         private void LegrandUPSImageMouseDown(object sender, MouseButtonEventArgs e)

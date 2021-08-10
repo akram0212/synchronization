@@ -24,28 +24,87 @@ namespace _01electronics_crm
     public partial class ProductsPage : Page
     {
         private Employee loggedInUser;
-        //private CommonQueries commonQueries;
-        //private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
+        private CommonQueries commonQueries;
+        private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
         public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
-            //commonQueries = new CommonQueries();
-            //products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            commonQueries = new CommonQueries();
+            products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
 
-            //InitializeProducts();
+            InitializeProducts();
+            SetUpPageUIElements();
         }
-        //private void InitializeProducts()
-        //{
-        //    if (!commonQueries.GetCompanyProducts(ref products))
-        //        return;
-        //}
+        private void InitializeProducts()
+        {
+            if (!commonQueries.GetCompanyProducts(ref products))
+                return;
+        }
 
-        //public void SetUpPageUIElements()
-        //{
+        public void SetUpPageUIElements()
+        {
+            for(int i = 0; i < products.Count(); i++)
+            {
+                RowDefinition rowI = new RowDefinition();
+                ProductsGrid.RowDefinitions.Add(rowI);
 
-        //}
+                Grid gridI = new Grid();
+
+                RowDefinition imageRow = new RowDefinition();
+                RowDefinition labelRow = new RowDefinition();
+                gridI.RowDefinitions.Add(imageRow);
+                gridI.RowDefinitions.Add(labelRow);
+
+
+                String[] productName = new String[3];
+                try
+                {
+                    productName = products[i].typeName.Split(' ');
+                    Image productImage = new Image();
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(productName[1] + "_cover_photo.jpg", UriKind.Relative);
+                    src.EndInit();
+                    productImage.Source = src;
+                    productImage.Width = 700;
+                    productImage.Height = 400;
+                    productImage.MouseDown += ImageMouseDown;
+                    productImage.Tag = products[i].typeId.ToString();
+                    gridI.Children.Add(productImage);
+                    Grid.SetRow(productImage, 0);
+                }
+                catch
+                {
+                    productName[0] = products[i].typeName;
+                    Image productImage = new Image();
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(productName[0] + "_cover_photo.jpg", UriKind.Relative);
+                    src.EndInit();
+                    productImage.Source = src;
+                    productImage.Width = 700;
+                    productImage.Height = 400;
+                    productImage.MouseDown += ImageMouseDown;
+                    productImage.Tag = products[i].typeId.ToString();
+                    gridI.Children.Add(productImage);
+                    Grid.SetRow(productImage, 0);
+                }
+
+
+                
+
+                Label imageLabel = new Label();
+                imageLabel.Content = products[i].typeName;
+                imageLabel.Style = (Style)FindResource("selectedSecondaryTabLabelItem");
+                gridI.Children.Add(imageLabel);
+                Grid.SetRow(imageLabel, 1);
+
+                ProductsGrid.Children.Add(gridI);
+                Grid.SetRow(gridI,i);
+            }
+        }
 
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
@@ -106,9 +165,11 @@ namespace _01electronics_crm
         //MOUSE DOWN HANDLERS
         /////////////////////////////////////////////////////////////////
         ///
-        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        private void ImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            UPSPage productsPage = new UPSPage(ref loggedInUser);
+            Image currentImage = (Image)sender;
+            String tmp = currentImage.Tag.ToString();
+            BrandsPage productsPage = new BrandsPage(ref loggedInUser, tmp);
             this.NavigationService.Navigate(productsPage);
         }
         private void GeneratorsImageMouseDown(object sender, MouseButtonEventArgs e)
@@ -124,6 +185,10 @@ namespace _01electronics_crm
             System.Windows.Forms.MessageBox.Show("done");
         }
         private void LeadAcidBatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("done");
+        }
+        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("done");
         }
