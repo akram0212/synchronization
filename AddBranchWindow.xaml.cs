@@ -71,48 +71,69 @@ namespace _01electronics_crm
 
         private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
         {
-            stateComboBox.IsEnabled = true;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-
             if (countryComboBox.SelectedItem != null)
-                commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states);
-            stateComboBox.Items.Clear();
-            for (int i = 0; i < states.Count(); i++)
             {
-                if (countryComboBox.SelectedItem != null && states[i].state_id / BASIC_MACROS.MAXIMUM_STATES_NO == countries[countryComboBox.SelectedIndex].country_id)
-                    stateComboBox.Items.Add(states[i].state_name);
+                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                    return;
+
+                stateComboBox.IsEnabled = true;
+                stateComboBox.Items.Clear();
+                for (int i = 0; i < states.Count(); i++)
+                {
+                    if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
+                        stateComboBox.Items.Add(states[i].state_name);
+                }
+            }
+            else
+            {
+                stateComboBox.SelectedItem = null;
+                stateComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
         {
-            cityComboBox.IsEnabled = true;
-            districtComboBox.IsEnabled = false;
-
             if (stateComboBox.SelectedItem != null)
-                commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities);
-            cityComboBox.Items.Clear();
-
-            for (int i = 0; i < cities.Count; i++)
             {
-                if (stateComboBox.SelectedItem != null && cities[i].city_id / BASIC_MACROS.MAXIMUM_CITIES_NO == states[stateComboBox.SelectedIndex].state_id)
-                    cityComboBox.Items.Add(cities[i].city_name);
+                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                    return;
+
+                cityComboBox.IsEnabled = true;
+                cityComboBox.Items.Clear();
+
+                for (int i = 0; i < cities.Count; i++)
+                {
+                    if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                        cityComboBox.Items.Add(cities[i].city_name);
+                }
+            }
+            else
+            {
+                cityComboBox.SelectedItem = null;
+                cityComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
         {
-            districtComboBox.IsEnabled = true;
-
             if (cityComboBox.SelectedItem != null)
-                commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts);
-            districtComboBox.Items.Clear();
-
-            for (int i = 0; i < districts.Count; i++)
             {
-                if (cityComboBox.SelectedItem != null && districts[i].district_id / BASIC_MACROS.MAXIMUM_DISTRICTS_NO == cities[cityComboBox.SelectedIndex].city_id)
-                    districtComboBox.Items.Add(districts[i].district_name);
+                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                    return;
+
+                districtComboBox.IsEnabled = true;
+                districtComboBox.Items.Clear();
+
+                for (int i = 0; i < districts.Count; i++)
+                {
+                    if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                        districtComboBox.Items.Add(districts[i].district_name);
+                }
+            }
+            else
+            {
+                districtComboBox.IsEnabled = false;
+                districtComboBox.SelectedItem = null;
             }
         }
 

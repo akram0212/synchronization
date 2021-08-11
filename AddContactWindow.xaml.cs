@@ -61,17 +61,15 @@ namespace _01electronics_crm
             departments = new List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT>();
             teams = new List<COMPANY_ORGANISATION_MACROS.TEAM_STRUCT>();
 
-            //this.address_serial = address_serial;
-            //this.company = company;
-
-            commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companies);
-
+            if (!commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companies))
+                return;
             for (int i = 0; i < companies.Count; i++)
             {
                 companyNameComboBox.Items.Add(companies[i].company_name);
             }
 
-            commonQueries.GetDepartmentsType(ref departments);
+            if (!commonQueries.GetDepartmentsType(ref departments))
+                return;
             for (int i = 0; i < departments.Count; i++)
             {
                 employeeDepartmentComboBox.Items.Add(departments[i].department_name);
@@ -79,6 +77,8 @@ namespace _01electronics_crm
 
             contactGenderComboBox.Items.Add("Male");
             contactGenderComboBox.Items.Add("Female");
+
+            companyBranchComboBox.IsEnabled = false;
 
         }
 
@@ -91,18 +91,21 @@ namespace _01electronics_crm
         {
             if (companyNameComboBox.SelectedItem != null)
             {
+                if (!commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial, ref companyAddresses))
+                    return;
+
                 companyBranchComboBox.Items.Clear();
-
-                commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial, ref companyAddresses);
-
+                companyBranchComboBox.IsEnabled = true;
                 for (int i = 0; i < companyAddresses.Count; i++)
                 {
                     companyBranchComboBox.Items.Add(companyAddresses[i].country + ",\t" + companyAddresses[i].state_governorate + ",\t" + companyAddresses[i].city + ",\t" + companyAddresses[i].district);
                 }
+                companyBranchComboBox.SelectedIndex = 0;
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Company name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                companyBranchComboBox.IsEnabled = true;
+                companyBranchComboBox.SelectedItem = null;
             }
         }
 

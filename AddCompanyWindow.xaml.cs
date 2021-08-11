@@ -73,6 +73,7 @@ namespace _01electronics_crm
                 countryComboBox.Items.Add(countries[i].country_name);
             }
 
+            secondaryWorkField.IsEnabled = false;
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
@@ -88,6 +89,7 @@ namespace _01electronics_crm
         private void OnSelChangedPrimaryWorkField(object sender, SelectionChangedEventArgs e)
         {
             secondaryWorkField.Items.Clear();
+            secondaryWorkField.IsEnabled = true;
 
             if (primaryWorkFieldComboBox.SelectedItem != null)
                 commonQueries.GetSecondaryWorkFields(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, secondaryWorkFields);
@@ -96,6 +98,7 @@ namespace _01electronics_crm
             {
                 secondaryWorkField.Items.Add(secondaryWorkFields[i].field_name);
             }
+            secondaryWorkField.SelectedIndex = 0;
         }
 
         private void OnSelChangedSecondaryWorkField(object sender, SelectionChangedEventArgs e)
@@ -105,48 +108,69 @@ namespace _01electronics_crm
 
         private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
         {
-            stateComboBox.IsEnabled = true;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-
             if (countryComboBox.SelectedItem != null)
-                commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states);
-
-            stateComboBox.Items.Clear();
-            for (int i = 0; i < states.Count(); i++)
             {
-                if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
-                    stateComboBox.Items.Add(states[i].state_name);
+                if(!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                    return;
+
+                stateComboBox.IsEnabled = true;
+                stateComboBox.Items.Clear();
+                for (int i = 0; i < states.Count(); i++)
+                {
+                    if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
+                        stateComboBox.Items.Add(states[i].state_name);
+                }
+            }
+            else
+            {
+                stateComboBox.SelectedItem = null;
+                stateComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
         {
-            cityComboBox.IsEnabled = true;
-            districtComboBox.IsEnabled = false;
-
             if (stateComboBox.SelectedItem != null)
-                commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities);
-            cityComboBox.Items.Clear();
-
-            for (int i = 0; i < cities.Count; i++)
             {
-                if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
-                    cityComboBox.Items.Add(cities[i].city_name);
+                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                    return;
+
+                cityComboBox.IsEnabled = true;
+                cityComboBox.Items.Clear();
+
+                for (int i = 0; i < cities.Count; i++)
+                {
+                    if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                        cityComboBox.Items.Add(cities[i].city_name);
+                }
+            }
+            else
+            {
+                cityComboBox.SelectedItem = null;
+                cityComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
         {
-            districtComboBox.IsEnabled = true;
             if (cityComboBox.SelectedItem != null)
-                commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts);
-            districtComboBox.Items.Clear();
-
-            for (int i = 0; i < districts.Count; i++)
             {
-                if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
-                    districtComboBox.Items.Add(districts[i].district_name);
+                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                    return;
+
+                districtComboBox.IsEnabled = true;
+                districtComboBox.Items.Clear();
+
+                for (int i = 0; i < districts.Count; i++)
+                {
+                    if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                        districtComboBox.Items.Add(districts[i].district_name);
+                }
+            }
+            else
+            {
+                districtComboBox.IsEnabled = false;
+                districtComboBox.SelectedItem = null;
             }
         }
 
@@ -273,7 +297,7 @@ namespace _01electronics_crm
 
         private bool CheckDistrictComboBox()
         {
-            if (districtComboBox.SelectedItem == null)
+            if (districtComboBox.SelectedItem == null && districtComboBox.Items.Count != 0)
             {
                 System.Windows.Forms.MessageBox.Show("District must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
