@@ -53,10 +53,7 @@ namespace _01electronics_crm
                 Grid gridI = new Grid();
 
                 RowDefinition imageRow = new RowDefinition();
-                RowDefinition labelRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
-                gridI.RowDefinitions.Add(labelRow);
-
 
                 String[] productName = new String[3];
                 try
@@ -65,15 +62,36 @@ namespace _01electronics_crm
                     Image productImage = new Image();
                     BitmapImage src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri(productName[1] + "_cover_photo.jpg", UriKind.Relative);
+                    src.UriSource = new Uri(productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Relative);
                     src.EndInit();
                     productImage.Source = src;
-                    productImage.Width = 700;
+                    productImage.Width = 900;
                     productImage.Height = 400;
                     productImage.MouseDown += ImageMouseDown;
                     productImage.Tag = products[i].typeId.ToString();
+                    //productImage.Name = products[i].typeName;
+
                     gridI.Children.Add(productImage);
                     Grid.SetRow(productImage, 0);
+
+                    TextBlock imageTextBlock = new TextBlock();
+                    imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
+                    imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    imageTextBlock.Width = 350;
+                    imageTextBlock.Height = 150;
+                    imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
+                    imageTextBlock.Padding = new Thickness(15,15,15,15);
+                    imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                    imageTextBlock.FontSize = 16;
+                    imageTextBlock.TextWrapping = TextWrapping.Wrap;
+                    imageTextBlock.Text = "  " + products[i].typeName;
+                    imageTextBlock.Text += "\n\n";
+
+                    imageTextBlock.Text += "A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.";
+                    gridI.Children.Add(imageTextBlock);
+                    Grid.SetRow(imageTextBlock, 0);
+                    ProductsGrid.Children.Add(gridI);
+                    Grid.SetRow(gridI, i);
                 }
                 catch
                 {
@@ -84,33 +102,42 @@ namespace _01electronics_crm
                     src.UriSource = new Uri(productName[0] + "_cover_photo.jpg", UriKind.Relative);
                     src.EndInit();
                     productImage.Source = src;
-                    productImage.Width = 700;
+                    productImage.Width = 900;
                     productImage.Height = 400;
                     productImage.MouseDown += ImageMouseDown;
                     productImage.Tag = products[i].typeId.ToString();
+                    //productImage.Name = products[i].typeName;
                     gridI.Children.Add(productImage);
                     Grid.SetRow(productImage, 0);
+
+                    TextBlock imageTextBlock = new TextBlock();
+                    imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
+                    imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    imageTextBlock.Width = 350;
+                    imageTextBlock.Height = 150;
+                    imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
+                    imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
+                    imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                    imageTextBlock.FontSize = 16;
+                    imageTextBlock.TextWrapping = TextWrapping.Wrap;
+                    imageTextBlock.Text = "  "+ products[i].typeName;
+                    imageTextBlock.Text += "\n\n";
+
+                    imageTextBlock.Text += "A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.";
+                    Grid.SetRow(imageTextBlock, 0);
+
+                    gridI.Children.Add(imageTextBlock);
+                    ProductsGrid.Children.Add(gridI);
+                    Grid.SetRow(gridI, i);
+
                 }
-
-
                 
-
-                Label imageLabel = new Label();
-                imageLabel.Content = products[i].typeName;
-                imageLabel.Style = (Style)FindResource("selectedSecondaryTabLabelItem");
-                gridI.Children.Add(imageLabel);
-                Grid.SetRow(imageLabel, 1);
-
-                ProductsGrid.Children.Add(gridI);
-                Grid.SetRow(gridI,i);
             }
         }
 
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////
-
-
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -169,29 +196,13 @@ namespace _01electronics_crm
         {
             Image currentImage = (Image)sender;
             String tmp = currentImage.Tag.ToString();
-            BrandsPage productsPage = new BrandsPage(ref loggedInUser, tmp);
+
+            Product selectedProduct = new Product();
+            selectedProduct.SetProductID(int.Parse(tmp));
+
+            BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(productsPage);
         }
-        private void GeneratorsImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        } 
-        private void NiCdBatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
-        private void PanelsImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
-        private void LeadAcidBatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
-        private void BatteriesImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show("done");
-        }
-
+       
     }
 }

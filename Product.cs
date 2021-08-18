@@ -42,7 +42,7 @@ namespace _01electronics_crm
         //PRODUCT ADDITIONAL INFO
         private List<String> modelApplications;
         private List<String> modelBenefits;
-        private List<String> modelSummaryPoints;
+        public List<String> modelSummaryPoints;
         private List<String> modelStandardFeatures;
 
         private int numberOfSavedModelApplications;
@@ -67,51 +67,14 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////
         public bool InitializeProductInfo(int mProductID, int mBrandID, int mModelID)
         {
-            productID = mProductID;
-            brandID = mBrandID;
-            modelID = mModelID;
-
-            String sqlQueryPart1 = @"SELECT product_name, brand_name, brand_model
-                                     from erp_system.dbo.brands_models
-
-                                     inner join erp_system.dbo.products_type
-                                     on brands_models.product_id = products_type.id
-                                     
-                                     inner join erp_system.dbo.brands_type
-                                     on brands_models.brand_id = brands_type.id
-                                     
-                                     where brands_models.product_id = ";
-
-            String sqlQueryPart2 = " and brands_models.brand_id = ";
-            String sqlQueryPart3 = "  and brands_models.model_id = ";
-            String sqlQueryPart4 = " ;";
-            
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += productID;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += brandID;
-            sqlQuery += sqlQueryPart3;
-            sqlQuery += modelID;
-            sqlQuery += sqlQueryPart4;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_string = 3;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            productName = sqlDatabase.rows[0].sql_string[0];
-            brandName = sqlDatabase.rows[0].sql_string[1];
-            modelName = sqlDatabase.rows[0].sql_string[2];
+            SetProductID(mProductID);
+            SetBrandID(mBrandID);
+            SetModelID(mModelID);
 
             if (!commonQueries.GetModelApplications(productID, brandID, modelID, ref modelApplications))
                 return false;
             if (!commonQueries.GetModelBenefits(productID, brandID, modelID, ref modelBenefits))
                 return false; 
-            if (!InitializeModelSummaryPoints(productID, brandID, modelID))
-                return false;
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
 
@@ -119,9 +82,7 @@ namespace _01electronics_crm
         }
         public bool InitializeModelSummaryPoints(int mProductID, int mBrandID, int mModelID)
         {
-            productID = mProductID;
-            brandID = mBrandID;
-            modelID = mModelID;
+            modelSummaryPoints.Clear();
 
             String sqlQueryPart1 = @"select products_summary.points_id, products_summary.points
                                      from  erp_system.dbo.products_summary
@@ -133,11 +94,11 @@ namespace _01electronics_crm
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += productID;
+            sqlQuery += GetProductID();
             sqlQuery += sqlQueryPart2;
-            sqlQuery += brandID;
+            sqlQuery += GetBrandID();
             sqlQuery += sqlQueryPart3;
-            sqlQuery += modelID;
+            sqlQuery += mModelID;
             sqlQuery += sqlQueryPart4;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
@@ -153,7 +114,7 @@ namespace _01electronics_crm
                 numberOfSavedModelSummaryPoints = sqlDatabase.rows[i].sql_int[0];
 
                 if (numberOfSavedModelSummaryPoints > 0)
-                    modelSummaryPoints[numberOfSavedModelSummaryPoints - 1] = sqlDatabase.rows[i].sql_string[0];
+                    modelSummaryPoints.Add(sqlDatabase.rows[i].sql_string[0]);
             }
 
             return true;

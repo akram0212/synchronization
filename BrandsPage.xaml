@@ -44,7 +44,7 @@
 
         </Grid>
 
-        <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="BrandsGrid">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -55,53 +55,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="UPS" Style="{StaticResource primaryHeaderTextStyle}"/>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Image Source="borri_logo.jpg"  Mouse.MouseDown="BorriUPSImageMouseDown" Width="150">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
-                    </Image>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="BORRI" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
-                </Grid>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Image Source="legrand_logo.jpg"  Mouse.MouseDown="LegrandUPSImageMouseDown" Width="300">
-                        <Image.Triggers>
-                            <EventTrigger RoutedEvent="Image.MouseEnter">
-                                <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Image.MouseLeave">
-                                <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                            </EventTrigger>
-                        </Image.Triggers>
-                        <Image.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Image.RenderTransform>
-                    </Image>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Content="LEGRAND" Style="{StaticResource selectedSecondaryTabLabelItem}" Height="50"/>
-                </Grid>
-            </Grid>
+           
         </Grid>
 
     </Grid>

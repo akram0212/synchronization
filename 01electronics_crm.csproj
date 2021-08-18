@@ -69,23 +69,11 @@
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BorriCommercialUPSPage.xaml.cs">
-      <DependentUpon>BorriCommercialUPSPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BorriUPSPage.xaml.cs">
-      <DependentUpon>BorriUPSPage.xaml</DependentUpon>
+    <Compile Include="ModelsPage.xaml.cs">
+      <DependentUpon>ModelsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BrandsPage.xaml.cs">
       <DependentUpon>BrandsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CommericalUPSPage.xaml.cs">
-      <DependentUpon>CommericalUPSPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IndustrialUPSPage.xaml.cs">
-      <DependentUpon>IndustrialUPSPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LegrandUPSPage.xaml.cs">
-      <DependentUpon>LegrandUPSPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
@@ -178,11 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BorriCommercialUPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BorriUPSPage.xaml">
+    <Page Include="ModelsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,21 +182,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CommericalUPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ContactsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="IndustrialUPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LegrandUPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -386,12 +358,7 @@
     <Resource Include="BorriIndustrialUPS.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="borri_logo.jpg" />
     <Resource Include="elcos.jpg" />
-    <Resource Include="legrand_logo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UPS_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="generators_cover_photo.jpg" />
@@ -404,6 +371,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Panels_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Borri.jpg" />
+    <Resource Include="Legrand.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Commerical_UPS_cover_photo.jpg" />
+    <Resource Include="Industrial_UPS_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

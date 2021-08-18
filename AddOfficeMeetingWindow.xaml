@@ -46,7 +46,7 @@
                     <WrapPanel Grid.Row="1">
                         <WrapPanel Name="AdditionalDescriptionPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Additional Description"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox" SelectionChanged="OnSelChangedadditionalDescription" Height="100"/>
+                            <TextBox Style="{StaticResource commentsTextBoxStyle}" Name="additionalDescriptionTextBox" SelectionChanged="OnSelChangedadditionalDescription"/>
                         </WrapPanel>
                     </WrapPanel>
 

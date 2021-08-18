@@ -296,5 +296,11 @@ namespace _01electronics_crm
         {
 
         }
+
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
     }
 }
