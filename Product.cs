@@ -13,8 +13,8 @@ namespace _01electronics_crm
         //FTP_SERVER OBJECTS
         protected FTPServer ftpServer;
         //protected String serverPath = "ftp://salma.omran%254001electronics.net@01electronics.net/ftp_server/erp_system/products_photos/";
-        protected String serverPath = "erp_system/products_photos/";
-        protected String photoLocalPath = @"D:\erp_system\01electronics_crm";
+        //protected String serverPath = "/ftp_server/erp_system/products_photos/";
+        protected String photoLocalPath;
         protected String photoServerPath;
 
         //SQL QUERY
@@ -78,14 +78,17 @@ namespace _01electronics_crm
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
 
+            GetNewPhotoLocalPath();
+            GetNewPhotoServerPath();
+
             return true;
         }
         public bool InitializeModelSummaryPoints(int mProductID, int mBrandID, int mModelID)
         {
             modelSummaryPoints.Clear();
 
-            String sqlQueryPart1 = @"select products_summary.points_id, products_summary.points
-                                     from  erp_system.dbo.products_summary
+            String sqlQueryPart1 = @"select models_summary.points_id, models_summary.points
+                                     from  erp_system.dbo.models_summary
                                      where product_id = ";
 
             String sqlQueryPart2 = " and brand_id = ";
@@ -154,7 +157,11 @@ namespace _01electronics_crm
             if (!InsertIntoModelBenefits(ref mModelBenefits))
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
-                return false;  
+                return false;
+
+            GetNewPhotoLocalPath();
+            GetNewPhotoServerPath();
+
             return true;
         }
 
@@ -442,8 +449,6 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////
         public bool DownloadPhotoFromServer()
         {
-            GetNewPhotoServerPath();
-
             if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath))
                 return false;
 
@@ -471,6 +476,9 @@ namespace _01electronics_crm
         public void SetModelID(int mModelID)
         {
             modelID = mModelID;
+
+            GetNewPhotoLocalPath();
+            GetNewPhotoServerPath();
         } 
         public void SetProductName(String mProductName)
         {
@@ -492,7 +500,6 @@ namespace _01electronics_crm
         {
             photoServerPath = mPath;
         }
-
         //////////////////////////////////////////////////////////////////////
         //GETTERS
         //////////////////////////////////////////////////////////////////////
@@ -547,7 +554,7 @@ namespace _01electronics_crm
         public void GetNewPhotoServerPath()
         {
             photoServerPath = String.Empty;
-            photoServerPath += serverPath;
+            photoServerPath += BASIC_MACROS.MODELS_PHOTOS_PATH;
             photoServerPath += GetProductID();
             photoServerPath += "/";
             photoServerPath += GetBrandID();
@@ -556,6 +563,11 @@ namespace _01electronics_crm
             photoServerPath += ".jpg";
             
             //photoServerPath = photoServerPath;
+        }
+        public void GetNewPhotoLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = BASIC_MACROS.LOCAL_PHOTOS_PATH + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

@@ -65,8 +65,8 @@ namespace _01electronics_crm
                     src.UriSource = new Uri(productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Relative);
                     src.EndInit();
                     productImage.Source = src;
-                    productImage.Width = 900;
-                    productImage.Height = 400;
+                    productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    productImage.VerticalAlignment = VerticalAlignment.Stretch;
                     productImage.MouseDown += ImageMouseDown;
                     productImage.Tag = products[i].typeId.ToString();
                     //productImage.Name = products[i].typeName;

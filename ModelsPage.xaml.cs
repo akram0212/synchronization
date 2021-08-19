@@ -67,7 +67,6 @@ namespace _01electronics_crm
 
             ScrollViewer scrollViewer = new ScrollViewer();
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-           // scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             scrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
             scrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
             Grid.SetColumn(scrollViewer, 0);
@@ -80,95 +79,89 @@ namespace _01electronics_crm
             {
                 if(brandModels[i].modelId != 0)
                 {
-                Grid currentModelGrid = new Grid();
-                currentModelGrid.Margin = new Thickness(55, 24, 24, 24);
+                    Grid currentModelGrid = new Grid();
+                    currentModelGrid.Margin = new Thickness(55, 24, 24, 24);
 
-                ColumnDefinition column1 = new ColumnDefinition();
-                ColumnDefinition column2 = new ColumnDefinition();
+                    ColumnDefinition column1 = new ColumnDefinition();
+                    ColumnDefinition column2 = new ColumnDefinition();
 
-                currentModelGrid.ColumnDefinitions.Add(column1);
-                currentModelGrid.ColumnDefinitions.Add(column2);
+                    currentModelGrid.ColumnDefinitions.Add(column1);
+                    currentModelGrid.ColumnDefinitions.Add(column2);
 
-                Grid column1Grid = new Grid();
+                    Grid column1Grid = new Grid();
 
-                Border imageBorder = new Border();
-                imageBorder.Width = 200;
-                imageBorder.Height = 230;
-                imageBorder.BorderThickness = new Thickness(3);
-                imageBorder.Background = Brushes.White;
-                imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                Grid.SetColumn(imageBorder, 0);
+                    Border imageBorder = new Border();
+                    imageBorder.Width = 200;
+                    imageBorder.Height = 230;
+                    imageBorder.BorderThickness = new Thickness(3);
+                    imageBorder.Background = Brushes.White;
+                    imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    Grid.SetColumn(imageBorder, 0);
 
-                Image brandImage = new Image();
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.UriSource = new Uri("UPS.jpg", UriKind.Relative);
-                src.EndInit();
-                brandImage.Source = src;
-                brandImage.Width = 190;
-                brandImage.MouseDown += ImageMouseDown;
-                brandImage.Tag = brandModels[i].modelId.ToString();
-                Grid.SetColumn(brandImage, 0);
+                    selectedProduct.SetModelID(brandModels[i].modelId);
+                    selectedProduct.DownloadPhotoFromServer();
+                    Image brandImage = new Image();
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                    src.EndInit();
+                    brandImage.Source = src;
+                        brandImage.Height = 220;
+                    brandImage.Width = 190;
+                    brandImage.MouseDown += ImageMouseDown;
+                    brandImage.Tag = brandModels[i].modelId.ToString();
+                    Grid.SetColumn(brandImage, 0);
 
-                column1Grid.Children.Add(imageBorder);
-                column1Grid.Children.Add(brandImage);
-                Grid.SetColumn(column1Grid, 0);
+                    column1Grid.Children.Add(imageBorder);
+                    column1Grid.Children.Add(brandImage);
+                    Grid.SetColumn(column1Grid, 0);
 
-                currentModelGrid.Children.Add(column1Grid);
+                    currentModelGrid.Children.Add(column1Grid);
 
-                Grid column2Grid = new Grid();
+                    Grid column2Grid = new Grid();
 
-                RowDefinition row1 = new RowDefinition();
-                row1.Height = new GridLength(30);
+                    RowDefinition row1 = new RowDefinition();
+                    row1.Height = new GridLength(30);
 
-                RowDefinition row2 = new RowDefinition();
-                row2.Height = new GridLength(200);
+                    RowDefinition row2 = new RowDefinition();
+                    row2.Height = new GridLength(200);
 
-                column2Grid.RowDefinitions.Add(row1);
-                column2Grid.RowDefinitions.Add(row2);
+                    column2Grid.RowDefinitions.Add(row1);
+                    column2Grid.RowDefinitions.Add(row2);
 
-                Grid row1Grid = new Grid();
+                    Grid row1Grid = new Grid();
 
-                //Border titleBorder = new Border();
-                //titleBorder.Width = 200;
-                //titleBorder.Height = 400;
-                //titleBorder.BorderThickness = new Thickness(3);
-                //titleBorder.Background = Brushes.Transparent;
-                //titleBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                //Grid.SetRow(titleBorder, 0);
+                    Label modelLabel = new Label();
+                    modelLabel.VerticalAlignment = VerticalAlignment.Top;
+                    modelLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    modelLabel.Content = brandModels[i].modelName;
+                    modelLabel.Style = (Style)FindResource("tableSubHeaderItem");
+                    Grid.SetRow(modelLabel, 0);
+                    Grid.SetColumn(modelLabel, 0);
 
-                Label modelLabel = new Label();
-                modelLabel.VerticalAlignment = VerticalAlignment.Top;
-                modelLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
-                modelLabel.Content = brandModels[i].modelName;
-                modelLabel.Style = (Style)FindResource("tableSubHeaderItem");
-                Grid.SetRow(modelLabel, 0);
-                Grid.SetColumn(modelLabel, 0);
+                    row1Grid.Children.Add(modelLabel);
 
-                //row1Grid.Children.Add(titleBorder);
-                row1Grid.Children.Add(modelLabel);
+                    column2Grid.Children.Add(row1Grid);
 
-                column2Grid.Children.Add(row1Grid);
+                    Grid row2Grid = new Grid();
+                    row2Grid.Background = Brushes.White;
 
-                Grid row2Grid = new Grid();
-                row2Grid.Background = Brushes.White;
+                    ScrollViewer scrollViewer2 = new ScrollViewer();
+                    scrollViewer2.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                    scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
+                    scrollViewer2.Content = row2Grid;
+                    Grid.SetRow(scrollViewer2, 1);
 
-                ScrollViewer scrollViewer2 = new ScrollViewer();
-                scrollViewer2.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
-                scrollViewer2.Content = row2Grid;
-                Grid.SetRow(scrollViewer2, 1);
-               // row2Grid.Children.Add(scrollViewer2);
+                    if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID()))
+                         return;
 
-                    if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), brandModels[i].modelId))
-                        return;
                     for (int j = 0; j < 4; j++)
                     {
                         RowDefinition summaryRow = new RowDefinition();
                         row2Grid.RowDefinitions.Add(summaryRow);
-
+                      
                         Grid textBoxGrid = new Grid();
-
+                      
                         TextBox pointsBox = new TextBox();
                         pointsBox.BorderThickness = new Thickness(0);
                         pointsBox.IsEnabled = false;
@@ -178,45 +171,22 @@ namespace _01electronics_crm
                         pointsBox.TextWrapping = TextWrapping.Wrap;
                         pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
                         Grid.SetRow(pointsBox, j);
-
-                        Border summaryBorder = new Border();
-                        summaryBorder.BorderThickness = new Thickness(0,0,3,0);
-                        //summaryBorder.Height = 300;
-                        //summaryBorder.Background = Brushes.Transparent;
-                        summaryBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                        Grid.SetRow(summaryBorder,j);
-
-                        if(j == 3)
-                        {
-                            Border summaryBorder1 = new Border();
-                            summaryBorder1.BorderThickness = new Thickness(0, 0, 0, 3);
-                            //summaryBorder.Height = 300;
-                            //summaryBorder.Background = Brushes.Transparent;
-                            summaryBorder1.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                            Grid.SetRow(summaryBorder1, j);
-                            textBoxGrid.Children.Add(summaryBorder1);
-                        }
                       
-
-                        textBoxGrid.Children.Add(summaryBorder);
                         textBoxGrid.Children.Add(pointsBox);
-
+                      
                         Grid.SetRow(textBoxGrid, j);
                         row2Grid.Children.Add(textBoxGrid);
-
                     }
 
                     Grid.SetRow(row2Grid, 1);
 
-                
-                column2Grid.Children.Add(scrollViewer2);
-                Grid.SetColumn(column2Grid, 1);
+                    column2Grid.Children.Add(scrollViewer2);
+                    Grid.SetColumn(column2Grid, 1);
 
-                currentModelGrid.Children.Add(column2Grid);
-                modelsWrapPanel.Children.Add(currentModelGrid);
+                    currentModelGrid.Children.Add(column2Grid);
+                    modelsWrapPanel.Children.Add(currentModelGrid);
                 }
             }
-            //ModelsGrid.Children.Add(scrollViewer);
             Grid.SetRow(modelsWrapPanel, 1);
         }
 

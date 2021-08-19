@@ -361,13 +361,7 @@
     <Resource Include="elcos.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="generators_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="NiCdBatteries.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Batteries_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Panels_cover_photo.jpg" />
@@ -379,6 +373,12 @@
   <ItemGroup>
     <Resource Include="Commerical_UPS_cover_photo.jpg" />
     <Resource Include="Industrial_UPS_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Batteries_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Genset_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
