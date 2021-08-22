@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_crm", "01electronics_crm.csproj", "{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "..\01electronics_library\01electronics_library.csproj", "{8F7BA699-42D3-4687-A895-5F0D495292C2}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "..\01electronics_library\01electronics_library\01electronics_library.csproj", "{2DF5A4FD-4C49-4E68-9189-3DB5048DCA81}"
+>>>>>>> 42339691937a8f47954b0ef9db0061d7c0d6d929
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,17 @@ Global
 		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{8F7BA699-42D3-4687-A895-5F0D495292C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F7BA699-42D3-4687-A895-5F0D495292C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F7BA699-42D3-4687-A895-5F0D495292C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F7BA699-42D3-4687-A895-5F0D495292C2}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{2DF5A4FD-4C49-4E68-9189-3DB5048DCA81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF5A4FD-4C49-4E68-9189-3DB5048DCA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF5A4FD-4C49-4E68-9189-3DB5048DCA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF5A4FD-4C49-4E68-9189-3DB5048DCA81}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 42339691937a8f47954b0ef9db0061d7c0d6d929
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
