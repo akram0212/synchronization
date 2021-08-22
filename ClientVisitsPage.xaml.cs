@@ -23,29 +23,41 @@ namespace _01electronics_crm
     public partial class ClientVisitsPage : Page
     {
         private Employee loggedInUser;
-        protected CommonQueries commonQueries;
-        protected CommonFunctions commonFunctions;
+
+        protected CommonQueries commonQueriesObject;
+        protected CommonFunctions commonFunctionsObject;
+
+        protected List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
+
         protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> visitsInfo;
         protected List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT> filteredVisits;
+
         private Grid previousSelectedVisitItem;
         private Grid currentSelectedVisitItem;
+
+        private int selectedYear;
+        private int selectedQuarter;
+        private int selectedEmployee;
         public ClientVisitsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;
 
-            commonQueries = new CommonQueries();
-            commonFunctions = new CommonFunctions();
+            commonQueriesObject = new CommonQueries();
+            commonFunctionsObject = new CommonFunctions();
+
+            listOfEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+
             visitsInfo = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
             filteredVisits = new List<COMPANY_WORK_MACROS.CLIENT_VISIT_STRUCT>();
 
             viewButton.IsEnabled = false;
 
-            yearCombo.IsEnabled = true;
-            yearCombo.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
+            yearComboBox.IsEnabled = true;
+            yearComboBox.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
 
-            quarterCombo.IsEnabled = false;
-            employeeCombo.IsEnabled = false;
+            quarterComboBox.IsEnabled = false;
+            employeeComboBox.IsEnabled = false;
 
             yearCheckBox.IsChecked = true;
             employeeCheckBox.IsEnabled = false;
@@ -53,12 +65,61 @@ namespace _01electronics_crm
             InitializeYearsComboBox();
             InitializeQuartersComboBox();
 
+            if (!InitializeEmployeeComboBox())
+                return;
+
             GetVisits();
             InitializeStackPanel();
+
+            SetDefaultSettings();
         }
         private void GetVisits()
         {
-            commonQueries.GetClientVisits(ref visitsInfo);
+            commonQueriesObject.GetClientVisits(ref visitsInfo);
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //CONFIGURATION FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        ///
+        private void SetDefaultSettings()
+        {
+            yearCheckBox.IsChecked = true;
+
+            yearCheckBox.IsEnabled = false;
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.SENIOR_POSTION)
+            {
+                employeeCheckBox.IsChecked = false;
+                employeeCheckBox.IsEnabled = true;
+                employeeComboBox.IsEnabled = false;
+            }
+            else
+            {
+                employeeCheckBox.IsChecked = true;
+                employeeCheckBox.IsEnabled = false;
+                employeeComboBox.IsEnabled = false;
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //SET FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        private void SetYearComboBox()
+        {
+            yearComboBox.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
+        }
+        private void SetQuarterComboBox()
+        {
+            quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+        }
+        private void SetEmployeeComboBox()
+        {
+            employeeComboBox.SelectedIndex = 0;
+
+            for (int i = 0; i < listOfEmployees.Count; i++)
+                if (loggedInUser.GetEmployeeId() == listOfEmployees[i].employee_id)
+                    employeeComboBox.SelectedIndex = i;
         }
 
         //////////////////////////////////////////////////////////
@@ -67,78 +128,83 @@ namespace _01electronics_crm
         private void InitializeYearsComboBox()
         {
             for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
-                yearCombo.Items.Add(year);
+                yearComboBox.Items.Add(year);
 
         }
         private void InitializeQuartersComboBox()
         {
             for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
-                quarterCombo.Items.Add(commonFunctions.GetQuarterName(i + 1));
+                quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
+
+        private bool InitializeEmployeeComboBox()
+        {
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref listOfEmployees))
+                return false;
+
+            for (int i = 0; i < listOfEmployees.Count; i++)
+                employeeComboBox.Items.Add(listOfEmployees[i].employee_name);
+
+            return true;
+        }
+
         private void InitializeStackPanel()
         {
             ClientVisitsStackPanel.Children.Clear();
             filteredVisits.Clear();
+
             for (int i = 0; i < visitsInfo.Count; i++)
             {
-                if (visitsInfo[i].sales_person_id == loggedInUser.GetEmployeeId())
-                {
-                    DateTime currentVisitDate = DateTime.Parse(visitsInfo[i].visit_date);
+                DateTime currentVisitDate = DateTime.Parse(visitsInfo[i].visit_date);
 
-                    if (yearCheckBox.IsChecked == true && (yearCombo.SelectedItem == null || currentVisitDate.Year != int.Parse(yearCombo.SelectedItem.ToString())))
-                        continue;
+                if (yearCheckBox.IsChecked == true && currentVisitDate.Year != selectedYear)
+                    continue;
 
-                    if (quarterCheckBox.IsChecked == true && (quarterCombo.SelectedItem == null || commonFunctions.GetQuarter(DateTime.Parse(visitsInfo[i].visit_date)) != quarterCombo.SelectedIndex + 1))
-                        continue;
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentVisitDate) != selectedQuarter)
+                    continue;
 
-                    filteredVisits.Add(visitsInfo[i]);
+                if (employeeCheckBox.IsChecked == true && visitsInfo[i].sales_person_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
 
-                    StackPanel currentStackPanel = new StackPanel();
-                    currentStackPanel.Orientation = Orientation.Vertical;
+                filteredVisits.Add(visitsInfo[i]);
 
-                    Label dateOfVisitLabel = new Label();
-                    dateOfVisitLabel.Content = visitsInfo[i].visit_date;
-                    dateOfVisitLabel.Style = (Style)FindResource("stackPanelItemBody");
+                StackPanel currentStackPanel = new StackPanel();
+                currentStackPanel.Orientation = Orientation.Vertical;
 
-                    Label salesPersonNameLabel = new Label();
-                    salesPersonNameLabel.Content = visitsInfo[i].sales_person_name;
-                    salesPersonNameLabel.Style = (Style)FindResource("stackPanelItemBody");
+                Label salesPersonNameLabel = new Label();
+                salesPersonNameLabel.Content = visitsInfo[i].sales_person_name;
+                salesPersonNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
 
-                    Label companyAndContactLabel = new Label();
-                    companyAndContactLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
-                    companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
+                Label dateOfVisitLabel = new Label();
+                dateOfVisitLabel.Content = visitsInfo[i].visit_date;
+                dateOfVisitLabel.Style = (Style)FindResource("stackPanelItemBody");
 
-                    Label purposeAndResultLabel = new Label();
-                    purposeAndResultLabel.Content = visitsInfo[i].visit_purpose + " - " + visitsInfo[i].visit_result;
-                    purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
+                Label companyAndContactLabel = new Label();
+                companyAndContactLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
-                    Label lineLabel = new Label();
-                    lineLabel.Content = "";
-                    lineLabel.Style = (Style)FindResource("stackPanelItemBody");
-                    
-                    Label newLineLabel = new Label();
-                    newLineLabel.Content = "";
-                    newLineLabel.Style = (Style)FindResource("stackPanelItemBody");
+                Label purposeAndResultLabel = new Label();
+                purposeAndResultLabel.Content = visitsInfo[i].visit_purpose + " - " + visitsInfo[i].visit_result;
+                purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
 
-                    currentStackPanel.Children.Add(newLineLabel);
-                    currentStackPanel.Children.Add(dateOfVisitLabel);
-                    currentStackPanel.Children.Add(salesPersonNameLabel);
-                    currentStackPanel.Children.Add(companyAndContactLabel);
-                    currentStackPanel.Children.Add(purposeAndResultLabel);
-                    currentStackPanel.Children.Add(lineLabel);
+                currentStackPanel.Children.Add(salesPersonNameLabel);
+                currentStackPanel.Children.Add(dateOfVisitLabel);
+                
+                currentStackPanel.Children.Add(companyAndContactLabel);
+                currentStackPanel.Children.Add(purposeAndResultLabel);
 
-                    Grid newGrid = new Grid();
-                    ColumnDefinition column1 = new ColumnDefinition();
+                Grid newGrid = new Grid();
+                ColumnDefinition column1 = new ColumnDefinition();
 
-                    newGrid.ColumnDefinitions.Add(column1);
-                    newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
-                    
-                    Grid.SetColumn(currentStackPanel, 0);
+                newGrid.ColumnDefinitions.Add(column1);
+                newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
 
-                    newGrid.Children.Add(currentStackPanel);
-                    ClientVisitsStackPanel.Children.Add(newGrid);
-                }
+                Grid.SetColumn(currentStackPanel, 0);
+
+                newGrid.Children.Add(currentStackPanel);
+                ClientVisitsStackPanel.Children.Add(newGrid);
+
             }
         }
 
@@ -246,66 +312,92 @@ namespace _01electronics_crm
         }
 
         //////////////////////////////////////////////////////////
+        /// SELECTION CHANGED HANDLERS
+        //////////////////////////////////////////////////////////
+        private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (yearComboBox.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
+            else
+                selectedYear = 0;
+
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (quarterComboBox.SelectedItem != null)
+                selectedQuarter = quarterComboBox.SelectedIndex + 1;
+            else
+                selectedQuarter = 0;
+
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        private void OnSelChangedEmployeeCombo(object sender, RoutedEventArgs e)
+        {
+            if (employeeCheckBox.IsChecked == true)
+                selectedEmployee = listOfEmployees[employeeComboBox.SelectedIndex].employee_id;
+            else
+                selectedEmployee = 0;
+
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        //////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
         //////////////////////////////////////////////////////////
-        private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.IsEnabled = true;
+            yearComboBox.IsEnabled = true;
+
+            SetYearComboBox();
         }
 
-        private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.IsEnabled = false;
-            yearCombo.SelectedItem = null;
+            quarterComboBox.IsEnabled = true;
+
+            SetQuarterComboBox();
+        }
+
+        private void OnCheckEmployeeCheckBox(object sender, RoutedEventArgs e)
+        {
+            employeeComboBox.IsEnabled = true;
+
+            SetEmployeeComboBox();
+        }
+        //////////////////////////////////////////////////////////
+        /// ON UNCHECK HANDLERS
+        //////////////////////////////////////////////////////////
+        private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
+        {
+            yearComboBox.IsEnabled = false;
+            yearComboBox.SelectedItem = null;
 
             currentSelectedVisitItem = null;
             previousSelectedVisitItem = null;
         }
-
-        private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            quarterCombo.IsEnabled = true;
-        }
-
-        private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-            quarterCombo.IsEnabled = false; 
-            quarterCombo.SelectedItem = null;
+            quarterComboBox.IsEnabled = false; 
+            quarterComboBox.SelectedItem = null;
 
             currentSelectedVisitItem = null;
             previousSelectedVisitItem = null;
         }
-
-        private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnUncheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            
         }
 
         private void OnClosedAddVisitWindow(object sender, EventArgs e)
         {
             GetVisits();
             InitializeStackPanel();
-        }
-        private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

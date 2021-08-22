@@ -243,7 +243,7 @@ namespace _01electronics_crm
         /// ON SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////
         ///
-        private void OnSelectionChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
@@ -263,7 +263,7 @@ namespace _01electronics_crm
            
         }
 
-        private void OnSelectionChangedStateComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = true;
             cityCheckBox.IsChecked = false;
@@ -280,7 +280,7 @@ namespace _01electronics_crm
 
         }
 
-        private void OnSelectionChangedCityComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
         {
             districtCheckBox.IsEnabled = true;
             districtCheckBox.IsChecked = false;
@@ -294,7 +294,7 @@ namespace _01electronics_crm
             
         }
 
-        private void OnSelectionChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
             InitializeCompaniesTree();

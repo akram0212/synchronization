@@ -56,37 +56,37 @@
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Sales Person" Width="140"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Sales Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="SalesPersonComboSelectionChanged" />
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="assigneeWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="RFQ Serial" Width="140"/>
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="RFQSerialComboSelectionChanged" />
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedRFQSerialCombo"/>
                 </WrapPanel>
             </WrapPanel>
 
             <WrapPanel Grid.Row="1">
                 <WrapPanel Name="companyNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company Name" Width="140"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company Name"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="CompanyNameComboSelectionChanged" />
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="companyAddressWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company Address" Width="140"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company Address"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="CompanyAddressComboSelectionChanged" />
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
                 </WrapPanel>
             </WrapPanel>
 
             <WrapPanel Grid.Row="2">
                 <WrapPanel Name="contactPersonNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Contact Person" Width="140"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Contact Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="ContactPersonComboSelectionChanged" />
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
             </WrapPanel>
 

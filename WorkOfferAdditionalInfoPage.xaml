@@ -50,27 +50,27 @@
 
             <WrapPanel Grid.Row="2">
                 <Label Content="Drawing &#x0a;Submission &#x0a;Deadline" Style="{StaticResource labelStyle}"/>
-                <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DrawingDeadlineFromTextBoxTextChanged" Name="drawingDeadlineFromTextBox"/>
+                <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineFromTextBox" TextChanged="OnTextChangedDrawingDeadlineFromTextBox"/>
                 <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center"/>
-                <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineToTextBox" TextChanged="DrawingDeadlineToTextBoxTextChanged" />
-                <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="drawingDeadlineDateComboBox" SelectionChanged="DrawingDeadlineDateComboBoxSelectionChanged"/>
+                <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineToTextBox" TextChanged="OnTextChangedDrawingDeadlineToTextBox" />
+                <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="drawingDeadlineDateComboBox" SelectionChanged="OnSelChangedDrawingDeadlineDateCombo"/>
             </WrapPanel>
            
                 <WrapPanel  Grid.Row="3">
                 <Label Content="Contract &#x0a;Type" Style="{StaticResource labelStyle}"/>
-                <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeComboBox" SelectionChanged="ContractTypeComboSelectionChanged"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeComboBox" SelectionChanged="OnSelChangedContractTypeCombo"/>
                 </WrapPanel>
             
                 <WrapPanel  Grid.Row="4">
                     <Label Content="Warranty &#x0a;Period" Style="{StaticResource labelStyle}"/>
-                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
-                <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
+                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="OnTextChangedWarrantyPeriodTextBox"/>
+                <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="OnSelChangedWarrantyPeriodCombo"/>
                 </WrapPanel>
             
             <WrapPanel Grid.Row="5">
                 <Label Content="Validity &#x0a;Period" Style="{StaticResource labelStyle}"/>
-                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="offerValidityTextBox" TextChanged="OfferValidityTextBoxTextChanged"/>
-                <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="offerValidityCombo" SelectionChanged="OfferValidityComboSelectionChanged"/>
+                <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="offerValidityTextBox" TextChanged="OnTextChangedOfferValidityTextBox"/>
+                <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="offerValidityCombo" SelectionChanged="OnSelChangedOfferValidityCombo"/>
                 </WrapPanel>
             
             <WrapPanel Grid.Row="6">

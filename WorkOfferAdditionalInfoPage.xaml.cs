@@ -145,6 +145,7 @@ namespace _01electronics_crm
             offerValidityTextBox.IsEnabled = false;
             additionalDescriptionTextBox.IsEnabled = false;
         }
+
         /////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         /////////////////////////////////
@@ -170,9 +171,11 @@ namespace _01electronics_crm
             }
             return true;
         }
+
         //////////////////////////////
         ///SET FUNCTIONS
         //////////////////////////////
+        ///
         private void SetDrawingSubmissionValues()
         {
             drawingDeadlineFromTextBox.Text = workOffer.GetDrawingSubmissionDeadlineMinimum().ToString();
@@ -201,57 +204,13 @@ namespace _01electronics_crm
         {
             additionalDescriptionTextBox.Text = workOffer.GetOfferNotes();
         }
-        //////////////////////////////
-        ///GET FUNCTIONS
-        //////////////////////////////
-        //////////////////////////////
-        ///SELECTION CHANGED HANDLERS
-        //////////////////////////////
 
-        private void WarrantyPeriodTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        /////////////////////////////////////////////////////////////////
+        //TEXT CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
+        private void OnTextChangedDrawingDeadlineFromTextBox(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
-                warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
-            else
-            {
-                warrantyPeriod = 0;
-                warrantyPeriodTextBox.Text = null;
-            }
-        }
-
-        private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            workOffer.SetWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
-        }
-
-        private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            workOffer.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
-        }
-
-        private void OfferValidityComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            workOffer.SetOfferValidityTimeUnit(timeUnits[offerValidityCombo.SelectedIndex].timeUnitId, timeUnits[offerValidityCombo.SelectedIndex].timeUnit);
-        }
-
-        private void OfferValidityTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
-                offerValidityPeriod = int.Parse(offerValidityTextBox.Text);
-            else
-            {
-                offerValidityPeriod = 0;
-                warrantyPeriodTextBox.Text = null;
-            }
-        }
-
-        private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            additionalDescription = additionalDescriptionTextBox.Text;
-        }
-
-        private void DrawingDeadlineFromTextBoxTextChanged(object sender, TextChangedEventArgs e)
-           {
             if (IntegrityChecks.CheckInvalidCharacters(drawingDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineFromTextBox.Text != "")
                 drawingDeadlineFrom = int.Parse(drawingDeadlineFromTextBox.Text);
             else
@@ -260,8 +219,7 @@ namespace _01electronics_crm
                 drawingDeadlineFromTextBox.Text = null;
             }
         }
-
-        private void DrawingDeadlineToTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedDrawingDeadlineToTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(drawingDeadlineToTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineToTextBox.Text != "")
                 drawingDeadlineTo = int.Parse(drawingDeadlineToTextBox.Text);
@@ -271,33 +229,60 @@ namespace _01electronics_crm
                 drawingDeadlineToTextBox.Text = null;
             }
         }
-        private void DrawingDeadlineDateComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnTextChangedWarrantyPeriodTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
+                warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
+            else
+            {
+                warrantyPeriod = 0;
+                warrantyPeriodTextBox.Text = null;
+            }
+        }
+        private void OnTextChangedOfferValidityTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
+                offerValidityPeriod = int.Parse(offerValidityTextBox.Text);
+            else
+            {
+                offerValidityPeriod = 0;
+                warrantyPeriodTextBox.Text = null;
+            }
+        }
+        private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            additionalDescription = additionalDescriptionTextBox.Text;
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //SELECTION CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
+        private void OnSelChangedWarrantyPeriodCombo(object sender, SelectionChangedEventArgs e)
+        {
+            workOffer.SetWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
+        }
+
+        private void OnSelChangedContractTypeCombo(object sender, SelectionChangedEventArgs e)
+        {
+            workOffer.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
+        }
+
+        private void OnSelChangedOfferValidityCombo(object sender, SelectionChangedEventArgs e)
+        {
+            workOffer.SetOfferValidityTimeUnit(timeUnits[offerValidityCombo.SelectedIndex].timeUnitId, timeUnits[offerValidityCombo.SelectedIndex].timeUnit);
+        }
+
+        
+        private void OnSelChangedDrawingDeadlineDateCombo(object sender, SelectionChangedEventArgs e)
         {
             workOffer.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
         }
 
-        //////////////////////////////
-        ///CHECK BOXES EVENT HANDLERS
-        //////////////////////////////
-
-        private void DrawingConditionsCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            drawingDeadlineFromTextBox.IsEnabled = true;
-            drawingDeadlineToTextBox.IsEnabled = true;
-            drawingDeadlineDateComboBox.IsEnabled = true;
-            isDrawing = 1;
-        }
-
-        private void DrawingConditionsCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-            drawingDeadlineFromTextBox.IsEnabled = false;
-            drawingDeadlineToTextBox.IsEnabled = false;
-            drawingDeadlineDateComboBox.IsEnabled = false;
-            isDrawing = 0;
-        }
-
-        ///BUTTON CLICKED HANDLERS
-        /////////////////////////////
+        /////////////////////////////////////////////////////////////////
+        //INTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
@@ -321,6 +306,10 @@ namespace _01electronics_crm
 
         }
 
+        /////////////////////////////////////////////////////////////////
+        //BUTTON CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
         private void AddOfferButtonClick(object sender, RoutedEventArgs e)
         {
             workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);

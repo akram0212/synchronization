@@ -54,34 +54,34 @@
         </WrapPanel>
         
         <WrapPanel Grid.Row="3">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="downPaymentPercentageTextBox" TextChanged="DownPaymentPercentageTextBoxTextChanged"/>
+            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="downPaymentPercentageTextBox" TextChanged="OnTextChangedDownPaymentPercentageTextBox"/>
             <Label  Content="% Down Payment" Style="{StaticResource largeLabelStyle}"/>
             <TextBox Name="downPaymentActualTextBox" Style="{StaticResource miniTextBoxStyle}"  IsReadOnly="True"/>
         </WrapPanel>
         
         <WrapPanel Grid.Row="4">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onDeliveryPercentageTextBox" TextChanged="OnDeliveryPercentageTextBoxTextChanged"/>
+            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onDeliveryPercentageTextBox" TextChanged="OnTextChangedDeliveryPercentageTextBox"/>
             <Label  Content="% On Delivery" Style="{StaticResource largeLabelStyle}" />
             <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onDeliveryActualTextBox" IsReadOnly="True"/>
         </WrapPanel>
         
         <WrapPanel Grid.Row="5">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onInstallationPercentageTextBox" TextChanged="OnInstallationPercentageTextBoxTextChanged"/>
+            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onInstallationPercentageTextBox" TextChanged="OnTextChangedInstallationPercentageTextBox"/>
             <Label  Content="% On Installation" Style="{StaticResource largeLabelStyle}" />
             <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onInstallationActualTextBox"  IsReadOnly="True"/>
         </WrapPanel>
 
         <WrapPanel Grid.Row="6">
             <Label Content="Delivery &#x0a;Time" Style="{StaticResource labelStyle}"/>
-            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DeliveryTimeTextBoxFromTextChanged"  Name="deliveryTimeTextBoxFrom" />
+            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeFromTextBox"  Name="deliveryTimeTextBoxFrom" />
             <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DeliveryTimeTextBoxToTextChanged"  x:Name="deliveryTimeTextBoxTo" />
-            <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="DeliveryTimeComboSelectionChanged" Name="deliveryTimeCombo" />
+            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeToTextBox"  x:Name="deliveryTimeTextBoxTo" />
+            <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeCombo" Name="deliveryTimeCombo" />
         </WrapPanel>
         
         <WrapPanel Grid.Row="7">
             <Label Content="Delivery &#x0a;Point" Style="{StaticResource labelStyle}" />
-            <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="DeliveryPointComboSelectionChanged"/>
+            <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
         </WrapPanel>
 
     </Grid>
