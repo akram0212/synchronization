@@ -103,7 +103,7 @@ namespace _01electronics_crm
                     Image brandImage = new Image();
                     BitmapImage src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath());
                     src.EndInit();
                     brandImage.Source = src;
                         brandImage.Height = 220;
