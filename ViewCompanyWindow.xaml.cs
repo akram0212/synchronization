@@ -112,17 +112,24 @@ namespace _01electronics_crm
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
             companyPhonesWrapPanel.Children.Clear();
-            company.InitializeBranchInfo(branchesList[branchComboBox.SelectedIndex].address_serial);
-            company.QueryCompanyPhones();
-            company.QueryCompanyFaxes();
 
-            phonesCount = company.GetNumberOfSavedCompanyPhones();
-            faxesCount = company.GetNumberOfSavedCompanyFaxes();
+            if (branchComboBox.SelectedItem != null)
+            {
+                if (!company.InitializeBranchInfo(branchesList[branchComboBox.SelectedIndex].address_serial))
+                    return;
+                if (!company.QueryCompanyPhones())
+                    return;
+                if (!company.QueryCompanyFaxes())
+                    return;
 
-            if (phonesCount != 0)
-                AddPhone();
-            if (faxesCount != 0)
-                AddFax();
+                phonesCount = company.GetNumberOfSavedCompanyPhones();
+                faxesCount = company.GetNumberOfSavedCompanyFaxes();
+
+                if (phonesCount != 0)
+                    AddPhone();
+                if (faxesCount != 0)
+                    AddFax();
+            }
         }
 
         private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)

@@ -145,32 +145,23 @@ namespace _01electronics_crm
         }
 
         //////////////////////////////////////////////////////////
-        /// ON BTN CLICKED HANDLERS
+        //EXTERNAL TABS
         //////////////////////////////////////////////////////////
-        private void OnBtnClickedMeetingItem(object sender, RoutedEventArgs e)
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
-            viewButton.IsEnabled = true;
-            previousSelectedCallItem = currentSelectedCallItem;
-            currentSelectedCallItem = (Grid)sender;
-            BrushConverter brush = new BrushConverter();
+            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
+            this.NavigationService.Navigate(userPortal);
+        }
 
-            if (previousSelectedCallItem != null)
-            {
-                previousSelectedCallItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[0];
-
-                foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-            }
-
-            currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[0];
-
-            foreach (Label childLabel in currentSelectedStackPanel.Children)
-                childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-
+        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
+        {
+            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contactsPage);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
         }
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
@@ -208,17 +199,9 @@ namespace _01electronics_crm
             //this.NavigationService.Navigate(statisticsPage);
         }
 
-        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
-        {
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contactsPage);
-        }
+        //////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        //////////////////////////////////////////////////////////
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
@@ -242,12 +225,73 @@ namespace _01electronics_crm
             InitializeStackPanel();
         }
 
-        private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnBtnClickedMeetingItem(object sender, RoutedEventArgs e)
+        {
+            viewButton.IsEnabled = true;
+            previousSelectedCallItem = currentSelectedCallItem;
+            currentSelectedCallItem = (Grid)sender;
+            BrushConverter brush = new BrushConverter();
+
+            if (previousSelectedCallItem != null)
+            {
+                previousSelectedCallItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[0];
+
+                foreach (Label childLabel in previousSelectedStackPanel.Children)
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+            }
+
+            currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[0];
+
+            foreach (Label childLabel in currentSelectedStackPanel.Children)
+                childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //SELECTION CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////
+        private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
+        {
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
+        {
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        private void OnSelChangedEmployeeCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //CHECKED HANDLERS
+        /////////////////////////////////////////////////////////////////
+        ///
+        private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = true;
         }
+        private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
+        {
+            quarterCombo.IsEnabled = true;
+        }
+        private void OnCheckEmployeeCheckBox(object sender, RoutedEventArgs e)
+        {
 
-        private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //UNCHECKED HANDLERS FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = false;
             yearCombo.SelectedItem = null;
@@ -255,19 +299,7 @@ namespace _01electronics_crm
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
         }
-
-        private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            quarterCombo.IsEnabled = true;
-        }
-
-        private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterCombo.IsEnabled = false;
             quarterCombo.SelectedItem = null;
@@ -275,26 +307,10 @@ namespace _01electronics_crm
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
         }
-
-        private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnUncheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

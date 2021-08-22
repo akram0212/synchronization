@@ -109,36 +109,42 @@ namespace _01electronics_crm
         public bool InitializeStatesComboBox()
         {
             stateComboBox.Items.Clear();
+            if (countryComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                    return false;
 
-            if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
-                return false;
-
-            for (int i = 0; i < states.Count(); i++)
-                stateComboBox.Items.Add(states[i].state_name);
+                for (int i = 0; i < states.Count(); i++)
+                    stateComboBox.Items.Add(states[i].state_name);
+            }
 
             return true;
         }
         public bool InitializeCitiesComboBox()
         {
             cityComboBox.Items.Clear();
+            if (stateComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                    return false;
 
-            if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
-                return false;
-
-            for (int i = 0; i < cities.Count; i++)
-                cityComboBox.Items.Add(cities[i].city_name);
+                for (int i = 0; i < cities.Count; i++)
+                    cityComboBox.Items.Add(cities[i].city_name);
+            }
 
             return true;
         }
         public bool InitializeDistrictsComboBox()
         {
             districtComboBox.Items.Clear();
+            if (cityComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                    return false;
 
-            if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
-                return false;
-
-            for (int i = 0; i < districts.Count; i++)
-                districtComboBox.Items.Add(districts[i].district_name);
+                for (int i = 0; i < districts.Count; i++)
+                    districtComboBox.Items.Add(districts[i].district_name);
+            }
 
             return true;
         }
@@ -156,13 +162,13 @@ namespace _01electronics_crm
 
             for (int i = 0; i < companiesList.Count(); i++)
             {
-                if (countryCheckBox.IsChecked == true && countries[countryComboBox.SelectedIndex].country_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
                     continue;
-                if (stateCheckBox.IsChecked == true && states[stateComboBox.SelectedIndex].state_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
                     continue;
-                if (cityCheckBox.IsChecked == true && cities[cityComboBox.SelectedIndex].city_id != companiesList[i].branchesList[0].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
+                if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != companiesList[i].branchesList[0].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
                     continue;
-                if (districtCheckBox.IsChecked == true && districts[districtComboBox.SelectedIndex].district_id != companiesList[i].branchesList[0].address)
+                if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != companiesList[i].branchesList[0].address)
                     continue;
 
                 TreeViewItem ChildItem = new TreeViewItem();
@@ -190,6 +196,7 @@ namespace _01electronics_crm
                     TreeViewItem contactTreeItem = new TreeViewItem();
 
                     contactTreeItem.Header = contactsList[i].contact_name;
+                    contactTreeItem.Tag = contactsList[i].contact_id;
 
                     companyTreeItem.Items.Add(contactTreeItem);
 
@@ -236,7 +243,7 @@ namespace _01electronics_crm
         /// ON SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////
         ///
-        private void OnSelectionChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
@@ -256,7 +263,7 @@ namespace _01electronics_crm
            
         }
 
-        private void OnSelectionChangedStateComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
         {
             cityCheckBox.IsEnabled = true;
             cityCheckBox.IsChecked = false;
@@ -273,7 +280,7 @@ namespace _01electronics_crm
 
         }
 
-        private void OnSelectionChangedCityComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
         {
             districtCheckBox.IsEnabled = true;
             districtCheckBox.IsChecked = false;
@@ -287,7 +294,7 @@ namespace _01electronics_crm
             
         }
 
-        private void OnSelectionChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
             InitializeCompaniesTree();
@@ -416,11 +423,11 @@ namespace _01electronics_crm
 
             if (!selectedItem.HasItems)
             {
-                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
                 currentContactStruct = contactsTreeArray.Find(current_item => current_item.Key.Tag == selectedItem.Tag).Value;
 
                 Contact selectedContact = new Contact();
-                selectedContact.InitializeContactInfo(currentContactStruct.sales_person_id, currentContactStruct.address_serial, currentContactStruct.contact_id);
+                selectedContact.InitializeContactInfo(loggedInUser.GetEmployeeId(), currentContactStruct.address_serial, currentContactStruct.contact_id);
 
                 ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
                 viewContactWindow.Show();

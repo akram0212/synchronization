@@ -303,18 +303,18 @@ namespace _01electronics_crm
 
         /////////////SELECTION CHANGED//////////////
         ////////////////////////////////////////////
-        private void SalesPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
                 rfq.InitializeSalesPersonInfo(salesEmployees[salesPersonCombo.SelectedIndex].employee_id);
         }
-        private void AssigneeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
         {
             if(assigneeCombo.SelectedItem != null)
                 rfq.InitializeAssignedEngineerInfo(preSalesEmployees[assigneeCombo.SelectedIndex].employee_id);
         }
-
-        private void CompanyNameComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+                     
+        private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
 
@@ -346,8 +346,7 @@ namespace _01electronics_crm
             }
             
         }
-
-        private void CompanyAddressComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCompanyAddressCombo(object sender, SelectionChangedEventArgs e)
         {
             contactPersonCombo.Items.Clear();
 
@@ -377,8 +376,7 @@ namespace _01electronics_crm
                     contactPersonCombo.SelectedIndex = 0;
             }
         }
-
-        private void ContactPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContactPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             contactPersonPhoneCombo.Items.Clear();
             if (contactPersonCombo.SelectedItem != null)
@@ -398,7 +396,7 @@ namespace _01electronics_crm
                 contactPersonPhoneCombo.SelectedIndex = 0;
             
         }
-        private void ContactPersonPhoneComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContactPersonPhoneCombo(object sender, SelectionChangedEventArgs e)
         {
             
         }

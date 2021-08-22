@@ -162,7 +162,7 @@ namespace _01electronics_crm
 
         private void InitializeCompanyNameCombo()
         {
-            if (!GetCompaniesQuery(salesPersonID, ref companiesList))
+            if (!commonQueriesObject.GetEmployeeCompanies(salesPersonID, ref companiesList))
                 return;
 
             for (int i = 0; i < companiesList.Count; i++)
@@ -355,35 +355,10 @@ namespace _01electronics_crm
         ///////////GET FUNCTIONS////////////////////////////
         ////////////////////////////////////////////////////
 
-        private bool GetCompaniesQuery(int mEmployeeSerial, ref List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> returnVector)
-        {
-            returnVector.Clear();
-
-            string sqlQuery = "SELECT company_serial,company_name FROM erp_system.dbo.company_name WHERE added_by = " + mEmployeeSerial;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 1;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
-                return false;
-
-            for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            {
-                COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT temp = new COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT();
-
-                temp.company_serial = sqlDatabase.rows[i].sql_int[0];
-                temp.company_name = sqlDatabase.rows[i].sql_string[0];
-
-                returnVector.Add(temp);
-            }
-            return true;
-        }
 
         ///////////SELECTION CHANGED HANDLERS///////////////
         ////////////////////////////////////////////////////
-        private void SalesPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             RFQSerialCombo.Items.Clear();
             companyNameCombo.Items.Clear();
@@ -407,7 +382,7 @@ namespace _01electronics_crm
                 RFQSerialCombo.IsEnabled = false;
             }
         }
-        private void RFQSerialComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedRFQSerialCombo(object sender, SelectionChangedEventArgs e)
         {
             if(RFQSerialCombo.SelectedItem != null)
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
@@ -415,7 +390,7 @@ namespace _01electronics_crm
             SetCompanyNameAddressContactFromRFQ();
         }
 
-        private void CompanyNameComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
 
@@ -434,7 +409,7 @@ namespace _01electronics_crm
             
         }
 
-        private void CompanyAddressComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCompanyAddressCombo(object sender, SelectionChangedEventArgs e)
         {
             contactPersonNameCombo.Items.Clear();
 
@@ -444,9 +419,9 @@ namespace _01electronics_crm
                 contactPersonNameCombo.IsEnabled = false;
         }
 
-        private void ContactPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContactPersonCombo(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         ///////////BUTTON CLICK HANDLERS/////////

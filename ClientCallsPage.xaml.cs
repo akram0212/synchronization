@@ -253,15 +253,45 @@ namespace _01electronics_crm
             viewClientCallWindow.Show();
         }
 
+
+        //////////////////////////////////////////////////////////
+        /// ON SELECTION CHANGED HANDLERS
+        //////////////////////////////////////////////////////////
+        private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
+        {
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+        private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
+        {
+            InitializeStackPanel();
+            viewButton.IsEnabled = false;
+        }
+
+        private void OnSelChangedEmployeeCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         //////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
         //////////////////////////////////////////////////////////
-        private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = true;
         }
+        private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
+        {
+            quarterCombo.IsEnabled = true;
+        }
+        private void OnCheckEmployeeCheckBox(object sender, RoutedEventArgs e)
+        {
 
-        private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        }
+        //////////////////////////////////////////////////////////
+        /// ON UNCHECK HANDLERS
+        //////////////////////////////////////////////////////////
+        private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearCombo.IsEnabled = false;
             yearCombo.SelectedItem = null;
@@ -269,19 +299,7 @@ namespace _01electronics_crm
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
         }
-
-        private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            quarterCombo.IsEnabled = true;
-        }
-
-        private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterCombo.IsEnabled = false;
             quarterCombo.SelectedItem = null;
@@ -289,24 +307,7 @@ namespace _01electronics_crm
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
         }
-
-        private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            InitializeStackPanel();
-            viewButton.IsEnabled = false;
-        }
-
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
 
         }

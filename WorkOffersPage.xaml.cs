@@ -29,7 +29,8 @@ namespace _01electronics_crm
 
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
-        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
@@ -37,8 +38,10 @@ namespace _01electronics_crm
 
         private int selectedYear;
         private int selectedQuarter;
-        private int selectedEmployee;
-        private int selectedTeam;
+
+        private int selectedSales;
+        private int selectedPreSales;
+
         private int selectedProduct;
         private int selectedBrand;
         private int selectedStatus;
@@ -64,7 +67,10 @@ namespace _01electronics_crm
             InitializeQuartersComboBox();
             InitializeStatusComboBox();
 
-            if (!InitializeEmployeeComboBox())
+            if (!InitializeSalesComboBox())
+                return;
+            
+            if (!InitializePreSalesComboBox())
                 return;
 
             if (!InitializeProductsComboBox())
@@ -73,66 +79,11 @@ namespace _01electronics_crm
             if (!InitializeBrandsComboBox())
                 return;
 
-            DisableComboBoxes();
-            ResetComboBoxes();
-            DisableViewBtn();
-            DisableReviseBtn();
-
-            ConfigureUIElements();
+            SetDefaultSettings();
 
             SetWorkOffersStackPanel();
         }
 
-        private void DisableEmployeeUIElements()
-        {
-            employeeCheckBox.IsChecked = true;
-            employeeCheckBox.IsEnabled = false;
-            employeeCombo.IsEnabled = false;
-        }
-
-        private void ResetComboBoxes()
-        {
-            yearCombo.SelectedItem = null;
-
-            quarterCombo.SelectedItem = null;
-
-            employeeCombo.SelectedItem = null;
-
-            productCombo.SelectedItem = null;
-
-            brandCombo.SelectedItem = null;
-
-            statusCombo.SelectedItem = null;
-        }
-
-        private void DisableComboBoxes()
-        {
-            yearCombo.IsEnabled = false;
-            quarterCombo.IsEnabled = false;
-            employeeCombo.IsEnabled = false;
-            productCombo.IsEnabled = false;
-            brandCombo.IsEnabled = false;
-            statusCombo.IsEnabled = false;
-        }
-
-        private void DisableViewBtn()
-        {
-            viewButton.IsEnabled = false;
-        }
-        private void EnableViewBtn()
-        {
-            viewButton.IsEnabled = true;
-        }
-
-        private void DisableReviseBtn()
-        {
-            reviseButton.IsEnabled = false;
-        }
-        
-        private void EnableReviseButton()
-        {
-            reviseButton.IsEnabled = true;
-        }
         /////////////////////////////////////////////////////////////////
         //GET DATA FUNCTIONS
         /////////////////////////////////////////////////////////////////
@@ -152,22 +103,33 @@ namespace _01electronics_crm
         private void InitializeYearsComboBox()
         {
             for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
-                yearCombo.Items.Add(year);
+                yearComboBox.Items.Add(year);
         }
         private void InitializeQuartersComboBox()
         {
             for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
-                quarterCombo.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
+                quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
-        private bool InitializeEmployeeComboBox()
+
+        private bool InitializeSalesComboBox()
         {
-            if (!commonQueriesObject.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employeesList))
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
 
-            for (int i = 0; i < employeesList.Count; i++)
-                employeeCombo.Items.Add(employeesList[i].employee_name);
+            for (int i = 0; i < salesEmployeesList.Count; i++)
+                salesComboBox.Items.Add(salesEmployeesList[i].employee_name);
              
+            return true;
+        }
+        private bool InitializePreSalesComboBox()
+        {
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployeesList))
+                return false;
+
+            for (int i = 0; i < preSalesEmployeesList.Count; i++)
+                preSalesComboBox.Items.Add(preSalesEmployeesList[i].employee_name);
+
             return true;
         }
 
@@ -177,7 +139,7 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < productTypes.Count; i++)
-                productCombo.Items.Add(productTypes[i].typeName);
+                productComboBox.Items.Add(productTypes[i].typeName);
 
             return true;
         }
@@ -189,38 +151,126 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < brandTypes.Count; i++)
-                brandCombo.Items.Add(brandTypes[i].brandName);
+                brandComboBox.Items.Add(brandTypes[i].brandName);
 
-            brandCombo.IsEnabled = false;
+            brandComboBox.IsEnabled = false;
             return true;
         }
 
         private void InitializeStatusComboBox()
         {
            
-            statusCombo.Items.Add("Failed");
-            statusCombo.Items.Add("Confirmed");
-            statusCombo.Items.Add("Pending");
-            statusCombo.IsEnabled = false;
+            statusComboBox.Items.Add("Failed");
+            statusComboBox.Items.Add("Confirmed");
+            statusComboBox.Items.Add("Pending");
+            statusComboBox.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////
         //CONFIGURATION FUNCTIONS
         /////////////////////////////////////////////////////////////////
 
-        private void ConfigureUIElements()
+        private void ResetComboBoxes()
         {
-            EnableYearUIElements();
+            yearComboBox.SelectedIndex = -1;
+            quarterComboBox.SelectedIndex = -1;
 
-            if (loggedInUser.GetEmployeePositionId() >= COMPANY_ORGANISATION_MACROS.JUNIOR_POSTION)
-            {
-                DisableEmployeeUIElements();
-                SetEmployeeComboBox();
-            }
+            salesComboBox.SelectedIndex = -1;
+
+            productComboBox.SelectedIndex = -1;
+            brandComboBox.SelectedIndex = -1;
+
+            statusComboBox.SelectedIndex = -1;
         }
-        private void EnableYearUIElements()
+        private void DisableComboBoxes()
         {
+            yearComboBox.IsEnabled = false;
+            quarterComboBox.IsEnabled = false;
+            salesComboBox.IsEnabled = false;
+            productComboBox.IsEnabled = false;
+            brandComboBox.IsEnabled = false;
+            statusComboBox.IsEnabled = false;
+        }
+
+
+        private void DisableViewButton()
+        {
+            viewButton.IsEnabled = false;
+        }
+        private void EnableViewButton()
+        {
+            viewButton.IsEnabled = true;
+        }
+
+        private void DisableReviseButton()
+        {
+            reviseButton.IsEnabled = false;
+        }
+        private void EnableReviseButton()
+        {
+            reviseButton.IsEnabled = true;
+        }
+
+        private void SetDefaultSettings()
+        {
+            DisableViewButton();
+            DisableReviseButton();
+            DisableComboBoxes();
+            ResetComboBoxes();
+
             yearCheckBox.IsChecked = true;
+            yearCheckBox.IsEnabled = false;
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                salesCheckBox.IsChecked = false;
+                salesCheckBox.IsEnabled = true;
+                salesComboBox.IsEnabled = false;
+
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
+                preSalesComboBox.IsEnabled = false;
+            }
+            else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                salesCheckBox.IsChecked = false;
+                salesCheckBox.IsEnabled = true;
+                salesComboBox.IsEnabled = false;
+                
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
+                preSalesComboBox.IsEnabled = false;
+            }
+            else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
+                preSalesComboBox.IsEnabled = false;
+
+                salesCheckBox.IsChecked = false;
+                salesCheckBox.IsEnabled = true;
+                salesComboBox.IsEnabled = false;
+            }
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                salesCheckBox.IsChecked = true;
+                salesCheckBox.IsEnabled = false;
+                salesComboBox.IsEnabled = false;
+
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
+                preSalesComboBox.IsEnabled = false;
+            }
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                preSalesCheckBox.IsChecked = true;
+                preSalesCheckBox.IsEnabled = false;
+                preSalesComboBox.IsEnabled = false;
+
+                salesCheckBox.IsChecked = false;
+                salesCheckBox.IsEnabled = true;
+                salesComboBox.IsEnabled = false;
+            }
         }
 
         /////////////////////////////////////////////////////////////////
@@ -229,18 +279,14 @@ namespace _01electronics_crm
 
         private void SetYearComboBox()
         {
-            yearCombo.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
+            yearComboBox.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
         }
         private void SetQuarterComboBox()
         {
-            quarterCombo.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
-        }
-
-        private void SetEmployeeComboBox()
-        {
-            for (int i = 0; i < employeesList.Count; i++)
-                if (loggedInUser.GetEmployeeId() == employeesList[i].employee_id)
-                    employeeCombo.SelectedIndex = i;
+            if (yearComboBox.SelectedIndex == DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR)
+                quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+            else
+                quarterComboBox.SelectedIndex = 0;
         }
 
 
@@ -253,13 +299,9 @@ namespace _01electronics_crm
             {
                 DateTime currentWorkOfferDate = DateTime.Parse(workOffers[i].issue_date);
 
-                bool salesPersonCondition =
-                   selectedTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID &&
-                   selectedEmployee != workOffers[i].sales_person_id;
+                bool salesPersonCondition = selectedSales != workOffers[i].sales_person_id;
 
-                bool assigneeCondition =
-                    selectedTeam == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID &&
-                    selectedEmployee != workOffers[i].offer_proposer_id;
+                bool assigneeCondition = selectedPreSales != workOffers[i].offer_proposer_id;
 
                 bool productCondition = false;
                 for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
@@ -275,10 +317,10 @@ namespace _01electronics_crm
                 if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
                     continue;
 
-                if (employeeCheckBox.IsChecked == true && salesPersonCondition )
+                if (salesCheckBox.IsChecked == true && salesPersonCondition)
                     continue;
 
-                if (employeeCheckBox.IsChecked == true && assigneeCondition)
+                if (preSalesCheckBox.IsChecked == true && assigneeCondition)
                     continue;
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOfferDate) != selectedQuarter)
@@ -317,6 +359,7 @@ namespace _01electronics_crm
 
                 Label productTypeAndBrandLabel = new Label();
                 List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> temp = workOffers[i].products;
+
                 for (int j = 0; j < temp.Count(); j++)
                 {
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
@@ -384,87 +427,97 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////
-        private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (yearCombo.SelectedItem != null)
-                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            if (yearComboBox.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
                 selectedYear = 0;
-            currentSelectedOfferItem = null;
+            
             SetWorkOffersStackPanel();
         }
 
-        private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (quarterCombo.SelectedItem != null)
-                selectedQuarter = quarterCombo.SelectedIndex + 1;
+            if (quarterComboBox.SelectedItem != null)
+                selectedQuarter = quarterComboBox.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
-            currentSelectedOfferItem = null;
+            
             SetWorkOffersStackPanel();
         }
 
-        private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (employeeCombo.SelectedItem != null)
-            {
-                selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
-                selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
-            }
+            if (salesComboBox.SelectedItem != null)
+                selectedSales = salesEmployeesList[salesComboBox.SelectedIndex].employee_id;
             else
-            {
-                selectedEmployee = 0;
-                selectedTeam = 0;
-            }
-            currentSelectedOfferItem = null;
+                selectedSales = 0;
+
+            
+
+            SetWorkOffersStackPanel();
+        }
+        private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
+        {
+            DisableViewButton();
+            DisableReviseButton();
+
+            if (preSalesComboBox.SelectedItem != null)
+                selectedPreSales = preSalesEmployeesList[preSalesComboBox.SelectedIndex].employee_id;
+            else
+                selectedPreSales = 0;
+
+            
+
             SetWorkOffersStackPanel();
         }
 
-        private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (productCombo.SelectedItem != null)
-                selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            if (productComboBox.SelectedItem != null)
+                selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
-            currentSelectedOfferItem = null;
+            
             SetWorkOffersStackPanel();
         }
 
-        private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (brandCombo.SelectedItem != null)
-                selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            if (brandComboBox.SelectedItem != null)
+                selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
-            currentSelectedOfferItem = null;
+            
             SetWorkOffersStackPanel();
         }
 
-        private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewBtn();
-            DisableReviseBtn();
+            DisableViewButton();
+            DisableReviseButton();
 
-            if (statusCombo.SelectedItem != null)
-                selectedStatus = statusCombo.SelectedIndex + 1;
+            if (statusComboBox.SelectedItem != null)
+                selectedStatus = statusComboBox.SelectedIndex + 1;
             else
                 selectedStatus = 0;
-            currentSelectedOfferItem = null;
+            
             SetWorkOffersStackPanel();
         }
 
@@ -472,92 +525,119 @@ namespace _01electronics_crm
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////
 
-        private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
+            yearComboBox.IsEnabled = true;
+            
             SetYearComboBox();
         }
 
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            quarterCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
+            quarterComboBox.IsEnabled = true;
+            
             SetQuarterComboBox();
         }
 
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckSalesCheckBox(object sender, RoutedEventArgs e)
         {
-            employeeCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
-            SetEmployeeComboBox();
+            salesComboBox.IsEnabled = true;
+            
+
+            salesComboBox.SelectedIndex = 0;
+
+            for (int i = 0; i < salesEmployeesList.Count; i++)
+                if (loggedInUser.GetEmployeeId() == salesEmployeesList[i].employee_id)
+                    salesComboBox.SelectedIndex = i;
+        }
+        private void OnCheckPreSalesCheckBox(object sender, RoutedEventArgs e)
+        {
+            preSalesComboBox.IsEnabled = true;
+            
+
+            preSalesComboBox.SelectedIndex = 0;
+
+            for (int i = 0; i < preSalesEmployeesList.Count; i++)
+                if (loggedInUser.GetEmployeeId() == preSalesEmployeesList[i].employee_id)
+                    preSalesComboBox.SelectedIndex = i;
         }
 
-        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckProductCheckBox(object sender, RoutedEventArgs e)
         {
-            productCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
+            productComboBox.IsEnabled = true;
+            
 
+            productComboBox.SelectedIndex = 0;
         }
 
-        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
-            brandCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
+            brandComboBox.IsEnabled = true;
+            
+
+            brandComboBox.SelectedIndex = 0;
         }
 
-        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
-            statusCombo.IsEnabled = true;
-            currentSelectedOfferItem = null;
+            statusComboBox.IsEnabled = true;
+            
+
+            statusComboBox.SelectedIndex = 0;
         }
         /////////////////////////////////////////////////////////////////
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////
 
 
-        private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.SelectedItem = null;
-            yearCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            yearComboBox.SelectedItem = null;
+            yearComboBox.IsEnabled = false;
+            
         }
 
         
-        private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            quarterCombo.SelectedItem = null;
-            quarterCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            quarterComboBox.SelectedItem = null;
+            quarterComboBox.IsEnabled = false;
+            
         }
 
 
-        private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckSalesCheckBox(object sender, RoutedEventArgs e)
         {
-            employeeCombo.SelectedItem = null;
-            employeeCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            salesComboBox.SelectedItem = null;
+            salesComboBox.IsEnabled = false;
+            
+        }
+        private void OnUncheckPreSalesCheckBox(object sender, RoutedEventArgs e)
+        {
+            preSalesComboBox.SelectedItem = null;
+            preSalesComboBox.IsEnabled = false;
+            
         }
 
-        private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckProductCheckBox(object sender, RoutedEventArgs e)
         {
-            productCombo.SelectedItem = null;
-            productCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            productComboBox.SelectedItem = null;
+            productComboBox.IsEnabled = false;
+            
         }
 
-        private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
-            brandCombo.SelectedItem = null;
-            brandCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            brandComboBox.SelectedItem = null;
+            brandComboBox.IsEnabled = false;
+            
         }
 
-        private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
-            statusCombo.SelectedItem = null;
-            statusCombo.IsEnabled = false;
-            currentSelectedOfferItem = null;
+            statusComboBox.SelectedItem = null;
+            statusComboBox.IsEnabled = false;
+            
         }
 
         /////////////////////////////////////////////////////////////////
@@ -679,7 +759,7 @@ namespace _01electronics_crm
         }
         private void OnBtnClickedWorkOfferItem(object sender, RoutedEventArgs e)
         {
-            EnableViewBtn();
+            EnableViewButton();
             EnableReviseButton();
             previousSelectedOfferItem = currentSelectedOfferItem;
             currentSelectedOfferItem = (Grid)sender;

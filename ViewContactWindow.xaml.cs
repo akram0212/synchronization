@@ -25,8 +25,6 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
 
         Contact contact;
-
-        String [] name;
         public ViewContactWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             InitializeComponent();
@@ -35,16 +33,12 @@ namespace _01electronics_crm
             contact = mContact;
 
             employeeFirstNameTextBox.IsEnabled = false;
-            employeeLastNameTextBox.IsEnabled = false;
             contactGenderTextBox.IsEnabled = false;
             companyNameTextBox.IsEnabled = false;
             companyBranchTextBox.IsEnabled = false;
             departmentTextBox.IsEnabled = false;
 
-            name = contact.GetContactName().Split(' '); 
-
-            employeeFirstNameTextBox.Text = name[0];
-            employeeLastNameTextBox.Text = name[1];
+            employeeFirstNameTextBox.Text = contact.GetContactName();
 
             contactGenderTextBox.Text = contact.GetContactGender();
             companyNameTextBox.Text = contact.GetCompanyName();

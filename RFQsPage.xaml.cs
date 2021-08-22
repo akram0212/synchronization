@@ -29,7 +29,7 @@ namespace _01electronics_crm
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList;
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
-        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsListAfterFiltering;
+        private List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT> stackPanelItems;
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes;
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes;
 
@@ -56,7 +56,7 @@ namespace _01electronics_crm
 
             employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
             rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
-            rfqsListAfterFiltering = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+            stackPanelItems = new List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT>();
             productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
@@ -82,46 +82,106 @@ namespace _01electronics_crm
 
             InitializeStatusComboBox();
 
-            DisableViewButton();
-            DisableReviseButton();
-            DisableResolveButton();
-            DisableComboBoxes();
-            ResetComboBoxes();
-
-            ConfigureUIElements();
+            SetDefaultSettings();
 
             if (!GetRFQs())
                 return;
 
             SetRFQsStackPanel();
 
+            
         }
+
+        /////////////////////////////////////////////////////////////////
+        //GET DATA FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        private bool GetRFQs()
+        {
+            if (!commonQueriesObject.GetRFQs(ref rfqsList))
+                return false;
+            return true;
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //INTIALIZATION FUNCTIONS
+        /////////////////////////////////////////////////////////////////
+        ///
+        private void InitializeYearsComboBox()
+        {
+            for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
+                yearComboBox.Items.Add(year);
+        }
+        private void InitializeQuartersComboBox()
+        {
+            for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
+                quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
+        }
+        private bool InitializeEmployeeComboBox()
+        {
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
+                return false;
+
+            for (int i = 0; i < employeesList.Count; i++)
+                employeeComboBox.Items.Add(employeesList[i].employee_name);
+
+            return true;
+        }
+
+        private bool InitializeProductsComboBox()
+        {
+            if (!commonQueriesObject.GetCompanyProducts(ref productTypes))
+                return false;
+
+            for (int i = 0; i < productTypes.Count; i++)
+                productComboBox.Items.Add(productTypes[i].typeName);
+
+            return true;
+        }
+        private bool InitializeBrandsComboBox()
+        {
+            
+            if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
+                return false;
+
+            for (int i = 0; i < brandTypes.Count; i++)
+                brandComboBox.Items.Add(brandTypes[i].brandName);
+
+            return true;
+        }
+
+        private void InitializeStatusComboBox()
+        {
+            statusComboBox.Items.Add("Pending");
+            statusComboBox.Items.Add("Confirmed");
+            statusComboBox.Items.Add("Failed");
+            statusComboBox.IsEnabled = false;
+        }
+
+        /////////////////////////////////////////////////////////////////
+        //CONFIGURATION FUNCTIONS
+        /////////////////////////////////////////////////////////////////
 
         private void ResetComboBoxes()
         {
-            yearCombo.SelectedItem = null;
+            yearComboBox.SelectedIndex = -1;
+            quarterComboBox.SelectedIndex = -1;
 
-            quarterCombo.SelectedItem = -1;
+            employeeComboBox.SelectedIndex = -1;
 
-            employeeCombo.SelectedItem = -1;
-            selectedEmployee = -1;
-            selectedTeam = -1;
+            productComboBox.SelectedIndex = -1;
+            brandComboBox.SelectedIndex = -1;
 
-            productCombo.SelectedItem = -1;
-
-            brandCombo.SelectedItem = -1;
-
-            statusCombo.SelectedItem = -1;
+            statusComboBox.SelectedIndex = -1;
         }
 
         private void DisableComboBoxes()
         {
-            yearCombo.IsEnabled = false;
-            quarterCombo.IsEnabled = false;
-            employeeCombo.IsEnabled = false;
-            productCombo.IsEnabled = false;
-            brandCombo.IsEnabled = false;
-            statusCombo.IsEnabled = false;
+            yearComboBox.IsEnabled = false;
+            quarterComboBox.IsEnabled = false;
+            employeeComboBox.IsEnabled = false;
+            productComboBox.IsEnabled = false;
+            brandComboBox.IsEnabled = false;
+            statusComboBox.IsEnabled = false;
         }
 
         private void DisableViewButton()
@@ -152,113 +212,54 @@ namespace _01electronics_crm
         {
             resolveButton.IsEnabled = false;
         }
-        /////////////////////////////////////////////////////////////////
-        //GET DATA FUNCTIONS
-        /////////////////////////////////////////////////////////////////
-        private bool GetRFQs()
+  
+        private void SetDefaultSettings()
         {
-            if (!commonQueriesObject.GetRFQs(ref rfqsList))
-                return false;
-            return true;
-        }
+            DisableViewButton();
+            DisableReviseButton();
+            DisableResolveButton();
+            DisableComboBoxes();
+            ResetComboBoxes();
 
-        /////////////////////////////////////////////////////////////////
-        //INTIALIZATION FUNCTIONS
-        /////////////////////////////////////////////////////////////////
-        ///
-        private void InitializeYearsComboBox()
-        {
-            for (int year = BASIC_MACROS.CRM_START_YEAR; year <= DateTime.Now.Year; year++)
-                yearCombo.Items.Add(year);
-        }
-        private void InitializeQuartersComboBox()
-        {
-            for (int i = 0; i < BASIC_MACROS.NO_OF_QUARTERS; i++)
-                quarterCombo.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
-        }
-        private bool InitializeEmployeeComboBox()
-        {
-            if (!commonQueriesObject.GetCompanyEmployees(ref employeesList))
-                return false;
-
-            for (int i = 0; i < employeesList.Count; i++)
-                employeeCombo.Items.Add(employeesList[i].employee_name);
-
-            return true;
-        }
-
-        private bool InitializeProductsComboBox()
-        {
-            if (!commonQueriesObject.GetCompanyProducts(ref productTypes))
-                return false;
-
-            for (int i = 0; i < productTypes.Count; i++)
-                productCombo.Items.Add(productTypes[i].typeName);
-
-            return true;
-        }
-        private bool InitializeBrandsComboBox()
-        {
-            
-            if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
-                return false;
-
-            for (int i = 0; i < brandTypes.Count; i++)
-                brandCombo.Items.Add(brandTypes[i].brandName);
-
-            return true;
-        }
-
-        private void InitializeStatusComboBox()
-        {
-            statusCombo.Items.Add("Pending");
-            statusCombo.Items.Add("Confirmed");
-            statusCombo.Items.Add("Failed");
-            statusCombo.IsEnabled = false;
-        }
-
-        /////////////////////////////////////////////////////////////////
-        //CONFIGURATION FUNCTIONS
-        /////////////////////////////////////////////////////////////////
-        private void ConfigureUIElements()
-        {
-            EnableYearUIElements();
-
-            //THE CONDITION HERE IS WRONG, YOU SHOULD CHECK THE POSITION NOT THE TEAM
-            if (loggedInUser.GetEmployeePositionId() >= COMPANY_ORGANISATION_MACROS.JUNIOR_POSTION)
-            {
-                DisableEmployeeUIElements();
-                SetEmployeeComboBox();
-            }
-
-        }
-
-        private void EnableYearUIElements()
-        {
             yearCheckBox.IsChecked = true;
+            yearCheckBox.IsEnabled = false;
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.SENIOR_POSTION)
+            {
+                employeeCheckBox.IsChecked = false;
+                employeeCheckBox.IsEnabled = true;
+                employeeComboBox.IsEnabled = false;
+            }
+            else
+            {
+                employeeCheckBox.IsChecked = true;
+                employeeCheckBox.IsEnabled = false;
+                employeeComboBox.IsEnabled = false;
+            }
         }
+
         /////////////////////////////////////////////////////////////////
         //SET FUNCTIONS
         /////////////////////////////////////////////////////////////////
         private void SetYearComboBox()
         {
-            yearCombo.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
+            yearComboBox.SelectedIndex = DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR;
         }
         private void SetQuarterComboBox()
         {
-            quarterCombo.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+            if (yearComboBox.SelectedIndex == DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR)
+                quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+            else
+                quarterComboBox.SelectedIndex = 0;
         }
+
         private void SetEmployeeComboBox()
         {
+            employeeComboBox.SelectedIndex = 0;
+
             for (int i = 0; i < employeesList.Count; i++)
                 if (loggedInUser.GetEmployeeId() == employeesList[i].employee_id)
-                    employeeCombo.SelectedIndex = i;
-        }
-        private void DisableEmployeeUIElements()
-        {
-            employeeCheckBox.IsChecked = true;
-            employeeCheckBox.IsEnabled = false;
-            employeeCombo.IsEnabled = false;
+                    employeeComboBox.SelectedIndex = i;
         }
 
         private bool SetRFQsStackPanel()
@@ -269,8 +270,8 @@ namespace _01electronics_crm
 
             RFQsStackPanel.Children.Clear();
 
-            if(rfqsListAfterFiltering.Count() != 0)
-                rfqsListAfterFiltering.Clear();
+            if(stackPanelItems.Count() != 0)
+                stackPanelItems.Clear();
 
             for (int i = 0; i < rfqsList.Count; i++)
             {
@@ -311,7 +312,8 @@ namespace _01electronics_crm
                
                 else
                 {
-                    if (employeeCheckBox.IsChecked == true && employeeCombo.SelectedItem != null  && employeeCombo.SelectedItem.ToString() != rfqsList[i].sales_person_name)
+                    //COMPARE ONLY BY ID NOT NAME
+                    if (employeeCheckBox.IsChecked == true && employeeComboBox.SelectedItem != null  && employeesList[employeeComboBox.SelectedIndex].employee_id != rfqsList[i].sales_person_id)
                         continue;
                 }
 
@@ -327,12 +329,15 @@ namespace _01electronics_crm
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
                     continue;
 
-                rfqsListAfterFiltering.Add(rfqsList[i]);
+                COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT currentItem = new COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT();
+                currentItem.sales_person = rfqsList[i].sales_person_id;
+                currentItem.rfq_serial = rfqsList[i].rfq_serial;
+                currentItem.rfq_version = rfqsList[i].rfq_version;
+
+                stackPanelItems.Add(currentItem);
+
                 StackPanel currentStackPanel = new StackPanel();
                 currentStackPanel.Orientation = Orientation.Vertical;
-                //currentStackPanel.MouseLeftButtonDown += OnButtonRFQItem;
-
-                //currentStackPanel.Height = 90;
 
                 Label rfqIDLabel = new Label();
                 rfqIDLabel.Content = rfqsList[i].rfq_id;
@@ -420,154 +425,161 @@ namespace _01electronics_crm
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////
 
-        private void YearComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (yearCombo.SelectedItem != null)
-                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearCombo.SelectedIndex;
+            if (yearComboBox.SelectedItem != null)
+                selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
                 selectedYear = 0;
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
-        private void QuarterComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (quarterCombo.SelectedItem != null)
-                selectedQuarter = quarterCombo.SelectedIndex + 1;
+            if (quarterComboBox.SelectedItem != null)
+                selectedQuarter = quarterComboBox.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
-        private void EmployeeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedEmployeeCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (employeeCombo.SelectedItem != null)
+            if (employeeComboBox.SelectedItem != null)
             {
-                selectedEmployee = employeesList[employeeCombo.SelectedIndex].employee_id;
-                selectedTeam = employeesList[employeeCombo.SelectedIndex].team.team_id;
+                selectedEmployee = employeesList[employeeComboBox.SelectedIndex].employee_id;
+                selectedTeam = employeesList[employeeComboBox.SelectedIndex].team.team_id;
             }
             else
             {
                 selectedEmployee = 0;
                 selectedTeam = 0;
             }
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
-        private void ProductComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (productCombo.SelectedItem != null)
-                selectedProduct = productTypes[productCombo.SelectedIndex].typeId;
+            if (productComboBox.SelectedItem != null)
+                selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
-        private void BrandComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (brandCombo.SelectedItem != null)
-                selectedBrand = brandTypes[brandCombo.SelectedIndex].brandId;
+            if (brandComboBox.SelectedItem != null)
+                selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
-        private void StatusComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (statusCombo.SelectedItem != null)
-                selectedStatus = statusCombo.SelectedIndex + 1;
+            if (statusComboBox.SelectedItem != null)
+                selectedStatus = statusComboBox.SelectedIndex + 1;
             else
                 selectedStatus = 0;
-            currentSelectedRFQItem = null;
+
+            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
         }
 
         /////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////
-        private void YearCheckBoxChecked(object sender, RoutedEventArgs e)
+        ///
+        private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.IsEnabled = true;
+            yearComboBox.IsEnabled = true;
             SetYearComboBox();
         }
-        private void QuarterCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            quarterCombo.IsEnabled = true;
+            quarterComboBox.IsEnabled = true;
             SetQuarterComboBox();
         }
-        private void EmployeeCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
-            employeeCombo.IsEnabled = true;
+            employeeComboBox.IsEnabled = true;
             SetEmployeeComboBox();
         }
-        private void ProductCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckProductCheckBox(object sender, RoutedEventArgs e)
         {
-            productCombo.IsEnabled = true;
+            productComboBox.IsEnabled = true;
         }
-        private void BrandCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
-            brandCombo.IsEnabled = true;
+            brandComboBox.IsEnabled = true;
         }
-        private void StatusCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void OnCheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
-            statusCombo.IsEnabled = true;
+            statusComboBox.IsEnabled = true;
         }
 
         /////////////////////////////////////////////////////////////////
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////
-        private void YearCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        ///
+        private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
-            yearCombo.IsEnabled = false;
-            yearCombo.SelectedItem = null;
+            yearComboBox.IsEnabled = false;
+            yearComboBox.SelectedItem = null;
             
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
-        private void QuarterCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            quarterCombo.IsEnabled = false;
-            quarterCombo.SelectedItem = null;
+            quarterComboBox.IsEnabled = false;
+            quarterComboBox.SelectedItem = null;
 
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
-        private void EmployeeCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
-            employeeCombo.IsEnabled = false;
-            employeeCombo.SelectedItem = null;
+            employeeComboBox.IsEnabled = false;
+            employeeComboBox.SelectedItem = null;
 
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
-        private void ProductCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckProductCheckBox(object sender, RoutedEventArgs e)
         {
-            productCombo.SelectedItem = null;
-            productCombo.IsEnabled = false;
+            productComboBox.SelectedItem = null;
+            productComboBox.IsEnabled = false;
 
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
-        
-        private void BrandCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
-            brandCombo.SelectedItem = null;
-            brandCombo.IsEnabled = false;
+            brandComboBox.SelectedItem = null;
+            brandComboBox.IsEnabled = false;
 
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
-        private void StatusCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
-            statusCombo.SelectedItem = null;
-            statusCombo.IsEnabled = false;
+            statusComboBox.SelectedItem = null;
+            statusComboBox.IsEnabled = false;
 
-            currentSelectedRFQItem = null;
-            previousSelectedRFQItem = null;
+            //currentSelectedRFQItem = null;
+            //previousSelectedRFQItem = null;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -639,9 +651,10 @@ namespace _01electronics_crm
         {
             RFQ selectedRFQ = new RFQ(sqlDatabase);
 
-            selectedRFQ.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
 
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
             RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
@@ -652,9 +665,9 @@ namespace _01electronics_crm
         {
             RFQ selectedRFQ = new RFQ(sqlDatabase);
 
-            selectedRFQ.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
 
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
             RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
@@ -709,12 +722,14 @@ namespace _01electronics_crm
         {
             RFQ selectedRFQ = new RFQ(sqlDatabase);
             WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
-            
-            resolveWorkOffer.ResolveRFQ(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version);
-            
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_RESOLVE_CONDITION;
+
+
+            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
+            resolveWorkOffer.LinkRFQInfo();
+            int viewAddCondition = 3;
+
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition);
             resolveOffer.Show();
         }

@@ -79,9 +79,13 @@
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BorriUPSPage.xaml.cs">
-      <DependentUpon>BorriUPSPage.xaml</DependentUpon>
+    <Compile Include="ModelsPage.xaml.cs">
+      <DependentUpon>ModelsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BrandsPage.xaml.cs">
+      <DependentUpon>BrandsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
     </Compile>
@@ -108,9 +112,6 @@
     </Compile>
     <Compile Include="SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UPSPage.xaml.cs">
-      <DependentUpon>UPSPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
@@ -146,9 +147,6 @@
     <Compile Include="WorkOffersPage.xaml.cs">
       <DependentUpon>WorkOffersPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorkOffersWordAutomation.xaml.cs">
-      <DependentUpon>WorkOffersWordAutomation.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WorkOfferWindow.xaml.cs">
       <DependentUpon>WorkOfferWindow.xaml</DependentUpon>
     </Compile>
@@ -179,7 +177,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BorriUPSPage.xaml">
+    <Page Include="ModelsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BrandsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -265,10 +267,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UPSPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -312,10 +310,6 @@
     <Page Include="WorkOffersPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WorkOffersWordAutomation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WorkOfferWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -365,6 +359,38 @@
       <Name>01electronics_library</Name>
     </ProjectReference>
     <Resource Include="MAIN_LOGO.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\BorriUPS.jpg" />
+    <Resource Include="Photos\LegrandUPS.jpg" />
+    <Resource Include="Photos\UPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\BorriCommercialUPS.jpg" />
+    <Resource Include="Photos\BorriIndustrialUPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\elcos.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\NiCdBatteries.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\Panels_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\Borri.jpg" />
+    <Resource Include="Photos\Legrand.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\Commerical_UPS_cover_photo.jpg" />
+    <Resource Include="Photos\Industrial_UPS_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\Batteries_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Photos\Genset_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

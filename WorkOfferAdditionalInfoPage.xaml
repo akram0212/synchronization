@@ -98,8 +98,8 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Name="automateWorkOfferButon" Style="{StaticResource buttonStyle}" Content="Generate Word" Click="AutomateWorkOfferButonClick" HorizontalAlignment="Left" Margin="71,0,0,0"/>
-                    <Button Grid.Column="1" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnBtnClickOk"/>
+                    <Button Grid.Column="0" Name="automateWorkOfferButon" Style="{StaticResource buttonStyle}" Content="Generate Word" Click="OnButtonClickAutomateWorkOffer" HorizontalAlignment="Left" Margin="71,0,0,0"/>
+                    <Button Grid.Column="1" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnButtonClickOk"/>
                 </Grid>
             </Grid>
            
