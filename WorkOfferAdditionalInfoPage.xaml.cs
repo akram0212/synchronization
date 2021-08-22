@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _01electronics_library;
 
-
 namespace _01electronics_crm
 {
     /// <summary>
@@ -24,6 +23,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         WorkOffer workOffer;
+        WordAutomation wordAutomation;
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -51,15 +51,16 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
             IntegrityChecks = new IntegrityChecks();
+            wordAutomation = new WordAutomation();
 
             workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
             /////////////////////////
             ///ADD
             /////////////////////////
-            if(viewAddCondition == 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
-                ConfigureDrawingSubmissionUIElements();
+                //ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 HideReviseOfferButton();
@@ -67,14 +68,14 @@ namespace _01electronics_crm
             //////////////////////////
             ///VIEW
             //////////////////////////
-            else if(viewAddCondition == 0)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
 
                 //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
                 //    drawingConditionsCheckBox.IsChecked = true;
-                
+
                 ConfigureUIElementsView();
                 SetDrawingSubmissionValues();
                 SetContractTypeValue();
@@ -88,9 +89,9 @@ namespace _01electronics_crm
             //////////////////////////////
             ///REVISE
             //////////////////////////////
-            else if(viewAddCondition == 2)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
-                ConfigureDrawingSubmissionUIElements();
+                //ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 SetDrawingSubmissionValues();
@@ -107,7 +108,7 @@ namespace _01electronics_crm
             ///////////////////////
             else
             {
-                ConfigureDrawingSubmissionUIElements();
+                //ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 HideReviseOfferButton();
@@ -116,7 +117,7 @@ namespace _01electronics_crm
         /////////////////////////////////
         ///CONFIGURE UI ELEMENTS FUNCTIONS
         /////////////////////////////////
-        
+
         private void HideReviseOfferButton()
         {
             reviseOfferButton.Visibility = Visibility.Collapsed;
@@ -152,7 +153,7 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetContractTypes(ref contractTypes))
                 return false;
-            for(int i = 0; i < contractTypes.Count; i++)
+            for (int i = 0; i < contractTypes.Count; i++)
                 contractTypeComboBox.Items.Add(contractTypes[i].contractName);
 
             return true;
@@ -162,7 +163,7 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTimeUnits(ref timeUnits))
                 return false;
-            for(int i = 0; i < timeUnits.Count(); i++)
+            for (int i = 0; i < timeUnits.Count(); i++)
             {
                 warrantyPeriodCombo.Items.Add(timeUnits[i].timeUnit);
                 offerValidityCombo.Items.Add(timeUnits[i].timeUnit);
@@ -251,7 +252,7 @@ namespace _01electronics_crm
         }
 
         private void DrawingDeadlineFromTextBoxTextChanged(object sender, TextChangedEventArgs e)
-           {
+        {
             if (IntegrityChecks.CheckInvalidCharacters(drawingDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineFromTextBox.Text != "")
                 drawingDeadlineFrom = int.Parse(drawingDeadlineFromTextBox.Text);
             else
@@ -273,7 +274,15 @@ namespace _01electronics_crm
         }
         private void DrawingDeadlineDateComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
+            if (drawingDeadlineDateComboBox.SelectedItem != null)
+            {
+                workOffer.SetHasDrawings(true);
+                workOffer.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
+            }
+            else
+            {
+                workOffer.SetHasDrawings(false);
+            }
         }
 
         //////////////////////////////
@@ -323,14 +332,43 @@ namespace _01electronics_crm
 
         private void AddOfferButtonClick(object sender, RoutedEventArgs e)
         {
-            workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
-            workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
-            workOffer.SetWarrantyPeriod(warrantyPeriod);
-            workOffer.SetOfferValidityPeriod(offerValidityPeriod);
-            workOffer.SetOfferNotes(additionalDescription);
-
-            workOffer.IssueNewOffer();
+            
+            if (workOffer.GetSalesPersonId() == 0)
+                MessageBox.Show("You need to choose sales person before adding a work offer!");
+            else if (workOffer.GetCompanyName() == null)
+                MessageBox.Show("You need to choose a company before adding a work offer!");
+            else if (workOffer.GetAddressSerial() == 0)
+                MessageBox.Show("You need to choose company address before adding a work offer!");
+            else if (workOffer.GetContactId() == 0)
+                MessageBox.Show("You need to choose a contact before adding a work offer!");
+            else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
+                MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
+            else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
+                MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
+            else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
+                MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
+            else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
+                MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
+            else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
+                MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
+            else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
+                MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
+            else if (workOffer.GetDeliveryPointId() == 0)
+                MessageBox.Show("You need to set delivery point before adding a work offer!");
+            else if (workOffer.GetOfferContractTypeId() == 0)
+                MessageBox.Show("You need to set contract type before adding a work offer!");
+            else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
+                MessageBox.Show("You need to set warranty period before adding a work offer!");
+            else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
+                MessageBox.Show("You need to set validity period before adding a work offer!");
+            else
+            {
+                if (workOffer.IssueNewOffer())
+                    MessageBox.Show("WorkOffer added succefully!");
+            }
         }
+
+
 
         private void ReviseOfferButtonClick(object sender, RoutedEventArgs e)
         {
@@ -339,8 +377,34 @@ namespace _01electronics_crm
             workOffer.SetWarrantyPeriod(warrantyPeriod);
             workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             workOffer.SetOfferNotes(additionalDescription);
+
+           
             
-            workOffer.ReviseOffer();
+
+            if (workOffer.ReviseOffer())
+                MessageBox.Show("Offer Revised successfully!");
+        }
+
+        private void DrawingDeadlineDateFromWhenComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void WarrantyPeriodFromWhenComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void AutomateWorkOfferButonClick(object sender, RoutedEventArgs e)
+        {
+            workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+            workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+            workOffer.SetWarrantyPeriod(warrantyPeriod);
+            workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+            workOffer.SetOfferNotes(additionalDescription);
+
+            string wordFilePath = "D:/01electronics_crm/MyExcel/" + workOffer.GetNoOfOfferSavedProducts() + ".doc";
+            wordAutomation.AutomateWorkOffer(wordFilePath, workOffer);
         }
     }
 }

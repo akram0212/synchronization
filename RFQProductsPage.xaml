@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
@@ -38,8 +38,8 @@
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
             </Border>
         </Grid>
-
-        <WrapPanel Name="mainWrapPanel" Grid.Row="2"/>
-
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <WrapPanel Name="mainWrapPanel" />
+        </ScrollViewer>
     </Grid>
 </Page>

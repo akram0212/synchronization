@@ -266,7 +266,9 @@ namespace _01electronics_crm
             DisableReviseButton();
             DisableViewButton();
             DisableResolveButton();
+
             RFQsStackPanel.Children.Clear();
+
             if(rfqsListAfterFiltering.Count() != 0)
                 rfqsListAfterFiltering.Clear();
 
@@ -351,10 +353,16 @@ namespace _01electronics_crm
                 Label productTypeAndBrandLabel = new Label();
                 for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
                 {
+                    
                     List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
+
+                    if (tempType1.typeId == 0)
+                        continue;
+
                     productTypeAndBrandLabel.Content += tempType1.typeName + " -" + tempBrand1.brandName;
+
                     if (j != COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS - 1)
                         productTypeAndBrandLabel.Content += ", ";
                 }
@@ -622,7 +630,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = 1;
+            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_ADD_CONDITION;
             RFQ rfq = new RFQ(sqlDatabase);
             RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
             addRFQWindow.Show();
@@ -631,11 +639,11 @@ namespace _01electronics_crm
         {
             RFQ selectedRFQ = new RFQ(sqlDatabase);
 
-            selectedRFQ.InitializeRFQInfo(rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            rfqsList[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
+            selectedRFQ.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
 
-            int viewAddCondition = 0;
+            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
             RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
             viewRFQ.Show();
 
@@ -648,7 +656,7 @@ namespace _01electronics_crm
                                             rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
                                             rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
 
-            int viewAddCondition = 2;
+            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
             RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
             reviseRFQ.Show();
         }
@@ -701,12 +709,12 @@ namespace _01electronics_crm
         {
             RFQ selectedRFQ = new RFQ(sqlDatabase);
             WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
-
-            resolveWorkOffer.InitializeRFQInfo(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id);
-            resolveWorkOffer.LinkRFQInfo();
-            int viewAddCondition = 3;
+            
+            resolveWorkOffer.ResolveRFQ(rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person_id,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                            rfqsListAfterFiltering[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version);
+            
+            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_RESOLVE_CONDITION;
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition);
             resolveOffer.Show();
         }

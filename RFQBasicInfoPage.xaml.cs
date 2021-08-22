@@ -21,6 +21,8 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQBasicInfoPage : Page
     {
+        
+
         Employee loggedInUser;
         RFQ rfq;
 
@@ -63,7 +65,7 @@ namespace _01electronics_crm
             rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
 
-            if (viewAddCondition == 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureAddRFQUIElements();
 
@@ -82,7 +84,7 @@ namespace _01electronics_crm
 
                 
             }
-            else if (viewAddCondition == 0)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
                 InitializeCompanyInfo();
                 InitializeContactInfo();
@@ -169,7 +171,7 @@ namespace _01electronics_crm
         }
         private bool InitializeContactInfo()
         {
-            if (viewAddCondition == 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), rfq.GetAddressSerial(), ref contactInfo))
                     return false;
@@ -196,7 +198,7 @@ namespace _01electronics_crm
         //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
-            if (viewAddCondition == 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
                     return false;
@@ -206,7 +208,7 @@ namespace _01electronics_crm
                 if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
                     return false;
             }
-                //NO NEED FOR TEMP VARIABLES
+
                 for (int i = 0; i < companiesList.Count(); i++)
                     companyNameCombo.Items.Add(companiesList[i].company_name);
 
@@ -320,12 +322,12 @@ namespace _01electronics_crm
             {
                 companyAddressCombo.IsEnabled = true;
 
-                for(int i = 0; i < companiesList.Count; i++)
-                {
-                    if (companyNameCombo.SelectedItem.ToString() == companiesList[i].company_name)
-                        companySerial = companiesList[i].company_serial;
-                }
-                //int companySerial = companyNameCombo.SelectedIndex + 1;
+               // for(int i = 0; i < companiesList.Count; i++)
+                //{
+                 //   if (companyNameCombo.SelectedItem.ToString() == companiesList[i].company_name)
+                  //      companySerial = companiesList[i].company_serial;
+                //}
+                int companySerial = companiesList[companyNameCombo.SelectedIndex].company_serial;
 
                 if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                     return;
@@ -355,7 +357,7 @@ namespace _01electronics_crm
                 
                 addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
 
-                if (viewAddCondition == 1)
+                if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
                 {
                     if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
                         return;
@@ -371,8 +373,8 @@ namespace _01electronics_crm
                 
                 rfq.InitializeBranchInfo(addressSerial);
 
-                if (contactInfo.Count() == 1)
-                    contactPersonCombo.Items.GetItemAt(0);
+                if (contactPersonCombo.Items.Count > 0)
+                    contactPersonCombo.SelectedIndex = 0;
             }
         }
 
@@ -391,6 +393,9 @@ namespace _01electronics_crm
                 contactPersonPhoneCombo.Items.Add(rfq.GetRFQContact().GetContactPhones()[i]);
                 contactPhones[i] = rfq.GetRFQContact().GetContactPhones()[i];
             }
+
+            if (contactPersonPhoneCombo.Items.Count > 0)
+                contactPersonPhoneCombo.SelectedIndex = 0;
             
         }
         private void ContactPersonPhoneComboSelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+                <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>

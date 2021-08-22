@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Spire.Doc, Version=9.7.14.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>packages\Spire.Doc.9.7.14\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
@@ -64,6 +68,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RFQ.cs" />
+    <Compile Include="SQLServer.cs" />
+    <Compile Include="Vacation.cs" />
+    <Compile Include="WorkOffer.cs" />
+    <Compile Include="WorkOrder.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +87,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mission.cs" />
+    <Compile Include="OfficeMeeting.cs" />
+    <Compile Include="Petition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

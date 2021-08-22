@@ -621,9 +621,9 @@ namespace _01electronics_crm
 
         private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = 1;
+            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
             WorkOffer workOffer = new WorkOffer(sqlDatabase);
-
+            
             WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
             workOfferWindow.Show();
         }
@@ -648,7 +648,7 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
             }
 
-            int viewAddCondition = 0;
+            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
             WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
             viewOffer.Show();
         }
@@ -673,7 +673,7 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
             }
 
-            int viewAddCondition = 2;
+            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
             WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
             reviseOffer.Show();
         }

@@ -52,12 +52,12 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if(viewAddCondition == 1)
+            if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureUIElementsForAdd();
                 InitializeContractTypeCombo();
             }
-            else if (viewAddCondition == 0)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
                 ConfigureUIElementsForView();
 
@@ -191,15 +191,26 @@ namespace _01electronics_crm
         {
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
-            
+
 
             //YOUR MESSAGE MUST BE SPECIFIC
             //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
-            if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
+            if (rfq.GetSalesPersonId() == 0)
                 System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetAssigneeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an assignee for the rfq!");
+            else if (rfq.GetAddressSerial() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an address for the rfq!");
+            else if (rfq.GetContactId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contact for the rfq!");
+            else if (rfq.GetRFQContractTypeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contract type for the rfq!");
+            else if (rfq.GetRFQStatusId() == 0)
+                System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!");
             else
             {
-                rfq.IssueNewRFQ();
+                if (rfq.IssueNewRFQ())
+                    System.Windows.MessageBox.Show("RFQ added succefully!");
             }
         }
 
@@ -207,7 +218,23 @@ namespace _01electronics_crm
         {
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
-            rfq.ReviseRFQ();
+            if (rfq.GetSalesPersonId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetAssigneeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an assignee for the rfq!");
+            else if (rfq.GetAddressSerial() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an address for the rfq!");
+            else if (rfq.GetContactId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contact for the rfq!");
+            else if (rfq.GetRFQContractTypeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contract type for the rfq!");
+            else if (rfq.GetRFQStatusId() == 0)
+                System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!");
+            else
+            { 
+                if(rfq.ReviseRFQ())
+                    System.Windows.MessageBox.Show("New RFQ added succefully!");
+            }
         }
     }
 }
