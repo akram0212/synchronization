@@ -104,7 +104,7 @@
 
                 </ScrollViewer>
             </Grid>
-            
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -114,11 +114,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-                <Button Grid.Column="1" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton"/>
-                <Button Grid.Column="2" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton"/>
-                <Button Grid.Column="3" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
-                
+                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+                <Button Grid.Column="2" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton"/>
+                <Button Grid.Column="3" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton"/>
             </Grid>
+            
         </Grid>
 
     </Grid>
