@@ -53,8 +53,8 @@ namespace _01electronics_crm
             IntegrityChecks = new IntegrityChecks();
             wordAutomation = new WordAutomation();
 
-            workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
+
             /////////////////////////
             ///ADD
             /////////////////////////
@@ -356,8 +356,7 @@ namespace _01electronics_crm
             workOffer.SetOfferNotes(additionalDescription);
             workOffer.GetNewOfferID();
 
-            string wordFilePath = "D:/01electronics_crm/MyExcel/" + workOffer.GetNoOfOfferSavedProducts() + ".doc";
-            wordAutomation.AutomateWorkOffer(wordFilePath, workOffer);
+            wordAutomation.AutomateWorkOffer(workOffer);
         }
 
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
