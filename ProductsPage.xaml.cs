@@ -26,21 +26,54 @@ namespace _01electronics_crm
         private Employee loggedInUser;
         private CommonQueries commonQueries;
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
+        protected List<String> productSummaryPoints;
+        protected String sqlQuery;
+        protected SQLServer sqlDatabase;
         public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
             commonQueries = new CommonQueries();
+            sqlDatabase = new SQLServer();
             products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+            productSummaryPoints = new List<string>();
 
             InitializeProducts();
+            InitializeProducSummaryPoints();
             SetUpPageUIElements();
         }
         private void InitializeProducts()
         {
             if (!commonQueries.GetCompanyProducts(ref products))
                 return;
+        }
+        public bool InitializeProducSummaryPoints()
+        {
+            productSummaryPoints.Clear();
+
+            String sqlQueryPart1 = @"select summary_points
+                                     from erp_system.dbo.products_summary_points
+                                     where summary_points != 'others' ;";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_string = 1;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count(); i++)
+            {
+                productSummaryPoints.Add(sqlDatabase.rows[i].sql_string[0]);
+            }
+
+            productSummaryPoints.Add("others");
+
+            return true;
         }
 
         public void SetUpPageUIElements()
@@ -87,7 +120,7 @@ namespace _01electronics_crm
                     imageTextBlock.Text = "  " + products[i].typeName;
                     imageTextBlock.Text += "\n\n";
 
-                    imageTextBlock.Text += "A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.";
+                    imageTextBlock.Text += productSummaryPoints[i];
                     gridI.Children.Add(imageTextBlock);
                     Grid.SetRow(imageTextBlock, 0);
                     ProductsGrid.Children.Add(gridI);
@@ -123,7 +156,7 @@ namespace _01electronics_crm
                     imageTextBlock.Text = "  "+ products[i].typeName;
                     imageTextBlock.Text += "\n\n";
 
-                    imageTextBlock.Text += "A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.";
+                    imageTextBlock.Text += productSummaryPoints[i];
                     Grid.SetRow(imageTextBlock, 0);
 
                     gridI.Children.Add(imageTextBlock);

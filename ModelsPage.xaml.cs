@@ -99,21 +99,31 @@ namespace _01electronics_crm
                     Grid.SetColumn(imageBorder, 0);
 
                     selectedProduct.SetModelID(brandModels[i].modelId);
-                    selectedProduct.DownloadPhotoFromServer();
-                    Image brandImage = new Image();
-                    BitmapImage src = new BitmapImage();
-                    src.BeginInit();
-                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath());
-                    src.EndInit();
-                    brandImage.Source = src;
-                        brandImage.Height = 220;
-                    brandImage.Width = 190;
-                    brandImage.MouseDown += ImageMouseDown;
-                    brandImage.Tag = brandModels[i].modelId.ToString();
-                    Grid.SetColumn(brandImage, 0);
 
+                    try
+                    {
+                        if(!selectedProduct.DownloadPhotoFromServer())
+                        {
+                            continue;
+                        }
+                    }
+                    catch
+                    { 
+                        Image brandImage = new Image();
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath());
+                        src.EndInit();
+                        brandImage.Source = src;
+                        brandImage.Height = 220;
+                        brandImage.Width = 190;
+                        brandImage.MouseDown += ImageMouseDown;
+                        brandImage.Tag = brandModels[i].modelId.ToString();
+                        Grid.SetColumn(brandImage, 0);
+                        column1Grid.Children.Add(brandImage);
+
+                    }
                     column1Grid.Children.Add(imageBorder);
-                    column1Grid.Children.Add(brandImage);
                     Grid.SetColumn(column1Grid, 0);
 
                     currentModelGrid.Children.Add(column1Grid);

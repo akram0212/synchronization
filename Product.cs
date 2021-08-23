@@ -87,8 +87,8 @@ namespace _01electronics_crm
         {
             modelSummaryPoints.Clear();
 
-            String sqlQueryPart1 = @"select models_summary.points_id, models_summary.points
-                                     from  erp_system.dbo.models_summary
+            String sqlQueryPart1 = @"select models_summary_points.points_id, models_summary_points.points
+                                     from  erp_system.dbo.models_summary_points
                                      where product_id = ";
 
             String sqlQueryPart2 = " and brand_id = ";
@@ -122,7 +122,7 @@ namespace _01electronics_crm
 
             return true;
         }
-
+       
         //////////////////////////////////////////////////////////////////////
         //ISSUE FUNCTIONS
         //////////////////////////////////////////////////////////////////////
