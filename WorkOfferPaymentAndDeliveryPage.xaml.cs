@@ -234,11 +234,12 @@ namespace _01electronics_crm
                 return 0;
             
         }
+
         //////////////////////////////////////////////////
-        ///SELECTION AND TEXT CHANGED HANDLERS
+        ///TEXT CHANGED HANDLERS
         //////////////////////////////////////////////////
 
-        private void DownPaymentPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedDownPaymentPercentageTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(downPaymentPercentageTextBox.Text, BASIC_MACROS.PHONE_STRING) && downPaymentPercentageTextBox.Text != "")
                 downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
@@ -257,8 +258,7 @@ namespace _01electronics_crm
                 downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
 
         }
-
-        private void OnDeliveryPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedDeliveryPercentageTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(onDeliveryPercentageTextBox.Text, BASIC_MACROS.PHONE_STRING) && onDeliveryPercentageTextBox.Text != "")
                 onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
@@ -279,8 +279,7 @@ namespace _01electronics_crm
                 onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
             }
         }
-
-        private void OnInstallationPercentageTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedInstallationPercentageTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(onInstallationPercentageTextBox.Text, BASIC_MACROS.PHONE_STRING) && onInstallationPercentageTextBox.Text != "")
                 onInstallationPercentage = int.Parse(onInstallationPercentageTextBox.Text);
@@ -299,21 +298,14 @@ namespace _01electronics_crm
                 onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
 
         }
-
-        private void DeliveryPointComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
-        }
-
-        private void DeliveryTimeTextBoxFromTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedDeliveryTimeFromTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxFrom.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxFrom.Text != "")
                 workOffer.SetDeliveryTimeMinimum(int.Parse(deliveryTimeTextBoxFrom.Text));
             else
                 deliveryTimeTextBoxFrom.Text = null;
         }
-
-        private void DeliveryTimeTextBoxToTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedDeliveryTimeToTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxTo.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxTo.Text != "")
                 workOffer.SetDeliveryTimeMaximum(int.Parse(deliveryTimeTextBoxTo.Text));
@@ -321,7 +313,16 @@ namespace _01electronics_crm
                 deliveryTimeTextBoxTo.Text = null;
         }
 
-        private void DeliveryTimeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        //////////////////////////////////////////////////
+        ///SELECTION CHANGED HANDLERS
+        //////////////////////////////////////////////////
+        private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
+        {
+            workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
+        }
+
+
+        private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
             workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }

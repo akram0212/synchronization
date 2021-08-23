@@ -151,16 +151,16 @@ namespace _01electronics_crm
         }
         //////////SELECTION CHANGED//////////
         /////////////////////////////////////
-        private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContractTypeCombo(object sender, SelectionChangedEventArgs e)
         {
             if (contractTypeCombo.SelectedItem != null)
                 rfq.SetRFQContractType(contractTypes[contractTypeCombo.SelectedIndex].contractId, contractTypes[contractTypeCombo.SelectedIndex].contractName);
         }
-        private void DeadlineDateDatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedDeadlineDate(object sender, SelectionChangedEventArgs e)
         {
             deadlineDate = DateTime.Parse(deadlineDateDatePicker.SelectedDate.ToString());
         }
-        private void NotesTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnTextChangedNotes(object sender, TextChangedEventArgs e)
         {
             if (notesTextBox.Text != null)
                 notes = notesTextBox.Text;

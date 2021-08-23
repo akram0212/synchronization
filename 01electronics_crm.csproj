@@ -349,36 +349,36 @@
     <Resource Include="MAIN_LOGO.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="BorriUPS.jpg" />
-    <Resource Include="LegrandUPS.jpg" />
-    <Resource Include="UPS.jpg" />
+    <Resource Include="Photos\BorriUPS.jpg" />
+    <Resource Include="Photos\LegrandUPS.jpg" />
+    <Resource Include="Photos\UPS.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="BorriCommercialUPS.jpg" />
-    <Resource Include="BorriIndustrialUPS.jpg" />
+    <Resource Include="Photos\BorriCommercialUPS.jpg" />
+    <Resource Include="Photos\BorriIndustrialUPS.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="elcos.jpg" />
+    <Resource Include="Photos\elcos.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="NiCdBatteries.jpg" />
+    <Resource Include="Photos\NiCdBatteries.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Panels_cover_photo.jpg" />
+    <Resource Include="Photos\Panels_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Borri.jpg" />
-    <Resource Include="Legrand.jpg" />
+    <Resource Include="Photos\Borri.jpg" />
+    <Resource Include="Photos\Legrand.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Commerical_UPS_cover_photo.jpg" />
-    <Resource Include="Industrial_UPS_cover_photo.jpg" />
+    <Resource Include="Photos\Commerical_UPS_cover_photo.jpg" />
+    <Resource Include="Photos\Industrial_UPS_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Batteries_cover_photo.jpg" />
+    <Resource Include="Photos\Batteries_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Genset_cover_photo.jpg" />
+    <Resource Include="Photos\Genset_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
