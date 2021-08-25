@@ -237,6 +237,7 @@ namespace _01electronics_crm
             {
                 offerValidityPeriod = 0;
                 warrantyPeriodTextBox.Text = null;
+                
             }
         }
 
@@ -354,6 +355,13 @@ namespace _01electronics_crm
             workOffer.SetWarrantyPeriod(warrantyPeriod);
             workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             workOffer.SetOfferNotes(additionalDescription);
+            
+            if (!workOffer.GetNewOfferSerial())
+                return;
+
+            if (!workOffer.GetNewOfferVersion())
+                return;
+
             workOffer.GetNewOfferID();
 
             string wordFilePath = "D:/01electronics_crm/MyExcel/" + workOffer.GetNoOfOfferSavedProducts() + ".doc";

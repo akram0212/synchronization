@@ -171,14 +171,6 @@ namespace _01electronics_crm
                 companiesAddedToComboList.Add(companiesList[i]);
             }
 
-            if (companyNameCombo.SelectedItem == null)
-            {
-                companyAddressCombo.SelectedItem = null;
-                companyAddressCombo.IsEnabled = false;
-            }
-            else
-                InitializeCompanyAddressCombo();
-
             companyNameCombo.IsEnabled = true;
         }
 
@@ -195,14 +187,10 @@ namespace _01electronics_crm
                 companyAddressCombo.Items.Add(address);
             }
 
+            workOffer.InitializeBranchInfo(branchInfo[0].address_serial);
+           
             companyAddressCombo.SelectedIndex = 0;
-            
-            if(companyAddressCombo.SelectedItem == null)
-            {
-                contactPersonNameCombo.SelectedItem = null;
-                contactPersonNameCombo.IsEnabled = false;
-            }
-            
+           
             companyAddressCombo.IsEnabled = true;
         }
 
@@ -210,7 +198,7 @@ namespace _01electronics_crm
         {
             int addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
 
-            if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
+            if (!commonQueriesObject.GetCompanyContacts(salesPersonID, addressSerial, ref contactInfo))
                 return;
         
             for (int i = 0; i < contactInfo.Count(); i++)
@@ -330,6 +318,7 @@ namespace _01electronics_crm
             
             InitializeCompanyNameCombo();
             
+           
             companyNameCombo.SelectedItem = rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].company_name;
 
 
@@ -364,6 +353,7 @@ namespace _01electronics_crm
             companyNameCombo.Items.Clear();
             RFQSerialCombo.SelectedIndex = -1;
             companyNameCombo.SelectedIndex = -1;
+
             salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
             salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
 
@@ -377,6 +367,7 @@ namespace _01electronics_crm
             }
             else
             {
+                workOffer.InitializeOfferProposerInfo(salesPersonID, COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
                 InitializeCompanyNameCombo();
                 RFQSerialCombo.SelectedItem = null;
                 RFQSerialCombo.IsEnabled = false;
@@ -384,12 +375,13 @@ namespace _01electronics_crm
         }
         private void OnSelChangedRFQSerialCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(RFQSerialCombo.SelectedItem != null)
+            if (RFQSerialCombo.SelectedItem != null)
+            {
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-           
-            SetCompanyNameAddressContactFromRFQ();
+                workOffer.InitializeOfferProposerInfo(workOffer.GetAssigneeId(), COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
+                SetCompanyNameAddressContactFromRFQ();
+            }
         }
-
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
@@ -413,15 +405,21 @@ namespace _01electronics_crm
         {
             contactPersonNameCombo.Items.Clear();
 
-            if (companyAddressCombo.SelectedItem != null)
-                InitializeCompanyContactCombo();
-            else
+            if (companyAddressCombo.SelectedItem == null)
+            {
+                contactPersonNameCombo.SelectedItem = null;
                 contactPersonNameCombo.IsEnabled = false;
+            }
+            else
+                InitializeCompanyContactCombo();
+           
         }
 
         private void OnSelChangedContactPersonCombo(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (contactPersonNameCombo.SelectedItem != null)
+                workOffer.InitializeContactInfo(contactInfo[contactPersonNameCombo.SelectedIndex].contact_id);
+
         }
 
         ///////////BUTTON CLICK HANDLERS/////////

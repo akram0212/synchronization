@@ -176,6 +176,7 @@ namespace _01electronics_crm
             quarterComboBox.SelectedIndex = -1;
 
             salesComboBox.SelectedIndex = -1;
+            preSalesComboBox.SelectedIndex = -1;
 
             productComboBox.SelectedIndex = -1;
             brandComboBox.SelectedIndex = -1;
@@ -187,6 +188,7 @@ namespace _01electronics_crm
             yearComboBox.IsEnabled = false;
             quarterComboBox.IsEnabled = false;
             salesComboBox.IsEnabled = false;
+            preSalesComboBox.IsEnabled = false;
             productComboBox.IsEnabled = false;
             brandComboBox.IsEnabled = false;
             statusComboBox.IsEnabled = false;
@@ -521,6 +523,13 @@ namespace _01electronics_crm
             SetWorkOffersStackPanel();
         }
 
+        private void OnClosedWorkOfferWindow(object sender, EventArgs e)
+        {
+            if (!GetWorkOffers())
+                return;
+            SetWorkOffersStackPanel();
+        }
+
         /////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////
@@ -705,9 +714,11 @@ namespace _01electronics_crm
             WorkOffer workOffer = new WorkOffer(sqlDatabase);
             
             WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            workOfferWindow.Closed += OnClosedWorkOfferWindow;
             workOfferWindow.Show();
         }
 
+        
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
             WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
@@ -755,6 +766,7 @@ namespace _01electronics_crm
 
             int viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
             WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
+            reviseOffer.Closed += OnClosedWorkOfferWindow;
             reviseOffer.Show();
         }
         private void OnBtnClickedWorkOfferItem(object sender, RoutedEventArgs e)

@@ -100,8 +100,7 @@ namespace _01electronics_crm
             }  
             else
             {
-               
-
+              
                 ConfigureAddRFQUIElements();
                 InitializeSalesPersonCombo();
                 SetSalesPersonCombo();
@@ -232,8 +231,7 @@ namespace _01electronics_crm
 
         private void SetSalesPerson()
         {
-            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-                rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+            rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
         }
         private void SetSalesPersonCombo()
         {
@@ -276,21 +274,21 @@ namespace _01electronics_crm
 
         private void SetCompanyAddressLabel()
         {
-            for (int i = 0; i < branchInfo.Count; i++)
-            {
-                string address;
-
-                address = branchInfo[i].district + ", " + branchInfo[i].city + ", " + branchInfo[i].state_governorate + ", " + branchInfo[i].country + "\n";
-                companyAddressLabel.Content += address;
-            }
+            
+            string address;
+            
+            address = rfq.GetRFQCompany().GetCompanyDistrict() + ", " + rfq.GetRFQCompany().GetCompanyCity() + ", " + rfq.GetRFQCompany().GetCompanyState() + ", " + rfq.GetRFQCompany().GetCompanyCountry();
+            companyAddressLabel.Content += address;
+            
         }
 
         private void SetContactPersonLabel()
         {
-            contactPersonNameLabel.Content = null;
+            contactPersonNameLabel.Content = rfq.GetRFQContact().GetContactName();
 
-            for (int i = 0; i < contactInfo.Count(); i++)
-                contactPersonNameLabel.Content += contactInfo[i].contact_name + "\n";
+
+            //for (int i = 0; i < contactInfo.Count(); i++)
+              //  contactPersonNameLabel.Content += contactInfo[i].contact_name + "\n";
         }
 
         private void SetContactNumberLabel()
@@ -340,8 +338,8 @@ namespace _01electronics_crm
                     companyAddressCombo.Items.Add(address);
                 }
 
-                if (branchInfo.Count == 1)
-                    companyAddressCombo.SelectedItem = companyAddressCombo.Items.GetItemAt(0);
+                companyAddressCombo.SelectedIndex = 0;
+                
                 rfq.InitializeCompanyInfo(companySerial);
             }
             
