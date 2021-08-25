@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using _01electronics_hr;
 using _01electronics_library;
 
 namespace _01electronics_crm
