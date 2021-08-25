@@ -51,6 +51,8 @@ namespace _01electronics_crm
             if (!InitializeBranchesComboBox())
                 return;
 
+            if (!InitializeBranchPhones())
+                return;
         }
         private bool InitializeBranchesComboBox()
         {
@@ -62,11 +64,27 @@ namespace _01electronics_crm
             for (int i = 0; i < branchesList.Count; i++)
                 branchComboBox.Items.Add(branchesList[i].district + ", " + branchesList[i].city + ", " + branchesList[i].state_governorate + ", " + branchesList[i].country);
 
+
+            return true;
+        }
+        private bool InitializeBranchPhones()
+        {
+            for(int i = 0; i < branchesList.Count(); i++)
+            {
+                if (!company.InitializeBranchInfo(branchesList[i].address_serial))
+                    return false;
+
+                if (!company.QueryCompanyPhones())
+                    return false;
+
+                if (!company.QueryCompanyFaxes())
+                    return false;
+            }
             branchComboBox.SelectedIndex = 0;
 
             return true;
         }
-        private void AddPhone()
+        private void AddPhone(int selectedBranch)
         {
             WrapPanel PhoneWrapPanel = new WrapPanel();
 
@@ -77,7 +95,7 @@ namespace _01electronics_crm
             TextBox telephoneTextBox = new TextBox();
             telephoneTextBox.IsEnabled = false;
             telephoneTextBox.Style = (Style)FindResource("textBoxStyle");
-            telephoneTextBox.Text = company.GetCompanyPhones()[0];
+            telephoneTextBox.Text = company.GetCompanyPhones()[selectedBranch];
 
             PhoneWrapPanel.Children.Add(PhoneLabel);
             PhoneWrapPanel.Children.Add(telephoneTextBox);
@@ -85,7 +103,7 @@ namespace _01electronics_crm
 
         }
 
-        private void AddFax()
+        private void AddFax(int selectedBranch)
         {
             WrapPanel FaxWrapPanel = new WrapPanel();
 
@@ -96,7 +114,7 @@ namespace _01electronics_crm
             TextBox FaxTextBox = new TextBox();
             FaxTextBox.IsEnabled = false;
             FaxTextBox.Style = (Style)FindResource("textBoxStyle");
-            FaxTextBox.Text = company.GetCompanyFaxes()[0];
+            FaxTextBox.Text = company.GetCompanyFaxes()[selectedBranch];
 
             FaxWrapPanel.Children.Add(FaxLabel);
             FaxWrapPanel.Children.Add(FaxTextBox);
@@ -115,20 +133,15 @@ namespace _01electronics_crm
 
             if (branchComboBox.SelectedItem != null)
             {
-                if (!company.InitializeBranchInfo(branchesList[branchComboBox.SelectedIndex].address_serial))
-                    return;
-                if (!company.QueryCompanyPhones())
-                    return;
-                if (!company.QueryCompanyFaxes())
-                    return;
+                try
+                {
+                    AddPhone(branchComboBox.SelectedIndex);
+                    AddFax(branchComboBox.SelectedIndex);
+                }
+                catch
+                {
 
-                phonesCount = company.GetNumberOfSavedCompanyPhones();
-                faxesCount = company.GetNumberOfSavedCompanyFaxes();
-
-                if (phonesCount != 0)
-                    AddPhone();
-                if (faxesCount != 0)
-                    AddFax();
+                }
             }
         }
 
