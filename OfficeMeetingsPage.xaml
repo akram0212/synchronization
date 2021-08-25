@@ -83,13 +83,13 @@
                     </Grid.RowDefinitions>
 
                     <CheckBox Name="yearCheckBox" Grid.Row="0" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="OnCheckYearCheckBox" Unchecked="OnUncheckYearCheckBox"/>
-                    <ComboBox Name="yearCombo" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedYearCombo"/>
+                    <ComboBox Name="yearComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedYearCombo"/>
 
                     <CheckBox Name="quarterCheckBox" Grid.Row="1" Grid.Column="0" Content="Quarter" Style="{StaticResource checkBoxStyle}" Checked="OnCheckQuarterCheckBox" Unchecked="OnUncheckQuarterCheckBox"/>
-                    <ComboBox Name="quarterCombo" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedQuarterCombo"/>
+                    <ComboBox Name="quarterComboBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedQuarterCombo"/>
 
                     <CheckBox Name="employeeCheckBox" Grid.Row="2" Grid.Column="0" Content="Employee" Style="{StaticResource checkBoxStyle}" Checked="OnCheckEmployeeCheckBox" Unchecked="OnUncheckEmployeeCheckBox"/>
-                    <ComboBox Name="employeeCombo" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedEmployeeCombo"/>
+                    <ComboBox Name="employeeComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedEmployeeCombo"/>
 
                 </Grid>
 

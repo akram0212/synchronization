@@ -188,11 +188,17 @@ namespace _01electronics_crm
                 purposeAndResultLabel.Content = visitsInfo[i].visit_purpose + " - " + visitsInfo[i].visit_result;
                 purposeAndResultLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                Label lineLabel = new Label();
+                lineLabel.Content = "";
+                lineLabel.Style = (Style)FindResource("stackPanelItemBody");
+
                 currentStackPanel.Children.Add(salesPersonNameLabel);
                 currentStackPanel.Children.Add(dateOfVisitLabel);
                 
                 currentStackPanel.Children.Add(companyAndContactLabel);
                 currentStackPanel.Children.Add(purposeAndResultLabel);
+
+                currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
@@ -305,7 +311,7 @@ namespace _01electronics_crm
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
             ClientVisit selectedVisit = new ClientVisit();
-            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, loggedInUser.GetEmployeeId());
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);
 
             ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
             viewClientVisitWindow.Show();
@@ -391,7 +397,11 @@ namespace _01electronics_crm
         }
         private void OnUncheckEmployeeCheckBox(object sender, RoutedEventArgs e)
         {
-            
+            employeeComboBox.IsEnabled = false;
+            employeeComboBox.SelectedItem = null;
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
         }
 
         private void OnClosedAddVisitWindow(object sender, EventArgs e)

@@ -297,11 +297,12 @@ namespace _01electronics_crm
                 return;
 
             //YOU DON'T NEED TO WRITE A FUNCTION TO GET NEW CONTACT ID, THE CONTACT CLASS HANDLES IT ALREADY
-            contact.GetNewContactId();
 
             contact.SetAddressSerial(companyAddresses[companyBranchComboBox.SelectedIndex].address_serial);
 
             contact.SetSalesPerson(loggedInUser);
+
+            contact.GetNewContactId();
 
             InsertIntoContactInfo();
 
@@ -314,6 +315,8 @@ namespace _01electronics_crm
 
             for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
                 InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
+
+            this.Close();
         }
 
         private bool InsertIntoContactInfo()

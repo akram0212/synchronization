@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DurableTask.Core.Common;
 
 namespace _01electronics_crm
 {
@@ -36,8 +37,23 @@ namespace _01electronics_crm
 
             loggedInUser = mloggedInUser;
 
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-3));
+            visitDatePicker.FirstDayOfWeek = DayOfWeek.Sunday;
+            int minDate;
+            int maxDate;
+
+            DayOfWeek today = DateTime.Today.DayOfWeek;
+
+            DayOfWeek firstDay = DayOfWeek.Sunday;
+            DayOfWeek lastDay = DayOfWeek.Saturday;
+
+            minDate = today - firstDay + 1 ;
+            maxDate = lastDay - today + 1;
+
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
             visitDatePicker.BlackoutDates.Add(cdr);
+
+            CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
+            visitDatePicker.BlackoutDates.Add(cdr2);
 
             clientVisit = new ClientVisit(loggedInUser);
             commonQueries = new CommonQueries();
@@ -73,49 +89,6 @@ namespace _01electronics_crm
             if (!commonQueries.GetCompanyAddresses(companies[companyNameComboBox.SelectedIndex].company_serial, ref branches))
                 return false;
 
-            //String sqlQueryPart1 = @"select company_address.address_serial,company_address.address,
-            //     districts.district,cities.city,states_governorates.state_governorate,countries.country
-            //     from erp_system.dbo.company_address
-            //     inner join erp_system.dbo.company_name
-            //     on company_address.company_serial = company_name.company_serial
-            //     inner join erp_system.dbo.districts
-            //     on company_address.address = districts.id
-            //     inner join erp_system.dbo.cities
-            //     on districts.city = cities.id
-            //     inner join erp_system.dbo.states_governorates
-            //     on cities.state_governorate = states_governorates.id
-            //     inner join erp_system.dbo.countries
-            //     on states_governorates.country = countries.id
-            //     where company_name.added_by = ";
-            //
-            //sqlQuery = String.Empty;
-            //sqlQuery += sqlQueryPart1;
-            //sqlQuery += loggedInUser.GetEmployeeId();
-            //
-            //BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-            //
-            //queryColumns.sql_int = 2;
-            //queryColumns.sql_string = 4;
-            //
-            //if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
-            //    return false;
-            //
-
-            //for (int i = 0; i < branches.Count; i++)
-            //{
-            //    COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT tempItem;
-            //
-            //    tempItem.address_serial = sqlDatabase.rows[i].sql_int[0];
-            //    tempItem.address = sqlDatabase.rows[i].sql_int[1];
-            //
-            //    tempItem.district = sqlDatabase.rows[i].sql_string[0];
-            //    tempItem.state_governorate = sqlDatabase.rows[i].sql_string[1];
-            //    tempItem.city = sqlDatabase.rows[i].sql_string[2];
-            //    tempItem.country = sqlDatabase.rows[i].sql_string[3];
-            //
-            //    branches.Add(tempItem);
-            //}
-
             return true;
         }
 
@@ -136,7 +109,6 @@ namespace _01electronics_crm
             //YOU SHALL SET THE SELECTED ITEM LIKE THIS, NO NEED TO SELECT DISTRICT, CITY, STATE AND COUNTRY
             companyBranchComboBox.SelectedIndex = 0;
 
-            contactComboBox.IsEnabled = false;
         }
         private void InitializeCompanyContactsComboBox()
         {
@@ -150,6 +122,11 @@ namespace _01electronics_crm
 
             if (contacts.Count == 1)
                 contactComboBox.SelectedIndex = 0;
+            else
+            {
+                contactComboBox.IsEnabled = true;
+                contactComboBox.SelectedIndex = 0;
+            }
 
         }
         //ANY FUNCTION THAT USES COMMONQUERIES OR MAKES A QUERY ITSELF SHOULD BE BOOL
@@ -318,7 +295,7 @@ namespace _01electronics_crm
             clientVisit.IssueNewVisit();
 
             
-            this.Hide();
+            this.Close();
         }
     }
 }

@@ -34,8 +34,25 @@ namespace _01electronics_crm
             InitializeComponent();
             loggedInUser = mloggedInUser;
 
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-3));
+            DayOfWeek today = DateTime.Today.DayOfWeek;
+
+            DayOfWeek firstDay = DayOfWeek.Sunday;
+            DayOfWeek lastDay = DayOfWeek.Saturday;
+
+            int minDate;
+            int maxDate;
+
+            minDate = today - firstDay + 1;
+            maxDate = lastDay - today + 1;
+
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
             CallDatePicker.BlackoutDates.Add(cdr);
+
+            CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
+            CallDatePicker.BlackoutDates.Add(cdr2);
+
+            //CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-3));
+            //CallDatePicker.BlackoutDates.Add(cdr);
 
             clientCall = new ClientCall();
             commonQueries = new CommonQueries();
@@ -92,7 +109,7 @@ namespace _01electronics_crm
         
             companyBranchComboBox.SelectedIndex = 0;
 
-            contactComboBox.IsEnabled = false;
+            //contactComboBox.IsEnabled = false;
         }
         private void InitializeCompanyContactsComboBox()
         {
@@ -106,7 +123,11 @@ namespace _01electronics_crm
 
             if (contacts.Count == 1)
                 contactComboBox.SelectedIndex = 0;
-
+            else
+            {
+                contactComboBox.IsEnabled = true;
+                contactComboBox.SelectedIndex = 0;
+            }
         }
         private bool InitializeCallPurposes()
         {
@@ -270,8 +291,7 @@ namespace _01electronics_crm
 
             clientCall.IssueNewCall();
 
-
-            this.Hide();
+            this.Close();
         }
     }
 }
