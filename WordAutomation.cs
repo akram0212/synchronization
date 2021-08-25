@@ -5,22 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Web;
+using System.IO;
 using Spire.Doc;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using Spire.Doc.Interface;
 using Spire.Doc.Utilities;
 using Spire.Doc.Collections;
+using _01electronics_library;
 
-
-namespace _01electronics_library
+namespace _01electronics_crm
 {
 
     public class WordAutomation
     {
         SQLServer sqlServer;
+        FTPServer ftpServer;
+
         WorkOffer workOffer;
-        
+
+        String wordFilePath;
 
         CommonQueries commonQueriesObject;
         CommonFunctions commonFunctionsObject;
@@ -33,16 +37,20 @@ namespace _01electronics_library
         int counter;
         decimal totalPrice;
 
-        public void AutomateWorkOffer(string wordFilePath, WorkOffer mWorkOffer)
+        public WordAutomation()
         {
             sqlServer = new SQLServer();
+            ftpServer = new FTPServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            workOffer = new WorkOffer(sqlServer);
-            workOffer = mWorkOffer;
-            //workOffer.InitializeSalesWorkOfferInfo(38, 1, 36);
+        }
 
-            //wordFile = "D:/01electronics_crm/MyExcel/" + workOffer.GetNoOfOfferSavedProducts() + ".doc";
+        public void AutomateWorkOffer(WorkOffer mWorkOffer)
+        {
+            workOffer = mWorkOffer;
+
+            wordFilePath = Directory.GetCurrentDirectory() + '\\' + workOffer.GetOfferID() + ".doc";
+            ftpServer.DownloadFile(BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath);
 
             Document doc = new Document(wordFilePath);
 

@@ -39,13 +39,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Spire.Doc, Version=9.7.14.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.7.14\lib\net40\Spire.Doc.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Spire.Doc.dll</HintPath>
     </Reference>
     <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.7.14\lib\net40\Spire.License.dll</HintPath>
+      <HintPath>..\packages\Spire.Doc.9.8.6\lib\net40\Spire.License.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Spire.Pdf, Version=7.7.10.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.7.14\lib\net40\Spire.Pdf.dll</HintPath>
+    <Reference Include="Spire.Pdf, Version=7.8.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.9.8.6\lib\net40\Spire.Pdf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
