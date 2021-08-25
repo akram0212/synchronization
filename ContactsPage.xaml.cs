@@ -31,19 +31,15 @@ namespace _01electronics_crm
         private Employee loggedInUser;
         private int selectedEmployee;
 
-        private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>> employeesCompanies;
-        //private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>> companyContacts;
+        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>> employeesCompanies;
+        private List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> contactsList;
+
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
-        private List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> contactsList;
-       // private List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> companiesList;
+        
         private List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
         private List<BASIC_STRUCTS.STATE_STRUCT> states;
         private List<BASIC_STRUCTS.CITY_STRUCT> cities;
         private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
-
-       // private TreeViewItem[] salesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_EMPLOYEES];
-
-        //private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>> salesCompaniesTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
 
 
         private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
@@ -54,11 +50,10 @@ namespace _01electronics_crm
         {
             initializationObject = new SQLServer();
 
-            employeesCompanies = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>>();
+            employeesCompanies = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>>();
             listOfEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
-            //companiesList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
-            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
+            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
 
             countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
             states = new List<BASIC_STRUCTS.STATE_STRUCT>();
@@ -240,8 +235,8 @@ namespace _01electronics_crm
                         continue;
                     if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != employeesCompanies[j].Value[i].branchesList[0].address)
                         continue;
-                   // if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null && employeesCompanies[i].Key.employee_id != listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id)
-                    //    continue;
+                    if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null && employeesCompanies[i].Key.employee_id != listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id)
+                        continue;
 
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = employeesCompanies[j].Value[i].company_name;
