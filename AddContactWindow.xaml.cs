@@ -98,7 +98,7 @@ namespace _01electronics_crm
                 companyBranchComboBox.IsEnabled = true;
                 for (int i = 0; i < companyAddresses.Count; i++)
                 {
-                    companyBranchComboBox.Items.Add(companyAddresses[i].country + ",\t" + companyAddresses[i].state_governorate + ",\t" + companyAddresses[i].city + ",\t" + companyAddresses[i].district);
+                    companyBranchComboBox.Items.Add(companyAddresses[i].country + ", " + companyAddresses[i].state_governorate + ", " + companyAddresses[i].city + ", " + companyAddresses[i].district);
                 }
                 companyBranchComboBox.SelectedIndex = 0;
             }

@@ -49,12 +49,14 @@ namespace _01electronics_crm
 
             if (telephoneTextBox.Text != String.Empty)
             {
-                contact.InsertIntoContactMobile(contact.GetNumberOfSavedContactPhones() + 1, telephoneTextBox.Text.ToString());
+                contact.AddNewContactPhone(telephoneTextBox.Text.ToString());
+                contact.InsertIntoContactMobile(contact.GetNumberOfSavedContactPhones(), telephoneTextBox.Text.ToString());
             }
 
             if (emailTextBox.Text != String.Empty)
             {
-                contact.InsertIntoContactPersonalEmail(contact.GetNumberOfSavedContactEmails() + 1, emailTextBox.Text.ToString());
+                contact.AddNewContactEmail(emailTextBox.Text.ToString());
+                contact.InsertIntoContactPersonalEmail(contact.GetNumberOfSavedContactEmails(), emailTextBox.Text.ToString());
             }
 
             this.Close();

@@ -51,8 +51,6 @@ namespace _01electronics_crm
             if (!InitializeBranchesComboBox())
                 return;
 
-            if (!InitializeBranchPhones())
-                return;
         }
         private void InitializeCompanyInfo()
         {
