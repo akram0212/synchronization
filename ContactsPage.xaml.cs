@@ -110,22 +110,22 @@ namespace _01electronics_crm
                 salesPersonComboBox.IsEnabled = false;
             }
         }
-        private void InitializeListOfEmployees()
+        private bool InitializeListOfEmployees()
         {
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
 
                 List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
-               
 
-                //tmpList.Count() != 0
-                if (GetAllCompanies(listOfEmployees[i].employee_id, ref tmpList))
-                {
+
+                if (!commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList))
+                    return false;
+                else
                     employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
-                }
             }
 
+            return true;
         }
 
         private bool InitializeEmployeeComboBox()
@@ -137,12 +137,12 @@ namespace _01electronics_crm
                 if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref listOfEmployees))
                     return false;
             }
-            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            else if (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
                 if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref listOfEmployees))
                     return false;
             }
-            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            else if (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref listOfEmployees))
                     return false;
@@ -152,14 +152,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        public bool GetAllCompanies(int salesPerson, ref List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList)
-        {
-            tmpList.Clear();
-            if (!commonQueries.GetEmployeeCompanies(salesPerson, ref tmpList))
-                return false;
-
-            return true;
-        }
+        
         public bool GetAllContacts()
         {
             for (int i = 0; i < listOfEmployees.Count; i++)
