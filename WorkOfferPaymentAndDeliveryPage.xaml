@@ -34,7 +34,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
@@ -51,6 +51,7 @@
             <Label  Content="Total Price" Style="{StaticResource labelStyle}"/>
             <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  IsReadOnly="True" Name="totalPriceTextBox" />
             <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="totalPriceCombo" />
+            <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="totalPriceVATCombo" SelectionChanged="OnSelChangedTotalPriceVATCombo"/>
         </WrapPanel>
         
         <WrapPanel Grid.Row="3">
@@ -75,13 +76,17 @@
             <Label Content="Delivery &#x0a;Time" Style="{StaticResource labelStyle}"/>
             <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeFromTextBox"  Name="deliveryTimeTextBoxFrom" />
             <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
             <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeToTextBox"  x:Name="deliveryTimeTextBoxTo" />
             <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeCombo" Name="deliveryTimeCombo" />
+            <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeFromWhenCombo" Name="deliveryTimeFromWhenCombo" />
         </WrapPanel>
         
         <WrapPanel Grid.Row="7">
             <Label Content="Delivery &#x0a;Point" Style="{StaticResource labelStyle}" />
+
             <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
+                <ComboBox Name="deliveryPointPortCombo" Style="{StaticResource miniComboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointPortCombo"/>
         </WrapPanel>
 
     </Grid>

@@ -47,17 +47,19 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            rfq = new RFQ(sqlDatabase);
+            
+            //YOU DONT NEED TO INITIALIZE RFQ IF YOU ARE GOING TO LINK IT TO ANOTHER ONE
+            //rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
 
             InitializeComponent();
 
-            if(viewAddCondition == 1)
+            if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureUIElementsForAdd();
                 InitializeContractTypeCombo();
             }
-            else if (viewAddCondition == 0)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
                 ConfigureUIElementsForView();
 
@@ -83,7 +85,6 @@ namespace _01electronics_crm
             deadlineDateDatePicker.IsEnabled = false;
             notesTextBox.Visibility = Visibility.Collapsed;
             addRFQButton.Visibility = Visibility.Collapsed;
-            reviseRFQButton.Visibility = Visibility.Collapsed;
 
             contractTypeLabel.Visibility = Visibility.Visible;
             notesLabel.Visibility = Visibility.Visible;
@@ -94,7 +95,6 @@ namespace _01electronics_crm
             deadlineDateDatePicker.IsEnabled = true;
             notesTextBox.Visibility = Visibility.Visible;
             addRFQButton.Visibility = Visibility.Visible;
-            reviseRFQButton.Visibility = Visibility.Collapsed;
 
             contractTypeLabel.Visibility = Visibility.Collapsed;
             notesLabel.Visibility = Visibility.Collapsed;
@@ -104,8 +104,7 @@ namespace _01electronics_crm
             contractTypeCombo.Visibility = Visibility.Visible;
             deadlineDateDatePicker.IsEnabled = true;
             notesTextBox.Visibility = Visibility.Visible;
-            addRFQButton.Visibility = Visibility.Collapsed;
-            reviseRFQButton.Visibility = Visibility.Visible;
+            addRFQButton.Visibility = Visibility.Visible;
 
             contractTypeLabel.Visibility = Visibility.Collapsed;
             notesLabel.Visibility = Visibility.Collapsed;
@@ -191,23 +190,42 @@ namespace _01electronics_crm
         {
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
-            
+
 
             //YOUR MESSAGE MUST BE SPECIFIC
             //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
-            if (rfq.GetSalesPersonId() == 0 || rfq.GetRFQSerial() == 0 || rfq.GetAssigneeId() == 0 || rfq.GetRFQID() == null || rfq.GetAddressSerial() == 0 || rfq.GetContactId() == 0 || rfq.GetRFQContractTypeId() == 0 || rfq.GetRFQStatusId() == 0)
+            if (rfq.GetSalesPersonId() == 0)
                 System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetAssigneeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an assignee for the rfq!");
+            else if (rfq.GetAddressSerial() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an address for the rfq!");
+            else if (rfq.GetContactId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contact for the rfq!");
+            else if (rfq.GetRFQContractTypeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contract type for the rfq!");
+            else if (rfq.GetRFQStatusId() == 0)
+                System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!");
             else
             {
-                rfq.IssueNewRFQ();
+                if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+                {
+                    if (!rfq.IssueNewRFQ())
+                    {
+                        //ENTER AN ERROR MESSAGE HERE
+                        //THEN CLOSE THE WINDOW
+                    }
+                }
+                else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
+                {
+                    if (!rfq.ReviseRFQ())
+                    {
+                        //ENTER AN ERROR MESSAGE HERE
+                        //THEN CLOSE THE WINDOW
+                    }
+                }
             }
         }
 
-        private void ReviseRFQButtonClick(object sender, RoutedEventArgs e)
-        {
-            rfq.SetRFQNotes(notes);
-            rfq.SetRFQDeadlineDate(deadlineDate);
-            rfq.ReviseRFQ();
-        }
     }
 }

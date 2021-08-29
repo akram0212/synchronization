@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
@@ -66,8 +66,7 @@
 
             </WrapPanel>
 
-            <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Add RFQ" Click="AddRFQButtonClick"/>
-            <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="reviseRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Add Rev RFQ" Click="ReviseRFQButtonClick"/>
+            <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="ADD" Click="AddRFQButtonClick"/>
 
         </Grid>
 

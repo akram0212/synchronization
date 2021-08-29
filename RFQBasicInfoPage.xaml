@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickBasicInfo"/>
+                <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
@@ -51,13 +51,13 @@
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Sales Person"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Sales Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="assigneeWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Assignee"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Assignee"/>
                     <Label Style="{StaticResource tableItemValue}" Name="offerProposerLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="assigneeCombo" SelectionChanged="OnSelChangedAssigneeCombo"/>
                 </WrapPanel>
@@ -65,13 +65,13 @@
 
             <WrapPanel Grid.Row="1">
                 <WrapPanel Name="companyNameWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="companyAddressWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Company Address"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Address"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
                 </WrapPanel>
@@ -79,13 +79,13 @@
 
             <WrapPanel Grid.Row="2">
                 <WrapPanel Name="contactPersonNameWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Contact Person"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="contactPersonPhoneWrapPanel">
-                    <Label Style="{StaticResource tableItemLabel}" Content="Contact Phone"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Phone"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonPhoneLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonPhoneCombo" SelectionChanged="OnSelChangedContactPersonPhoneCombo"/>
                 </WrapPanel>

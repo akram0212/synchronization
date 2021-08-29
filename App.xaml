@@ -156,7 +156,7 @@
 
         <Style x:Key="textBoxStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Width" Value="384" />
-            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Margin" Value="30,12,12,12"/>
             <Setter Property="FontFamily" Value="Sans Serif" />

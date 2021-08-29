@@ -53,22 +53,24 @@ namespace _01electronics_crm
             workOffer = mWorkOffer;
 
             totalPrice = 0;
+            
             //////////////////////
             ///ADD OFFER
             //////////////////////
-            if(viewAddCondition == 1)
+            if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
 
+                DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
             //////////////////////
             ///VIEW OFFER
             //////////////////////
-            else if (viewAddCondition == 0)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -85,11 +87,13 @@ namespace _01electronics_crm
             /////////////////////////
             ///REVISE OFFER
             /////////////////////////
-            else if(viewAddCondition == 2)
+            else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+
+                DisableTotalPriceComboAndTextBox();
 
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
@@ -108,6 +112,7 @@ namespace _01electronics_crm
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
 
+                DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
@@ -131,6 +136,11 @@ namespace _01electronics_crm
             deliveryPointCombo.IsEnabled = false;
         }
 
+        private void DisableTotalPriceComboAndTextBox()
+        {
+            totalPriceCombo.IsEnabled = false;
+            totalPriceTextBox.IsEnabled = false;
+        }
         ///////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         ///////////////////////////////////////////
@@ -186,8 +196,11 @@ namespace _01electronics_crm
 
         private void SetPriceValues()
         {
-            totalPriceCombo.Text = workOffer.GetCurrency().ToString();
-            totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
+            if (workOffer.GetCurrency() != null)
+            {
+                totalPriceCombo.Text = workOffer.GetCurrency().ToString();
+                totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
+            }
         }
 
         private void SetDownPaymentValues()
@@ -210,9 +223,12 @@ namespace _01electronics_crm
 
         private void SetDeliveryTimeValues()
         {
+            ////////////Added by me ama get awareeh
+            
             deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMaximum().ToString();
             deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMinimum().ToString();
-            deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
+            if(workOffer.GetDeliveryTimeUnit() != null)
+                deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
         }
 
         private void SetDeliveryPointValue()
@@ -332,18 +348,22 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            SetPercentAndValuesInDataBase();
+
             WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(basicInfoPage);
 
-            SetPercentAndValuesInDataBase();
+            
         }
 
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
+            SetPercentAndValuesInDataBase();
+
             WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(workOfferProductsPage);
 
-            SetPercentAndValuesInDataBase();
+            
         }
 
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
@@ -353,12 +373,26 @@ namespace _01electronics_crm
 
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
+            SetPercentAndValuesInDataBase();
+
             WorkOfferAdditionalInfoPage offerAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(offerAdditionalInfoPage);
 
-            SetPercentAndValuesInDataBase();
         }
 
-       
+        private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
