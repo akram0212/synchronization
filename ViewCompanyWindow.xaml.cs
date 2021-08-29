@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -21,7 +21,7 @@ namespace _01electronics_crm
     public partial class ViewCompanyWindow : Window
     {
         protected Employee loggedInUser;
-        
+
         protected CommonQueries commonQueries;
 
         protected Company company;
@@ -30,19 +30,15 @@ namespace _01electronics_crm
         protected int faxesCount;
 
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchesList;
-        public ViewCompanyWindow(ref Employee mLoggedInUser, int companySerial)
+        public ViewCompanyWindow(ref Employee mLoggedInUser, ref Company mCompany)
         {
             InitializeComponent();
 
-            company = new Company();
-            commonQueries = new CommonQueries();
-            loggedInUser = new Employee();
-            branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
-
-
-            company.InitializeCompanyInfo(companySerial);
-            commonQueries.GetCompanyAddresses(company.GetCompanySerial(), ref branchesList);
             loggedInUser = mLoggedInUser;
+            company = mCompany;
+
+            commonQueries = new CommonQueries();
+            branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
 
             companyNameTextBox.IsEnabled = false;
             primaryWorkFieldTextBox.IsEnabled = false;
@@ -52,56 +48,94 @@ namespace _01electronics_crm
             primaryWorkFieldTextBox.Text = company.GetCompanyPrimaryField();
             secondaryWorkFieldTextBox.Text = company.GetCompanySecondaryField();
 
-            for(int i = 0; i < branchesList.Count; i++)
-                branchComboBox.Items.Add(branchesList[i].country + ",\t" + branchesList[i].state_governorate + ",\t" + branchesList[i].city + ",\t" + branchesList[i].district);
-            
-            company.QueryCompanyPhones();
-            company.QueryCompanyFaxes();
+            if (!InitializeBranchesComboBox())
+                return;
 
-            phonesCount = company.GetNumberOfSavedCompanyPhones();
-            faxesCount = company.GetNumberOfSavedCompanyFaxes();
+            if (!InitializeBranchPhones())
+                return;
+        }
+        private bool InitializeBranchesComboBox()
+        {
+            branchComboBox.Items.Clear();
 
-            if (phonesCount != 0)
-                AddPhone();
-            if (faxesCount != 0)
-                AddFax();
+            if (!commonQueries.GetCompanyAddresses(company.GetCompanySerial(), ref branchesList))
+                return false;
+
+            for (int i = 0; i < branchesList.Count; i++)
+                branchComboBox.Items.Add(branchesList[i].district + ", " + branchesList[i].city + ", " + branchesList[i].state_governorate + ", " + branchesList[i].country);
+
+            branchComboBox.SelectedIndex = 0;
+
+            return true;
+        }
+        private bool InitializeBranchPhones()
+        {
+            company.SetAddressSerial(branchesList[branchComboBox.SelectedIndex].address_serial);
+
+            if (!company.QueryCompanyPhones())
+                return false;
+
+            AddPhone();
+
+            return true;
+        }
+        private bool InitializeBranchFaxes()
+        {
+            company.SetAddressSerial(branchesList[branchComboBox.SelectedIndex].address_serial);
+
+            if (!company.QueryCompanyFaxes())
+                return false;
+
+            AddFax();
+
+            return true;
         }
         private void AddPhone()
         {
-            WrapPanel PhoneWrapPanel = new WrapPanel();
+            for (int i = 0; i < company.GetCompanyPhones().Count(); i++)
+            {
+                if (company.GetCompanyPhones()[i] != String.Empty)
+                {
+                    WrapPanel PhoneWrapPanel = new WrapPanel();
 
-            Label PhoneLabel = new Label();
-            PhoneLabel.Style = (Style)FindResource("tableItemLabel");
-            PhoneLabel.Content = "Telephone";
+                    Label PhoneLabel = new Label();
+                    PhoneLabel.Style = (Style)FindResource("tableItemLabel");
+                    PhoneLabel.Content = "Telephone";
 
-            TextBox telephoneTextBox = new TextBox();
-            telephoneTextBox.IsEnabled = false;
-            telephoneTextBox.Style = (Style)FindResource("textBoxStyle");
-            telephoneTextBox.Text = company.GetCompanyPhones()[0];
+                    TextBox telephoneTextBox = new TextBox();
+                    telephoneTextBox.IsEnabled = false;
+                    telephoneTextBox.Style = (Style)FindResource("textBoxStyle");
+                    telephoneTextBox.Text = company.GetCompanyPhones()[i];
 
-            PhoneWrapPanel.Children.Add(PhoneLabel);
-            PhoneWrapPanel.Children.Add(telephoneTextBox);
-            companyPhonesWrapPanel.Children.Add(PhoneWrapPanel);
-
+                    PhoneWrapPanel.Children.Add(PhoneLabel);
+                    PhoneWrapPanel.Children.Add(telephoneTextBox);
+                    companyPhonesWrapPanel.Children.Add(PhoneWrapPanel);
+                }
+            }
         }
-        
+
         private void AddFax()
         {
-            WrapPanel FaxWrapPanel = new WrapPanel();
+            for (int i = 0; i < company.GetCompanyFaxes().Count(); i++)
+            {
+                if (company.GetCompanyFaxes()[i] != String.Empty)
+                {
+                WrapPanel FaxWrapPanel = new WrapPanel();
 
-            Label FaxLabel = new Label();
-            FaxLabel.Style = (Style)FindResource("tableItemLabel");
-            FaxLabel.Content = "Fax";
+                Label FaxLabel = new Label();
+                FaxLabel.Style = (Style)FindResource("tableItemLabel");
+                FaxLabel.Content = "Fax";
 
-            TextBox FaxTextBox = new TextBox();
-            FaxTextBox.IsEnabled = false;
-            FaxTextBox.Style = (Style)FindResource("textBoxStyle");
-            FaxTextBox.Text = company.GetCompanyFaxes()[0];
+                TextBox FaxTextBox = new TextBox();
+                FaxTextBox.IsEnabled = false;
+                FaxTextBox.Style = (Style)FindResource("textBoxStyle");
+                FaxTextBox.Text = company.GetCompanyFaxes()[i];
 
-            FaxWrapPanel.Children.Add(FaxLabel);
-            FaxWrapPanel.Children.Add(FaxTextBox);
-            companyPhonesWrapPanel.Children.Add(FaxWrapPanel);
-
+                FaxWrapPanel.Children.Add(FaxLabel);
+                FaxWrapPanel.Children.Add(FaxTextBox);
+                companyPhonesWrapPanel.Children.Add(FaxWrapPanel);
+                }
+            }
         }
 
         private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
@@ -111,13 +145,32 @@ namespace _01electronics_crm
 
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
+            companyPhonesWrapPanel.Children.Clear();
 
+            if (branchComboBox.SelectedItem != null)
+            {
+                InitializeBranchPhones();
+                InitializeBranchFaxes();
+
+            }
         }
 
         private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)
         {
             AddBranchWindow addBranchWindow = new AddBranchWindow(ref loggedInUser, ref company);
+            addBranchWindow.Closed += OnClosedAddBranchWindow;
             addBranchWindow.Show();
+        }
+        private void OnClosedAddBranchWindow(object sender, EventArgs e)
+        {
+            InitializeBranchesComboBox();
+        }
+
+        private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
+        {
+            AddComapnyDetailsWindow addComapnyDetailsWindow = new AddComapnyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
+            addComapnyDetailsWindow.Closed += OnClosedAddBranchWindow;
+            addComapnyDetailsWindow.Show();
         }
     }
 }

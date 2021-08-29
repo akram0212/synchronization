@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -60,7 +61,8 @@ namespace _01electronics_crm
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
 
             commonQueries.GetPrimaryWorkFields(ref primaryWorkFields);
-            for(int i = 0; i < primaryWorkFields.Count; i++)
+
+            for (int i = 0; i < primaryWorkFields.Count; i++)
             {
                 primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
             }
@@ -70,6 +72,8 @@ namespace _01electronics_crm
             {
                 countryComboBox.Items.Add(countries[i].country_name);
             }
+
+            secondaryWorkField.IsEnabled = false;
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
@@ -85,6 +89,7 @@ namespace _01electronics_crm
         private void OnSelChangedPrimaryWorkField(object sender, SelectionChangedEventArgs e)
         {
             secondaryWorkField.Items.Clear();
+            secondaryWorkField.IsEnabled = true;
 
             if (primaryWorkFieldComboBox.SelectedItem != null)
                 commonQueries.GetSecondaryWorkFields(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, secondaryWorkFields);
@@ -93,6 +98,7 @@ namespace _01electronics_crm
             {
                 secondaryWorkField.Items.Add(secondaryWorkFields[i].field_name);
             }
+            secondaryWorkField.SelectedIndex = 0;
         }
 
         private void OnSelChangedSecondaryWorkField(object sender, SelectionChangedEventArgs e)
@@ -102,48 +108,69 @@ namespace _01electronics_crm
 
         private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
         {
-            stateComboBox.IsEnabled = true;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-
             if (countryComboBox.SelectedItem != null)
-                commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states);
-
-            stateComboBox.Items.Clear();
-            for (int i = 0; i < states.Count(); i++)
             {
-                if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
-                    stateComboBox.Items.Add(states[i].state_name);
+                if(!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                    return;
+
+                stateComboBox.IsEnabled = true;
+                stateComboBox.Items.Clear();
+                for (int i = 0; i < states.Count(); i++)
+                {
+                    if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
+                        stateComboBox.Items.Add(states[i].state_name);
+                }
+            }
+            else
+            {
+                stateComboBox.SelectedItem = null;
+                stateComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
         {
-            cityComboBox.IsEnabled = true;
-            districtComboBox.IsEnabled = false;
-
             if (stateComboBox.SelectedItem != null)
-                commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities);
-            cityComboBox.Items.Clear();
-
-            for (int i = 0; i < cities.Count; i++)
             {
-                if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
-                    cityComboBox.Items.Add(cities[i].city_name);
+                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                    return;
+
+                cityComboBox.IsEnabled = true;
+                cityComboBox.Items.Clear();
+
+                for (int i = 0; i < cities.Count; i++)
+                {
+                    if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                        cityComboBox.Items.Add(cities[i].city_name);
+                }
+            }
+            else
+            {
+                cityComboBox.SelectedItem = null;
+                cityComboBox.IsEnabled = false;
             }
         }
 
         private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
         {
-            districtComboBox.IsEnabled = true;
             if (cityComboBox.SelectedItem != null)
-                commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts);
-            districtComboBox.Items.Clear();
-
-            for (int i = 0; i < districts.Count; i++)
             {
-                if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
-                    districtComboBox.Items.Add(districts[i].district_name);
+                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                    return;
+
+                districtComboBox.IsEnabled = true;
+                districtComboBox.Items.Clear();
+
+                for (int i = 0; i < districts.Count; i++)
+                {
+                    if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                        districtComboBox.Items.Add(districts[i].district_name);
+                }
+            }
+            else
+            {
+                districtComboBox.IsEnabled = false;
+                districtComboBox.SelectedItem = null;
             }
         }
 
@@ -185,12 +212,11 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyPhone(outputString);
-
             telephoneTextBox.Text = company.GetCompanyPhones()[0];
 
             return true;
-        } 
-        
+        }
+
         private bool CheckCompanyFaxEditBox()
         {
             String inputString = faxTextBox.Text;
@@ -209,12 +235,12 @@ namespace _01electronics_crm
         {
             if (primaryWorkFieldComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Company's Primary Work Field must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company's Primary Work Field must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             company.SetCompanyPrimaryField(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, primaryWorkFieldComboBox.SelectedItem.ToString());
-           
+
             return true;
         }
 
@@ -222,33 +248,33 @@ namespace _01electronics_crm
         {
             if (secondaryWorkField.SelectedItem == null)
             {
-                MessageBox.Show("Company's Secondary Work Field must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Company's Secondary Work Field must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             company.SetCompanySecondaryField(secondaryWorkFields[secondaryWorkField.SelectedIndex].field_id, secondaryWorkField.SelectedItem.ToString());
 
             return true;
-        } 
-        
+        }
+
         private bool CheckCountryComboBox()
         {
             if (countryComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Country must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("Country must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             company.SetCompanyCountry(countries[countryComboBox.SelectedIndex].country_id, countryComboBox.SelectedItem.ToString());
 
             return true;
-        } 
-        
+        }
+
         private bool CheckStateComboBox()
         {
             if (stateComboBox.SelectedItem == null)
             {
-                MessageBox.Show("State must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("State must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             company.SetCompanyState(states[stateComboBox.SelectedIndex].state_id, stateComboBox.SelectedItem.ToString());
@@ -260,7 +286,7 @@ namespace _01electronics_crm
         {
             if (cityComboBox.SelectedItem == null)
             {
-                MessageBox.Show("City must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("City must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -268,12 +294,12 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         private bool CheckDistrictComboBox()
         {
-            if (districtComboBox.SelectedItem == null)
+            if (districtComboBox.SelectedItem == null && districtComboBox.Items.Count != 0)
             {
-                MessageBox.Show("District must be specified.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Forms.MessageBox.Show("District must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -290,184 +316,38 @@ namespace _01electronics_crm
             if (!CheckPrimaryWorkFieldComboBox())
                 return;
             if (!CheckSecondaryWorkFieldComboBox())
-                return; 
+                return;
             if (!CheckCountryComboBox())
                 return;
             if (!CheckStateComboBox())
-                return; 
+                return;
             if (!CheckCityComboBox())
-                return; 
+                return;
             if (!CheckDistrictComboBox())
                 return;
             if (!CheckCompanyPhoneEditBox())
-                return; 
+                return;
             if (!CheckCompanyFaxEditBox())
                 return;
 
-            QueryGetMaxCompanySerial();
-            QueryGetMaxBranchSerial(); 
-            QueryAddCompanyName();
-            QueryAddCompanyAddress();
-            QueryAddCompanyWorkField();
+            //YOU DON'T NEED TO WRITE A QUERY TO GET NEW SERIAL,
+            //THE COMPANY CLASS HANDLES ALL THAT 
+            company.GetNewCompanySerial();
+            company.GetNewAddressSerial();
+            company.SetOwnerUser(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
 
-            if (telephoneTextBox.Text != "")
-            {
-                QueryAddCompanyTelephone();
-            }
+            company.InsertIntoCompanyName();
+            company.InsertIntoCompanyAddress();
+            company.InsertIntoCompanyWorkField();
 
-            if (faxTextBox.Text != "")
-            {
-                QueryAddCompanyFax();
-            }
+            for (int i = 0; i < company.GetNumberOfSavedCompanyPhones(); i++)
+                company.InsertIntoCompanyTelephone(company.GetCompanyPhones()[i]);
 
-            MessageBox.Show("Company Added Successfully");
-            this.Hide();
+            for (int i = 0; i < company.GetNumberOfSavedCompanyFaxes(); i++)
+                company.InsertIntoCompanyFax(company.GetCompanyFaxes()[i]);
 
+            this.Close();
         }
-        private bool QueryAddCompanyName()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_name values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyName();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool QueryAddCompanyAddress()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += districts[districtComboBox.SelectedIndex].district_id;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        } 
-        private bool QueryAddCompanyWorkField()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_field_of_work values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanySecondaryFieldId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        } 
-        private bool QueryAddCompanyFax()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_fax values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyFaxes()[0];
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool QueryAddCompanyTelephone()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanyPhones()[0];
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool QueryGetMaxCompanySerial()
-        {
-            String sqlQueryPart1 = "select max(company_serial) from erp_system.dbo.company_name ";
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            company.SetCompanySerial(1 + sqlServer.rows[0].sql_int[0]);
-
-            return true;
-        }
-        
-        private bool QueryGetMaxBranchSerial()
-        {
-            String sqlQueryPart1 = "select max(address_serial) from erp_system.dbo.company_address ";
-            sqlQuery = String.Empty;
-
-            sqlQuery += sqlQueryPart1;
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 1;
-            queryColumns.sql_string = 0;
-
-            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            company.SetAddressSerial(1 + sqlServer.rows[0].sql_int[0]);
-
-            return true;
-        }
-        }
+       
+    }
 }

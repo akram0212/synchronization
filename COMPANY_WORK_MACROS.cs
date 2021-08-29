@@ -108,7 +108,7 @@ namespace _01electronics_erp
 
             public int productNumber;
             public int productQuantity;
-            public int productPrice;
+            public Decimal productPrice;
 
             public int CompareTo(OFFER_PRODUCT_STRUCT other)
             {

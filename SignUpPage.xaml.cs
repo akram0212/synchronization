@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -42,7 +42,7 @@ namespace _01electronics_crm
             String inputString = businessEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString, true))
+            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString,false))
                 return false;
 
             if (!signupEmployee.InitializeEmployeeInfo(modifiedString))
@@ -58,7 +58,7 @@ namespace _01electronics_crm
             String inputString = personalEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString, true))
+            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString, false))
                 return false;
 
             signupEmployee.SetEmployeePersonalEmail(modifiedString);

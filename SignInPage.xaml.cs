@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -40,7 +40,7 @@ namespace _01electronics_crm
         {
             employeeEmail = employeeEmailTextBox.Text;
 
-            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, true))
+            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, false))
                 return;
 
             loggedInUser.InitializeEmployeeInfo(employeeEmail);

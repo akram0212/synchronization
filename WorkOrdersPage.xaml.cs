@@ -1,5 +1,4 @@
-﻿using _01electronics_erp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _01electronics_library;
 
-<<<<<<< HEAD
-namespace TempCRM
-=======
 namespace _01electronics_crm
->>>>>>> salma
 {
     /// <summary>
     /// Interaction logic for WorkOrdersPage.xaml
@@ -32,15 +28,34 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
         }
 
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
+        /////////////////////////////////////////////////////////////////
+        //EXTERNAL TABS
+        /////////////////////////////////////////////////////////////////
+
+        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
+            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
+            this.NavigationService.Navigate(userPortal);
         }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffersPage);
+            ContactsPage contacts = new ContactsPage(ref loggedInUser);
+            this.NavigationService.Navigate(contacts);
+        }
+        private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
+        {
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            this.NavigationService.Navigate(productsPage);
+        }
+        private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
+        {
+            WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrders);
+        }
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        {
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
@@ -64,20 +79,11 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
-            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            this.NavigationService.Navigate(statisticsPage);
+
         }
 
-        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
-        {
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contactsPage);
-        }
+        /////////////////////////////////////////////////////////////////
+        //BTN CLICKED HANDLERS
+        /////////////////////////////////////////////////////////////////
     }
 }

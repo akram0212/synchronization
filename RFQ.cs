@@ -27,7 +27,7 @@ namespace _01electronics_erp
         protected const int RFQ_ID_REVISION_SERIAL_START_INDEX = RFQ_ID_DATE_START_INDEX + RFQ_ID_DATE_TOKEN + RFQ_ID_REVISION_OFFSET_TOKEN + 1;
 
         protected const String RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
-        protected const String REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY";
+        protected const String REVISED_RFQ_ID_FORMAT = "RFQ-0001-XXXX.XXXX-DDMMYYYY-REV01";
 
         protected SQLServer sqlDatabase;
 
@@ -1102,15 +1102,15 @@ namespace _01electronics_erp
             return rfqFailureReason;
         }
 
-        DateTime GetRFQIssueDate()
+        public DateTime GetRFQIssueDate()
         {
             return rfqIssueDate;
         }
-        DateTime GetRFQDeadlineDate()
+        public DateTime GetRFQDeadlineDate()
         {
             return rfqDeadlineDate;
         }
-        DateTime GetRFQRejectionDate()
+        public DateTime GetRFQRejectionDate()
         {
             return rfqRejectionDate;
         }
@@ -1150,6 +1150,9 @@ namespace _01electronics_erp
 
             GetNewRFQID();
 
+            if (!InsertIntoRFQs())
+                return false;
+
             return true;
         }
         public bool ReviseRFQ()
@@ -1161,17 +1164,34 @@ namespace _01electronics_erp
 
             GetNewRFQID();
 
+            if (!InsertIntoRFQs())
+                return false;
+
             return true;
         }
-        public void ConfirmRFQ()
+        public bool ConfirmRFQ()
         {
             ConfirmRFQStatus();
+
+            if (!UpdateRFQ())
+                return false;
+
+            return true;
+
         }
-        public void RejectRFQ(int mFailureReasonId, String mFailureReason)
+        public bool RejectRFQ(int mFailureReasonId, String mFailureReason)
         {
             SetRFQRejectionDateToToday();
             RejectRFQStatus();
             SetRFQFailureReason(mFailureReasonId, mFailureReason);
+
+            if (!UpdateRFQ())
+                return false;
+
+            if (!InsertIntoRFQFailureReasons())
+                return false;
+
+            return true;
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -1180,7 +1200,9 @@ namespace _01electronics_erp
 
         public void SetRFQIssueDateToToday()
         {
-            rfqIssueDate = commonFunctions.GetTodaysDate();
+            DateTime currentDate = DateTime.Now;
+
+            rfqIssueDate = currentDate;
         }
         public void SetRFQRejectionDateToToday()
         {
@@ -1265,18 +1287,86 @@ namespace _01electronics_erp
                 RFQIdString[RFQ_ID_DATE_START_INDEX + i] = rfqDateID[i];
                 revisedRFQIdString[RFQ_ID_DATE_START_INDEX + i] = rfqDateID[i];
             }
-
-            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX] = (char)((rfqVersion - 1) / 10);
-            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX + 1] = (char)((rfqVersion - 1) % 10);
+            string temp = Convert.ToString((rfqVersion - 1) / 10);
+            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX] = Convert.ToChar(temp);
+            temp = Convert.ToString((rfqVersion - 1) % 10);
+            revisedRFQIdString[RFQ_ID_REVISION_SERIAL_START_INDEX + 1] = Convert.ToChar(temp);
 
             if (rfqVersion > 1)
-                RFQId = revisedRFQIdString.ToString();
+                RFQId = new string(revisedRFQIdString);
+
             else
-                RFQId = RFQIdString.ToString();
+                RFQId = new string(RFQIdString);
 
         }
 
+        public bool InsertIntoRFQs()
+        {
+            String sqlQueryPart1 = "select max(rfqs.rfq_version) from erp_system.dbo.rfqs where rfqs.sales_person = ";
+            String sqlQueryPart2 = " and rfqs.rfq_serial = ";
+            String sqlQueryPart3 = ";";
 
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetSalesPersonId();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += rfqSerial;
+            sqlQuery += sqlQueryPart3;
 
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+        public bool UpdateRFQ()
+        {
+            String sqlQueryPart1 = "select max(rfqs.rfq_version) from erp_system.dbo.rfqs where rfqs.sales_person = ";
+            String sqlQueryPart2 = " and rfqs.rfq_serial = ";
+            String sqlQueryPart3 = ";";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetSalesPersonId();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += rfqSerial;
+            sqlQuery += sqlQueryPart3;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+        public bool InsertIntoRFQFailureReasons()
+        {
+            String sqlQueryPart1 = "select max(rfqs.rfq_version) from erp_system.dbo.rfqs where rfqs.sales_person = ";
+            String sqlQueryPart2 = " and rfqs.rfq_serial = ";
+            String sqlQueryPart3 = ";";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetSalesPersonId();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += rfqSerial;
+            sqlQuery += sqlQueryPart3;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
     }
 }

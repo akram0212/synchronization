@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -38,63 +38,80 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList;
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
         String[] contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
 
         private int viewAddCondition;
+        private int companySerial;
+        private int addressSerial;
 
         //NICE WORK HERE, I LIKE YOUR WORK
         //YOUR CODING STYLE IS GETTING BETTER
 
-        //PLEASE DONT CHANGE/ADD STYLES, WE SHALL STICK THE TO STYLES USED BY ALL THE ERP SYSTEM
-        public RFQBasicInfoPage(ref Employee mLoggedInUser)
+        //PLEASE DONT CHANGE/ADD STYLES, WE SHALL STICK TO THE STYLES USED BY ALL THE ERP SYSTEM
+        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
+            viewAddCondition = mViewAddCondition;
 
             InitializeComponent();
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            
             rfq = new RFQ(sqlDatabase);
-
-            ConfigureAddRFQUIElements();
-
-            InitializeSalesPersonLabel();
-            InitializeCompanyNameCombo();
-            InitializeAssigneeCombo();
-            
-            viewAddCondition = 1;
-
-            SetSalesPerson();
-        }
-
-        ///////VIEW CONSTRUCTOR/////////////
-        ////////////////////////////////////
-        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ)
-        {
-            loggedInUser = mLoggedInUser;
-            
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-
             rfq = mRFQ;
 
-            InitializeComponent();
-            InitializeCompanyInfo();
-            InitializeContactInfo();
-            ConfigureViewRFQUIElements();
+            if (viewAddCondition == 1)
+            {
+                ConfigureAddRFQUIElements();
 
-            SetSalesPersonLabel();
-            SetAssigneeLabel();
-            SetCompanyNameLabel();
-            SetCompanyAddressLabel();
-            SetContactPersonLabel();
+                InitializeSalesPersonCombo();
+                InitializeCompanyNameCombo();
+                InitializeAssigneeCombo();
 
-            viewAddCondition = 0;
+                SetSalesPerson();
+
+                if (rfq.GetSalesPersonName() != null)
+                    salesPersonCombo.Text = rfq.GetSalesPersonName();
+                if (rfq.GetAssigneeName() != null)
+                    assigneeCombo.Text = rfq.GetAssigneeName();
+                if (rfq.GetRFQCompany().GetCompanyName() != null)
+                    companyNameCombo.Text = rfq.GetRFQCompany().GetCompanyName();
+
+                
+            }
+            else if (viewAddCondition == 0)
+            {
+                InitializeCompanyInfo();
+                InitializeContactInfo();
+
+                ConfigureViewRFQUIElements();
+
+                SetSalesPersonLabel();
+                SetAssigneeLabel();
+                SetCompanyNameLabel();
+                SetCompanyAddressLabel();
+                SetContactPersonLabel();
+                SetContactNumberLabel();
+            }  
+            else
+            {
+               
+
+                ConfigureAddRFQUIElements();
+                InitializeSalesPersonCombo();
+                SetSalesPersonCombo();
+                InitializeAssigneeCombo();
+                SetAssigneeCombo();
+                InitializeCompanyNameCombo();
+                SetCompanyNameCombo();
+                InitializeCompanyInfo();
+                InitializeContactInfo(); 
+                SetContactPersonCombo();
+                SetContactPhoneCombo();
+            }
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////
@@ -107,6 +124,7 @@ namespace _01electronics_crm
             companyAddressLabel.Visibility = Visibility.Collapsed;
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             contactPersonPhoneLabel.Visibility = Visibility.Collapsed;
+            salesPersonLabel.Visibility = Visibility.Collapsed;
 
             //YOU SHALL MAKE SURE THAT LABELS ARE COLLAPSED AND COMBOS ARE VISIBLE EVERY TIME
             assigneeCombo.Visibility = Visibility.Visible;
@@ -114,6 +132,7 @@ namespace _01electronics_crm
             companyAddressCombo.Visibility = Visibility.Visible;
             contactPersonCombo.Visibility = Visibility.Visible;
             contactPersonPhoneCombo.Visibility = Visibility.Visible;
+            salesPersonCombo.Visibility = Visibility.Visible;
 
             companyAddressCombo.IsEnabled = false;
             contactPersonCombo.IsEnabled = false;
@@ -127,12 +146,14 @@ namespace _01electronics_crm
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonCombo.Visibility = Visibility.Collapsed;
             contactPersonPhoneCombo.Visibility = Visibility.Collapsed;
+            salesPersonCombo.Visibility = Visibility.Collapsed;
 
             offerProposerLabel.Visibility = Visibility.Visible;
             companyNameLabel.Visibility = Visibility.Visible;
             companyAddressLabel.Visibility = Visibility.Visible;
             contactPersonNameLabel.Visibility = Visibility.Visible;
             contactPersonPhoneLabel.Visibility = Visibility.Visible;
+            salesPersonLabel.Visibility = Visibility.Visible;
         }
 
         ///////////////INITIALIZE FUNCTIONS///////////////
@@ -146,39 +167,62 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                 return;
         }
-        private void InitializeContactInfo()
+        private bool InitializeContactInfo()
         {
-            if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(),rfq.GetAddressSerial(), ref contactInfo))
-                return;
+            if (viewAddCondition == 1)
+            {
+                if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), rfq.GetAddressSerial(), ref contactInfo))
+                    return false;
+            }
+            else
+            {
+                if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), rfq.GetAddressSerial(), ref contactInfo))
+                    return false;
+            }
+            return true;
         }
         
 
-        private void InitializeSalesPersonLabel()
+        private bool InitializeSalesPersonCombo()
         {
-            salesPersonLabel.Content = loggedInUser.GetEmployeeName();
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployees))
+                return false;
+            for (int i = 0; i < salesEmployees.Count(); i++)
+                salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
+
+            return true;
         }
 
         //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
-            if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
-                return false;
-
-            //NO NEED FOR TEMP VARIABLES
-            for (int i = 0; i < companiesList.Count; i++)
-                companyNameCombo.Items.Add(companiesList[i].company_name);
+            if (viewAddCondition == 1)
+            {
+                if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
+                    return false;
+            }
+            else
+            { 
+                if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
+                    return false;
+            }
+                //NO NEED FOR TEMP VARIABLES
+                for (int i = 0; i < companiesList.Count(); i++)
+                    companyNameCombo.Items.Add(companiesList[i].company_name);
 
             return true;
         }
 
-        private void InitializeAssigneeCombo()
+        private bool InitializeAssigneeCombo()
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
-                return;
+                return false;
 
             //NO NEED FOR TEMP VARIABLES
             for (int i = 0; i < preSalesEmployees.Count(); i++)
                 assigneeCombo.Items.Add(preSalesEmployees[i].employee_name);
+
+            return true;
         }
 
         /////////////SET FUNCTIONS////////////////
@@ -186,9 +230,32 @@ namespace _01electronics_crm
 
         private void SetSalesPerson()
         {
-            rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+        }
+        private void SetSalesPersonCombo()
+        {
+            salesPersonCombo.SelectedItem = rfq.GetSalesPersonName();
+        }
+        private void SetAssigneeCombo()
+        {
+            assigneeCombo.SelectedItem = rfq.GetAssigneeName();
         }
 
+        private void SetCompanyNameCombo()
+        {
+            companyNameCombo.SelectedItem = rfq.GetRFQCompany().GetCompanyName();
+        }
+        private void SetContactPersonCombo()
+        {
+            contactPersonCombo.SelectedItem = rfq.GetRFQContact().GetContactName().ToString();
+            //contactPersonCombo.Text = contactInfo[0].contact_name;
+        }
+        private void SetContactPhoneCombo()
+        {
+            if(rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
+                contactPersonPhoneCombo.SelectedItem = rfq.GetRFQContact().GetContactPhones()[0].ToString();
+        }
         private void SetSalesPersonLabel()
         {
             salesPersonLabel.Content = rfq.GetSalesPersonName();
@@ -218,27 +285,34 @@ namespace _01electronics_crm
 
         private void SetContactPersonLabel()
         {
+            contactPersonNameLabel.Content = null;
+
             for (int i = 0; i < contactInfo.Count(); i++)
-            {
-                COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT tempContact = contactInfo[i];
-                contactPersonNameLabel.Content += tempContact.contact_name + "\n";
-            }
+                contactPersonNameLabel.Content += contactInfo[i].contact_name + "\n";
+        }
+
+        private void SetContactNumberLabel()
+        {
+            //for (int i = 0; i < contactPhones.Count(); i++)
+              //contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
+              if(rfq.GetRFQContact().GetContactPhones()[0] != null)
+                contactPersonPhoneLabel.Content = rfq.GetRFQContact().GetContactPhones()[0].ToString();
         }
 
         /////////////SELECTION CHANGED//////////////
         ////////////////////////////////////////////
-        private void salesPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-        
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                rfq.InitializeSalesPersonInfo(salesEmployees[salesPersonCombo.SelectedIndex].employee_id);
         }
-        private void AssigneeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
         {
             if(assigneeCombo.SelectedItem != null)
                 rfq.InitializeAssignedEngineerInfo(preSalesEmployees[assigneeCombo.SelectedIndex].employee_id);
         }
-
-        private void CompanyNameComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+                     
+        private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
 
@@ -246,7 +320,12 @@ namespace _01electronics_crm
             {
                 companyAddressCombo.IsEnabled = true;
 
-                int companySerial = companyNameCombo.SelectedIndex + 1;
+                for(int i = 0; i < companiesList.Count; i++)
+                {
+                    if (companyNameCombo.SelectedItem.ToString() == companiesList[i].company_name)
+                        companySerial = companiesList[i].company_serial;
+                }
+                //int companySerial = companyNameCombo.SelectedIndex + 1;
 
                 if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                     return;
@@ -265,47 +344,56 @@ namespace _01electronics_crm
             }
             
         }
-
-        private void CompanyAddressComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedCompanyAddressCombo(object sender, SelectionChangedEventArgs e)
         {
             contactPersonCombo.Items.Clear();
 
             if (companyAddressCombo.SelectedItem != null)
             {
                 contactPersonCombo.IsEnabled = true;
-                int addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
-
-                if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
-                    return;
                 
-                for (int i = 0; i < contactInfo.Count(); i++)
+                addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
+
+                if (viewAddCondition == 1)
                 {
-                    COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT tempContact = contactInfo[i];
-                    contactPersonCombo.Items.Add(tempContact.contact_name);
+                    if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), addressSerial, ref contactInfo))
+                        return;
                 }
+                else
+                {
+                    if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), addressSerial, ref contactInfo))
+                        return;
+                }
+
+                for (int i = 0; i < contactInfo.Count(); i++)
+                    contactPersonCombo.Items.Add(contactInfo[i].contact_name);
+                
+                rfq.InitializeBranchInfo(addressSerial);
 
                 if (contactInfo.Count() == 1)
                     contactPersonCombo.Items.GetItemAt(0);
-                rfq.InitializeBranchInfo(addressSerial);
             }
         }
-
-        private void ContactPersonComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContactPersonCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(contactPersonCombo.SelectedItem != null)
+            contactPersonPhoneCombo.Items.Clear();
+            if (contactPersonCombo.SelectedItem != null)
             {
                 contactPersonPhoneCombo.IsEnabled = true;
                 rfq.InitializeContactInfo(contactInfo[contactPersonCombo.SelectedIndex].contact_id);
             }
-            
+
             //YOU SHALL ACCESS THE CONTACT PHONE LIKE THIS
             for (int i = 0; i < rfq.GetRFQContact().GetNumberOfSavedContactPhones(); i++)
+            {
                 contactPersonPhoneCombo.Items.Add(rfq.GetRFQContact().GetContactPhones()[i]);
+                contactPhones[i] = rfq.GetRFQContact().GetContactPhones()[i];
+            }
+            
         }
-
-        private void ContactPersonPhoneComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedContactPersonPhoneCombo(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         //////////BUTTON CLICKED///////////////////
@@ -326,30 +414,14 @@ namespace _01electronics_crm
 
         private void OnClickProductsInfo(object sender, RoutedEventArgs e)
         {
-            if(viewAddCondition == 0)
-            {
-                RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq);
-                NavigationService.Navigate(productsPage);
-            }
-            else
-            {
-                RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser);
-                NavigationService.Navigate(productsPage);
-            }
+            RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
+            NavigationService.Navigate(productsPage);
         }
 
         private void OnClickAdditionalInfo(object sender, RoutedEventArgs e)
         {
-            if(viewAddCondition == 0)
-            {
-                RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq);
-                NavigationService.Navigate(additionalInfoPage);
-            }
-            else
-            {
-                RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser);
-                NavigationService.Navigate(additionalInfoPage);
-            }
+            RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            NavigationService.Navigate(additionalInfoPage);
         }
 
     }

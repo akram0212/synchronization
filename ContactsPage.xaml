@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
-      Background="#EDEDED"
       Title="ContactsPage">
 
     <Grid>
@@ -27,17 +26,19 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MyProfileLabel" Text="My Profile" MouseLeftButtonDown="OnButtonClickedMyProfile"/>
             <TextBlock Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ContactsLabel" Text="Contacts" MouseLeftButtonDown="OnButtonClickedContacts"/>
-            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedOrders"/>
-            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Work Offers" MouseLeftButtonDown="OnButtonClickedOffers"/>
-            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs"/>
-            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
-            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
-            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
-            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
+            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ProductsLabel" Text="Products" MouseLeftButtonDown="OnButtonClickedProducts"/>
+            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedWorkOrders"/>
+            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Work Offers" MouseLeftButtonDown="OnButtonClickedWorkOffers"/>
+            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs"/>
+            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
+            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
+            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
+            <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
 
         </Grid>
 
@@ -58,7 +59,7 @@
             <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="400"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
@@ -66,11 +67,11 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0" Margin="48,24,48,48">
+                <Grid Grid.Column="0" Margin="0,0,24,0">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition MinWidth="180"/>
-                        <ColumnDefinition MinWidth="125"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -81,24 +82,25 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="countryCheckBoxChecked" Unchecked="countryCheckBoxUnchecked"/>
-                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="countryComboBoxSelectionChanged"/>
+                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCountryCheckBox" Unchecked="OnUncheckedCountryCheckBox"/>
+                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedCountryComboBox"/>
 
-                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="stateCheckBoxChecked" Unchecked="stateCheckBoxUnchecked"/>
-                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="stateComboBoxSelectionChanged"/>
+                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedStateCheckBox" Unchecked="OnUncheckedStateCheckBox"/>
+                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStateComboBox"/>
 
-                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="cityCheckBoxChecked" Unchecked="cityCheckBoxUnchecked"/>
-                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="cityComboBoxSelectionChanged"/>
+                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCityCheckBox" Unchecked="OnUncheckedCityCheckBox"/>
+                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedCityComboBox"/>
 
-                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="districtCheckBoxChecked" Unchecked="districtCheckBoxUnchecked"/>
-                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="districtComboBoxSelectionChanged"/>
+                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedDistrictCheckBox" Unchecked="OnUncheckedDistrictCheckBox"/>
+                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedDistrictComboBox"/>
 
-                    <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="salesPersonCheckBoxChecked"/>
-                    <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}"/>
+                    <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedSalesPersonCheckBox" Unchecked="OnUncheckedSalesPersonCheckBox"/>
+                    <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSalesPersonComboBox"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
-                    <TreeView Name="treeViewItem" SelectedItemChanged="treeViewItemSelectedItemChanged" >
+                    <TreeView Name="contactTreeView" SelectedItemChanged="OnSelectedItemChangedTreeViewItem" >
+
                     </TreeView>
                 </ScrollViewer>
 

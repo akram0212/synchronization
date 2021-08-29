@@ -38,15 +38,9 @@
 
                     <WrapPanel Grid.Row="0">
                         <WrapPanel Name="FirstNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="First Name"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Contact Name"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="employeeFirstNameTextBox"/>
                         </WrapPanel>
-
-                        <WrapPanel Name="LastNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Last Name"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeLastNameTextBox"/>
-                        </WrapPanel>
-
                         <WrapPanel Name="ContactGender">
                             <Label Style="{StaticResource tableItemLabel}" Content="Gender"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="contactGenderTextBox"/>
@@ -82,7 +76,7 @@
             </WrapPanel>
 
         </ScrollViewer>
-
+        <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Details" Name="addTelephoneEmailButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
         
 
     </Grid>

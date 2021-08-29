@@ -55,10 +55,10 @@ namespace _01electronics_erp
         protected int percentOnDelivery;
         protected int percentOnInstallation;
 
-        protected int totalPriceValue;
-        protected int priceValueDownPayment;
-        protected int priceValueOnDelivery;
-        protected int priceValueOnInstallation;
+        protected Decimal totalPriceValue;
+        protected Decimal priceValueDownPayment;
+        protected Decimal priceValueOnDelivery;
+        protected Decimal priceValueOnInstallation;
 
         //////////////////////////////////////////////////////////////////////
         //DRAWINGS CONIDITIONS
@@ -235,7 +235,7 @@ namespace _01electronics_erp
 
             LinkRFQInfo();
 
-            String sqlQueryPart5 = @"with get_product_type		as	(	select products_type.id as product_type_id, 
+            String sqlQueryPart5 = @"with get_product_type		as(	select products_type.id as product_type_id, 
 		products_type.product_name as product_type 
 		from erp_system.dbo.products_type 
 		), 
@@ -379,8 +379,9 @@ namespace _01electronics_erp
             sqlQuery += sqlQueryPart8;
 
             queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_int = 20;
+            
+            queryColumns.sql_int = 19;
+            queryColumns.sql_money = 1;
             queryColumns.sql_datetime = 1;
             queryColumns.sql_string = 12;
             queryColumns.sql_bit = 1;
@@ -402,7 +403,7 @@ namespace _01electronics_erp
             SetPercentOnDelivery(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetPercentOnInstallation(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
 
-            SetHasDrawings(sqlDatabase.rows[0].sql_bit[intColumnsCount++]);
+            SetHasDrawings(sqlDatabase.rows[0].sql_bit[0]);
 
             SetDeliveryTimeMinimum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
             SetDeliveryTimeMaximum(sqlDatabase.rows[0].sql_int[intColumnsCount++]);
@@ -434,7 +435,7 @@ namespace _01electronics_erp
                 SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
 
                 OfferProductsList[i].productQuantity = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
-                OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
+                OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_money[0];
             }
 
             SetTotalValues();
@@ -1409,23 +1410,23 @@ namespace _01electronics_erp
             return OfferProductsList[i - 1].productQuantity;
         }
 
-        public int GetProduct1PriceValue()
+        public Decimal GetProduct1PriceValue()
         {
             return OfferProductsList[0].productPrice;
         }
-        public int GetProduct2PriceValue()
+        public Decimal GetProduct2PriceValue()
         {
             return OfferProductsList[1].productPrice;
         }
-        public int GetProduct3PriceValue()
+        public Decimal GetProduct3PriceValue()
         {
             return OfferProductsList[2].productPrice;
         }
-        public int GetProduct4PriceValue()
+        public Decimal GetProduct4PriceValue()
         {
             return OfferProductsList[4].productPrice;
         }
-        public int GetProductPriceValue(int i)
+        public Decimal GetProductPriceValue(int i)
         {
             return OfferProductsList[i - 1].productPrice;
         }
@@ -1457,19 +1458,19 @@ namespace _01electronics_erp
             return percentOnInstallation;
         }
 
-        public int GetTotalPriceValue()
+        public Decimal GetTotalPriceValue()
         {
             return totalPriceValue;
         }
-        public int GetPriceValueDownPayment()
+        public Decimal GetPriceValueDownPayment()
         {
             return priceValueDownPayment;
         }
-        public int GetPriceValueOnDelivery()
+        public Decimal GetPriceValueOnDelivery()
         {
             return priceValueOnDelivery;
         }
-        public int GetPriceValueOnInstallation()
+        public Decimal GetPriceValueOnInstallation()
         {
             return priceValueOnInstallation;
         }
@@ -1754,7 +1755,7 @@ namespace _01electronics_erp
             offerStatus = "Failed";
         }
 
-        bool IssueNewOffer()
+        public bool IssueNewOffer()
         {
             SetOfferIssueDateToToday();
 
@@ -1765,9 +1766,17 @@ namespace _01electronics_erp
 
             GetNewOfferServerPath();
 
+            //InsertIntoWorkOffers
+            //InsertIntoWorkOffersProducts
+            //InsertIntoWorkOffersDrawings
+
+            //if(check team)
+            //{
+            //  InsertIntoWorkOffersRFQs
+            // ConfirmRFQ()
             return true;
         }
-        bool ReviseOffer()
+        public bool ReviseOffer()
         {
             SetOfferIssueDateToToday();
 
@@ -1881,14 +1890,15 @@ namespace _01electronics_erp
                 offerIdString[OFFER_ID_DATE_START_INDEX + i] = offerDateID[i];
                 revisedOfferIdString[OFFER_ID_DATE_START_INDEX + i] = offerDateID[i];
             }
-
-            revisedOfferIdString[OFFER_ID_REVISION_SERIAL_START_INDEX] = (char)((offerVersion - 1) / 10);
-            revisedOfferIdString[OFFER_ID_REVISION_SERIAL_START_INDEX + 1] = (char)((offerVersion - 1) % 10);
+            string temp = Convert.ToString((offerVersion - 1) / 10);
+            revisedOfferIdString[OFFER_ID_REVISION_SERIAL_START_INDEX] = Convert.ToChar(temp);
+            temp = Convert.ToString((offerVersion - 1) % 10);
+            revisedOfferIdString[OFFER_ID_REVISION_SERIAL_START_INDEX + 1] = Convert.ToChar(temp);
 
             if (offerVersion > 1)
-                offerId = revisedOfferIdString.ToString();
+                offerId = new string(revisedOfferIdString);
             else
-                offerId = offerIdString.ToString();
+                offerId = new string(offerIdString);
         }
 
         public void GetNewOfferServerPath()
@@ -1901,5 +1911,15 @@ namespace _01electronics_erp
             offerServerPath = offerServerPath;
         }
 
+        public void InsertIntoWorkOffers()
+        {
+
+        }
+        //InsertIntoWorkOffers
+        //InsertIntoWorkOffersProducts
+        //InsertIntoWorkOffersDrawings
+
+
+        //InsertIntoWorkOffersRFQs
     }
 }

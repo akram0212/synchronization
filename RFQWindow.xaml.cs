@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
-using _01electronics_erp;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -21,18 +21,11 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQWindow : NavigationWindow
     {
-        public RFQWindow(ref Employee mLoggedInUser)
+        public RFQWindow(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             InitializeComponent();
 
-            RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser);
-            this.NavigationService.Navigate(rfqsPage);
-        }
-        public RFQWindow(ref Employee mLoggedInUser, ref RFQ mRFQ)
-        {
-            InitializeComponent();
-
-            RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser, ref mRFQ);
+            RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser,ref mRFQ, mViewAddCondition);
             this.NavigationService.Navigate(rfqsPage);
         }
     }
