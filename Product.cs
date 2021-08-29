@@ -566,7 +566,7 @@ namespace _01electronics_crm
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = BASIC_MACROS.LOCAL_PHOTOS_PATH + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = "D:\\erp_system\\01electronics_crm\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

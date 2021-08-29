@@ -274,7 +274,6 @@ namespace _01electronics_crm
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
-            
             if (!CheckContactFirstNameEditBox())
                 return;
             if (!CheckContactLastNameEditBox())
@@ -302,116 +301,25 @@ namespace _01electronics_crm
 
             contact.SetSalesPerson(loggedInUser);
 
-            contact.GetNewContactId();
-
-            InsertIntoContactInfo();
+            contact.IssueNewContact();
 
             //YOU DON'T NEED TO GET A NEW EMAIL/PHONE ID, THIS IS A NEW CONTACT, SO THE EMAIL ID SHALL BE 1,
             //ALSO, YOU SHALL ONLY USE CONTACT.ADDNEWPERSONALEMAIL() / CONTACT.ADDNEWCONTACTPHONE(), 
             //THIS FUNCTION SHALL HANDLE THE IDs BY ITSELF
 
             for (int i = 0; i < contact.GetNumberOfSavedContactPhones(); i++)
-                InsertIntoContactMobile(i + 1, contact.GetContactPhones()[i]);
+                contact.InsertIntoContactMobile(i + 1, contact.GetContactPhones()[i]);
 
             for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
-                InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
+                contact.InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
 
             this.Close();
         }
-
-        private bool InsertIntoContactInfo()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_info values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetContactId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + contact.GetContactBusinessEmail() + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + contact.GetContactName() + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + contact.GetContactGender() + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetContactDepartmentId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += 1;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-
-        private bool InsertIntoContactPersonalEmail(int mEmailId, String mContactEmail)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_personal_emails values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetContactId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += mEmailId;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + mContactEmail + "'"; 
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        
-        private bool InsertIntoContactMobile(int mPhoneId, String mContactPhone)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.contact_person_mobile values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += contact.GetContactId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += mPhoneId;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + mContactPhone + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-
-            return true;
-        } 
-        
 
         private void OnSelChangedGender(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
-
-     
 
         private void OnTextChangedLastName(object sender, TextChangedEventArgs e)
         {

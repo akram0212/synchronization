@@ -131,5 +131,12 @@ namespace _01electronics_crm
 
             wrapPanel3.Children.Add(ContactPersonalEmailWrapPanel);
         }
+
+        private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
+        {
+            AddContactDetailsWindow addContactDetailsWindow = new AddContactDetailsWindow();
+            addContactDetailsWindow.Show();
+        }
+
     }
 }

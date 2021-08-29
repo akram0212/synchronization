@@ -99,20 +99,16 @@ namespace _01electronics_crm
                     Grid.SetColumn(imageBorder, 0);
 
                     selectedProduct.SetModelID(brandModels[i].modelId);
+                    selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
 
                     try
                     {
-                        if(!selectedProduct.DownloadPhotoFromServer())
-                        {
-                            continue;
-                        }
-                    }
-                    catch
-                    { 
+                        selectedProduct.DownloadPhotoFromServer();
+                    
                         Image brandImage = new Image();
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath());
+                        src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
                         src.EndInit();
                         brandImage.Source = src;
                         brandImage.Height = 220;
@@ -121,6 +117,10 @@ namespace _01electronics_crm
                         brandImage.Tag = brandModels[i].modelId.ToString();
                         Grid.SetColumn(brandImage, 0);
                         column1Grid.Children.Add(brandImage);
+                        
+                    }
+                    catch
+                    { 
 
                     }
                     column1Grid.Children.Add(imageBorder);

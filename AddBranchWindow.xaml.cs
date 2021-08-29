@@ -169,16 +169,44 @@ namespace _01electronics_crm
 
             //YOU DON'T NEED TO WRITE A NEW QUERY GET NEW BRANCH SERIAL
             //COMPANY CLASS HANDLES ALL THAT
-            company.GetNewAddressSerial();
 
-            if (!InsertIntoCompanyAddress())
-                return;
+            company.SetOwnerUser(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
 
-            if (!InsertIntoCompanyTelephone(telephoneTextBox.Text))
-                return;
+            if (telephoneTextBox.Text != "" && faxTextBox.Text != "")
+            {
+                if (!company.IssueNewBranch(telephoneTextBox.Text, faxTextBox.Text))
+                    return;
+            }
+            else
+            {
+                if (!company.GetNewAddressSerial())
+                    return;
 
-             if (!InsertIntoCompanyFax(faxTextBox.Text))
-                return;
+                if (!company.InsertIntoCompanyAddress())
+                    return;
+
+                if(telephoneTextBox.Text != "")
+                {
+                    if (!company.InsertIntoCompanyTelephone(telephoneTextBox.Text))
+                        return;
+                }
+
+                if (faxTextBox.Text != "")
+                {
+                    if (!company.InsertIntoCompanyFax(faxTextBox.Text))
+                        return;
+                }
+            }
+            //company.GetNewAddressSerial();
+
+            //if (!InsertIntoCompanyAddress())
+            //    return;
+
+            //if (!InsertIntoCompanyTelephone(telephoneTextBox.Text))
+            //    return;
+
+            // if (!InsertIntoCompanyFax(faxTextBox.Text))
+            //    return;
 
             this.Close();
 
@@ -192,7 +220,7 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyPhone(outputString);
-            telephoneTextBox.Text = company.GetCompanyPhones()[1];
+            telephoneTextBox.Text = company.GetCompanyPhones()[0];
 
             return true;
         }
@@ -205,7 +233,7 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyFax(outputString);
-            faxTextBox.Text = company.GetCompanyFaxes()[1];
+            faxTextBox.Text = company.GetCompanyFaxes()[0];
 
             return true;
         }
@@ -255,75 +283,10 @@ namespace _01electronics_crm
                 return false;
             }
 
-
             company.SetCompanyDistrict(districts[districtComboBox.SelectedIndex].district_id, districtComboBox.SelectedItem.ToString());
 
             return true;
         }
-        private bool InsertIntoCompanyAddress()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += districts[districtComboBox.SelectedIndex].district_id;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        } 
-        private bool InsertIntoCompanyTelephone(String Telephone)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + Telephone + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool InsertIntoCompanyFax(String Fax)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.[company_fax] values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + Fax + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
+        
     }
 }

@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="75"/>
+            <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Name="ContactProfileHeader" Content="VIEW COMPANY" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
@@ -67,7 +67,8 @@
 
         </ScrollViewer>
 
-        <Button Grid.Row="2" Content="Add Branch" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
+        <Button Grid.Row="2" HorizontalAlignment="Left" Content="Add Branch"  Margin="150,0" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
+        <Button Grid.Row="2" HorizontalAlignment="Right"  Margin="150,0" Content="Add Details" Name="addTelephoneFaxButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
 
     </Grid>
 
