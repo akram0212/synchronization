@@ -58,13 +58,11 @@ namespace _01electronics_crm
 
             if (telephoneTextBox.Text != String.Empty)
             {
-               // company.AddCompanyPhone(telephoneTextBox.Text.ToString());
                 company.InsertIntoCompanyTelephone(telephoneTextBox.Text.ToString());
             }
 
             if (faxTextBox.Text != String.Empty)
             {
-               // company.AddCompanyFax(faxTextBox.Text.ToString());
                 company.InsertIntoCompanyFax(faxTextBox.Text.ToString());
             }
 
@@ -108,5 +106,6 @@ namespace _01electronics_crm
 
             return true;
         }
+        
     }
 }

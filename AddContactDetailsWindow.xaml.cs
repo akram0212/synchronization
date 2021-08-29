@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +20,44 @@ namespace _01electronics_crm
     /// </summary>
     public partial class AddContactDetailsWindow : Window
     {
-        public AddContactDetailsWindow()
+        protected Employee loggedInUser;
+
+        protected CommonQueries commonQueries;
+        protected IntegrityChecks integrityChecker;
+
+        protected Contact contact;
+
+        protected int phonesCount;
+        protected int emailsCount;
+        public AddContactDetailsWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             InitializeComponent();
+
+            loggedInUser = mLoggedInUser;
+            contact = mContact;
+
+            integrityChecker = new IntegrityChecks();
         }
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
+            if (!CheckContactPhoneEditBox())
+                return;
 
+            if (!CheckContactEmailEditBox())
+                return;
+
+            if (telephoneTextBox.Text != String.Empty)
+            {
+                contact.InsertIntoContactMobile(contact.GetNumberOfSavedContactPhones() + 1, telephoneTextBox.Text.ToString());
+            }
+
+            if (emailTextBox.Text != String.Empty)
+            {
+                contact.InsertIntoContactPersonalEmail(contact.GetNumberOfSavedContactEmails() + 1, emailTextBox.Text.ToString());
+            }
+
+            this.Close();
         }
 
         private void OnTextChangedEmail(object sender, TextChangedEventArgs e)
@@ -37,6 +68,34 @@ namespace _01electronics_crm
         private void OnTextChangedTelephone(object sender, TextChangedEventArgs e)
         {
 
+        }
+        private bool CheckContactPhoneEditBox()
+        {
+            String inputString = telephoneTextBox.Text;
+            String outputString = telephoneTextBox.Text;
+
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
+                return false;
+
+            //contact.AddCompanyPhone(outputString);
+            // contact.GetNumberOfSavedCompanyPhones();
+            telephoneTextBox.Text = outputString;
+
+            return true;
+        }
+
+        private bool CheckContactEmailEditBox()
+        {
+            String inputString = emailTextBox.Text;
+            String outputString = emailTextBox.Text;
+
+            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref outputString, false))
+                return false;
+
+            //contact.AddNewContactEmail(outputString);
+            emailTextBox.Text = outputString;
+
+            return true;
         }
     }
 }

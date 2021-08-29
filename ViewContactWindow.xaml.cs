@@ -32,6 +32,11 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
             contact = mContact;
 
+            InitializeContactInfo();
+
+        }
+        private void InitializeContactInfo()
+        {
             employeeFirstNameTextBox.IsEnabled = false;
             contactGenderTextBox.IsEnabled = false;
             companyNameTextBox.IsEnabled = false;
@@ -48,17 +53,16 @@ namespace _01electronics_crm
 
             AddBusinessEmail();
 
-            if(contact.GetContactPersonalEmails()[0] != null)
-                 AddPersonalEmail();
+            if (contact.GetContactPersonalEmails()[0] != null)
+                AddPersonalEmail();
 
             if (contact.GetContactPhones()[0] != null)
                 AddBusinessPhone();
 
             if (contact.GetContactPhones()[1] != null)
                 AddPersonalPhone();
-
         }
-        private void AddPersonalPhone()
+            private void AddPersonalPhone()
         {
              WrapPanel ContactPersonalPhoneWrapPanel = new WrapPanel();
 
@@ -134,8 +138,13 @@ namespace _01electronics_crm
 
         private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
         {
-            AddContactDetailsWindow addContactDetailsWindow = new AddContactDetailsWindow();
+            AddContactDetailsWindow addContactDetailsWindow = new AddContactDetailsWindow(ref loggedInUser, ref contact);
+            addContactDetailsWindow.Closed += OnClosedAddContactDetailsWindow;
             addContactDetailsWindow.Show();
+        }
+        private void OnClosedAddContactDetailsWindow(object sender, EventArgs e)
+        {
+            InitializeContactInfo();
         }
 
     }
