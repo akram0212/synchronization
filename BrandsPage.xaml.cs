@@ -67,33 +67,40 @@ namespace _01electronics_crm
             {
                 Grid gridI = new Grid();
 
-                Image brandLogo = new Image();
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.UriSource = new Uri(brandsList[i].brandName + ".jpg", UriKind.Relative);
-                src.EndInit();
-                brandLogo.Source = src;
-                brandLogo.Width = 300;
-                brandLogo.MouseDown += ImageMouseDown;
-                brandLogo.Margin = new Thickness(80,100,12,12);
-                brandLogo.Tag = brandsList[i].brandId.ToString();
-                brandLogo.Name = brandsList[i].brandName;
+                try
+                {
+                    Image brandLogo = new Image();
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
+                    src.EndInit();
+                    brandLogo.Source = src;
+                    brandLogo.Width = 300;
+                    brandLogo.MouseDown += ImageMouseDown;
+                    brandLogo.Margin = new Thickness(80, 100, 12, 12);
+                    brandLogo.Tag = brandsList[i].brandId.ToString();
+                    brandLogo.Name = brandsList[i].brandName;
+               
+                    var e1 = new EventTrigger(UIElement.MouseEnterEvent);
+                    e1.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("expandStoryboard")});
+                    var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
+                    e2.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+                    ScaleTransform myScaleTransform = new ScaleTransform();
+                    myScaleTransform.ScaleY = 1;
+                    myScaleTransform.ScaleX = 1;
+                    brandLogo.RenderTransform = myScaleTransform;
+                   
+                    brandLogo.Triggers.Add(e1);
+                    brandLogo.Triggers.Add(e2);
+                   
+                    gridI.Children.Add(brandLogo);
+                   
+                    brandsWrapPanel.Children.Add(gridI);
+                }
+                catch
+                {
 
-                var e1 = new EventTrigger(UIElement.MouseEnterEvent);
-                e1.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("expandStoryboard")});
-                var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
-                e2.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
-                ScaleTransform myScaleTransform = new ScaleTransform();
-                myScaleTransform.ScaleY = 1;
-                myScaleTransform.ScaleX = 1;
-                brandLogo.RenderTransform = myScaleTransform;
-
-                brandLogo.Triggers.Add(e1);
-                brandLogo.Triggers.Add(e2);
-
-                gridI.Children.Add(brandLogo);
-
-                brandsWrapPanel.Children.Add(gridI);
+                }
             }
 
             BrandsGrid.Children.Add(brandsWrapPanel);
@@ -172,8 +179,8 @@ namespace _01electronics_crm
             selectedProduct.SetBrandID(int.Parse(tmp));
             selectedProduct.SetBrandName(Name);
 
-            ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(productsPage);
+            //ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref selectedProduct);
+            //this.NavigationService.Navigate(productsPage);
         }
 
         /////////////////////////////////////////////////////////////////

@@ -29,24 +29,37 @@ namespace _01electronics_crm
 
         CommonQueries commonQueries;
         private Employee loggedInUser;
+        private int selectedEmployee;
 
-        private List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> contactsList;
-        private List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> companiesList;
+        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>> employeesCompanies;
+
+        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>> employeesContacts;
+        private List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> contactsList;
+
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
+
         private List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
         private List<BASIC_STRUCTS.STATE_STRUCT> states;
         private List<BASIC_STRUCTS.CITY_STRUCT> cities;
         private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
-        private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
+        private List<KeyValuePair<int, TreeViewItem>> salesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+        private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
 
-        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
+        //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
+
+        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>();
 
         public ContactsPage(ref Employee mLoggedInUser)
         {
             initializationObject = new SQLServer();
 
-            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
-            companiesList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
+            employeesCompanies = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>>();
+            employeesContacts = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>>();
+            listOfEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+
+            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
+
             countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
             states = new List<BASIC_STRUCTS.STATE_STRUCT>();
             cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
@@ -57,43 +70,117 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            countryComboBox.IsEnabled = false; 
+            countryComboBox.IsEnabled = false;
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
             salesPersonComboBox.IsEnabled = false;
 
+            stateCheckBox.IsEnabled = false;
+            cityCheckBox.IsEnabled = false;
+            districtCheckBox.IsEnabled = false;
+            salesPersonCheckBox.IsEnabled = true;
+
             ViewBtn.IsEnabled = false;
 
             InitializeCountriesComboBox();
 
-            GetAllCompanies();
+            if (!InitializeEmployeeComboBox())
+                return;
+
             GetAllContacts();
 
-            InitializeCompaniesTree();
+            SetDefaultSettings();
 
-            stateCheckBox.IsEnabled = false;
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            salesPersonCheckBox.IsEnabled = false;
+            InitializeSalesTree();
 
         }
-        
-        public bool GetAllCompanies()
+        private void SetDefaultSettings()
         {
-            if (!commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+            {
+                salesPersonCheckBox.IsChecked = false;
+                salesPersonCheckBox.IsEnabled = true;
+                salesPersonComboBox.IsEnabled = false;
+            }
+            else
+            {
+                salesPersonCheckBox.IsChecked = true;
+                salesPersonCheckBox.IsEnabled = false;
+                salesPersonComboBox.IsEnabled = false;
+            }
+        }
+        private void InitializeListOfEmployees()
+        {
+            for (int i = 0; i < listOfEmployees.Count; i++)
+            {
+                salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
+
+                List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
+               
+
+                //tmpList.Count() != 0
+                if (GetAllCompanies(listOfEmployees[i].employee_id, ref tmpList))
+                {
+                    employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                }
+            }
+
+        }
+
+        private bool InitializeEmployeeComboBox()
+        {
+            listOfEmployees.Clear();
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref listOfEmployees))
+                    return false;
+            }
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref listOfEmployees))
+                    return false;
+            }
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref listOfEmployees))
+                    return false;
+            }
+
+            InitializeListOfEmployees();
+
+            return true;
+        }
+        public bool GetAllCompanies(int salesPerson, ref List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList)
+        {
+            tmpList.Clear();
+            if (!commonQueries.GetEmployeeCompanies(salesPerson, ref tmpList))
                 return false;
 
             return true;
         }
         public bool GetAllContacts()
         {
-            if (!commonQueries.GetEmployeeContacts(loggedInUser.GetEmployeeId(), ref contactsList))
-                return false;
+            for (int i = 0; i < listOfEmployees.Count; i++)
+            {
+                List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
+                commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref tmpList);
+
+                 employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                
+            }
 
             return true;
         }
+        private void SetEmployeeComboBox()
+        {
+            salesPersonComboBox.SelectedIndex = 0;
 
+            for (int i = 0; i < listOfEmployees.Count; i++)
+                if (loggedInUser.GetEmployeeId() == listOfEmployees[i].employee_id)
+                    salesPersonComboBox.SelectedIndex = i;
+        }
         public bool InitializeCountriesComboBox()
         {
             countryComboBox.Items.Clear();
@@ -149,59 +236,105 @@ namespace _01electronics_crm
             return true;
         }
 
-        public bool InitializeCompaniesTree()
+        public bool InitializeSalesTree()
         {
             contactTreeView.Items.Clear();
-            
-            TreeViewItem ParentItem = new TreeViewItem();
-            
-            ParentItem.Header = loggedInUser.GetEmployeeName();
-            ParentItem.Tag = loggedInUser.GetEmployeeId();
 
-            contactTreeView.Items.Add(ParentItem);
+            salesTreeArray.Clear();
 
-            for (int i = 0; i < companiesList.Count(); i++)
+            for (int j = 0; j < listOfEmployees.Count(); j++)
             {
-                if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                    continue;
-                if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != companiesList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                    continue;
-                if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != companiesList[i].branchesList[0].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
-                    continue;
-                if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != companiesList[i].branchesList[0].address)
+                if (salesPersonComboBox.SelectedItem != null && listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id != listOfEmployees[j].employee_id)
                     continue;
 
-                TreeViewItem ChildItem = new TreeViewItem();
-                ChildItem.Header = companiesList[i].company_name;
-                ChildItem.Tag = companiesList[i].company_serial;
+                TreeViewItem ParentItem = new TreeViewItem();
 
-                companiesTreeArray[companiesList[i].company_serial] = ChildItem;
+                ParentItem.Header = listOfEmployees[j].employee_name;
+                ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ParentItem.Tag = listOfEmployees[j].employee_id;
 
-                ParentItem.Items.Add(ChildItem);
+                contactTreeView.Items.Add(ParentItem);
+
+                salesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(listOfEmployees[j].employee_id, ParentItem));
+
             }
 
+            InitializeCompaniesTree();
             InitializeContactsTree();
 
             return true;
         }
+        public bool InitializeCompaniesTree()
+        {
+            companiesTreeArray.Clear();
+
+            for (int i = 0; i < employeesCompanies.Count(); i++)
+            {
+                // List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = employeesCompanies[loggedInUser.GetEmployeeId()];
+
+
+                // if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != employeesCompanies[i].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                // continue;
+                //if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != tmpList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                // continue;
+                // if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != tmpList[i].branchesList[0].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
+                // continue;
+                //if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != tmpList[i].branchesList[0].address)
+                //  continue;
+                if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null && employeesCompanies[i].Key != listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                TreeViewItem currentEmployeeTreeItem = salesTreeArray.Find(tree_item => tree_item.Key == employeesCompanies[i].Key).Value;
+
+                for (int j = 0; j < employeesCompanies[i].Value.Count; j++)
+                {
+                    TreeViewItem ChildItem = new TreeViewItem();
+                    ChildItem.Header = employeesCompanies[i].Value[j].company_name;
+                    ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
+
+                    companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
+
+                    currentEmployeeTreeItem.Items.Add(ChildItem);
+                }
+
+                //if (!ParentItem.HasItems)
+                //    contactTreeView.Items.Remove(ParentItem);
+            }
+
+
+            return true;
+        }
+
         public bool InitializeContactsTree()
         {
+            contactsTreeArray.Clear();
 
-            for (int i = 0; i < contactsList.Count(); i++)
+            for (int i = 0; i < employeesContacts.Count(); i++)
             {
-                TreeViewItem companyTreeItem = companiesTreeArray[contactsList[i].company_serial];
-
-                if (companyTreeItem != null)
+                if(salesTreeArray.Exists(sales_item => sales_item.Key == employeesContacts[i].Key))
                 {
-                    TreeViewItem contactTreeItem = new TreeViewItem();
+                    for (int j = 0; j < employeesContacts[i].Value.Count; j++)
+                    {
+                        TreeViewItem companyTreeItem = new TreeViewItem();
 
-                    contactTreeItem.Header = contactsList[i].contact_name;
-                    contactTreeItem.Tag = contactsList[i].contact_id;
+                        if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial))
+                            continue;
 
-                    companyTreeItem.Items.Add(contactTreeItem);
+                        companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial).Value;
+                        
+                        TreeViewItem contactTreeItem = new TreeViewItem();
 
-                    contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>(contactTreeItem, contactsList[i]));
+                        contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
+                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
+
+
+                        contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>(contactTreeItem, employeesContacts[i].Value[j]));
+
+                        companyTreeItem.Items.Add(contactTreeItem);
+
+                    }
                 }
+                
 
             }
 
@@ -225,7 +358,7 @@ namespace _01electronics_crm
 
         private void OnCheckedCityCheckBox(object sender, RoutedEventArgs e)
         {
-            cityComboBox.IsEnabled = true; 
+            cityComboBox.IsEnabled = true;
         }
 
 
@@ -235,7 +368,9 @@ namespace _01electronics_crm
         }
         private void OnCheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
+            salesPersonComboBox.IsEnabled = true;
 
+            SetEmployeeComboBox();
         }
 
 
@@ -247,7 +382,7 @@ namespace _01electronics_crm
         {
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
-            salesPersonCheckBox.IsEnabled = false;
+            //salesPersonCheckBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
             stateCheckBox.IsEnabled = true;
@@ -259,8 +394,7 @@ namespace _01electronics_crm
             if (!InitializeStatesComboBox())
                 return;
 
-            InitializeCompaniesTree();
-           
+            InitializeSalesTree();
         }
 
         private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
@@ -276,8 +410,7 @@ namespace _01electronics_crm
             if (!InitializeCitiesComboBox())
                 return;
 
-            InitializeCompaniesTree();
-
+            InitializeSalesTree();
         }
 
         private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
@@ -290,16 +423,27 @@ namespace _01electronics_crm
             if (!InitializeDistrictsComboBox())
                 return;
 
-            InitializeCompaniesTree();
-            
+            InitializeSalesTree();
         }
 
         private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
-            InitializeCompaniesTree();
-        }
 
+            InitializeSalesTree();
+        }
+        private void OnSelChangedSalesPersonComboBox(object sender, SelectionChangedEventArgs e)
+        {
+            ViewBtn.IsEnabled = false;
+
+            if (salesPersonCheckBox.IsChecked == true)
+                selectedEmployee = listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id;
+            else
+                selectedEmployee = 0;
+
+            InitializeSalesTree();
+
+        }
 
         //////////////////////////////////////////////////////////
         /// ON UNCHECKED HANDLERS
@@ -310,22 +454,24 @@ namespace _01electronics_crm
             stateComboBox.IsEnabled = false;
 
             cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
+            stateComboBox.IsEnabled = false;
 
-            countryComboBox.Items.Clear();
-            stateComboBox.Items.Clear();
-            cityComboBox.Items.Clear();
-            districtComboBox.Items.Clear();
+            cityComboBox.SelectedItem = null;
+            districtComboBox.SelectedItem = null;
+            stateComboBox.SelectedItem = null;
+            countryComboBox.SelectedItem = null;
+
+            ViewBtn.IsEnabled = false;
 
             stateCheckBox.IsEnabled = false;
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
-            salesPersonCheckBox.IsEnabled = false;
+            // salesPersonCheckBox.IsEnabled = false;
 
             stateCheckBox.IsChecked = false;
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
+            InitializeSalesTree();
 
         }
 
@@ -336,16 +482,17 @@ namespace _01electronics_crm
             districtComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            stateComboBox.Items.Clear();
-            cityComboBox.Items.Clear();
-            districtComboBox.Items.Clear();
+            cityComboBox.SelectedItem = null;
+            districtComboBox.SelectedItem = null;
+            stateComboBox.SelectedItem = null;
 
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
-            salesPersonCheckBox.IsEnabled = false;
+            // salesPersonCheckBox.IsEnabled = false;
 
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
+            InitializeSalesTree();
         }
 
         private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
@@ -354,26 +501,31 @@ namespace _01electronics_crm
             districtComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            cityComboBox.Items.Clear();
-            districtComboBox.Items.Clear();
-
             districtCheckBox.IsEnabled = false;
-            salesPersonCheckBox.IsEnabled = false;
+            //salesPersonCheckBox.IsEnabled = false;
+
+            cityComboBox.SelectedItem = null;
+            districtComboBox.SelectedItem = null;
 
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
+            InitializeSalesTree();
         }
 
         private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
         {
+            districtComboBox.SelectedItem = null;
+
             districtComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
-            districtComboBox.Items.Clear();
-            salesPersonCheckBox.IsEnabled = false;
-        }   
+            //salesPersonCheckBox.IsEnabled = false;
+            InitializeSalesTree();
+        }
         private void OnUncheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
-            
+            salesPersonComboBox.IsEnabled = false;
+            salesPersonComboBox.SelectedItem = null;
+            InitializeSalesTree();
         }
 
         //////////////////////////////////////////////////////////
@@ -397,22 +549,58 @@ namespace _01electronics_crm
 
         private void OnClosedAddCompanyWindow(object sender, EventArgs e)
         {
-            GetAllCompanies();
-            GetAllContacts();
+            listOfEmployees.Clear();
+            employeesCompanies.Clear();
 
-            InitializeCompaniesTree();
+            InitializeCountriesComboBox();
+
+            if (!InitializeEmployeeComboBox())
+                return;
+
+            InitializeSalesTree();
         }
         private void OnClosedAddContactWindow(object sender, EventArgs e)
         {
-            GetAllCompanies();
-            GetAllContacts();
+            listOfEmployees.Clear();
+            employeesCompanies.Clear();
 
-            InitializeCompaniesTree();
+            InitializeCountriesComboBox();
+
+            if (!InitializeEmployeeComboBox())
+                return;
+
+            InitializeSalesTree();
         }
         private void OnSelectedItemChangedTreeViewItem(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             //VIEW BUTTON IS ENABLED ONCE ANY ITEM IS SELECTED
-            ViewBtn.IsEnabled = true;
+            ViewBtn.IsEnabled = false;
+            TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
+            if (selectedItem != null)
+            {
+                try
+                {
+                    object parent = selectedItem.Parent;
+                    TreeViewItem currentCompany = (TreeViewItem)parent;
+                    ViewBtn.IsEnabled = true;
+
+                    try
+                    {
+                        object parent2 = currentCompany.Parent;
+                        TreeViewItem currentSales = (TreeViewItem)parent2;
+                        ViewBtn.IsEnabled = true;
+
+                    }
+                    catch
+                    {
+                    }
+
+                }
+                catch
+                {
+                }
+            }
+
         }
 
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
@@ -423,24 +611,60 @@ namespace _01electronics_crm
 
             if (!selectedItem.HasItems)
             {
-                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
+                COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT();
                 currentContactStruct = contactsTreeArray.Find(current_item => current_item.Key.Tag == selectedItem.Tag).Value;
 
                 Contact selectedContact = new Contact();
-                selectedContact.InitializeContactInfo(loggedInUser.GetEmployeeId(), currentContactStruct.address_serial, currentContactStruct.contact_id);
+                object parent = selectedItem.Parent;
+                TreeViewItem currentCompany = (TreeViewItem)parent;
 
-                ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
-                viewContactWindow.Show();
+                try
+                {
+                    object parent2 = currentCompany.Parent;
+                    TreeViewItem currentSales = (TreeViewItem)parent2;
+
+                    selectedContact.InitializeContactInfo(Convert.ToInt32
+                        (currentSales.Tag), currentContactStruct.address_serial, currentContactStruct.contact.contact_id);
+
+                    ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
+                    viewContactWindow.Show();
+                }
+                catch
+                {
+                    Company currentCompanyClass = new Company();
+                    currentCompanyClass.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
+
+                    try
+                    {
+                        object parent3 = selectedItem.Parent;
+                        TreeViewItem currentSales = (TreeViewItem)parent3;
+                        ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompanyClass);
+                        viewCompanyWindow.Show();
+                    }
+                    catch
+                    {
+                    }
+                }
+
             }
-            else 
+            else
             {
                 Company currentCompany = new Company();
                 currentCompany.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
 
-                ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompany);
-                viewCompanyWindow.Show();
+                try
+                {
+                    object parent = selectedItem.Parent;
+                    TreeViewItem currentSales = (TreeViewItem)parent;
+                    ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompany);
+                    viewCompanyWindow.Show();
+                }
+                catch
+                {
+                }
+
             }
-           
+
         }
 
         /////////////////////////////////////////////////////////////////

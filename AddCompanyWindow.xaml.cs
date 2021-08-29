@@ -334,127 +334,20 @@ namespace _01electronics_crm
             //THE COMPANY CLASS HANDLES ALL THAT 
             company.GetNewCompanySerial();
             company.GetNewAddressSerial();
+            company.SetOwnerUser(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
 
-            InsertIntoCompanyName();
-            InsertIntoCompanyAddress();
-            InsertIntoCompanyWorkField();
+            company.InsertIntoCompanyName();
+            company.InsertIntoCompanyAddress();
+            company.InsertIntoCompanyWorkField();
 
             for (int i = 0; i < company.GetNumberOfSavedCompanyPhones(); i++)
-                InsertIntoCompanyTelephone(i);
+                company.InsertIntoCompanyTelephone(company.GetCompanyPhones()[i]);
 
             for (int i = 0; i < company.GetNumberOfSavedCompanyFaxes(); i++)
-                InsertIntoCompanyFax(i);
+                company.InsertIntoCompanyFax(company.GetCompanyFaxes()[i]);
 
-            this.Hide();
+            this.Close();
         }
-        private bool InsertIntoCompanyName()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_name values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + company.GetCompanyName() + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool InsertIntoCompanyAddress()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_address values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += districts[districtComboBox.SelectedIndex].district_id;
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool InsertIntoCompanyWorkField()
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_field_of_work values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetCompanySerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += company.GetCompanySecondaryFieldId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool InsertIntoCompanyFax(int faxId)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_fax values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + company.GetCompanyFaxes()[faxId] + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
-        private bool InsertIntoCompanyTelephone(int telephoneId)
-        {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.company_telephone values(";
-            String sqlQueryPart2 = ", ";
-            String sqlQueryPart3 = "getdate()) ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += company.GetAddressSerial();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += "'" + company.GetCompanyPhones()[telephoneId] + "'";
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += loggedInUser.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += sqlQueryPart3;
-
-            if (!sqlServer.InsertRows(sqlQuery))
-                return false;
-
-            return true;
-        }
+       
     }
 }

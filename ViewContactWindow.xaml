@@ -76,7 +76,7 @@
             </WrapPanel>
 
         </ScrollViewer>
-
+        <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Details" Name="addTelephoneEmailButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
         
 
     </Grid>

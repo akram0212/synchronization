@@ -86,8 +86,8 @@ namespace _01electronics_crm
         {
             modelSummaryPoints.Clear();
 
-            String sqlQueryPart1 = @"select models_summary.points_id, models_summary.points
-                                     from  erp_system.dbo.models_summary
+            String sqlQueryPart1 = @"select models_summary_points.points_id, models_summary_points.points
+                                     from  erp_system.dbo.models_summary_points
                                      where product_id = ";
 
             String sqlQueryPart2 = " and brand_id = ";
@@ -121,7 +121,7 @@ namespace _01electronics_crm
 
             return true;
         }
-
+       
         //////////////////////////////////////////////////////////////////////
         //ISSUE FUNCTIONS
         //////////////////////////////////////////////////////////////////////
@@ -566,7 +566,7 @@ namespace _01electronics_crm
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = BASIC_MACROS.LOCAL_PHOTOS_PATH + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = "D:\\erp_system\\01electronics_crm\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

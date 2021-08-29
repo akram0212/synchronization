@@ -31,8 +31,21 @@ namespace _01electronics_crm
             InitializeComponent();
             loggedInUser = mloggedInUser;
 
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-3));
+            DayOfWeek today = DateTime.Today.DayOfWeek;
+
+            DayOfWeek firstDay = DayOfWeek.Sunday;
+            DayOfWeek lastDay = DayOfWeek.Saturday;
+
+            int minDate;
+            int maxDate;
+
+            minDate = today - firstDay + 1;
+            maxDate = lastDay - today + 1;
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
             MeetingDatePicker.BlackoutDates.Add(cdr);
+
+            CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
+            MeetingDatePicker.BlackoutDates.Add(cdr2);
 
             officeMeeting = new OfficeMeeting();
             commonQueries = new CommonQueries();
@@ -106,7 +119,7 @@ namespace _01electronics_crm
             officeMeeting.SetMeetingNotes(additionalDescriptionTextBox.Text.ToString());
             officeMeeting.IssueNewMeeting();
 
-            this.Hide();
+            this.Close();
         }
     }
 }

@@ -73,7 +73,7 @@
                         </WrapPanel>
 
                         <WrapPanel Name="ContactTeamWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Team *"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Team"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeTeamComboBox" SelectionChanged="OnSelChangedTeam"/>
                         </WrapPanel>
                     </WrapPanel>

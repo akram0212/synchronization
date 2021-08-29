@@ -37,7 +37,8 @@ namespace _01electronics_crm
 
             MeetingPurposeTextBox.Text = officeMeeting.GetMeetingPurpose().ToString();
 
-            additionalDescriptionTextBox.Text = officeMeeting.GetMeetingNotes().ToString();
+            if(officeMeeting.GetMeetingNotes().ToString() != "NULL")
+                additionalDescriptionTextBox.Text = officeMeeting.GetMeetingNotes().ToString();
         }
     }
 }
