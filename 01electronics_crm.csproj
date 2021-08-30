@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{642EF31C-0CD1-4E04-83D9-0F3044E2B3FA}</ProjectGuid>
+    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -63,6 +63,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Spire.Doc">
