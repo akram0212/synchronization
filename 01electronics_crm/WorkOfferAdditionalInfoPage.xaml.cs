@@ -55,6 +55,8 @@ namespace _01electronics_crm
 
             workOffer = mWorkOffer;
 
+            ConfigureDrawingSubmissionUIElements();
+
             /////////////////////////
             ///ADD
             /////////////////////////
