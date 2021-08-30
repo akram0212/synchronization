@@ -131,13 +131,14 @@ namespace _01electronics_crm
         }
         private bool InitializeSalesPersonCombo()
         {
-            if (!commonQueriesObject.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employeesList))
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
                 return false;
 
             for (int i = 0; i < employeesList.Count(); i++)
             {
                 salesPersonCombo.Items.Add(employeesList[i].employee_name);
             }
+            salesPersonCombo.Items.Add(loggedInUser.GetEmployeeName());
             return true;
         }
 
@@ -361,13 +362,14 @@ namespace _01electronics_crm
             }
             else
             {
+                salesPersonID = loggedInUser.GetEmployeeId();
                 salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
             }
+
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-            {
                 workOffer.ResetWorkOfferInfo(salesPersonTeamID);
-                workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
-            }
+
+            workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
@@ -389,7 +391,7 @@ namespace _01electronics_crm
             if (RFQSerialCombo.SelectedItem != null)
             {
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-                workOffer.InitializeOfferProposerInfo(workOffer.GetAssigneeId(), COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
+                //workOffer.InitializeOfferProposerInfo(workOffer.GetAssigneeId(), COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
                 SetCompanyNameAddressContactFromRFQ();
             }
         }

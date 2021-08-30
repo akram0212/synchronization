@@ -55,7 +55,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OFFERS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath))
             {
                 Document doc = new Document(wordFilePath);
 
@@ -124,15 +124,15 @@ namespace _01electronics_crm
                     Spire.Doc.TableCell imageCell = imageTable.Rows[0].Cells[0];
                     IParagraph imageParagraph = imageCell.Paragraphs[0];
 
-                    string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".doc";
+                    string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".jpg";
 
-                    if (ftpServer.DownloadFile(BASIC_MACROS.OFFER_FILES_PATH + "/" + workOffer.GetOfferProductType(i + 1) + "/" + workOffer.GetOfferProductBrand(i + 1) + "/" + workOffer.GetOfferProductModel(i + 1) + ".doc", imagePath))
+                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
                     {
                         Image productImage = Image.FromFile(imagePath);
 
                         productImage = resizeImage(productImage, new Size(200, 200));
                         imageParagraph.AppendPicture(productImage);
-                        imageParagraph.Text = "picture here" + i;
+                        //imageParagraph.Text = "picture here" + i;
                     }
                 }
 

@@ -89,6 +89,7 @@
                 <WrapPanel Grid.Row="5">
                     <Label Content="Offer File &#x0a;  Path" Style="{StaticResource labelStyle}"/>
                     <TextBox Style="{StaticResource textBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="offerFilePath" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                    <ProgressBar Style="{StaticResource ProgressBarStyle}" Name="uploadFileProgressBar" VerticalAlignment="Center" Visibility="Collapsed"/>
                     <Button Style="{StaticResource buttonBrowseStyle}" Content="Browse" Name="browseButton" Click="OnBtnClickBrowse"/>
                 </WrapPanel>
 
