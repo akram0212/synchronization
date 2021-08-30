@@ -33,13 +33,13 @@
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
-                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
             <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
-                <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickPaymentAndDelivery"/>
+                <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
             <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
-                <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+                <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
             
         </Grid>
