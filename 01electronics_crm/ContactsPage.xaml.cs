@@ -283,7 +283,7 @@ namespace _01electronics_crm
                     ChildItem.Header = employeesCompanies[i].Value[j].company_name;
                     ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
                     ChildItem.FontSize = 13;
-                    ChildItem.FontWeight = FontWeights.Normal;
+                    ChildItem.FontWeight = FontWeights.SemiBold;
 
                     companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
 
