@@ -210,18 +210,31 @@ namespace _01electronics_crm
             {
                 if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
                 {
-                    if (!rfq.IssueNewRFQ())
+                    if (rfq.IssueNewRFQ())
                     {
                         //ENTER AN ERROR MESSAGE HERE
                         //THEN CLOSE THE WINDOW
+                        System.Windows.Forms.MessageBox.Show("RFQ added successfully!");
+
+                        RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
+
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
+
                     }
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
-                    if (!rfq.ReviseRFQ())
+                    if (rfq.ReviseRFQ())
                     {
                         //ENTER AN ERROR MESSAGE HERE
                         //THEN CLOSE THE WINDOW
+                        System.Windows.Forms.MessageBox.Show("RFQ revised successfully!");
+
+                        RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
+
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
                     }
                 }
             }

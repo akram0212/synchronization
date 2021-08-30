@@ -208,7 +208,7 @@ namespace _01electronics_crm
                 mainLabelCheckBox.Style = (Style)FindResource("checkBoxStyle");
                 mainLabelCheckBox.Checked += new RoutedEventHandler(OnCheckMainLabelCheckBox);
                 mainLabelCheckBox.Unchecked += new RoutedEventHandler(OnUnCheckMainLabelCheckBox);
-                if(i == 0)
+                if(i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                 {
                     mainLabelCheckBox.IsEnabled = false;
                 }
@@ -236,6 +236,12 @@ namespace _01electronics_crm
                     ComboBox currentTypeCombo = new ComboBox();
                     currentTypeCombo.Style = (Style)FindResource("comboBoxStyle");
                     currentTypeCombo.SelectionChanged += new SelectionChangedEventHandler(TypeComboBoxesSelectionChanged);
+
+                    if(i != 0)
+                    {
+                        currentTypeCombo.IsEnabled = false;
+                    }
+
                     for (int j = 0; j < products.Count(); j++)
                         currentTypeCombo.Items.Add(products[j].typeName);
                     productTypeWrapPanel.Children.Add(currentTypeCombo);
@@ -268,6 +274,12 @@ namespace _01electronics_crm
                     currentBrandCombo.Style = (Style)FindResource("comboBoxStyle");
                     //currentBrandCombo.Margin = new Thickness(-300, 12, 12, 12);
                     currentBrandCombo.SelectionChanged += new SelectionChangedEventHandler(BrandComboBoxesSelectionChanged);
+
+                    if (i != 0)
+                    {
+                        currentBrandCombo.IsEnabled = false;
+                    }
+
                     for (int j = 0; j < brands.Count(); j++)
                         currentBrandCombo.Items.Add(brands[j].brandName);
                     productBrandWrapPanel.Children.Add(currentBrandCombo);
@@ -298,6 +310,9 @@ namespace _01electronics_crm
                     ComboBox currentModelCombo = new ComboBox();
                     currentModelCombo.Style = (Style)FindResource("comboBoxStyle");
                     //currentModelCombo.Margin = new Thickness(-300, 12, 12, 12);
+                    
+                    currentModelCombo.IsEnabled = false;
+
                     currentModelCombo.SelectionChanged += new SelectionChangedEventHandler(ModelComboBoxesSelectionChanged);
                     productModelWrapPanel.Children.Add(currentModelCombo);
                 }
@@ -336,7 +351,7 @@ namespace _01electronics_crm
             //////////////SELECTION CHANGED HANDLERS///////////
             ///////////////////////////////////////////////////
 
-            private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             ComboBox currentTypeComboBox = (ComboBox)sender;
@@ -360,6 +375,8 @@ namespace _01electronics_crm
 
                 if (currentBrandComboBox.SelectedItem != null)
                 {
+                    currentModelComboBox.IsEnabled = true;
+
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
 
@@ -403,6 +420,7 @@ namespace _01electronics_crm
             {
                 if (currentTypeComboBox.SelectedItem != null)
                 {
+                    currentModelComboBox.IsEnabled = true;
 
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
@@ -499,17 +517,17 @@ namespace _01electronics_crm
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
             currentTypeComboBox.IsEnabled = true;
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
             currentBrandComboBox.IsEnabled = true;
 
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
-            currentModelComboBox.IsEnabled = true;
+            currentModelComboBox.IsEnabled = false;
 
             WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
-            currentModelComboBox.IsEnabled = true;
+            currentQuantityTextBox.IsEnabled = true;
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//

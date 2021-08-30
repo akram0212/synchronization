@@ -60,6 +60,8 @@ namespace _01electronics_library
             new Company(mSqlDatabase);
             salesPerson = new Employee(ref mSqlDatabase);
 
+            sqlDatabase = mSqlDatabase;
+
             contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
             contactPersonalEmails = new String[COMPANY_ORGANISATION_MACROS.MAX_EMAILS_PER_CONTACT];
 
