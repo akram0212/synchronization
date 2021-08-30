@@ -51,6 +51,20 @@ namespace _01electronics_crm
             if (!InitializeBranchesComboBox())
                 return;
 
+        }
+        private void InitializeCompanyInfo()
+        {
+            companyNameTextBox.IsEnabled = false;
+            primaryWorkFieldTextBox.IsEnabled = false;
+            secondaryWorkFieldTextBox.IsEnabled = false;
+
+            companyNameTextBox.Text = company.GetCompanyName();
+            primaryWorkFieldTextBox.Text = company.GetCompanyPrimaryField();
+            secondaryWorkFieldTextBox.Text = company.GetCompanySecondaryField();
+
+            if (!InitializeBranchesComboBox())
+                return;
+
             if (!InitializeBranchPhones())
                 return;
         }
@@ -171,6 +185,10 @@ namespace _01electronics_crm
             AddComapnyDetailsWindow addComapnyDetailsWindow = new AddComapnyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
             addComapnyDetailsWindow.Closed += OnClosedAddBranchWindow;
             addComapnyDetailsWindow.Show();
+        }
+        private void OnClosedAddCompanyDetailsWindow(object sender, EventArgs e)
+        {
+            InitializeCompanyInfo();
         }
     }
 }

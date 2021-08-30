@@ -241,6 +241,9 @@ namespace _01electronics_crm
 
                 ParentItem.Header = listOfEmployees[j].employee_name;
                 ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ParentItem.FontSize = 14;
+                ParentItem.FontWeight = FontWeights.SemiBold;
+                ParentItem.FontFamily = new FontFamily("Sans Serif");
                 ParentItem.Tag = listOfEmployees[j].employee_id;
 
                 contactTreeView.Items.Add(ParentItem);
@@ -281,6 +284,8 @@ namespace _01electronics_crm
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = employeesCompanies[i].Value[j].company_name;
                     ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
+                    ChildItem.FontSize = 13;
+                    ChildItem.FontWeight = FontWeights.Normal;
 
                     companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
 
@@ -316,6 +321,8 @@ namespace _01electronics_crm
 
                         contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
                         contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
+                        contactTreeItem.FontSize = 12;
+                        contactTreeItem.FontWeight = FontWeights.Normal;
 
                         companyTreeItem.Items.Add(contactTreeItem);
 
@@ -604,8 +611,6 @@ namespace _01electronics_crm
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
             TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
-            //TreeViewItem parentItem = (TreeViewItem)selectedItem.Parent;
-            //DependencyObject RootItem = selectedItem.Parent;
 
             if (!selectedItem.HasItems)
             {

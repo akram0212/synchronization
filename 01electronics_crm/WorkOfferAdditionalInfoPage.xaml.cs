@@ -69,11 +69,15 @@ namespace _01electronics_crm
 
             workOffer = mWorkOffer;
 
+
             uploadBackground = new BackgroundWorker();
             uploadBackground.DoWork += BackgroundUpload;
             uploadBackground.ProgressChanged += OnUploadProgressChanged;
             uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
             uploadBackground.WorkerReportsProgress = true;
+
+            ConfigureDrawingSubmissionUIElements();
+
 
             /////////////////////////
             ///ADD

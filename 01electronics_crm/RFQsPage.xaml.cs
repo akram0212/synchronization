@@ -317,7 +317,9 @@ namespace _01electronics_crm
 
             RFQsStackPanel.Children.Clear();
 
-            if(stackPanelItems.Count() != 0)
+            currentSelectedRFQItem = null;
+
+            if (stackPanelItems.Count() != 0)
                 stackPanelItems.Clear();
 
             for (int i = 0; i < rfqsList.Count; i++)
