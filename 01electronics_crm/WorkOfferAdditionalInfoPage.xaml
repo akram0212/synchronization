@@ -1,0 +1,108 @@
+﻿<Page x:Class="_01electronics_crm.WorkOfferAdditionalInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_01electronics_crm"
+      mc:Ignorable="d" 
+      Title="WorkOfferAdditionalInfoPage">
+
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="WORK OFFER ADDITIONAL INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                    <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                    <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                    <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo"/>
+                </Border>
+                <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                    <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <WrapPanel Grid.Row="0">
+                    <Label Content="Drawing &#x0a;Submission &#x0a;Deadline" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DrawingDeadlineFromTextBoxTextChanged" Name="drawingDeadlineFromTextBox"/>
+                    <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center"/>
+                    <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineToTextBox" TextChanged="DrawingDeadlineToTextBoxTextChanged" />
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="drawingDeadlineDateComboBox" SelectionChanged="DrawingDeadlineDateComboBoxSelectionChanged"/>
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="drawingDeadlineDateFromWhenComboBox" SelectionChanged="DrawingDeadlineDateFromWhenComboBoxSelectionChanged"/>
+                </WrapPanel>
+
+                <WrapPanel  Grid.Row="1">
+                    <Label Content="Contract &#x0a;Type" Style="{StaticResource labelStyle}"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeComboBox" SelectionChanged="ContractTypeComboSelectionChanged"/>
+                </WrapPanel>
+
+                <WrapPanel  Grid.Row="2">
+                    <Label Content="Warranty &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}"   Name="warrantyPeriodFromWhenCombo"  SelectionChanged="WarrantyPeriodFromWhenComboSelectionChanged"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="3">
+                    <Label Content="Validity &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="offerValidityTextBox" TextChanged="OfferValidityTextBoxTextChanged"/>
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="offerValidityCombo" SelectionChanged="OfferValidityComboSelectionChanged"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="4">
+                    <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="5">
+                    <Label Content="Offer File &#x0a;  Path" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="offerFilePath" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                    <Button Style="{StaticResource buttonBrowseStyle}" Content="Browse" Name="browseButton" Click="OnBtnClickBrowse"/>
+                </WrapPanel>
+
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Name="automateWorkOfferButon" Style="{StaticResource buttonStyle}" Content="Generate Word" Click="OnButtonClickAutomateWorkOffer" HorizontalAlignment="Left" Margin="71,0,0,0"/>
+                    <Button Grid.Column="1" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnButtonClickOk"/>
+                </Grid>
+            </Grid>
+           
+        </Grid>
+    </Grid>
+</Page>
