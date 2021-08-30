@@ -684,8 +684,8 @@ namespace _01electronics_library
                 SetOfferProductBrand(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
                 SetOfferProductModel(productNumber, sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++], sqlDatabase.rows[productNumber - 1].sql_string[StringColumnsCount++]);
 
-                OfferProductsList[i].productQuantity = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
-                OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_int[intColumnsCount++];
+                OfferProductsList[i].productQuantity = sqlDatabase.rows[productNumber - 1].sql_int[++intColumnsCount];
+                OfferProductsList[i].productPrice = sqlDatabase.rows[productNumber - 1].sql_money[0];
             }
 
             SetTotalValues();

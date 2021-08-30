@@ -750,7 +750,7 @@ namespace _01electronics_crm
             currentTypeComboBox.SelectedItem = null;
             currentTypeComboBox.IsEnabled = false;
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
             currentBrandComboBox.SelectedItem = null;
             currentBrandComboBox.IsEnabled = false;

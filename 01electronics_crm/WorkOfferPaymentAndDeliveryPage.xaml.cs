@@ -225,8 +225,8 @@ namespace _01electronics_crm
         {
             ////////////Added by me ama get awareeh
             
-            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMaximum().ToString();
-            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
             if(workOffer.GetDeliveryTimeUnit() != null)
                 deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
         }

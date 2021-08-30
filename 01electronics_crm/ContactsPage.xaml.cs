@@ -119,10 +119,8 @@ namespace _01electronics_crm
                 List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
 
 
-                if (!commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList))
-                    return false;
-                else
-                    employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
+                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
             }
 
             return true;
