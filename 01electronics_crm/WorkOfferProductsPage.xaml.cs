@@ -333,6 +333,10 @@ namespace _01electronics_crm
                 mainLabelCheckBox.Style = (Style)FindResource("checkBoxStyle");
                 mainLabelCheckBox.Checked += new RoutedEventHandler(OnCheckMainLabelCheckBox);
                 mainLabelCheckBox.Unchecked += new RoutedEventHandler(OnUnCheckMainLabelCheckBox);
+                if(i == 0)
+                {
+                    mainLabelCheckBox.IsEnabled = false;
+                }
                 currentProductGrid.Children.Add(mainLabelCheckBox);
                 Grid.SetRow(mainLabelCheckBox, 0);
 
@@ -507,11 +511,15 @@ namespace _01electronics_crm
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
+            CheckBox currentProductCheckBox = (CheckBox)currentProductGrid.Children[0];
+
 
             currentModelComboBox.Items.Clear();
 
             if (currentTypeComboBox.SelectedItem != null)
             {
+                currentProductCheckBox.IsChecked = true;
+
                 if (currentBrandComboBox.SelectedItem != null)
                 {
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))

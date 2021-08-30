@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_crm", "01electronics_crm.csproj", "{9242DE85-6DD4-4CCF-8DE4-11AAF70410FB}"
 EndProject
@@ -26,6 +26,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CD5D18E8-A5A7-46E7-8154-D98F48C177E8}
+		SolutionGuid = {380DB67B-3064-49DA-B98D-EFCC21ABD6DF}
 	EndGlobalSection
 EndGlobal

@@ -32,6 +32,11 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
             contact = mContact;
 
+            InitializeContactInfo();
+
+        }
+        private void InitializeContactInfo()
+        {
             employeeFirstNameTextBox.IsEnabled = false;
             contactGenderTextBox.IsEnabled = false;
             companyNameTextBox.IsEnabled = false;
@@ -46,19 +51,28 @@ namespace _01electronics_crm
             companyBranchTextBox.Text = contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict();
             departmentTextBox.Text = contact.GetContactDepartment();
 
+            wrapPanel4.Children.Clear();
+            wrapPanel3.Children.Clear();
+
             AddBusinessEmail();
 
-            if(contact.GetContactPersonalEmails()[0] != null)
-                 AddPersonalEmail();
+            for(int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
+            {
+                 if (contact.GetContactPersonalEmails()[i] != null)
+                     AddPersonalEmail(contact.GetContactPersonalEmails()[i]);
+            }
 
             if (contact.GetContactPhones()[0] != null)
                 AddBusinessPhone();
 
-            if (contact.GetContactPhones()[1] != null)
-                AddPersonalPhone();
-
+            for (int i = 1; i < contact.GetNumberOfSavedContactPhones(); i++)
+            {
+                if (contact.GetContactPhones()[i] != null)
+                    AddPersonalPhone(contact.GetContactPhones()[i]);
+            }
+            
         }
-        private void AddPersonalPhone()
+        private void AddPersonalPhone(String Phone)
         {
              WrapPanel ContactPersonalPhoneWrapPanel = new WrapPanel();
 
@@ -69,7 +83,7 @@ namespace _01electronics_crm
              TextBox employeePersonalPhoneTextBox = new TextBox();
              employeePersonalPhoneTextBox.IsEnabled = false;
              employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
-             employeePersonalPhoneTextBox.Text = contact.GetContactPhones()[1];
+             employeePersonalPhoneTextBox.Text = Phone;
 
              ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabel);
              ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
@@ -113,7 +127,7 @@ namespace _01electronics_crm
 
             wrapPanel3.Children.Add(ContactBusinessEmailWrapPanel);
         } 
-        private void AddPersonalEmail()
+        private void AddPersonalEmail(String Email)
         {
             WrapPanel ContactPersonalEmailWrapPanel = new WrapPanel();
 
@@ -124,7 +138,7 @@ namespace _01electronics_crm
             TextBox employeePersonalEmailTextBox = new TextBox();
             employeePersonalEmailTextBox.IsEnabled = false;
             employeePersonalEmailTextBox.Style = (Style)FindResource("textBoxStyle");
-            employeePersonalEmailTextBox.Text = contact.GetContactPersonalEmails()[0];
+            employeePersonalEmailTextBox.Text = Email;
 
             ContactPersonalEmailWrapPanel.Children.Add(PersonalEmailLabel);
             ContactPersonalEmailWrapPanel.Children.Add(employeePersonalEmailTextBox);
@@ -134,8 +148,13 @@ namespace _01electronics_crm
 
         private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
         {
-            AddContactDetailsWindow addContactDetailsWindow = new AddContactDetailsWindow();
+            AddContactDetailsWindow addContactDetailsWindow = new AddContactDetailsWindow(ref loggedInUser, ref contact);
+            addContactDetailsWindow.Closed += OnClosedAddContactDetailsWindow;
             addContactDetailsWindow.Show();
+        }
+        private void OnClosedAddContactDetailsWindow(object sender, EventArgs e)
+        {
+            InitializeContactInfo();
         }
 
     }

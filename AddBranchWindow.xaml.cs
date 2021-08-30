@@ -220,7 +220,7 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyPhone(outputString);
-            telephoneTextBox.Text = company.GetCompanyPhones()[0];
+            telephoneTextBox.Text = outputString;
 
             return true;
         }
@@ -233,7 +233,7 @@ namespace _01electronics_crm
                 return false;
 
             company.AddCompanyFax(outputString);
-            faxTextBox.Text = company.GetCompanyFaxes()[0];
+            faxTextBox.Text = outputString;
 
             return true;
         }
