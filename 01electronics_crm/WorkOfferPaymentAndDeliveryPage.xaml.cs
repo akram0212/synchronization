@@ -94,14 +94,6 @@ namespace _01electronics_crm
                 InitializeDeliveryPointComboBox();
 
                 DisableTotalPriceComboAndTextBox();
-
-                SetTotalPriceCurrencyComboBox();
-                SetTotalPriceTextBox();
-                SetDownPaymentValues();
-                SetOnDeliveryValues();
-                SetOnInstallationValues();
-                SetDeliveryTimeValues();
-                SetDeliveryPointValue();
             }
             //////////////////////////
             ///RESOLVE RFQ
@@ -115,6 +107,17 @@ namespace _01electronics_crm
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
+            }
+
+            if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
             }
         }
         ///////////////////////////////////////////

@@ -75,6 +75,10 @@ namespace _01electronics_crm
                 InitializeProducts();
                 InitializeBrandCombo();
                 SetUpPageUIElements();
+            }
+
+            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
                 SetTypeComboBoxes();
                 SetBrandComboBoxes();
                 SetModelComboBoxes();
@@ -366,7 +370,7 @@ namespace _01electronics_crm
 
             CheckBox currentProductCheckBox = (CheckBox)currentProductGrid.Children[0];
 
-            
+
             currentModelComboBox.Items.Clear();
 
             if (currentTypeComboBox.SelectedItem != null)
@@ -376,7 +380,6 @@ namespace _01electronics_crm
                 if (currentBrandComboBox.SelectedItem != null)
                 {
                     currentModelComboBox.IsEnabled = true;
-
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
 
@@ -388,9 +391,13 @@ namespace _01electronics_crm
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
-                        rfq.SetRFQProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);   
+                    {
+                        rfq.SetRFQProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
+
+                        if (rfq.GetRFQProductModelId(k + 1) != 0)
+                            currentModelComboBox.SelectedItem = rfq.GetRFQProductModel(k + 1);
+                    }
                 }
-               
             }
             else
             {
@@ -421,7 +428,6 @@ namespace _01electronics_crm
                 if (currentTypeComboBox.SelectedItem != null)
                 {
                     currentModelComboBox.IsEnabled = true;
-
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
 
@@ -434,9 +440,13 @@ namespace _01electronics_crm
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
-                        rfq.SetRFQProductBrand(k+1 ,brands[currentBrandComboBox.SelectedIndex].brandId, brands[currentBrandComboBox.SelectedIndex].brandName);
+                    {
+                        rfq.SetRFQProductBrand(k + 1, brands[currentBrandComboBox.SelectedIndex].brandId, currentBrandComboBox.SelectedItem.ToString());
+
+                        if (rfq.GetRFQProductModelId(k + 1) != 0)
+                            currentModelComboBox.SelectedItem = rfq.GetRFQProductModel(k + 1);
+                    }
                 }
-                
             }
             else
             {
@@ -460,6 +470,7 @@ namespace _01electronics_crm
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
+
             if (currentModelComboBox.SelectedItem != null)
             {
 
@@ -480,8 +491,6 @@ namespace _01electronics_crm
                         rfq.SetRFQProductModel(k + 1, 0, "Others");
                 }
             }
-
-
         }
 
         private void QuantityTextBoxesTextChanged(object sender, TextChangedEventArgs e)
@@ -513,6 +522,21 @@ namespace _01electronics_crm
             CheckBox currentCheckBox = (CheckBox)sender;
             Grid currentProductGrid = (Grid)currentCheckBox.Parent;
 
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (currentProductGrid == mainWrapPanel.Children[i] && i > 1)
+                {
+                    Grid previousProductGrid = (Grid)mainWrapPanel.Children[i - 1];
+                    CheckBox previousCheckBox = (CheckBox)previousProductGrid.Children[0];
+                    if (previousCheckBox.IsChecked != true)
+                    {
+                        currentCheckBox.IsChecked = false;
+                        MessageBox.Show("previous checkbox must be checked first!");
+                        return;
+                    }
+                }
+            }
+
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
             currentTypeComboBox.IsEnabled = true;
@@ -528,6 +552,12 @@ namespace _01electronics_crm
             WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
             currentQuantityTextBox.IsEnabled = true;
+
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
+            currentPriceTextBox.IsEnabled = true;
+            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+            currentPriceCurrencyComboBox.IsEnabled = true;
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//
@@ -537,6 +567,21 @@ namespace _01electronics_crm
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             Grid currentProductGrid = (Grid)currentCheckBox.Parent;
+
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (currentProductGrid == mainWrapPanel.Children[i] && i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
+                {
+                    Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
+                    CheckBox nextCheckBox = (CheckBox)nextProductGrid.Children[0];
+                    if (nextCheckBox.IsChecked == true)
+                    {
+                        currentCheckBox.IsChecked = true;
+                        MessageBox.Show("next checkbox must be unchecked first!");
+                        return;
+                    }
+                }
+            }
 
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
@@ -557,6 +602,13 @@ namespace _01electronics_crm
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
             currentQuantityTextBox.Text = "0";
             currentQuantityTextBox.IsEnabled = false;
+
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
+            currentPriceTextBox.Text = "0";
+            currentPriceTextBox.IsEnabled = false;
+            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+            currentPriceCurrencyComboBox.IsEnabled = false;
         }
 
         ////////////BUTTON CLICKS///////////

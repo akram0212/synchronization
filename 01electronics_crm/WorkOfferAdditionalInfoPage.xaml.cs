@@ -84,7 +84,7 @@ namespace _01electronics_crm
             /////////////////////////
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
-                //ConfigureDrawingSubmissionUIElements();
+                ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 
@@ -112,14 +112,10 @@ namespace _01electronics_crm
             //////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
-                //ConfigureDrawingSubmissionUIElements();
+                ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
-                SetDrawingSubmissionValues();
-                SetContractTypeValue();
-                SetWarrantyPeriodValues();
-                SetValidityPeriodValues();
-                SetAdditionalDescriptionValue();
+                
                 //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
                 //    drawingConditionsCheckBox.IsChecked = true;
                 
@@ -133,6 +129,15 @@ namespace _01electronics_crm
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 
+            }
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetDrawingSubmissionValues();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetValidityPeriodValues();
+                SetAdditionalDescriptionValue();
             }
         }
         /////////////////////////////////

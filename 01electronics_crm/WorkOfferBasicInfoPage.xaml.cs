@@ -56,6 +56,7 @@ namespace _01electronics_crm
 
             workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
+
             
             ///////////////////////////
             ////ADD
@@ -65,7 +66,6 @@ namespace _01electronics_crm
                 FillrfqsList(); 
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
-                InitializeOfferProposer();
             }
             ////////////////////////////
             ///VIEW
@@ -88,16 +88,6 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
-                InitializeOfferProposer();
-                SetSalesPersonComboValue();
-                if (RFQSerialCombo.IsEnabled == true)
-                    SetRFQSerialComboValue();
-                else 
-                { 
-                    SetCompanyNameComboValue();
-                    SetContactPersonComboValue();
-                }
-                
             }
             //////////////////////////
             ///RESOLVE RFQ
@@ -107,7 +97,6 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
-                InitializeOfferProposer();
                 SetSalesPersonComboValue();
                 if (RFQSerialCombo.IsEnabled == true)
                 {
@@ -120,15 +109,23 @@ namespace _01electronics_crm
                     SetContactPersonComboValue();
                 }
             }
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetSalesPersonComboValue();
+                if (RFQSerialCombo.IsEnabled == true)
+                    SetRFQSerialComboValue();
+                else
+                {
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+                }
+            }
         }
 
         ///////////////INITIALIZE FUNCTIONS///////////////
         //////////////////////////////////////////////////
         
-        private void InitializeOfferProposer()
-        {
-            workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-        }
+        
         private bool InitializeSalesPersonCombo()
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))

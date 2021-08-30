@@ -71,11 +71,13 @@ namespace _01electronics_crm
             {
                 ConfigureUIElementsForRevise();
                 InitializeContractTypeCombo();
+            }
+            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
                 SetContractTypeCombo();
                 SetDeadlineDateDatePicker();
                 SetNotesTextBox();
             }
-          
         }
         ////////////UI CONFIGURATION FUNCTIONS/////////////
         ///////////////////////////////////////////////////
