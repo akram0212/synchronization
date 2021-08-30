@@ -134,17 +134,12 @@ namespace _01electronics_crm
 
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
-                if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref listOfEmployees))
+                if (!commonQueries.GetDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref listOfEmployees))
                     return false;
             }
-            else if (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            else
             {
-                if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref listOfEmployees))
-                    return false;
-            }
-            else if (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-            {
-                if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref listOfEmployees))
+                if (!commonQueries.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                     return false;
             }
 
@@ -155,6 +150,8 @@ namespace _01electronics_crm
         
         public bool GetAllContacts()
         {
+            employeesContacts.Clear();
+
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
@@ -244,6 +241,9 @@ namespace _01electronics_crm
 
                 ParentItem.Header = listOfEmployees[j].employee_name;
                 ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ParentItem.FontSize = 14;
+                ParentItem.FontWeight = FontWeights.SemiBold;
+                ParentItem.FontFamily = new FontFamily("Sans Serif");
                 ParentItem.Tag = listOfEmployees[j].employee_id;
 
                 contactTreeView.Items.Add(ParentItem);
@@ -284,6 +284,8 @@ namespace _01electronics_crm
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = employeesCompanies[i].Value[j].company_name;
                     ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
+                    ChildItem.FontSize = 13;
+                    ChildItem.FontWeight = FontWeights.Normal;
 
                     companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
 
@@ -319,11 +321,13 @@ namespace _01electronics_crm
 
                         contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
                         contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
+                        contactTreeItem.FontSize = 12;
+                        contactTreeItem.FontWeight = FontWeights.Normal;
 
+                        companyTreeItem.Items.Add(contactTreeItem);
 
                         contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>(contactTreeItem, employeesContacts[i].Value[j]));
 
-                        companyTreeItem.Items.Add(contactTreeItem);
 
                     }
                 }
@@ -550,6 +554,10 @@ namespace _01electronics_crm
             if (!InitializeEmployeeComboBox())
                 return;
 
+            GetAllContacts();
+
+            SetDefaultSettings();
+
             InitializeSalesTree();
         }
         private void OnClosedAddContactWindow(object sender, EventArgs e)
@@ -561,6 +569,10 @@ namespace _01electronics_crm
 
             if (!InitializeEmployeeComboBox())
                 return;
+
+            GetAllContacts();
+
+            SetDefaultSettings();
 
             InitializeSalesTree();
         }
@@ -599,8 +611,6 @@ namespace _01electronics_crm
         private void OnBtnClickedView(object sender, RoutedEventArgs e)
         {
             TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
-            //TreeViewItem parentItem = (TreeViewItem)selectedItem.Parent;
-            //DependencyObject RootItem = selectedItem.Parent;
 
             if (!selectedItem.HasItems)
             {
