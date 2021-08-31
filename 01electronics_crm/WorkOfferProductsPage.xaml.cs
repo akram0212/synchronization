@@ -781,47 +781,105 @@ namespace _01electronics_crm
             CheckBox currentCheckBox = (CheckBox)sender;
             Grid currentProductGrid = (Grid)currentCheckBox.Parent;
 
-            for (int i = 0; i < numberOfProductsAdded; i++)
-            {
-                if (currentProductGrid == mainWrapPanel.Children[i] && i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
-                {
-                    Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
-                    CheckBox nextCheckBox = (CheckBox)nextProductGrid.Children[0];
-                    if (nextCheckBox.IsChecked == true)
-                    {
-                        currentCheckBox.IsChecked = true;
-                        MessageBox.Show("next checkbox must be unchecked first!");
-                        return;
-                    }
-                }
-            }
-
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-            currentTypeComboBox.SelectedItem = null;
-            currentTypeComboBox.IsEnabled = false;
 
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
-            currentBrandComboBox.SelectedItem = null;
-            currentBrandComboBox.IsEnabled = false;
 
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
-            currentModelComboBox.SelectedItem = null;
-            currentModelComboBox.IsEnabled = false;
 
-            WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
-            TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
-            currentQuantityTextBox.Text = "0";
-            currentQuantityTextBox.IsEnabled = false;
+            WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+            TextBox currentQuantityTextBox = (TextBox)currentQuantityWrapPanel.Children[1];
 
             WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
             TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
-            currentPriceTextBox.Text = "0";
-            currentPriceTextBox.IsEnabled = false;
-            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
-            currentPriceCurrencyComboBox.IsEnabled = false;
+
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (currentProductGrid == mainWrapPanel.Children[i])
+                {
+                    if (i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
+                    {
+                        Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
+                        CheckBox nextCheckBox = (CheckBox)nextProductGrid.Children[0];
+
+                        if (nextCheckBox.IsChecked == true)
+                        {
+                            WrapPanel nextTypeWrapPanel = (WrapPanel)nextProductGrid.Children[1];
+                            ComboBox nextTypeCombo = (ComboBox)nextTypeWrapPanel.Children[1];
+
+                            WrapPanel nextBrandWrapPanel = (WrapPanel)nextProductGrid.Children[2];
+                            ComboBox nextBrandCombo = (ComboBox)nextBrandWrapPanel.Children[1];
+
+                            WrapPanel nextModelWrapPanel = (WrapPanel)nextProductGrid.Children[3];
+                            ComboBox nextModelCombo = (ComboBox)nextModelWrapPanel.Children[1];
+
+                            WrapPanel nextQuantityWrapPanel = (WrapPanel)nextProductGrid.Children[4];
+                            TextBox nextQuantityTextBox = (TextBox)nextQuantityWrapPanel.Children[1];
+
+                            WrapPanel nextPriceWrapPanel = (WrapPanel)nextProductGrid.Children[5];
+                            TextBox nextPriceTextBox = (TextBox)nextPriceWrapPanel.Children[1];
+
+                            currentTypeComboBox.SelectedItem = nextTypeCombo.SelectedItem;
+                            currentBrandComboBox.SelectedItem = nextBrandCombo.SelectedItem;
+                            currentModelComboBox.SelectedItem = nextModelCombo.SelectedItem;
+                            currentQuantityTextBox.Text = nextQuantityTextBox.Text;
+                            currentPriceTextBox.Text = nextPriceTextBox.Text;
+
+                            nextCheckBox.IsChecked = false;
+                            currentCheckBox.IsChecked = true;
+                        }
+                        else
+                        {
+                            currentTypeComboBox.SelectedItem = null;
+                            currentTypeComboBox.IsEnabled = false;
+
+
+                            currentBrandComboBox.SelectedItem = null;
+                            currentBrandComboBox.IsEnabled = false;
+
+
+                            currentModelComboBox.SelectedItem = null;
+                            currentModelComboBox.IsEnabled = false;
+
+
+                            currentQuantityTextBox.Text = "0";
+                            currentQuantityTextBox.IsEnabled = false;
+
+
+                            currentPriceTextBox.Text = "0";
+                            currentPriceTextBox.IsEnabled = false;
+                            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+                            currentPriceCurrencyComboBox.IsEnabled = false;
+                        }
+                    }
+                    else
+                    {
+                        currentTypeComboBox.SelectedItem = null;
+                        currentTypeComboBox.IsEnabled = false;
+
+
+                        currentBrandComboBox.SelectedItem = null;
+                        currentBrandComboBox.IsEnabled = false;
+
+
+                        currentModelComboBox.SelectedItem = null;
+                        currentModelComboBox.IsEnabled = false;
+
+
+                        currentQuantityTextBox.Text = "0";
+                        currentQuantityTextBox.IsEnabled = false;
+
+
+                        currentPriceTextBox.Text = "0";
+                        currentPriceTextBox.IsEnabled = false;
+                        ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+                        currentPriceCurrencyComboBox.IsEnabled = false;
+                    }
+                }
+            }
         }
 
 

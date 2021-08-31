@@ -76,6 +76,12 @@ namespace _01electronics_crm
             uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
             uploadBackground.WorkerReportsProgress = true;
 
+            downloadBackground = new BackgroundWorker();
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
+
             ConfigureDrawingSubmissionUIElements();
 
 
@@ -498,28 +504,55 @@ namespace _01electronics_crm
 
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
-            workOffer.GetNewOfferSerial();
-            workOffer.GetNewOfferVersion();
-            workOffer.GetNewOfferID();
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                workOffer.GetNewOfferSerial();
+                workOffer.GetNewOfferVersion();
+                workOffer.GetNewOfferID();
 
-            OpenFileDialog uploadFile = new OpenFileDialog();
+                OpenFileDialog uploadFile = new OpenFileDialog();
 
-            if (uploadFile.ShowDialog() == false)
-                return;
+                if (uploadFile.ShowDialog() == false)
+                    return;
 
-            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
-                return;
+                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                    return;
 
-            serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-            serverFileName = workOffer.GetOfferID() + ".pdf";
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
-            localFolderPath = uploadFile.FileName;
-            localFileName = null;
+                localFolderPath = uploadFile.FileName;
+                localFileName = null;
 
-            offerFilePath.Visibility = Visibility.Collapsed;
-            uploadFileProgressBar.Visibility = Visibility.Visible;
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
 
-            uploadBackground.RunWorkerAsync();
+                uploadBackground.RunWorkerAsync();
+            }
+            else
+            {
+                System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
+
+                if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                    return;
+
+                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+                    return;
+
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+
+                localFolderPath = downloadFile.SelectedPath;
+                localFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
+
+                downloadBackground.RunWorkerAsync();
+            }
         }
 
         protected void BackgroundUpload(object sender, DoWorkEventArgs e)
@@ -552,6 +585,34 @@ namespace _01electronics_crm
 
             browseButton.Content = "Update";
             browseButton.IsEnabled = true;
+        }
+
+
+        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker downloadBackground = sender as BackgroundWorker;
+            
+            downloadBackground.ReportProgress(50);
+            if (!fTPObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName)) 
+                return;
+
+            downloadBackground.ReportProgress(100);
+        }
+
+        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            uploadFileProgressBar.Value = e.ProgressPercentage;
+        }
+
+        protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+           
+                offerFilePath.Visibility = Visibility.Visible;
+                uploadFileProgressBar.Visibility = Visibility.Collapsed;
+
+                offerFilePath.Text = "SUCCESS!";
+                
+            
         }
     }
 }

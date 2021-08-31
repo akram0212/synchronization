@@ -266,7 +266,7 @@ namespace _01electronics_crm
 
         private void SetSalesPersonComboValue()
         {
-            salesPersonCombo.Text = workOffer.GetSalesPersonName();
+            salesPersonCombo.SelectedItem = workOffer.GetSalesPersonName();
         }
         private void SetRFQSerialLabel()
         {

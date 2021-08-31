@@ -105,6 +105,7 @@ namespace _01electronics_library
         public const String MODELS_OFFERS_PATH = "/erp_system/products_offer_models/generic/";
         public const String MODELS_PHOTOS_PATH = "/erp_system/products_photos/";
         public const String OFFER_FILES_PATH = "/erp_system/work_offers/";
+        public const String EMPLOYEES_PHOTOS_PATH = "/erp_system/employees_photos/";
 
         public const String LOCAL_PHOTOS_PATH = @"F:\Work\01 Electronics\Software Development\source_codes\erp_source_code - wpf_version\01electronics_crm\Images\";
 
