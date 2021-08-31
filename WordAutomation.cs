@@ -131,7 +131,7 @@ namespace _01electronics_crm
                         Image productImage = Image.FromFile(imagePath);
 
                         productImage = resizeImage(productImage, new Size(200, 200));
-                        imageParagraph.AppendPicture(productImage);
+                        //imageParagraph.AppendPicture(productImage);
                         //imageParagraph.Text = "picture here" + i;
                     }
                 }

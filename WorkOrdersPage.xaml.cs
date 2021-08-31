@@ -284,7 +284,7 @@ namespace _01electronics_crm
         private void SetQuarterComboBox()
         {
             if (yearComboBox.SelectedIndex == DateTime.Now.Year - BASIC_MACROS.CRM_START_YEAR)
-                quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+                quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter() - 1;
             else
                 quarterComboBox.SelectedIndex = 0;
         }
