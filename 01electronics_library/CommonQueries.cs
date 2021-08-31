@@ -2671,7 +2671,7 @@ namespace _01electronics_library
             queryColumns.sql_int = 4;
             queryColumns.sql_string = 1;
 
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
@@ -2891,7 +2891,7 @@ namespace _01electronics_library
             queryColumns2.sql_int = 3;
             queryColumns2.sql_string = 1;
 
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns2, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns2, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
