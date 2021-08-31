@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,8 +44,22 @@ namespace _01electronics_crm
             employeeTeamLabel.Content = loggedInUser.GetEmployeeTeam();
             employeeBusinessEmailLabel.Content = loggedInUser.GetEmployeeBusinessEmail();
             employeePersonalEmailLabel.Content = loggedInUser.GetEmployeePersonalEmail();
-        }
 
+            InitializeEmployeePhoto();
+        }
+        private void InitializeEmployeePhoto()
+        {
+            //string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".jpg";
+
+            //if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
+            //{
+            //    Image productImage = Image.FromFile(imagePath);
+
+            //    productImage = resizeImage(productImage, new Size(200, 200));
+            //    imageParagraph.AppendPicture(productImage);
+            //    //imageParagraph.Text = "picture here" + i;
+            //}
+        }
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////

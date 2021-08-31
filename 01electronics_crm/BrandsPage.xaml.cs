@@ -179,8 +179,8 @@ namespace _01electronics_crm
             selectedProduct.SetBrandID(int.Parse(tmp));
             selectedProduct.SetBrandName(Name);
 
-            //ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref selectedProduct);
-            //this.NavigationService.Navigate(productsPage);
+            ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref selectedProduct);
+            this.NavigationService.Navigate(productsPage);
         }
 
         /////////////////////////////////////////////////////////////////
