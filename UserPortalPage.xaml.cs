@@ -69,6 +69,30 @@ namespace _01electronics_crm
 
                 PhotoGrid.Children.Add(employeePhoto);
             }
+            else
+            {
+                try
+                {
+                    Image employeePhoto = new Image();
+
+                    employeePhoto.Margin = new Thickness(24);
+                    employeePhoto.Width = 245;
+                    employeePhoto.Height = 245;
+
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(imagePath, UriKind.Absolute);
+                    src.EndInit();
+                    employeePhoto.Source = src;
+
+                    PhotoGrid.Children.Add(employeePhoto);
+                }
+                catch
+                {
+
+                }
+                
+            }
         }
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
@@ -120,6 +144,11 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
 
         }
