@@ -290,8 +290,8 @@ namespace _01electronics_crm
                     currentEmployeeTreeItem.Items.Add(ChildItem);
                 }
 
-                if (!currentEmployeeTreeItem.HasItems)
-                    contactTreeView.Items.Remove(currentEmployeeTreeItem);
+                //if (!currentEmployeeTreeItem.HasItems)
+                //    contactTreeView.Items.Remove(currentEmployeeTreeItem);
             }
 
 

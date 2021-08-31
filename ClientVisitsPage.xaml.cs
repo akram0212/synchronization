@@ -111,7 +111,7 @@ namespace _01electronics_crm
         }
         private void SetQuarterComboBox()
         {
-            quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter();
+            quarterComboBox.SelectedIndex = commonFunctionsObject.GetCurrentQuarter() - 1;
         }
         private void SetEmployeeComboBox()
         {
@@ -140,7 +140,7 @@ namespace _01electronics_crm
 
         private bool InitializeEmployeeComboBox()
         {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref listOfEmployees))
+            if (!commonQueriesObject.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                 return false;
 
             for (int i = 0; i < listOfEmployees.Count; i++)
