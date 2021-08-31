@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using _01electronics_library;
+using System.ComponentModel;
 
 namespace _01electronics_crm
 {
@@ -28,7 +30,8 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
-        private IntegrityChecks IntegrityChecks;
+        private IntegrityChecks integrityChecks;
+        protected FTPServer fTPObject;
 
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
@@ -41,6 +44,16 @@ namespace _01electronics_crm
         private int isDrawing = 0;
 
         private string additionalDescription;
+
+        protected String serverFolderPath;
+        protected String serverFileName;
+
+        protected String localFolderPath;
+        protected String localFileName;
+
+        protected BackgroundWorker uploadBackground;
+        protected BackgroundWorker downloadBackground;
+
         public WorkOfferAdditionalInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
@@ -50,17 +63,34 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            IntegrityChecks = new IntegrityChecks();
+            integrityChecks = new IntegrityChecks();
             wordAutomation = new WordAutomation();
+            fTPObject = new FTPServer();
 
             workOffer = mWorkOffer;
+
+
+            uploadBackground = new BackgroundWorker();
+            uploadBackground.DoWork += BackgroundUpload;
+            uploadBackground.ProgressChanged += OnUploadProgressChanged;
+            uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
+            uploadBackground.WorkerReportsProgress = true;
+
+            downloadBackground = new BackgroundWorker();
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
+
+            ConfigureDrawingSubmissionUIElements();
+
 
             /////////////////////////
             ///ADD
             /////////////////////////
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
-                //ConfigureDrawingSubmissionUIElements();
+                ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 
@@ -81,24 +111,17 @@ namespace _01electronics_crm
                 SetContractTypeValue();
                 SetWarrantyPeriodValues();
                 SetValidityPeriodValues();
-                SetAdditionalDescriptionValue();
-
-               
-                
+                SetAdditionalDescriptionValue(); 
             }
             //////////////////////////////
             ///REVISE
             //////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
-                //ConfigureDrawingSubmissionUIElements();
+                ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
-                SetDrawingSubmissionValues();
-                SetContractTypeValue();
-                SetWarrantyPeriodValues();
-                SetValidityPeriodValues();
-                SetAdditionalDescriptionValue();
+                
                 //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
                 //    drawingConditionsCheckBox.IsChecked = true;
                 
@@ -112,6 +135,15 @@ namespace _01electronics_crm
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
                 
+            }
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetDrawingSubmissionValues();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetValidityPeriodValues();
+                SetAdditionalDescriptionValue();
             }
         }
         /////////////////////////////////
@@ -205,7 +237,7 @@ namespace _01electronics_crm
 
         private void WarrantyPeriodTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
+            if (integrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
                 warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
             else
             {
@@ -231,7 +263,7 @@ namespace _01electronics_crm
 
         private void OfferValidityTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
+            if (integrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
                 offerValidityPeriod = int.Parse(offerValidityTextBox.Text);
             else
             {
@@ -248,7 +280,7 @@ namespace _01electronics_crm
 
         private void DrawingDeadlineFromTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(drawingDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineFromTextBox.Text != "")
+            if (integrityChecks.CheckInvalidCharacters(drawingDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineFromTextBox.Text != "")
                 drawingDeadlineFrom = int.Parse(drawingDeadlineFromTextBox.Text);
             else
             {
@@ -259,7 +291,7 @@ namespace _01electronics_crm
 
         private void DrawingDeadlineToTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IntegrityChecks.CheckInvalidCharacters(drawingDeadlineToTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineToTextBox.Text != "")
+            if (integrityChecks.CheckInvalidCharacters(drawingDeadlineToTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineToTextBox.Text != "")
                 drawingDeadlineTo = int.Parse(drawingDeadlineToTextBox.Text);
             else
             {
@@ -362,6 +394,8 @@ namespace _01electronics_crm
             if (!workOffer.GetNewOfferVersion())
                 return;
 
+            workOffer.SetOfferIssueDateToToday();
+
             workOffer.GetNewOfferID();
 
             wordAutomation.AutomateWorkOffer(workOffer);
@@ -369,9 +403,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
         {
-            
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             {
                 workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
                 workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
@@ -409,60 +441,178 @@ namespace _01electronics_crm
                     MessageBox.Show("You need to set validity period before adding a work offer!");
                 else
                 {
-                    if(workOffer.IssueNewOffer())
+                    if (workOffer.IssueNewOffer())
                         MessageBox.Show("WorkOffer added succefully!");
-                }
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+
+                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                    currentWindow.Close();
+                }
+            }
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            {
+                workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+                workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+                workOffer.SetWarrantyPeriod(warrantyPeriod);
+                workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+                workOffer.SetOfferNotes(additionalDescription);
+
+                if (workOffer.GetSalesPersonId() == 0)
+                    MessageBox.Show("You need to choose sales person before adding a work offer!");
+                else if (workOffer.GetCompanyName() == null)
+                    MessageBox.Show("You need to choose a company before adding a work offer!");
+                else if (workOffer.GetAddressSerial() == 0)
+                    MessageBox.Show("You need to choose company address before adding a work offer!");
+                else if (workOffer.GetContactId() == 0)
+                    MessageBox.Show("You need to choose a contact before adding a work offer!");
+                else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
+                    MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
+                else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
+                    MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
+                else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
+                    MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
+                else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
+                    MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
+                else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
+                    MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
+                else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
+                    MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
+                else if (workOffer.GetDeliveryPointId() == 0)
+                    MessageBox.Show("You need to set delivery point before adding a work offer!");
+                else if (workOffer.GetOfferContractTypeId() == 0)
+                    MessageBox.Show("You need to set contract type before adding a work offer!");
+                else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
+                    MessageBox.Show("You need to set warranty period before adding a work offer!");
+                else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
+                    MessageBox.Show("You need to set validity period before adding a work offer!");
+
+
+                else
                 {
-                    workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
-                    workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
-                    workOffer.SetWarrantyPeriod(warrantyPeriod);
-                    workOffer.SetOfferValidityPeriod(offerValidityPeriod);
-                    workOffer.SetOfferNotes(additionalDescription);
+                    if(workOffer.ReviseOffer())
+                        MessageBox.Show("Offer Revised successfully!");
 
-                    if (workOffer.GetSalesPersonId() == 0)
-                        MessageBox.Show("You need to choose sales person before adding a work offer!");
-                    else if (workOffer.GetCompanyName() == null)
-                        MessageBox.Show("You need to choose a company before adding a work offer!");
-                    else if (workOffer.GetAddressSerial() == 0)
-                        MessageBox.Show("You need to choose company address before adding a work offer!");
-                    else if (workOffer.GetContactId() == 0)
-                        MessageBox.Show("You need to choose a contact before adding a work offer!");
-                    else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
-                        MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
-                    else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
-                        MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
-                    else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
-                        MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
-                    else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
-                        MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
-                    else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
-                        MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
-                    else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
-                        MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
-                    else if (workOffer.GetDeliveryPointId() == 0)
-                        MessageBox.Show("You need to set delivery point before adding a work offer!");
-                    else if (workOffer.GetOfferContractTypeId() == 0)
-                        MessageBox.Show("You need to set contract type before adding a work offer!");
-                    else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
-                        MessageBox.Show("You need to set warranty period before adding a work offer!");
-                    else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
-                        MessageBox.Show("You need to set validity period before adding a work offer!");
+                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
 
-
-                    else
-                    {
-                        if(workOffer.ReviseOffer())
-                            MessageBox.Show("Offer Revised successfully!");
-                    }
+                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                    currentWindow.Close();
                 }
+                
             }
         }
 
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                workOffer.GetNewOfferSerial();
+                workOffer.GetNewOfferVersion();
+                workOffer.GetNewOfferID();
 
+                OpenFileDialog uploadFile = new OpenFileDialog();
+
+                if (uploadFile.ShowDialog() == false)
+                    return;
+
+                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                    return;
+
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+
+                localFolderPath = uploadFile.FileName;
+                localFileName = null;
+
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
+
+                uploadBackground.RunWorkerAsync();
+            }
+            else
+            {
+                System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
+
+                if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                    return;
+
+                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+                    return;
+
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+
+                localFolderPath = downloadFile.SelectedPath;
+                localFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
+
+                downloadBackground.RunWorkerAsync();
+            }
+        }
+
+        protected void BackgroundUpload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker uploadBackground = sender as BackgroundWorker;
+
+            uploadBackground.ReportProgress(50);
+            if (!fTPObject.UploadFile(localFolderPath + localFileName, serverFolderPath + "/" + serverFileName))
+                return;
+
+            uploadBackground.ReportProgress(75);
+            
+
+            uploadBackground.ReportProgress(100);
+        }
+
+        protected void OnUploadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            uploadFileProgressBar.Value = e.ProgressPercentage;
+        }
+
+        protected void OnUploadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            offerFilePath.Visibility = Visibility.Visible;
+            uploadFileProgressBar.Visibility = Visibility.Collapsed;
+
+            BrushConverter brush = new BrushConverter();
+            offerFilePath.Text= "SUBMITTED";
+            offerFilePath.Foreground = (Brush)brush.ConvertFrom("#FF0000");
+
+            browseButton.Content = "Update";
+            browseButton.IsEnabled = true;
+        }
+
+
+        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker downloadBackground = sender as BackgroundWorker;
+            
+            downloadBackground.ReportProgress(50);
+            if (!fTPObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName)) 
+                return;
+
+            downloadBackground.ReportProgress(100);
+        }
+
+        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            uploadFileProgressBar.Value = e.ProgressPercentage;
+        }
+
+        protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+           
+                offerFilePath.Visibility = Visibility.Visible;
+                uploadFileProgressBar.Visibility = Visibility.Collapsed;
+
+                offerFilePath.Text = "SUCCESS!";
+                
+            
         }
     }
 }

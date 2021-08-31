@@ -112,12 +112,21 @@ namespace _01electronics_crm
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                SetTypeComboBoxesResolve();
-                SetBrandComboBoxesResolve();
-                SetModelComboBoxesResolve();
-                SetQuantityTextBoxesResolve();
+                
             }
 
+           
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+
+            { 
+                SetTypeComboBoxes();
+                SetBrandComboBoxes();
+                SetModelComboBoxes();
+                SetQuantityTextBoxes();
+                SetPriceTextBoxes();
+                SetPriceComboBoxes();
+            }    
 
         }
 
@@ -155,10 +164,13 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
-                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
-                ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-                CurrentTypeComboBox.Text = workOffer.GetOfferProductType(i + 1);
+                if(workOffer.GetOfferProductTypeId(i + 1) != 0)
+                {
+                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                    ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+                    CurrentTypeComboBox.Text = workOffer.GetOfferProductType(i + 1);
+                }
             }
         }
         private void SetTypeComboBoxesResolve()
@@ -272,7 +284,8 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-                currentQuantityTextBoxValue.Text = workOffer.GetOfferProductQuantity(i + 1).ToString();
+                if(workOffer.GetOfferProductQuantity(i+1) != 0)
+                    currentQuantityTextBoxValue.Text = workOffer.GetOfferProductQuantity(i + 1).ToString();
             }
         }
         private void SetQuantityTextBoxesResolve()
@@ -282,7 +295,8 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-                currentQuantityTextBoxValue.Text = workOffer.GetRFQProductQuantity(i + 1).ToString();
+                if(workOffer.GetRFQProductQuantity(i+1) != 0)
+                    currentQuantityTextBoxValue.Text = workOffer.GetRFQProductQuantity(i + 1).ToString();
             }
         }
 
@@ -293,9 +307,19 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                 TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
-                decimal price = workOffer.GetProductPriceValue(i + 1);
+                int price = (int) workOffer.GetProductPriceValue(i + 1);
                 currentPriceTextBoxValue.Text = price.ToString();
             }
+        }
+        private void SetPriceComboBoxes()
+        {
+            Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
+            WrapPanel currentProductWrapPanel = (WrapPanel) currentPriceGrid.Children[5];
+            ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
+
+            if (workOffer.GetCurrencyId() != 0)
+                currentPriceComboBox.SelectedItem = workOffer.GetCurrency();
+            
         }
 
         public void SetUpPageUIElements()
@@ -325,12 +349,18 @@ namespace _01electronics_crm
                 currentProductGrid.RowDefinitions.Add(row5);
                 currentProductGrid.RowDefinitions.Add(row6);
 
-                Label mainLabel = new Label();
+                CheckBox mainLabelCheckBox = new CheckBox();
                 int productNumber = i + 1;
-                mainLabel.Content = "Product " + productNumber;
-                mainLabel.Style = (Style)FindResource("tableHeaderItem");
-                currentProductGrid.Children.Add(mainLabel);
-                Grid.SetRow(mainLabel, 0);
+                mainLabelCheckBox.Content = "Product " + productNumber;
+                mainLabelCheckBox.Style = (Style)FindResource("checkBoxStyle");
+                mainLabelCheckBox.Checked += new RoutedEventHandler(OnCheckMainLabelCheckBox);
+                mainLabelCheckBox.Unchecked += new RoutedEventHandler(OnUnCheckMainLabelCheckBox);
+                if(i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                {
+                    mainLabelCheckBox.IsEnabled = false;
+                }
+                currentProductGrid.Children.Add(mainLabelCheckBox);
+                Grid.SetRow(mainLabelCheckBox, 0);
 
                 /////////TYPE WRAPPANEL////////////////
                 ////////////////////////////////////////
@@ -345,7 +375,6 @@ namespace _01electronics_crm
                 {
                     Label currentTypeLabelValue = new Label();
                     currentTypeLabelValue.Style = (Style)FindResource("labelStyle");
-                    //currentTypeLabelValue.Margin = new Thickness(-300, 12, 12, 12);
                     currentTypeLabelValue.Content = workOffer.GetOfferProductType(i + 1);
                     productTypeWrapPanel.Children.Add(currentTypeLabelValue);
                 }
@@ -353,10 +382,9 @@ namespace _01electronics_crm
                 {
                     ComboBox currentTypeCombo = new ComboBox();
                     currentTypeCombo.Style = (Style)FindResource("comboBoxStyle");
-                    //currentTypeCombo.Margin = new Thickness(-300, 12, 12, 12);
                     currentTypeCombo.SelectionChanged += new SelectionChangedEventHandler(TypeComboBoxesSelectionChanged);
-                    //if (viewAddCondition == 0)
-                    //  currentTypeCombo.Visibility = Visibility.Collapsed;
+                    if (i != 0)
+                        currentTypeCombo.IsEnabled = false;
                     for (int j = 0; j < products.Count(); j++)
                         currentTypeCombo.Items.Add(products[j].typeName);
                     productTypeWrapPanel.Children.Add(currentTypeCombo);
@@ -378,7 +406,6 @@ namespace _01electronics_crm
                 {
                     Label currentBrandLabelValue = new Label();
                     currentBrandLabelValue.Style = (Style)FindResource("labelStyle");
-                    //currentBrandLabelValue.Margin = new Thickness(-300, 12, 12, 12);
                     currentBrandLabelValue.Content = workOffer.GetOfferProductBrand(i + 1);
                     productBrandWrapPanel.Children.Add(currentBrandLabelValue);
                 }
@@ -387,8 +414,9 @@ namespace _01electronics_crm
                 {
                     ComboBox currentBrandCombo = new ComboBox();
                     currentBrandCombo.Style = (Style)FindResource("comboBoxStyle");
-                    //currentBrandCombo.Margin = new Thickness(-300, 12, 12, 12);
                     currentBrandCombo.SelectionChanged += new SelectionChangedEventHandler(BrandComboBoxesSelectionChanged);
+                    if (i != 0)
+                        currentBrandCombo.IsEnabled = false;
                     for (int j = 0; j < brands.Count(); j++)
                         currentBrandCombo.Items.Add(brands[j].brandName);
                     productBrandWrapPanel.Children.Add(currentBrandCombo);
@@ -410,7 +438,6 @@ namespace _01electronics_crm
                 {
                     Label currentModelLabelValue = new Label();
                     currentModelLabelValue.Style = (Style)FindResource("labelStyle");
-                    //currentModelLabelValue.Margin = new Thickness(-300, 12, 12, 12);
                     currentModelLabelValue.Content = workOffer.GetOfferProductModel(i + 1);
                     productModelWrapPanel.Children.Add(currentModelLabelValue);
                 }
@@ -418,8 +445,8 @@ namespace _01electronics_crm
                 {
                     ComboBox currentModelCombo = new ComboBox();
                     currentModelCombo.Style = (Style)FindResource("comboBoxStyle");
-                    //currentModelCombo.Margin = new Thickness(-300, 12, 12, 12);
                     currentModelCombo.SelectionChanged += new SelectionChangedEventHandler(ModelComboBoxesSelectionChanged);
+                    currentModelCombo.IsEnabled = false;
                     productModelWrapPanel.Children.Add(currentModelCombo);
                 }
                 currentProductGrid.Children.Add(productModelWrapPanel);
@@ -437,10 +464,8 @@ namespace _01electronics_crm
                 TextBox currentQuantityTextBox = new TextBox();
                 currentQuantityTextBox.Style = (Style)FindResource("textBoxStyle");
                 currentQuantityTextBox.TextChanged += new TextChangedEventHandler(QuantityTextBoxesTextChanged);
-                //currentQuantityTextBox.Margin = new Thickness(-300, 12, 12, 12);
+    
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
-
-                //currentQuantityTextBox.Text = workOffer.GetworkOfferProductQuantity(i + 1).ToString();
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
                     currentQuantityTextBox.IsEnabled = false;
@@ -461,6 +486,7 @@ namespace _01electronics_crm
                 currentPriceTextBox.Style = (Style)FindResource("miniTextBoxStyle");
                 currentPriceTextBox.Margin = new System.Windows.Thickness(30, 12, 42, 12);
                 currentPriceTextBox.TextChanged += new TextChangedEventHandler(PriceTextBoxesTextChanged);
+               
                 productPriceWrapPanel.Children.Add(currentPriceTextBox);
 
                 ComboBox currentPriceComboBox = new ComboBox();
@@ -469,6 +495,7 @@ namespace _01electronics_crm
                 currentPriceComboBox.SelectionChanged += new SelectionChangedEventHandler(PriceComboBoxesSelectionChanged);
                 for (int j = 0; j < currencies.Count; j++)
                     currentPriceComboBox.Items.Add(currencies[j].currencyName);
+                
                 productPriceWrapPanel.Children.Add(currentPriceComboBox);
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
@@ -503,13 +530,18 @@ namespace _01electronics_crm
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
+            CheckBox currentProductCheckBox = (CheckBox)currentProductGrid.Children[0];
+
 
             currentModelComboBox.Items.Clear();
 
             if (currentTypeComboBox.SelectedItem != null)
             {
+                currentProductCheckBox.IsChecked = true;
+
                 if (currentBrandComboBox.SelectedItem != null)
                 {
+                    currentModelComboBox.IsEnabled = true;
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
 
@@ -522,15 +554,20 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                     {
-                        //for (int i = 0; i < products.Count; i++)
-                        //{
-                          //  if (currentTypeComboBox.SelectedItem.ToString() == products[i].typeName)
-                            //    typeId = products[i].typeId;
-                        //}
                         workOffer.SetOfferProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
+                        
+                        if (workOffer.GetOfferProductModelId(k + 1) != 0)
+                            currentModelComboBox.SelectedItem = workOffer.GetOfferProductModel(k + 1);
                     }
                 }
-
+            }
+            else
+            {
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        workOffer.SetOfferProductType(k + 1, 0, "Others");
+                }
             }
         }
 
@@ -552,7 +589,7 @@ namespace _01electronics_crm
             {
                 if (currentTypeComboBox.SelectedItem != null)
                 {
-                   
+                    currentModelComboBox.IsEnabled = true;
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
 
@@ -564,16 +601,22 @@ namespace _01electronics_crm
                 }
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
-                    //for (int i = 0; i < brands.Count; i++)
-                    //{
-                      //  if (currentBrandComboBox.SelectedItem.ToString() == brands[i].brandName)
-                        //    brandId = brands[i].brandId;
-                    //}
-                    
                     if (currentProductGrid == mainWrapPanel.Children[k])
+                    {
                         workOffer.SetOfferProductBrand(k + 1, brands[currentBrandComboBox.SelectedIndex].brandId, currentBrandComboBox.SelectedItem.ToString());
-                }
 
+                        if (workOffer.GetOfferProductModelId(k + 1) != 0)
+                            currentModelComboBox.SelectedItem = workOffer.GetOfferProductModel(k + 1);
+                    }                
+                }
+            }
+            else
+            {
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        workOffer.SetOfferProductBrand(k + 1, 0, "Others");
+                }
             }
         }
 
@@ -589,17 +632,6 @@ namespace _01electronics_crm
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
-            /*
-                      if (currentModelComboBox.SelectedItem != null && currentModelComboBox.Items.Count == models.Count() && currentModelComboBox.SelectedItem.ToString() == models[currentModelComboBox.SelectedIndex].modelName)
-                      {
-                          for (int k = 0; k < numberOfProductsAdded; k++)
-                          {
-                              if (currentProductGrid == mainWrapPanel.Children[k])
-                                  workOffer.SetOfferProductModel(k + 1,models[currentModelComboBox.SelectedIndex].modelId, models[currentModelComboBox.SelectedIndex].modelName);
-                          }
-
-                      }
-            */
 
             if (currentModelComboBox.SelectedItem != null)
             {
@@ -613,7 +645,14 @@ namespace _01electronics_crm
                         workOffer.SetOfferProductModel(k + 1, models[currentModelComboBox.SelectedIndex].modelId, models[currentModelComboBox.SelectedIndex].modelName);
                 }
             }
-
+            else
+            {
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        workOffer.SetOfferProductModel(k + 1, 0, "Others");
+                }
+            }
         }
 
         private void QuantityTextBoxesTextChanged(object sender, TextChangedEventArgs e)
@@ -634,6 +673,11 @@ namespace _01electronics_crm
             else
             {
                 quantity = 0;
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        workOffer.SetOfferProductQuantity(k + 1, quantity);
+                }
                 currentQuantityTextBox.Text = null;
             }
         }
@@ -651,14 +695,18 @@ namespace _01electronics_crm
                     for (int k = 0; k < numberOfProductsAdded; k++)
                     {
                         if (currentProductGrid == mainWrapPanel.Children[k])
-                            workOffer.SetOfferProductPriceValue(k + 1,int.Parse(priceQuantity.ToString()));
+                            workOffer.SetOfferProductPriceValue(k + 1,(int)priceQuantity);
                     }
                 }
                 else
                 {
                     priceQuantity = 0;
-                   // if(viewAddCondition == 1)
-                        currentPriceTextBox.Text = null;
+                    for (int k = 0; k < numberOfProductsAdded; k++)
+                    {
+                        if (currentProductGrid == mainWrapPanel.Children[k])
+                            workOffer.SetOfferProductPriceValue(k + 1, (int)priceQuantity);
+                    }
+                    currentPriceTextBox.Text = null;
                 }
             }
         }
@@ -669,66 +717,172 @@ namespace _01electronics_crm
             //WrapPanel currentPriceWrapPanel = (WrapPanel)currentPriceComboBox.Parent;
             //Grid currentProductGrid = (Grid)currentPriceWrapPanel.Parent;
 
-            if (currentPriceComboBox.SelectedItem != null && workOffer.GetCurrency() == null)
+            if (currentPriceComboBox.SelectedItem != null)
             {
                 workOffer.SetCurrency(currencies[currentPriceComboBox.SelectedIndex].currencyId, currencies[currentPriceComboBox.SelectedIndex].currencyName);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[5];
-                ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
-                currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
+                for (int i = 0; i < 4; i++)
+                {
+                    Grid productGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[5];
+                    ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
+                    currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
+                }
             }
         }
 
         ///////////////CHECKBOX HANDLERS////////////////////
         ///////////////////////////////////////////////////
-        /*private void Product2CheckBoxChecked(object sender, RoutedEventArgs e)
+
+        private void OnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
-            product2TypeCombo.IsEnabled = true;
-            product2ModelCombo.IsEnabled = true;
-            product2ModelCombo.IsEnabled = true;
-            product2QuantityTextBox.IsEnabled = true;
+            CheckBox currentCheckBox = (CheckBox)sender;
+            Grid currentProductGrid = (Grid)currentCheckBox.Parent;
+
+            for(int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (currentProductGrid == mainWrapPanel.Children[i] && i > 1)
+                {
+                    Grid previousProductGrid = (Grid)mainWrapPanel.Children[i - 1];
+                    CheckBox previousCheckBox = (CheckBox)previousProductGrid.Children[0];
+                    if (previousCheckBox.IsChecked != true)
+                    {
+                        currentCheckBox.IsChecked = false;
+                        MessageBox.Show("previous checkbox must be checked first!");
+                        return;
+                    }
+                }
+            }
+
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+            currentTypeComboBox.IsEnabled = true;
+
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
+            currentBrandComboBox.IsEnabled = true;
+
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+            currentModelComboBox.IsEnabled = false;
+
+            WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+            TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
+            currentQuantityTextBox.IsEnabled = true;
+
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
+            currentPriceTextBox.IsEnabled = true;
+            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+            currentPriceCurrencyComboBox.IsEnabled = true;
         }
 
-        private void Product2CheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void OnUnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
-            product2TypeCombo.IsEnabled = false;
-            product2ModelCombo.IsEnabled = false;
-            product2ModelCombo.IsEnabled = false;
-            product2QuantityTextBox.IsEnabled = false;
-        }
-        private void Product3CheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            product3TypeCombo.IsEnabled = true;
-            product3ModelCombo.IsEnabled = true;
-            product3ModelCombo.IsEnabled = true;
-            product3QuantityTextBox.IsEnabled = true;
+            CheckBox currentCheckBox = (CheckBox)sender;
+            Grid currentProductGrid = (Grid)currentCheckBox.Parent;
+
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
+
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+
+            WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+            TextBox currentQuantityTextBox = (TextBox)currentQuantityWrapPanel.Children[1];
+
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
+
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (currentProductGrid == mainWrapPanel.Children[i])
+                {
+                    if (i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
+                    {
+                        Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
+                        CheckBox nextCheckBox = (CheckBox)nextProductGrid.Children[0];
+
+                        if (nextCheckBox.IsChecked == true)
+                        {
+                            WrapPanel nextTypeWrapPanel = (WrapPanel)nextProductGrid.Children[1];
+                            ComboBox nextTypeCombo = (ComboBox)nextTypeWrapPanel.Children[1];
+
+                            WrapPanel nextBrandWrapPanel = (WrapPanel)nextProductGrid.Children[2];
+                            ComboBox nextBrandCombo = (ComboBox)nextBrandWrapPanel.Children[1];
+
+                            WrapPanel nextModelWrapPanel = (WrapPanel)nextProductGrid.Children[3];
+                            ComboBox nextModelCombo = (ComboBox)nextModelWrapPanel.Children[1];
+
+                            WrapPanel nextQuantityWrapPanel = (WrapPanel)nextProductGrid.Children[4];
+                            TextBox nextQuantityTextBox = (TextBox)nextQuantityWrapPanel.Children[1];
+
+                            WrapPanel nextPriceWrapPanel = (WrapPanel)nextProductGrid.Children[5];
+                            TextBox nextPriceTextBox = (TextBox)nextPriceWrapPanel.Children[1];
+
+                            currentTypeComboBox.SelectedItem = nextTypeCombo.SelectedItem;
+                            currentBrandComboBox.SelectedItem = nextBrandCombo.SelectedItem;
+                            currentModelComboBox.SelectedItem = nextModelCombo.SelectedItem;
+                            currentQuantityTextBox.Text = nextQuantityTextBox.Text;
+                            currentPriceTextBox.Text = nextPriceTextBox.Text;
+
+                            nextCheckBox.IsChecked = false;
+                            currentCheckBox.IsChecked = true;
+                        }
+                        else
+                        {
+                            currentTypeComboBox.SelectedItem = null;
+                            currentTypeComboBox.IsEnabled = false;
+
+
+                            currentBrandComboBox.SelectedItem = null;
+                            currentBrandComboBox.IsEnabled = false;
+
+
+                            currentModelComboBox.SelectedItem = null;
+                            currentModelComboBox.IsEnabled = false;
+
+
+                            currentQuantityTextBox.Text = "0";
+                            currentQuantityTextBox.IsEnabled = false;
+
+
+                            currentPriceTextBox.Text = "0";
+                            currentPriceTextBox.IsEnabled = false;
+                            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+                            currentPriceCurrencyComboBox.IsEnabled = false;
+                        }
+                    }
+                    else
+                    {
+                        currentTypeComboBox.SelectedItem = null;
+                        currentTypeComboBox.IsEnabled = false;
+
+
+                        currentBrandComboBox.SelectedItem = null;
+                        currentBrandComboBox.IsEnabled = false;
+
+
+                        currentModelComboBox.SelectedItem = null;
+                        currentModelComboBox.IsEnabled = false;
+
+
+                        currentQuantityTextBox.Text = "0";
+                        currentQuantityTextBox.IsEnabled = false;
+
+
+                        currentPriceTextBox.Text = "0";
+                        currentPriceTextBox.IsEnabled = false;
+                        ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+                        currentPriceCurrencyComboBox.IsEnabled = false;
+                    }
+                }
+            }
         }
 
-        private void Product3CheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-            product3TypeCombo.IsEnabled = false;
-            product3ModelCombo.IsEnabled = false;
-            product3ModelCombo.IsEnabled = false;
-            product3QuantityTextBox.IsEnabled = false;
-        }
-        private void Product4CheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            product4TypeCombo.IsEnabled = true;
-            product4ModelCombo.IsEnabled = true;
-            product4ModelCombo.IsEnabled = true;
-            product4QuantityTextBox.IsEnabled = true;
-        }
 
-        private void Product4CheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-            product4TypeCombo.IsEnabled = false;
-            product4ModelCombo.IsEnabled = false;
-            product4ModelCombo.IsEnabled = false;
-            product4QuantityTextBox.IsEnabled = false;
-        }*/
         //////////BUTTON CLICK HANDLERS//////////////////
         /////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
@@ -771,5 +925,7 @@ namespace _01electronics_crm
             WorkOfferPaymentAndDeliveryPage paymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(paymentAndDeliveryPage);
         }
+
+
     }
 }

@@ -33,13 +33,13 @@
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
                 <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
-                    <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickProductsInfo"/>
+                    <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
                 <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
-                    <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo"/>
+                    <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
                 <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
-                    <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}" MouseLeftButtonDown="OnClickAdditionalInfo"/>
+                    <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
             </Grid>
 
@@ -89,6 +89,7 @@
                 <WrapPanel Grid.Row="5">
                     <Label Content="Offer File &#x0a;  Path" Style="{StaticResource labelStyle}"/>
                     <TextBox Style="{StaticResource textBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="offerFilePath" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                    <ProgressBar Style="{StaticResource ProgressBarStyle}" Name="uploadFileProgressBar" VerticalAlignment="Center" Visibility="Collapsed"/>
                     <Button Style="{StaticResource buttonBrowseStyle}" Content="Browse" Name="browseButton" Click="OnBtnClickBrowse"/>
                 </WrapPanel>
 

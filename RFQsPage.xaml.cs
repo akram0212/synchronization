@@ -317,7 +317,9 @@ namespace _01electronics_crm
 
             RFQsStackPanel.Children.Clear();
 
-            if(stackPanelItems.Count() != 0)
+            currentSelectedRFQItem = null;
+
+            if (stackPanelItems.Count() != 0)
                 stackPanelItems.Clear();
 
             for (int i = 0; i < rfqsList.Count; i++)
@@ -798,7 +800,7 @@ namespace _01electronics_crm
             WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
 
 
-            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+             resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
             resolveWorkOffer.LinkRFQInfo();

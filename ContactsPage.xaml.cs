@@ -119,10 +119,8 @@ namespace _01electronics_crm
                 List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
 
 
-                if (!commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList))
-                    return false;
-                else
-                    employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
+                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
             }
 
             return true;
@@ -285,15 +283,15 @@ namespace _01electronics_crm
                     ChildItem.Header = employeesCompanies[i].Value[j].company_name;
                     ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
                     ChildItem.FontSize = 13;
-                    ChildItem.FontWeight = FontWeights.Normal;
+                    ChildItem.FontWeight = FontWeights.SemiBold;
 
                     companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
 
                     currentEmployeeTreeItem.Items.Add(ChildItem);
                 }
 
-                //if (!ParentItem.HasItems)
-                //    contactTreeView.Items.Remove(ParentItem);
+                if (!currentEmployeeTreeItem.HasItems)
+                    contactTreeView.Items.Remove(currentEmployeeTreeItem);
             }
 
 
