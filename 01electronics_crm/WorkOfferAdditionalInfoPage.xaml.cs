@@ -542,11 +542,11 @@ namespace _01electronics_crm
 
                 serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
                 serverFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+                serverFileName.Replace(" .pdf", ".pdf");
 
                 localFolderPath = downloadFile.SelectedPath;
                 localFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+                localFileName.Replace(" .pdf", ".pdf");
 
                 offerFilePath.Visibility = Visibility.Collapsed;
                 uploadFileProgressBar.Visibility = Visibility.Visible;
