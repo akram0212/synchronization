@@ -240,7 +240,7 @@ namespace _01electronics_library
             if (!InitializeRFQInfo(sqlDatabase.rows[0].sql_int[1], sqlDatabase.rows[0].sql_int[2], sqlDatabase.rows[0].sql_int[0]))
                 return false;
 
-            LinkRFQInfo();
+            //LinkRFQInfo();
 
             String sqlQueryPart5 = @"with get_product_type		as	(	select products_type.id as product_type_id, 
 		products_type.product_name as product_type 

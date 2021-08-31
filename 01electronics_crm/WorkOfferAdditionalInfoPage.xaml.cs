@@ -504,7 +504,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 workOffer.GetNewOfferSerial();
                 workOffer.GetNewOfferVersion();
@@ -520,6 +520,7 @@ namespace _01electronics_crm
 
                 serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
                 serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
                 localFolderPath = uploadFile.FileName;
                 localFileName = null;
@@ -541,9 +542,11 @@ namespace _01electronics_crm
 
                 serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
                 serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
                 localFolderPath = downloadFile.SelectedPath;
                 localFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
 
                 offerFilePath.Visibility = Visibility.Collapsed;
                 uploadFileProgressBar.Visibility = Visibility.Visible;
@@ -588,7 +591,7 @@ namespace _01electronics_crm
         protected void BackgroundDownload(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker downloadBackground = sender as BackgroundWorker;
-
+            
             downloadBackground.ReportProgress(50);
             if (!fTPObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName)) 
                 return;
@@ -603,11 +606,13 @@ namespace _01electronics_crm
 
         protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            offerFilePath.Visibility = Visibility.Visible;
-            uploadFileProgressBar.Visibility = Visibility.Collapsed;
+           
+                offerFilePath.Visibility = Visibility.Visible;
+                uploadFileProgressBar.Visibility = Visibility.Collapsed;
 
-            offerFilePath.Text = "SUCCESS!";
-            browseButton.IsEnabled = false;
+                offerFilePath.Text = "SUCCESS!";
+                
+            
         }
     }
 }
