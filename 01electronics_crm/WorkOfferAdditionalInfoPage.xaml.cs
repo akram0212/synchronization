@@ -541,12 +541,14 @@ namespace _01electronics_crm
                     return;
 
                 serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-                serverFileName = workOffer.GetOfferID() + ".pdf";
-                serverFileName.Replace(" .pdf", ".pdf");
+                string temp = workOffer.GetOfferID() + ".pdf";
+                //serverFileName.Replace(" .pdf", ".pdf");
+                integrityChecks.RemoveExtraSpaces(temp, ref serverFileName);
 
                 localFolderPath = downloadFile.SelectedPath;
-                localFileName = workOffer.GetOfferID() + ".pdf";
-                localFileName.Replace(" .pdf", ".pdf");
+                temp = workOffer.GetOfferID() + ".pdf";
+                //localFileName.Replace(" .pdf", ".pdf");
+                integrityChecks.RemoveExtraSpaces(temp, ref localFolderPath); ;
 
                 offerFilePath.Visibility = Visibility.Collapsed;
                 uploadFileProgressBar.Visibility = Visibility.Visible;
