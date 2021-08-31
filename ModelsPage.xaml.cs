@@ -96,34 +96,28 @@ namespace _01electronics_crm
                     imageBorder.BorderThickness = new Thickness(3);
                     imageBorder.Background = Brushes.White;
                     imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                    Grid.SetColumn(imageBorder, 0);
+                    //Grid.SetColumn(imageBorder, 0);
+                    column1Grid.Children.Add(imageBorder);
 
                     selectedProduct.SetModelID(brandModels[i].modelId);
                     selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
 
-                    try
-                    {
-                        selectedProduct.DownloadPhotoFromServer();
-                    
-                        Image brandImage = new Image();
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
-                        src.EndInit();
-                        brandImage.Source = src;
-                        brandImage.Height = 220;
-                        brandImage.Width = 190;
-                        brandImage.MouseDown += ImageMouseDown;
-                        brandImage.Tag = brandModels[i].modelId.ToString();
-                        Grid.SetColumn(brandImage, 0);
-                        column1Grid.Children.Add(brandImage);
-                        
-                    }
-                    catch
-                    { 
+                        if(selectedProduct.DownloadPhotoFromServer())
+                        {
+                             Image brandImage = new Image();
+                             BitmapImage src = new BitmapImage();
+                             src.BeginInit();
+                             src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                             src.EndInit();
+                             brandImage.Source = src;
+                             brandImage.Height = 220;
+                             brandImage.Width = 190;
+                             brandImage.MouseDown += ImageMouseDown;
+                             brandImage.Tag = brandModels[i].modelId.ToString();
+                             //Grid.SetColumn(brandImage, 0);
+                             column1Grid.Children.Add(brandImage);
+                        }
 
-                    }
-                    column1Grid.Children.Add(imageBorder);
                     Grid.SetColumn(column1Grid, 0);
 
                     currentModelGrid.Children.Add(column1Grid);

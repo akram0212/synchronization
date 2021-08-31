@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_crm", "01electronics_crm.csproj", "{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "..\01electronics_library\01electronics_library.csproj", "{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DD69175-7CFC-4648-9FD4-6085FB77FDBF}
+	EndGlobalSection
+EndGlobal

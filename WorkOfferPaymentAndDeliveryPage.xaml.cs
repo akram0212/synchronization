@@ -94,14 +94,6 @@ namespace _01electronics_crm
                 InitializeDeliveryPointComboBox();
 
                 DisableTotalPriceComboAndTextBox();
-
-                SetTotalPriceCurrencyComboBox();
-                SetTotalPriceTextBox();
-                SetDownPaymentValues();
-                SetOnDeliveryValues();
-                SetOnInstallationValues();
-                SetDeliveryTimeValues();
-                SetDeliveryPointValue();
             }
             //////////////////////////
             ///RESOLVE RFQ
@@ -115,6 +107,17 @@ namespace _01electronics_crm
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
+            }
+
+            if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
             }
         }
         ///////////////////////////////////////////
@@ -225,8 +228,8 @@ namespace _01electronics_crm
         {
             ////////////Added by me ama get awareeh
             
-            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMaximum().ToString();
-            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
             if(workOffer.GetDeliveryTimeUnit() != null)
                 deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
         }
