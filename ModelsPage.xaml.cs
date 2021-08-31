@@ -117,6 +117,29 @@ namespace _01electronics_crm
                         //Grid.SetColumn(brandImage, 0);
                         column1Grid.Children.Add(brandImage);
                     }
+                    else
+                    {
+                        try
+                        {
+                            Image brandImage = new Image();
+                            BitmapImage src = new BitmapImage();
+                            src.BeginInit();
+                            src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
+                            src.EndInit();
+                            brandImage.Source = src;
+                            brandImage.Height = 220;
+                            brandImage.Width = 190;
+                            //brandImage.MouseDown += ImageMouseDown;
+                            brandImage.Tag = brandModels[i].modelId.ToString();
+                            //Grid.SetColumn(brandImage, 0);
+                            column1Grid.Children.Add(brandImage);
+                        }
+                        catch
+                        {
+
+                        }
+                        
+                    }
 
                     Grid.SetColumn(column1Grid, 0);
 
