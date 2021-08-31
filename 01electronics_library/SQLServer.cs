@@ -13,7 +13,7 @@ namespace _01electronics_library
 {
     public class SQLServer
     {
-        private String sqlConnectionString = @"Data Source=DEV-03;Initial Catalog=erp_system;Integrated Security=True;";
+        private String sqlConnectionString = @"Data Source=DEV-02\SQLEXPRESS;Initial Catalog=erp_system;Integrated Security=True;";
 
         private SqlConnection sqlConnection = null;
         private SqlCommand sqlCommand = null;

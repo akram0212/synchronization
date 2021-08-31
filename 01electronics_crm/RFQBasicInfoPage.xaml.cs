@@ -235,7 +235,7 @@ namespace _01electronics_crm
         private void SetSalesPerson()
         {
             rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-            SetSalesPerson();
+            SetSalesPersonCombo();
         }
         private void SetSalesPersonCombo()
         {

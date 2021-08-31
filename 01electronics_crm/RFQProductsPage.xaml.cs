@@ -552,12 +552,6 @@ namespace _01electronics_crm
             WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
             currentQuantityTextBox.IsEnabled = true;
-
-            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
-            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
-            currentPriceTextBox.IsEnabled = true;
-            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
-            currentPriceCurrencyComboBox.IsEnabled = true;
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//
@@ -603,12 +597,6 @@ namespace _01electronics_crm
             currentQuantityTextBox.Text = "0";
             currentQuantityTextBox.IsEnabled = false;
 
-            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
-            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
-            currentPriceTextBox.Text = "0";
-            currentPriceTextBox.IsEnabled = false;
-            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
-            currentPriceCurrencyComboBox.IsEnabled = false;
         }
 
         ////////////BUTTON CLICKS///////////

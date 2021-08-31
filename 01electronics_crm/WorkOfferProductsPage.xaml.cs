@@ -112,28 +112,20 @@ namespace _01electronics_crm
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                SetTypeComboBoxesResolve();
-                SetBrandComboBoxesResolve();
-                SetModelComboBoxesResolve();
-                SetQuantityTextBoxesResolve();
+                
             }
 
            
 
-            if (workOffer.GetRFQSerial() != 0 && viewAddCondition != COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION && viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                SetTypeComboBoxesResolve();
-                SetBrandComboBoxesResolve();
-                SetModelComboBoxesResolve();
-                SetQuantityTextBoxesResolve();
-            }
-            else
-            {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+
+            { 
                 SetTypeComboBoxes();
                 SetBrandComboBoxes();
                 SetModelComboBoxes();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
+                SetPriceComboBoxes();
             }    
 
         }
@@ -172,10 +164,13 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
-                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
-                ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-                CurrentTypeComboBox.Text = workOffer.GetOfferProductType(i + 1);
+                if(workOffer.GetOfferProductTypeId(i + 1) != 0)
+                {
+                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                    ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+                    CurrentTypeComboBox.Text = workOffer.GetOfferProductType(i + 1);
+                }
             }
         }
         private void SetTypeComboBoxesResolve()
@@ -316,6 +311,16 @@ namespace _01electronics_crm
                 currentPriceTextBoxValue.Text = price.ToString();
             }
         }
+        private void SetPriceComboBoxes()
+        {
+            Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
+            WrapPanel currentProductWrapPanel = (WrapPanel) currentPriceGrid.Children[5];
+            ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
+
+            if (workOffer.GetCurrencyId() != 0)
+                currentPriceComboBox.SelectedItem = workOffer.GetCurrency();
+            
+        }
 
         public void SetUpPageUIElements()
         {
@@ -414,8 +419,6 @@ namespace _01electronics_crm
                         currentBrandCombo.IsEnabled = false;
                     for (int j = 0; j < brands.Count(); j++)
                         currentBrandCombo.Items.Add(brands[j].brandName);
-                    if (workOffer.GetOfferProductBrandId(i + 1) != 0)
-                        currentBrandCombo.SelectedItem = workOffer.GetOfferProductBrand(i + 1);
                     productBrandWrapPanel.Children.Add(currentBrandCombo);
                 }
 
@@ -461,8 +464,7 @@ namespace _01electronics_crm
                 TextBox currentQuantityTextBox = new TextBox();
                 currentQuantityTextBox.Style = (Style)FindResource("textBoxStyle");
                 currentQuantityTextBox.TextChanged += new TextChangedEventHandler(QuantityTextBoxesTextChanged);
-                if (workOffer.GetOfferProductQuantity(i + 1) != 0)
-                    currentQuantityTextBox.Text = workOffer.GetOfferProductQuantity(i + 1).ToString();
+    
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
@@ -484,8 +486,7 @@ namespace _01electronics_crm
                 currentPriceTextBox.Style = (Style)FindResource("miniTextBoxStyle");
                 currentPriceTextBox.Margin = new System.Windows.Thickness(30, 12, 42, 12);
                 currentPriceTextBox.TextChanged += new TextChangedEventHandler(PriceTextBoxesTextChanged);
-                if (workOffer.GetProductPriceValue(i + 1) != 0)
-                    currentPriceTextBox.Text = workOffer.GetProductPriceValue(i + 1).ToString();
+               
                 productPriceWrapPanel.Children.Add(currentPriceTextBox);
 
                 ComboBox currentPriceComboBox = new ComboBox();
@@ -494,8 +495,7 @@ namespace _01electronics_crm
                 currentPriceComboBox.SelectionChanged += new SelectionChangedEventHandler(PriceComboBoxesSelectionChanged);
                 for (int j = 0; j < currencies.Count; j++)
                     currentPriceComboBox.Items.Add(currencies[j].currencyName);
-                if (i == 0 && workOffer.GetCurrencyId() != 0)
-                    currentPriceComboBox.SelectedItem = workOffer.GetCurrency();
+                
                 productPriceWrapPanel.Children.Add(currentPriceComboBox);
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)

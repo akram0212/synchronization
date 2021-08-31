@@ -403,7 +403,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             {
                 workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
                 workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);

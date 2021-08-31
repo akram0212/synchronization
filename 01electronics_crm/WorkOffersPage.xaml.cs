@@ -294,8 +294,9 @@ namespace _01electronics_crm
 
         private bool SetWorkOffersStackPanel()
         {
-            
             workOffersStackPanel.Children.Clear();
+            currentSelectedOfferItem = null;
+            workOffersAfterFiltering.Clear();
 
             for (int i = 0; i < workOffers.Count; i++)
             {
@@ -788,9 +789,9 @@ namespace _01electronics_crm
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
                     childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
 
-                if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
                     previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
-                else if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                else if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
                     previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
                 else
                     previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
