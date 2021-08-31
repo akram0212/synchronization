@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+//using System.Drawing;
+//using Size = System.Drawing.Size;
 using _01electronics_library;
 
 namespace _01electronics_crm
@@ -23,7 +25,7 @@ namespace _01electronics_crm
     /// 
     public partial class UserPortalPage : Page
     {
-
+        FTPServer ftpServer;
         private Employee loggedInUser;
 
         public UserPortalPage(ref Employee mLoggedInUser)
@@ -31,12 +33,14 @@ namespace _01electronics_crm
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
+            ftpServer = new FTPServer();
 
             InitializeEmployeeDashboard();
         }
         
         private void InitializeEmployeeDashboard()
         {
+            InitializeEmployeePhoto();
             employeeNameLabel.Content = loggedInUser.GetEmployeeName();
             employeeBirthdateLabel.Content = loggedInUser.GetEmployeeBirthDate();
             employeeJoiningDateLabel.Content = loggedInUser.GetEmployeeJoinDate();
@@ -44,21 +48,27 @@ namespace _01electronics_crm
             employeeTeamLabel.Content = loggedInUser.GetEmployeeTeam();
             employeeBusinessEmailLabel.Content = loggedInUser.GetEmployeeBusinessEmail();
             employeePersonalEmailLabel.Content = loggedInUser.GetEmployeePersonalEmail();
-
-            InitializeEmployeePhoto();
         }
         private void InitializeEmployeePhoto()
         {
-            //string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".jpg";
+            string imagePath = Directory.GetCurrentDirectory() + "\\" + loggedInUser.GetEmployeeId() + ".jpg";
 
-            //if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
-            //{
-            //    Image productImage = Image.FromFile(imagePath);
+            if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath))
+            {
+                Image employeePhoto = new Image();
 
-            //    productImage = resizeImage(productImage, new Size(200, 200));
-            //    imageParagraph.AppendPicture(productImage);
-            //    //imageParagraph.Text = "picture here" + i;
-            //}
+                employeePhoto.Margin = new Thickness(24);
+                employeePhoto.Width = 245;
+                employeePhoto.Height = 245;
+
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri(imagePath, UriKind.Absolute);
+                src.EndInit();
+                employeePhoto.Source = src;
+
+                PhotoGrid.Children.Add(employeePhoto);
+            }
         }
         /////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
