@@ -421,38 +421,6 @@
     <Resource Include="MAIN_LOGO.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Photos\BorriUPS.jpg" />
-    <Resource Include="Photos\LegrandUPS.jpg" />
-    <Resource Include="Photos\UPS.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\BorriCommercialUPS.jpg" />
-    <Resource Include="Photos\BorriIndustrialUPS.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\elcos.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\NiCdBatteries.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\Panels_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\Borri.jpg" />
-    <Resource Include="Photos\Legrand.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\Commerical_UPS_cover_photo.jpg" />
-    <Resource Include="Photos\Industrial_UPS_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\Batteries_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Photos\Genset_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>

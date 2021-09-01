@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -566,7 +567,7 @@ namespace _01electronics_crm
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = @"D:\erp_system\01electronics_crm\Photos\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = Directory.GetCurrentDirectory() + "\\" + "Photos\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

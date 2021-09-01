@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,7 +98,7 @@ namespace _01electronics_crm
                         Image productImage = new Image();
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\"+"Photos\\" + productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Absolute);
                         src.EndInit();
                         productImage.Source = src;
                         productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -134,7 +135,7 @@ namespace _01electronics_crm
                         Image productImage = new Image();
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + productName[0] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + productName[0] + "_cover_photo.jpg", UriKind.Absolute);
                         src.EndInit();
                         productImage.Source = src;
                         productImage.Width = 900;

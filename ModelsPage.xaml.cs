@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace _01electronics_crm
 
             QueryGetModels();
             SetUpPageUIElements();
-          //  DeletePhotos();
+            //DeletePhotos();
         }
         private void QueryGetModels()
         {
@@ -221,25 +222,13 @@ namespace _01electronics_crm
         {
             for(int i = 0; i < brandModels.Count(); i++)
             {
-                try
-                {
-                    //Image brandImage = new Image();
-                    //BitmapImage src = new BitmapImage();
-                    //src.BeginInit();
-                    //src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
-                    //src.EndInit();
-                    //brandImage.Source = src;
-                    //brandImage.Height = 220;
-                    //brandImage.Width = 190;
-                    ////brandImage.MouseDown += ImageMouseDown;
-                    //brandImage.Tag = brandModels[i].modelId.ToString();
-                    ////Grid.SetColumn(brandImage, 0);
-                    //column1Grid.Children.Add(brandImage);
-                }
-                catch
-                {
-
-                }
+                selectedProduct.SetModelID(brandModels[i].modelId);
+                selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
+                
+                System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
+                image2.Dispose();
+                File.Delete(selectedProduct.GetPhotoLocalPath());
+                
             }
         }
         /////////////////////////////////////////////////////////////////

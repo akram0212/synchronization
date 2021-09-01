@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace _01electronics_crm
                     Image brandLogo = new Image();
                     BitmapImage src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
+                    src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
                     src.EndInit();
                     brandLogo.Source = src;
                     brandLogo.Width = 300;
