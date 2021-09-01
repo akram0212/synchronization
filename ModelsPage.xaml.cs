@@ -110,37 +110,14 @@ namespace _01electronics_crm
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
                         src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
                         src.EndInit();
                         brandImage.Source = src;
                         brandImage.Height = 220;
                         brandImage.Width = 190;
                         //brandImage.MouseDown += ImageMouseDown;
                         brandImage.Tag = brandModels[i].modelId.ToString();
-                        //Grid.SetColumn(brandImage, 0);
                         column1Grid.Children.Add(brandImage);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Image brandImage = new Image();
-                            BitmapImage src = new BitmapImage();
-                            src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
-                            src.EndInit();
-                            brandImage.Source = src;
-                            brandImage.Height = 220;
-                            brandImage.Width = 190;
-                            //brandImage.MouseDown += ImageMouseDown;
-                            brandImage.Tag = brandModels[i].modelId.ToString();
-                            //Grid.SetColumn(brandImage, 0);
-                            column1Grid.Children.Add(brandImage);
-                        }
-                        catch
-                        {
-
-                        }
-                        
                     }
 
                     Grid.SetColumn(column1Grid, 0);
@@ -218,17 +195,26 @@ namespace _01electronics_crm
             }
             Grid.SetRow(modelsWrapPanel, 1);
         }
-        private void DeletePhotos()
+        private void DeletePhoto()
         {
-            for(int i = 0; i < brandModels.Count(); i++)
+            ModelsGrid.Children.Clear();
+            for (int i = 0; i < brandModels.Count(); i++)
             {
                 selectedProduct.SetModelID(brandModels[i].modelId);
                 selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
-                
-                System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
-                image2.Dispose();
-                File.Delete(selectedProduct.GetPhotoLocalPath());
-                
+
+                try
+                {
+                    System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
+                    image2.Dispose();
+                    File.Delete(selectedProduct.GetPhotoLocalPath());
+
+                }
+                catch
+                {
+
+                }
+
             }
         }
         /////////////////////////////////////////////////////////////////
@@ -237,46 +223,55 @@ namespace _01electronics_crm
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
+            DeletePhoto();
             ProductsPage productsPage = new ProductsPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
         private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
         {
+            DeletePhoto();
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrdersPage);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
             this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientVisitsPage);
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientCallsPage);
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
+            DeletePhoto();
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
