@@ -14,6 +14,7 @@ using Spire.Doc.Utilities;
 using Spire.Doc.Collections;
 using _01electronics_library;
 using System.Drawing;
+
 using Size = System.Drawing.Size;
 
 namespace _01electronics_crm
@@ -129,9 +130,13 @@ namespace _01electronics_crm
                     if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
                     {
                         Image productImage = Image.FromFile(imagePath);
-
+                        
                         productImage = resizeImage(productImage, new Size(200, 200));
-                        //imageParagraph.AppendPicture(productImage);
+                        
+                        byte[] byteImage = (byte[])(new ImageConverter()).ConvertTo(productImage, typeof(byte[]));
+
+                        imageParagraph.AppendPicture(byteImage);
+
                         //imageParagraph.Text = "picture here" + i;
                     }
                 }

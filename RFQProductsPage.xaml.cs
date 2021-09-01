@@ -206,18 +206,29 @@ namespace _01electronics_crm
                 currentProductGrid.RowDefinitions.Add(row4);
                 currentProductGrid.RowDefinitions.Add(row5);
 
+                Grid backgroundColour = new Grid();
+                RowDefinition firstRow = new RowDefinition();
+                backgroundColour.RowDefinitions.Add(firstRow);
+                backgroundColour.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 CheckBox mainLabelCheckBox = new CheckBox();
                 int productNumber = i + 1;
                 mainLabelCheckBox.Content = "Product " + productNumber;
                 mainLabelCheckBox.Style = (Style)FindResource("checkBoxStyle");
+                mainLabelCheckBox.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 mainLabelCheckBox.Checked += new RoutedEventHandler(OnCheckMainLabelCheckBox);
                 mainLabelCheckBox.Unchecked += new RoutedEventHandler(OnUnCheckMainLabelCheckBox);
-                if(i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-                {
-                    mainLabelCheckBox.IsEnabled = false;
-                }
-                currentProductGrid.Children.Add(mainLabelCheckBox);
+
+                backgroundColour.Children.Add(mainLabelCheckBox);
                 Grid.SetRow(mainLabelCheckBox, 0);
+
+                
+                if (i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                    mainLabelCheckBox.IsEnabled = false;
+                
+
+                currentProductGrid.Children.Add(backgroundColour);
+                Grid.SetRow(backgroundColour, 0);
 
                 /////////TYPE WRAPPANEL////////////////
                 ////////////////////////////////////////
@@ -368,7 +379,8 @@ namespace _01electronics_crm
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
-            CheckBox currentProductCheckBox = (CheckBox)currentProductGrid.Children[0];
+            Grid checkBoxGrid = (Grid)currentProductGrid.Children[0];
+            CheckBox currentProductCheckBox = (CheckBox)checkBoxGrid.Children[0];
 
 
             currentModelComboBox.Items.Clear();
@@ -520,14 +532,16 @@ namespace _01electronics_crm
         private void OnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
-            Grid currentProductGrid = (Grid)currentCheckBox.Parent;
+            Grid checkBoxColorGrid = (Grid)currentCheckBox.Parent;
+            Grid currentProductGrid = (Grid)checkBoxColorGrid.Parent;
 
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 if (currentProductGrid == mainWrapPanel.Children[i] && i > 1)
                 {
                     Grid previousProductGrid = (Grid)mainWrapPanel.Children[i - 1];
-                    CheckBox previousCheckBox = (CheckBox)previousProductGrid.Children[0];
+                    Grid previousCheckBoxColorGrid = (Grid)previousProductGrid.Children[0];
+                    CheckBox previousCheckBox = (CheckBox)previousCheckBoxColorGrid.Children[0];
                     if (previousCheckBox.IsChecked != true)
                     {
                         currentCheckBox.IsChecked = false;
@@ -552,6 +566,7 @@ namespace _01electronics_crm
             WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
             currentQuantityTextBox.IsEnabled = true;
+
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//
@@ -560,7 +575,8 @@ namespace _01electronics_crm
         private void OnUnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
-            Grid currentProductGrid = (Grid)currentCheckBox.Parent;
+            Grid checkBoxColorGrid = (Grid)currentCheckBox.Parent;
+            Grid currentProductGrid = (Grid)checkBoxColorGrid.Parent;
 
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
@@ -581,7 +597,8 @@ namespace _01electronics_crm
                     if (i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
                     {
                         Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
-                        CheckBox nextCheckBox = (CheckBox)nextProductGrid.Children[0];
+                        Grid nextCheckBoxColorGrid = (Grid)nextProductGrid.Children[0];
+                        CheckBox nextCheckBox = (CheckBox)nextCheckBoxColorGrid.Children[0];
 
                         if (nextCheckBox.IsChecked == true)
                         {
@@ -603,6 +620,7 @@ namespace _01electronics_crm
                             currentQuantityTextBox.Text = nextQuantityTextBox.Text;
 
                             nextCheckBox.IsChecked = false;
+                            currentCheckBox.IsChecked = true;
                         }
                         else
                         {

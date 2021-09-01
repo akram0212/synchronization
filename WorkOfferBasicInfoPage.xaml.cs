@@ -54,7 +54,7 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            workOffer = new WorkOffer(sqlDatabase);
+            //workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
             
@@ -275,7 +275,7 @@ namespace _01electronics_crm
 
         private void SetRFQSerialComboValue()
         {
-            RFQSerialCombo.Text = workOffer.GetRFQID();
+            RFQSerialCombo.SelectedItem = workOffer.GetRFQID();
         }
 
         private void SetCompanyNameLabel()
