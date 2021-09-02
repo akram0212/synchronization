@@ -31,10 +31,10 @@ namespace _01electronics_crm
         private Employee loggedInUser;
         private int selectedEmployee;
 
-        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>> employeesCompanies;
+        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>> employeesCompanies;
 
-        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>> employeesContacts;
-        private List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> contactsList;
+        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>> employeesContacts;
+        private List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> contactsList;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
 
@@ -48,17 +48,17 @@ namespace _01electronics_crm
 
         //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
 
-        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>();
+        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
 
         public ContactsPage(ref Employee mLoggedInUser)
         {
             initializationObject = new SQLServer();
 
-            employeesCompanies = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>>();
-            employeesContacts = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>>();
+            employeesCompanies = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>>();
+            employeesContacts = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>>();
             listOfEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
-            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
+            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
 
             countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
             states = new List<BASIC_STRUCTS.STATE_STRUCT>();
@@ -116,11 +116,11 @@ namespace _01electronics_crm
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
 
-                List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>();
+                List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
 
 
                 commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
-                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
             }
 
             return true;
@@ -152,10 +152,10 @@ namespace _01electronics_crm
 
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
-                List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>();
+                List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
                 commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref tmpList);
 
-                 employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                 employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
                 
             }
 
@@ -261,17 +261,6 @@ namespace _01electronics_crm
 
             for (int i = 0; i < employeesCompanies.Count(); i++)
             {
-                // List<COMPANY_ORGANISATION_MACROS.COMPANY_LIST_STRUCT> tmpList = employeesCompanies[loggedInUser.GetEmployeeId()];
-
-
-                // if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != employeesCompanies[i].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                // continue;
-                //if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != tmpList[i].branchesList[0].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                // continue;
-                // if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != tmpList[i].branchesList[0].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
-                // continue;
-                //if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != tmpList[i].branchesList[0].address)
-                //  continue;
                 if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null && employeesCompanies[i].Key != listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id)
                     continue;
 
@@ -290,8 +279,6 @@ namespace _01electronics_crm
                     currentEmployeeTreeItem.Items.Add(ChildItem);
                 }
 
-                //if (!currentEmployeeTreeItem.HasItems)
-                //    contactTreeView.Items.Remove(currentEmployeeTreeItem);
             }
 
 
@@ -308,6 +295,15 @@ namespace _01electronics_crm
                 {
                     for (int j = 0; j < employeesContacts[i].Value.Count; j++)
                     {
+                        if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                            continue;
+                        if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                            continue;
+                        if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != employeesContacts[i].Value[j].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
+                            continue;
+                        if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != employeesContacts[i].Value[j].address)
+                            continue;
+
                         TreeViewItem companyTreeItem = new TreeViewItem();
 
                         if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial))
@@ -317,20 +313,33 @@ namespace _01electronics_crm
                         
                         TreeViewItem contactTreeItem = new TreeViewItem();
 
-                        contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
-                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
+                        contactTreeItem.Header = employeesContacts[i].Value[j].contact_name;
+                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact_id;
                         contactTreeItem.FontSize = 12;
                         contactTreeItem.FontWeight = FontWeights.Normal;
 
                         companyTreeItem.Items.Add(contactTreeItem);
 
-                        contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT>(contactTreeItem, employeesContacts[i].Value[j]));
-
+                        contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>(contactTreeItem, employeesContacts[i].Value[j]));
 
                     }
                 }
                 
+            }
 
+            for (int i = 0; i < companiesTreeArray.Count(); i++)
+            {
+                TreeViewItem companyTreeItem = new TreeViewItem();
+                companyTreeItem = companiesTreeArray[i].Value;
+
+                TreeViewItem parentTreeItem = new TreeViewItem();
+                parentTreeItem = (TreeViewItem)companyTreeItem.Parent;
+
+                if (!companyTreeItem.HasItems)
+                {
+                    parentTreeItem.Items.Remove(companyTreeItem);
+
+                }
             }
 
             return true;
@@ -612,7 +621,7 @@ namespace _01electronics_crm
 
             if (!selectedItem.HasItems)
             {
-                COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_MIN_LIST_STRUCT();
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
                 currentContactStruct = contactsTreeArray.Find(current_item => current_item.Key.Tag == selectedItem.Tag).Value;
 
                 Contact selectedContact = new Contact();
@@ -625,7 +634,7 @@ namespace _01electronics_crm
                     TreeViewItem currentSales = (TreeViewItem)parent2;
 
                     selectedContact.InitializeContactInfo(Convert.ToInt32
-                        (currentSales.Tag), currentContactStruct.address_serial, currentContactStruct.contact.contact_id);
+                        (currentSales.Tag), currentContactStruct.address_serial, currentContactStruct.contact_id);
 
                     ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
                     viewContactWindow.Show();
