@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using _01electronics_library;
 using System.ComponentModel;
+using System.IO;
 
 namespace _01electronics_crm
 {
@@ -214,14 +215,25 @@ namespace _01electronics_crm
 
         private void SetWarrantyPeriodValues()
         {
-            warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
-            warrantyPeriodCombo.Text = workOffer.GetWarrantyPeriodTimeUnit();
+            if (workOffer.GetWarrantyPeriod() != 0)
+            {
+                warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
+                warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
+            }
+            else
+            {
+                warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
+                warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
+            }
         }
 
         private void SetValidityPeriodValues()
         {
-            offerValidityTextBox.Text = workOffer.GetOfferValidityPeriod().ToString();
-            offerValidityCombo.Text = workOffer.GetOfferValidityTimeUnit();
+            if (workOffer.GetOfferValidityPeriod() != 0)
+            {
+                offerValidityTextBox.Text = workOffer.GetOfferValidityPeriod().ToString();
+                offerValidityCombo.Text = workOffer.GetOfferValidityTimeUnit();
+            }
         }
 
         private void SetAdditionalDescriptionValue()
@@ -444,7 +456,7 @@ namespace _01electronics_crm
                     if (workOffer.IssueNewOffer())
                         MessageBox.Show("WorkOffer added succefully!");
 
-                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+                    //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
 
                     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                     currentWindow.Close();
@@ -493,7 +505,7 @@ namespace _01electronics_crm
                     if(workOffer.ReviseOffer())
                         MessageBox.Show("Offer Revised successfully!");
 
-                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+                   // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
 
                     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                     currentWindow.Close();
@@ -504,55 +516,59 @@ namespace _01electronics_crm
 
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                workOffer.GetNewOfferSerial();
-                workOffer.GetNewOfferVersion();
-                workOffer.GetNewOfferID();
 
-                OpenFileDialog uploadFile = new OpenFileDialog();
+            UploadFilesWindow uploadFilesWindow = new UploadFilesWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            uploadFilesWindow.Show();
 
-                if (uploadFile.ShowDialog() == false)
-                    return;
+            //if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            //{
+            //    workOffer.GetNewOfferSerial();
+            //    workOffer.GetNewOfferVersion();
+            //    workOffer.GetNewOfferID();
 
-                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
-                    return;
+            //    OpenFileDialog uploadFile = new OpenFileDialog();
 
-                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-                serverFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+            //    if (uploadFile.ShowDialog() == false)
+            //        return;
 
-                localFolderPath = uploadFile.FileName;
-                localFileName = null;
+            //    if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+            //        return;
 
-                offerFilePath.Visibility = Visibility.Collapsed;
-                uploadFileProgressBar.Visibility = Visibility.Visible;
+            //    serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+            //    serverFileName = workOffer.GetOfferID() + ".pdf";
+            //    integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
-                uploadBackground.RunWorkerAsync();
-            }
-            else
-            {
-                System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
+            //    localFolderPath = uploadFile.FileName;
+            //    localFileName = null;
 
-                if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-                    return;
+            //    offerFilePath.Visibility = Visibility.Collapsed;
+            //    uploadFileProgressBar.Visibility = Visibility.Visible;
 
-                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
-                    return;
+            //    uploadBackground.RunWorkerAsync();
+            //}
+            //else
+            //{
+            //    System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
 
-                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-                serverFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+            //    if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            //        return;
 
-                localFolderPath = downloadFile.SelectedPath;
-                localFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+            //    if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+            //        return;
 
-                offerFilePath.Visibility = Visibility.Collapsed;
-                uploadFileProgressBar.Visibility = Visibility.Visible;
+            //    serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+            //    serverFileName = workOffer.GetOfferID() + ".pdf";
+            //    integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
-                downloadBackground.RunWorkerAsync();
-            }
+            //    localFolderPath = downloadFile.SelectedPath;
+            //    localFileName = workOffer.GetOfferID() + ".pdf";
+            //    integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+
+            //    offerFilePath.Visibility = Visibility.Collapsed;
+            //    uploadFileProgressBar.Visibility = Visibility.Visible;
+
+            //    downloadBackground.RunWorkerAsync();
+            //}
         }
 
         protected void BackgroundUpload(object sender, DoWorkEventArgs e)
@@ -611,8 +627,12 @@ namespace _01electronics_crm
                 uploadFileProgressBar.Visibility = Visibility.Collapsed;
 
                 offerFilePath.Text = "SUCCESS!";
-                
-            
+        }
+
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            UploadFilesPage uploadFilesPage= new UploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(uploadFilesPage);
         }
     }
 }

@@ -98,16 +98,10 @@ namespace _01electronics_crm
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 SetSalesPersonComboValue();
-                if (RFQSerialCombo.IsEnabled == true)
-                {
-                    InitializeRFQSerialCombo();
-                    SetRFQSerialComboValue();
-                }
-                else
-                {
-                    SetCompanyNameComboValue();
-                    SetContactPersonComboValue();
-                }
+                InitializeRFQSerialCombo();
+                SetRFQSerialComboValue();
+                
+                DisableSalesPersonAndRFQCombo();
             }
             if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
@@ -243,7 +237,17 @@ namespace _01electronics_crm
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
 
         }
+        private void DisableSalesPersonAndRFQCombo()
+        {
+            salesPersonCombo.IsEnabled = false;
+            RFQSerialCombo.IsEnabled = false;
+        }
+        private void EnableSalesPersonAndRFQCombo()
+        {
+            salesPersonCombo.IsEnabled = true;
+            RFQSerialCombo.IsEnabled = true;
 
+        }
         private void DisableCompanyNameaddressContactCombos()
         {
             companyNameCombo.IsEnabled = false;
@@ -388,7 +392,8 @@ namespace _01electronics_crm
             if (RFQSerialCombo.SelectedItem != null)
             {
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-                //workOffer.InitializeOfferProposerInfo(workOffer.GetAssigneeId(), COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
+                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    workOffer.LinkRFQInfo();
                 SetCompanyNameAddressContactFromRFQ();
             }
         }
