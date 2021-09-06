@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace _01electronics_crm
         protected List<String> productSummaryPoints;
         protected String sqlQuery;
         protected SQLServer sqlDatabase;
+        protected FTPServer ftpServer;
         public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
             commonQueries = new CommonQueries();
             sqlDatabase = new SQLServer();
+            ftpServer = new FTPServer();
             products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             productSummaryPoints = new List<string>();
 
@@ -97,7 +100,8 @@ namespace _01electronics_crm
                         Image productImage = new Image();
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\Photos\\" + productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
                         src.EndInit();
                         productImage.Source = src;
                         productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -127,6 +131,7 @@ namespace _01electronics_crm
                         Grid.SetRow(imageTextBlock, 0);
                         ProductsGrid.Children.Add(gridI);
                         Grid.SetRow(gridI, i);
+                        
                     }
                     catch
                     {
@@ -134,7 +139,8 @@ namespace _01electronics_crm
                         Image productImage = new Image();
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + productName[0] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + productName[0] + "_cover_photo.jpg", UriKind.Absolute);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
                         src.EndInit();
                         productImage.Source = src;
                         productImage.Width = 900;
@@ -164,6 +170,7 @@ namespace _01electronics_crm
                         gridI.Children.Add(imageTextBlock);
                         ProductsGrid.Children.Add(gridI);
                         Grid.SetRow(gridI, i);
+                    
 
                     }
                 }
