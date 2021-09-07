@@ -86,7 +86,7 @@ namespace _01electronics_crm
             }
         }
         //////////INITIALIZE FUNCTIONS//////////
-        ////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
         private void InitializeProducts()
         {
             if (!commonQueriesObject.GetCompanyProducts(ref products))
@@ -100,7 +100,7 @@ namespace _01electronics_crm
         }
 
         ////////SET FUNCTIONS////////////////////
-        /////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         
        
         private void SetTypeComboBoxes()
@@ -234,7 +234,7 @@ namespace _01electronics_crm
                 Grid.SetRow(backgroundColour, 0);
 
                 /////////TYPE WRAPPANEL////////////////
-                ////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productTypeWrapPanel = new WrapPanel();
 
                 Label currentTypeLabel = new Label();
@@ -269,7 +269,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productTypeWrapPanel, 1);
 
                 ////////BRAND WRAPPANEL////////////////
-                ////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productBrandWrapPanel = new WrapPanel();
 
                 Label currentBrandLabel = new Label();
@@ -307,7 +307,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productBrandWrapPanel, 2);
 
                 //////////MODEL WRAPPANEL/////////////////////////
-                //////////////////////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productModelWrapPanel = new WrapPanel();
 
                 Label currentModelLabel = new Label();
@@ -338,7 +338,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productModelWrapPanel, 3);
 
                 /////////////QUANTITY WRAPPANEL///////////////////////
-                //////////////////////////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productQuantityWrapPanel = new WrapPanel();
 
                 Label currentQuantityLabel = new Label();
@@ -367,7 +367,7 @@ namespace _01electronics_crm
         }
 
             //////////////SELECTION CHANGED HANDLERS///////////
-            ///////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -531,7 +531,7 @@ namespace _01electronics_crm
             }
         }
         ////////////CHECK BOXES CHECKED HANDLERS////////
-        ////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
@@ -569,7 +569,7 @@ namespace _01electronics_crm
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//
-        /////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnUnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
@@ -663,7 +663,7 @@ namespace _01electronics_crm
         }
 
         ////////////BUTTON CLICKS///////////
-        ////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, RoutedEventArgs e)
         {
             RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);

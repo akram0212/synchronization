@@ -58,6 +58,11 @@ namespace _01electronics_crm
 
         List<string> ftpFiles;
 
+        public WorkOfferBasicInfoPage workOfferBasicInfoPage;
+        public WorkOfferProductsPage workOfferProductsPage;
+        public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
+        public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
+
         public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
            
@@ -127,10 +132,12 @@ namespace _01electronics_crm
 
                     Image icon = new Image();
 
-                    if (ftpFiles[i].Contains(".pdf"))
-                        icon = new Image { Source = new BitmapImage(new Uri("C:/Users/developer/Pictures/Saved Pictures/PDFIcon.jpg")) };
-                    else
-                        icon = new Image { Source = new BitmapImage(new Uri("C:/Users/developer/Pictures/Saved Pictures/WordIcon.jpg")) };
+                    //PLEASE PUT THE ICONS IN THE ICONS FOLDER I CREATED IN THE PROJECT FOLDER AND ADD THEM TO PROJECT IN VISUAL STUDIO
+
+                    //if (ftpFiles[i].Contains(".pdf"))
+                    //    icon = new Image { Source = new BitmapImage(new Uri("C:/Users/developer/Pictures/Saved Pictures/PDFIcon.jpg")) };
+                    //else
+                    //    icon = new Image { Source = new BitmapImage(new Uri("C:/Users/developer/Pictures/Saved Pictures/WordIcon.jpg")) };
 
                     resizeImage(ref icon);
                     UploadIconGrid.Children.Add(icon);
@@ -154,39 +161,197 @@ namespace _01electronics_crm
             }
         }
 
-        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        public void resizeImage(ref Image imgToResize)
         {
-
+            imgToResize.Width = 50;
+            imgToResize.Height = 50;
         }
 
-        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOfferPaymentAndDeliveryPage offerPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(offerPaymentAndDeliveryPage);
-        }
-
-        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOfferProductsPage offerProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(offerProductsPage);
-        }
-
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INTERNAL TABS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(basicInfoPage);
+            workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferBasicInfoPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferBasicInfoPage);
+        }
+        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferProductsPage);
+        }
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
+        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOffer.SetNoOfSavedOfferProducts();
+
+            workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferAdditionalInfoPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferAdditionalInfoPage);
+
+        }
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
+        {
+            previousSelectedFile = currentSelectedFile;
+            currentSelectedFile = (Grid)sender;
+            currentLabel = (Label)currentSelectedFile.Children[1];
+            BrushConverter brush = new BrushConverter();
+
+            if (previousSelectedFile != null)
+            {
+                previousSelectedFile.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                Label previousLabel = (Label)previousSelectedFile.Children[1];
+                previousLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+            }
+
+            currentSelectedFile.Background = (Brush)brush.ConvertFrom("#105A97");
+            currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+
+            //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            //{
+            //    downloadButton.Visibility = Visibility.Visible;
+            //}
+        }
+        private void OnButtonClickOk(object sender, RoutedEventArgs e)
+        {
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+            //{
+            //    workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+            //    workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+            //    workOffer.SetWarrantyPeriod(warrantyPeriod);
+            //    workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+            //    workOffer.SetOfferNotes(additionalDescription);
+            //
+            //    if (workOffer.GetSalesPersonId() == 0)
+            //        MessageBox.Show("You need to choose sales person before adding a work offer!");
+            //    else if (workOffer.GetCompanyName() == null)
+            //        MessageBox.Show("You need to choose a company before adding a work offer!");
+            //    else if (workOffer.GetAddressSerial() == 0)
+            //        MessageBox.Show("You need to choose company address before adding a work offer!");
+            //    else if (workOffer.GetContactId() == 0)
+            //        MessageBox.Show("You need to choose a contact before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
+            //    else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
+            //        MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
+            //    else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
+            //        MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
+            //    else if (workOffer.GetDeliveryPointId() == 0)
+            //        MessageBox.Show("You need to set delivery point before adding a work offer!");
+            //    else if (workOffer.GetOfferContractTypeId() == 0)
+            //        MessageBox.Show("You need to set contract type before adding a work offer!");
+            //    else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
+            //        MessageBox.Show("You need to set warranty period before adding a work offer!");
+            //    else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
+            //        MessageBox.Show("You need to set validity period before adding a work offer!");
+            //    else
+            //    {
+            //        if (workOffer.IssueNewOffer())
+            //            MessageBox.Show("WorkOffer added succefully!");
+            //
+            //        //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            //
+            //        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            //        currentWindow.Close();
+            //    }
+            //}
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            //{
+            //    workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+            //    workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+            //    workOffer.SetWarrantyPeriod(warrantyPeriod);
+            //    workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+            //    workOffer.SetOfferNotes(additionalDescription);
+            //
+            //    if (workOffer.GetSalesPersonId() == 0)
+            //        MessageBox.Show("You need to choose sales person before adding a work offer!");
+            //    else if (workOffer.GetCompanyName() == null)
+            //        MessageBox.Show("You need to choose a company before adding a work offer!");
+            //    else if (workOffer.GetAddressSerial() == 0)
+            //        MessageBox.Show("You need to choose company address before adding a work offer!");
+            //    else if (workOffer.GetContactId() == 0)
+            //        MessageBox.Show("You need to choose a contact before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
+            //    else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
+            //        MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
+            //    else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
+            //        MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
+            //    else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
+            //        MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
+            //    else if (workOffer.GetDeliveryPointId() == 0)
+            //        MessageBox.Show("You need to set delivery point before adding a work offer!");
+            //    else if (workOffer.GetOfferContractTypeId() == 0)
+            //        MessageBox.Show("You need to set contract type before adding a work offer!");
+            //    else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
+            //        MessageBox.Show("You need to set warranty period before adding a work offer!");
+            //    else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
+            //        MessageBox.Show("You need to set validity period before adding a work offer!");
+            //
+            //
+            //    else
+            //    {
+            //        if (workOffer.ReviseOffer())
+            //            MessageBox.Show("Offer Revised successfully!");
+            //
+            //        // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            //
+            //        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            //        currentWindow.Close();
+            //    }
+            //
+            //}
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///ON DROP HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnDropUploadFilesStackPanel(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop) && progressBar.Visibility == Visibility.Collapsed)
             {
-                string[] temp  = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string[] temp = (string[])e.Data.GetData(DataFormats.FileDrop);
                 //files[numberOfFilesAdded] = (string)e.Data.GetData(DataFormats.FileDrop);
                 //e.Effects = DragDropEffects.Copy;
                 e.Effects = DragDropEffects.All;
@@ -240,31 +405,11 @@ namespace _01electronics_crm
 
                 uploadBackground.RunWorkerAsync();
             }
-        } 
-
-        protected void BackgroundUpload(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker uploadBackground = sender as BackgroundWorker;
-
-
-
-            uploadBackground.ReportProgress(50);
-            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName))
-                fileUploaded = true;
-            else
-                fileUploaded = false;    
-            
-
-            uploadBackground.ReportProgress(75);
-
-            uploadBackground.ReportProgress(100);
         }
 
-        protected void OnUploadProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar.Value = e.ProgressPercentage;
-        }
-
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BACKGROUND COMPLETE HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         protected void OnUploadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (wrapPanel.Children.Count != 0)
@@ -356,61 +501,18 @@ namespace _01electronics_crm
                 wrapPanel.Children.Add(UploadIconGrid);
             }
         }
-
-        public void resizeImage(ref Image imgToResize)
-        {
-            imgToResize.Width = 50;
-            imgToResize.Height = 50;
-        }
-
-        private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
-        {
-            
-            previousSelectedFile = currentSelectedFile;
-            currentSelectedFile = (Grid)sender;
-            currentLabel = (Label)currentSelectedFile.Children[1];
-            BrushConverter brush = new BrushConverter();
-
-            if(previousSelectedFile != null)
-            {
-                previousSelectedFile.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-                Label previousLabel = (Label)previousSelectedFile.Children[1];
-                previousLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-            }
-
-            currentSelectedFile.Background = (Brush)brush.ConvertFrom("#105A97");
-            currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                downloadButton.Visibility = Visibility.Visible;
-            }
-        }
-        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker downloadBackground = sender as BackgroundWorker;
-
-            downloadBackground.ReportProgress(50);
-            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName))
-                return;
-
-            downloadBackground.ReportProgress(100);
-        }
-
-        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar.Value = e.ProgressPercentage;
-        }
-
         protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBar.Visibility = Visibility.Collapsed;
-            downloadButton.Visibility = Visibility.Visible;
+            //downloadButton.Visibility = Visibility.Visible;
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickDownloadButton(object sender, RoutedEventArgs e)
         {
-            downloadButton.Visibility = Visibility.Collapsed;
+            //downloadButton.Visibility = Visibility.Collapsed;
 
             System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -431,6 +533,50 @@ namespace _01electronics_crm
             progressBar.Visibility = Visibility.Visible;
 
             downloadBackground.RunWorkerAsync();
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///PROGRESS CHANGED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        protected void OnUploadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+        }
+        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BACKGROUND FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        protected void BackgroundUpload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker uploadBackground = sender as BackgroundWorker;
+
+
+
+            uploadBackground.ReportProgress(50);
+            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName))
+                fileUploaded = true;
+            else
+                fileUploaded = false;
+
+
+            uploadBackground.ReportProgress(75);
+
+            uploadBackground.ReportProgress(100);
+        }
+
+        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker downloadBackground = sender as BackgroundWorker;
+
+            downloadBackground.ReportProgress(50);
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName))
+                return;
+
+            downloadBackground.ReportProgress(100);
         }
     }
 }

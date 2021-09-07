@@ -34,10 +34,16 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT> deliveryPoints = new List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT>();
 
         private int viewAddCondition;
-        private Decimal totalPrice;
         private int downPaymentPercentage;
         private int onDeliveryPercentage;
         private int onInstallationPercentage;
+
+        private Decimal totalPrice;
+
+        public WorkOfferBasicInfoPage workOfferBasicInfoPage;
+        public WorkOfferProductsPage workOfferProductsPage;
+        public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
+        public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
         public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
@@ -54,9 +60,6 @@ namespace _01electronics_crm
 
             totalPrice = 0;
             
-            //////////////////////
-            ///ADD OFFER
-            //////////////////////
             if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -67,9 +70,6 @@ namespace _01electronics_crm
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
-            //////////////////////
-            ///VIEW OFFER
-            //////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -84,9 +84,6 @@ namespace _01electronics_crm
                 SetDeliveryTimeValues();
                 SetDeliveryPointValue();
             }
-            /////////////////////////
-            ///REVISE OFFER
-            /////////////////////////
             else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -95,9 +92,6 @@ namespace _01electronics_crm
 
                 DisableTotalPriceComboAndTextBox();
             }
-            //////////////////////////
-            ///RESOLVE RFQ
-            //////////////////////////
             else
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -120,9 +114,10 @@ namespace _01electronics_crm
                 SetDeliveryPointValue();
             }
         }
-        ///////////////////////////////////////////
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///CONFIGURE UI ELEMENTS
-        ///////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureViewUIElements()
         {
             totalPriceCombo.IsEnabled = false;
@@ -144,9 +139,10 @@ namespace _01electronics_crm
             totalPriceCombo.IsEnabled = false;
             totalPriceTextBox.IsEnabled = false;
         }
-        ///////////////////////////////////////////
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
-        ///////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         private void InitializeTotalPriceCurrencyComboBox()
         {
             commonQueriesObject.GetCurrencyTypes(ref currencies);
@@ -172,9 +168,10 @@ namespace _01electronics_crm
                 deliveryPointCombo.Items.Add(deliveryPoints[i].pointName);
             return true;
         }
-        ///////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SET FUNCTIONS
-        ///////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
         private void SetTotalPriceCurrencyComboBox()
         {
             totalPriceCombo.Text = workOffer.GetCurrency();
@@ -241,9 +238,10 @@ namespace _01electronics_crm
         {
             deliveryPointCombo.SelectedItem = workOffer.GetDeliveryPoint();
         }
-        ////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///GET FUNCTIONS
-        ////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         private double GetPercentage(Decimal percentage, Decimal total)
         {
             if (percentage != 0)
@@ -257,9 +255,9 @@ namespace _01electronics_crm
             
         }
 
-        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///TEXT CHANGED HANDLERS
-        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnTextChangedDownPaymentPercentageTextBox(object sender, TextChangedEventArgs e)
         {
@@ -335,70 +333,103 @@ namespace _01electronics_crm
                 deliveryTimeTextBoxTo.Text = null;
         }
 
-        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SELECTION CHANGED HANDLERS
-        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
             workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
-
-
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
             workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
-
-        //////////////////////////////////////////////////
-        ///BUTTON CLICKED HANDLERS
-        //////////////////////////////////////////////////
-        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
-        {
-            SetPercentAndValuesInDataBase();
-
-            WorkOfferBasicInfoPage basicInfoPage = new WorkOfferBasicInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(basicInfoPage);
-
-            
-        }
-
-        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
-        {
-            SetPercentAndValuesInDataBase();
-
-            WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(workOfferProductsPage);
-
-            
-        }
-
-        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
-        {
-            SetPercentAndValuesInDataBase();
-
-            WorkOfferAdditionalInfoPage offerAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(offerAdditionalInfoPage);
-
-        }
-
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
         private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INTERNAL TABS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            SetPercentAndValuesInDataBase();
+
+            workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferBasicInfoPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferBasicInfoPage);
+        }
+        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            SetPercentAndValuesInDataBase();
+
+            workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferProductsPage);
+
+
+        }
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            SetPercentAndValuesInDataBase();
+
+            workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferAdditionalInfoPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferAdditionalInfoPage);
+
+        }
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+                    if (!workOffer.GetNewOfferSerial())
+                        return;
+
+                if (!workOffer.GetNewOfferVersion())
+                    return;
+
+                workOffer.SetOfferIssueDateToToday();
+
+                workOffer.GetNewOfferID();
+            }
+
+            workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+
+            NavigationService.Navigate(workOfferUploadFilesPage);
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
