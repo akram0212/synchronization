@@ -48,8 +48,11 @@
                     <Label Content="Upload Files" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
             </Grid>
-            <StackPanel Grid.Row="2" Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel" AllowDrop="True"  Background="White" Margin="40,10,47,68"/>
+            <ScrollViewer Grid.Row="2" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel" AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </ScrollViewer>
             <ProgressBar Grid.Row="3" Name="progressBar" Visibility="Collapsed" Style="{StaticResource ProgressBarStyle}" HorizontalAlignment="Center"/>
+            <Button Grid.Row="3" Name="downloadButton" Style="{StaticResource buttonStyle}" Content="Download" Visibility="Collapsed" Click="OnClickDownloadButton"/>
         </Grid>
     </Grid>
 </Page>

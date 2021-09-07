@@ -38,6 +38,7 @@ namespace _01electronics_crm
         int viewAddCondition;
         
         protected BackgroundWorker uploadBackground;
+        protected BackgroundWorker downloadBackground;
 
         string[] files = new string[10];
 
@@ -49,9 +50,11 @@ namespace _01electronics_crm
 
         protected bool fileUploaded;
 
-        WrapPanel outerWrapPanel = new WrapPanel();
-        WrapPanel innerWrapPanel = new WrapPanel();
         WrapPanel wrapPanel = new WrapPanel();
+
+        private Grid previousSelectedFile;
+        private Grid currentSelectedFile;
+        private Label currentLabel;
 
         List<string> ftpFiles;
 
@@ -62,6 +65,7 @@ namespace _01electronics_crm
 
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
+            integrityChecks = new IntegrityChecks();
 
             loggedInUser = mLoggedInUser;
             workOffer = mWorkOffer;
@@ -76,12 +80,19 @@ namespace _01electronics_crm
             uploadBackground.ProgressChanged += OnUploadProgressChanged;
             uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
             uploadBackground.WorkerReportsProgress = true;
+
             uploadFilesStackPanel.Children.Clear();
             uploadFilesStackPanel.Children.Add(wrapPanel);
-            
-            progressBar.Style = (Style)FindResource("ProgressBarStyle");
+
+            downloadBackground = new BackgroundWorker();
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
 
             serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/";
+            //integrityChecks.RemoveExtraSpaces(serverFolderPath, ref serverFolderPath);
+            //serverFolderPath.Replace(@" /", @"");
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
             {
@@ -92,7 +103,9 @@ namespace _01electronics_crm
             {
                 ftpFiles.Clear();
                 if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
-                    return;
+                  return;
+                //if (!ftpObject.ListDirectory(serverFolderPath, ref ftpFiles))
+                  //  return;
             }
 
             if (ftpFiles.Count != 0)
@@ -109,6 +122,8 @@ namespace _01electronics_crm
                     UploadIconGrid.RowDefinitions.Add(row1);
                     UploadIconGrid.RowDefinitions.Add(row2);
                     UploadIconGrid.RowDefinitions.Add(row3);
+
+                    UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
 
                     Image icon = new Image();
 
@@ -271,6 +286,8 @@ namespace _01electronics_crm
                 UploadIconGrid.RowDefinitions.Add(row2);
                 UploadIconGrid.RowDefinitions.Add(row3);
 
+                UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
+
                 Image icon = new Image();
 
                 if (localFolderPath.Contains(".pdf"))
@@ -310,6 +327,8 @@ namespace _01electronics_crm
                 UploadIconGrid.RowDefinitions.Add(row2);
                 UploadIconGrid.RowDefinitions.Add(row3);
 
+                UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
+
                 Image icon = new Image();
 
                 if (localFolderPath.Contains(".pdf"))
@@ -342,6 +361,76 @@ namespace _01electronics_crm
         {
             imgToResize.Width = 50;
             imgToResize.Height = 50;
+        }
+
+        private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
+        {
+            
+            previousSelectedFile = currentSelectedFile;
+            currentSelectedFile = (Grid)sender;
+            currentLabel = (Label)currentSelectedFile.Children[1];
+            BrushConverter brush = new BrushConverter();
+
+            if(previousSelectedFile != null)
+            {
+                previousSelectedFile.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                Label previousLabel = (Label)previousSelectedFile.Children[1];
+                previousLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+            }
+
+            currentSelectedFile.Background = (Brush)brush.ConvertFrom("#105A97");
+            currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+
+            if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                downloadButton.Visibility = Visibility.Visible;
+            }
+        }
+        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker downloadBackground = sender as BackgroundWorker;
+
+            downloadBackground.ReportProgress(50);
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName))
+                return;
+
+            downloadBackground.ReportProgress(100);
+        }
+
+        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+        }
+
+        protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBar.Visibility = Visibility.Collapsed;
+            downloadButton.Visibility = Visibility.Visible;
+        }
+
+        private void OnClickDownloadButton(object sender, RoutedEventArgs e)
+        {
+            downloadButton.Visibility = Visibility.Collapsed;
+
+            System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                return;
+
+            if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+                return;
+
+            serverFileName = currentLabel.Content.ToString();
+            //serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/" + serverFileName;
+            integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+
+            localFolderPath = downloadFile.SelectedPath;
+            localFileName = System.IO.Path.GetFileName(downloadFile.SelectedPath);
+            integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+
+            progressBar.Visibility = Visibility.Visible;
+
+            downloadBackground.RunWorkerAsync();
         }
     }
 }

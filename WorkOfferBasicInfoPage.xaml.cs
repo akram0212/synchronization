@@ -88,6 +88,7 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                DisableSalesPersonAndRFQCombo();
             }
             //////////////////////////
             ///RESOLVE RFQ

@@ -282,11 +282,13 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
-                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
-                TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-                if(workOffer.GetOfferProductQuantity(i+1) != 0)
+                if (workOffer.GetOfferProductQuantity(i + 1) != 0)
+                {
+                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                    TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
                     currentQuantityTextBoxValue.Text = workOffer.GetOfferProductQuantity(i + 1).ToString();
+                }
             }
         }
         private void SetQuantityTextBoxesResolve()
@@ -317,13 +319,13 @@ namespace _01electronics_crm
         }
         private void SetPriceComboBoxes()
         {
-            Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
-            WrapPanel currentProductWrapPanel = (WrapPanel) currentPriceGrid.Children[5];
-            ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
-
             if (workOffer.GetCurrencyId() != 0)
+            {
+                Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
+                WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[5];
+                ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
                 currentPriceComboBox.SelectedItem = workOffer.GetCurrency();
-            
+            }
         }
 
         public void SetUpPageUIElements()

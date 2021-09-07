@@ -208,35 +208,38 @@ namespace _01electronics_crm
 
         private void SetDownPaymentValues()
         {
-            downPaymentPercentageTextBox.Text = workOffer.GetPercentDownPayment().ToString();
-            downPaymentActualTextBox.Text = workOffer.GetPriceValueDownPayment().ToString();
+            if(workOffer.GetPercentDownPayment() != 0)
+                downPaymentPercentageTextBox.Text = workOffer.GetPercentDownPayment().ToString();
+           
         }
 
         private void SetOnDeliveryValues()
         {
-            onDeliveryPercentageTextBox.Text = workOffer.GetPercentOnDelivery().ToString();
-            onDeliveryActualTextBox.Text = workOffer.GetPriceValueOnDelivery().ToString();
+            if(workOffer.GetPercentOnDelivery() != 0)
+                onDeliveryPercentageTextBox.Text = workOffer.GetPercentOnDelivery().ToString();
         }
 
         private void SetOnInstallationValues()
         {
-            onInstallationPercentageTextBox.Text = workOffer.GetPercentOnInstallation().ToString();
-            onInstallationActualTextBox.Text = workOffer.GetPriceValueOnInstallation().ToString();
+            if(workOffer.GetPercentOnInstallation() != 0)
+                onInstallationPercentageTextBox.Text = workOffer.GetPercentOnInstallation().ToString();
         }
 
         private void SetDeliveryTimeValues()
         {
             ////////////Added by me ama get awareeh
-            
-            deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
-            deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
+            if (workOffer.GetDeliveryTimeMinimum() != 0)
+            {
+                deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
+                deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
+            }
             if(workOffer.GetDeliveryTimeUnit() != null)
                 deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
         }
 
         private void SetDeliveryPointValue()
         {
-            deliveryPointCombo.Text = workOffer.GetDeliveryPoint();
+            deliveryPointCombo.SelectedItem = workOffer.GetDeliveryPoint();
         }
         ////////////////////////////////////////////////
         ///GET FUNCTIONS

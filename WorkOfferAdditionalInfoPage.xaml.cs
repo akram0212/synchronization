@@ -220,11 +220,6 @@ namespace _01electronics_crm
                 warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
                 warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
             }
-            else
-            {
-                warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
-                warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
-            }
         }
 
         private void SetValidityPeriodValues()
@@ -517,58 +512,58 @@ namespace _01electronics_crm
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
 
-            UploadFilesWindow uploadFilesWindow = new UploadFilesWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-            uploadFilesWindow.Show();
+            //UploadFilesWindow uploadFilesWindow = new UploadFilesWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            //uploadFilesWindow.Show();
 
-            //if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            //{
-            //    workOffer.GetNewOfferSerial();
-            //    workOffer.GetNewOfferVersion();
-            //    workOffer.GetNewOfferID();
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                workOffer.GetNewOfferSerial();
+                workOffer.GetNewOfferVersion();
+                workOffer.GetNewOfferID();
 
-            //    OpenFileDialog uploadFile = new OpenFileDialog();
+                OpenFileDialog uploadFile = new OpenFileDialog();
 
-            //    if (uploadFile.ShowDialog() == false)
-            //        return;
+                if (uploadFile.ShowDialog() == false)
+                    return;
 
-            //    if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
-            //        return;
+                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                    return;
 
-            //    serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-            //    serverFileName = workOffer.GetOfferID() + ".pdf";
-            //    integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
-            //    localFolderPath = uploadFile.FileName;
-            //    localFileName = null;
+                localFolderPath = uploadFile.FileName;
+                localFileName = null;
 
-            //    offerFilePath.Visibility = Visibility.Collapsed;
-            //    uploadFileProgressBar.Visibility = Visibility.Visible;
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
 
-            //    uploadBackground.RunWorkerAsync();
-            //}
-            //else
-            //{
-            //    System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
+                uploadBackground.RunWorkerAsync();
+            }
+            else
+            {
+                System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
 
-            //    if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-            //        return;
+                if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                    return;
 
-            //    if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
-            //        return;
+                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+                    return;
 
-            //    serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-            //    serverFileName = workOffer.GetOfferID() + ".pdf";
-            //    integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
+                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
+                serverFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
-            //    localFolderPath = downloadFile.SelectedPath;
-            //    localFileName = workOffer.GetOfferID() + ".pdf";
-            //    integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+                localFolderPath = downloadFile.SelectedPath;
+                localFileName = workOffer.GetOfferID() + ".pdf";
+                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
 
-            //    offerFilePath.Visibility = Visibility.Collapsed;
-            //    uploadFileProgressBar.Visibility = Visibility.Visible;
+                offerFilePath.Visibility = Visibility.Collapsed;
+                uploadFileProgressBar.Visibility = Visibility.Visible;
 
-            //    downloadBackground.RunWorkerAsync();
-            //}
+                downloadBackground.RunWorkerAsync();
+            }
         }
 
         protected void BackgroundUpload(object sender, DoWorkEventArgs e)
@@ -631,7 +626,20 @@ namespace _01electronics_crm
 
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            UploadFilesPage uploadFilesPage= new UploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+                    if (!workOffer.GetNewOfferSerial())
+                        return;
+
+                if (!workOffer.GetNewOfferVersion())
+                    return;
+
+                workOffer.SetOfferIssueDateToToday();
+
+                workOffer.GetNewOfferID();
+            }
+            UploadFilesPage uploadFilesPage = new UploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(uploadFilesPage);
         }
     }
