@@ -53,7 +53,7 @@ namespace _01electronics_crm
         {
             string imagePath = Directory.GetCurrentDirectory() + "\\" + loggedInUser.GetEmployeeId() + ".jpg";
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath))
+            try
             {
                 Image employeePhoto = new Image();
 
@@ -69,9 +69,9 @@ namespace _01electronics_crm
 
                 PhotoGrid.Children.Add(employeePhoto);
             }
-            else
+            catch
             {
-                try
+                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath))
                 {
                     Image employeePhoto = new Image();
 
@@ -87,12 +87,9 @@ namespace _01electronics_crm
 
                     PhotoGrid.Children.Add(employeePhoto);
                 }
-                catch
-                {
-
-                }
-                
+           
             }
+
         }
 
         /////////////////////////////////////////////////////////////////

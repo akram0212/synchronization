@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using _01electronics_library;
 using System.ComponentModel;
+using System.IO;
 
 namespace _01electronics_crm
 {
@@ -214,14 +215,20 @@ namespace _01electronics_crm
 
         private void SetWarrantyPeriodValues()
         {
-            warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
-            warrantyPeriodCombo.Text = workOffer.GetWarrantyPeriodTimeUnit();
+            if (workOffer.GetWarrantyPeriod() != 0)
+            {
+                warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
+                warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
+            }
         }
 
         private void SetValidityPeriodValues()
         {
-            offerValidityTextBox.Text = workOffer.GetOfferValidityPeriod().ToString();
-            offerValidityCombo.Text = workOffer.GetOfferValidityTimeUnit();
+            if (workOffer.GetOfferValidityPeriod() != 0)
+            {
+                offerValidityTextBox.Text = workOffer.GetOfferValidityPeriod().ToString();
+                offerValidityCombo.Text = workOffer.GetOfferValidityTimeUnit();
+            }
         }
 
         private void SetAdditionalDescriptionValue()
@@ -444,7 +451,7 @@ namespace _01electronics_crm
                     if (workOffer.IssueNewOffer())
                         MessageBox.Show("WorkOffer added succefully!");
 
-                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+                    //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
 
                     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                     currentWindow.Close();
@@ -493,7 +500,7 @@ namespace _01electronics_crm
                     if(workOffer.ReviseOffer())
                         MessageBox.Show("Offer Revised successfully!");
 
-                    WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+                   // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
 
                     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                     currentWindow.Close();
@@ -504,6 +511,10 @@ namespace _01electronics_crm
 
         private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
         {
+
+            //UploadFilesWindow uploadFilesWindow = new UploadFilesWindow(ref loggedInUser, ref workOffer, viewAddCondition);
+            //uploadFilesWindow.Show();
+
             if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 workOffer.GetNewOfferSerial();
@@ -611,8 +622,25 @@ namespace _01electronics_crm
                 uploadFileProgressBar.Visibility = Visibility.Collapsed;
 
                 offerFilePath.Text = "SUCCESS!";
-                
-            
+        }
+
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+                    if (!workOffer.GetNewOfferSerial())
+                        return;
+
+                if (!workOffer.GetNewOfferVersion())
+                    return;
+
+                workOffer.SetOfferIssueDateToToday();
+
+                workOffer.GetNewOfferID();
+            }
+            UploadFilesPage uploadFilesPage = new UploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            NavigationService.Navigate(uploadFilesPage);
         }
     }
 }

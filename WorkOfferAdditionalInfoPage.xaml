@@ -27,6 +27,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
@@ -40,6 +41,9 @@
                 </Border>
                 <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                </Border>
+                <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                    <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
             </Grid>
 

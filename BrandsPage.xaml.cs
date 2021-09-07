@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,8 @@ namespace _01electronics_crm
         //SQL OBJECTS
         protected SQLServer sqlDatabase;
 
+        protected FTPServer ftpServer;
+
         public BrandsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
@@ -40,6 +43,7 @@ namespace _01electronics_crm
             selectedProduct = mSelectedProduct;
 
             sqlDatabase = new SQLServer();
+            ftpServer = new FTPServer();
             commonQueries = new CommonQueries();
             brandsList = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
@@ -72,7 +76,8 @@ namespace _01electronics_crm
                     Image brandLogo = new Image();
                     BitmapImage src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri("D:\\erp_system\\01electronics_crm\\Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
+                    src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
                     src.EndInit();
                     brandLogo.Source = src;
                     brandLogo.Width = 300;
@@ -80,22 +85,23 @@ namespace _01electronics_crm
                     brandLogo.Margin = new Thickness(80, 100, 12, 12);
                     brandLogo.Tag = brandsList[i].brandId.ToString();
                     brandLogo.Name = brandsList[i].brandName;
-               
+
                     var e1 = new EventTrigger(UIElement.MouseEnterEvent);
-                    e1.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("expandStoryboard")});
+                    e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
                     var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
-                    e2.Actions.Add(new BeginStoryboard {Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+                    e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
                     ScaleTransform myScaleTransform = new ScaleTransform();
                     myScaleTransform.ScaleY = 1;
                     myScaleTransform.ScaleX = 1;
                     brandLogo.RenderTransform = myScaleTransform;
-                   
+
                     brandLogo.Triggers.Add(e1);
                     brandLogo.Triggers.Add(e2);
-                   
+
                     gridI.Children.Add(brandLogo);
-                   
+
                     brandsWrapPanel.Children.Add(gridI);
+                    
                 }
                 catch
                 {
