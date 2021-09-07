@@ -639,7 +639,7 @@ namespace _01electronics_crm
 
                 workOffer.GetNewOfferID();
             }
-            UploadFilesPage uploadFilesPage = new UploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+            WorkOfferUploadFilesPage uploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
             NavigationService.Navigate(uploadFilesPage);
         }
     }

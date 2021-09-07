@@ -22,9 +22,9 @@ using System.IO;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for UploadFilesPage.xaml
+    /// Interaction logic for WorkOfferUploadFilesPage.xaml
     /// </summary>
-    public partial class UploadFilesPage : Page
+    public partial class WorkOfferUploadFilesPage : Page
     {
         Employee loggedInUser;
         WorkOffer workOffer;
@@ -58,7 +58,7 @@ namespace _01electronics_crm
 
         List<string> ftpFiles;
 
-        public UploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
            
             InitializeComponent();
