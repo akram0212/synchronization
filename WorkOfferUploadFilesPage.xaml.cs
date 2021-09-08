@@ -425,8 +425,10 @@ namespace _01electronics_crm
             integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
             localFolderPath = downloadFile.SelectedPath;
-            localFileName = System.IO.Path.GetFileName(downloadFile.SelectedPath);
+            localFileName = serverFileName;
             integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
+
+            currentLabel.Content = "Downloaded";
 
             progressBar.Visibility = Visibility.Visible;
 
