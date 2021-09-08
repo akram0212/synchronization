@@ -37,8 +37,6 @@ namespace _01electronics_crm
 
         private DateTime deadlineDate;
 
-        ///////////////ADD CONSTRUCTOR///////////
-        ////////////////////////////////////////
         public RFQAdditionalInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
@@ -79,8 +77,10 @@ namespace _01electronics_crm
                 SetNotesTextBox();
             }
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////UI CONFIGURATION FUNCTIONS/////////////
-        ///////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureUIElementsForView()
         {
             contractTypeCombo.Visibility = Visibility.Collapsed;
@@ -111,8 +111,10 @@ namespace _01electronics_crm
             contractTypeLabel.Visibility = Visibility.Collapsed;
             notesLabel.Visibility = Visibility.Collapsed;
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         //////////INITIALIZE FUNCTIONS/////////
-        ///////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         private void InitializeContractTypeCombo()
         {
             if (!commonQueriesObject.GetContractTypes(ref contractTypes))
@@ -125,9 +127,10 @@ namespace _01electronics_crm
             }
         }
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         //////////SET FUNCTIONS//////////////
-        /////////////////////////////////////
-        
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
         private void SetContractTypeCombo()
         {
             contractTypeCombo.Text = rfq.GetRFQContractType();
@@ -150,8 +153,10 @@ namespace _01electronics_crm
         {
             notesLabel.Content = rfq.GetRFQNotes();
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         //////////SELECTION CHANGED//////////
-        /////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedContractTypeCombo(object sender, SelectionChangedEventArgs e)
         {
             if (contractTypeCombo.SelectedItem != null)
@@ -167,15 +172,15 @@ namespace _01electronics_crm
                 notes = notesTextBox.Text;
         }
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         //////////BUTTON CLICKED/////////////
-        /////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, RoutedEventArgs e)
         {
             RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
             NavigationService.Navigate(basicInfoPage);
         }    
         
-
         private void OnClickProductsInfo(object sender, RoutedEventArgs e)
         {
             RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);

@@ -23,7 +23,19 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="WORK OFFER PAYMENT AND DELIVERY" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Grid Grid.Row="0" Background="#105A97">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="WORK OFFER PAYMENT AND DELIVERY" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+        </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
@@ -31,20 +43,29 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
-                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
+
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
+
             <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                 <Label Content="Payment and Delivery" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
+
             <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
+
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
         </Grid>
         
         <WrapPanel Grid.Row="2">
