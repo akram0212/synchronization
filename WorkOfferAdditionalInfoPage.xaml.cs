@@ -99,7 +99,7 @@ namespace _01electronics_crm
                 ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
-                
+                SetContractTypeValue();
             }
             //////////////////////////
             ///VIEW
@@ -127,10 +127,14 @@ namespace _01electronics_crm
                 ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
-                
+                SetDrawingSubmissionValues();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetValidityPeriodValues();
+                SetAdditionalDescriptionValue();
                 //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
                 //    drawingConditionsCheckBox.IsChecked = true;
-                
+
             }
             ////////////////////////
             ///RESOLVE RFQ
@@ -142,15 +146,10 @@ namespace _01electronics_crm
                 InitializeTimeUnitComboBoxes();
                 
             }
-
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                SetDrawingSubmissionValues();
-                SetContractTypeValue();
-                SetWarrantyPeriodValues();
-                SetValidityPeriodValues();
-                SetAdditionalDescriptionValue();
-            }
+        }
+        public WorkOfferAdditionalInfoPage(ref WorkOffer mWorkOffer)
+        {
+            workOffer = mWorkOffer;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -214,7 +213,7 @@ namespace _01electronics_crm
             drawingDeadlineDateComboBox.Text = workOffer.GetDrawingDeadlineTimeUnit();
         }
 
-        private void SetContractTypeValue()
+        public void SetContractTypeValue()
         {
             contractTypeComboBox.Text = workOffer.GetOfferContractType();
         }

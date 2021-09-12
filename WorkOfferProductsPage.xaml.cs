@@ -74,6 +74,12 @@ namespace _01electronics_crm
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
+                SetTypeComboBoxes();
+                SetBrandComboBoxes();
+                SetModelComboBoxes();
+                SetQuantityTextBoxes();
+                SetPriceTextBoxes();
+                SetPriceComboBoxes();
             }
             /////////////////////////////
             ///VIEW CONDITION
@@ -108,12 +114,14 @@ namespace _01electronics_crm
             /////////////////////////////
             else
             {
-                
                 InitializeProducts();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                
+                SetTypeComboBoxes();
+                SetBrandComboBoxes();
+                SetModelComboBoxes();
+                SetQuantityTextBoxes();
             }
 
            
@@ -121,14 +129,14 @@ namespace _01electronics_crm
             if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
 
             { 
-                SetTypeComboBoxes();
-                SetBrandComboBoxes();
-                SetModelComboBoxes();
-                SetQuantityTextBoxes();
-                SetPriceTextBoxes();
-                SetPriceComboBoxes();
+               
             }    
 
+        }
+
+        public WorkOfferProductsPage(ref WorkOffer mWorkOffer)
+        {
+            workOffer = mWorkOffer;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +166,7 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void SetTypeComboBoxes()
+        public void SetTypeComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -186,7 +194,7 @@ namespace _01electronics_crm
                     CurrentTypeComboBox.SelectedItem = workOffer.GetRFQProductType(i + 1);
             }
         }
-        private void SetBrandComboBoxes()
+        public void SetBrandComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -215,7 +223,7 @@ namespace _01electronics_crm
                     currentBrandComboBox.SelectedItem = workOffer.GetRFQProductBrand(i + 1);
             }
         }
-        private void SetModelComboBoxes()
+        public void SetModelComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -276,7 +284,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetQuantityTextBoxes()
+        public void SetQuantityTextBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -934,6 +942,9 @@ namespace _01electronics_crm
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
             workOffer.SetNoOfSavedOfferProducts();
+
+            workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
+            workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
 
             workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferPaymentAndDeliveryPage.workOfferProductsPage = this;

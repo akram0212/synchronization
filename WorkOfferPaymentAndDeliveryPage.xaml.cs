@@ -89,7 +89,13 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
-
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
                 DisableTotalPriceComboAndTextBox();
             }
             else
@@ -102,19 +108,12 @@ namespace _01electronics_crm
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
-
-            if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                SetTotalPriceCurrencyComboBox();
-                SetTotalPriceTextBox();
-                SetDownPaymentValues();
-                SetOnDeliveryValues();
-                SetOnInstallationValues();
-                SetDeliveryTimeValues();
-                SetDeliveryPointValue();
-            }
         }
 
+        public WorkOfferPaymentAndDeliveryPage(ref WorkOffer mWorkOffer)
+        {
+            workOffer = mWorkOffer;
+        }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///CONFIGURE UI ELEMENTS
         ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,12 +171,12 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SET FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void SetTotalPriceCurrencyComboBox()
+        public void SetTotalPriceCurrencyComboBox()
         {
             totalPriceCombo.Text = workOffer.GetCurrency();
         }
 
-        private void SetTotalPriceTextBox()
+        public void SetTotalPriceTextBox()
         {
             for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
                 totalPrice += workOffer.GetProductPriceValue(i) * workOffer.GetOfferProductQuantity(i);

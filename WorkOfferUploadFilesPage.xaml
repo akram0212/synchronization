@@ -67,10 +67,10 @@
             </Grid>
             
             <ScrollViewer Grid.Row="2" Margin="24" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel" AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </ScrollViewer>
             
-            <ProgressBar Grid.Row="2" Name="progressBar" Style="{StaticResource ProgressBarStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ProgressBar Grid.Row="2" Name="progressBar" Style="{StaticResource ProgressBarStyle}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             
             <Button Grid.Row="3" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="CONFIRM" Click="OnButtonClickOk"/>
         </Grid>

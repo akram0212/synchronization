@@ -814,8 +814,8 @@ namespace _01electronics_crm
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffers);
+            //WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            //this.NavigationService.Navigate(workOffers);
         }
     }
 }
