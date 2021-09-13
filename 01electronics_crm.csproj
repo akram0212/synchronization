@@ -446,5 +446,17 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\addfiles_icon.jpg" />
+    <Resource Include="icons\drop_files_icon.jpg" />
+    <Resource Include="icons\excel_icon.jpg" />
+    <Resource Include="icons\image_icon.jpg" />
+    <Resource Include="icons\pdf_icon.jpg" />
+    <Resource Include="icons\powerpoint_icon.jpg" />
+    <Resource Include="icons\text_icon.jpg" />
+    <Resource Include="icons\unknown_icon.jpg" />
+    <Resource Include="icons\winrar_icon.jpg" />
+    <Resource Include="icons\word_icon.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

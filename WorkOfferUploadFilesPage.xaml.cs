@@ -189,18 +189,46 @@ namespace _01electronics_crm
             }
             else
             {
+                Grid grid = new Grid();
+
+                RowDefinition row1 = new RowDefinition();
+                RowDefinition row2 = new RowDefinition();
+                RowDefinition row3 = new RowDefinition();
+
+                grid.RowDefinitions.Add(row1);
+                grid.RowDefinitions.Add(row2);
+                grid.RowDefinitions.Add(row3);
+
                 Image icon = new Image();
 
                 icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/drop_files_icon.jpg")) };
                 icon.HorizontalAlignment = HorizontalAlignment.Center;
                 icon.VerticalAlignment = VerticalAlignment.Center;
-                resizeImage(ref icon, 250, 250);
+                resizeImage(ref icon, 250, 150);
+                grid.Children.Add(icon);
+                Grid.SetRow(icon, 0);
 
-                uploadFilesStackPanel.Children.Add(icon);
+                Label orLabel = new Label();
+                orLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                orLabel.Content = "OR";
+                orLabel.FontWeight = FontWeights.Bold;
+                orLabel.FontSize = 16;
+                orLabel.Foreground = Brushes.Gray;
+                grid.Children.Add(orLabel);
+                Grid.SetRow(orLabel, 1);
 
-                uploadFilesStackPanel.Children.Add(wrapPanel);
+                Button browseFileButton = new Button();
+                browseFileButton.Style = (Style)FindResource("buttonBrowseStyle");
+                browseFileButton.Width = 200;
+                browseFileButton.Background = null;
+                browseFileButton.Foreground = Brushes.Gray;
+                browseFileButton.Content = "BROWSE FILE";
+                browseFileButton.Click += OnClickBrowseButton;
+                grid.Children.Add(browseFileButton);
+                Grid.SetRow(browseFileButton, 2);
 
-                InsertAddFilesIcon();
+                uploadFilesStackPanel.Children.Add(grid);
+                
             }
         }
 
@@ -428,6 +456,27 @@ namespace _01electronics_crm
                 uploadBackground.RunWorkerAsync();
             }
         }
+
+        private void OnClickBrowseButton(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog uploadFile = new OpenFileDialog();
+
+            if (uploadFile.ShowDialog() == false)
+                return;
+
+            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                return;
+
+            localFolderPath = uploadFile.FileName;
+            localFileName = System.IO.Path.GetFileName(localFolderPath);
+
+            serverFileName = localFileName;
+
+            progressBar.Visibility = Visibility.Visible;
+
+            uploadBackground.RunWorkerAsync();
+        }
+
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
         { 
             //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
