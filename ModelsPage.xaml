@@ -52,7 +52,13 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
+
+            <ProgressBar Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Name="downloadProgressBar" Style="{StaticResource ProgressBarStyle}"/>
             
+            <ScrollViewer Name="scrollViewer" Grid.Column="0" Grid.Row="1" Visibility="Collapsed" VerticalScrollBarVisibility ="Auto" VerticalAlignment ="Stretch" HorizontalAlignment="Stretch">
+                <WrapPanel Name="modelsWrapPanel"/>
+            </ScrollViewer>
+
         </Grid>
 
     </Grid>
