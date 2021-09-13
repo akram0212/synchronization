@@ -52,6 +52,7 @@ namespace _01electronics_crm
             workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+            workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
