@@ -64,7 +64,18 @@ namespace _01electronics_crm
             //workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
-            
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+            {
+                workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
+                workOffer.GetNewOfferSerial();
+                workOffer.GetNewOfferVersion();
+                workOffer.GetNewOfferID();
+            }
+
+            workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+
+
+
             ///////////////////////////
             ////ADD
             ///////////////////////////
@@ -382,15 +393,6 @@ namespace _01electronics_crm
                 workOffer.ResetWorkOfferInfo(salesPersonTeamID);
 
             workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
-            {
-                workOffer.GetNewOfferSerial();
-                workOffer.GetNewOfferVersion();
-                workOffer.GetNewOfferID();
-            }
-
-            workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
