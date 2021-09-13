@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,8 +25,12 @@ namespace _01electronics_crm
     {
         private Employee loggedInUser;
         protected CommonQueries commonQueries;
+
         protected List<COMPANY_WORK_MACROS.MODEL_STRUCT> brandModels;
         private Product selectedProduct;
+
+        protected BackgroundWorker downloadBackground; 
+
         Frame frame;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
@@ -33,21 +38,26 @@ namespace _01electronics_crm
 
             loggedInUser = mLoggedInUser;
             selectedProduct = mSelectedProduct;
+
             commonQueries = new CommonQueries();
             brandModels = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
-            frame = new Frame(); 
 
-            QueryGetModels();
-            SetUpPageUIElements();
-            // DeletePhotos();
+            downloadBackground = new BackgroundWorker();
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
 
+            //  MainWindow mainWindow = new MainWindow();
+            //mainWindow.Navigated += OnNavigatingEventHandler;
+            //new WebBrowserNavigatingEventHandler(webBrowser1_Navigating);
 
-            //if(this.NavigationService.Navigated)
-            //if (this.frame != null)
-           // {
-               // this.NavigationService.Navigated += NavigatingHandler;
-            //}
+            downloadBackground.RunWorkerAsync();
 
+        }
+        ~ ModelsPage()
+        {
+            DeletePhotosDestructor();
         }
         private void QueryGetModels()
         {
@@ -65,73 +75,59 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
-            Label productTitleLabel = new Label();
-            productTitleLabel.Content = selectedProduct.GetBrandName() + " " + selectedProduct.GetProductName();
-            productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
-            productTitleLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
-            productTitleLabel.Margin = new Thickness(48, 24, 48, 24);
-            productTitleLabel.Style = (Style)FindResource("primaryHeaderTextStyle");
-            ModelsGrid.Children.Add(productTitleLabel);
-            Grid.SetRow(productTitleLabel, 0);
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                Label productTitleLabel = new Label();
+                productTitleLabel.Content = selectedProduct.GetBrandName() + " " + selectedProduct.GetProductName();
+                productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
+                productTitleLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productTitleLabel.Margin = new Thickness(48, 24, 48, 24);
+                productTitleLabel.Style = (Style)FindResource("primaryHeaderTextStyle");
+                ModelsGrid.Children.Add(productTitleLabel);
+                Grid.SetRow(productTitleLabel, 0);
 
-            WrapPanel modelsWrapPanel = new WrapPanel();
-            modelsWrapPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                //WrapPanel modelsWrapPanel = new WrapPanel();
+                //modelsWrapPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
 
-            ScrollViewer scrollViewer = new ScrollViewer();
-            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            scrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
-            scrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
-            Grid.SetColumn(scrollViewer, 0);
+                //ScrollViewer scrollViewer = new ScrollViewer();
+                //scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                //scrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
+                //scrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
+                // Grid.SetColumn(scrollViewer, 0);
 
-            ModelsGrid.Children.Add(scrollViewer);
-            Grid.SetRow(scrollViewer, 1);
-            scrollViewer.Content = modelsWrapPanel;
+                //ModelsGrid.Children.Add(scrollViewer);
+                //Grid.SetRow(scrollViewer, 1);
 
-            for (int i = 0; i < brandModels.Count(); i++)
-            {
-                if (brandModels[i].modelId != 0)
+                //scrollViewer.Content = modelsWrapPanel;
+
+                for (int i = 0; i < brandModels.Count(); i++)
                 {
-                    Grid currentModelGrid = new Grid();
-                    currentModelGrid.Margin = new Thickness(55, 24, 24, 24);
-
-                    ColumnDefinition column1 = new ColumnDefinition();
-                    ColumnDefinition column2 = new ColumnDefinition();
-
-                    currentModelGrid.ColumnDefinitions.Add(column1);
-                    currentModelGrid.ColumnDefinitions.Add(column2);
-
-                    Grid column1Grid = new Grid();
-
-                    Border imageBorder = new Border();
-                    imageBorder.Width = 200;
-                    imageBorder.Height = 230;
-                    imageBorder.BorderThickness = new Thickness(3);
-                    imageBorder.Background = Brushes.White;
-                    imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                    //Grid.SetColumn(imageBorder, 0);
-                    column1Grid.Children.Add(imageBorder);
-
-                    selectedProduct.SetModelID(brandModels[i].modelId);
-                    selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
-                  
-                    try
+                    if (brandModels[i].modelId != 0)
                     {
-                        Image brandImage = new Image();
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
-                        src.EndInit();
-                        brandImage.Source = src;
-                        brandImage.Height = 220;
-                        brandImage.Width = 190;
-                        //brandImage.MouseDown += ImageMouseDown;
-                        brandImage.Tag = brandModels[i].modelId.ToString();
-                        column1Grid.Children.Add(brandImage);
-                    }
-                    catch
-                    {
-                        if (selectedProduct.DownloadPhotoFromServer())
+                        Grid currentModelGrid = new Grid();
+                        currentModelGrid.Margin = new Thickness(55, 24, 24, 24);
+
+                        ColumnDefinition column1 = new ColumnDefinition();
+                        ColumnDefinition column2 = new ColumnDefinition();
+
+                        currentModelGrid.ColumnDefinitions.Add(column1);
+                        currentModelGrid.ColumnDefinitions.Add(column2);
+
+                        Grid column1Grid = new Grid();
+
+                        Border imageBorder = new Border();
+                        imageBorder.Width = 200;
+                        imageBorder.Height = 230;
+                        imageBorder.BorderThickness = new Thickness(3);
+                        imageBorder.Background = Brushes.White;
+                        imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                        //Grid.SetColumn(imageBorder, 0);
+                        column1Grid.Children.Add(imageBorder);
+
+                        selectedProduct.SetModelID(brandModels[i].modelId);
+                        selectedProduct.GetNewPhotoLocalPath();
+                        selectedProduct.GetNewPhotoServerPath();
+
+                        try
                         {
                             Image brandImage = new Image();
                             BitmapImage src = new BitmapImage();
@@ -146,84 +142,104 @@ namespace _01electronics_crm
                             brandImage.Tag = brandModels[i].modelId.ToString();
                             column1Grid.Children.Add(brandImage);
                         }
+                        catch
+                        {
+                            if (selectedProduct.DownloadPhotoFromServer())
+                            {
+                                Image brandImage = new Image();
+                                BitmapImage src = new BitmapImage();
+                                src.BeginInit();
+                                src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
+                                src.CacheOption = BitmapCacheOption.OnLoad;
+                                src.EndInit();
+                                brandImage.Source = src;
+                                brandImage.Height = 220;
+                                brandImage.Width = 190;
+                                //brandImage.MouseDown += ImageMouseDown;
+                                brandImage.Tag = brandModels[i].modelId.ToString();
+                                column1Grid.Children.Add(brandImage);
+                            }
+
+                        }
+
+
+                        Grid.SetColumn(column1Grid, 0);
+
+                        currentModelGrid.Children.Add(column1Grid);
+
+                        Grid column2Grid = new Grid();
+
+                        RowDefinition row1 = new RowDefinition();
+                        row1.Height = new GridLength(30);
+
+                        RowDefinition row2 = new RowDefinition();
+                        row2.Height = new GridLength(200);
+
+                        column2Grid.RowDefinitions.Add(row1);
+                        column2Grid.RowDefinitions.Add(row2);
+
+                        Grid row1Grid = new Grid();
+
+                        Label modelLabel = new Label();
+                        modelLabel.VerticalAlignment = VerticalAlignment.Top;
+                        modelLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        modelLabel.Content = brandModels[i].modelName;
+                        modelLabel.Style = (Style)FindResource("tableSubHeaderItem");
+                        Grid.SetRow(modelLabel, 0);
+                        Grid.SetColumn(modelLabel, 0);
+
+                        row1Grid.Children.Add(modelLabel);
+
+                        column2Grid.Children.Add(row1Grid);
+
+                        Grid row2Grid = new Grid();
+                        row2Grid.Background = Brushes.White;
+
+                        ScrollViewer scrollViewer2 = new ScrollViewer();
+                        scrollViewer2.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
+                        scrollViewer2.Content = row2Grid;
+                        Grid.SetRow(scrollViewer2, 1);
+
+                        if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID()))
+                            return;
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            RowDefinition summaryRow = new RowDefinition();
+                            row2Grid.RowDefinitions.Add(summaryRow);
+
+                            Grid textBoxGrid = new Grid();
+
+                            TextBox pointsBox = new TextBox();
+                            pointsBox.BorderThickness = new Thickness(0);
+                            pointsBox.IsEnabled = false;
+                            pointsBox.FontWeight = FontWeights.Bold;
+                            pointsBox.Background = Brushes.White;
+                            pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
+                            pointsBox.TextWrapping = TextWrapping.Wrap;
+                            pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
+                            Grid.SetRow(pointsBox, j);
+
+                            textBoxGrid.Children.Add(pointsBox);
+
+                            Grid.SetRow(textBoxGrid, j);
+                            row2Grid.Children.Add(textBoxGrid);
+                        }
+
+                        Grid.SetRow(row2Grid, 1);
+
+                        column2Grid.Children.Add(scrollViewer2);
+                        Grid.SetColumn(column2Grid, 1);
+
+                        currentModelGrid.Children.Add(column2Grid);
+                        modelsWrapPanel.Children.Add(currentModelGrid);
 
                     }
-                    
-
-                    Grid.SetColumn(column1Grid, 0);
-
-                    currentModelGrid.Children.Add(column1Grid);
-
-                    Grid column2Grid = new Grid();
-
-                    RowDefinition row1 = new RowDefinition();
-                    row1.Height = new GridLength(30);
-
-                    RowDefinition row2 = new RowDefinition();
-                    row2.Height = new GridLength(200);
-
-                    column2Grid.RowDefinitions.Add(row1);
-                    column2Grid.RowDefinitions.Add(row2);
-
-                    Grid row1Grid = new Grid();
-
-                    Label modelLabel = new Label();
-                    modelLabel.VerticalAlignment = VerticalAlignment.Top;
-                    modelLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    modelLabel.Content = brandModels[i].modelName;
-                    modelLabel.Style = (Style)FindResource("tableSubHeaderItem");
-                    Grid.SetRow(modelLabel, 0);
-                    Grid.SetColumn(modelLabel, 0);
-
-                    row1Grid.Children.Add(modelLabel);
-
-                    column2Grid.Children.Add(row1Grid);
-
-                    Grid row2Grid = new Grid();
-                    row2Grid.Background = Brushes.White;
-
-                    ScrollViewer scrollViewer2 = new ScrollViewer();
-                    scrollViewer2.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
-                    scrollViewer2.Content = row2Grid;
-                    Grid.SetRow(scrollViewer2, 1);
-
-                    if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID()))
-                        return;
-
-                    for (int j = 0; j < 4; j++)
-                    {
-                        RowDefinition summaryRow = new RowDefinition();
-                        row2Grid.RowDefinitions.Add(summaryRow);
-
-                        Grid textBoxGrid = new Grid();
-
-                        TextBox pointsBox = new TextBox();
-                        pointsBox.BorderThickness = new Thickness(0);
-                        pointsBox.IsEnabled = false;
-                        pointsBox.FontWeight = FontWeights.Bold;
-                        pointsBox.Background = Brushes.White;
-                        pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
-                        pointsBox.TextWrapping = TextWrapping.Wrap;
-                        pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
-                        Grid.SetRow(pointsBox, j);
-
-                        textBoxGrid.Children.Add(pointsBox);
-
-                        Grid.SetRow(textBoxGrid, j);
-                        row2Grid.Children.Add(textBoxGrid);
-                    }
-
-                    Grid.SetRow(row2Grid, 1);
-
-                    column2Grid.Children.Add(scrollViewer2);
-                    Grid.SetColumn(column2Grid, 1);
-
-                    currentModelGrid.Children.Add(column2Grid);
-                    modelsWrapPanel.Children.Add(currentModelGrid);
                 }
-            }
-            Grid.SetRow(modelsWrapPanel, 1);
+                Grid.SetRow(modelsWrapPanel, 1);
+            });
+           
         }
         private void DeletePhotos()
         {
@@ -231,7 +247,30 @@ namespace _01electronics_crm
             for (int i = 0; i < brandModels.Count(); i++)
             {
                 selectedProduct.SetModelID(brandModels[i].modelId);
-                selectedProduct.InitializeProductInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
+                selectedProduct.GetNewPhotoLocalPath();
+                selectedProduct.GetNewPhotoServerPath();
+
+                try
+                {
+                    System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
+                    image2.Dispose();
+                    File.Delete(selectedProduct.GetPhotoLocalPath());
+
+                }
+                catch
+                {
+
+                }
+
+            }
+        }
+        private void DeletePhotosDestructor()
+        {
+            for (int i = 0; i < brandModels.Count(); i++)
+            {
+                selectedProduct.SetModelID(brandModels[i].modelId);
+                selectedProduct.GetNewPhotoLocalPath();
+                selectedProduct.GetNewPhotoServerPath();
 
                 try
                 {
@@ -337,9 +376,33 @@ namespace _01electronics_crm
             BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(productsPage);
         }
-        private void NavigatingHandler(object sender, NavigationEventArgs e)
+        private void OnNavigatingEventHandler(object sender, NavigationWindow e)
         {
-            DeletePhotos();
-        } 
+        }
+        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker downloadBackground = sender as BackgroundWorker;
+
+            QueryGetModels();
+
+            downloadBackground.ReportProgress(50);
+
+            SetUpPageUIElements();
+
+            //downloadBackground.ReportProgress(100);
+        }
+
+        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            downloadProgressBar.Value = e.ProgressPercentage;
+        }
+
+        protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            scrollViewer.Visibility = Visibility.Visible;
+            downloadProgressBar.Visibility = Visibility.Collapsed;
+
+        }
     }
 }
