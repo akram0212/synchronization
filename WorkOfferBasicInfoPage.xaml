@@ -19,10 +19,23 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="WORK OFFER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Grid Grid.Row="0" Background="#105A97">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="WORK OFFER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+        </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -32,18 +45,24 @@
             <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
+
             <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
+
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                 <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
+
             <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            
-        </Grid>
 
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
+        </Grid>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -56,7 +75,7 @@
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Sales Person"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
                 </WrapPanel>
@@ -70,13 +89,13 @@
 
             <WrapPanel Grid.Row="1">
                 <WrapPanel Name="companyNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company Name"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
                 </WrapPanel>
 
                 <WrapPanel Name="companyAddressWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company Address"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Address"/>
                     <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
                 </WrapPanel>
@@ -84,7 +103,7 @@
 
             <WrapPanel Grid.Row="2">
                 <WrapPanel Name="contactPersonNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Contact Person"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>

@@ -1,0 +1,78 @@
+﻿<Page x:Class="_01electronics_crm.WorkOfferUploadFilesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_01electronics_crm"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UploadFilesPage">
+
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#105A97">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Name="RFQHeader" Content="WORK OFFER UPLOAD FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
+                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+            </Grid>
+            
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                    <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
+                </Border>
+                
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                    <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                </Border>
+                
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                    <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                </Border>
+                
+                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                    <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                </Border>
+                
+                <Border Grid.Column="4" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                    <Label Content="Upload Files" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                </Border>
+                
+            </Grid>
+            
+            <ScrollViewer Grid.Row="2" Margin="24" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </ScrollViewer>
+            
+            <ProgressBar Grid.Row="2" Name="progressBar" Style="{StaticResource ProgressBarStyle}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            
+            <Button Grid.Row="3" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="CONFIRM" Click="OnButtonClickOk"/>
+        </Grid>
+    </Grid>
+</Page>

@@ -86,7 +86,7 @@ namespace _01electronics_crm
             }
         }
         //////////INITIALIZE FUNCTIONS//////////
-        ////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
         private void InitializeProducts()
         {
             if (!commonQueriesObject.GetCompanyProducts(ref products))
@@ -100,7 +100,7 @@ namespace _01electronics_crm
         }
 
         ////////SET FUNCTIONS////////////////////
-        /////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         
        
         private void SetTypeComboBoxes()
@@ -225,13 +225,16 @@ namespace _01electronics_crm
                 
                 if (i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                     mainLabelCheckBox.IsEnabled = false;
-                
+                else if (i == 1)
+                    mainLabelCheckBox.IsEnabled = true;
+                else
+                    mainLabelCheckBox.IsEnabled = false;
 
                 currentProductGrid.Children.Add(backgroundColour);
                 Grid.SetRow(backgroundColour, 0);
 
                 /////////TYPE WRAPPANEL////////////////
-                ////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productTypeWrapPanel = new WrapPanel();
 
                 Label currentTypeLabel = new Label();
@@ -266,7 +269,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productTypeWrapPanel, 1);
 
                 ////////BRAND WRAPPANEL////////////////
-                ////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productBrandWrapPanel = new WrapPanel();
 
                 Label currentBrandLabel = new Label();
@@ -304,7 +307,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productBrandWrapPanel, 2);
 
                 //////////MODEL WRAPPANEL/////////////////////////
-                //////////////////////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productModelWrapPanel = new WrapPanel();
 
                 Label currentModelLabel = new Label();
@@ -335,7 +338,7 @@ namespace _01electronics_crm
                 Grid.SetRow(productModelWrapPanel, 3);
 
                 /////////////QUANTITY WRAPPANEL///////////////////////
-                //////////////////////////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productQuantityWrapPanel = new WrapPanel();
 
                 Label currentQuantityLabel = new Label();
@@ -364,7 +367,7 @@ namespace _01electronics_crm
         }
 
             //////////////SELECTION CHANGED HANDLERS///////////
-            ///////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -387,8 +390,6 @@ namespace _01electronics_crm
 
             if (currentTypeComboBox.SelectedItem != null)
             {
-                currentProductCheckBox.IsChecked = true;
-
                 if (currentBrandComboBox.SelectedItem != null)
                 {
                     currentModelComboBox.IsEnabled = true;
@@ -404,6 +405,9 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                     {
+                        if(k != 0)
+                            currentProductCheckBox.IsChecked = true;
+
                         rfq.SetRFQProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
 
                         if (rfq.GetRFQProductModelId(k + 1) != 0)
@@ -527,7 +531,7 @@ namespace _01electronics_crm
             }
         }
         ////////////CHECK BOXES CHECKED HANDLERS////////
-        ////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
@@ -537,17 +541,12 @@ namespace _01electronics_crm
 
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
-                if (currentProductGrid == mainWrapPanel.Children[i] && i > 1)
+                if (currentProductGrid == mainWrapPanel.Children[i] && i > 0 && i < numberOfProductsAdded - 1)
                 {
-                    Grid previousProductGrid = (Grid)mainWrapPanel.Children[i - 1];
-                    Grid previousCheckBoxColorGrid = (Grid)previousProductGrid.Children[0];
-                    CheckBox previousCheckBox = (CheckBox)previousCheckBoxColorGrid.Children[0];
-                    if (previousCheckBox.IsChecked != true)
-                    {
-                        currentCheckBox.IsChecked = false;
-                        MessageBox.Show("previous checkbox must be checked first!");
-                        return;
-                    }
+                    Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
+                    Grid nextCheckBoxColorGrid = (Grid)nextProductGrid.Children[0];
+                    CheckBox nextCheckBox = (CheckBox)nextCheckBoxColorGrid.Children[0];
+                    nextCheckBox.IsEnabled = true;
                 }
             }
 
@@ -570,7 +569,7 @@ namespace _01electronics_crm
         }
 
         ///////////CHECK BOXES UNCHECKED EVENT HANDLERS//
-        /////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnUnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)
         {
@@ -638,6 +637,8 @@ namespace _01electronics_crm
 
                             currentQuantityTextBox.Text = "0";
                             currentQuantityTextBox.IsEnabled = false;
+
+                            nextCheckBox.IsEnabled = false;
                         }
                     }
                     else
@@ -662,7 +663,7 @@ namespace _01electronics_crm
         }
 
         ////////////BUTTON CLICKS///////////
-        ////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, RoutedEventArgs e)
         {
             RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);

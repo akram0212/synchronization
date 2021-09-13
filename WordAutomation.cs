@@ -16,6 +16,7 @@ using _01electronics_library;
 using System.Drawing;
 
 using Size = System.Drawing.Size;
+using System.Windows.Media.Imaging;
 
 namespace _01electronics_crm
 {
@@ -26,6 +27,7 @@ namespace _01electronics_crm
         FTPServer ftpServer;
 
         WorkOffer workOffer;
+        Document doc;
 
         String wordFilePath;
 
@@ -36,6 +38,7 @@ namespace _01electronics_crm
         List<string> standardFeatures = new List<string>();
         List<string> applications = new List<string>();
         List<string> benefits = new List<string>();
+        List<string> imagePaths = new List<string>();
 
         int counter;
         decimal totalPrice;
@@ -46,27 +49,28 @@ namespace _01electronics_crm
             ftpServer = new FTPServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+            doc = new Document();
         }
 
         public void AutomateWorkOffer(WorkOffer mWorkOffer)
         {
             workOffer = mWorkOffer;
 
-            wordFilePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferID() + ".doc";
+            wordFilePath = Directory.GetCurrentDirectory() + "\\" + workOffer.GetOfferID() + ".doc";
 
             counter = 0;
 
             if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OFFERS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath))
             {
-                Document doc = new Document(wordFilePath);
+                doc.LoadFromFile(wordFilePath);
 
                 totalPrice = 0;
 
                 ISection section = doc.Sections[0];
 
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////COMPANY & CONTACT TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
                 ITable CompanyContactTable = section.Tables[counter];
                 counter++;
 
@@ -79,9 +83,9 @@ namespace _01electronics_crm
                 contactNameParagraph.Text = workOffer.GetContactName();
 
 
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////OFFER INFO TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
                 ITable offerInfoTable = section.Tables[counter];
                 counter++;
 
@@ -114,9 +118,9 @@ namespace _01electronics_crm
                     IParagraph quantityParagraph = quantityCell.Paragraphs[0];
                     quantityParagraph.Text = workOffer.GetOfferProductQuantity(i + 1).ToString();
                 }
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////IMAGE TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
                 for (int i = 0; i < workOffer.GetNoOfOfferSavedProducts(); i++)
                 {
                     ITable imageTable = section.Tables[counter];
@@ -126,24 +130,30 @@ namespace _01electronics_crm
                     IParagraph imageParagraph = imageCell.Paragraphs[0];
 
                     string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".jpg";
-
+                    imagePaths.Add(imagePath);
                     if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
                     {
+                        //BitmapImage src = new BitmapImage();
+                        //src.BeginInit();
+                        //src.UriSource = new Uri(imagePath, UriKind.Absolute);
+                        //src.CacheOption = BitmapCacheOption.OnLoad;
+                        //src.EndInit();
+                        
                         Image productImage = Image.FromFile(imagePath);
                         
                         productImage = resizeImage(productImage, new Size(200, 200));
                         
-                        byte[] byteImage = (byte[])(new ImageConverter()).ConvertTo(productImage, typeof(byte[]));
+                        //byte[] byteImage = (byte[])(new ImageConverter()).ConvertTo(productImage, typeof(byte[]));
 
-                        imageParagraph.AppendPicture(byteImage);
+                        imageParagraph.AppendPicture(productImage);
 
-                        //imageParagraph.Text = "picture here" + i;
+                        //File.Delete(imagePath);
                     }
                 }
 
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////SPECS TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
                 ///
 
 
@@ -192,9 +202,9 @@ namespace _01electronics_crm
                 }
 
                 counter = counter + workOffer.GetNoOfOfferSavedProducts() + 1;
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////COMMERTIAL OFFER TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
 
                 ITable commercialOfferTable = section.Tables[counter];
                 counter++;
@@ -230,9 +240,9 @@ namespace _01electronics_crm
                 }
 
                 counter++;
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////DELIVERY & PAYMENT TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
 
 
                 ITable deliveryPaymentTable = section.Tables[counter];
@@ -265,9 +275,9 @@ namespace _01electronics_crm
                 offerValidityParagraph.Text = workOffer.GetOfferValidityPeriod() + " " + workOffer.GetOfferValidityTimeUnit();
 
 
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////TECH OFFICE REP TABLE
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 ITable techOfficeRepTable = section.Tables[counter];
                 counter++;
 
@@ -308,9 +318,9 @@ namespace _01electronics_crm
                     IParagraph techOfficeRepNumberParagraph = techOfficeRepNumberCell.Paragraphs[0];
                     techOfficeRepNumberParagraph.Text = "Mob. " + workOffer.GetOfferProposerCompanyPhone();
                 }
-                ///////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 /////////////SALES REP TABLE
-                //////////////////////////////////
+                //////////////////////////////////////////////////////////////////////////////////////////
                 ITable salesRepTable = section.Tables[counter];
 
                 Spire.Doc.TableCell salesRepNameCell = salesRepTable.Rows[1].Cells[0];
@@ -328,10 +338,6 @@ namespace _01electronics_crm
                 Spire.Doc.TableCell salesRepNumberCell = salesRepTable.Rows[4].Cells[0];
                 IParagraph salesRepNumberParagraph = salesRepNumberCell.Paragraphs[0];
                 salesRepNumberParagraph.Text = "Mob. " + workOffer.GetSalesPersonCompanyPhone();
-
-
-
-
 
                 doc.SaveToFile(wordFilePath);
 

@@ -13,8 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-//using System.Drawing;
-//using Size = System.Drawing.Size;
 using _01electronics_library;
 
 namespace _01electronics_crm
@@ -25,8 +23,9 @@ namespace _01electronics_crm
     /// 
     public partial class UserPortalPage : Page
     {
-        FTPServer ftpServer;
         private Employee loggedInUser;
+
+        private FTPServer ftpServer;
 
         public UserPortalPage(ref Employee mLoggedInUser)
         {
@@ -41,6 +40,7 @@ namespace _01electronics_crm
         private void InitializeEmployeeDashboard()
         {
             InitializeEmployeePhoto();
+
             employeeNameLabel.Content = loggedInUser.GetEmployeeName();
             employeeBirthdateLabel.Content = loggedInUser.GetEmployeeBirthDate();
             employeeJoiningDateLabel.Content = loggedInUser.GetEmployeeJoinDate();
@@ -91,9 +91,10 @@ namespace _01electronics_crm
             }
 
         }
-        /////////////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
-        /////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
@@ -150,8 +151,8 @@ namespace _01electronics_crm
 
         }
 
-        /////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
-        /////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

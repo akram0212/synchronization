@@ -41,11 +41,18 @@ namespace _01electronics_crm
         private int viewAddCondition;
         private int salesPersonID;
         private int salesPersonTeamID;
-        
-        //////////////ADD CONSTRUCTOR////////////////
-        /////////////////////////////////////////////
+
+        public WorkOfferProductsPage workOfferProductsPage;
+        public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
+        public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
+        public WorkOfferUploadFilesPage workOfferUploadFilesPage;
+
         public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer,int mViewAddCondition)
         {
+            workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+            workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+            workOfferAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
             InitializeComponent();
@@ -88,6 +95,15 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                SetSalesPersonComboValue();
+                if (RFQSerialCombo.IsEnabled == true)
+                    SetRFQSerialComboValue();
+                else
+                {
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+                }
+                DisableSalesPersonAndRFQCombo();
             }
             //////////////////////////
             ///RESOLVE RFQ
@@ -98,34 +114,22 @@ namespace _01electronics_crm
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 SetSalesPersonComboValue();
-                if (RFQSerialCombo.IsEnabled == true)
-                {
-                    InitializeRFQSerialCombo();
-                    SetRFQSerialComboValue();
-                }
-                else
-                {
-                    SetCompanyNameComboValue();
-                    SetContactPersonComboValue();
-                }
-            }
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                SetSalesPersonComboValue();
-                if (RFQSerialCombo.IsEnabled == true)
-                    SetRFQSerialComboValue();
-                else
-                {
-                    SetCompanyNameComboValue();
-                    SetContactPersonComboValue();
-                }
+                InitializeRFQSerialCombo();
+                SetRFQSerialComboValue();
+                
+                DisableSalesPersonAndRFQCombo();
             }
         }
 
+        public WorkOfferBasicInfoPage(ref WorkOffer mWorkOffer)
+        {
+            workOffer = mWorkOffer;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////INITIALIZE FUNCTIONS///////////////
-        //////////////////////////////////////////////////
-        
-        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         private bool InitializeSalesPersonCombo()
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
@@ -207,8 +211,9 @@ namespace _01electronics_crm
 
             contactPersonNameCombo.IsEnabled = true;
         }
+
         ///////////CONFIGURE UI ELEMENTS////////////////////
-        ///////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureUIElemenetsForAdd()
         {
             salesPersonLabel.Visibility = Visibility.Collapsed;
@@ -243,7 +248,17 @@ namespace _01electronics_crm
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
 
         }
+        private void DisableSalesPersonAndRFQCombo()
+        {
+            salesPersonCombo.IsEnabled = false;
+            RFQSerialCombo.IsEnabled = false;
+        }
+        private void EnableSalesPersonAndRFQCombo()
+        {
+            salesPersonCombo.IsEnabled = true;
+            RFQSerialCombo.IsEnabled = true;
 
+        }
         private void DisableCompanyNameaddressContactCombos()
         {
             companyNameCombo.IsEnabled = false;
@@ -257,8 +272,10 @@ namespace _01electronics_crm
             companyAddressCombo.IsEnabled = true;
             contactPersonNameCombo.IsEnabled = true;
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SET FUNCTIONS////////////////////////////
-        ////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void SetSalesPersonLabel()
         {
             salesPersonLabel.Content = workOffer.GetSalesPersonName();
@@ -339,12 +356,10 @@ namespace _01electronics_crm
             DisableCompanyNameaddressContactCombos();
         }
 
-        ///////////GET FUNCTIONS////////////////////////////
-        ////////////////////////////////////////////////////
-
-
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SELECTION CHANGED HANDLERS///////////////
-        ////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///
         private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             RFQSerialCombo.Items.Clear();
@@ -368,6 +383,15 @@ namespace _01electronics_crm
 
             workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
 
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+            {
+                workOffer.GetNewOfferSerial();
+                workOffer.GetNewOfferVersion();
+                workOffer.GetNewOfferID();
+            }
+
+            workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
+
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
                 workOffer.InitializeSalesPersonInfo(salesPersonID);
@@ -388,7 +412,8 @@ namespace _01electronics_crm
             if (RFQSerialCombo.SelectedItem != null)
             {
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-                //workOffer.InitializeOfferProposerInfo(workOffer.GetAssigneeId(), COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID);
+                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    workOffer.LinkRFQInfo();
                 SetCompanyNameAddressContactFromRFQ();
             }
         }
@@ -432,28 +457,80 @@ namespace _01electronics_crm
 
         }
 
-        ///////////BUTTON CLICK HANDLERS/////////
-        /////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INTERNAL TABS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
 
         }
-
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            WorkOfferProductsPage workOfferProductsPage = new WorkOfferProductsPage(ref loggedInUser, ref workOffer, viewAddCondition);
+
+            if(RFQSerialCombo.IsEnabled == true)
+            {
+                workOfferProductsPage.SetTypeComboBoxes();
+                workOfferProductsPage.SetBrandComboBoxes();
+                workOfferProductsPage.SetModelComboBoxes();
+                workOfferProductsPage.SetQuantityTextBoxes();
+            }
+
+            workOfferProductsPage.workOfferBasicInfoPage = this;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            
             NavigationService.Navigate(workOfferProductsPage);
         }
-        private void OnClickPaymentAndDelivery(object sender, MouseButtonEventArgs e)
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
-             WorkOfferPaymentAndDeliveryPage paymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(paymentAndDeliveryPage);
-        }
+            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = this;
+            workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
 
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            WorkOfferAdditionalInfoPage offerAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref loggedInUser, ref workOffer, viewAddCondition);
-            NavigationService.Navigate(offerAdditionalInfoPage);
+            workOfferAdditionalInfoPage.workOfferBasicInfoPage = this;
+            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferAdditionalInfoPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferAdditionalInfoPage);
+        }
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+                    if (!workOffer.GetNewOfferSerial())
+                        return;
+
+                if (!workOffer.GetNewOfferVersion())
+                    return;
+
+                workOffer.SetOfferIssueDateToToday();
+
+                workOffer.GetNewOfferID();
+            }
+
+            workOfferUploadFilesPage.workOfferBasicInfoPage = this;
+            workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+
+            NavigationService.Navigate(workOfferUploadFilesPage);
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
+        {
+            
         }
 
     }
