@@ -132,9 +132,11 @@ namespace _01electronics_crm
                             Image brandImage = new Image();
                             BitmapImage src = new BitmapImage();
                             src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
+                            src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
                             src.CacheOption = BitmapCacheOption.OnLoad;
                             src.EndInit();
+                            //string src = String.Format(selectedProduct.GetPhotoLocalPath());
+                            // brandImage.Source = new BitmapImage(new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute));
                             brandImage.Source = src;
                             brandImage.Height = 220;
                             brandImage.Width = 190;
@@ -149,10 +151,11 @@ namespace _01electronics_crm
                                 Image brandImage = new Image();
                                 BitmapImage src = new BitmapImage();
                                 src.BeginInit();
-                                src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute);
+                                src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
                                 src.CacheOption = BitmapCacheOption.OnLoad;
                                 src.EndInit();
                                 brandImage.Source = src;
+                                //brandImage.Source = new BitmapImage(new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative));
                                 brandImage.Height = 220;
                                 brandImage.Width = 190;
                                 //brandImage.MouseDown += ImageMouseDown;

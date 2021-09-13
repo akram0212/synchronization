@@ -169,9 +169,6 @@
     <Compile Include="WorkOfferUploadFilesPage.xaml.cs">
       <DependentUpon>WorkOfferUploadFilesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UploadFilesWindow.xaml.cs">
-      <DependentUpon>UploadFilesWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
     </Compile>
@@ -331,10 +328,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UploadFilesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -445,6 +438,26 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\Batteries.jpg" />
+    <Resource Include="photos\Batteries_cover_photo.jpg" />
+    <Resource Include="photos\BORRI.jpg" />
+    <Resource Include="photos\BorriCommercialUPS.jpg" />
+    <Resource Include="photos\BorriIndustrialUPS.jpg" />
+    <Resource Include="photos\BorriLogo.jpg" />
+    <Resource Include="photos\BorriUPS.jpg" />
+    <Resource Include="photos\Commerical_UPS_cover_photo.jpg" />
+    <Resource Include="photos\ELCOS.jpg" />
+    <Resource Include="photos\Generators.jpg" />
+    <Resource Include="photos\Genset_cover_photo.jpg" />
+    <Resource Include="photos\Industrial_UPS_cover_photo.jpg" />
+    <Resource Include="photos\LEGRAND.jpg" />
+    <Resource Include="photos\LegrandUPS.jpg" />
+    <Resource Include="photos\NiCdBatteries.jpg" />
+    <Resource Include="photos\Panels.png" />
+    <Resource Include="photos\Panels_cover_photo.jpg" />
+    <Resource Include="photos\UPS.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
