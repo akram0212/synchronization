@@ -52,6 +52,7 @@ namespace _01electronics_crm
             workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+            
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -64,10 +65,12 @@ namespace _01electronics_crm
             //workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
+
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             {
                 workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-                workOffer.GetNewOfferSerial();
+                if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    workOffer.GetNewOfferSerial();
                 workOffer.GetNewOfferVersion();
                 workOffer.GetNewOfferID();
             }

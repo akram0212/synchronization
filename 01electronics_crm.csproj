@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
+    <ProjectGuid>{23E8A24E-440C-4E06-97BD-C87F736A1B8F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -169,9 +169,6 @@
     <Compile Include="WorkOfferUploadFilesPage.xaml.cs">
       <DependentUpon>WorkOfferUploadFilesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UploadFilesWindow.xaml.cs">
-      <DependentUpon>UploadFilesWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
     </Compile>
@@ -331,10 +328,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UploadFilesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserPortalPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -447,16 +440,36 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icons\addfiles_icon.jpg" />
-    <Resource Include="icons\drop_files_icon.jpg" />
-    <Resource Include="icons\excel_icon.jpg" />
-    <Resource Include="icons\image_icon.jpg" />
-    <Resource Include="icons\pdf_icon.jpg" />
-    <Resource Include="icons\powerpoint_icon.jpg" />
-    <Resource Include="icons\text_icon.jpg" />
-    <Resource Include="icons\unknown_icon.jpg" />
-    <Resource Include="icons\winrar_icon.jpg" />
-    <Resource Include="icons\word_icon.jpg" />
+    <Resource Include="photos\Batteries.jpg" />
+    <Resource Include="photos\Batteries_cover_photo.jpg" />
+    <Resource Include="photos\BORRI.jpg" />
+    <Resource Include="photos\BorriCommercialUPS.jpg" />
+    <Resource Include="photos\BorriIndustrialUPS.jpg" />
+    <Resource Include="photos\BorriLogo.jpg" />
+    <Resource Include="photos\BorriUPS.jpg" />
+    <Resource Include="photos\Commerical_UPS_cover_photo.jpg" />
+    <Resource Include="photos\ELCOS.jpg" />
+    <Resource Include="photos\Generators.jpg" />
+    <Resource Include="photos\Genset_cover_photo.jpg" />
+    <Resource Include="photos\Industrial_UPS_cover_photo.jpg" />
+    <Resource Include="photos\LEGRAND.jpg" />
+    <Resource Include="photos\LegrandUPS.jpg" />
+    <Resource Include="photos\NiCdBatteries.jpg" />
+    <Resource Include="photos\Panels.png" />
+    <Resource Include="photos\Panels_cover_photo.jpg" />
+    <Resource Include="photos\UPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\addfiles_icon.jpg" />
+    <Resource Include="photos\drop_files_icon.jpg" />
+    <Resource Include="photos\excel_icon.jpg" />
+    <Resource Include="photos\image_icon.jpg" />
+    <Resource Include="photos\pdf_icon.jpg" />
+    <Resource Include="photos\powerpoint_icon.jpg" />
+    <Resource Include="photos\text_icon.jpg" />
+    <Resource Include="photos\unknown_icon.jpg" />
+    <Resource Include="photos\winrar_icon.jpg" />
+    <Resource Include="photos\word_icon.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
