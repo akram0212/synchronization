@@ -403,6 +403,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="photos\iloveimg-resized.zip" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -441,7 +442,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\Batteries.jpg" />
-    <Resource Include="photos\Batteries_cover_photo.jpg" />
     <Resource Include="photos\BORRI.jpg" />
     <Resource Include="photos\BorriCommercialUPS.jpg" />
     <Resource Include="photos\BorriIndustrialUPS.jpg" />
@@ -450,14 +450,38 @@
     <Resource Include="photos\Commerical_UPS_cover_photo.jpg" />
     <Resource Include="photos\ELCOS.jpg" />
     <Resource Include="photos\Generators.jpg" />
-    <Resource Include="photos\Genset_cover_photo.jpg" />
     <Resource Include="photos\Industrial_UPS_cover_photo.jpg" />
     <Resource Include="photos\LEGRAND.jpg" />
     <Resource Include="photos\LegrandUPS.jpg" />
-    <Resource Include="photos\NiCdBatteries.jpg" />
     <Resource Include="photos\Panels.png" />
     <Resource Include="photos\Panels_cover_photo.jpg" />
-    <Resource Include="photos\UPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\1500RPM_Gensets_cover_photo.jpg" />
+    <Resource Include="photos\Lead-Acid_Batteries_cover_photo.jpg" />
+    <Resource Include="photos\NI-CD_Batteries_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\FIAMM.jpg" />
+    <Resource Include="photos\SAFT.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\Static_Transfer_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\3000RPM_Gensets_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\Batteries_cover_photo.jpg" />
+    <Resource Include="photos\IndustrialUPS.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\Air_Circuit_cover_photo.jpg" />
+    <Resource Include="photos\Changeover_Switch_cover_photo.jpg" />
+    <Resource Include="photos\Contactors_cover_photo.jpg" />
+    <Resource Include="photos\Earth_Leakage_cover_photo.jpg" />
+    <Resource Include="photos\Electrical_Contracts_cover_photo.jpg" />
+    <Resource Include="photos\Inverter_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\addfiles_icon.jpg" />
