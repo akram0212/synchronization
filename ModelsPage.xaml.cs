@@ -85,20 +85,6 @@ namespace _01electronics_crm
                 ModelsGrid.Children.Add(productTitleLabel);
                 Grid.SetRow(productTitleLabel, 0);
 
-                //WrapPanel modelsWrapPanel = new WrapPanel();
-                //modelsWrapPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-                //ScrollViewer scrollViewer = new ScrollViewer();
-                //scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                //scrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
-                //scrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
-                // Grid.SetColumn(scrollViewer, 0);
-
-                //ModelsGrid.Children.Add(scrollViewer);
-                //Grid.SetRow(scrollViewer, 1);
-
-                //scrollViewer.Content = modelsWrapPanel;
-
                 for (int i = 0; i < brandModels.Count(); i++)
                 {
                     if (brandModels[i].modelId != 0)
@@ -209,25 +195,28 @@ namespace _01electronics_crm
 
                         for (int j = 0; j < 4; j++)
                         {
-                            RowDefinition summaryRow = new RowDefinition();
-                            row2Grid.RowDefinitions.Add(summaryRow);
+                            if (j < selectedProduct.modelSummaryPoints.Count())
+                            {
+                                RowDefinition summaryRow = new RowDefinition();
+                                row2Grid.RowDefinitions.Add(summaryRow);
 
-                            Grid textBoxGrid = new Grid();
+                                Grid textBoxGrid = new Grid();
 
-                            TextBox pointsBox = new TextBox();
-                            pointsBox.BorderThickness = new Thickness(0);
-                            pointsBox.IsEnabled = false;
-                            pointsBox.FontWeight = FontWeights.Bold;
-                            pointsBox.Background = Brushes.White;
-                            pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
-                            pointsBox.TextWrapping = TextWrapping.Wrap;
-                            pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
-                            Grid.SetRow(pointsBox, j);
+                                TextBox pointsBox = new TextBox();
+                                pointsBox.BorderThickness = new Thickness(0);
+                                pointsBox.IsEnabled = false;
+                                pointsBox.FontWeight = FontWeights.Bold;
+                                pointsBox.Background = Brushes.White;
+                                pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
+                                pointsBox.TextWrapping = TextWrapping.Wrap;
+                                pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
+                                Grid.SetRow(pointsBox, j);
 
-                            textBoxGrid.Children.Add(pointsBox);
+                                textBoxGrid.Children.Add(pointsBox);
 
-                            Grid.SetRow(textBoxGrid, j);
-                            row2Grid.Children.Add(textBoxGrid);
+                                Grid.SetRow(textBoxGrid, j);
+                                row2Grid.Children.Add(textBoxGrid);
+                            }
                         }
 
                         Grid.SetRow(row2Grid, 1);
