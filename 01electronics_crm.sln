@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_crm", "01electronics_crm.csproj", "{23E8A24E-440C-4E06-97BD-C87F736A1B8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "C:\Users\developer\Desktop\01electronics_library\01electronics_library.csproj", "{63FFEEA7-180D-40CA-AAF0-3F46E3179CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "..\01electronics_library\01electronics_library.csproj", "{E37B1E5F-F399-43E8-A9B7-58A96F388FA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{23E8A24E-440C-4E06-97BD-C87F736A1B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23E8A24E-440C-4E06-97BD-C87F736A1B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23E8A24E-440C-4E06-97BD-C87F736A1B8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63FFEEA7-180D-40CA-AAF0-3F46E3179CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63FFEEA7-180D-40CA-AAF0-3F46E3179CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63FFEEA7-180D-40CA-AAF0-3F46E3179CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63FFEEA7-180D-40CA-AAF0-3F46E3179CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E37B1E5F-F399-43E8-A9B7-58A96F388FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37B1E5F-F399-43E8-A9B7-58A96F388FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37B1E5F-F399-43E8-A9B7-58A96F388FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37B1E5F-F399-43E8-A9B7-58A96F388FA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
