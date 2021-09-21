@@ -26,16 +26,20 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
 
@@ -65,9 +69,11 @@
                 <TextBox Style="{StaticResource commentsTextBoxStyle}" Name="notesTextBox" TextChanged="OnTextChangedNotes"/>
 
             </WrapPanel>
-
-            <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="addRFQButton" VerticalAlignment="Center" HorizontalAlignment="Center" Content="ADD" Click="AddRFQButtonClick"/>
-
+            
+            <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="backButto" Content="BACK" Click="OnClickBackButton" Margin="24"/>
+                <Button Grid.Row="3" Style="{StaticResource buttonStyle}" Name="nextButton" Content="NEXT" Click="OnClickNextButton" Margin="24"/>
+            </WrapPanel>
         </Grid>
 
 

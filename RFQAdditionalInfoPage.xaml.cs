@@ -37,6 +37,10 @@ namespace _01electronics_crm
 
         private DateTime deadlineDate;
 
+        public RFQBasicInfoPage rfqBasicInfoPage;
+        public RFQProductsPage rfqProductsPage;
+        public RFQUploadFilesPage rfqUploadFilesPage;
+
         public RFQAdditionalInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
@@ -70,12 +74,7 @@ namespace _01electronics_crm
                 ConfigureUIElementsForRevise();
                 InitializeContractTypeCombo();
             }
-            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                SetContractTypeCombo();
-                SetDeadlineDateDatePicker();
-                SetNotesTextBox();
-            }
+            
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +85,7 @@ namespace _01electronics_crm
             contractTypeCombo.Visibility = Visibility.Collapsed;
             deadlineDateDatePicker.IsEnabled = false;
             notesTextBox.Visibility = Visibility.Collapsed;
-            addRFQButton.Visibility = Visibility.Collapsed;
+            //addRFQButton.Visibility = Visibility.Collapsed;
 
             contractTypeLabel.Visibility = Visibility.Visible;
             notesLabel.Visibility = Visibility.Visible;
@@ -96,7 +95,7 @@ namespace _01electronics_crm
             contractTypeCombo.Visibility = Visibility.Visible;
             deadlineDateDatePicker.IsEnabled = true;
             notesTextBox.Visibility = Visibility.Visible;
-            addRFQButton.Visibility = Visibility.Visible;
+            //addRFQButton.Visibility = Visibility.Visible;
 
             contractTypeLabel.Visibility = Visibility.Collapsed;
             notesLabel.Visibility = Visibility.Collapsed;
@@ -106,7 +105,7 @@ namespace _01electronics_crm
             contractTypeCombo.Visibility = Visibility.Visible;
             deadlineDateDatePicker.IsEnabled = true;
             notesTextBox.Visibility = Visibility.Visible;
-            addRFQButton.Visibility = Visibility.Visible;
+            //addRFQButton.Visibility = Visibility.Visible;
 
             contractTypeLabel.Visibility = Visibility.Collapsed;
             notesLabel.Visibility = Visibility.Collapsed;
@@ -193,7 +192,7 @@ namespace _01electronics_crm
             //NavigationService.Navigate(additionalInfoPage);
         }
 
-        private void AddRFQButtonClick(object sender, RoutedEventArgs e)
+        private void OnClickAddRFQButton(object sender, RoutedEventArgs e)
         {
             rfq.SetRFQNotes(notes);
             rfq.SetRFQDeadlineDate(deadlineDate);
@@ -247,5 +246,25 @@ namespace _01electronics_crm
             }
         }
 
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            rfq.SetRFQNotes(notes);
+            rfq.SetRFQDeadlineDate(deadlineDate);
+
+            rfqUploadFilesPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqUploadFilesPage.rfqProductsPage = rfqProductsPage;
+            rfqUploadFilesPage.rfqAdditionalInfoPage = this;
+
+            NavigationService.Navigate(rfqUploadFilesPage);
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            rfqProductsPage.rfqAdditionalInfoPage = this;
+            rfqProductsPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
     }
 }

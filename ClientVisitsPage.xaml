@@ -51,13 +51,30 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
-                <RowDefinition Height="1*"/>
                 <RowDefinition Height="75"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="Client Visits" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" Margin="48,24">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource selectedMainTabBorder}">
+                    <Label Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource unselectedMainTabBorder}"  Width="173">
+                    <Label Content="Table View" Style="{StaticResource unselectedMainTabLabelItem}"/>
+                </Border>
+
+            </Grid>
+            
+            <Grid Grid.Row="2" Margin="48,24">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -92,8 +109,17 @@
                     <StackPanel Name="ClientVisitsStackPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF"/>
                 </ScrollViewer>
             </Grid>
-            <Button Grid.Row="2" HorizontalAlignment="Left"  Margin="200,0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Margin="24" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
+                <Button Grid.Column="1" Margin="24" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+                <Button Grid.Column="2" Margin="24" Content="Export" Style="{StaticResource buttonStyle}" Name="exportButton"/>
+            </Grid>
         </Grid>
 
     </Grid>

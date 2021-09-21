@@ -19,15 +19,16 @@ using System.ComponentModel;
 using _01electronics_library;
 using System.IO;
 
+
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOfferUploadFilesPage.xaml
+    /// Interaction logic for RFQUploadFilesPage.xaml
     /// </summary>
-    public partial class WorkOfferUploadFilesPage : Page
+    public partial class RFQUploadFilesPage : Page
     {
         Employee loggedInUser;
-        WorkOffer workOffer;
+        RFQ rfq;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
@@ -63,22 +64,19 @@ namespace _01electronics_crm
 
         ProgressBar progressBar = new ProgressBar();
 
-        public WorkOfferBasicInfoPage workOfferBasicInfoPage;
-        public WorkOfferProductsPage workOfferProductsPage;
-        public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
-        public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
+        public RFQBasicInfoPage rfqBasicInfoPage;
+        public RFQProductsPage rfqProductsPage;
+        public RFQAdditionalInfoPage rfqAdditionalInfoPage;
 
-        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        public RFQUploadFilesPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
-           
             InitializeComponent();
-
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
             integrityChecks = new IntegrityChecks();
 
             loggedInUser = mLoggedInUser;
-            workOffer = mWorkOffer;
+            rfq = mRFQ;
             viewAddCondition = mViewAddCondition;
 
             ftpFiles = new List<string>();
@@ -103,7 +101,19 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/";
+            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                rfq.SetRFQIssueDateToToday();
+
+                if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+                    if (!rfq.GetNewRFQSerial())
+                        return;
+                if (!rfq.GetNewRFQVersion())
+                    return;
+                rfq.GetNewRFQID();
+            }
+
+            serverFolderPath = BASIC_MACROS.RFQ_FILES_PATH + rfq.GetRFQID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
@@ -115,7 +125,7 @@ namespace _01electronics_crm
             {
                 ftpFiles.Clear();
                 if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
-                  return;
+                    return;
             }
 
             if (ftpFiles.Count != 0)
@@ -124,18 +134,16 @@ namespace _01electronics_crm
 
                 for (int i = 0; i < ftpFiles.Count; i++)
                 {
-                    if(ftpFiles[i] != "." || ftpFiles[i] != "..")
+                    if (ftpFiles[i] != "." || ftpFiles[i] != "..")
                         InsertIconGridFromServer(i);
                 }
                 InsertAddFilesIcon();
             }
-            else if(ftpFiles.Count == 0)
+            else if (ftpFiles.Count == 0)
             {
                 InsertDragAndDropOrBrowseGrid();
             }
         }
-
-        
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INSERT FUNCTIONS
@@ -338,21 +346,70 @@ namespace _01electronics_crm
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///INTERNAL TABS
+        ///ON DROP HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
-
-
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        private void OnDropUploadFilesStackPanel(object sender, DragEventArgs e)
         {
-            workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
-            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
-            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
-            workOfferAdditionalInfoPage.workOfferUploadFilesPage = this;
+            if (ftpFiles.Count == 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+            }
 
-            NavigationService.Navigate(workOfferAdditionalInfoPage);
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] temp = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                e.Effects = DragDropEffects.All;
+
+                for (int i = 0; i < temp.Count(); i++)
+                {
+                    localFolderPath = temp[i];
+                    localFileName = System.IO.Path.GetFileName(localFolderPath);
+
+                    serverFileName = localFileName;
+
+                    CheckIfFileAlreadyUploaded(localFileName);
+
+                    if (uploadThisFile == true && checkFileInServer == false)
+                    {
+
+                        if (wrapPanel.Children.Count != 0)
+                            wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
+
+                        progressBar.Visibility = Visibility.Visible;
+
+                        ftpFiles.Add(localFileName);
+
+                        InsertIconGrid("pending", localFolderPath);
+
+                        currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
+                        currentSelectedFile.Children.Add(progressBar);
+                        Grid.SetRow(progressBar, 3);
+
+                        uploadBackground.RunWorkerAsync();
+
+                        while (uploadBackground.IsBusy)
+                        {
+                            System.Windows.Forms.Application.DoEvents();
+                        }
+
+                        uploadThisFile = false;
+                    }
+                    else if (uploadThisFile == true)
+                    {
+                        uploadBackground.RunWorkerAsync();
+
+                        while (uploadBackground.IsBusy)
+                        {
+                            System.Windows.Forms.Application.DoEvents();
+                        }
+
+                        uploadThisFile = false;
+                    }
+                }
+            }
         }
-
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
@@ -383,7 +440,7 @@ namespace _01electronics_crm
 
         }
 
-        
+
         private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
         {
             previousSelectedFile = currentSelectedFile;
@@ -403,7 +460,7 @@ namespace _01electronics_crm
                 currentSelectedFile.Background = (Brush)brush.ConvertFrom("#105A97");
                 currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
             }
-            else 
+            else
             {
                 System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -482,7 +539,7 @@ namespace _01electronics_crm
 
                     uploadThisFile = false;
                 }
-                else if(checkFileInServer == true)
+                else if (checkFileInServer == true)
                 {
                     uploadBackground.RunWorkerAsync();
 
@@ -622,71 +679,6 @@ namespace _01electronics_crm
 
             //}
         }
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///ON DROP HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnDropUploadFilesStackPanel(object sender, DragEventArgs e)
-        {
-            if(ftpFiles.Count == 0)
-            {
-                uploadFilesStackPanel.Children.Clear();
-                uploadFilesStackPanel.Children.Add(wrapPanel);
-            }
-
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] temp = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                e.Effects = DragDropEffects.All;
-
-                for (int i = 0; i < temp.Count(); i++)
-                {
-                    localFolderPath = temp[i];
-                    localFileName = System.IO.Path.GetFileName(localFolderPath);
-
-                    serverFileName = localFileName;
-
-                    CheckIfFileAlreadyUploaded(localFileName);
-
-                    if (uploadThisFile == true && checkFileInServer == false)
-                    {
-
-                        if (wrapPanel.Children.Count != 0)
-                            wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
-
-                        progressBar.Visibility = Visibility.Visible;
-
-                        ftpFiles.Add(localFileName);
-
-                        InsertIconGrid("pending", localFolderPath);
-
-                        currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
-                        currentSelectedFile.Children.Add(progressBar);
-                        Grid.SetRow(progressBar, 3);
-
-                        uploadBackground.RunWorkerAsync();
-
-                        while (uploadBackground.IsBusy)
-                        {
-                            System.Windows.Forms.Application.DoEvents();
-                        }
-
-                        uploadThisFile = false;
-                    }
-                    else if (uploadThisFile == true)
-                    {
-                        uploadBackground.RunWorkerAsync();
-
-                        while (uploadBackground.IsBusy)
-                        {
-                            System.Windows.Forms.Application.DoEvents();
-                        }
-
-                        uploadThisFile = false;
-                    }
-                }
-            }
-        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BACKGROUND COMPLETE HANDLERS
@@ -709,7 +701,7 @@ namespace _01electronics_crm
                 {
                     InsertIconGrid("failed", localFolderPath);
                 }
-                
+
                 InsertAddFilesIcon();
             }
 
@@ -719,7 +711,7 @@ namespace _01electronics_crm
 
                 BrushConverter brush = new BrushConverter();
                 Label overwriteFileLabel = (Label)overwriteFileGrid.Children[2];
-                
+
                 if (fileUploaded == true)
                 {
                     overwriteFileLabel.Content = "SUBMITTED";
@@ -804,7 +796,7 @@ namespace _01electronics_crm
 
             if (ftpFiles.Count == 0)
                 uploadThisFile = true;
-            
+
             else
             {
                 for (int i = 0; i < ftpFiles.Count(); i++)
@@ -837,7 +829,12 @@ namespace _01electronics_crm
                     }
                 }
             }
-            
+
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

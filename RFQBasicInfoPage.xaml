@@ -17,6 +17,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="RFQ BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
@@ -26,16 +27,20 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+            <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
         
@@ -95,8 +100,9 @@
 
             </WrapPanel>
         </Grid>
-
-
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Button Style="{StaticResource buttonStyle}" Name="nextButton" Click="OnClickNextButton" Content="Next" Margin="24"/>
+        </WrapPanel>
     </Grid>
 
 </Page>

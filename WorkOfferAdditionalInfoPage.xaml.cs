@@ -75,19 +75,6 @@ namespace _01electronics_crm
 
             workOffer = mWorkOffer;
 
-
-            uploadBackground = new BackgroundWorker();
-            uploadBackground.DoWork += BackgroundUpload;
-            uploadBackground.ProgressChanged += OnUploadProgressChanged;
-            uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
-            uploadBackground.WorkerReportsProgress = true;
-
-            downloadBackground = new BackgroundWorker();
-            downloadBackground.DoWork += BackgroundDownload;
-            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
-            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
-            downloadBackground.WorkerReportsProgress = true;
-
             ConfigureDrawingSubmissionUIElements();
 
 
@@ -411,66 +398,29 @@ namespace _01electronics_crm
             NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferUploadFilesPage.workOfferAdditionalInfoPage = this;
+
+            NavigationService.Navigate(workOfferUploadFilesPage);
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = this;
+            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        private void OnBtnClickBrowse(object sender, RoutedEventArgs e)
-        {
-
-            //UploadFilesWindow uploadFilesWindow = new UploadFilesWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-            //uploadFilesWindow.Show();
-
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                workOffer.GetNewOfferSerial();
-                workOffer.GetNewOfferVersion();
-                workOffer.GetNewOfferID();
-
-                OpenFileDialog uploadFile = new OpenFileDialog();
-
-                if (uploadFile.ShowDialog() == false)
-                    return;
-
-                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
-                    return;
-
-                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-                serverFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
-
-                localFolderPath = uploadFile.FileName;
-                localFileName = null;
-
-                offerFilePath.Visibility = Visibility.Collapsed;
-                uploadFileProgressBar.Visibility = Visibility.Visible;
-
-                uploadBackground.RunWorkerAsync();
-            }
-            else
-            {
-                System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
-
-                if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-                    return;
-
-                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
-                    return;
-
-                serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH;
-                serverFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
-
-                localFolderPath = downloadFile.SelectedPath;
-                localFileName = workOffer.GetOfferID() + ".pdf";
-                integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
-
-                offerFilePath.Visibility = Visibility.Collapsed;
-                uploadFileProgressBar.Visibility = Visibility.Visible;
-
-                downloadBackground.RunWorkerAsync();
-            }
-        }
 
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
@@ -492,72 +442,5 @@ namespace _01electronics_crm
 
             wordAutomation.AutomateWorkOffer(workOffer);
         }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BACKGROUND FUNCTIONS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        protected void BackgroundUpload(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker uploadBackground = sender as BackgroundWorker;
-
-            uploadBackground.ReportProgress(50);
-            if (!fTPObject.UploadFile(localFolderPath + localFileName, serverFolderPath + "/" + serverFileName))
-                return;
-
-            uploadBackground.ReportProgress(75);
-            
-
-            uploadBackground.ReportProgress(100);
-        }
-
-        protected void BackgroundDownload(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker downloadBackground = sender as BackgroundWorker;
-            
-            downloadBackground.ReportProgress(50);
-            if (!fTPObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName)) 
-                return;
-
-            downloadBackground.ReportProgress(100);
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///PROGRESS CHANGED HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            uploadFileProgressBar.Value = e.ProgressPercentage;
-        }
-
-        protected void OnUploadProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            uploadFileProgressBar.Value = e.ProgressPercentage;
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BACKGROUND COMPLETE HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        protected void OnUploadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-            offerFilePath.Visibility = Visibility.Visible;
-            uploadFileProgressBar.Visibility = Visibility.Collapsed;
-
-            BrushConverter brush = new BrushConverter();
-            offerFilePath.Text = "SUBMITTED";
-            offerFilePath.Foreground = (Brush)brush.ConvertFrom("#FF0000");
-
-            browseButton.Content = "Update";
-            browseButton.IsEnabled = true;
-        }
-        protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-
-            offerFilePath.Visibility = Visibility.Visible;
-            uploadFileProgressBar.Visibility = Visibility.Collapsed;
-
-            offerFilePath.Text = "SUCCESS!";
-        }
-
-        
     }
 }

@@ -159,7 +159,7 @@ namespace _01electronics_crm
                     imageTextBlock.Text = "  " + products[i].typeName;
                     imageTextBlock.Text += "\n\n";
 
-                    imageTextBlock.Text += productSummaryPoints[i];
+                    //imageTextBlock.Text += productSummaryPoints[i];
                     Grid.SetRow(imageTextBlock, 0);
 
                     gridI.Children.Add(imageTextBlock);
