@@ -26,16 +26,12 @@ namespace _01electronics_crm
         Employee loggedInUser;
         RFQ rfq;
 
-        //NO NEED FOR THESE OBJECTS, RFQ OBJECT ALREADY CONTAINS A CONTACT OBJECT WHICH INHERETS COMPANY CLASS
-        //Company company;
-        //Contact contact;
-
+        
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
 
-        //I MADE A STRUCT FOR THIS LIST
-        //AND A QUERY FUNCTION IN COMMONQUERIES
+        
         private List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> companiesList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
@@ -48,12 +44,13 @@ namespace _01electronics_crm
         private int companySerial;
         private int addressSerial;
 
-        //NICE WORK HERE, I LIKE YOUR WORK
-        //YOUR CODING STYLE IS GETTING BETTER
+        public RFQProductsPage rfqProductsPage;
+        public RFQAdditionalInfoPage rfqAdditionalInfoPage;
+        public RFQUploadFilesPage rfqUploadFilesPage;
 
-        //PLEASE DONT CHANGE/ADD STYLES, WE SHALL STICK TO THE STYLES USED BY ALL THE ERP SYSTEM
         public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
+
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
@@ -64,7 +61,12 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
             rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
-            
+
+            rfq.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
+
+            rfqProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
+            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            rfqUploadFilesPage = new RFQUploadFilesPage(ref loggedInUser, ref rfq, viewAddCondition);
 
             if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
@@ -74,16 +76,7 @@ namespace _01electronics_crm
                 InitializeCompanyNameCombo();
                 InitializeAssigneeCombo();
 
-                SetSalesPerson();
-
-                if (rfq.GetSalesPersonName() != null)
-                    salesPersonCombo.Text = rfq.GetSalesPersonName();
-                if (rfq.GetAssigneeName() != null)
-                    assigneeCombo.Text = rfq.GetAssigneeName();
-                if (rfq.GetRFQCompany().GetCompanyName() != null)
-                    companyNameCombo.Text = rfq.GetRFQCompany().GetCompanyName();
-
-                
+                SetSalesPerson();  
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
@@ -110,12 +103,7 @@ namespace _01electronics_crm
                 InitializeCompanyNameCombo();
                 
             }
-            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                SetSalesPersonCombo();
-                SetAssigneeCombo();
-                SetCompanyNameCombo();
-            }
+            
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////
@@ -427,5 +415,13 @@ namespace _01electronics_crm
             NavigationService.Navigate(additionalInfoPage);
         }
 
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            rfqProductsPage.rfqBasicInfoPage = this;
+            rfqProductsPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+            rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
     }
 }

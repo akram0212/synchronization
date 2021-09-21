@@ -18,7 +18,7 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="#105A97">
@@ -34,7 +34,7 @@
                 <Label Grid.Column="0" Name="RFQHeader" Content="WORK OFFER UPLOAD FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
                 <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
             </Grid>
-            
+
             <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -44,36 +44,38 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
-                
-                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
                     <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
-                
-                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
                     <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
-                
-                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+    
+                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
                     <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
-                
-                <Border Grid.Column="4" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+
+                <Border Grid.Column="4" Style="{StaticResource selectedSecondaryTabBorder}" >
                     <Label Content="Upload Files" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
-                
+
             </Grid>
-            
+
             <ScrollViewer Grid.Row="2" Margin="24" Name="scrollViewer" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </ScrollViewer>
+
+            <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <Button Name="backButton" Style="{StaticResource buttonStyle}" Content="BACK" Click="OnClickBackButton" Margin="24"/>
+                <Button Name="cancelButton" Style="{StaticResource buttonStyle}" Content="CANCEL" Click="OnClickCancelButton" Margin="24" />
+                <Button Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnButtonClickOk" Margin="24"/>
+            </WrapPanel>
             
-            <ProgressBar Grid.Row="2" Name="progressBar" Style="{StaticResource ProgressBarStyle}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-
-            <Button Grid.Row="3" Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="CONFIRM" Click="OnButtonClickOk"/>
-
         </Grid>
     </Grid>
 </Page>

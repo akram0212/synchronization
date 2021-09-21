@@ -37,7 +37,6 @@ namespace _01electronics_crm
         int counter;
         int viewAddCondition;
 
-        //protected var doneEvent = new AutoResetEvent(false);
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
 
@@ -49,17 +48,20 @@ namespace _01electronics_crm
 
         protected bool fileUploaded;
         protected bool fileDownloaded;
-        protected bool uploadComplete = true;
+        protected bool uploadThisFile = false;
+        protected bool checkFileInServer = false;
 
 
         WrapPanel wrapPanel = new WrapPanel();
 
         private Grid previousSelectedFile;
         private Grid currentSelectedFile;
+        private Grid overwriteFileGrid;
         private Label currentLabel;
 
         List<string> ftpFiles;
-        private string currentDirectory;
+
+        ProgressBar progressBar = new ProgressBar();
 
         public WorkOfferBasicInfoPage workOfferBasicInfoPage;
         public WorkOfferProductsPage workOfferProductsPage;
@@ -83,6 +85,10 @@ namespace _01electronics_crm
 
             counter = 0;
 
+            progressBar.Style = (Style)FindResource("ProgressBarStyle");
+            progressBar.HorizontalAlignment = HorizontalAlignment.Center;
+            progressBar.Width = 200;
+
             uploadBackground = new BackgroundWorker();
             uploadBackground.DoWork += BackgroundUpload;
             uploadBackground.ProgressChanged += OnUploadProgressChanged;
@@ -99,7 +105,6 @@ namespace _01electronics_crm
 
             serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/";
 
-            currentDirectory = Directory.GetCurrentDirectory();
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
             {
@@ -111,8 +116,6 @@ namespace _01electronics_crm
                 ftpFiles.Clear();
                 if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
                   return;
-                //if (!ftpObject.ListDirectory(serverFolderPath, ref ftpFiles))
-                  //  return;
             }
 
             if (ftpFiles.Count != 0)
@@ -121,173 +124,266 @@ namespace _01electronics_crm
 
                 for (int i = 0; i < ftpFiles.Count; i++)
                 {
-                    Grid UploadIconGrid = new Grid();
-                    UploadIconGrid.Margin = new Thickness(24);
-                    UploadIconGrid.Width = 250;
-
-                    RowDefinition row1 = new RowDefinition();
-                    RowDefinition row2 = new RowDefinition();
-                    RowDefinition row3 = new RowDefinition();
-
-                    UploadIconGrid.RowDefinitions.Add(row1);
-                    UploadIconGrid.RowDefinitions.Add(row2);
-                    UploadIconGrid.RowDefinitions.Add(row3);
-
-                    UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
-                    //UploadIconGrid.IsMouseDirectlyOverChanged += OnMouseOverIcons;
-                    Image icon = new Image();
-
-                    //PLEASE PUT THE ICONS IN THE ICONS FOLDER I CREATED IN THE PROJECT FOLDER AND ADD THEM TO PROJECT IN VISUAL STUDIO
-
-                    if (ftpFiles[i].Contains(".pdf"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/pdf_icon.jpg")) };
-
-                    else if (ftpFiles[i].Contains(".doc") || ftpFiles[i].Contains(".docs") || ftpFiles[i].Contains(".docx"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/word_icon.jpg")) };
-                    
-                    else if (ftpFiles[i].Contains(".txt") || ftpFiles[i].Contains(".rtf"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/text_icon.jpg")) };
-                    
-                    else if (ftpFiles[i].Contains(".xls") || ftpFiles[i].Contains(".xlsx") || ftpFiles[i].Contains(".csv"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/excel_icon.jpg")) };
-
-                    else if (ftpFiles[i].Contains(".jpg") || ftpFiles[i].Contains(".png") || ftpFiles[i].Contains(".raw") || ftpFiles[i].Contains(".jpeg") || ftpFiles[i].Contains(".gif"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/image_icon.jpg")) };
-
-                    else if (ftpFiles[i].Contains(".rar") || ftpFiles[i].Contains(".zip") || ftpFiles[i].Contains(".gzip"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/winrar_icon.jpg")) };
-
-                    else if (ftpFiles[i].Contains(".ppt") || ftpFiles[i].Contains(".pptx") || ftpFiles[i].Contains(".pptm"))
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/powerpoint_icon.jpg")) };
-
-                    else if (ftpFiles[i] != ".." || ftpFiles[i] != ".")
-                        icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/unkown_icon.jpg")) };
-
-                    resizeImage(ref icon, 50, 50);
-                    UploadIconGrid.Children.Add(icon);
-                    Grid.SetRow(icon, 0);
-
-                    Label name = new Label();
-                    name.Content = ftpFiles[i];
-                    name.HorizontalAlignment = HorizontalAlignment.Center;
-                    UploadIconGrid.Children.Add(name);
-                    Grid.SetRow(name, 1);
-
-                    Label status = new Label();
-                    status.Content = "SUBMITTED";
-                    status.HorizontalAlignment = HorizontalAlignment.Center;
-                    BrushConverter brush = new BrushConverter();
-                    status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
-                    UploadIconGrid.Children.Add(status);
-                    Grid.SetRow(status, 2);
-
-                    wrapPanel.Children.Add(UploadIconGrid);
+                    if(ftpFiles[i] != "." || ftpFiles[i] != "..")
+                        InsertIconGridFromServer(i);
                 }
-
                 InsertAddFilesIcon();
-
             }
-            else
+            else if(ftpFiles.Count == 0)
             {
-                Image icon = new Image();
-
-                icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/drop_files_icon.jpg")) };
-                icon.HorizontalAlignment = HorizontalAlignment.Center;
-                icon.VerticalAlignment = VerticalAlignment.Center;
-                resizeImage(ref icon, 250, 250);
-
-                uploadFilesStackPanel.Children.Add(icon);
-
-                uploadFilesStackPanel.Children.Add(wrapPanel);
-
-                InsertAddFilesIcon();
+                InsertDragAndDropOrBrowseGrid();
             }
         }
 
-        public void resizeImage(ref Image imgToResize, int width, int height)
+        
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INSERT FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void InsertAddFilesIcon()
         {
-            imgToResize.Width = width;
-            imgToResize.Height = height;
+            Grid addFilesGrid = new Grid();
+            addFilesGrid.Margin = new Thickness(24);
+            addFilesGrid.Width = 250;
+
+            RowDefinition addFilesRow1 = new RowDefinition();
+            RowDefinition addFilesRow2 = new RowDefinition();
+            addFilesGrid.RowDefinitions.Add(addFilesRow1);
+            addFilesGrid.RowDefinitions.Add(addFilesRow2);
+
+            addFilesGrid.MouseLeftButtonDown += OnClickAddFilesGrid;
+
+            Image addFilesImage = new Image();
+
+            addFilesImage = new Image { Source = new BitmapImage(new Uri(@"photos\addfiles_icon.jpg", UriKind.Relative)) };
+            resizeImage(ref addFilesImage, 50, 50);
+            addFilesGrid.Children.Add(addFilesImage);
+            Grid.SetRow(addFilesImage, 0);
+
+            Label addFilesLabel = new Label();
+            addFilesLabel.HorizontalAlignment = HorizontalAlignment.Center;
+            addFilesLabel.Content = "Double-Click to ADD FILES";
+            addFilesGrid.Children.Add(addFilesLabel);
+            Grid.SetRow(addFilesLabel, 1);
+
+            wrapPanel.Children.Add(addFilesGrid);
+        }
+        private void InsertIconGridFromServer(int i)
+        {
+            Grid UploadIconGrid = new Grid();
+            UploadIconGrid.Margin = new Thickness(24);
+            UploadIconGrid.Width = 250;
+
+            RowDefinition row1 = new RowDefinition();
+            RowDefinition row2 = new RowDefinition();
+            RowDefinition row3 = new RowDefinition();
+            RowDefinition row4 = new RowDefinition();
+
+            UploadIconGrid.RowDefinitions.Add(row1);
+            UploadIconGrid.RowDefinitions.Add(row2);
+            UploadIconGrid.RowDefinitions.Add(row3);
+            UploadIconGrid.RowDefinitions.Add(row4);
+
+            UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
+
+            Image icon = new Image();
+
+            LoadIcon(ref icon, ftpFiles[i]);
+
+            resizeImage(ref icon, 50, 50);
+            UploadIconGrid.Children.Add(icon);
+            Grid.SetRow(icon, 0);
+
+            Label name = new Label();
+            name.Content = ftpFiles[i];
+            name.HorizontalAlignment = HorizontalAlignment.Center;
+            UploadIconGrid.Children.Add(name);
+            Grid.SetRow(name, 1);
+
+            Label status = new Label();
+            status.Content = "SUBMITTED";
+            status.HorizontalAlignment = HorizontalAlignment.Center;
+            BrushConverter brush = new BrushConverter();
+            status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
+            UploadIconGrid.Children.Add(status);
+            Grid.SetRow(status, 2);
+
+            wrapPanel.Children.Add(UploadIconGrid);
+        }
+        private void InsertIconGrid(string mStatus, string localFolderPath)
+        {
+            Grid UploadIconGrid = new Grid();
+            UploadIconGrid.Margin = new Thickness(24);
+            UploadIconGrid.Width = 250;
+            UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
+
+            RowDefinition row1 = new RowDefinition();
+            RowDefinition row2 = new RowDefinition();
+            RowDefinition row3 = new RowDefinition();
+            RowDefinition row4 = new RowDefinition();
+
+
+            UploadIconGrid.RowDefinitions.Add(row1);
+            UploadIconGrid.RowDefinitions.Add(row2);
+            UploadIconGrid.RowDefinitions.Add(row3);
+            UploadIconGrid.RowDefinitions.Add(row4);
+
+            Image icon = new Image();
+
+            LoadIcon(ref icon, localFolderPath);
+
+            resizeImage(ref icon, 50, 50);
+            UploadIconGrid.Children.Add(icon);
+            Grid.SetRow(icon, 0);
+
+            Label name = new Label();
+            name.Content = localFileName;
+            name.HorizontalAlignment = HorizontalAlignment.Center;
+            UploadIconGrid.Children.Add(name);
+            Grid.SetRow(name, 1);
+
+            Label status = new Label();
+            BrushConverter brush = new BrushConverter();
+            if (mStatus == "pending")
+            {
+                status.Content = "PENDING";
+                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
+            }
+            else if (mStatus == "submitted")
+            {
+                status.Content = "SUBMITTED";
+                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
+            }
+            else if (mStatus == "failed")
+            {
+                status.Content = "FAILED";
+                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FF0000");
+            }
+            status.HorizontalAlignment = HorizontalAlignment.Center;
+            UploadIconGrid.Children.Add(status);
+            Grid.SetRow(status, 2);
+
+            wrapPanel.Children.Add(UploadIconGrid);
+        }
+
+        private void InsertDragAndDropOrBrowseGrid()
+        {
+            Grid grid = new Grid();
+
+            RowDefinition row1 = new RowDefinition();
+            RowDefinition row2 = new RowDefinition();
+            RowDefinition row3 = new RowDefinition();
+
+            grid.RowDefinitions.Add(row1);
+            grid.RowDefinitions.Add(row2);
+            grid.RowDefinitions.Add(row3);
+
+            Image icon = new Image();
+
+            icon = new Image { Source = new BitmapImage(new Uri(@"photos\drop_files_icon.jpg", UriKind.Relative)) };
+            icon.HorizontalAlignment = HorizontalAlignment.Center;
+            icon.VerticalAlignment = VerticalAlignment.Center;
+            resizeImage(ref icon, 250, 150);
+            grid.Children.Add(icon);
+            Grid.SetRow(icon, 0);
+
+            Label orLabel = new Label();
+            orLabel.HorizontalAlignment = HorizontalAlignment.Center;
+            orLabel.Content = "OR";
+            orLabel.FontWeight = FontWeights.Bold;
+            orLabel.FontSize = 20;
+            orLabel.Foreground = Brushes.Gray;
+            grid.Children.Add(orLabel);
+            Grid.SetRow(orLabel, 1);
+
+            Button browseFileButton = new Button();
+            browseFileButton.Style = (Style)FindResource("buttonBrowseStyle");
+            browseFileButton.Width = 200;
+            browseFileButton.Background = null;
+            browseFileButton.Foreground = Brushes.Gray;
+            browseFileButton.Content = "BROWSE FILE";
+            browseFileButton.Click += OnClickBrowseButton;
+            grid.Children.Add(browseFileButton);
+            Grid.SetRow(browseFileButton, 2);
+
+            uploadFilesStackPanel.Children.Add(grid);
+        }
+
+        private void LoadIcon(ref Image icon, string ftpFiles)
+        {
+            if (ftpFiles.Contains(".pdf"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\pdf_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".doc") || ftpFiles.Contains(".docs") || ftpFiles.Contains(".docx"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\word_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".txt") || ftpFiles.Contains(".rtf"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\text_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".xls") || ftpFiles.Contains(".xlsx") || ftpFiles.Contains(".csv"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\excel_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".jpg") || ftpFiles.Contains(".png") || ftpFiles.Contains(".raw") || ftpFiles.Contains(".jpeg") || ftpFiles.Contains(".gif"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\image_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".rar") || ftpFiles.Contains(".zip") || ftpFiles.Contains(".gzip"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\winrar_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles.Contains(".ppt") || ftpFiles.Contains(".pptx") || ftpFiles.Contains(".pptm"))
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\powerpoint_icon.jpg", UriKind.Relative)) };
+
+            else if (ftpFiles != ".." || ftpFiles != ".")
+                icon = new Image { Source = new BitmapImage(new Uri(@"photos\unknown_icon.jpg", UriKind.Relative)) };
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
-        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
-        {
-            workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
-            workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
-            workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
-            workOfferBasicInfoPage.workOfferUploadFilesPage = this;
 
-            NavigationService.Navigate(workOfferBasicInfoPage);
-        }
-        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
-        {
-            workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
-            workOfferProductsPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
-            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
-            workOfferProductsPage.workOfferUploadFilesPage = this;
 
-            NavigationService.Navigate(workOfferProductsPage);
-        }
-        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
-            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
-            workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
-            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
-            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = this;
-
-            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
-        }
-        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
-        {
-            workOffer.SetNoOfSavedOfferProducts();
-
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
             workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
             workOfferAdditionalInfoPage.workOfferUploadFilesPage = this;
 
             NavigationService.Navigate(workOfferAdditionalInfoPage);
+        }
 
-        }
-        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
-        {
-        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
+
+        private void OnClickCancelButton(object sender, RoutedEventArgs e)
+        {
+            if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
+                ftpObject.DeleteFtpDirectory(serverFolderPath);
+
+            else
+            {
+                for (int i = 0; i < ftpFiles.Count(); i++)
+                {
+                    ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i]);
+                }
+
+                ftpObject.DeleteFtpDirectory(serverFolderPath);
+            }
+
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+        }
+
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
 
         }
-        //private void OnMouseOverIcons(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    previousSelectedFile = currentSelectedFile;
-        //    currentSelectedFile = (Grid)sender;
-        //    currentLabel = (Label)currentSelectedFile.Children[1];
-        //    BrushConverter brush = new BrushConverter();
 
-        //    if (previousSelectedFile != null)
-        //    {
-        //        previousSelectedFile.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-        //        Label previousLabel = (Label)previousSelectedFile.Children[1];
-        //        previousLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-        //    }
-
-        //    currentSelectedFile.Background = (Brush)brush.ConvertFrom("#105A97");
-        //    currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-
-        //    //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-        //    //{
-        //    //    downloadButton.Visibility = Visibility.Visible;
-        //    //}
-        //}
-
+        
         private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
         {
             previousSelectedFile = currentSelectedFile;
@@ -324,7 +420,8 @@ namespace _01electronics_crm
                 localFileName = serverFileName;
 
                 progressBar.Visibility = Visibility.Visible;
-
+                currentSelectedFile.Children.Add(progressBar);
+                Grid.SetRow(progressBar, 3);
                 downloadBackground.RunWorkerAsync();
             }
         }
@@ -363,73 +460,70 @@ namespace _01electronics_crm
 
                 serverFileName = localFileName;
 
-                uploadFilesStackPanel.Children.Clear();
-                uploadFilesStackPanel.Children.Add(wrapPanel);
+                CheckIfFileAlreadyUploaded(localFileName);
 
-                progressBar.Visibility = Visibility.Visible;
+                if (uploadThisFile == true && checkFileInServer == false)
+                {
+                    ftpFiles.Add(localFileName);
 
-                Grid UploadIconGrid = new Grid();
-                UploadIconGrid.Margin = new Thickness(24);
-                UploadIconGrid.Width = 250;
+                    //uploadFilesStackPanel.Children.Clear();
+                    //uploadFilesStackPanel.Children.Add(wrapPanel);
 
-                RowDefinition row1 = new RowDefinition();
-                RowDefinition row2 = new RowDefinition();
-                RowDefinition row3 = new RowDefinition();
+                    if (wrapPanel.Children.Count != 0)
+                        wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
 
-                UploadIconGrid.RowDefinitions.Add(row1);
-                UploadIconGrid.RowDefinitions.Add(row2);
-                UploadIconGrid.RowDefinitions.Add(row3);
+                    InsertIconGrid("pending", localFolderPath);
 
-                Image icon = new Image();
+                    currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
+                    currentSelectedFile.Children.Add(progressBar);
+                    Grid.SetRow(progressBar, 3);
 
-                if (localFolderPath.Contains(".pdf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/pdf_icon.jpg")) };
+                    uploadBackground.RunWorkerAsync();
 
-                else if (localFolderPath.Contains(".doc") || localFolderPath.Contains(".docs") || localFolderPath.Contains(".docx"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/word_icon.jpg")) };
+                    uploadThisFile = false;
+                }
+                else if(checkFileInServer == true)
+                {
+                    uploadBackground.RunWorkerAsync();
 
-                else if (localFolderPath.Contains(".txt") || localFolderPath.Contains(".rtf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/text_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".xls") || localFolderPath.Contains(".xlsx") || localFolderPath.Contains(".csv"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/excel_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".jpg") || localFolderPath.Contains(".png") || localFolderPath.Contains(".raw") || localFolderPath.Contains(".jpeg") || localFolderPath.Contains(".gif"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/image_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".rar") || localFolderPath.Contains(".zip") || localFolderPath.Contains(".gzip"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/winrar_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".ppt") || localFolderPath.Contains(".pptx") || localFolderPath.Contains(".pptm"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/powerpoint_icon.jpg")) };
-
-                else if (localFolderPath != ".." || localFolderPath != ".")
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/unknown_icon.jpg")) };
-
-                resizeImage(ref icon, 70, 70);
-                UploadIconGrid.Children.Add(icon);
-                Grid.SetRow(icon, 0);
-
-                Label name = new Label();
-                name.Content = localFileName;
-                name.HorizontalAlignment = HorizontalAlignment.Center;
-                UploadIconGrid.Children.Add(name);
-                Grid.SetRow(name, 1);
-
-                Label status = new Label();
-                status.Content = "PENDING";
-                status.HorizontalAlignment = HorizontalAlignment.Center;
-                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
-                UploadIconGrid.Children.Add(status);
-                Grid.SetRow(status, 2);
-
-                wrapPanel.Children.Add(UploadIconGrid);
-
-                uploadBackground.RunWorkerAsync();
+                    uploadThisFile = false;
+                }
             }
         }
+
+        private void OnClickBrowseButton(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog uploadFile = new OpenFileDialog();
+
+            if (uploadFile.ShowDialog() == false)
+                return;
+
+            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                return;
+
+            if (ftpFiles.Count == 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+            }
+
+            localFolderPath = uploadFile.FileName;
+            localFileName = System.IO.Path.GetFileName(localFolderPath);
+
+            serverFileName = localFileName;
+
+            ftpFiles.Add(localFileName);
+
+            InsertIconGrid("pending", localFolderPath);
+            currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
+            currentSelectedFile.Children.Add(progressBar);
+            Grid.SetRow(progressBar, 3);
+
+            uploadBackground.RunWorkerAsync();
+        }
+
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
-        { 
+        {
             //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             //{
             //    workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
@@ -437,7 +531,7 @@ namespace _01electronics_crm
             //    workOffer.SetWarrantyPeriod(warrantyPeriod);
             //    workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             //    workOffer.SetOfferNotes(additionalDescription);
-            //
+
             //    if (workOffer.GetSalesPersonId() == 0)
             //        MessageBox.Show("You need to choose sales person before adding a work offer!");
             //    else if (workOffer.GetCompanyName() == null)
@@ -470,9 +564,9 @@ namespace _01electronics_crm
             //    {
             //        if (workOffer.IssueNewOffer())
             //            MessageBox.Show("WorkOffer added succefully!");
-            //
+
             //        //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-            //
+
             //        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
             //        currentWindow.Close();
             //    }
@@ -484,7 +578,7 @@ namespace _01electronics_crm
             //    workOffer.SetWarrantyPeriod(warrantyPeriod);
             //    workOffer.SetOfferValidityPeriod(offerValidityPeriod);
             //    workOffer.SetOfferNotes(additionalDescription);
-            //
+
             //    if (workOffer.GetSalesPersonId() == 0)
             //        MessageBox.Show("You need to choose sales person before adding a work offer!");
             //    else if (workOffer.GetCompanyName() == null)
@@ -513,19 +607,19 @@ namespace _01electronics_crm
             //        MessageBox.Show("You need to set warranty period before adding a work offer!");
             //    else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
             //        MessageBox.Show("You need to set validity period before adding a work offer!");
-            //
-            //
+
+
             //    else
             //    {
             //        if (workOffer.ReviseOffer())
             //            MessageBox.Show("Offer Revised successfully!");
-            //
+
             //        // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-            //
+
             //        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
             //        currentWindow.Close();
             //    }
-            //
+
             //}
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -542,94 +636,54 @@ namespace _01electronics_crm
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] temp = (string[])e.Data.GetData(DataFormats.FileDrop);
-                int tempCounter = 0;
+
                 e.Effects = DragDropEffects.All;
 
                 for (int i = 0; i < temp.Count(); i++)
                 {
-                    if (wrapPanel.Children.Count != 0)
-                            wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
-                    
-                    //files[numberOfFilesAdded] = (string)e.Data.GetData(DataFormats.FileDrop);
-                    //e.Effects = DragDropEffects.Copy;
-                    if (uploadComplete == true)
+                    localFolderPath = temp[i];
+                    localFileName = System.IO.Path.GetFileName(localFolderPath);
+
+                    serverFileName = localFileName;
+
+                    CheckIfFileAlreadyUploaded(localFileName);
+
+                    if (uploadThisFile == true && checkFileInServer == false)
                     {
-                        uploadComplete = false;
 
-                        localFolderPath = temp[i];
-                        localFileName = System.IO.Path.GetFileName(localFolderPath);
-
-                        serverFileName = localFileName;
+                        if (wrapPanel.Children.Count != 0)
+                            wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
 
                         progressBar.Visibility = Visibility.Visible;
 
-                        counter++;
+                        ftpFiles.Add(localFileName);
 
-                        Grid UploadIconGrid = new Grid();
-                        UploadIconGrid.Margin = new Thickness(24);
-                        UploadIconGrid.Width = 250;
+                        InsertIconGrid("pending", localFolderPath);
 
-                        RowDefinition row1 = new RowDefinition();
-                        RowDefinition row2 = new RowDefinition();
-                        RowDefinition row3 = new RowDefinition();
+                        currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
+                        currentSelectedFile.Children.Add(progressBar);
+                        Grid.SetRow(progressBar, 3);
 
-                        UploadIconGrid.RowDefinitions.Add(row1);
-                        UploadIconGrid.RowDefinitions.Add(row2);
-                        UploadIconGrid.RowDefinitions.Add(row3);
-
-                        Image icon = new Image();
-
-                        if (localFolderPath.Contains(".pdf"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/pdf_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".doc") || localFolderPath.Contains(".docs") || localFolderPath.Contains(".docx"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/word_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".txt") || localFolderPath.Contains(".rtf"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/text_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".xls") || localFolderPath.Contains(".xlsx") || localFolderPath.Contains(".csv"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/excel_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".jpg") || localFolderPath.Contains(".png") || localFolderPath.Contains(".raw") || localFolderPath.Contains(".jpeg") || localFolderPath.Contains(".gif"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/image_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".rar") || localFolderPath.Contains(".zip") || localFolderPath.Contains(".gzip"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/winrar_icon.jpg")) };
-
-                        else if (localFolderPath.Contains(".ppt") || localFolderPath.Contains(".pptx") || localFolderPath.Contains(".pptm"))
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/powerpoint_icon.jpg")) };
-
-                        else if (localFolderPath != ".." || localFolderPath != ".")
-                            icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/unknown_icon.jpg")) };
-
-                        resizeImage(ref icon, 70, 70);
-                        UploadIconGrid.Children.Add(icon);
-                        Grid.SetRow(icon, 0);
-
-                        Label name = new Label();
-                        name.Content = localFileName;
-                        name.HorizontalAlignment = HorizontalAlignment.Center;
-                        UploadIconGrid.Children.Add(name);
-                        Grid.SetRow(name, 1);
-
-                        Label status = new Label();
-                        status.Content = "PENDING";
-                        status.HorizontalAlignment = HorizontalAlignment.Center;
-                        BrushConverter brush = new BrushConverter();
-                        status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
-                        UploadIconGrid.Children.Add(status);
-                        Grid.SetRow(status, 2);
-
-                        wrapPanel.Children.Add(UploadIconGrid);
-                        //const result = await firstFunction()
                         uploadBackground.RunWorkerAsync();
+
                         while (uploadBackground.IsBusy)
                         {
                             System.Windows.Forms.Application.DoEvents();
                         }
+
+                        uploadThisFile = false;
                     }
-                    
+                    else if (uploadThisFile == true)
+                    {
+                        uploadBackground.RunWorkerAsync();
+
+                        while (uploadBackground.IsBusy)
+                        {
+                            System.Windows.Forms.Application.DoEvents();
+                        }
+
+                        uploadThisFile = false;
+                    }
                 }
             }
         }
@@ -639,181 +693,55 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         protected void OnUploadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            uploadComplete = true;
 
-            if (wrapPanel.Children.Count != 0)
-                wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
-
-            //uploadLabel.Visibility = Visibility.Visible;
-            progressBar.Visibility = Visibility.Collapsed;
-
-            if (fileUploaded == true)
+            if (checkFileInServer == false)
             {
-                Grid UploadIconGrid = new Grid();
-                UploadIconGrid.Margin = new Thickness(24);
-                UploadIconGrid.Width = 250;
+                if (wrapPanel.Children.Count != 0)
+                    wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
 
-                RowDefinition row1 = new RowDefinition();
-                RowDefinition row2 = new RowDefinition();
-                RowDefinition row3 = new RowDefinition();
+                currentSelectedFile.Children.Remove(progressBar);
 
-                UploadIconGrid.RowDefinitions.Add(row1);
-                UploadIconGrid.RowDefinitions.Add(row2);
-                UploadIconGrid.RowDefinitions.Add(row3);
-
-                UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
-
-                Image icon = new Image();
-
-                if (localFolderPath.Contains(".pdf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/pdf_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".doc") || localFolderPath.Contains(".docs") || localFolderPath.Contains(".docx"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/word_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".txt") || localFolderPath.Contains(".rtf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/text_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".xls") || localFolderPath.Contains(".xlsx") || localFolderPath.Contains(".csv"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/excel_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".jpg") || localFolderPath.Contains(".png") || localFolderPath.Contains(".raw") || localFolderPath.Contains(".jpeg") || localFolderPath.Contains(".gif"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/image_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".rar") || localFolderPath.Contains(".zip") || localFolderPath.Contains(".gzip"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/winrar_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".ppt") || localFolderPath.Contains(".pptx") || localFolderPath.Contains(".pptm"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/powerpoint_icon.jpg")) };
-
-                else if (localFolderPath != ".." || localFolderPath != ".")
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/unknown_icon.jpg")) };
-
-                resizeImage(ref icon, 70, 70);
-                UploadIconGrid.Children.Add(icon);
-                Grid.SetRow(icon, 0);
-
-                Label name = new Label();
-                name.Content = System.IO.Path.GetFileName(localFolderPath);
-                name.HorizontalAlignment = HorizontalAlignment.Center;
-                UploadIconGrid.Children.Add(name);
-                Grid.SetRow(name, 1);
-
-                Label status = new Label();
-                status.Content = "SUBMITTED";
-                status.HorizontalAlignment = HorizontalAlignment.Center;
-                BrushConverter brush = new BrushConverter();
-                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
-                UploadIconGrid.Children.Add(status);
-                Grid.SetRow(status, 2);
-
-                wrapPanel.Children.Add(UploadIconGrid);
-
+                if (fileUploaded == true)
+                {
+                    InsertIconGrid("submitted", localFolderPath);
+                }
+                else
+                {
+                    InsertIconGrid("failed", localFolderPath);
+                }
+                
                 InsertAddFilesIcon();
             }
+
             else
             {
-                Grid UploadIconGrid = new Grid();
-                UploadIconGrid.Margin = new Thickness(24);
-                UploadIconGrid.Width = 250;
+                overwriteFileGrid.Children.Remove(progressBar);
 
-                RowDefinition row1 = new RowDefinition();
-                RowDefinition row2 = new RowDefinition();
-                RowDefinition row3 = new RowDefinition();
-
-                UploadIconGrid.RowDefinitions.Add(row1);
-                UploadIconGrid.RowDefinitions.Add(row2);
-                UploadIconGrid.RowDefinitions.Add(row3);
-
-                UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
-
-                Image icon = new Image();
-
-                if (localFolderPath.Contains(".pdf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/pdf_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".doc") || localFolderPath.Contains(".docs") || localFolderPath.Contains(".docx"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/word_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".txt") || localFolderPath.Contains(".rtf"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/text_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".xls") || localFolderPath.Contains(".xlsx") || localFolderPath.Contains(".csv"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/excel_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".jpg") || localFolderPath.Contains(".png") || localFolderPath.Contains(".raw") || localFolderPath.Contains(".jpeg") || localFolderPath.Contains(".gif"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/image_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".rar") || localFolderPath.Contains(".zip") || localFolderPath.Contains(".gzip"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/winrar_icon.jpg")) };
-
-                else if (localFolderPath.Contains(".ppt") || localFolderPath.Contains(".pptx") || localFolderPath.Contains(".pptm"))
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/powerpoint_icon.jpg")) };
-
-                else if (localFolderPath != ".." || localFolderPath != ".")
-                    icon = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/unknown_icon.jpg")) };
-
-                resizeImage(ref icon, 70, 70);
-                UploadIconGrid.Children.Add(icon);
-                Grid.SetRow(icon, 0);
-
-                Label name = new Label();
-                name.Content = System.IO.Path.GetFileName(localFolderPath);
-                name.HorizontalAlignment = HorizontalAlignment.Center;
-                UploadIconGrid.Children.Add(name);
-                Grid.SetRow(name, 1);
-
-                Label status = new Label();
-                status.Content = "FAILED";
-                status.HorizontalAlignment = HorizontalAlignment.Center;
                 BrushConverter brush = new BrushConverter();
-                status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FF0000");
-                UploadIconGrid.Children.Add(status);
-                Grid.SetRow(status, 2);
-
-                wrapPanel.Children.Add(UploadIconGrid);
-
-                InsertAddFilesIcon();
+                Label overwriteFileLabel = (Label)overwriteFileGrid.Children[2];
+                
+                if (fileUploaded == true)
+                {
+                    overwriteFileLabel.Content = "SUBMITTED";
+                    overwriteFileLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
+                }
+                else
+                {
+                    overwriteFileLabel.Content = "Failed";
+                    overwriteFileLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FF0000");
+                }
             }
         }
         protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            progressBar.Visibility = Visibility.Collapsed;
+            currentSelectedFile.Children.Remove(progressBar);
             Label currentStatusLabel = (Label)currentSelectedFile.Children[2];
             if (fileDownloaded == true)
                 currentStatusLabel.Content = "Downloaded";
             else
                 currentStatusLabel.Content = "Failed";
-            //downloadButton.Visibility = Visibility.Visible;
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BUTTON CLICKED HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //private void OnClickDownloadButton(object sender, RoutedEventArgs e)
-        //{
-        //    //downloadButton.Visibility = Visibility.Collapsed;
-
-        //    System.Windows.Forms.FolderBrowserDialog downloadFile = new System.Windows.Forms.FolderBrowserDialog();
-
-        //    if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-        //        return;
-
-        //    if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
-        //        return;
-
-        //    serverFileName = currentLabel.Content.ToString();
-        //    //serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/" + serverFileName;
-        //    integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
-
-        //    localFolderPath = downloadFile.SelectedPath;
-        //    localFileName = serverFileName;
-        //    integrityChecks.RemoveExtraSpaces(localFileName, ref localFileName);
-
-        //    progressBar.Visibility = Visibility.Visible;
-
-        //    downloadBackground.RunWorkerAsync();
-        //}
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///PROGRESS CHANGED HANDLERS
@@ -833,8 +761,6 @@ namespace _01electronics_crm
         protected void BackgroundUpload(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
-            uploadComplete = false;
-
 
             uploadBackground.ReportProgress(50);
             if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName))
@@ -863,34 +789,55 @@ namespace _01electronics_crm
             downloadBackground.ReportProgress(100);
         }
 
-        
-        private void InsertAddFilesIcon()
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///EXTRA FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public void resizeImage(ref Image imgToResize, int width, int height)
         {
-            Grid addFilesGrid = new Grid();
-            addFilesGrid.Margin = new Thickness(24);
-            addFilesGrid.Width = 250;
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
 
-            RowDefinition addFilesRow1 = new RowDefinition();
-            RowDefinition addFilesRow2 = new RowDefinition();
-            addFilesGrid.RowDefinitions.Add(addFilesRow1);
-            addFilesGrid.RowDefinitions.Add(addFilesRow2);
+        private void CheckIfFileAlreadyUploaded(string fileName)
+        {
 
-            addFilesGrid.MouseLeftButtonDown += OnClickAddFilesGrid;
+            if (ftpFiles.Count == 0)
+                uploadThisFile = true;
+            
+            else
+            {
+                for (int i = 0; i < ftpFiles.Count(); i++)
+                {
+                    if (ftpFiles[i] == fileName)
+                    {
+                        var result = MessageBox.Show("This file has already been uploaded, are you sure you want to overwrite?", "FTP Server", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            uploadThisFile = true;
 
-            Image addFilesImage = new Image();
+                            BrushConverter brush = new BrushConverter();
+                            overwriteFileGrid = (Grid)wrapPanel.Children[i];
+                            Label overwriteFileLabel = (Label)overwriteFileGrid.Children[2];
+                            overwriteFileLabel.Content = "Overwriting";
+                            overwriteFileLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
+                            overwriteFileGrid.Children.Add(progressBar);
+                            Grid.SetRow(progressBar, 3);
+                        }
+                        else
+                            uploadThisFile = false;
 
-            addFilesImage = new Image { Source = new BitmapImage(new Uri(currentDirectory + "/icons/addfiles_icon.jpg")) };
-            resizeImage(ref addFilesImage, 70, 70);
-            addFilesGrid.Children.Add(addFilesImage);
-            Grid.SetRow(addFilesImage, 0);
-
-            Label addFilesLabel = new Label();
-            addFilesLabel.HorizontalAlignment = HorizontalAlignment.Center;
-            addFilesLabel.Content = "Double-Click to ADD";
-            addFilesGrid.Children.Add(addFilesLabel);
-            Grid.SetRow(addFilesLabel, 1);
-
-            wrapPanel.Children.Add(addFilesGrid);
+                        checkFileInServer = true;
+                        break;
+                    }
+                    else
+                    {
+                        uploadThisFile = true;
+                        checkFileInServer = false;
+                    }
+                }
+            }
+            
         }
     }
 }

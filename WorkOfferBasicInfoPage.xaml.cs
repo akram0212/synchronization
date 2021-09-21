@@ -52,7 +52,7 @@ namespace _01electronics_crm
             workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             workOfferAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
-            workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
+            
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -65,12 +65,17 @@ namespace _01electronics_crm
             //workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
+
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             {
                 workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-                workOffer.GetNewOfferSerial();
-                workOffer.GetNewOfferVersion();
+                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    if (!workOffer.GetNewOfferSerial())
+                        return;
+                if(!workOffer.GetNewOfferVersion())
+                    return;
                 workOffer.GetNewOfferID();
+                workOffer.SetOfferIssueDateToToday();
             }
 
             workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
@@ -506,26 +511,32 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-                    if (!workOffer.GetNewOfferSerial())
-                        return;
-
-                if (!workOffer.GetNewOfferVersion())
-                    return;
-
-                workOffer.SetOfferIssueDateToToday();
-
-                workOffer.GetNewOfferID();
-            }
-
+            
             workOfferUploadFilesPage.workOfferBasicInfoPage = this;
             workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
             workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
             workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
 
             NavigationService.Navigate(workOfferUploadFilesPage);
+        }
+
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            if (RFQSerialCombo.IsEnabled == true)
+            {
+                workOfferProductsPage.SetTypeComboBoxes();
+                workOfferProductsPage.SetBrandComboBoxes();
+                workOfferProductsPage.SetModelComboBoxes();
+                workOfferProductsPage.SetQuantityTextBoxes();
+            }
+
+            workOfferProductsPage.workOfferBasicInfoPage = this;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+
+            NavigationService.Navigate(workOfferProductsPage);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -535,6 +546,5 @@ namespace _01electronics_crm
         {
             
         }
-
     }
 }
