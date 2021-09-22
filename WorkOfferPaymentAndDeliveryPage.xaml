@@ -16,11 +16,7 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="#105A97">
@@ -46,68 +42,85 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Payment and Delivery" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" >
                 <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
         </Grid>
-        
-        <WrapPanel Grid.Row="2">
-            <Label  Content="Total Price" Style="{StaticResource labelStyle}"/>
-            <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  IsReadOnly="True" Name="totalPriceTextBox" />
-            <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="totalPriceCombo" />
-            <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="totalPriceVATCombo" SelectionChanged="OnSelChangedTotalPriceVATCombo"/>
-        </WrapPanel>
-        
-        <WrapPanel Grid.Row="3">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="downPaymentPercentageTextBox" TextChanged="OnTextChangedDownPaymentPercentageTextBox"/>
-            <Label  Content="% Down Payment" Style="{StaticResource largeLabelStyle}"/>
-            <TextBox Name="downPaymentActualTextBox" Style="{StaticResource miniTextBoxStyle}"  IsReadOnly="True"/>
-        </WrapPanel>
-        
-        <WrapPanel Grid.Row="4">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onDeliveryPercentageTextBox" TextChanged="OnTextChangedDeliveryPercentageTextBox"/>
-            <Label  Content="% On Delivery" Style="{StaticResource largeLabelStyle}" />
-            <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onDeliveryActualTextBox" IsReadOnly="True"/>
-        </WrapPanel>
-        
-        <WrapPanel Grid.Row="5">
-            <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onInstallationPercentageTextBox" TextChanged="OnTextChangedInstallationPercentageTextBox"/>
-            <Label  Content="% On Installation" Style="{StaticResource largeLabelStyle}" />
-            <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onInstallationActualTextBox"  IsReadOnly="True"/>
-        </WrapPanel>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="6">
-            <Label Content="Delivery &#x0a;Time" Style="{StaticResource labelStyle}"/>
-            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeFromTextBox"  Name="deliveryTimeTextBoxFrom" />
-            <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <WrapPanel Grid.Row="0">
+                    <Label  Content="Total Price" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  IsReadOnly="True" Name="totalPriceTextBox" />
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="totalPriceCombo" />
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="totalPriceVATCombo" SelectionChanged="OnSelChangedTotalPriceVATCombo"/>
+                </WrapPanel>
 
-            <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeToTextBox"  x:Name="deliveryTimeTextBoxTo" />
-            <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeCombo" Name="deliveryTimeCombo" />
-            <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeFromWhenCombo" Name="deliveryTimeFromWhenCombo" />
-        </WrapPanel>
-        
-        <WrapPanel Grid.Row="7">
-            <Label Content="Delivery &#x0a;Point" Style="{StaticResource labelStyle}" />
+                <WrapPanel Grid.Row="1">
+                    <TextBox Style="{StaticResource microTextBoxStyle}"  Name="downPaymentPercentageTextBox" TextChanged="OnTextChangedDownPaymentPercentageTextBox"/>
+                    <Label  Content="% Down Payment" Style="{StaticResource largeLabelStyle}"/>
+                    <TextBox Name="downPaymentActualTextBox" Style="{StaticResource miniTextBoxStyle}"  IsReadOnly="True"/>
+                </WrapPanel>
 
-            <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
-                <ComboBox Name="deliveryPointPortCombo" Style="{StaticResource miniComboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointPortCombo"/>
+                <WrapPanel Grid.Row="2">
+                    <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onDeliveryPercentageTextBox" TextChanged="OnTextChangedDeliveryPercentageTextBox"/>
+                    <Label  Content="% On Delivery" Style="{StaticResource largeLabelStyle}" />
+                    <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onDeliveryActualTextBox" IsReadOnly="True"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="3">
+                    <TextBox Style="{StaticResource microTextBoxStyle}"  Name="onInstallationPercentageTextBox" TextChanged="OnTextChangedInstallationPercentageTextBox"/>
+                    <Label  Content="% On Installation" Style="{StaticResource largeLabelStyle}" />
+                    <TextBox Style="{StaticResource miniTextBoxStyle}"  Name="onInstallationActualTextBox"  IsReadOnly="True"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="4">
+                    <Label Content="Delivery &#x0a;Time" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeFromTextBox"  Name="deliveryTimeTextBoxFrom" />
+                    <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+                    <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="OnTextChangedDeliveryTimeToTextBox"  x:Name="deliveryTimeTextBoxTo" />
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeCombo" Name="deliveryTimeCombo" />
+                    <ComboBox Style="{StaticResource miniComboBoxStyle}"  SelectionChanged="OnSelChangedDeliveryTimeFromWhenCombo" Name="deliveryTimeFromWhenCombo" />
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="5">
+                    <Label Content="Delivery &#x0a;Point" Style="{StaticResource labelStyle}" />
+
+                    <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
+                    <ComboBox Name="deliveryPointPortCombo" Style="{StaticResource miniComboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointPortCombo"/>
+                </WrapPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Button Style="{StaticResource buttonStyle}" Name="backButton" Content="Back" Click="OnClickBackButton" Margin="24"/>
+            <Button Style="{StaticResource buttonStyle}" x:Name="nextButton" Content="Next" Click="OnClickNextButton" Margin="24"/>
         </WrapPanel>
 
     </Grid>

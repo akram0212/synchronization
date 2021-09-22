@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
+    <ProjectGuid>{23E8A24E-440C-4E06-97BD-C87F736A1B8F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -72,6 +72,10 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Spire.Doc, Version=9.8.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
@@ -131,6 +135,7 @@
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExcelExport.cs" />
     <Compile Include="MainWindow.xaml.cs" />
     <Compile Include="ModelsPage.xaml.cs">
       <DependentUpon>ModelsPage.xaml</DependentUpon>
@@ -153,6 +158,9 @@
     </Compile>
     <Compile Include="RFQsPage.xaml.cs">
       <DependentUpon>RFQsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RFQUploadFilesPage.xaml.cs">
+      <DependentUpon>RFQUploadFilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RFQWindow.xaml.cs">
       <DependentUpon>RFQWindow.xaml</DependentUpon>
@@ -307,6 +315,10 @@
     <Page Include="RFQsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RFQUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RFQWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -482,6 +494,18 @@
     <Resource Include="photos\Earth_Leakage_cover_photo.jpg" />
     <Resource Include="photos\Electrical_Contracts_cover_photo.jpg" />
     <Resource Include="photos\Inverter_cover_photo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\addfiles_icon.jpg" />
+    <Resource Include="photos\drop_files_icon.jpg" />
+    <Resource Include="photos\excel_icon.jpg" />
+    <Resource Include="photos\image_icon.jpg" />
+    <Resource Include="photos\pdf_icon.jpg" />
+    <Resource Include="photos\powerpoint_icon.jpg" />
+    <Resource Include="photos\text_icon.jpg" />
+    <Resource Include="photos\unknown_icon.jpg" />
+    <Resource Include="photos\winrar_icon.jpg" />
+    <Resource Include="photos\word_icon.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

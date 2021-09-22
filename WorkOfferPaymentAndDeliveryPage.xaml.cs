@@ -185,7 +185,7 @@ namespace _01electronics_crm
             workOffer.SetTotalValues();
         }
 
-        private void SetPercentAndValuesInDataBase()
+        private void SetPercentAndValuesInWorkOffer()
         {
             workOffer.SetPercentOnInstallation(onInstallationPercentage);
             workOffer.SetPercentDownPayment(downPaymentPercentage);
@@ -362,7 +362,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInDataBase();
+            SetPercentAndValuesInWorkOffer();
 
             workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
             workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = this;
@@ -373,7 +373,7 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInDataBase();
+            SetPercentAndValuesInWorkOffer();
 
             workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferProductsPage.workOfferPaymentAndDeliveryPage = this;
@@ -390,7 +390,7 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInDataBase();
+            SetPercentAndValuesInWorkOffer();
 
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
@@ -424,11 +424,35 @@ namespace _01electronics_crm
             NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            SetPercentAndValuesInWorkOffer();
+
+            workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferAdditionalInfoPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferAdditionalInfoPage);
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = this;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferProductsPage);
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
         }
+
+        
     }
 }

@@ -51,13 +51,30 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>                
-                <RowDefinition Height="1*"/>
                 <RowDefinition Height="75"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="RFQS" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" Margin="48,24">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource selectedMainTabBorder}">
+                    <Label Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource unselectedMainTabBorder}"  Width="173">
+                    <Label Content="Table View" Style="{StaticResource unselectedMainTabLabelItem}"/>
+                </Border>
+
+            </Grid>
+            
+            <Grid Grid.Row="2" Margin="48,24">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -109,18 +126,20 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
-                <Button Grid.Column="2" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton"/>
-                <Button Grid.Column="3" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton"/>
+                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton" Margin="24"/>
+                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton" Margin="24"/>
+                <Button Grid.Column="2" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton" Margin="24"/>
+                <Button Grid.Column="3" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton" Margin="24"/>
+                <Button Grid.Column="4" Content="Export" Style="{StaticResource buttonStyle}" Name="exportButton" Margin="24"/>
             </Grid>
             
         </Grid>

@@ -39,7 +39,10 @@ namespace _01electronics_crm
 
         private int viewAddCondition;
         private int numberOfProductsAdded;
-        
+
+        public RFQBasicInfoPage rfqBasicInfoPage;
+        public RFQAdditionalInfoPage rfqAdditionalInfoPage;
+        public RFQUploadFilesPage rfqUploadFilesPage;
 
         public RFQProductsPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
@@ -75,14 +78,6 @@ namespace _01electronics_crm
                 InitializeProducts();
                 InitializeBrandCombo();
                 SetUpPageUIElements();
-            }
-
-            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                SetTypeComboBoxes();
-                SetBrandComboBoxes();
-                SetModelComboBoxes();
-                SetQuantityTextBoxes();
             }
         }
         //////////INITIALIZE FUNCTIONS//////////
@@ -683,6 +678,22 @@ namespace _01electronics_crm
             NavigationService.Navigate(additionalInfoPage);
         }
 
-        
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            rfqBasicInfoPage.rfqProductsPage = this;
+            rfqBasicInfoPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+            rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqBasicInfoPage);
+        }
+
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqAdditionalInfoPage.rfqProductsPage = this;
+            rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqAdditionalInfoPage);
+        }
     }
 }

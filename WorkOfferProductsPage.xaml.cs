@@ -989,6 +989,31 @@ namespace _01electronics_crm
             NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+            workOffer.SetNoOfSavedOfferProducts();
+
+            workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
+            workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
+
+            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferProductsPage = this;
+            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            workOfferBasicInfoPage.workOfferProductsPage = this;
+            workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferBasicInfoPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
+
+            NavigationService.Navigate(workOfferBasicInfoPage);
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -997,6 +1022,5 @@ namespace _01electronics_crm
         {
             
         }
-
     }
 }
