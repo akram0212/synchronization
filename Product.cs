@@ -109,7 +109,7 @@ namespace _01electronics_crm
             queryColumns.sql_string = 1;
             queryColumns.sql_int = 1;
 
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)

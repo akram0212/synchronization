@@ -54,8 +54,6 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-
-           
         </Grid>
 
     </Grid>
