@@ -398,8 +398,20 @@ namespace _01electronics_crm
             NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
+            workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+            workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+            workOffer.SetWarrantyPeriod(warrantyPeriod);
+            workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+            workOffer.SetOfferNotes(additionalDescription);
+
             workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
             workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
@@ -410,6 +422,12 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            workOffer.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+            workOffer.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+            workOffer.SetWarrantyPeriod(warrantyPeriod);
+            workOffer.SetOfferValidityPeriod(offerValidityPeriod);
+            workOffer.SetOfferNotes(additionalDescription);
+
             workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
             workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = this;
@@ -417,10 +435,6 @@ namespace _01electronics_crm
 
             NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
         }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BUTTON CLICKED HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {

@@ -80,7 +80,8 @@ namespace _01electronics_crm
 
             SetDefaultSettings();
 
-            SetRFQsStackPanel();            
+            SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -451,7 +452,306 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
+        private bool SetRFQsGrid()
+        {
+
+            rfqsGrid.Children.Clear();
+            rfqsGrid.RowDefinitions.Clear();
+            rfqsGrid.ColumnDefinitions.Clear();
+
+            currentSelectedRFQItem = null;
+
+            Label offerIdHeader = new Label();
+            offerIdHeader.Content = "RFQ ID";
+            offerIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerSalesHeader = new Label();
+            offerSalesHeader.Content = "Sales Engineer";
+            offerSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerPreSalesHeader = new Label();
+            offerPreSalesHeader.Content = "Pre-Sales Engineer";
+            offerPreSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerCompanyContactHeader = new Label();
+            offerCompanyContactHeader.Content = "Contact Info";
+            offerCompanyContactHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerProductsHeader = new Label();
+            offerProductsHeader.Content = "Products";
+            offerProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerContractTypeHeader = new Label();
+            offerContractTypeHeader.Content = "Contract Type";
+            offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerStatusHeader = new Label();
+            offerStatusHeader.Content = "Offer Status";
+            offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            rfqsGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetRow(offerIdHeader, 0);
+            Grid.SetColumn(offerIdHeader, 0);
+            rfqsGrid.Children.Add(offerIdHeader);
+
+            Grid.SetRow(offerSalesHeader, 0);
+            Grid.SetColumn(offerSalesHeader, 1);
+            rfqsGrid.Children.Add(offerSalesHeader);
+
+            Grid.SetRow(offerPreSalesHeader, 0);
+            Grid.SetColumn(offerPreSalesHeader, 2);
+            rfqsGrid.Children.Add(offerPreSalesHeader);
+
+            Grid.SetRow(offerCompanyContactHeader, 0);
+            Grid.SetColumn(offerCompanyContactHeader, 3);
+            rfqsGrid.Children.Add(offerCompanyContactHeader);
+
+            Grid.SetRow(offerProductsHeader, 0);
+            Grid.SetColumn(offerProductsHeader, 4);
+            rfqsGrid.Children.Add(offerProductsHeader);
+
+            Grid.SetRow(offerContractTypeHeader, 0);
+            Grid.SetColumn(offerContractTypeHeader, 5);
+            rfqsGrid.Children.Add(offerContractTypeHeader);
+
+            Grid.SetRow(offerStatusHeader, 0);
+            Grid.SetColumn(offerStatusHeader, 6);
+            rfqsGrid.Children.Add(offerStatusHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < rfqsList.Count; i++)
+            {
+                DateTime currentWorkOfferDate = DateTime.Parse(rfqsList[i].issue_date);
+
+                bool salesPersonCondition = selectedSales != rfqsList[i].sales_person_id;
+
+                bool assigneeCondition = selectedPreSales != rfqsList[i].assignee_id;
+
+                bool productCondition = false;
+                for (int productNo = 0; productNo < rfqsList[i].products.Count(); productNo++)
+                    if (rfqsList[i].products[productNo].productType.typeId == selectedProduct)
+                        productCondition |= true;
+
+                bool brandCondition = false;
+                for (int productNo = 0; productNo < rfqsList[i].products.Count(); productNo++)
+                    if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
+                        brandCondition |= true;
+
+
+                if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
+                    continue;
+
+                if (salesCheckBox.IsChecked == true && salesPersonCondition)
+                    continue;
+
+                if (preSalesCheckBox.IsChecked == true && assigneeCondition)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOfferDate) != selectedQuarter)
+                    continue;
+
+                if (productCheckBox.IsChecked == true && !productCondition)
+                    continue;
+
+                if (brandCheckBox.IsChecked == true && !brandCondition)
+                    continue;
+
+                if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
+                    continue;
+
+
+                RowDefinition currentRow = new RowDefinition();
+                rfqsGrid.RowDefinitions.Add(currentRow);
+
+                Label offerIdLabel = new Label();
+                offerIdLabel.Content = rfqsList[i].rfq_id;
+                offerIdLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(offerIdLabel, currentRowNumber);
+                Grid.SetColumn(offerIdLabel, 0);
+                rfqsGrid.Children.Add(offerIdLabel);
+
+
+                Label salesLabel = new Label();
+                salesLabel.Content = rfqsList[i].sales_person_name;
+                salesLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesLabel, currentRowNumber);
+                Grid.SetColumn(salesLabel, 1);
+                rfqsGrid.Children.Add(salesLabel);
+
+
+                Label preSalesLabel = new Label();
+                preSalesLabel.Content = rfqsList[i].assignee_name;
+                preSalesLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(preSalesLabel, currentRowNumber);
+                Grid.SetColumn(preSalesLabel, 2);
+                rfqsGrid.Children.Add(preSalesLabel);
+
+
+                Label companyAndContactLabel = new Label();
+                companyAndContactLabel.Content = rfqsList[i].company_name + " - " + rfqsList[i].contact_name;
+                companyAndContactLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                rfqsGrid.Children.Add(companyAndContactLabel);
+                Grid.SetRow(companyAndContactLabel, currentRowNumber);
+                Grid.SetColumn(companyAndContactLabel, 3);
+
+
+                Grid productGrid = new Grid();
+                productGrid.ShowGridLines = true;
+
+
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                productGrid.RowDefinitions.Add(new RowDefinition());
+
+
+                Label rowColumnHeader = new Label();
+                rowColumnHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(rowColumnHeader);
+                Grid.SetRow(rowColumnHeader, 0);
+                Grid.SetColumn(rowColumnHeader, 0);
+
+                Label typeHeader = new Label();
+                typeHeader.Content = "Type";
+                typeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(typeHeader);
+                Grid.SetRow(typeHeader, 0);
+                Grid.SetColumn(typeHeader, 1);
+
+
+                Label brandHeader = new Label();
+                brandHeader.Content = "Brand";
+                brandHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(brandHeader);
+                Grid.SetRow(brandHeader, 0);
+                Grid.SetColumn(brandHeader, 2);
+
+
+                Label modelHeader = new Label();
+                modelHeader.Content = "Model";
+                modelHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(modelHeader);
+                Grid.SetRow(modelHeader, 0);
+                Grid.SetColumn(modelHeader, 3);
+
+
+                List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
+
+                for (int j = 0; j < temp.Count(); j++)
+                {
+                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
+                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
+                    COMPANY_WORK_MACROS.MODEL_STRUCT tempModel1 = temp[j].productModel;
+
+                    if (tempType1.typeId != 0)
+                    {
+                        productGrid.RowDefinitions.Add(new RowDefinition());
+
+                        int tempNumber = j + 1;
+                        Label productNumberHeader = new Label();
+                        productNumberHeader.Content = "Product" + " " + tempNumber;
+                        productNumberHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                        productGrid.Children.Add(productNumberHeader);
+                        Grid.SetRow(productNumberHeader, j + 1);
+                        Grid.SetColumn(productNumberHeader, 0);
+
+                        Label type = new Label();
+                        type.Content = tempType1.typeName;
+                        type.Style = (Style)FindResource("tableSubItemLabel");
+
+                        productGrid.Children.Add(type);
+                        Grid.SetRow(type, j + 1);
+                        Grid.SetColumn(type, 1);
+
+                        Label brand = new Label();
+                        brand.Content = tempBrand1.brandName;
+                        brand.Style = (Style)FindResource("tableSubItemLabel");
+
+                        productGrid.Children.Add(brand);
+                        Grid.SetRow(brand, j + 1);
+                        Grid.SetColumn(brand, 2);
+
+                        Label model = new Label();
+                        model.Content = tempModel1.modelName;
+                        model.Style = (Style)FindResource("tableSubItemLabel");
+
+                        productGrid.Children.Add(model);
+                        Grid.SetRow(model, j + 1);
+                        Grid.SetColumn(model, 3);
+                    }
+                }
+
+                rfqsGrid.Children.Add(productGrid);
+                Grid.SetRow(productGrid, currentRowNumber);
+                Grid.SetColumn(productGrid, 4);
+
+
+
+                Label contractTypeLabel = new Label();
+                contractTypeLabel.Content = rfqsList[i].contract_type;
+                contractTypeLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                rfqsGrid.Children.Add(contractTypeLabel);
+                Grid.SetRow(contractTypeLabel, currentRowNumber);
+                Grid.SetColumn(contractTypeLabel, 5);
+
+
+                Border borderIcon = new Border();
+                borderIcon.Style = (Style)FindResource("BorderIcon");
+
+                Label rfqStatusLabel = new Label();
+                rfqStatusLabel.Content = rfqsList[i].rfq_status;
+                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
+                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                {
+                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                {
+                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
+                }
+                else
+                {
+                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                }
+
+                borderIcon.Child = rfqStatusLabel;
+
+                rfqsGrid.Children.Add(borderIcon);
+                Grid.SetRow(borderIcon, currentRowNumber);
+                Grid.SetColumn(borderIcon, 6);
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+            return true;
+        }
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
@@ -469,6 +769,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -483,6 +784,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
@@ -497,6 +799,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -510,6 +813,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
@@ -524,6 +828,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
@@ -538,6 +843,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
@@ -552,6 +858,7 @@ namespace _01electronics_crm
 
             //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
 
         private void OnClosedRFQWindow(object sender, EventArgs e)
@@ -559,6 +866,7 @@ namespace _01electronics_crm
             if (!GetRFQs())
                 return;
             SetRFQsStackPanel();
+            SetRFQsGrid();
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
@@ -657,6 +965,28 @@ namespace _01electronics_crm
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            RFQsStackPanel.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            RFQsStackPanel.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -682,8 +1012,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffers);
+            WorkOffersPage rfqsList = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(rfqsList);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
@@ -810,7 +1140,12 @@ namespace _01electronics_crm
             resolveOffer.Show();
         }
 
-       
+        private void OnBtnClickedExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(rfqsGrid);
+        }
+
+        
     }
 
 }

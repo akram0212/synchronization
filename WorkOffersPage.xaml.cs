@@ -1147,7 +1147,7 @@ namespace _01electronics_crm
             //this.NavigationService.Navigate(workOffers);
         }
 
-        private void OnButtonClickExport(object sender, RoutedEventArgs e)
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(workOffersGrid);
         }
