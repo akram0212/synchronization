@@ -52,10 +52,11 @@ namespace _01electronics_crm
             //mainWindow.Navigated += OnNavigatingEventHandler;
             //new WebBrowserNavigatingEventHandler(webBrowser1_Navigating);
 
+            downloadProgressBar.Visibility = Visibility.Visible;
             downloadBackground.RunWorkerAsync();
 
         }
-        ~ ModelsPage()
+        ~ModelsPage()
         {
             DeletePhotosDestructor();
         }
@@ -110,8 +111,6 @@ namespace _01electronics_crm
                         column1Grid.Children.Add(imageBorder);
 
                         selectedProduct.SetModelID(brandModels[i].modelId);
-                        selectedProduct.GetNewPhotoLocalPath();
-                        selectedProduct.GetNewPhotoServerPath();
 
                         try
                         {
@@ -169,15 +168,25 @@ namespace _01electronics_crm
 
                         Grid row1Grid = new Grid();
 
-                        Label modelLabel = new Label();
-                        modelLabel.VerticalAlignment = VerticalAlignment.Top;
-                        modelLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        modelLabel.Content = brandModels[i].modelName;
-                        modelLabel.Style = (Style)FindResource("tableSubHeaderItem");
-                        Grid.SetRow(modelLabel, 0);
-                        Grid.SetColumn(modelLabel, 0);
+                        row1Grid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151)); 
+                        TextBox modelTextBox = new TextBox();
+                        modelTextBox.VerticalAlignment = VerticalAlignment.Center;
+                        modelTextBox.HorizontalAlignment = HorizontalAlignment.Center;
+                        modelTextBox.HorizontalContentAlignment = HorizontalAlignment.Center;
+                        modelTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+                        modelTextBox.Foreground = Brushes.White;
+                        modelTextBox.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                        modelTextBox.FontWeight = FontWeights.DemiBold;
+                        modelTextBox.IsReadOnly = true;
+                        modelTextBox.BorderThickness = new Thickness(0);
+                        modelTextBox.FontSize = 16;
+                        modelTextBox.Height = 30;
+                        modelTextBox.Text = " " + brandModels[i].modelName;
+                        modelTextBox.TextWrapping = TextWrapping.Wrap;
+                        Grid.SetRow(modelTextBox, 0);
+                        Grid.SetColumn(modelTextBox, 0);
 
-                        row1Grid.Children.Add(modelLabel);
+                        row1Grid.Children.Add(modelTextBox);
 
                         column2Grid.Children.Add(row1Grid);
 
@@ -217,6 +226,28 @@ namespace _01electronics_crm
                                 Grid.SetRow(textBoxGrid, j);
                                 row2Grid.Children.Add(textBoxGrid);
                             }
+                        }
+                        if (selectedProduct.modelSummaryPoints.Count() == 0)
+                        {
+                            RowDefinition summaryRow = new RowDefinition();
+                            row2Grid.RowDefinitions.Add(summaryRow);
+
+                            Grid textBoxGrid = new Grid();
+
+                            TextBox pointsBox = new TextBox();
+                            pointsBox.BorderThickness = new Thickness(0);
+                            pointsBox.IsEnabled = false;
+                            pointsBox.FontWeight = FontWeights.Bold;
+                            pointsBox.Background = Brushes.White;
+                            pointsBox.Text = "";
+                            pointsBox.TextWrapping = TextWrapping.Wrap;
+                            pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
+                            Grid.SetRow(pointsBox, 0);
+
+                            textBoxGrid.Children.Add(pointsBox);
+
+                            Grid.SetRow(textBoxGrid, 0);
+                            row2Grid.Children.Add(textBoxGrid);
                         }
 
                         Grid.SetRow(row2Grid, 1);
@@ -373,15 +404,13 @@ namespace _01electronics_crm
         }
         protected void BackgroundDownload(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker downloadBackground = sender as BackgroundWorker;
-
             QueryGetModels();
 
             downloadBackground.ReportProgress(50);
 
             SetUpPageUIElements();
 
-            //downloadBackground.ReportProgress(100);
+            downloadBackground.ReportProgress(100);
         }
 
         protected void OnDownloadProgressChanged(object sender, ProgressChangedEventArgs e)
