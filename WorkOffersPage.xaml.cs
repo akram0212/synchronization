@@ -412,7 +412,7 @@ namespace _01electronics_crm
                 Grid grid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
-                column2.MaxWidth = 77;
+                column2.MaxWidth = 95;
                 grid.ColumnDefinitions.Add(column1);
                 grid.ColumnDefinitions.Add(column2);
 
