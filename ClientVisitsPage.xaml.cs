@@ -70,6 +70,7 @@ namespace _01electronics_crm
 
             GetVisits();
             InitializeStackPanel();
+            InitializeGrid();
 
             SetDefaultSettings();
         }
@@ -214,6 +215,145 @@ namespace _01electronics_crm
             }
         }
 
+        private bool InitializeGrid()
+        {
+             
+            clientVisitsGrid.Children.Clear();
+            clientVisitsGrid.RowDefinitions.Clear();
+            clientVisitsGrid.ColumnDefinitions.Clear();
+
+            filteredVisits.Clear();
+
+            Label salesPersonHeader = new Label();
+            salesPersonHeader.Content = "Sales Person";
+            salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label dateOfVisitHeader = new Label();
+            dateOfVisitHeader.Content = "Visit Date";
+            dateOfVisitHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label contactInfoHeader = new Label();
+            contactInfoHeader.Content = "Contact Info";
+            contactInfoHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label purposeAndResultHeader = new Label();
+            purposeAndResultHeader.Content = "Purpose - Result";
+            purposeAndResultHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            
+            clientVisitsGrid.RowDefinitions.Add(new RowDefinition());
+
+            
+
+            Grid.SetRow(salesPersonHeader, 0);
+            Grid.SetColumn(salesPersonHeader, 0);
+            clientVisitsGrid.Children.Add(salesPersonHeader);
+
+            Grid.SetRow(dateOfVisitHeader, 0);
+            Grid.SetColumn(dateOfVisitHeader, 1);
+            clientVisitsGrid.Children.Add(dateOfVisitHeader);
+
+            Grid.SetRow(contactInfoHeader, 0);
+            Grid.SetColumn(contactInfoHeader, 2);
+            clientVisitsGrid.Children.Add(contactInfoHeader);
+
+            Grid.SetRow(purposeAndResultHeader, 0);
+            Grid.SetColumn(purposeAndResultHeader, 3);
+            clientVisitsGrid.Children.Add(purposeAndResultHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < visitsInfo.Count; i++)
+            {
+                DateTime currentVisitDate = DateTime.Parse(visitsInfo[i].visit_date);
+
+                if (yearCheckBox.IsChecked == true && currentVisitDate.Year != selectedYear)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentVisitDate) != selectedQuarter)
+                    continue;
+
+                if (employeeCheckBox.IsChecked == true && visitsInfo[i].sales_person_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                filteredVisits.Add(visitsInfo[i]);
+
+
+                RowDefinition currentRow = new RowDefinition();
+                currentRow.Height = new GridLength(75);
+                clientVisitsGrid.RowDefinitions.Add(currentRow);
+
+                Label salesPersonLabel = new Label();
+                salesPersonLabel.Content = visitsInfo[i].sales_person_name;
+                salesPersonLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesPersonLabel, currentRowNumber);
+                Grid.SetColumn(salesPersonLabel, 0);
+                clientVisitsGrid.Children.Add(salesPersonLabel);
+
+
+                Label dateOfVisitLabel = new Label();
+                dateOfVisitLabel.Content = visitsInfo[i].visit_date;
+                dateOfVisitLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(dateOfVisitLabel, currentRowNumber);
+                Grid.SetColumn(dateOfVisitLabel, 1);
+                clientVisitsGrid.Children.Add(dateOfVisitLabel);
+
+
+                Label contactInfoLabel = new Label();
+                contactInfoLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                contactInfoLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(contactInfoLabel, currentRowNumber);
+                Grid.SetColumn(contactInfoLabel, 2);
+                clientVisitsGrid.Children.Add(contactInfoLabel);
+
+
+                Label purposeAndResultLabel = new Label();
+                purposeAndResultLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                purposeAndResultLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clientVisitsGrid.Children.Add(purposeAndResultLabel);
+                Grid.SetRow(purposeAndResultLabel, currentRowNumber);
+                Grid.SetColumn(purposeAndResultLabel, 3);
+
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+            return true;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,6 +457,11 @@ namespace _01electronics_crm
             viewClientVisitWindow.Show();
         }
 
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(clientVisitsGrid);
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,6 +473,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -339,6 +485,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -350,6 +497,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -408,6 +556,8 @@ namespace _01electronics_crm
         {
             GetVisits();
             InitializeStackPanel();
+            InitializeGrid();
         }
+
     }
 }

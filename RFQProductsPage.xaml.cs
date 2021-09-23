@@ -680,6 +680,8 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            rfq.SetNoOfSavedRFQProducts();
+
             rfqBasicInfoPage.rfqProductsPage = this;
             rfqBasicInfoPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
             rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
@@ -689,6 +691,8 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
+            rfq.SetNoOfSavedRFQProducts();
+
             rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
             rfqAdditionalInfoPage.rfqProductsPage = this;
             rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;

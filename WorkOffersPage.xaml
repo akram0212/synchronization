@@ -64,11 +64,11 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource selectedMainTabBorder}" MouseLeftButtonDown="OnClickListView">
+                <Border Grid.Column="0" Style="{StaticResource selectedMainTabBorder}" MouseLeftButtonDown="OnClickListView">
                     <Label Name="listViewLabel" Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource unselectedMainTabBorder}" MouseLeftButtonDown="OnClickTableView">
+                <Border Grid.Column="1" Style="{StaticResource unselectedMainTabBorder}" MouseLeftButtonDown="OnClickTableView">
                     <Label Name="tableViewLabel" Content="Table View" Style="{StaticResource unselectedMainTabLabelItem}"/>
                 </Border>
 
@@ -139,7 +139,7 @@
                 <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
                 <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
                 <Button Grid.Column="2" Content="Revise Offer" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseOffer" Name="reviseButton"/>
-                <Button Grid.Column="3" Content="Export" Style="{StaticResource buttonStyle}" Click="OnButtonClickExport" Name="exportButton"/>
+                <Button Grid.Column="3" Content="Export" Style="{StaticResource buttonStyle}" Click="OnBtnClickExport" Name="exportButton"/>
             </Grid>
         </Grid>
 
