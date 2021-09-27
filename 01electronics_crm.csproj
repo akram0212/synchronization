@@ -77,16 +77,13 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Spire.Doc, Version=9.9.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.Doc.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\Spire.Doc.9.9.6\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
     <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.License.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\Spire.Doc.9.9.6\lib\net40\Spire.License.dll</HintPath>
     </Reference>
     <Reference Include="Spire.Pdf, Version=7.9.3.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.Pdf.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\Spire.Doc.9.9.6\lib\net40\Spire.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -418,7 +415,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="photos\iloveimg-resized.zip" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -456,45 +452,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\Batteries.jpg" />
-    <Resource Include="photos\BORRI.jpg" />
-    <Resource Include="photos\BorriCommercialUPS.jpg" />
-    <Resource Include="photos\BorriIndustrialUPS.jpg" />
-    <Resource Include="photos\BorriLogo.jpg" />
-    <Resource Include="photos\BorriUPS.jpg" />
-    <Resource Include="photos\Commerical_UPS_cover_photo.jpg" />
-    <Resource Include="photos\ELCOS.jpg" />
-    <Resource Include="photos\Generators.jpg" />
-    <Resource Include="photos\Industrial_UPS_cover_photo.jpg" />
-    <Resource Include="photos\LEGRAND.jpg" />
-    <Resource Include="photos\LegrandUPS.jpg" />
-    <Resource Include="photos\Panels.png" />
-    <Resource Include="photos\Panels_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\Lead-Acid_Batteries_cover_photo.jpg" />
-    <Resource Include="photos\NI-CD_Batteries_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\FIAMM.jpg" />
-    <Resource Include="photos\SAFT.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\Static_Transfer_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\Batteries_cover_photo.jpg" />
-    <Resource Include="photos\IndustrialUPS.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\Air_Circuit_cover_photo.jpg" />
-    <Resource Include="photos\Changeover_Switch_cover_photo.jpg" />
-    <Resource Include="photos\Contactors_cover_photo.jpg" />
-    <Resource Include="photos\Earth_Leakage_cover_photo.jpg" />
-    <Resource Include="photos\Electrical_Contracts_cover_photo.jpg" />
-    <Resource Include="photos\Inverter_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="photos\addfiles_icon.jpg" />
     <Resource Include="photos\drop_files_icon.jpg" />
     <Resource Include="photos\excel_icon.jpg" />
@@ -507,8 +464,80 @@
     <Resource Include="photos\word_icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\1500_RPM_cover_photo.jpg" />
-    <Resource Include="photos\3000_RPM_cover_photo.jpg" />
+    <Resource Include="photos\products\1.jpg" />
+    <Resource Include="photos\products\11.jpg" />
+    <Resource Include="photos\products\15.jpg" />
+    <Resource Include="photos\products\16.jpg" />
+    <Resource Include="photos\products\17.jpg" />
+    <Resource Include="photos\products\18.jpg" />
+    <Resource Include="photos\products\2.jpg" />
+    <Resource Include="photos\products\20.jpg" />
+    <Resource Include="photos\products\21.jpg" />
+    <Resource Include="photos\products\23.jpg" />
+    <Resource Include="photos\products\24.jpg" />
+    <Resource Include="photos\products\25.jpg" />
+    <Resource Include="photos\products\26.jpg" />
+    <Resource Include="photos\products\28.jpg" />
+    <Resource Include="photos\products\29.jpg" />
+    <Resource Include="photos\products\3.jpg" />
+    <Resource Include="photos\products\30.jpg" />
+    <Resource Include="photos\products\31.jpg" />
+    <Resource Include="photos\products\32.jpg" />
+    <Resource Include="photos\products\35.jpg" />
+    <Resource Include="photos\products\39.jpg" />
+    <Resource Include="photos\products\4.jpg" />
+    <Resource Include="photos\products\5.jpg" />
+    <Resource Include="photos\products\50.jpg" />
+    <Resource Include="photos\products\51.jpg" />
+    <Resource Include="photos\products\52.jpg" />
+    <Resource Include="photos\products\6.jpg" />
+    <Resource Include="photos\products\7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\10.jpg" />
+    <Resource Include="photos\products\12.jpg" />
+    <Resource Include="photos\products\13.jpg" />
+    <Resource Include="photos\products\14.jpg" />
+    <Resource Include="photos\products\19.jpg" />
+    <Resource Include="photos\products\27.jpg" />
+    <Resource Include="photos\products\33.jpg" />
+    <Resource Include="photos\products\34.jpg" />
+    <Resource Include="photos\products\36.jpg" />
+    <Resource Include="photos\products\37.jpg" />
+    <Resource Include="photos\products\38.jpg" />
+    <Resource Include="photos\products\40.jpg" />
+    <Resource Include="photos\products\43.jpg" />
+    <Resource Include="photos\products\44.jpg" />
+    <Resource Include="photos\products\45.jpg" />
+    <Resource Include="photos\products\46.jpg" />
+    <Resource Include="photos\products\47.jpg" />
+    <Resource Include="photos\products\48.jpg" />
+    <Resource Include="photos\products\49.jpg" />
+    <Resource Include="photos\products\53.jpg" />
+    <Resource Include="photos\products\54.jpg" />
+    <Resource Include="photos\products\8.jpg" />
+    <Resource Include="photos\products\9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\22.jpg" />
+    <Resource Include="photos\products\42.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\41.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\0.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\1.jpg" />
+    <Resource Include="photos\brands\10.jpg" />
+    <Resource Include="photos\brands\2.jpg" />
+    <Resource Include="photos\brands\3.jpg" />
+    <Resource Include="photos\brands\4.jpg" />
+    <Resource Include="photos\brands\5.jpg" />
+    <Resource Include="photos\brands\6.jpg" />
+    <Resource Include="photos\brands\7.jpg" />
+    <Resource Include="photos\brands\8.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

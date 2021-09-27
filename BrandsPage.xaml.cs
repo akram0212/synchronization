@@ -74,12 +74,7 @@ namespace _01electronics_crm
                 try
                 {
                     Image brandLogo = new Image();
-                    //BitmapImage src = new BitmapImage();
-                    //src.BeginInit();
-                    //src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + brandsList[i].brandName + ".jpg", UriKind.Absolute);
-                    //src.CacheOption = BitmapCacheOption.OnLoad;
-                    //src.EndInit();
-                    string src = String.Format(@"photos\" + brandsList[i].brandName + ".jpg");
+                    string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg");
                     brandLogo.Source = new BitmapImage(new Uri(src, UriKind.Relative));
                     brandLogo.Width = 300;
                     brandLogo.MouseDown += ImageMouseDown;
