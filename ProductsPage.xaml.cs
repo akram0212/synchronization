@@ -95,78 +95,38 @@ namespace _01electronics_crm
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
-                String[] productName = new String[5];
-                try
-                {
-                    productName = products[i].typeName.Split(' ');
-                    Image productImage = new Image();
+                Image productImage = new Image();
 
-                    string src = String.Format(@"/01electronics_crm;component/photos/" + productName[0] + "_" + productName[1] + "_cover_photo.jpg");
-                    productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                    productImage.Width = 1000;
-                    productImage.Height = 400;
-                    productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                    productImage.MouseDown += ImageMouseDown;
-                    productImage.Tag = products[i].typeId.ToString();
-                    gridI.Children.Add(productImage);
-                    Grid.SetRow(productImage, 0);
+                string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
+                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
+                //productImage.Width = 900;
+                //productImage.Height = 300;
+                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                productImage.MouseDown += ImageMouseDown;
+                productImage.Tag = products[i].typeId.ToString();
+                gridI.Children.Add(productImage);
+                Grid.SetRow(productImage, 0);
 
-                    TextBlock imageTextBlock = new TextBlock();
-                    imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                    imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                    imageTextBlock.Width = 350;
-                    imageTextBlock.Height = 150;
-                    imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
-                    imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
-                    imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                    imageTextBlock.FontSize = 16;
-                    imageTextBlock.TextWrapping = TextWrapping.Wrap;
-                    imageTextBlock.Text = "  " + products[i].typeName;
-                    imageTextBlock.Text += "\n\n";
+                TextBlock imageTextBlock = new TextBlock();
+                imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
+                imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                imageTextBlock.Width = 350;
+                imageTextBlock.Height = 150;
+                imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
+                imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
+                imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                imageTextBlock.FontSize = 16;
+                imageTextBlock.TextWrapping = TextWrapping.Wrap;
+                imageTextBlock.Text = "  " + products[i].typeName;
+                imageTextBlock.Text += "\n\n";
 
-                    imageTextBlock.Text += productSummaryPoints[i];
-                    gridI.Children.Add(imageTextBlock);
-                    Grid.SetRow(imageTextBlock, 0);
-                    ProductsGrid.Children.Add(gridI);
-                    Grid.SetRow(gridI, i);
+                imageTextBlock.Text += productSummaryPoints[i];
+                gridI.Children.Add(imageTextBlock);
+                Grid.SetRow(imageTextBlock, 0);
+                ProductsGrid.Children.Add(gridI);
+                Grid.SetRow(gridI, i);
 
-                }
-                catch
-                {
-                    gridI.Tag = i;
-                    productName[0] = products[i].typeName;
-                    Image productImage = new Image();
-                    string src = String.Format(@"/01electronics_crm;component/photos/" + productName[0] + "_cover_photo.jpg");
-                    productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                    productImage.Width = 1000;
-                    productImage.Height = 400;
-                    productImage.MouseDown += ImageMouseDown;
-                    productImage.Tag = products[i].typeId.ToString();
-                    gridI.Children.Add(productImage);
-                    Grid.SetRow(productImage, 0);
-
-                    TextBlock imageTextBlock = new TextBlock();
-                    imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                    imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                    imageTextBlock.Width = 350;
-                    imageTextBlock.Height = 150;
-                    imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
-                    imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
-                    imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                    imageTextBlock.FontSize = 16;
-                    imageTextBlock.TextWrapping = TextWrapping.Wrap;
-                    imageTextBlock.Text = "  " + products[i].typeName;
-                    imageTextBlock.Text += "\n\n";
-
-                    //imageTextBlock.Text += productSummaryPoints[i];
-                    Grid.SetRow(imageTextBlock, 0);
-
-                    gridI.Children.Add(imageTextBlock);
-                    ProductsGrid.Children.Add(gridI);
-                    Grid.SetRow(gridI, i);
-                       
-                }
             }
         }
       
