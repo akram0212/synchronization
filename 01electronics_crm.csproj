@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{23E8A24E-440C-4E06-97BD-C87F736A1B8F}</ProjectGuid>
+    <ProjectGuid>{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_01electronics_crm</RootNamespace>
     <AssemblyName>01electronics_crm</AssemblyName>
@@ -76,14 +76,17 @@
       <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Spire.Doc, Version=9.8.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.Doc.dll</HintPath>
+    <Reference Include="Spire.Doc, Version=9.9.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.Doc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.License.dll</HintPath>
+      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.License.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Spire.Pdf, Version=7.8.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.Pdf.dll</HintPath>
+    <Reference Include="Spire.Pdf, Version=7.9.3.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.9.9.6\lib\net40\Spire.Pdf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -469,7 +472,6 @@
     <Resource Include="photos\Panels_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\1500RPM_Gensets_cover_photo.jpg" />
     <Resource Include="photos\Lead-Acid_Batteries_cover_photo.jpg" />
     <Resource Include="photos\NI-CD_Batteries_cover_photo.jpg" />
   </ItemGroup>
@@ -479,9 +481,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\Static_Transfer_cover_photo.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\3000RPM_Gensets_cover_photo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\Batteries_cover_photo.jpg" />
@@ -506,6 +505,10 @@
     <Resource Include="photos\unknown_icon.jpg" />
     <Resource Include="photos\winrar_icon.jpg" />
     <Resource Include="photos\word_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\1500_RPM_cover_photo.jpg" />
+    <Resource Include="photos\3000_RPM_cover_photo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

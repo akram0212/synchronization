@@ -70,6 +70,7 @@ namespace _01electronics_crm
 
             GetCalls();
             InitializeStackPanel();
+            InitializeGrid();
             SetDefaultSettings();
         }
         private void GetCalls()
@@ -207,6 +208,119 @@ namespace _01electronics_crm
             }
         }
 
+        private bool InitializeGrid()
+        {
+
+            clienCallsGrid.Children.Clear();
+            clienCallsGrid.RowDefinitions.Clear();
+            clienCallsGrid.ColumnDefinitions.Clear();
+
+            filteredCalls.Clear();
+
+            Label salesPersonHeader = new Label();
+            salesPersonHeader.Content = "Sales Person";
+            salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label dateOfCallHeader = new Label();
+            dateOfCallHeader.Content = "Visit Date";
+            dateOfCallHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label contactInfoHeader = new Label();
+            contactInfoHeader.Content = "Contact Info";
+            contactInfoHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label purposeAndResultHeader = new Label();
+            purposeAndResultHeader.Content = "Purpose - Result";
+            purposeAndResultHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            clienCallsGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetRow(salesPersonHeader, 0);
+            Grid.SetColumn(salesPersonHeader, 0);
+            clienCallsGrid.Children.Add(salesPersonHeader);
+
+            Grid.SetRow(dateOfCallHeader, 0);
+            Grid.SetColumn(dateOfCallHeader, 1);
+            clienCallsGrid.Children.Add(dateOfCallHeader);
+
+            Grid.SetRow(contactInfoHeader, 0);
+            Grid.SetColumn(contactInfoHeader, 2);
+            clienCallsGrid.Children.Add(contactInfoHeader);
+
+            Grid.SetRow(purposeAndResultHeader, 0);
+            Grid.SetColumn(purposeAndResultHeader, 3);
+            clienCallsGrid.Children.Add(purposeAndResultHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < clientCalls.Count; i++)
+            {
+                DateTime currentVisitDate = DateTime.Parse(clientCalls[i].call_date);
+
+                if (yearCheckBox.IsChecked == true && currentVisitDate.Year != selectedYear)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctions.GetQuarter(currentVisitDate) != selectedQuarter)
+                    continue;
+
+                if (employeeCheckBox.IsChecked == true && clientCalls[i].sales_person_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                filteredCalls.Add(clientCalls[i]);
+
+
+                RowDefinition currentRow = new RowDefinition();
+                clienCallsGrid.RowDefinitions.Add(currentRow);
+
+                Label salesPersonLabel = new Label();
+                salesPersonLabel.Content = clientCalls[i].sales_person_name;
+                salesPersonLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesPersonLabel, currentRowNumber);
+                Grid.SetColumn(salesPersonLabel, 0);
+                clienCallsGrid.Children.Add(salesPersonLabel);
+
+
+                Label dateOfVisitLabel = new Label();
+                dateOfVisitLabel.Content = clientCalls[i].call_date;
+                dateOfVisitLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(dateOfVisitLabel, currentRowNumber);
+                Grid.SetColumn(dateOfVisitLabel, 1);
+                clienCallsGrid.Children.Add(dateOfVisitLabel);
+
+
+                Label contactInfoLabel = new Label();
+                contactInfoLabel.Content = clientCalls[i].company_name + " - " + clientCalls[i].contact_name;
+                contactInfoLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(contactInfoLabel, currentRowNumber);
+                Grid.SetColumn(contactInfoLabel, 2);
+                clienCallsGrid.Children.Add(contactInfoLabel);
+
+
+                Label purposeAndResultLabel = new Label();
+                purposeAndResultLabel.Content = clientCalls[i].call_purpose + " - " + clientCalls[i].call_result;
+                purposeAndResultLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clienCallsGrid.Children.Add(purposeAndResultLabel);
+                Grid.SetRow(purposeAndResultLabel, currentRowNumber);
+                Grid.SetColumn(purposeAndResultLabel, 3);
+
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+            return true;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,6 +353,34 @@ namespace _01electronics_crm
         {
             GetCalls();
             InitializeStackPanel();
+            InitializeGrid();
+        }
+
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(clienCallsGrid);
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            clientCallsStackPanel.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            clientCallsStackPanel.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -325,6 +467,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -335,6 +478,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -346,6 +490,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 

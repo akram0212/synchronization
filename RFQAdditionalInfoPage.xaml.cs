@@ -260,6 +260,9 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            rfq.SetRFQNotes(notes);
+            rfq.SetRFQDeadlineDate(deadlineDate);
+
             rfqProductsPage.rfqAdditionalInfoPage = this;
             rfqProductsPage.rfqBasicInfoPage = rfqBasicInfoPage;
             rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
