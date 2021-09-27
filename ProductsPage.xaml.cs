@@ -44,7 +44,7 @@ namespace _01electronics_crm
             productSummaryPoints = new List<string>();
 
             InitializeProducts();
-            InitializeProducSummaryPoints();
+            InitializeProductSummaryPoints();
             SetUpPageUIElements();
         }
         private void InitializeProducts()
@@ -52,35 +52,10 @@ namespace _01electronics_crm
             if (!commonQueries.GetCompanyProducts(ref products))
                 return;
         }
-        public bool InitializeProducSummaryPoints()
+        public void InitializeProductSummaryPoints()
         {
-            productSummaryPoints.Clear();
-
-            String sqlQueryPart1 = @"select summary_points
-                                     from erp_system.dbo.products_summary_points
-                                     inner join erp_system.dbo.products_type
-                                     on products_type.id = products_summary_points.id
-                                     where products_type.id > 0
-                                     order by products_type.product_name;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_string = 1;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            for (int i = 0; i < sqlDatabase.rows.Count(); i++)
-            {
-                productSummaryPoints.Add(sqlDatabase.rows[i].sql_string[0]);
-            }
-
-            productSummaryPoints.Add("Others");
-
-            return true;
+            if (!commonQueries.GetProductsSummaryPoints(ref productSummaryPoints))
+                return;
         }
 
         public void SetUpPageUIElements()
