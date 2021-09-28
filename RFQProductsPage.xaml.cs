@@ -33,9 +33,6 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.MODEL_STRUCT> models = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
 
         private int quantity1;
-        private int typeId;
-        private int brandId;
-        private int modelId;
 
         private int viewAddCondition;
         private int numberOfProductsAdded;

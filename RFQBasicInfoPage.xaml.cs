@@ -21,8 +21,6 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQBasicInfoPage : Page
     {
-        
-
         Employee loggedInUser;
         RFQ rfq;
 
@@ -47,7 +45,75 @@ namespace _01electronics_crm
         public RFQProductsPage rfqProductsPage;
         public RFQAdditionalInfoPage rfqAdditionalInfoPage;
         public RFQUploadFilesPage rfqUploadFilesPage;
-        
+
+
+        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition, bool directlyNavigateToFilesPage)
+        {
+            loggedInUser = mLoggedInUser;
+            viewAddCondition = mViewAddCondition;
+
+            InitializeComponent();
+
+            sqlDatabase = new SQLServer();
+            commonQueriesObject = new CommonQueries();
+            commonFunctionsObject = new CommonFunctions();
+            rfq = new RFQ(sqlDatabase);
+            rfq = mRFQ;
+
+            rfqProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
+            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            rfqUploadFilesPage = new RFQUploadFilesPage(ref loggedInUser, ref rfq, viewAddCondition);
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+            {
+                ConfigureAddRFQUIElements();
+
+                InitializeSalesPersonCombo();
+                InitializeAssigneeCombo();
+
+                SetSalesPerson();
+                salesPersonCombo.IsEnabled = false;
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                InitializeCompanyInfo();
+                InitializeContactInfo();
+
+                ConfigureViewRFQUIElements();
+
+                SetSalesPersonLabel();
+                SetAssigneeLabel();
+                SetCompanyNameLabel();
+                SetCompanyAddressLabel();
+                SetContactPersonLabel();
+                SetContactNumberLabel();
+
+                cancelButton.IsEnabled = false;
+            }
+            else
+            {
+
+                ConfigureAddRFQUIElements();
+                InitializeSalesPersonCombo();
+
+                InitializeAssigneeCombo();
+
+                SetSalesPersonCombo();
+                SetAssigneeCombo();
+                SetCompanyNameCombo();
+
+                salesPersonCombo.IsEnabled = false;
+            }
+
+            if(directlyNavigateToFilesPage)
+            {
+                rfqUploadFilesPage.rfqBasicInfoPage = this;
+                rfqUploadFilesPage.rfqProductsPage = rfqProductsPage;
+                rfqUploadFilesPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+                NavigationService.Navigate(rfqUploadFilesPage);
+            }
+        }
 
         public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
