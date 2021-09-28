@@ -138,8 +138,7 @@ namespace _01electronics_crm
                 quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
-
-        private bool InitializeEmployeeComboBox()
+                private bool InitializeEmployeeComboBox()
         {
             if (!commonQueriesObject.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                 return false;
@@ -293,7 +292,7 @@ namespace _01electronics_crm
 
 
                 RowDefinition currentRow = new RowDefinition();
-                //currentRow.Height = new GridLength(75);
+
                 clientVisitsGrid.RowDefinitions.Add(currentRow);
 
                 Label salesPersonLabel = new Label();
