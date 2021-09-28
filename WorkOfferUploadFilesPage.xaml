@@ -31,7 +31,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Name="RFQHeader" Content="WORK OFFER UPLOAD FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
+                <Label Grid.Column="0" Name="RFQHeader" Content="WORK OFFER FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
                 <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
             </Grid>
 

@@ -540,6 +540,7 @@
     <Resource Include="photos\brands\8.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="photos\no_internet_icon.jpg" />
     <Resource Include="photos\models\00.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

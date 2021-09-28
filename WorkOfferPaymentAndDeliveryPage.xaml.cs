@@ -173,11 +173,13 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         public void SetTotalPriceCurrencyComboBox()
         {
-            totalPriceCombo.Text = workOffer.GetCurrency();
+            totalPriceCombo.SelectedItem = workOffer.GetCurrency();
         }
 
         public void SetTotalPriceTextBox()
         {
+            totalPrice = 0;
+
             for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
                 totalPrice += workOffer.GetProductPriceValue(i) * workOffer.GetOfferProductQuantity(i);
 
@@ -199,26 +201,39 @@ namespace _01electronics_crm
             {
                 totalPriceCombo.Text = workOffer.GetCurrency().ToString();
                 totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
+                totalPrice = workOffer.GetTotalPriceValue();
             }
         }
 
-        private void SetDownPaymentValues()
+        public void SetDownPaymentValues()
         {
-            if(workOffer.GetPercentDownPayment() != 0)
+            if (workOffer.GetPercentDownPayment() != 0)
+            {
                 downPaymentPercentageTextBox.Text = workOffer.GetPercentDownPayment().ToString();
-           
+                downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
+                downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+            }
+
         }
 
-        private void SetOnDeliveryValues()
+        public void SetOnDeliveryValues()
         {
-            if(workOffer.GetPercentOnDelivery() != 0)
+            if (workOffer.GetPercentOnDelivery() != 0)
+            {
                 onDeliveryPercentageTextBox.Text = workOffer.GetPercentOnDelivery().ToString();
+                onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+            }
         }
 
-        private void SetOnInstallationValues()
+        public void SetOnInstallationValues()
         {
-            if(workOffer.GetPercentOnInstallation() != 0)
+            if (workOffer.GetPercentOnInstallation() != 0)
+            {
                 onInstallationPercentageTextBox.Text = workOffer.GetPercentOnInstallation().ToString();
+                onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
+            }
         }
 
         private void SetDeliveryTimeValues()
@@ -236,6 +251,11 @@ namespace _01electronics_crm
         private void SetDeliveryPointValue()
         {
             deliveryPointCombo.SelectedItem = workOffer.GetDeliveryPoint();
+        }
+
+        public void SetDownPaymentPercentage()
+        {
+            downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,15 +24,13 @@
             <Grid Grid.Row="0" Background="#105A97">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Name="RFQHeader" Content="RFQ UPLOAD FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+                <Label Grid.Column="0" Name="RFQHeader" Content="RFQ FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -44,15 +42,15 @@
                     
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickBasicInfo">
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickProductsInfo">
                     <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
@@ -66,11 +64,19 @@
                 <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </ScrollViewer>
 
-            <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <Button Name="backButton" Style="{StaticResource buttonStyle}" Content="BACK" Click="OnClickBackButton" Margin="24"/>
-                <Button Name="cancelButton" Style="{StaticResource buttonStyle}" Content="CANCEL" Click="OnClickCancelButton" Margin="24" />
-                <Button Name="addOfferButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnButtonClickOk" Margin="24"/>
-            </WrapPanel>
+            <Grid Grid.Row="3" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+
+                <Button Grid.Column="0" Name="backButton" Style="{StaticResource buttonStyle}" Content="BACK" Click="OnClickBackButton" Margin="24"/>
+                <Button Grid.Column="1" Name="okButton" Style="{StaticResource buttonStyle}" Content="OK" Click="OnButtonClickOk" Margin="24"/>
+
+            </Grid>
 
         </Grid>
     </Grid>

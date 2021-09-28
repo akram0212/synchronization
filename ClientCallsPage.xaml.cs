@@ -215,8 +215,6 @@ namespace _01electronics_crm
             clienCallsGrid.RowDefinitions.Clear();
             clienCallsGrid.ColumnDefinitions.Clear();
 
-            filteredCalls.Clear();
-
             Label salesPersonHeader = new Label();
             salesPersonHeader.Content = "Sales Person";
             salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
