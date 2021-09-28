@@ -80,6 +80,7 @@ namespace _01electronics_crm
             SetDefaultSettings();
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -424,6 +425,307 @@ namespace _01electronics_crm
             return true;
         }
 
+        private bool SetWorkOrdersGrid()
+        {
+
+            workOrdersGrid.Children.Clear();
+            workOrdersGrid.RowDefinitions.Clear();
+            workOrdersGrid.ColumnDefinitions.Clear();
+
+            int counter = 0;
+
+            Label offerIdHeader = new Label();
+            offerIdHeader.Content = "Offer ID";
+            offerIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerSalesHeader = new Label();
+            offerSalesHeader.Content = "Sales Engineer";
+            offerSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerPreSalesHeader = new Label();
+            offerPreSalesHeader.Content = "Pre-Sales Engineer";
+            offerPreSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerCompanyContactHeader = new Label();
+            offerCompanyContactHeader.Content = "Contact Info";
+            offerCompanyContactHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerProductsHeader = new Label();
+            offerProductsHeader.Content = "Products";
+            offerProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerContractTypeHeader = new Label();
+            offerContractTypeHeader.Content = "Contract Type";
+            offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label offerStatusHeader = new Label();
+            offerStatusHeader.Content = "Offer Status";
+            offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            workOrdersGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetRow(offerIdHeader, 0);
+            Grid.SetColumn(offerIdHeader, 0);
+            workOrdersGrid.Children.Add(offerIdHeader);
+
+            Grid.SetRow(offerSalesHeader, 0);
+            Grid.SetColumn(offerSalesHeader, 1);
+            workOrdersGrid.Children.Add(offerSalesHeader);
+
+            Grid.SetRow(offerPreSalesHeader, 0);
+            Grid.SetColumn(offerPreSalesHeader, 2);
+            workOrdersGrid.Children.Add(offerPreSalesHeader);
+
+            Grid.SetRow(offerCompanyContactHeader, 0);
+            Grid.SetColumn(offerCompanyContactHeader, 3);
+            workOrdersGrid.Children.Add(offerCompanyContactHeader);
+
+            Grid.SetRow(offerProductsHeader, 0);
+            Grid.SetColumn(offerProductsHeader, 4);
+            workOrdersGrid.Children.Add(offerProductsHeader);
+
+            Grid.SetRow(offerContractTypeHeader, 0);
+            Grid.SetColumn(offerContractTypeHeader, 5);
+            workOrdersGrid.Children.Add(offerContractTypeHeader);
+
+            Grid.SetRow(offerStatusHeader, 0);
+            Grid.SetColumn(offerStatusHeader, 6);
+            workOrdersGrid.Children.Add(offerStatusHeader);
+
+            int currentRowNumber = 1;
+
+
+            for (int i = 0; i < workOrders.Count; i++)
+            {
+                DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
+
+                bool salesPersonCondition = selectedSales != workOrders[i].sales_person_id;
+
+                bool assigneeCondition = selectedPreSales != workOrders[i].offer_proposer_id;
+
+                bool productCondition = false;
+                for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
+                    if (workOrders[i].products[productNo].productType.typeId == selectedProduct)
+                        productCondition |= true;
+
+                bool brandCondition = false;
+                for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
+                    if (workOrders[i].products[productNo].productBrand.brandId == selectedBrand)
+                        brandCondition |= true;
+
+
+                if (yearCheckBox.IsChecked == true && currentWorkOrderDate.Year != selectedYear)
+                    continue;
+
+                if (salesCheckBox.IsChecked == true && salesPersonCondition)
+                    continue;
+
+                if (preSalesCheckBox.IsChecked == true && assigneeCondition)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOrderDate) != selectedQuarter)
+                    continue;
+
+                if (productCheckBox.IsChecked == true && !productCondition)
+                    continue;
+
+                if (brandCheckBox.IsChecked == true && !brandCondition)
+                    continue;
+
+                if (statusCheckBox.IsChecked == true && workOrders[i].order_status_id != selectedStatus)
+                    continue;
+
+                RowDefinition currentRow = new RowDefinition();
+                workOrdersGrid.RowDefinitions.Add(currentRow);
+
+                Label offerIdLabel = new Label();
+                offerIdLabel.Content = workOrders[i].order_id;
+                offerIdLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(offerIdLabel, currentRowNumber);
+                Grid.SetColumn(offerIdLabel, 0);
+                workOrdersGrid.Children.Add(offerIdLabel);
+
+
+                Label salesLabel = new Label();
+                salesLabel.Content = workOrders[i].sales_person_name;
+                salesLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesLabel, currentRowNumber);
+                Grid.SetColumn(salesLabel, 1);
+                workOrdersGrid.Children.Add(salesLabel);
+
+
+                Label preSalesLabel = new Label();
+                preSalesLabel.Content = workOrders[i].offer_proposer_name;
+                preSalesLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(preSalesLabel, currentRowNumber);
+                Grid.SetColumn(preSalesLabel, 2);
+                workOrdersGrid.Children.Add(preSalesLabel);
+
+
+                Label companyAndContactLabel = new Label();
+                companyAndContactLabel.Content = workOrders[i].company_name + " - " + workOrders[i].contact_name;
+                companyAndContactLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                workOrdersGrid.Children.Add(companyAndContactLabel);
+                Grid.SetRow(companyAndContactLabel, currentRowNumber);
+                Grid.SetColumn(companyAndContactLabel, 3);
+
+
+                Grid productGrid = new Grid();
+                productGrid.ShowGridLines = true;
+
+
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                productGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                productGrid.RowDefinitions.Add(new RowDefinition());
+
+
+                Label rowColumnHeader = new Label();
+                rowColumnHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(rowColumnHeader);
+                Grid.SetRow(rowColumnHeader, 0);
+                Grid.SetColumn(rowColumnHeader, 0);
+
+                Label typeHeader = new Label();
+                typeHeader.Content = "Type";
+                typeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(typeHeader);
+                Grid.SetRow(typeHeader, 0);
+                Grid.SetColumn(typeHeader, 1);
+
+
+                Label brandHeader = new Label();
+                brandHeader.Content = "Brand";
+                brandHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(brandHeader);
+                Grid.SetRow(brandHeader, 0);
+                Grid.SetColumn(brandHeader, 2);
+
+
+                Label modelHeader = new Label();
+                modelHeader.Content = "Model";
+                modelHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                productGrid.Children.Add(modelHeader);
+                Grid.SetRow(modelHeader, 0);
+                Grid.SetColumn(modelHeader, 3);
+
+
+                List<COMPANY_WORK_MACROS.ORDER_PRODUCT_STRUCT> temp = workOrders[i].products;
+
+                for (int j = 0; j < temp.Count(); j++)
+                {
+                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
+                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
+                    COMPANY_WORK_MACROS.MODEL_STRUCT tempModel1 = temp[j].productModel;
+
+                    if (tempType1.typeId == 0)
+                        continue;
+
+                    productGrid.RowDefinitions.Add(new RowDefinition());
+
+                    int tempNumber = j + 1;
+                    Label productNumberHeader = new Label();
+                    productNumberHeader.Content = "Product" + " " + tempNumber;
+                    productNumberHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+                    productGrid.Children.Add(productNumberHeader);
+                    Grid.SetRow(productNumberHeader, j + 1);
+                    Grid.SetColumn(productNumberHeader, 0);
+
+                    Label type = new Label();
+                    type.Content = tempType1.typeName;
+                    type.Style = (Style)FindResource("tableSubItemLabel");
+
+                    productGrid.Children.Add(type);
+                    Grid.SetRow(type, j + 1);
+                    Grid.SetColumn(type, 1);
+
+                    Label brand = new Label();
+                    brand.Content = tempBrand1.brandName;
+                    brand.Style = (Style)FindResource("tableSubItemLabel");
+
+                    productGrid.Children.Add(brand);
+                    Grid.SetRow(brand, j + 1);
+                    Grid.SetColumn(brand, 2);
+
+                    Label model = new Label();
+                    model.Content = tempModel1.modelName;
+                    model.Style = (Style)FindResource("tableSubItemLabel");
+
+                    productGrid.Children.Add(model);
+                    Grid.SetRow(model, j + 1);
+                    Grid.SetColumn(model, 3);
+                }
+
+                workOrdersGrid.Children.Add(productGrid);
+                Grid.SetRow(productGrid, currentRowNumber);
+                Grid.SetColumn(productGrid, 4);
+
+
+
+                Label contractTypeLabel = new Label();
+                contractTypeLabel.Content = workOrders[i].contract_type;
+                contractTypeLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                workOrdersGrid.Children.Add(contractTypeLabel);
+                Grid.SetRow(contractTypeLabel, currentRowNumber);
+                Grid.SetColumn(contractTypeLabel, 5);
+
+
+                Border borderIcon = new Border();
+                borderIcon.Style = (Style)FindResource("BorderIcon");
+
+                Label rfqStatusLabel = new Label();
+                rfqStatusLabel.Content = workOrders[i].order_status;
+                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
+                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.OPEN_WORK_ORDER)
+                {
+                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CLOSED_WORK_ORDER)
+                {
+                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                }
+                //else
+                //{
+                //    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                //}
+
+                borderIcon.Child = rfqStatusLabel;
+
+                workOrdersGrid.Children.Add(borderIcon);
+                Grid.SetRow(borderIcon, currentRowNumber);
+                Grid.SetColumn(borderIcon, 6);
+
+                currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+
+                currentRowNumber++;
+
+
+            }
+
+            return true;
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,6 +740,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -451,6 +754,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
@@ -466,6 +770,7 @@ namespace _01electronics_crm
 
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -480,6 +785,7 @@ namespace _01electronics_crm
 
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
@@ -493,6 +799,7 @@ namespace _01electronics_crm
                 selectedProduct = 0;
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
@@ -506,6 +813,7 @@ namespace _01electronics_crm
                 selectedBrand = 0;
 
             SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
@@ -518,7 +826,7 @@ namespace _01electronics_crm
             else
                 selectedStatus = 0;
 
-            SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -720,6 +1028,28 @@ namespace _01electronics_crm
             currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
             currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -776,7 +1106,8 @@ namespace _01electronics_crm
 
         private void OnClickExportButton(object sender, RoutedEventArgs e)
         {
-
+            ExcelExport excelExport = new ExcelExport(workOrdersGrid);
         }
+
     }
 }

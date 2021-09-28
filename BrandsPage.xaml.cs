@@ -48,7 +48,7 @@ namespace _01electronics_crm
             brandsList = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
 
             QueryGetProductName();
-            QueryGetBrands();
+            InitializeProductBrands();
             SetUpPageUIElements();
         }
 
@@ -104,6 +104,21 @@ namespace _01electronics_crm
 
                 }
             }
+            if (brandsList.Count() == 0 || brandsList[0].brandId == 0)
+            {
+                Image brandImage = new Image();
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri("..\\..\\Photos\\brands\\" + "00.jpg", UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
+                brandImage.Source = src;
+                brandImage.VerticalAlignment = VerticalAlignment.Center;
+                brandImage.Margin = new Thickness(100);
+                brandImage.HorizontalAlignment = HorizontalAlignment.Center;
+                brandImage.Tag = 00;
+                brandsWrapPanel.Children.Add(brandImage);
+            }
 
             BrandsGrid.Children.Add(brandsWrapPanel);
             Grid.SetRow(brandsWrapPanel, 1);
@@ -134,38 +149,10 @@ namespace _01electronics_crm
 
             return true;
         }
-        public bool QueryGetBrands()
+        public void InitializeProductBrands()
         {
-            String sqlQueryPart1 = @"select brand_id, brand_name
-                                     from erp_system.dbo.products_brands
-                                     inner join erp_system.dbo.brands_type
-                                     on products_brands.brand_id = brands_type.id
-                                     where product_id = ";
-
-            String sqlQueryPart2 = " and brand_id != 0; ";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += selectedProduct.GetProductID();
-            sqlQuery += sqlQueryPart2;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_string = 1;
-            queryColumns.sql_int = 1;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            for (int i = 0; i < sqlDatabase.rows.Count(); i++)
-            {
-                COMPANY_WORK_MACROS.BRAND_STRUCT tmpList;
-                tmpList.brandId = sqlDatabase.rows[i].sql_int[0];
-                tmpList.brandName = sqlDatabase.rows[i].sql_string[0];
-                brandsList.Add(tmpList);
-            }
-
-            return true;
+            if (!commonQueries.GetProductBrands(selectedProduct.GetProductID(), ref brandsList))
+                return;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

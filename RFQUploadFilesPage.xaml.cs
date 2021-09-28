@@ -33,7 +33,8 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
         private IntegrityChecks integrityChecks;
-        protected FTPServer ftpObject;
+        public FTPServer ftpObject;
+        
 
         int counter;
         int viewAddCondition;
@@ -101,31 +102,26 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                rfq.SetRFQIssueDateToToday();
-
-                if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
-                    if (!rfq.GetNewRFQSerial())
-                        return;
-                if (!rfq.GetNewRFQVersion())
-                    return;
-                rfq.GetNewRFQID();
-            }
-
             serverFolderPath = BASIC_MACROS.RFQ_FILES_PATH + rfq.GetRFQID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
             {
                 if (!ftpObject.CreateNewFolder(serverFolderPath))
+                {
+                    InsertErrorRetryButton();
                     return;
+                }
             }
             else
             {
                 ftpFiles.Clear();
                 if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
+                {
+                    InsertErrorRetryButton();
                     return;
+                }
+                    
             }
 
             if (ftpFiles.Count != 0)
@@ -143,6 +139,11 @@ namespace _01electronics_crm
             {
                 InsertDragAndDropOrBrowseGrid();
             }
+        }
+
+        ~RFQUploadFilesPage()
+        {
+            //GC.Collect();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -278,6 +279,8 @@ namespace _01electronics_crm
         private void InsertDragAndDropOrBrowseGrid()
         {
             Grid grid = new Grid();
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             RowDefinition row1 = new RowDefinition();
             RowDefinition row2 = new RowDefinition();
@@ -314,6 +317,40 @@ namespace _01electronics_crm
             browseFileButton.Click += OnClickBrowseButton;
             grid.Children.Add(browseFileButton);
             Grid.SetRow(browseFileButton, 2);
+
+            uploadFilesStackPanel.Children.Add(grid);
+        }
+
+        private void InsertErrorRetryButton()
+        {
+            Grid grid = new Grid();
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+
+            RowDefinition row1 = new RowDefinition();
+            RowDefinition row2 = new RowDefinition();
+            
+            grid.RowDefinitions.Add(row1);
+            grid.RowDefinitions.Add(row2);
+
+            Image icon = new Image();
+
+            icon = new Image { Source = new BitmapImage(new Uri(@"photos\no_internet_icon.jpg", UriKind.Relative)) };
+            icon.HorizontalAlignment = HorizontalAlignment.Center;
+            icon.VerticalAlignment = VerticalAlignment.Center;
+            resizeImage(ref icon, 250, 350);
+            grid.Children.Add(icon);
+            Grid.SetRow(icon, 0);
+
+            Button retryButton = new Button();
+            retryButton.Style = (Style)FindResource("buttonBrowseStyle");
+            retryButton.Width = 200;
+            retryButton.Background = null;
+            retryButton.Foreground = Brushes.Gray;
+            retryButton.Content = "Retry";
+            retryButton.Click += OnClickRetryButton;
+            grid.Children.Add(retryButton);
+            Grid.SetRow(retryButton, 1);
 
             uploadFilesStackPanel.Children.Add(grid);
         }
@@ -416,34 +453,48 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
 
-        private void OnClickCancelButton(object sender, RoutedEventArgs e)
-        {
-            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
-                    ftpObject.DeleteFtpDirectory(serverFolderPath);
-
-                else
-                {
-                    for (int i = 0; i < ftpFiles.Count(); i++)
-                    {
-                        ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i]);
-                    }
-
-                    ftpObject.DeleteFtpDirectory(serverFolderPath);
-                }
-            }
-
-            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-            currentWindow.Close();
+        //private void OnClickCancelButton(object sender, RoutedEventArgs e)
+        //{
+            //    if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            //    {
+            //        if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
+            //            ftpObject.DeleteFtpDirectory(serverFolderPath);
+            //
+            //        else
+            //        {
+            //            for (int i = 0; i < ftpFiles.Count(); i++)
+            //            {
+            //                ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i]);
+            //            }
+            //
+            //            ftpObject.DeleteFtpDirectory(serverFolderPath);
+            //        }
+            //    }
+            //
+            //    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            //    currentWindow.Close();
+            //
+            //
             
-        }
+        //}
 
-        private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
+        private void OnButtonClickOk(object sender, RoutedEventArgs e)
         {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
 
+            GC.Collect();
+
+            currentWindow.Close();
         }
 
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqAdditionalInfoPage.rfqProductsPage = rfqProductsPage;
+            rfqAdditionalInfoPage.rfqUploadFilesPage = this;
+
+            NavigationService.Navigate(rfqAdditionalInfoPage);
+        }
 
         private void OnClickIconGrid(object sender, MouseButtonEventArgs e)
         {
@@ -583,69 +634,52 @@ namespace _01electronics_crm
             uploadBackground.RunWorkerAsync();
         }
 
-        private void OnButtonClickOk(object sender, RoutedEventArgs e)
+        private void OnClickRetryButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+            
+            FTPServer fTPServer = new FTPServer();
+
+            if (!fTPServer.CheckExistingFolder(serverFolderPath))
             {
-
-                if (rfq.GetSalesPersonId() == 0)
-                    MessageBox.Show("Sales Engineer must be selected before adding RFQ!");
-                else if (rfq.GetRFQCompany().GetCompanyName() == null)
-                    MessageBox.Show("Company must be selected before adding RFQ!");
-                else if (rfq.GetRFQProduct1TypeId() != 0 && rfq.GetRFQProduct1Quantity() == 0)
-                    MessageBox.Show("Product 1 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct2TypeId() != 0 && rfq.GetRFQProduct2Quantity() == 0)
-                    MessageBox.Show("Product 2 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct3TypeId() != 0 && rfq.GetRFQProduct3Quantity() == 0)
-                    MessageBox.Show("Product 3 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct4TypeId() != 0 && rfq.GetRFQProduct4Quantity() == 0)
-                    MessageBox.Show("Product 4 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQContractType() == null)
-                    MessageBox.Show("Contract type must be selected before adding RFQ!");
-                else if (rfq.GetRFQDeadlineDate() == null)
-                    MessageBox.Show("DeadlineDate must be set before adding RFQ!");
-                else
+                if (!fTPServer.CreateNewFolder(serverFolderPath))
                 {
-                    if (rfq.IssueNewRFQ())
-                        MessageBox.Show("RFQ added succefully!");
-
-                    //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-
-                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                    currentWindow.Close();
+                    InsertErrorRetryButton();
+                    return;
                 }
             }
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else
             {
-                if (rfq.GetSalesPersonId() == 0)
-                    MessageBox.Show("Sales Engineer must be selected before adding RFQ!");
-                else if (rfq.GetRFQCompany().GetCompanyName() == null)
-                    MessageBox.Show("Company must be selected before adding RFQ!");
-                else if (rfq.GetRFQProduct1TypeId() != 0 && rfq.GetRFQProduct1Quantity() == 0)
-                    MessageBox.Show("Product 1 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct2TypeId() != 0 && rfq.GetRFQProduct2Quantity() == 0)
-                    MessageBox.Show("Product 2 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct3TypeId() != 0 && rfq.GetRFQProduct3Quantity() == 0)
-                    MessageBox.Show("Product 3 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQProduct4TypeId() != 0 && rfq.GetRFQProduct4Quantity() == 0)
-                    MessageBox.Show("Product 4 quantity must be set before adding RFQ!");
-                else if (rfq.GetRFQContractType() == null)
-                    MessageBox.Show("Contract type must be selected before adding RFQ!");
-                else if (rfq.GetRFQDeadlineDate() == null)
-                    MessageBox.Show("DeadlineDate must be set before adding RFQ!");
-                else
+                ftpFiles.Clear();
+                if (!fTPServer.ListFilesInFolder(serverFolderPath, ref ftpFiles))
                 {
-                    if (rfq.ReviseRFQ())
-                        MessageBox.Show("RFQ Revised successfully!");
-
-                    // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-
-                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                    currentWindow.Close();
+                    InsertErrorRetryButton();
+                    return;
                 }
 
             }
+
+            if (ftpFiles.Count != 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+
+                for (int i = 0; i < ftpFiles.Count; i++)
+                {
+                    if (ftpFiles[i] != "." || ftpFiles[i] != "..")
+                        InsertIconGridFromServer(i);
+                }
+                InsertAddFilesIcon();
+            }
+            else if (ftpFiles.Count == 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                InsertDragAndDropOrBrowseGrid();
+            }
+
         }
+
+
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BACKGROUND COMPLETE HANDLERS
@@ -722,7 +756,7 @@ namespace _01electronics_crm
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
 
             uploadBackground.ReportProgress(50);
-            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName))
+            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH))
                 fileUploaded = true;
             else
                 fileUploaded = false;
@@ -738,7 +772,7 @@ namespace _01electronics_crm
             BackgroundWorker downloadBackground = sender as BackgroundWorker;
 
             downloadBackground.ReportProgress(50);
-            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName))
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName, BASIC_MACROS.SEVERITY_HIGH))
             {
                 fileDownloaded = false;
                 return;
@@ -799,9 +833,31 @@ namespace _01electronics_crm
 
         }
 
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            rfqBasicInfoPage.rfqProductsPage = rfqProductsPage;
+            rfqBasicInfoPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+            rfqBasicInfoPage.rfqUploadFilesPage = this;
 
+            NavigationService.Navigate(rfqBasicInfoPage);
+        }
+
+        private void OnBtnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqProductsPage.rfqUploadFilesPage = this;
+            rfqProductsPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqProductsPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
+
+        private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqAdditionalInfoPage.rfqProductsPage = rfqProductsPage;
+            rfqAdditionalInfoPage.rfqUploadFilesPage= this;
+
+            NavigationService.Navigate(rfqAdditionalInfoPage);
         }
     }
 }

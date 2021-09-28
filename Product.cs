@@ -449,14 +449,14 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public bool DownloadPhotoFromServer()
         {
-            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath))
+            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             return true;
         }
         public bool UploadPhotoToServer()
         {
-            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath))
+            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             return true;
@@ -567,7 +567,7 @@ namespace _01electronics_crm
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = "..\\..\\Photos\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = "..\\..\\Photos\\models\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

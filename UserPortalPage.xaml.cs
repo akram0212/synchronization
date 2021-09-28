@@ -71,7 +71,7 @@ namespace _01electronics_crm
             }
             catch
             {
-                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath))
+                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath, BASIC_MACROS.SEVERITY_LOW))
                 {
                     Image employeePhoto = new Image();
 

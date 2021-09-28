@@ -71,6 +71,7 @@ namespace _01electronics_crm
 
             GetMeetings();
             InitializeStackPanel();
+            InitializeGrid();
             SetDefaultSettings();
         }
 
@@ -205,6 +206,118 @@ namespace _01electronics_crm
             }
         }
 
+        private void InitializeGrid()
+        {
+            officeMeetingsGrid.Children.Clear();
+            officeMeetingsGrid.RowDefinitions.Clear();
+            officeMeetingsGrid.ColumnDefinitions.Clear();
+
+            Label salesPersonHeader = new Label();
+            salesPersonHeader.Content = "Sales Person";
+            salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label dateOfMeetingHeader = new Label();
+            dateOfMeetingHeader.Content = "Meeting Date";
+            dateOfMeetingHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label meetingPurposeHeader = new Label();
+            meetingPurposeHeader.Content = "Meeting Purpose";
+            meetingPurposeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            officeMeetingsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            officeMeetingsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            officeMeetingsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            officeMeetingsGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetRow(salesPersonHeader, 0);
+            Grid.SetColumn(salesPersonHeader, 0);
+            officeMeetingsGrid.Children.Add(salesPersonHeader);
+
+            Grid.SetRow(dateOfMeetingHeader, 0);
+            Grid.SetColumn(dateOfMeetingHeader, 1);
+            officeMeetingsGrid.Children.Add(dateOfMeetingHeader);
+
+            Grid.SetRow(meetingPurposeHeader, 0);
+            Grid.SetColumn(meetingPurposeHeader, 2);
+            officeMeetingsGrid.Children.Add(meetingPurposeHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < officeMeetings.Count; i++)
+            {
+                DateTime currentMeetingDate = DateTime.Parse(officeMeetings[i].meeting_date);
+
+                if (yearCheckBox.IsChecked == true && currentMeetingDate.Year != selectedYear)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctions.GetQuarter(currentMeetingDate) != selectedQuarter)
+                    continue;
+
+                if (employeeCheckBox.IsChecked == true && officeMeetings[i].meeting_caller.employee_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                filteredMeetings.Add(officeMeetings[i]);
+
+                RowDefinition currentRow = new RowDefinition();
+                officeMeetingsGrid.RowDefinitions.Add(currentRow);
+
+                Label salesPersonLabel = new Label();
+                salesPersonLabel.Content = officeMeetings[i].meeting_caller.employee_name;
+                salesPersonLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesPersonLabel, currentRowNumber);
+                Grid.SetColumn(salesPersonLabel, 0);
+                officeMeetingsGrid.Children.Add(salesPersonLabel);
+
+
+                Label dateOfMeeting = new Label();
+                dateOfMeeting.Content = officeMeetings[i].meeting_date;
+                dateOfMeeting.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(dateOfMeeting, currentRowNumber);
+                Grid.SetColumn(dateOfMeeting, 1);
+                officeMeetingsGrid.Children.Add(dateOfMeeting);
+
+
+                Label meetingPurpose = new Label();
+                meetingPurpose.Content = officeMeetings[i].meeting_purpose.purpose_name;
+                meetingPurpose.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(meetingPurpose, currentRowNumber);
+                Grid.SetColumn(meetingPurpose, 2);
+                officeMeetingsGrid.Children.Add(meetingPurpose);
+
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+        }
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //VIEWING TABS
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -278,10 +391,16 @@ namespace _01electronics_crm
             viewOfficeMeetingWindow.Show();
         }
 
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(officeMeetingsGrid);
+        }
+
         private void OnClosedAddCallWindow(object sender, EventArgs e)
         {
             GetMeetings();
             InitializeStackPanel();
+            InitializeGrid();
         }
 
         private void OnBtnClickedMeetingItem(object sender, RoutedEventArgs e)
@@ -321,6 +440,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -331,6 +451,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -342,6 +463,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 

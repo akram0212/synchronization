@@ -191,6 +191,11 @@ namespace _01electronics_crm
             viewButton.IsEnabled = false;
         }
 
+        private void DisableAddButton()
+        {
+            addButton.IsEnabled = false;
+        }
+
         private void EnableViewButton()
         {
             viewButton.IsEnabled = true;
@@ -215,8 +220,20 @@ namespace _01electronics_crm
             resolveButton.IsEnabled = false;
         }
 
+        private void EnableChangeAssigneeButton()
+        {
+            changeAssigneeButton.IsEnabled = true;
+        }
+
+        private void DisableChangeAssigneeButton()
+        {
+            changeAssigneeButton.IsEnabled = false;
+        }
+
         private void SetDefaultSettings()
         {
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                DisableAddButton();
             DisableViewButton();
             DisableReviseButton();
             DisableComboBoxes();
@@ -315,6 +332,7 @@ namespace _01electronics_crm
             DisableReviseButton();
             DisableViewButton();
             DisableResolveButton();
+            DisableChangeAssigneeButton();
 
             RFQsStackPanel.Children.Clear();
 
@@ -487,7 +505,7 @@ namespace _01electronics_crm
             offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             Label offerStatusHeader = new Label();
-            offerStatusHeader.Content = "Offer Status";
+            offerStatusHeader.Content = "RFQ Status";
             offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -725,7 +743,7 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = rfqsList[i].rfq_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
@@ -1083,8 +1101,12 @@ namespace _01electronics_crm
         private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
         {
             EnableViewButton();
-            EnableReviseButton();
-            EnableResolveButton();
+            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                EnableReviseButton();
+            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                EnableResolveButton();
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                EnableChangeAssigneeButton();
 
             previousSelectedRFQItem = currentSelectedRFQItem;
             currentSelectedRFQItem = (Grid)sender;
@@ -1145,7 +1167,10 @@ namespace _01electronics_crm
             ExcelExport excelExport = new ExcelExport(rfqsGrid);
         }
 
-        
+        private void OnBtnClickChangeAssignee(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

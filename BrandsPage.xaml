@@ -43,8 +43,8 @@
 
 
         </Grid>
-
-        <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="BrandsGrid">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="BrandsGrid">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -55,6 +55,6 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
         </Grid>
-
+        </ScrollViewer>
     </Grid>
 </Page>
