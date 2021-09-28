@@ -461,12 +461,12 @@ namespace _01electronics_crm
                 Grid currentGrid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
-                ColumnDefinition column3 = new ColumnDefinition();
+                //ColumnDefinition column3 = new ColumnDefinition();
                 column2.MaxWidth = 95;
                 //column3.Width = new GridLength(Width = 20);
                 currentGrid.ColumnDefinitions.Add(column1);
                 currentGrid.ColumnDefinitions.Add(column2);
-                currentGrid.ColumnDefinitions.Add(column3);
+                //currentGrid.ColumnDefinitions.Add(column3);
 
                 Grid.SetColumn(currentStackPanel, 0);
                 Grid.SetColumn(borderIcon, 1);
