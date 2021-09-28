@@ -74,8 +74,17 @@ namespace _01electronics_crm
                         return;
                 if(!workOffer.GetNewOfferVersion())
                     return;
-                workOffer.GetNewOfferID();
                 workOffer.SetOfferIssueDateToToday();
+                workOffer.GetNewOfferID();
+                
+            }
+
+            if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            {
+                if (!workOffer.GetNewOfferVersion())
+                    return;
+                workOffer.SetOfferIssueDateToToday();
+                workOffer.GetNewOfferID();
             }
 
             workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
@@ -524,10 +533,20 @@ namespace _01electronics_crm
         {
             if (RFQSerialCombo.IsEnabled == true)
             {
-                workOfferProductsPage.SetTypeComboBoxes();
-                workOfferProductsPage.SetBrandComboBoxes();
-                workOfferProductsPage.SetModelComboBoxes();
-                workOfferProductsPage.SetQuantityTextBoxes();
+                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                {
+                    workOfferProductsPage.SetTypeComboBoxes();
+                    workOfferProductsPage.SetBrandComboBoxes();
+                    workOfferProductsPage.SetModelComboBoxes();
+                    workOfferProductsPage.SetQuantityTextBoxes();
+                }
+                else
+                {
+                    workOfferProductsPage.SetTypeLabels();
+                    workOfferProductsPage.SetBrandLabels();
+                    workOfferProductsPage.SetModelLabels();
+                    workOfferProductsPage.SetQuantityTextBoxes();
+                }
             }
 
             workOfferProductsPage.workOfferBasicInfoPage = this;

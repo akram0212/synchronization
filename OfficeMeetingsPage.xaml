@@ -52,13 +52,30 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,15" Content="Office Meetings" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" Margin="48,24">
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource selectedMainTabBorder}" MouseLeftButtonDown="OnClickListView">
+                    <Label Name="listViewLabel" Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource unselectedMainTabBorder}" MouseLeftButtonDown="OnClickTableView">
+                    <Label Name="tableViewLabel" Content="Table View" Style="{StaticResource unselectedMainTabLabelItem}"/>
+                </Border>
+
+            </Grid>
+            
+            <Grid Grid.Row="2" Margin="48,24">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -93,14 +110,27 @@
 
                 </Grid>
 
-                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400">
+                <ScrollViewer Name="stackPanelScrollViewer" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400">
                     <StackPanel Name="OfficeMeetingsStackPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF"/>
                 </ScrollViewer>
-            </Grid>
-           
-            <Button Grid.Row="2" HorizontalAlignment="Left"  Margin="200,0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
 
+                <ScrollViewer Name="gridScrollViewer" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400" Visibility="Collapsed" >
+                    <Grid Name="officeMeetingsGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF" ShowGridLines="True"/>
+                </ScrollViewer>
+                
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
+                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+                <Button Grid.Column="2" Content="Export" Style="{StaticResource buttonStyle}" Click="OnBtnClickExport" Name="exportButton"/>
+            </Grid>
         </Grid>
 
 

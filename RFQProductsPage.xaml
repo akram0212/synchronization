@@ -20,7 +20,19 @@
             <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Background="#105A97" Name="RFQHeader" Content="RFQ PRODUCT INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <Grid Grid.Row="0" Background="#105A97">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Background="#105A97" Name="RFQHeader" Content="RFQ PRODUCT INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        </Grid>
+        
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
@@ -30,16 +42,16 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickBasicInfo">
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
             <Border Grid.Column="1" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Products Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUploadFiles">
                 <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
@@ -48,9 +60,23 @@
             <WrapPanel Name="mainWrapPanel" />
         </ScrollViewer>
 
+        <Grid Grid.Row="3" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton"  Content="Back" Click="OnBtnClickBack" Margin="24"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton"  Content="Next" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel" Margin="24"/>
+
+        </Grid>
+
         <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <Button Style="{StaticResource buttonStyle}" Name="backButton" Click="OnClickBackButton" Content="Back" Margin="24"/>
-            <Button Style="{StaticResource buttonStyle}" Name="nextButton" Click="OnClickNextButton" Content="Next" Margin="24"/>
+            
         </WrapPanel>
     </Grid>
 </Page>

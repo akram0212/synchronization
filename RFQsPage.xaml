@@ -136,6 +136,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton" />
@@ -143,6 +144,7 @@
                 <Button Grid.Column="2" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton" />
                 <Button Grid.Column="3" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton" />
                 <Button Grid.Column="4" Content="Export" Style="{StaticResource buttonStyle}" Name="exportButton" Click="OnBtnClickedExport"/>
+                <Button Grid.Column="5" Content="Change Assignee" Style="{StaticResource buttonStyle}" Name="changeAssigneeButton" Click="OnBtnClickChangeAssignee"/>
             </Grid>
             
         </Grid>

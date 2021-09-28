@@ -78,6 +78,10 @@ namespace _01electronics_crm
                 InitializeProducts();
                 InitializeBrandCombo();
                 SetUpPageUIElements();
+                SetTypeComboBoxes();
+                SetBrandComboBoxes();
+                SetModelComboBoxes();
+                SetQuantityTextBoxes();
             }
         }
         //////////INITIALIZE FUNCTIONS//////////
@@ -97,7 +101,6 @@ namespace _01electronics_crm
         ////////SET FUNCTIONS////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
         
-       
         private void SetTypeComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
@@ -406,7 +409,10 @@ namespace _01electronics_crm
                         rfq.SetRFQProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
 
                         if (rfq.GetRFQProductModelId(k + 1) != 0)
+                        {
                             currentModelComboBox.SelectedItem = rfq.GetRFQProductModel(k + 1);
+                            rfq.SetNoOfSavedRFQProducts();
+                        }
                     }
                 }
             }
@@ -659,45 +665,69 @@ namespace _01electronics_crm
 
         ////////////BUTTON CLICKS///////////
         ////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnClickBasicInfo(object sender, RoutedEventArgs e)
+        ///
+        private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
-            RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(basicInfoPage);
-        }
-        
-
-        private void OnClickProductsInfo(object sender, RoutedEventArgs e)
-        {
-            //RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq);
-            //NavigationService.Navigate(productsPage);
-        }
-
-        private void OnClickAdditionalInfo(object sender, RoutedEventArgs e)
-        {
-            RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(additionalInfoPage);
-        }
-
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
-        {
-            rfq.SetNoOfSavedRFQProducts();
-
             rfqBasicInfoPage.rfqProductsPage = this;
             rfqBasicInfoPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
-            rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
 
             NavigationService.Navigate(rfqBasicInfoPage);
         }
 
-        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
-            rfq.SetNoOfSavedRFQProducts();
+            rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
+            rfqAdditionalInfoPage.rfqProductsPage = this;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqAdditionalInfoPage);
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+        }
+
+        private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqBasicInfoPage.rfqProductsPage = this;
+            rfqBasicInfoPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqBasicInfoPage);
+        }
+
+        private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            //rfq.SetNoOfSavedRFQProducts();
 
             rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
             rfqAdditionalInfoPage.rfqProductsPage = this;
-            rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
 
             NavigationService.Navigate(rfqAdditionalInfoPage);
+        }
+
+        private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                rfqUploadFilesPage.rfqBasicInfoPage = rfqBasicInfoPage;
+                rfqUploadFilesPage.rfqProductsPage = this;
+                rfqUploadFilesPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+                NavigationService.Navigate(rfqUploadFilesPage);
+            }
         }
     }
 }

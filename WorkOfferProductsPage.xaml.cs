@@ -92,6 +92,7 @@ namespace _01electronics_crm
                 SetModelLabels();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
+                SetPriceComboBoxes();
             }
             //////////////////////////////
             ///REVISE
@@ -108,6 +109,7 @@ namespace _01electronics_crm
                 SetModelComboBoxes();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
+                SetPriceComboBoxes();
             }
             /////////////////////////////
             ///RESOLVE RFQ
@@ -132,11 +134,6 @@ namespace _01electronics_crm
                
             }    
 
-        }
-
-        public WorkOfferProductsPage(ref WorkOffer mWorkOffer)
-        {
-            workOffer = mWorkOffer;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -251,7 +248,7 @@ namespace _01electronics_crm
                     currentModelComboBox.SelectedItem = workOffer.GetRFQProductModel(i + 1);
             }
         }
-        private void SetTypeLabels()
+        public void SetTypeLabels()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -262,7 +259,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetBrandLabels()
+        public void SetBrandLabels()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -273,7 +270,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetModelLabels()
+        public void SetModelLabels()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {

@@ -73,8 +73,15 @@ namespace _01electronics_crm
             {
                 ConfigureUIElementsForRevise();
                 InitializeContractTypeCombo();
+
+                SetContractTypeCombo();
+                SetDeadlineDateDatePicker();
+                SetNotesTextBox();
             }
-            
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                nextButton.IsEnabled = false; 
+
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,41 +170,20 @@ namespace _01electronics_crm
         }
         private void OnSelChangedDeadlineDate(object sender, SelectionChangedEventArgs e)
         {
-            deadlineDate = DateTime.Parse(deadlineDateDatePicker.SelectedDate.ToString());
+            rfq.SetRFQDeadlineDate(DateTime.Parse(deadlineDateDatePicker.SelectedDate.ToString()));
+
         }
         private void OnTextChangedNotes(object sender, TextChangedEventArgs e)
         {
-            if (notesTextBox.Text != null)
-                notes = notesTextBox.Text;
+            rfq.SetRFQNotes(notesTextBox.Text);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         //////////BUTTON CLICKED/////////////
         /////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnClickBasicInfo(object sender, RoutedEventArgs e)
-        {
-            RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(basicInfoPage);
-        }    
-        
-        private void OnClickProductsInfo(object sender, RoutedEventArgs e)
-        {
-            RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(productsPage);
-        }
 
-        private void OnClickAdditionalInfo(object sender, RoutedEventArgs e)
+        private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
-            //RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq);
-            //NavigationService.Navigate(additionalInfoPage);
-        }
-
-        private void OnClickAddRFQButton(object sender, RoutedEventArgs e)
-        {
-            rfq.SetRFQNotes(notes);
-            rfq.SetRFQDeadlineDate(deadlineDate);
-
-
             //YOUR MESSAGE MUST BE SPECIFIC
             //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
             if (rfq.GetSalesPersonId() == 0)
@@ -218,39 +204,48 @@ namespace _01electronics_crm
                 {
                     if (rfq.IssueNewRFQ())
                     {
-                        //ENTER AN ERROR MESSAGE HERE
-                        //THEN CLOSE THE WINDOW
+                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                        RFQBasicInfoPage rFQBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+                        
+                        rfqUploadFilesPage = rFQBasicInfoPage.rfqUploadFilesPage;
+
+                        //rfqUploadFilesPage.rfqAdditionalInfoPage = rFQBasicInfoPage.rfqAdditionalInfoPage;
+
+                        //rfqUploadFilesPage.rfqBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq);
+                        //rfqUploadFilesPage.rfqBasicInfoPage = rFQProductsPage.rfqBasicInfoPage;
+                        
+                        //rfqUploadFilesPage.rfqProductsPage = rFQBasicInfoPage.rfqProductsPage;
+                        
                         System.Windows.Forms.MessageBox.Show("RFQ added successfully!");
 
-                        RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
-
-                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                        currentWindow.Close();
-
+                        NavigationService.Navigate(rfqUploadFilesPage);
                     }
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
                     if (rfq.ReviseRFQ())
                     {
-                        //ENTER AN ERROR MESSAGE HERE
-                        //THEN CLOSE THE WINDOW
+                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                        RFQBasicInfoPage rFQBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+                        //RFQProductsPage rFQProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
+
+                        //rfqUploadFilesPage.rfqBasicInfoPage = rFQProductsPage.rfqBasicInfoPage;
+                        //rfqUploadFilesPage.rfqProductsPage = rFQBasicInfoPage.rfqProductsPage;
+                        //rfqUploadFilesPage.rfqAdditionalInfoPage = rFQBasicInfoPage.rfqAdditionalInfoPage;
+                        rfqUploadFilesPage = rFQBasicInfoPage.rfqUploadFilesPage;
+
                         System.Windows.Forms.MessageBox.Show("RFQ revised successfully!");
 
-                        RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
-
-                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                        currentWindow.Close();
+                        NavigationService.Navigate(rfqUploadFilesPage);
                     }
                 }
             }
         }
 
-        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
-            rfq.SetRFQNotes(notes);
-            rfq.SetRFQDeadlineDate(deadlineDate);
-
             rfqUploadFilesPage.rfqBasicInfoPage = rfqBasicInfoPage;
             rfqUploadFilesPage.rfqProductsPage = rfqProductsPage;
             rfqUploadFilesPage.rfqAdditionalInfoPage = this;
@@ -258,16 +253,55 @@ namespace _01electronics_crm
             NavigationService.Navigate(rfqUploadFilesPage);
         }
 
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
-            rfq.SetRFQNotes(notes);
-            rfq.SetRFQDeadlineDate(deadlineDate);
-
             rfqProductsPage.rfqAdditionalInfoPage = this;
             rfqProductsPage.rfqBasicInfoPage = rfqBasicInfoPage;
-            rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
 
             NavigationService.Navigate(rfqProductsPage);
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+        }
+
+        private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqBasicInfoPage.rfqProductsPage = rfqProductsPage;
+            rfqBasicInfoPage.rfqAdditionalInfoPage = this;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqUploadFilesPage);
+        }
+
+        private void OnBtnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqProductsPage.rfqAdditionalInfoPage = this;
+            rfqProductsPage.rfqBasicInfoPage = rfqBasicInfoPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
+
+        private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                rfqUploadFilesPage.rfqBasicInfoPage = rfqBasicInfoPage;
+                rfqUploadFilesPage.rfqProductsPage = rfqProductsPage;
+                rfqUploadFilesPage.rfqAdditionalInfoPage = this;
+
+                NavigationService.Navigate(rfqUploadFilesPage);
+            }
         }
     }
 }

@@ -507,5 +507,8 @@
     <Resource Include="photos\winrar_icon.jpg" />
     <Resource Include="photos\word_icon.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\no_internet_icon.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

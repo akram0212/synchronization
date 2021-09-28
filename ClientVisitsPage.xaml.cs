@@ -236,15 +236,19 @@ namespace _01electronics_crm
             contactInfoHeader.Content = "Contact Info";
             contactInfoHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label purposeAndResultHeader = new Label();
-            purposeAndResultHeader.Content = "Purpose - Result";
-            purposeAndResultHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label purposeHeader = new Label();
+            purposeHeader.Content = "Visit Purpose";
+            purposeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label resultHeader = new Label();
+            resultHeader.Content = "Visit Result";
+            resultHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
-
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             
             clientVisitsGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -262,9 +266,13 @@ namespace _01electronics_crm
             Grid.SetColumn(contactInfoHeader, 2);
             clientVisitsGrid.Children.Add(contactInfoHeader);
 
-            Grid.SetRow(purposeAndResultHeader, 0);
-            Grid.SetColumn(purposeAndResultHeader, 3);
-            clientVisitsGrid.Children.Add(purposeAndResultHeader);
+            Grid.SetRow(purposeHeader, 0);
+            Grid.SetColumn(purposeHeader, 3);
+            clientVisitsGrid.Children.Add(purposeHeader);
+
+            Grid.SetRow(resultHeader, 0);
+            Grid.SetColumn(resultHeader, 4);
+            clientVisitsGrid.Children.Add(resultHeader);
 
             int currentRowNumber = 1;
 
@@ -285,7 +293,7 @@ namespace _01electronics_crm
 
 
                 RowDefinition currentRow = new RowDefinition();
-                currentRow.Height = new GridLength(75);
+                //currentRow.Height = new GridLength(75);
                 clientVisitsGrid.RowDefinitions.Add(currentRow);
 
                 Label salesPersonLabel = new Label();
@@ -315,14 +323,21 @@ namespace _01electronics_crm
                 clientVisitsGrid.Children.Add(contactInfoLabel);
 
 
-                Label purposeAndResultLabel = new Label();
-                purposeAndResultLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
-                purposeAndResultLabel.Style = (Style)FindResource("tableSubItemLabel");
+                Label purposeLabel = new Label();
+                purposeLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                purposeLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                clientVisitsGrid.Children.Add(purposeAndResultLabel);
-                Grid.SetRow(purposeAndResultLabel, currentRowNumber);
-                Grid.SetColumn(purposeAndResultLabel, 3);
+                clientVisitsGrid.Children.Add(purposeLabel);
+                Grid.SetRow(purposeLabel, currentRowNumber);
+                Grid.SetColumn(purposeLabel, 3);
 
+                Label resultLabel = new Label();
+                resultLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                resultLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clientVisitsGrid.Children.Add(resultLabel);
+                Grid.SetRow(resultLabel, currentRowNumber);
+                Grid.SetColumn(resultLabel, 4);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
 
