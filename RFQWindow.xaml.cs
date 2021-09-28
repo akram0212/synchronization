@@ -24,7 +24,8 @@ namespace _01electronics_crm
         public RFQWindow(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             InitializeComponent();
-
+            this.MinHeight = 200;
+            this.MinWidth = 200;
             RFQBasicInfoPage rfqsPage = new RFQBasicInfoPage(ref mLoggedInUser,ref mRFQ, mViewAddCondition);
             this.NavigationService.Navigate(rfqsPage);
         }

@@ -445,6 +445,12 @@ namespace _01electronics_crm
 
                 borderIcon.Child = rfqStatusLabel;
 
+                //Expander expander = new Expander();
+                //expander.ExpandDirection = ExpandDirection.Down;
+                //expander.HorizontalAlignment = HorizontalAlignment.Center;
+                //expander.VerticalAlignment = VerticalAlignment.Center;
+                //currentStackPanel.Children.Add(expander);
+
                 currentStackPanel.Children.Add(rfqIDLabel);
                 currentStackPanel.Children.Add(salesLabel);
                 currentStackPanel.Children.Add(preSalesLabel);
@@ -455,12 +461,16 @@ namespace _01electronics_crm
                 Grid currentGrid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
+                ColumnDefinition column3 = new ColumnDefinition();
                 column2.MaxWidth = 95;
+                //column3.Width = new GridLength(Width = 20);
                 currentGrid.ColumnDefinitions.Add(column1);
                 currentGrid.ColumnDefinitions.Add(column2);
+                currentGrid.ColumnDefinitions.Add(column3);
 
                 Grid.SetColumn(currentStackPanel, 0);
                 Grid.SetColumn(borderIcon, 1);
+                //Grid.SetColumn(expander, 2);
 
                 currentGrid.Children.Add(currentStackPanel);
                 currentGrid.Children.Add(borderIcon);
