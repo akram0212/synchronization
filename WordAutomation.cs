@@ -59,7 +59,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OFFERS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OFFERS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
             {
                 doc.LoadFromFile(wordFilePath);
 
@@ -130,7 +130,7 @@ namespace _01electronics_crm
 
                     string imagePath = Directory.GetCurrentDirectory() + "/" + workOffer.GetOfferProductModel(i + 1) + ".jpg";
                     imagePaths.Add(imagePath);
-                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath))
+                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOffer.GetOfferProductTypeId(i + 1) + "/" + workOffer.GetOfferProductBrandId(i + 1) + "/" + workOffer.GetOfferProductModelId(i + 1) + ".jpg", imagePath, BASIC_MACROS.SEVERITY_HIGH))
                     {
                         //BitmapImage src = new BitmapImage();
                         //src.BeginInit();

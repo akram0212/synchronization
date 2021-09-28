@@ -107,7 +107,6 @@ namespace _01electronics_crm
                         imageBorder.BorderThickness = new Thickness(3);
                         imageBorder.Background = Brushes.White;
                         imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                        //Grid.SetColumn(imageBorder, 0);
                         column1Grid.Children.Add(imageBorder);
 
                         selectedProduct.SetModelID(brandModels[i].modelId);
@@ -120,8 +119,6 @@ namespace _01electronics_crm
                             src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
                             src.CacheOption = BitmapCacheOption.OnLoad;
                             src.EndInit();
-                            //string src = String.Format(selectedProduct.GetPhotoLocalPath());
-                            // brandImage.Source = new BitmapImage(new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Absolute));
                             brandImage.Source = src;
                             brandImage.Height = 220;
                             brandImage.Width = 190;
@@ -140,7 +137,6 @@ namespace _01electronics_crm
                                 src.CacheOption = BitmapCacheOption.OnLoad;
                                 src.EndInit();
                                 brandImage.Source = src;
-                                //brandImage.Source = new BitmapImage(new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative));
                                 brandImage.Height = 220;
                                 brandImage.Width = 190;
                                 //brandImage.MouseDown += ImageMouseDown;
@@ -168,7 +164,7 @@ namespace _01electronics_crm
 
                         Grid row1Grid = new Grid();
 
-                        row1Grid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151)); 
+                        row1Grid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                         TextBox modelTextBox = new TextBox();
                         modelTextBox.VerticalAlignment = VerticalAlignment.Center;
                         modelTextBox.HorizontalAlignment = HorizontalAlignment.Center;
@@ -259,6 +255,21 @@ namespace _01electronics_crm
                         modelsWrapPanel.Children.Add(currentModelGrid);
 
                     }
+                }
+                if (brandModels.Count() == 0 || brandModels[0].modelId == 0)
+                {
+                    Image brandImage = new Image();
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri("..\\..\\Photos\\models\\" + "00.jpg", UriKind.Relative);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    brandImage.Source = src;
+                    brandImage.VerticalAlignment = VerticalAlignment.Center;
+                    brandImage.Margin = new Thickness(100);
+                    brandImage.HorizontalAlignment = HorizontalAlignment.Center;
+                    brandImage.Tag = 00;
+                    modelsWrapPanel.Children.Add(brandImage);
                 }
                 Grid.SetRow(modelsWrapPanel, 1);
             });

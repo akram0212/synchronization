@@ -74,8 +74,6 @@ namespace _01electronics_crm
 
                 string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
                 productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                //productImage.Width = 900;
-                //productImage.Height = 300;
                 productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
                 productImage.VerticalAlignment = VerticalAlignment.Stretch;
                 productImage.MouseDown += ImageMouseDown;
@@ -83,28 +81,8 @@ namespace _01electronics_crm
                 gridI.Children.Add(productImage);
                 Grid.SetRow(productImage, 0);
 
-                //TextBlock imageTextBlock = new TextBlock();
-                //imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                //imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                //imageTextBlock.Width = 350;
-                //imageTextBlock.Height = 150;
-                //imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
-                //imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
-                //imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                //imageTextBlock.FontSize = 16;
-                //imageTextBlock.TextWrapping = TextWrapping.Wrap;
-                //imageTextBlock.Text = "  " + products[i].typeName;
-                //imageTextBlock.Text += "\n\n";
-
-                //imageTextBlock.Text += productSummaryPoints[i];
-                //gridI.Children.Add(imageTextBlock);
-                //Grid.SetRow(imageTextBlock, 0);
-                //ProductsGrid.Children.Add(gridI);
-                //Grid.SetRow(gridI, i);
-
                 Grid imageGrid = new Grid();
                 imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                //imageGrid.Background = Brushes.White;
                 imageGrid.Width = 350;
                 imageGrid.Height = 150;
                 imageGrid.Margin = new Thickness(100, -20, 0, 0);
@@ -119,15 +97,16 @@ namespace _01electronics_crm
                 imageGrid.RowDefinitions.Add(pointsRow);
 
                 Grid headerGrid = new Grid();
-                headerGrid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                 RowDefinition headerGridRow = new RowDefinition();
                 headerGrid.RowDefinitions.Add(headerGridRow);
                 Grid.SetRow(headerGrid, 0);
 
                 Label headerLabel = new Label();
-                headerLabel.Foreground = Brushes.White;
+                headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                headerLabel.FontFamily = new FontFamily("Sans Serif");
                 headerLabel.FontSize = 17;
                 headerLabel.FontWeight = FontWeights.Bold;
+                headerLabel.Padding = new Thickness(10);
                 headerLabel.Content = products[i].typeName;
 
                 Grid.SetRow(headerLabel, 0);
@@ -140,7 +119,7 @@ namespace _01electronics_crm
                 pointsTextBlock.FontSize = 15;
                 pointsTextBlock.FontStyle = FontStyles.Italic;
                 pointsTextBlock.Text = productSummaryPoints[i];
-                pointsTextBlock.Padding = new Thickness(15, 15, 15, 15);
+                pointsTextBlock.Padding = new Thickness(20);
 
                 Grid.SetRow(pointsTextBlock, 1);
                 imageGrid.Children.Add(pointsTextBlock);
