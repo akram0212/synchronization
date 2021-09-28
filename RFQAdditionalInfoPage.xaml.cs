@@ -71,6 +71,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
                 finishButton.IsEnabled = false;
+                nextButton.IsEnabled = true;
             }
             else
             {

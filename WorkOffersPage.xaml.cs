@@ -83,6 +83,12 @@ namespace _01electronics_crm
 
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
+
+            if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+                reviseButton.IsEnabled = false;
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

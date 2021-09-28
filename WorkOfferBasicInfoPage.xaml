@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Content="WORK OFFER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -47,19 +47,19 @@
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                 <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
                 <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
@@ -79,7 +79,7 @@
                 </WrapPanel>
 
                 <WrapPanel Name="assigneeWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="RFQ Serial"/>
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedRFQSerialCombo"/>
                 </WrapPanel>
@@ -110,8 +110,23 @@
         </Grid>
 
         <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <Button Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnClickNextButton" HorizontalAlignment="Center" Margin="24"/>
+            
         </WrapPanel>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
+
+        </Grid>
 
     </Grid>
 </Page>

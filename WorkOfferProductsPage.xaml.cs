@@ -47,8 +47,101 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        //public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        //{
+        //    loggedInUser = mLoggedInUser;
+        //    viewAddCondition = mViewAddCondition;
+        //
+        //    InitializeComponent();
+        //
+        //    sqlDatabase = new SQLServer();
+        //    commonQueriesObject = new CommonQueries();
+        //    commonFunctionsObject = new CommonFunctions();
+        //
+        //    workOffer = new WorkOffer(sqlDatabase);
+        //    workOffer = mWorkOffer;
+        //
+        //    numberOfProductsAdded = 0;
+        //
+        //
+        //
+        //    //////////////////////////////
+        //    ///ADD CONDITION
+        //    //////////////////////////////
+        //    if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+        //    {
+        //        InitializeProducts();
+        //        InitializeBrandCombo();
+        //        InitializePriceCurrencyComboBoxes();
+        //        SetUpPageUIElements();
+        //        //SetTypeComboBoxes();
+        //        //SetBrandComboBoxes();
+        //        //SetModelComboBoxes();
+        //        //SetQuantityTextBoxes();
+        //        //SetPriceTextBoxes();
+        //        //SetPriceComboBoxes();
+        //    }
+        //    /////////////////////////////
+        //    ///VIEW CONDITION
+        //    /////////////////////////////
+        //    else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+        //    {
+        //        SetUpPageUIElements();
+        //        SetTypeLabels();
+        //        SetBrandLabels();
+        //        SetModelLabels();
+        //        SetQuantityTextBoxes();
+        //        SetPriceTextBoxes();
+        //        SetPriceComboBoxes();
+        //
+        //        cancelButton.IsEnabled = false;
+        //    }
+        //    //////////////////////////////
+        //    ///REVISE
+        //    //////////////////////////////
+        //    else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+        //    {
+        //        
+        //        InitializeProducts();
+        //        InitializeBrandCombo();
+        //        InitializePriceCurrencyComboBoxes();
+        //        SetUpPageUIElements();
+        //        SetTypeComboBoxes();
+        //        SetBrandComboBoxes();
+        //        SetModelComboBoxes();
+        //        SetQuantityTextBoxes();
+        //        SetPriceTextBoxes();
+        //        SetPriceComboBoxes();
+        //    }
+        //    /////////////////////////////
+        //    ///RESOLVE RFQ
+        //    /////////////////////////////
+        //    else
+        //    {
+        //        InitializeProducts();
+        //        InitializeBrandCombo();
+        //        InitializePriceCurrencyComboBoxes();
+        //        SetUpPageUIElements();
+        //        SetTypeComboBoxes();
+        //        SetBrandComboBoxes();
+        //        SetModelComboBoxes();
+        //        SetQuantityTextBoxes();
+        //    }
+        //
+        //   
+        //
+        //    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+        //
+        //    { 
+        //       
+        //    }    
+        //
+        //}
+
+        public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferPaymentAndDeliveryPage mWorkOfferPaymentAndDeliveryPage)
         {
+            workOfferPaymentAndDeliveryPage = mWorkOfferPaymentAndDeliveryPage;
+
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
@@ -74,12 +167,12 @@ namespace _01electronics_crm
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                SetTypeComboBoxes();
-                SetBrandComboBoxes();
-                SetModelComboBoxes();
-                SetQuantityTextBoxes();
-                SetPriceTextBoxes();
-                SetPriceComboBoxes();
+                //SetTypeComboBoxes();
+                //SetBrandComboBoxes();
+                //SetModelComboBoxes();
+                //SetQuantityTextBoxes();
+                //SetPriceTextBoxes();
+                //SetPriceComboBoxes();
             }
             /////////////////////////////
             ///VIEW CONDITION
@@ -93,13 +186,15 @@ namespace _01electronics_crm
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
+
+                cancelButton.IsEnabled = false;
             }
             //////////////////////////////
             ///REVISE
             //////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
-                
+
                 InitializeProducts();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
@@ -126,16 +221,15 @@ namespace _01electronics_crm
                 SetQuantityTextBoxes();
             }
 
-           
+
 
             if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
 
-            { 
-               
-            }    
+            {
+
+            }
 
         }
-
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -582,13 +676,16 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                     {
-                        if(k != 0)
+                        if (k != 0)
                             currentProductCheckBox.IsChecked = true;
 
                         workOffer.SetOfferProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
-                        
+
                         if (workOffer.GetOfferProductModelId(k + 1) != 0)
+                        {
                             currentModelComboBox.SelectedItem = workOffer.GetOfferProductModel(k + 1);
+                            workOffer.SetNoOfSavedOfferProducts();
+                        }
                     }
                 }
             }
@@ -713,6 +810,8 @@ namespace _01electronics_crm
                         workOffer.SetOfferProductQuantity(k + 1, quantity);
                 }
                 currentQuantityTextBox.Text = null;
+
+                //CALL TOTAL PRICE HERE
             }
         }
         private void PriceTextBoxesTextChanged(Object sender, TextChangedEventArgs e)
@@ -729,7 +828,15 @@ namespace _01electronics_crm
                     for (int k = 0; k < numberOfProductsAdded; k++)
                     {
                         if (currentProductGrid == mainWrapPanel.Children[k])
-                            workOffer.SetOfferProductPriceValue(k + 1,(int)priceQuantity);
+                        {
+                            workOffer.SetOfferProductPriceValue(k + 1, (int)priceQuantity);
+                            //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                            //    workOfferPaymentAndDeliveryPage = workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage;
+                            workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
+
+                            //REMOVE THIS FROM HERE, SHALL BE ADDED ON ANY SELECTION CHANGE FOR CURRENCY COMBO BOX
+                            workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
+                        }
                     }
                 }
                 else
@@ -924,8 +1031,6 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            workOffer.SetNoOfSavedOfferProducts();
-
             workOfferBasicInfoPage.workOfferProductsPage = this;
             workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
             workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
@@ -938,8 +1043,7 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
-            workOffer.SetNoOfSavedOfferProducts();
-
+           
             workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
             workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
 
@@ -952,8 +1056,6 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            workOffer.SetNoOfSavedOfferProducts();
-
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = this;
             workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
@@ -964,35 +1066,19 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-                    if (!workOffer.GetNewOfferSerial())
-                        return;
+                workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+                workOfferUploadFilesPage.workOfferProductsPage = this;
+                workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+                workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
 
-                if (!workOffer.GetNewOfferVersion())
-                    return;
-
-                workOffer.SetOfferIssueDateToToday();
-
-                workOffer.GetNewOfferID();
+                NavigationService.Navigate(workOfferUploadFilesPage);
             }
-
-            workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
-            workOfferUploadFilesPage.workOfferProductsPage = this;
-            workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
-            workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
-
-            NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            workOffer.SetNoOfSavedOfferProducts();
-
-            workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
-            workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
-
             workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferPaymentAndDeliveryPage.workOfferProductsPage = this;
             workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
@@ -1018,6 +1104,13 @@ namespace _01electronics_crm
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+
+            currentWindow.Close();
         }
     }
 }
