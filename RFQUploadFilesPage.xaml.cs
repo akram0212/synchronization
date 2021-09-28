@@ -756,7 +756,7 @@ namespace _01electronics_crm
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
 
             uploadBackground.ReportProgress(50);
-            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName))
+            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH))
                 fileUploaded = true;
             else
                 fileUploaded = false;
@@ -772,7 +772,7 @@ namespace _01electronics_crm
             BackgroundWorker downloadBackground = sender as BackgroundWorker;
 
             downloadBackground.ReportProgress(50);
-            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName))
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName, BASIC_MACROS.SEVERITY_HIGH))
             {
                 fileDownloaded = false;
                 return;

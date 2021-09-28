@@ -104,6 +104,21 @@ namespace _01electronics_crm
 
                 }
             }
+            if (brandsList.Count() == 0 || brandsList[0].brandId == 0)
+            {
+                Image brandImage = new Image();
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri("..\\..\\Photos\\brands\\" + "00.jpg", UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
+                brandImage.Source = src;
+                brandImage.VerticalAlignment = VerticalAlignment.Center;
+                brandImage.Margin = new Thickness(100);
+                brandImage.HorizontalAlignment = HorizontalAlignment.Center;
+                brandImage.Tag = 00;
+                brandsWrapPanel.Children.Add(brandImage);
+            }
 
             BrandsGrid.Children.Add(brandsWrapPanel);
             Grid.SetRow(brandsWrapPanel, 1);
