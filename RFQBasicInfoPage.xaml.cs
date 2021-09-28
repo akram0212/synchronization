@@ -91,6 +91,8 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetContactNumberLabel();
+
+                cancelButton.IsEnabled = false;
             }  
             else
             {

@@ -505,7 +505,7 @@ namespace _01electronics_crm
             offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             Label offerStatusHeader = new Label();
-            offerStatusHeader.Content = "Offer Status";
+            offerStatusHeader.Content = "RFQ Status";
             offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -743,7 +743,7 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = rfqsList[i].rfq_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }

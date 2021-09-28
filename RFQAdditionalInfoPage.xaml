@@ -83,7 +83,7 @@
 
             </WrapPanel>
 
-            <Grid Grid.Row="3" HorizontalAlignment="Right">
+            <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

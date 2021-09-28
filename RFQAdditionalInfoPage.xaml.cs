@@ -68,6 +68,9 @@ namespace _01electronics_crm
                 SetContractTypeLabel();
                 SetDeadlineDateDatePicker();
                 SetNotesLabel();
+
+                cancelButton.IsEnabled = false;
+                finishButton.IsEnabled = false;
             }
             else
             {
@@ -217,9 +220,10 @@ namespace _01electronics_crm
                         
                         //rfqUploadFilesPage.rfqProductsPage = rFQBasicInfoPage.rfqProductsPage;
                         
-                        System.Windows.Forms.MessageBox.Show("RFQ added successfully!");
+                        //System.Windows.Forms.MessageBox.Show("RFQ added successfully!");
 
                         NavigationService.Navigate(rfqUploadFilesPage);
+
                     }
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
@@ -236,7 +240,7 @@ namespace _01electronics_crm
                         //rfqUploadFilesPage.rfqAdditionalInfoPage = rFQBasicInfoPage.rfqAdditionalInfoPage;
                         rfqUploadFilesPage = rFQBasicInfoPage.rfqUploadFilesPage;
 
-                        System.Windows.Forms.MessageBox.Show("RFQ revised successfully!");
+                        //System.Windows.Forms.MessageBox.Show("RFQ revised successfully!");
 
                         NavigationService.Navigate(rfqUploadFilesPage);
                     }

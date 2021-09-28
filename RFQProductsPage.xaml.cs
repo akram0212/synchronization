@@ -72,6 +72,8 @@ namespace _01electronics_crm
                 SetBrandLabels();
                 SetModelLabels();
                 SetQuantityTextBoxes();
+
+                cancelButton.IsEnabled = false;
             }
             else
             {
