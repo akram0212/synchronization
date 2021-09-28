@@ -327,21 +327,6 @@ namespace _01electronics_crm
                 
             }
 
-            for (int i = 0; i < companiesTreeArray.Count(); i++)
-            {
-                TreeViewItem companyTreeItem = new TreeViewItem();
-                companyTreeItem = companiesTreeArray[i].Value;
-
-                TreeViewItem parentTreeItem = new TreeViewItem();
-                parentTreeItem = (TreeViewItem)companyTreeItem.Parent;
-
-                if (!companyTreeItem.HasItems)
-                {
-                    parentTreeItem.Items.Remove(companyTreeItem);
-
-                }
-            }
-
             return true;
         }
 
