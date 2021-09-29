@@ -49,21 +49,16 @@ namespace _01electronics_crm
 
         public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer,int mViewAddCondition)
         {
-            workOfferAdditionalInfoPage = new WorkOfferAdditionalInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
-            workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition, ref workOfferAdditionalInfoPage);
-            workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition, ref workOfferPaymentAndDeliveryPage);
-            
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            InitializeComponent();
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
+            InitializeComponent();
 
             //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
             //{
@@ -86,20 +81,12 @@ namespace _01electronics_crm
             //    workOffer.GetNewOfferID();
             //}
 
-
-
-            ///////////////////////////
-            ////ADD
-            ///////////////////////////
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
                 FillrfqsList(); 
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
             }
-            ////////////////////////////
-            ///VIEW
-            ////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 FillrfqsList();
@@ -112,9 +99,6 @@ namespace _01electronics_crm
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
             }
-            /////////////////////////////
-            ///REVISE
-            /////////////////////////////
             else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
                 FillrfqsList();
@@ -132,9 +116,6 @@ namespace _01electronics_crm
                 }
                 DisableSalesPersonAndRFQCombo();
             }
-            //////////////////////////
-            ///RESOLVE RFQ
-            //////////////////////////
             else
             {
                 FillrfqsList();

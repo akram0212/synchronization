@@ -47,97 +47,6 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        //public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
-        //{
-        //    loggedInUser = mLoggedInUser;
-        //    viewAddCondition = mViewAddCondition;
-        //
-        //    InitializeComponent();
-        //
-        //    sqlDatabase = new SQLServer();
-        //    commonQueriesObject = new CommonQueries();
-        //    commonFunctionsObject = new CommonFunctions();
-        //
-        //    workOffer = new WorkOffer(sqlDatabase);
-        //    workOffer = mWorkOffer;
-        //
-        //    numberOfProductsAdded = 0;
-        //
-        //
-        //
-        //    //////////////////////////////
-        //    ///ADD CONDITION
-        //    //////////////////////////////
-        //    if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-        //    {
-        //        InitializeProducts();
-        //        InitializeBrandCombo();
-        //        InitializePriceCurrencyComboBoxes();
-        //        SetUpPageUIElements();
-        //        //SetTypeComboBoxes();
-        //        //SetBrandComboBoxes();
-        //        //SetModelComboBoxes();
-        //        //SetQuantityTextBoxes();
-        //        //SetPriceTextBoxes();
-        //        //SetPriceComboBoxes();
-        //    }
-        //    /////////////////////////////
-        //    ///VIEW CONDITION
-        //    /////////////////////////////
-        //    else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-        //    {
-        //        SetUpPageUIElements();
-        //        SetTypeLabels();
-        //        SetBrandLabels();
-        //        SetModelLabels();
-        //        SetQuantityTextBoxes();
-        //        SetPriceTextBoxes();
-        //        SetPriceComboBoxes();
-        //
-        //        cancelButton.IsEnabled = false;
-        //    }
-        //    //////////////////////////////
-        //    ///REVISE
-        //    //////////////////////////////
-        //    else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
-        //    {
-        //        
-        //        InitializeProducts();
-        //        InitializeBrandCombo();
-        //        InitializePriceCurrencyComboBoxes();
-        //        SetUpPageUIElements();
-        //        SetTypeComboBoxes();
-        //        SetBrandComboBoxes();
-        //        SetModelComboBoxes();
-        //        SetQuantityTextBoxes();
-        //        SetPriceTextBoxes();
-        //        SetPriceComboBoxes();
-        //    }
-        //    /////////////////////////////
-        //    ///RESOLVE RFQ
-        //    /////////////////////////////
-        //    else
-        //    {
-        //        InitializeProducts();
-        //        InitializeBrandCombo();
-        //        InitializePriceCurrencyComboBoxes();
-        //        SetUpPageUIElements();
-        //        SetTypeComboBoxes();
-        //        SetBrandComboBoxes();
-        //        SetModelComboBoxes();
-        //        SetQuantityTextBoxes();
-        //    }
-        //
-        //   
-        //
-        //    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-        //
-        //    { 
-        //       
-        //    }    
-        //
-        //}
-
         public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferPaymentAndDeliveryPage mWorkOfferPaymentAndDeliveryPage)
         {
             workOfferPaymentAndDeliveryPage = mWorkOfferPaymentAndDeliveryPage;
@@ -145,38 +54,24 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
-            InitializeComponent();
-
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            workOffer = new WorkOffer(sqlDatabase);
             workOffer = mWorkOffer;
 
             numberOfProductsAdded = 0;
 
+            InitializeComponent();
 
-
-            //////////////////////////////
-            ///ADD CONDITION
-            //////////////////////////////
+            
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
                 InitializeProducts();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                //SetTypeComboBoxes();
-                //SetBrandComboBoxes();
-                //SetModelComboBoxes();
-                //SetQuantityTextBoxes();
-                //SetPriceTextBoxes();
-                //SetPriceComboBoxes();
             }
-            /////////////////////////////
-            ///VIEW CONDITION
-            /////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 SetUpPageUIElements();
@@ -189,9 +84,6 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            //////////////////////////////
-            ///REVISE
-            //////////////////////////////
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
 
@@ -206,9 +98,6 @@ namespace _01electronics_crm
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
             }
-            /////////////////////////////
-            ///RESOLVE RFQ
-            /////////////////////////////
             else
             {
                 InitializeProducts();

@@ -418,7 +418,7 @@ namespace _01electronics_crm
 
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
-                grid.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                grid.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
                 workOrdersStackPanel.Children.Add(grid);
             }
 
@@ -716,7 +716,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
 
@@ -953,41 +953,23 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
-            WorkOffer workOffer = new WorkOffer(sqlDatabase);
-
-            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-            workOfferWindow.Show();
+            
         }
 
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
 
             commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
 
-
-            //if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            //{
-            ////    selectedWorkOffer.InitializeSalesWorkOfferInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].order_serial,
-            ////                                                    workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].order_version,
-            ////                                                    workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].offer_proposer_id);
-            ////}
-            //else
-            //{
-            ////    selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].order_serial,
-            ////                                                    workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].order_version,
-            ////                                                    workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].offer_proposer_id);
-            //}
-
             int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
-            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
             viewOffer.Show();
         }
 
-        private void OnBtnClickedWorkOfferItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
         {
             EnableViewButton();
             //EnableReviseButton();

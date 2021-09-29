@@ -27,6 +27,8 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
+        RFQ selectedRFQ;
+
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
@@ -45,6 +47,8 @@ namespace _01electronics_crm
         private int selectedBrand;
         private int selectedStatus;
 
+        int viewAddCondition;
+
         private Grid previousSelectedRFQItem;
         private Grid currentSelectedRFQItem;
 
@@ -57,6 +61,8 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+
+            selectedRFQ = new RFQ();
 
             if (!GetRFQs())
                 return;
@@ -474,7 +480,7 @@ namespace _01electronics_crm
 
                 currentGrid.Children.Add(currentStackPanel);
                 currentGrid.Children.Add(borderIcon);
-                currentGrid.MouseLeftButtonDown += OnBtnClickedRFQItem;
+                currentGrid.MouseLeftButtonDown += OnBtnClickRFQItem;
                 RFQsStackPanel.Children.Add(currentGrid);
             }
 
@@ -772,7 +778,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -889,13 +895,6 @@ namespace _01electronics_crm
             SetRFQsGrid();
         }
 
-        private void OnClosedRFQWindow(object sender, EventArgs e)
-        {
-            if (!GetRFQs())
-                return;
-            SetRFQsStackPanel();
-            SetRFQsGrid();
-        }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1072,43 +1071,59 @@ namespace _01electronics_crm
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_ADD_CONDITION;
-            RFQ rfq = new RFQ(sqlDatabase);
-            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_ADD_CONDITION;
+
+            selectedRFQ = new RFQ(sqlDatabase);
+
+            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
+            
             addRFQWindow.Closed += OnClosedRFQWindow;
             addRFQWindow.Show();
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
-            RFQ selectedRFQ = new RFQ(sqlDatabase);
-
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
 
             selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
 
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
-            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
             viewRFQ.Show();
 
         }
-        private void OnBtnClickedReviseRFQ(object sender, RoutedEventArgs e)
+        private void OnBtnClickRevise(object sender, RoutedEventArgs e)
         {
-            RFQ selectedRFQ = new RFQ(sqlDatabase);
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
 
             selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
                                             stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
 
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
-            RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
+            RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
+            
             reviseRFQ.Closed += OnClosedRFQWindow;
             reviseRFQ.Show();
         }
+        private void OnBtnClickResolve(object sender, RoutedEventArgs e)
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_RESOLVE_CONDITION;
 
-        private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
+            WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
+
+            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
+            resolveWorkOffer.LinkRFQInfo();
+            
+            WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
+            
+            resolveOffer.Closed += OnClosedRFQWindow;
+            resolveOffer.Show();
+        }
+        private void OnBtnClickRFQItem(object sender, RoutedEventArgs e) 
         {
             EnableViewButton();
             if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
@@ -1156,23 +1171,7 @@ namespace _01electronics_crm
             currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
         }
 
-        private void ResolveButtonClick(object sender, RoutedEventArgs e)
-        {
-            RFQ selectedRFQ = new RFQ(sqlDatabase);
-            WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
-
-
-             resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
-            resolveWorkOffer.LinkRFQInfo();
-            int viewAddCondition = 3;
-
-            WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition);
-            resolveOffer.Show();
-        }
-
-        private void OnBtnClickedExport(object sender, RoutedEventArgs e)
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(rfqsGrid);
         }
@@ -1180,6 +1179,23 @@ namespace _01electronics_crm
         private void OnBtnClickChangeAssignee(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void OnClosedRFQWindow(object sender, EventArgs e)
+        {
+            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, true);
+                viewRFQ.Show();
+            }
+
+            if (!GetRFQs())
+                return;
+
+            SetRFQsStackPanel();
+            SetRFQsGrid();
         }
     }
 

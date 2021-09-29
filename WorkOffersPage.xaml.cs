@@ -27,6 +27,8 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
+        private WorkOffer selectedWorkOffer;
+
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -47,6 +49,8 @@ namespace _01electronics_crm
         private int selectedStatus;
         private int salesPersonTeam;
 
+        int viewAddCondition;
+
         private Grid previousSelectedOfferItem;
         private Grid currentSelectedOfferItem;
 
@@ -59,6 +63,8 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+
+            selectedWorkOffer = new WorkOffer(sqlDatabase);
 
             if (!GetWorkOffers())
                 return;
@@ -427,7 +433,7 @@ namespace _01electronics_crm
 
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
-                grid.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                grid.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
                 workOffersStackPanel.Children.Add(grid);
             }
 
@@ -724,7 +730,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -832,14 +838,6 @@ namespace _01electronics_crm
             else
                 selectedStatus = 0;
             
-            SetWorkOffersStackPanel();
-            SetWorkOffersGrid();
-        }
-
-        private void OnClosedWorkOfferWindow(object sender, EventArgs e)
-        {
-            if (!GetWorkOffers())
-                return;
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
@@ -1044,20 +1042,22 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
-            WorkOffer workOffer = new WorkOffer(sqlDatabase);
+            viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
+
+            selectedWorkOffer = new WorkOffer(sqlDatabase);
+
+            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
             
-            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
             workOfferWindow.Closed += OnClosedWorkOfferWindow;
             workOfferWindow.Show();
         }
 
         
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
-            WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+            viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
 
@@ -1075,14 +1075,14 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
             }
 
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
-            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
+            
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
             viewOffer.Show();
         }
 
-        private void OnBtnClickedReviseOffer(object sender, RoutedEventArgs e)
+        private void OnBtnClickReviseOffer(object sender, RoutedEventArgs e)
         {
-            WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+            viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
 
@@ -1100,12 +1100,14 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
             }
 
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
-            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition);
+            
+            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+
             reviseOffer.Closed += OnClosedWorkOfferWindow;
             reviseOffer.Show();
         }
-        private void OnBtnClickedWorkOfferItem(object sender, RoutedEventArgs e)
+
+        private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
         {
             EnableViewButton();
             EnableReviseButton();
@@ -1158,7 +1160,23 @@ namespace _01electronics_crm
             ExcelExport excelExport = new ExcelExport(workOffersGrid);
         }
 
-        
+
+        private void OnClosedWorkOfferWindow(object sender, EventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+
+                WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, true);
+                viewOffer.Show();
+            }
+
+            if (!GetWorkOffers())
+                return;
+
+            SetWorkOffersStackPanel();
+            SetWorkOffersGrid();
+        }
     }
 }
 

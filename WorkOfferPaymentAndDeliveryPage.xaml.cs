@@ -45,89 +45,22 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        //public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
-        //{
-        //    loggedInUser = mLoggedInUser;
-        //    viewAddCondition = mViewAddCondition;
-        //    InitializeComponent();
-        //
-        //    sqlDatabase = new SQLServer();
-        //    commonQueriesObject = new CommonQueries();
-        //    commonFunctionsObject = new CommonFunctions();
-        //
-        //    workOffer = new WorkOffer(sqlDatabase);
-        //    workOffer = mWorkOffer;
-        //
-        //    totalPrice = 0;
-        //    
-        //    if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-        //    {
-        //        InitializeTotalPriceCurrencyComboBox();
-        //        InitializeDeliveryTimeComboBox();
-        //        InitializeDeliveryPointComboBox();
-        //
-        //        DisableTotalPriceComboAndTextBox();
-        //        SetTotalPriceCurrencyComboBox();
-        //        SetTotalPriceTextBox();
-        //    }
-        //    else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-        //    {
-        //        InitializeTotalPriceCurrencyComboBox();
-        //        InitializeDeliveryTimeComboBox();
-        //        InitializeDeliveryPointComboBox();
-        //
-        //        ConfigureViewUIElements();
-        //        SetPriceValues();
-        //        SetDownPaymentValues();
-        //        SetOnDeliveryValues();
-        //        SetOnInstallationValues();
-        //        SetDeliveryTimeValues();
-        //        SetDeliveryPointValue();
-        //
-        //        cancelButton.IsEnabled = false;
-        //    }
-        //    else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
-        //    {
-        //        InitializeTotalPriceCurrencyComboBox();
-        //        InitializeDeliveryTimeComboBox();
-        //        InitializeDeliveryPointComboBox();
-        //        SetTotalPriceCurrencyComboBox();
-        //        SetTotalPriceTextBox();
-        //        SetDownPaymentValues();
-        //        SetOnDeliveryValues();
-        //        SetOnInstallationValues();
-        //        SetDeliveryTimeValues();
-        //        SetDeliveryPointValue();
-        //        DisableTotalPriceComboAndTextBox();
-        //    }
-        //    else
-        //    {
-        //        InitializeTotalPriceCurrencyComboBox();
-        //        InitializeDeliveryTimeComboBox();
-        //        InitializeDeliveryPointComboBox();
-        //
-        //        DisableTotalPriceComboAndTextBox();
-        //        SetTotalPriceCurrencyComboBox();
-        //        SetTotalPriceTextBox();
-        //    }
-        //}
-
         public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferAdditionalInfoPage mWorkOfferAdditionalInfoPage)
         {
             workOfferAdditionalInfoPage = mWorkOfferAdditionalInfoPage;
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            InitializeComponent();
-
+            
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-
-            workOffer = new WorkOffer(sqlDatabase);
+            
             workOffer = mWorkOffer;
 
             totalPrice = 0;
+
+            InitializeComponent();
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {

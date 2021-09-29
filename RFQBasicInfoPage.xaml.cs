@@ -51,17 +51,12 @@ namespace _01electronics_crm
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
-
             sqlDatabase = new SQLServer();
 
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
-
-            rfqProductsPage = new RFQProductsPage(ref mLoggedInUser, ref rfq, mViewAddCondition);
-            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref mLoggedInUser, ref rfq, mViewAddCondition);
 
             InitializeComponent();
 
@@ -77,8 +72,6 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
-                rfqUploadFilesPage = new RFQUploadFilesPage(ref loggedInUser, ref rfq, viewAddCondition);
-
                 InitializeCompanyInfo();
                 InitializeContactInfo();
 
@@ -108,87 +101,6 @@ namespace _01electronics_crm
                 salesPersonCombo.IsEnabled = false;
             }
 
-        }
-
-        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition, bool directlyNavigateToFilesPage)
-        {
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-
-            rfq = new RFQ(sqlDatabase);
-            rfq = mRFQ;
-
-
-            loggedInUser = mLoggedInUser;
-            viewAddCondition = mViewAddCondition;
-
-            if (!directlyNavigateToFilesPage)
-            {
-                rfqProductsPage = new RFQProductsPage(ref mLoggedInUser, ref rfq, mViewAddCondition);
-                rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref mLoggedInUser, ref rfq, mViewAddCondition);
-
-            }
-
-
-            InitializeComponent();
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
-            {
-                ConfigureAddRFQUIElements();
-
-                InitializeSalesPersonCombo();
-                InitializeAssigneeCombo();
-
-                SetSalesPerson();
-                salesPersonCombo.IsEnabled = false;
-            }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                rfqUploadFilesPage = new RFQUploadFilesPage(ref loggedInUser, ref rfq, viewAddCondition);
-
-                InitializeCompanyInfo();
-                InitializeContactInfo();
-
-                ConfigureViewRFQUIElements();
-
-                SetSalesPersonLabel();
-                SetAssigneeLabel();
-                SetCompanyNameLabel();
-                SetCompanyAddressLabel();
-                SetContactPersonLabel();
-                SetContactNumberLabel();
-
-                cancelButton.IsEnabled = false;
-            }
-            else
-            {
-
-                ConfigureAddRFQUIElements();
-                InitializeSalesPersonCombo();
-
-                InitializeAssigneeCombo();
-
-                SetSalesPersonCombo();
-                SetAssigneeCombo();
-                SetCompanyNameCombo();
-
-                salesPersonCombo.IsEnabled = false;
-            }
-
-        }
-
-        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ)
-        {
-            loggedInUser = mLoggedInUser;
-
-            InitializeComponent();
-
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-            rfq = new RFQ(sqlDatabase);
-            rfq = mRFQ;
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////

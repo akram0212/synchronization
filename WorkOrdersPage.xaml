@@ -136,8 +136,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 
-                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
+                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickAdd" Name="addButton"/>
+                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="viewButton"/>
                 <Button Grid.Column="2" Content="Export" Style="{StaticResource buttonStyle}" Click="OnClickExportButton" Name="exportButton"/>
             </Grid>
         </Grid>

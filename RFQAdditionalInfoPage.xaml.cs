@@ -217,10 +217,6 @@ namespace _01electronics_crm
 
                 NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                 currentWindow.Close();
-
-                RFQWindow openConfirmedRFQ = new RFQWindow(ref loggedInUser, ref rfq, COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION, true);
-                openConfirmedRFQ.Show();
-
             }
         }
 

@@ -26,17 +26,20 @@ namespace _01electronics_crm
     /// </summary>
     public partial class WorkOfferUploadFilesPage : Page
     {
-        Employee loggedInUser;
-        WorkOffer workOffer;
-        private CommonQueries commonQueriesObject;
-        private CommonFunctions commonFunctionsObject;
+        protected Employee loggedInUser;
+        protected WorkOffer workOffer;
+
         private SQLServer sqlDatabase;
-        private IntegrityChecks integrityChecks;
         protected FTPServer ftpObject;
+
+        protected CommonQueries commonQueriesObject;
+        protected CommonFunctions commonFunctionsObject;
+        protected IntegrityChecks integrityChecks;
+        
         WordAutomation wordAutomation;
 
-        int counter;
-        int viewAddCondition;
+        protected int counter;
+        protected int viewAddCondition;
 
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
@@ -71,12 +74,11 @@ namespace _01electronics_crm
 
         public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
-           
-            InitializeComponent();
-
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
+
             integrityChecks = new IntegrityChecks();
+
             wordAutomation = new WordAutomation();
 
             loggedInUser = mLoggedInUser;
@@ -86,6 +88,8 @@ namespace _01electronics_crm
             ftpFiles = new List<string>();
 
             counter = 0;
+
+            InitializeComponent();
 
             progressBar.Style = (Style)FindResource("ProgressBarStyle");
             progressBar.HorizontalAlignment = HorizontalAlignment.Center;

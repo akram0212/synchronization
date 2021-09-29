@@ -70,11 +70,6 @@ namespace _01electronics_crm
 
         public RFQUploadFilesPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
-            rfqBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition, true);
-            rfqProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-
-
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
             integrityChecks = new IntegrityChecks();
