@@ -49,9 +49,7 @@ namespace _01electronics_crm
 
         int viewAddCondition;
 
-        private Grid previousSelectedRFQItem;
-        private Grid currentSelectedRFQItem;
-
+        private Grid currentGrid;
         public RFQsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -300,8 +298,6 @@ namespace _01electronics_crm
               
             RFQsStackPanel.Children.Clear();
 
-            currentSelectedRFQItem = null;
-
             if (stackPanelItems.Count() != 0)
                 stackPanelItems.Clear();
 
@@ -483,8 +479,6 @@ namespace _01electronics_crm
             rfqsGrid.Children.Clear();
             rfqsGrid.RowDefinitions.Clear();
             rfqsGrid.ColumnDefinitions.Clear();
-
-            currentSelectedRFQItem = null;
 
             Label offerIdHeader = new Label();
             offerIdHeader.Content = "RFQ ID";
@@ -783,104 +777,76 @@ namespace _01electronics_crm
 
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (yearComboBox.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
                 selectedYear = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (quarterComboBox.SelectedItem != null)
                 selectedQuarter = quarterComboBox.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (salesComboBox.SelectedItem != null)
                 selectedSales = salesEmployeesList[salesComboBox.SelectedIndex].employee_id;
             else
                 selectedSales = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (preSalesComboBox.SelectedItem != null)
                 selectedPreSales = preSalesEmployeesList[preSalesComboBox.SelectedIndex].employee_id;
             else
                 selectedPreSales = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (productComboBox.SelectedItem != null)
                 selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (brandComboBox.SelectedItem != null)
                 selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (statusComboBox.SelectedItem != null)
                 selectedStatus = statusComboBox.SelectedIndex + 1;
             else
                 selectedStatus = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
@@ -930,25 +896,16 @@ namespace _01electronics_crm
         {
             yearComboBox.IsEnabled = false;
             yearComboBox.SelectedItem = null;
-            
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterComboBox.IsEnabled = false;
             quarterComboBox.SelectedItem = null;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckSalesCheckBox(object sender, RoutedEventArgs e)
         {
             salesComboBox.IsEnabled = false;
             salesComboBox.SelectedItem = null;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
 
         private void OnUncheckedPreSalesCheckBox(object sender, RoutedEventArgs e)
@@ -960,25 +917,16 @@ namespace _01electronics_crm
         {
             productComboBox.SelectedItem = null;
             productComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
             brandComboBox.SelectedItem = null;
             brandComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
             statusComboBox.SelectedItem = null;
             statusComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1076,9 +1024,9 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
 
-            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
 
             RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
             viewRFQ.Show();
@@ -1088,9 +1036,9 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
 
-            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
 
             RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
 
@@ -1103,9 +1051,9 @@ namespace _01electronics_crm
 
             WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
 
-            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_serial,
-                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].rfq_version,
-                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentSelectedRFQItem)].sales_person);
+            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
             resolveWorkOffer.LinkRFQInfo();
 
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
@@ -1149,7 +1097,8 @@ namespace _01electronics_crm
             ListBox tempListBox = (ListBox)sender;
             ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
             Expander currentExpander = (Expander)tempListBox.Parent;
-            Grid currentGrid = (Grid)currentExpander.Parent;
+            
+            currentGrid = (Grid)currentExpander.Parent;
 
             if (tempListBox.SelectedIndex == 0)
             {
