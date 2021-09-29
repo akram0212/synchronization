@@ -211,15 +211,16 @@ namespace _01electronics_crm
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
-                    if (rfq.ReviseRFQ())
+                    if (!rfq.ReviseRFQ())
                         return;
                 }
 
-                viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                currentWindow.Close();
 
-                RFQBasicInfoPage rFQBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition, true);
-                
-                NavigationService.Navigate(rFQBasicInfoPage);
+                RFQWindow openConfirmedRFQ = new RFQWindow(ref loggedInUser, ref rfq, COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION, true);
+                openConfirmedRFQ.Show();
+
             }
         }
 
