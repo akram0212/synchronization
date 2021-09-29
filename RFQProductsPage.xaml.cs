@@ -21,21 +21,24 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQProductsPage : Page
     {
-        Employee loggedInUser;
-        RFQ rfq;
-        private CommonQueries commonQueriesObject;
-        private CommonFunctions commonFunctionsObject;
-        private SQLServer sqlDatabase;
-        private IntegrityChecks IntegrityChecks = new IntegrityChecks();
+        protected Employee loggedInUser;
+        protected RFQ rfq;
 
-        private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-        private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brands = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-        private List<COMPANY_WORK_MACROS.MODEL_STRUCT> models = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
+        protected SQLServer sqlDatabase;
 
-        private int quantity1;
+        protected CommonQueries commonQueriesObject;
+        protected CommonFunctions commonFunctionsObject;
+        
+        protected IntegrityChecks IntegrityChecks = new IntegrityChecks();
 
-        private int viewAddCondition;
-        private int numberOfProductsAdded;
+        protected List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
+        protected List<COMPANY_WORK_MACROS.BRAND_STRUCT> brands = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        protected List<COMPANY_WORK_MACROS.MODEL_STRUCT> models = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
+
+        protected int quantity1;
+
+        protected int viewAddCondition;
+        protected int numberOfProductsAdded;
 
         public RFQBasicInfoPage rfqBasicInfoPage;
         public RFQAdditionalInfoPage rfqAdditionalInfoPage;
