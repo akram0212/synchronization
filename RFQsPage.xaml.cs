@@ -27,6 +27,8 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
+        RFQ selectedRFQ;
+
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
@@ -45,9 +47,9 @@ namespace _01electronics_crm
         private int selectedBrand;
         private int selectedStatus;
 
-        private Grid previousSelectedRFQItem;
-        private Grid currentSelectedRFQItem;
+        int viewAddCondition;
 
+        private Grid currentGrid;
         public RFQsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -57,6 +59,8 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+
+            selectedRFQ = new RFQ();
 
             if (!GetRFQs())
                 return;
@@ -294,8 +298,6 @@ namespace _01electronics_crm
               
             RFQsStackPanel.Children.Clear();
 
-            currentSelectedRFQItem = null;
-
             if (stackPanelItems.Count() != 0)
                 stackPanelItems.Clear();
 
@@ -464,7 +466,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(borderIcon, 1);
                 Grid.SetColumn(expander, 2);
 
-                //currentGrid.MouseLeftButtonDown += OnBtnClickedRFQItem;
+
                 RFQsStackPanel.Children.Add(currentGrid);
             }
 
@@ -477,8 +479,6 @@ namespace _01electronics_crm
             rfqsGrid.Children.Clear();
             rfqsGrid.RowDefinitions.Clear();
             rfqsGrid.ColumnDefinitions.Clear();
-
-            currentSelectedRFQItem = null;
 
             Label offerIdHeader = new Label();
             offerIdHeader.Content = "RFQ ID";
@@ -762,7 +762,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -777,123 +777,80 @@ namespace _01electronics_crm
 
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (yearComboBox.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
                 selectedYear = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (quarterComboBox.SelectedItem != null)
                 selectedQuarter = quarterComboBox.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (salesComboBox.SelectedItem != null)
                 selectedSales = salesEmployeesList[salesComboBox.SelectedIndex].employee_id;
             else
                 selectedSales = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (preSalesComboBox.SelectedItem != null)
                 selectedPreSales = preSalesEmployeesList[preSalesComboBox.SelectedIndex].employee_id;
             else
                 selectedPreSales = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (productComboBox.SelectedItem != null)
                 selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (brandComboBox.SelectedItem != null)
                 selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
             if (statusComboBox.SelectedItem != null)
                 selectedStatus = statusComboBox.SelectedIndex + 1;
             else
                 selectedStatus = 0;
 
-            //currentSelectedRFQItem = null;
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
 
-        private void OnClosedRFQWindow(object sender, EventArgs e)
-        {
-            if (!GetRFQs())
-                return;
-            SetRFQsStackPanel();
-            SetRFQsGrid();
-        }
-
-        private void OnClosedChangeAssigneeWindow(object sender, EventArgs e)
-        {
-            if (!GetRFQs())
-                return;
-            SetRFQsStackPanel();
-            SetRFQsGrid();
-        }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -939,25 +896,16 @@ namespace _01electronics_crm
         {
             yearComboBox.IsEnabled = false;
             yearComboBox.SelectedItem = null;
-            
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterComboBox.IsEnabled = false;
             quarterComboBox.SelectedItem = null;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckSalesCheckBox(object sender, RoutedEventArgs e)
         {
             salesComboBox.IsEnabled = false;
             salesComboBox.SelectedItem = null;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
 
         private void OnUncheckedPreSalesCheckBox(object sender, RoutedEventArgs e)
@@ -969,25 +917,16 @@ namespace _01electronics_crm
         {
             productComboBox.SelectedItem = null;
             productComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
             brandComboBox.SelectedItem = null;
             brandComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
         private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
             statusComboBox.SelectedItem = null;
             statusComboBox.IsEnabled = false;
-
-            //currentSelectedRFQItem = null;
-            //previousSelectedRFQItem = null;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1070,75 +1009,70 @@ namespace _01electronics_crm
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_ADD_CONDITION;
-            RFQ rfq = new RFQ(sqlDatabase);
-            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition);
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_ADD_CONDITION;
+
+            selectedRFQ = new RFQ(sqlDatabase);
+
+            RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
+            
             addRFQWindow.Closed += OnClosedRFQWindow;
             addRFQWindow.Show();
         }
-       
+        private void OnBtnClickView()
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
 
-        //private void OnBtnClickedRFQItem(object sender, RoutedEventArgs e) 
-        //{
-        //    EnableViewButton();
-        //    if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-        //        EnableReviseButton();
-        //    if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-        //        EnableResolveButton();
-        //    if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
-        //        EnableChangeAssigneeButton();
-        //
-        //    previousSelectedRFQItem = currentSelectedRFQItem;
-        //    currentSelectedRFQItem = (Grid)sender;
-        //    BrushConverter brush = new BrushConverter();
-        //
-        //    if (previousSelectedRFQItem != null)
-        //    {
-        //        previousSelectedRFQItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-        //
-        //        StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedRFQItem.Children[0];
-        //        Border previousSelectedBorder = (Border)previousSelectedRFQItem.Children[1];
-        //        Label previousStatusLabel = (Label)previousSelectedBorder.Child;
-        //
-        //        foreach (Label childLabel in previousSelectedStackPanel.Children)
-        //            childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-        //
-        //        if (rfqsList[RFQsStackPanel.Children.IndexOf(previousSelectedRFQItem)].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
-        //        else if (rfqsList[RFQsStackPanel.Children.IndexOf(previousSelectedRFQItem)].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
-        //        else
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
-        //
-        //        previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-        //    }
-        //
-        //    currentSelectedRFQItem.Background = (Brush)brush.ConvertFrom("#105A97");
-        //
-        //    StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedRFQItem.Children[0];
-        //    Border currentSelectedBorder = (Border)currentSelectedRFQItem.Children[1];
-        //    Label currentStatusLabel = (Label)currentSelectedBorder.Child;
-        //
-        //    foreach (Label childLabel in currentSelectedStackPanel.Children)
-        //        childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-        //
-        //    currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-        //    currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-        //}
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
 
-        
+            RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
+            viewRFQ.Show();
+
+        }
+        private void OnBtnClickRevise()
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
+
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
+
+            RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
+
+            reviseRFQ.Closed += OnClosedRFQWindow;
+            reviseRFQ.Show();
+        }
+        private void OnBtnClickResolve()
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_RESOLVE_CONDITION;
+
+            WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
+
+            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
+            resolveWorkOffer.LinkRFQInfo();
+
+            WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
+
+            resolveOffer.Closed += OnClosedRFQWindow;
+            resolveOffer.Show();
+        }
         private void OnBtnClickedExport(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(rfqsGrid);
         }
 
-        private void OnBtnClickChangeAssignee(object sender, RoutedEventArgs e)
+        private void OnBtnClickChangeAssignee()
         {
-
+            ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow("Ahmed");
+            changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
+            changeAssignee.Show();
         }
-
+   
         private void OnExpandExpander(object sender, RoutedEventArgs e)
         {
             Expander currentExpander = (Expander)sender;
@@ -1163,64 +1097,59 @@ namespace _01electronics_crm
             ListBox tempListBox = (ListBox)sender;
             ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
             Expander currentExpander = (Expander)tempListBox.Parent;
-            Grid currentGrid = (Grid)currentExpander.Parent;
+            
+            currentGrid = (Grid)currentExpander.Parent;
 
             if (tempListBox.SelectedIndex == 0)
             {
-                ///////////////////////////////////////////////
-                ///VIEW RFQ
-                //////////////////////////////////////////////
-                RFQ selectedRFQ = new RFQ(sqlDatabase);
-                selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
-                                                stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
-                                                stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
-
-                int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
-                RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
-                viewRFQ.Show();
+                OnBtnClickView();
             }
             else if (tempListBox.SelectedIndex == 1)
             {
-                ///////////////////////////////////////////////
-                ///REVISE RFQ
-                //////////////////////////////////////////////
-
-                RFQ selectedRFQ = new RFQ(sqlDatabase);
-
-                selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
-                                                stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
-                                                stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
-
-                int viewAddCondition = COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION;
-                RFQWindow reviseRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition);
-                reviseRFQ.Closed += OnClosedRFQWindow;
-                reviseRFQ.Show();
+                OnBtnClickRevise();
             }
             else if (tempListBox.SelectedIndex == 2)
             {
-                ///////////////////////////////////////////////
-                ///RESOLVE RFQ
-                //////////////////////////////////////////////
-
-                RFQ selectedRFQ = new RFQ(sqlDatabase);
-                WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
-
-
-                resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
-                                               stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
-                                               stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
-                resolveWorkOffer.LinkRFQInfo();
-                int viewAddCondition = 3;
-
-                WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition);
-                resolveOffer.Show();
+                OnBtnClickResolve();
             }
             else
             {
+
                 ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow("ahmed");
                 changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
                 changeAssignee.Show();
             }
+        }
+            
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(rfqsGrid);
+        }
+
+      
+        private void OnClosedRFQWindow(object sender, EventArgs e)
+        {
+            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            {
+                viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, true);
+                viewRFQ.Show();
+            }
+
+            if (!GetRFQs())
+                return;
+
+            SetRFQsStackPanel();
+            SetRFQsGrid();
+        }
+
+        private void OnClosedChangeAssigneeWindow(object sender, EventArgs e)
+        {
+            if (!GetRFQs())
+                return;
+            SetRFQsStackPanel();
+            SetRFQsGrid();
         }
     }
 

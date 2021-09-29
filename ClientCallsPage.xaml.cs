@@ -199,7 +199,7 @@ namespace _01electronics_crm
                 ColumnDefinition column1 = new ColumnDefinition();
 
                 newGrid.ColumnDefinitions.Add(column1);
-                newGrid.MouseLeftButtonDown += OnBtnClickedCallItem;
+                newGrid.MouseLeftButtonDown += OnBtnClickCallItem;
 
                 Grid.SetColumn(currentStackPanel, 0);
 
@@ -311,7 +311,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(purposeAndResultLabel, 3);
 
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -322,7 +322,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedCallItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickCallItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
             previousSelectedCallItem = currentSelectedCallItem;
@@ -438,13 +438,13 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
             AddClientCallWindow addClientCallWindow = new AddClientCallWindow(ref loggedInUser);
             addClientCallWindow.Closed += OnClosedAddCallWindow;
             addClientCallWindow.Show();
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             ClientCall selectedCall = new ClientCall();
             selectedCall.InitializeClientCallInfo(filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial, filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].sales_person_id);

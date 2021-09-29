@@ -27,17 +27,16 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQUploadFilesPage : Page
     {
-        Employee loggedInUser;
-        RFQ rfq;
-        private CommonQueries commonQueriesObject;
-        private CommonFunctions commonFunctionsObject;
-        private SQLServer sqlDatabase;
-        private IntegrityChecks integrityChecks;
-        public FTPServer ftpObject;
-        
+        protected Employee loggedInUser;
+        protected RFQ rfq;
 
-        int counter;
-        int viewAddCondition;
+        protected SQLServer sqlDatabase;
+
+        protected IntegrityChecks integrityChecks;
+        protected FTPServer ftpObject;
+        
+        protected int counter;
+        protected int viewAddCondition;
 
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
@@ -71,11 +70,6 @@ namespace _01electronics_crm
 
         public RFQUploadFilesPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
-            rfqBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition, true);
-            rfqProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-
-
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
             integrityChecks = new IntegrityChecks();

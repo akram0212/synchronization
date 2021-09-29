@@ -520,14 +520,14 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedAddCompany(object sender, RoutedEventArgs e)
+        private void OnBtnClickAddCompany(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
             AddCompanyWindow addCompanyWindow = new AddCompanyWindow(ref loggedInUser);
             addCompanyWindow.Closed += OnClosedAddCompanyWindow;
             addCompanyWindow.Show();
         }
-        private void OnBtnClickedAddContact(object sender, RoutedEventArgs e)
+        private void OnBtnClickAddContact(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
 
@@ -600,7 +600,7 @@ namespace _01electronics_crm
 
         }
 
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
 

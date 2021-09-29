@@ -106,9 +106,9 @@
 
 
             </Grid>
-            <Button Grid.Row="2" HorizontalAlignment="Left" Margin="200,0" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddCompany" Name="AddCompanyBtn"/>
-            <Button Grid.Row="2" HorizontalAlignment="Center" Margin="200,0" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAddContact" Name="AddContactBtn"/>
-            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="ViewBtn"/>
+            <Button Grid.Row="2" HorizontalAlignment="Left" Margin="200,0" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddCompany" Name="AddCompanyBtn"/>
+            <Button Grid.Row="2" HorizontalAlignment="Center" Margin="200,0" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddContact" Name="AddContactBtn"/>
+            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="ViewBtn"/>
         </Grid>
 
     </Grid>
