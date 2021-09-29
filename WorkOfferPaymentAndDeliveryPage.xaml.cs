@@ -45,22 +45,24 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferAdditionalInfoPage mWorkOfferAdditionalInfoPage)
         {
+            workOfferAdditionalInfoPage = mWorkOfferAdditionalInfoPage;
+
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            InitializeComponent();
-
+            
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-
-            workOffer = new WorkOffer(sqlDatabase);
+            
             workOffer = mWorkOffer;
 
             totalPrice = 0;
-            
-            if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+
+            InitializeComponent();
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -83,8 +85,10 @@ namespace _01electronics_crm
                 SetOnInstallationValues();
                 SetDeliveryTimeValues();
                 SetDeliveryPointValue();
+
+                cancelButton.IsEnabled = false;
             }
-            else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -109,7 +113,6 @@ namespace _01electronics_crm
                 SetTotalPriceTextBox();
             }
         }
-
         public WorkOfferPaymentAndDeliveryPage(ref WorkOffer mWorkOffer)
         {
             workOffer = mWorkOffer;
@@ -189,9 +192,6 @@ namespace _01electronics_crm
 
         private void SetPercentAndValuesInWorkOffer()
         {
-            workOffer.SetPercentOnInstallation(onInstallationPercentage);
-            workOffer.SetPercentDownPayment(downPaymentPercentage);
-            workOffer.SetPercentOnDelivery(onDeliveryPercentage);
             workOffer.SetPercentValues();
         }
 
@@ -294,8 +294,10 @@ namespace _01electronics_crm
                 MessageBox.Show("You can't exceed 100%");
             }
             else
+            {
                 downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
-
+                workOffer.SetPercentDownPayment(downPaymentPercentage);
+            }
         }
         private void OnTextChangedDeliveryPercentageTextBox(object sender, TextChangedEventArgs e)
         {
@@ -314,8 +316,8 @@ namespace _01electronics_crm
             }
             else
             {
-
                 onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+                workOffer.SetPercentOnDelivery(onDeliveryPercentage);
             }
         }
         private void OnTextChangedInstallationPercentageTextBox(object sender, TextChangedEventArgs e)
@@ -334,8 +336,10 @@ namespace _01electronics_crm
                 MessageBox.Show("You can't exceed 100%");
             }
             else
+            {
                 onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
-
+                workOffer.SetPercentOnInstallation(onInstallationPercentage);
+            }
         }
         private void OnTextChangedDeliveryTimeFromTextBox(object sender, TextChangedEventArgs e)
         {
@@ -382,8 +386,10 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInWorkOffer();
-
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOffer();
+            }
             workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
             workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = this;
             workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
@@ -393,7 +399,10 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInWorkOffer();
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOffer();
+            }
 
             workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferProductsPage.workOfferPaymentAndDeliveryPage = this;
@@ -410,7 +419,11 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            SetPercentAndValuesInWorkOffer();
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOffer();
+            }
+            
 
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
@@ -422,31 +435,23 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-                    if (!workOffer.GetNewOfferSerial())
-                        return;
+                workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+                workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
+                workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = this;
+                workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
 
-                if (!workOffer.GetNewOfferVersion())
-                    return;
-
-                workOffer.SetOfferIssueDateToToday();
-
-                workOffer.GetNewOfferID();
+                NavigationService.Navigate(workOfferUploadFilesPage);
             }
-
-            workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
-            workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
-            workOfferUploadFilesPage.workOfferPaymentAndDeliveryPage = this;
-            workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
-
-            NavigationService.Navigate(workOfferUploadFilesPage);
         }
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            SetPercentAndValuesInWorkOffer();
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOffer();
+            }
 
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
@@ -458,6 +463,11 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOffer();
+            }
+
             workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferProductsPage.workOfferPaymentAndDeliveryPage = this;
             workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
@@ -473,6 +483,11 @@ namespace _01electronics_crm
         {
         }
 
-        
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+
+            currentWindow.Close();
+        }
     }
 }

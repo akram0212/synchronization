@@ -196,7 +196,7 @@ namespace _01electronics_crm
                 ColumnDefinition column1 = new ColumnDefinition();
 
                 newGrid.ColumnDefinitions.Add(column1);
-                newGrid.MouseLeftButtonDown += OnBtnClickedMeetingItem;
+                newGrid.MouseLeftButtonDown += OnBtnClickMeetingItem;
 
                 Grid.SetColumn(currentStackPanel, 0);
 
@@ -289,7 +289,7 @@ namespace _01electronics_crm
                 officeMeetingsGrid.Children.Add(meetingPurpose);
 
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -375,14 +375,14 @@ namespace _01electronics_crm
         //BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
             AddOfficeMeetingWindow addOfficeMeetingWindow = new AddOfficeMeetingWindow(ref loggedInUser);
             addOfficeMeetingWindow.Closed += OnClosedAddCallWindow;
             addOfficeMeetingWindow.Show();
         }
 
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             OfficeMeeting selectedMeeting = new OfficeMeeting();
             selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_serial);
@@ -403,7 +403,7 @@ namespace _01electronics_crm
             InitializeGrid();
         }
 
-        private void OnBtnClickedMeetingItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickMeetingItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
             previousSelectedCallItem = currentSelectedCallItem;

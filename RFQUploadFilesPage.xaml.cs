@@ -27,17 +27,16 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQUploadFilesPage : Page
     {
-        Employee loggedInUser;
-        RFQ rfq;
-        private CommonQueries commonQueriesObject;
-        private CommonFunctions commonFunctionsObject;
-        private SQLServer sqlDatabase;
-        private IntegrityChecks integrityChecks;
-        public FTPServer ftpObject;
-        
+        protected Employee loggedInUser;
+        protected RFQ rfq;
 
-        int counter;
-        int viewAddCondition;
+        protected SQLServer sqlDatabase;
+
+        protected IntegrityChecks integrityChecks;
+        protected FTPServer ftpObject;
+        
+        protected int counter;
+        protected int viewAddCondition;
 
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
@@ -71,7 +70,6 @@ namespace _01electronics_crm
 
         public RFQUploadFilesPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
-            InitializeComponent();
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
             integrityChecks = new IntegrityChecks();
@@ -82,6 +80,8 @@ namespace _01electronics_crm
 
             ftpFiles = new List<string>();
 
+            InitializeComponent();
+            
             counter = 0;
 
             progressBar.Style = (Style)FindResource("ProgressBarStyle");
@@ -338,7 +338,7 @@ namespace _01electronics_crm
             icon = new Image { Source = new BitmapImage(new Uri(@"photos\no_internet_icon.jpg", UriKind.Relative)) };
             icon.HorizontalAlignment = HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
-            resizeImage(ref icon, 250, 350);
+            resizeImage(ref icon, 250, 250);
             grid.Children.Add(icon);
             Grid.SetRow(icon, 0);
 
@@ -534,6 +534,11 @@ namespace _01electronics_crm
                 progressBar.Visibility = Visibility.Visible;
                 currentSelectedFile.Children.Add(progressBar);
                 Grid.SetRow(progressBar, 3);
+
+                Label currentStatusLabel = (Label)currentSelectedFile.Children[2];
+                currentStatusLabel.Content = "DOWNLOADING";
+                currentStatusLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
+
                 downloadBackground.RunWorkerAsync();
             }
         }
@@ -643,6 +648,7 @@ namespace _01electronics_crm
             {
                 if (!fTPServer.CreateNewFolder(serverFolderPath))
                 {
+                    uploadFilesStackPanel.Children.Clear();
                     InsertErrorRetryButton();
                     return;
                 }
@@ -652,6 +658,7 @@ namespace _01electronics_crm
                 ftpFiles.Clear();
                 if (!fTPServer.ListFilesInFolder(serverFolderPath, ref ftpFiles))
                 {
+                    uploadFilesStackPanel.Children.Clear();
                     InsertErrorRetryButton();
                     return;
                 }

@@ -26,16 +26,20 @@ namespace _01electronics_crm
     /// </summary>
     public partial class WorkOfferUploadFilesPage : Page
     {
-        Employee loggedInUser;
-        WorkOffer workOffer;
-        private CommonQueries commonQueriesObject;
-        private CommonFunctions commonFunctionsObject;
+        protected Employee loggedInUser;
+        protected WorkOffer workOffer;
+
         private SQLServer sqlDatabase;
-        private IntegrityChecks integrityChecks;
         protected FTPServer ftpObject;
 
-        int counter;
-        int viewAddCondition;
+        protected CommonQueries commonQueriesObject;
+        protected CommonFunctions commonFunctionsObject;
+        protected IntegrityChecks integrityChecks;
+        
+        WordAutomation wordAutomation;
+
+        protected int counter;
+        protected int viewAddCondition;
 
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
@@ -70,12 +74,12 @@ namespace _01electronics_crm
 
         public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
         {
-           
-            InitializeComponent();
-
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
+
             integrityChecks = new IntegrityChecks();
+
+            wordAutomation = new WordAutomation();
 
             loggedInUser = mLoggedInUser;
             workOffer = mWorkOffer;
@@ -84,6 +88,8 @@ namespace _01electronics_crm
             ftpFiles = new List<string>();
 
             counter = 0;
+
+            InitializeComponent();
 
             progressBar.Style = (Style)FindResource("ProgressBarStyle");
             progressBar.HorizontalAlignment = HorizontalAlignment.Center;
@@ -109,13 +115,19 @@ namespace _01electronics_crm
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
             {
                 if (!ftpObject.CreateNewFolder(serverFolderPath))
+                {
+                    InsertErrorRetryButton();
                     return;
+                }
             }
             else
             {
                 ftpFiles.Clear();
                 if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
-                  return;
+                {
+                    InsertErrorRetryButton();
+                    return;
+                }
             }
 
             if (ftpFiles.Count != 0)
@@ -134,8 +146,6 @@ namespace _01electronics_crm
                 InsertDragAndDropOrBrowseGrid();
             }
         }
-
-        
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INSERT FUNCTIONS
@@ -313,6 +323,40 @@ namespace _01electronics_crm
             uploadFilesStackPanel.Children.Add(grid);
         }
 
+        private void InsertErrorRetryButton()
+        {
+            Grid grid = new Grid();
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+
+            RowDefinition row1 = new RowDefinition();
+            RowDefinition row2 = new RowDefinition();
+
+            grid.RowDefinitions.Add(row1);
+            grid.RowDefinitions.Add(row2);
+
+            Image icon = new Image();
+
+            icon = new Image { Source = new BitmapImage(new Uri(@"photos\no_internet_icon.jpg", UriKind.Relative)) };
+            icon.HorizontalAlignment = HorizontalAlignment.Center;
+            icon.VerticalAlignment = VerticalAlignment.Center;
+            resizeImage(ref icon, 250, 250);
+            grid.Children.Add(icon);
+            Grid.SetRow(icon, 0);
+
+            Button retryButton = new Button();
+            retryButton.Style = (Style)FindResource("buttonBrowseStyle");
+            retryButton.Width = 200;
+            retryButton.Background = null;
+            retryButton.Foreground = Brushes.Gray;
+            retryButton.Content = "Retry";
+            retryButton.Click += OnClickRetryButton;
+            grid.Children.Add(retryButton);
+            Grid.SetRow(retryButton, 1);
+
+            uploadFilesStackPanel.Children.Add(grid);
+        }
+
         private void LoadIcon(ref Image icon, string ftpFiles)
         {
             if (ftpFiles.Contains(".pdf"))
@@ -356,37 +400,83 @@ namespace _01electronics_crm
             NavigationService.Navigate(workOfferAdditionalInfoPage);
         }
 
+        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOfferBasicInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferBasicInfoPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferBasicInfoPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferBasicInfoPage);
+        }
+
+        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOfferProductsPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferProductsPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferProductsPage);
+        }
+
+        private void OnClickPaymentAndDelivery(object sender, MouseButtonEventArgs e)
+        {
+            workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
+            workOfferPaymentAndDeliveryPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferPaymentAndDeliveryPage);
+        }
+
+        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
+            workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
+            workOfferAdditionalInfoPage.workOfferPaymentAndDeliveryPage = workOfferPaymentAndDeliveryPage;
+            workOfferAdditionalInfoPage.workOfferUploadFilesPage = this;
+
+            NavigationService.Navigate(workOfferAdditionalInfoPage);
+        }
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
 
+        private void OnButtonClickOk(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+        }
+
         private void OnClickCancelButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
-                    ftpObject.DeleteFtpDirectory(serverFolderPath, BASIC_MACROS.SEVERITY_HIGH);
-
-                else
-                {
-                    for (int i = 0; i < ftpFiles.Count(); i++)
-                    {
-                        ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i], BASIC_MACROS.SEVERITY_HIGH);
-                    }
-
-                    ftpObject.DeleteFtpDirectory(serverFolderPath, BASIC_MACROS.SEVERITY_HIGH);
-                }
-            }
-
+            //if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            //{
+            //    if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
+            //        ftpObject.DeleteFtpDirectory(serverFolderPath, BASIC_MACROS.SEVERITY_HIGH);
+            //
+            //    else
+            //    {
+            //        for (int i = 0; i < ftpFiles.Count(); i++)
+            //        {
+            //            ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i], BASIC_MACROS.SEVERITY_HIGH);
+            //        }
+            //
+            //        ftpObject.DeleteFtpDirectory(serverFolderPath, BASIC_MACROS.SEVERITY_HIGH);
+            //    }
+            //}
+            
             NavigationWindow currentWindow = (NavigationWindow)this.Parent;
             currentWindow.Close();
         }
 
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
-
+            wordAutomation.AutomateWorkOffer(workOffer);
         }
 
         
@@ -428,6 +518,11 @@ namespace _01electronics_crm
                 progressBar.Visibility = Visibility.Visible;
                 currentSelectedFile.Children.Add(progressBar);
                 Grid.SetRow(progressBar, 3);
+
+                Label currentStatusLabel = (Label)currentSelectedFile.Children[2];
+                currentStatusLabel.Content = "DOWNLOADING";
+                currentStatusLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
+
                 downloadBackground.RunWorkerAsync();
             }
         }
@@ -528,97 +623,52 @@ namespace _01electronics_crm
             uploadBackground.RunWorkerAsync();
         }
 
-        private void OnButtonClickOk(object sender, RoutedEventArgs e)
+        private void OnClickRetryButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+
+            FTPServer fTPServer = new FTPServer();
+
+            if (!fTPServer.CheckExistingFolder(serverFolderPath))
             {
-
-                if (workOffer.GetSalesPersonId() == 0)
-                    MessageBox.Show("You need to choose sales person before adding a work offer!");
-                else if (workOffer.GetCompanyName() == null)
-                    MessageBox.Show("You need to choose a company before adding a work offer!");
-                else if (workOffer.GetAddressSerial() == 0)
-                    MessageBox.Show("You need to choose company address before adding a work offer!");
-                else if (workOffer.GetContactId() == 0)
-                    MessageBox.Show("You need to choose a contact before adding a work offer!");
-                else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
-                else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
-                else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
-                else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
-                else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
-                    MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
-                else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
-                    MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
-                else if (workOffer.GetDeliveryPointId() == 0)
-                    MessageBox.Show("You need to set delivery point before adding a work offer!");
-                else if (workOffer.GetOfferContractTypeId() == 0)
-                    MessageBox.Show("You need to set contract type before adding a work offer!");
-                else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
-                    MessageBox.Show("You need to set warranty period before adding a work offer!");
-                else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
-                    MessageBox.Show("You need to set validity period before adding a work offer!");
-                else
+                if (!fTPServer.CreateNewFolder(serverFolderPath))
                 {
-                    if (workOffer.IssueNewOffer())
-                        MessageBox.Show("WorkOffer added succefully!");
-
-                    //WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-
-                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                    currentWindow.Close();
+                    uploadFilesStackPanel.Children.Clear();
+                    InsertErrorRetryButton();
+                    return;
                 }
             }
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else
             {
-                
-
-                if (workOffer.GetSalesPersonId() == 0)
-                    MessageBox.Show("You need to choose sales person before adding a work offer!");
-                else if (workOffer.GetCompanyName() == null)
-                    MessageBox.Show("You need to choose a company before adding a work offer!");
-                else if (workOffer.GetAddressSerial() == 0)
-                    MessageBox.Show("You need to choose company address before adding a work offer!");
-                else if (workOffer.GetContactId() == 0)
-                    MessageBox.Show("You need to choose a contact before adding a work offer!");
-                else if (workOffer.GetOfferProduct1TypeId() != 0 && workOffer.GetProduct1PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
-                else if (workOffer.GetOfferProduct2TypeId() != 0 && workOffer.GetProduct2PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
-                else if (workOffer.GetOfferProduct3TypeId() != 0 && workOffer.GetProduct3PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
-                else if (workOffer.GetOfferProduct4TypeId() != 0 && workOffer.GetProduct4PriceValue() == 0)
-                    MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
-                else if (workOffer.GetPercentDownPayment() + workOffer.GetPercentOnDelivery() + workOffer.GetPercentOnInstallation() < 100)
-                    MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
-                else if (workOffer.GetDeliveryTimeMinimum() == 0 || workOffer.GetDeliveryTimeMaximum() == 0)
-                    MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
-                else if (workOffer.GetDeliveryPointId() == 0)
-                    MessageBox.Show("You need to set delivery point before adding a work offer!");
-                else if (workOffer.GetOfferContractTypeId() == 0)
-                    MessageBox.Show("You need to set contract type before adding a work offer!");
-                else if (workOffer.GetWarrantyPeriod() == 0 || workOffer.GetWarrantyPeriodTimeUnitId() == 0)
-                    MessageBox.Show("You need to set warranty period before adding a work offer!");
-                else if (workOffer.GetOfferValidityPeriod() == 0 || workOffer.GetOfferValidityTimeUnitId() == 0)
-                    MessageBox.Show("You need to set validity period before adding a work offer!");
-
-
-                else
+                ftpFiles.Clear();
+                if (!fTPServer.ListFilesInFolder(serverFolderPath, ref ftpFiles))
                 {
-                    if (workOffer.ReviseOffer())
-                        MessageBox.Show("Offer Revised successfully!");
-
-                    // WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition);
-
-                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                    currentWindow.Close();
+                    uploadFilesStackPanel.Children.Clear();
+                    InsertErrorRetryButton();
+                    return;
                 }
 
             }
+
+            if (ftpFiles.Count != 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+
+                for (int i = 0; i < ftpFiles.Count; i++)
+                {
+                    if (ftpFiles[i] != "." || ftpFiles[i] != "..")
+                        InsertIconGridFromServer(i);
+                }
+                InsertAddFilesIcon();
+            }
+            else if (ftpFiles.Count == 0)
+            {
+                uploadFilesStackPanel.Children.Clear();
+                InsertDragAndDropOrBrowseGrid();
+            }
+
         }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///ON DROP HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -836,5 +886,7 @@ namespace _01electronics_crm
             }
             
         }
+
+        
     }
 }

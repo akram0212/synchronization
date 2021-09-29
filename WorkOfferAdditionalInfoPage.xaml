@@ -31,7 +31,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Content="WORK OFFER ADDITIONAL INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer" IsEnabled="False"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -43,23 +43,23 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
                 
-                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                     <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
                 
-                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                     <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
                 
-                <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" >
+                <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
                 
-                <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" >
+                <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
                     <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
             </Grid>
@@ -107,10 +107,24 @@
                     </WrapPanel>
                 </Grid>
             </ScrollViewer>
-            
+
+            <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="Back" Click="OnClickBackButton" Margin="24"/>
+                <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" IsEnabled="False" Click="OnClickNextButton" Margin="24"/>
+                <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" Click="OnBtnClickFinish"  Margin="24"/>
+                <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
+
+            </Grid>
+
             <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <Button Style="{StaticResource buttonStyle}" Name="backButton" Content="Back" Click="OnClickBackButton" Margin="24"/>
-                <Button Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnClickNextButton" Margin="24"/>
+                
             </WrapPanel>
             
         </Grid>

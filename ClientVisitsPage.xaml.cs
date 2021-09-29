@@ -138,8 +138,7 @@ namespace _01electronics_crm
                 quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
-
-        private bool InitializeEmployeeComboBox()
+                private bool InitializeEmployeeComboBox()
         {
             if (!commonQueriesObject.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                 return false;
@@ -205,7 +204,7 @@ namespace _01electronics_crm
                 ColumnDefinition column1 = new ColumnDefinition();
 
                 newGrid.ColumnDefinitions.Add(column1);
-                newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
+                newGrid.MouseLeftButtonDown += OnBtnClickVisitItem;
 
                 Grid.SetColumn(currentStackPanel, 0);
 
@@ -293,7 +292,7 @@ namespace _01electronics_crm
 
 
                 RowDefinition currentRow = new RowDefinition();
-                //currentRow.Height = new GridLength(75);
+
                 clientVisitsGrid.RowDefinitions.Add(currentRow);
 
                 Label salesPersonLabel = new Label();
@@ -339,7 +338,7 @@ namespace _01electronics_crm
                 Grid.SetRow(resultLabel, currentRowNumber);
                 Grid.SetColumn(resultLabel, 4);
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickedWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
             }
@@ -372,7 +371,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedVisitItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickVisitItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
             previousSelectedVisitItem = currentSelectedVisitItem;
@@ -457,13 +456,13 @@ namespace _01electronics_crm
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
             AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
             addClientVisitWindow.Closed += OnClosedAddVisitWindow;
             addClientVisitWindow.Show();
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             ClientVisit selectedVisit = new ClientVisit();
             selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);

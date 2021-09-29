@@ -30,11 +30,11 @@
     <ProductName>CRM</ProductName>
     <PublisherName>01 Electronics</PublisherName>
     <SuiteName>ERP System</SuiteName>
-    <MinimumRequiredVersion>5.0.0.0</MinimumRequiredVersion>
+    <MinimumRequiredVersion>5.1.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>5.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>5.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -131,6 +131,9 @@
     </Compile>
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeAssigneeWindow.xaml.cs">
+      <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
@@ -246,6 +249,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AddOfficeMeetingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangeAssigneeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

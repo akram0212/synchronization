@@ -21,8 +21,6 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQBasicInfoPage : Page
     {
-        
-
         Employee loggedInUser;
         RFQ rfq;
 
@@ -47,24 +45,20 @@ namespace _01electronics_crm
         public RFQProductsPage rfqProductsPage;
         public RFQAdditionalInfoPage rfqAdditionalInfoPage;
         public RFQUploadFilesPage rfqUploadFilesPage;
-        
 
         public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
-
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
-            InitializeComponent();
-
             sqlDatabase = new SQLServer();
+
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            rfq = new RFQ(sqlDatabase);
+
             rfq = mRFQ;
 
-            rfqProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-            rfqAdditionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
+            InitializeComponent();
 
             if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
@@ -78,8 +72,6 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
-                rfqUploadFilesPage = new RFQUploadFilesPage(ref loggedInUser, ref rfq, viewAddCondition);
-
                 InitializeCompanyInfo();
                 InitializeContactInfo();
 
@@ -109,19 +101,6 @@ namespace _01electronics_crm
                 salesPersonCombo.IsEnabled = false;
             }
 
-        }
-
-        public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ)
-        {
-            loggedInUser = mLoggedInUser;
-
-            InitializeComponent();
-
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-            rfq = new RFQ(sqlDatabase);
-            rfq = mRFQ;
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////

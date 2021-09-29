@@ -71,6 +71,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
                 finishButton.IsEnabled = false;
+                nextButton.IsEnabled = true;
             }
             else
             {
@@ -205,46 +206,17 @@ namespace _01electronics_crm
             {
                 if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
                 {
-                    if (rfq.IssueNewRFQ())
-                    {
-                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
-
-                        RFQBasicInfoPage rFQBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-                        
-                        rfqUploadFilesPage = rFQBasicInfoPage.rfqUploadFilesPage;
-
-                        //rfqUploadFilesPage.rfqAdditionalInfoPage = rFQBasicInfoPage.rfqAdditionalInfoPage;
-
-                        //rfqUploadFilesPage.rfqBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq);
-                        //rfqUploadFilesPage.rfqBasicInfoPage = rFQProductsPage.rfqBasicInfoPage;
-                        
-                        //rfqUploadFilesPage.rfqProductsPage = rFQBasicInfoPage.rfqProductsPage;
-                        
-                        //System.Windows.Forms.MessageBox.Show("RFQ added successfully!");
-
-                        NavigationService.Navigate(rfqUploadFilesPage);
-
-                    }
+                    if (!rfq.IssueNewRFQ())
+                        return;
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
-                    if (rfq.ReviseRFQ())
-                    {
-                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
-
-                        RFQBasicInfoPage rFQBasicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-                        //RFQProductsPage rFQProductsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-
-                        //rfqUploadFilesPage.rfqBasicInfoPage = rFQProductsPage.rfqBasicInfoPage;
-                        //rfqUploadFilesPage.rfqProductsPage = rFQBasicInfoPage.rfqProductsPage;
-                        //rfqUploadFilesPage.rfqAdditionalInfoPage = rFQBasicInfoPage.rfqAdditionalInfoPage;
-                        rfqUploadFilesPage = rFQBasicInfoPage.rfqUploadFilesPage;
-
-                        //System.Windows.Forms.MessageBox.Show("RFQ revised successfully!");
-
-                        NavigationService.Navigate(rfqUploadFilesPage);
-                    }
+                    if (!rfq.ReviseRFQ())
+                        return;
                 }
+
+                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                currentWindow.Close();
             }
         }
 
