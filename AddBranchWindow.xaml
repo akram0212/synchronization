@@ -50,7 +50,7 @@
                         </WrapPanel>
 
                         <WrapPanel Name="SecondaryWorkFieldWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work Field"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work &#x0a;Field"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="secondaryWorkFieldTextBox"/>
                         </WrapPanel>
                     </WrapPanel>

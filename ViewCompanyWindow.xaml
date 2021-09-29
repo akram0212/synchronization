@@ -33,46 +33,44 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-
-                    <WrapPanel Grid.Row="0">
-                        <WrapPanel Name="CompanyNameWrapPanel">
+                    
+                    <WrapPanel Name="CompanyNameWrapPanel" Grid.Row="0">
                             <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
-                            <Label Style="{StaticResource largeLabelStyle}"/>
+                            <Label Style="{StaticResource tableItemValue}"  Name="companyNameLabel" MouseDoubleClick="OnDoubleClickLabel"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="companyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
-                        </WrapPanel>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="1">
-                        <WrapPanel Name="PrimaryWorkFieldWrapPanel">
+                        <WrapPanel Name="PrimaryWorkFieldWrapPanel" Grid.Row="1">
                             <Label Style="{StaticResource tableItemLabel}" Content="Primay Work Field"/>
-                            <Label Style="{StaticResource largeLabelStyle}"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="primaryWorkFieldTextBox"/>
-                        </WrapPanel>
-
-                        <WrapPanel Name="SecondaryWorkFieldWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work Field"/>
-                            <Label Style="{StaticResource largeLabelStyle}"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="secondaryWorkFieldTextBox"/>
-                        </WrapPanel>
+                            <Label Style="{StaticResource tableItemValue}" Name="primaryWorkFieldLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                            <!--<TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="primaryWorkFieldTextBox"/>-->
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="primaryWorkFieldComboBox" SelectionChanged="OnSelprimaryWorkFieldComboBox" />
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="2">
+                    <WrapPanel Name="SecondaryWorkFieldWrapPanel" Grid.Row="2">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work &#x0a;Field"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="secondaryWorkFieldLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                        <!--<TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="secondaryWorkFieldTextBox"/>-->
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="secondaryWorkFieldComboBox" SelectionChanged="OnSelSecondaryWorkFieldComboBox"/>
+                    </WrapPanel>
+
+                    <WrapPanel Grid.Row="3">
                         <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
-                        <Label Style="{StaticResource largeLabelStyle}"/>
-                        <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
+                        <!--<Label Style="{StaticResource largeLabelStyle}" Name="branchLabel"/>-->
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3" Name="companyPhonesWrapPanel"/>
+                    <!--<WrapPanel Grid.Row="4" Name="companyPhonesWrapPanel"/>-->
                 </Grid>
 
             </WrapPanel>
 
         </ScrollViewer>
 
-        <Button Grid.Row="2" HorizontalAlignment="Left" Content="Add Branch"  Margin="150,0" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
-        <Button Grid.Row="2" HorizontalAlignment="Right"  Margin="150,0" Content="Add Details" Name="addTelephoneFaxButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
+        <Button Grid.Row="2" HorizontalAlignment="Left" Content="Add Branch"  Margin="100,0" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
+        <Button Grid.Row="2" HorizontalAlignment="Center" Content="Save Changes"  Margin="100,0" Name="saveChangesButton" IsEnabled="False" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+        <Button Grid.Row="2" HorizontalAlignment="Right"  Margin="100,0" Content="Add Details" Name="addTelephoneFaxButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
 
     </Grid>
 
