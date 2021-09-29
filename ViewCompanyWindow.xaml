@@ -39,25 +39,29 @@
                     <WrapPanel Grid.Row="0">
                         <WrapPanel Name="CompanyNameWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
+                            <Label Style="{StaticResource largeLabelStyle}"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="companyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="1">
                         <WrapPanel Name="PrimaryWorkFieldWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Primay Work Field"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="primaryWorkFieldTextBox"/>
+                            <Label Style="{StaticResource largeLabelStyle}"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="primaryWorkFieldTextBox"/>
                         </WrapPanel>
 
                         <WrapPanel Name="SecondaryWorkFieldWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work Field"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="secondaryWorkFieldTextBox"/>
+                            <Label Style="{StaticResource largeLabelStyle}"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="secondaryWorkFieldTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="2">
                         <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
-                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
+                        <Label Style="{StaticResource largeLabelStyle}"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="3" Name="companyPhonesWrapPanel"/>
