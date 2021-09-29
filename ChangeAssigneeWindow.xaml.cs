@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -19,9 +20,16 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ChangeAssigneeWindow : Window
     {
-        public ChangeAssigneeWindow()
+        CommonQueries commonQueries;
+
+
+
+        public ChangeAssigneeWindow(string mOldAssigneeName)
         {
+            commonQueries = new CommonQueries();
+
             InitializeComponent();
+           
         }
 
         private void OnSelChangedChangeAssignee(object sender, SelectionChangedEventArgs e)

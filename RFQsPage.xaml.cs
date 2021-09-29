@@ -1217,7 +1217,7 @@ namespace _01electronics_crm
             }
             else
             {
-                ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow();
+                ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow("ahmed");
                 changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
                 changeAssignee.Show();
             }
