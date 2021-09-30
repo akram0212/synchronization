@@ -76,6 +76,8 @@ namespace _01electronics_crm
             {
                 isManager = true;
 
+                mergeCompanyButton.IsEnabled = true;
+
                 initializePrimaryWorkFieldCombo();
                 initializeSecondaryWorkFieldCombo(company.GetCompanyPrimaryFieldId());
 
@@ -97,9 +99,11 @@ namespace _01electronics_crm
             primaryWorkFieldComboBox.IsEnabled = false;
             secondaryWorkFieldComboBox.IsEnabled = false;
 
-            companyNameTextBox.Text = company.GetCompanyName();
-            primaryWorkFieldComboBox.Text = company.GetCompanyPrimaryField();
-            secondaryWorkFieldComboBox.Text = company.GetCompanySecondaryField();
+            companyNameLabel.Content = company.GetCompanyName();
+            primaryWorkFieldLabel.Content = company.GetCompanyPrimaryField();
+            secondaryWorkFieldLabel.Content = company.GetCompanySecondaryField();
+            //primaryWorkFieldComboBox.Text = company.GetCompanyPrimaryField();
+            // secondaryWorkFieldComboBox.Text = company.GetCompanySecondaryField();
 
             if (!InitializeBranchesComboBox())
                 return;
@@ -143,6 +147,33 @@ namespace _01electronics_crm
 
             return true;
         }
+        private bool initializePrimaryWorkFieldCombo()
+        {
+            if (!commonQueries.GetPrimaryWorkFields(ref primaryWorkFields))
+                return false;
+
+            for(int i = 0; i < primaryWorkFields.Count; i++)
+            {
+                primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
+            }
+
+            return true;
+        } 
+        private bool initializeSecondaryWorkFieldCombo(int primaryFieldID)
+        {
+            secondaryWorkFields.Clear();
+
+            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, secondaryWorkFields))
+                return false;
+
+            for (int i = 0; i < secondaryWorkFields.Count; i++)
+            {
+                secondaryWorkFieldComboBox.Items.Add(secondaryWorkFields[i].field_name);
+            }
+
+            return true;
+        }
+
         private void AddPhone()
         {
             for (int i = 0; i < company.GetCompanyPhones().Count(); i++)
@@ -182,7 +213,6 @@ namespace _01electronics_crm
                 }
             }
         }
-
         private void AddFax()
         {
             for (int i = 0; i < company.GetCompanyFaxes().Count(); i++)
@@ -223,50 +253,6 @@ namespace _01electronics_crm
             }
         }
 
-        private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
-        {
-            for (int i = ContactGrid.Children.Count -1; i >= 4; i--)
-            {
-                ContactGrid.Children.RemoveAt(i);
-                ContactGrid.RowDefinitions.RemoveAt(i);
-                gridRowsCounter--;
-            }
-
-            if (branchComboBox.SelectedItem != null)
-            {
-                InitializeBranchPhones();
-                InitializeBranchFaxes();
-
-            }
-        }
-
-        private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)
-        {
-            AddBranchWindow addBranchWindow = new AddBranchWindow(ref loggedInUser, ref company);
-            addBranchWindow.Closed += OnClosedAddBranchWindow;
-            addBranchWindow.Show();
-        }
-        private void OnClosedAddBranchWindow(object sender, EventArgs e)
-        {
-            InitializeBranchesComboBox();
-        }
-
-        private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
-        {
-            AddComapnyDetailsWindow addComapnyDetailsWindow = new AddComapnyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
-            addComapnyDetailsWindow.Closed += OnClosedAddBranchWindow;
-            addComapnyDetailsWindow.Show();
-        }
-        private void OnClosedAddCompanyDetailsWindow(object sender, EventArgs e)
-        {
-            InitializeCompanyInfo();
-        }
-
         private void setUIEelements()
         {
             WrapPanel currentWrapPanel = (WrapPanel)currentSelectedItem.Parent;
@@ -299,6 +285,35 @@ namespace _01electronics_crm
                 }
             }
         }
+
+        private void OnClosedAddBranchWindow(object sender, EventArgs e)
+        {
+            InitializeBranchesComboBox();
+        }
+        private void OnClosedAddCompanyDetailsWindow(object sender, EventArgs e)
+        {
+            InitializeCompanyInfo();
+        }
+        private void OnClosedMergeCompaniesWindow(object sender, EventArgs e)
+        {
+            try
+            {
+                setCollapsedTextBoxes((WrapPanel)currentSelectedItem.Parent);
+            }
+            catch
+            {
+                try
+                {
+                    setCollapsedComboBoxes((WrapPanel)currentSelectedItem.Parent);
+                }
+                catch
+                {
+
+                }
+            }
+            InitializeCompanyInfo();
+        }
+
         private void OnDoubleClickLabel(object sender, MouseButtonEventArgs e)
         {
             previousSelectedItem = currentSelectedItem;
@@ -306,6 +321,12 @@ namespace _01electronics_crm
             setUIEelements();
         }
 
+        private void OnBtnClkAddBranch(object sender, RoutedEventArgs e)
+        {
+            AddBranchWindow addBranchWindow = new AddBranchWindow(ref loggedInUser, ref company);
+            addBranchWindow.Closed += OnClosedAddBranchWindow;
+            addBranchWindow.Show();
+        }
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
             try
@@ -361,31 +382,17 @@ namespace _01electronics_crm
             }
             this.Close();
         }
-        private bool initializePrimaryWorkFieldCombo()
+        private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
         {
-            if (!commonQueries.GetPrimaryWorkFields(ref primaryWorkFields))
-                return false;
-
-            for(int i = 0; i < primaryWorkFields.Count; i++)
-            {
-                primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
-            }
-
-            return true;
-        } 
-        private bool initializeSecondaryWorkFieldCombo(int primaryFieldID)
+            AddComapnyDetailsWindow addComapnyDetailsWindow = new AddComapnyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
+            addComapnyDetailsWindow.Closed += OnClosedAddBranchWindow;
+            addComapnyDetailsWindow.Show();
+        }
+        private void OnBtnClkMergeCompany(object sender, RoutedEventArgs e)
         {
-            secondaryWorkFields.Clear();
-
-            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, secondaryWorkFields))
-                return false;
-
-            for (int i = 0; i < secondaryWorkFields.Count; i++)
-            {
-                secondaryWorkFieldComboBox.Items.Add(secondaryWorkFields[i].field_name);
-            }
-
-            return true;
+            MergeCompaniesWindow mergeCompaniesWindow = new MergeCompaniesWindow(ref loggedInUser, ref company);
+            mergeCompaniesWindow.Closed += OnClosedMergeCompaniesWindow;
+            mergeCompaniesWindow.Show();
         }
 
         private void setCollapsedComboBoxes(WrapPanel mWrapPanel)
@@ -459,6 +466,27 @@ namespace _01electronics_crm
             currentLabel.Visibility = Visibility.Collapsed;
 
         }
+
+        private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
+        {
+
+        }
+        private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
+        {
+            for (int i = ContactGrid.Children.Count -1; i >= 4; i--)
+            {
+                ContactGrid.Children.RemoveAt(i);
+                ContactGrid.RowDefinitions.RemoveAt(i);
+                gridRowsCounter--;
+            }
+
+            if (branchComboBox.SelectedItem != null)
+            {
+                InitializeBranchPhones();
+                InitializeBranchFaxes();
+
+            }
+        }
         private void OnSelprimaryWorkFieldComboBox(object sender, SelectionChangedEventArgs e)
         {
             secondaryWorkFieldComboBox.Items.Clear();
@@ -467,7 +495,6 @@ namespace _01electronics_crm
             secondaryWorkFieldLabel.Foreground = Brushes.Red;
 
         }
-
         private void OnSelSecondaryWorkFieldComboBox(object sender, SelectionChangedEventArgs e)
         {
             ComboBox currentComboBox = (ComboBox)sender;
@@ -486,5 +513,6 @@ namespace _01electronics_crm
 
             }
         }
+
     }
 }
