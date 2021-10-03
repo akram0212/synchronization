@@ -312,6 +312,19 @@ namespace _01electronics_crm
                 }
             }
             InitializeCompanyInfo();
+            for (int i = ContactGrid.Children.Count - 1; i >= 4; i--)
+            {
+                ContactGrid.Children.RemoveAt(i);
+                ContactGrid.RowDefinitions.RemoveAt(i);
+                gridRowsCounter--;
+            }
+
+            if (branchComboBox.SelectedItem != null)
+            {
+                InitializeBranchPhones();
+                InitializeBranchFaxes();
+
+            }
         }
 
         private void OnDoubleClickLabel(object sender, MouseButtonEventArgs e)

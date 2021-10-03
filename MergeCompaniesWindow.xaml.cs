@@ -36,6 +36,7 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_MIN_STRUCT> salesPeople;
         List<KeyValuePair<int, int>> updatedObjects;
         List<int> branches;
+        int oldSalesPersonId;
 
 
         public MergeCompaniesWindow(ref Employee mLoggedInUser, ref Company mCompany)
@@ -62,6 +63,7 @@ namespace _01electronics_crm
             initializeSecondaryWorkFieldCombo(company.GetCompanyPrimaryFieldId());
             initializeSalesPersonCombo();
 
+            oldSalesPersonId = company.GetOwnerUserId();
             CompanyNameTextBox.Text = company.GetCompanyName();
 
             primaryWorkFieldComboBox.Text = company.GetCompanyPrimaryField();
@@ -119,14 +121,20 @@ namespace _01electronics_crm
                 return;
             if (!UpdateBranches())
                 return;
+
             if (!company.UpdateCompanyOwnerUser())
                 return;
-            
-            
-            //if (!company.DeleteCompanyField())
-            //    return;
-            //if (!company.DeleteCompany())
-            //    return;
+
+            if(oldSalesPersonId != company.GetOwnerUserId())
+            {
+                if (!commonQueries.MergeCompanyContactsInfo(company.GetCompanySerial(), oldSalesPersonId, company.GetOwnerUserId()))
+                    return;
+            }
+
+            if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                return;
+            if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                return;
 
         }
 
@@ -145,6 +153,9 @@ namespace _01electronics_crm
                 {
                     companyToBeMergedComboBox.Items.Add(employeeCompanies[i].company_name);
                 }
+                else
+                    employeeCompanies.RemoveAt(i);
+
             }
 
             return true;
