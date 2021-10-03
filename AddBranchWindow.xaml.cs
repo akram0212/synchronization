@@ -216,7 +216,7 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, true))
                 return false;
 
             company.AddCompanyPhone(outputString);
