@@ -37,6 +37,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> offerStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -51,8 +52,9 @@ namespace _01electronics_crm
 
         int viewAddCondition;
 
-        private Grid previousSelectedOfferItem;
-        private Grid currentSelectedOfferItem;
+        private Grid currentGrid;
+        private Expander currentExpander;
+        private Expander previousExpander;
 
         public WorkOffersPage(ref Employee mLoggedInUser)
         {
@@ -93,7 +95,6 @@ namespace _01electronics_crm
             if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 addButton.IsEnabled = false;
-                reviseButton.IsEnabled = false;
             }
         }
 
@@ -172,11 +173,12 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-           
-            statusComboBox.Items.Add("Failed");
-            statusComboBox.Items.Add("Confirmed");
-            statusComboBox.Items.Add("Pending");
-            statusComboBox.IsEnabled = false;
+            commonQueriesObject.GetWorkOfferStatus(ref offerStatuses);
+
+            for(int i = 0; i < offerStatuses.Count; i++)
+            {
+                statusComboBox.Items.Add(offerStatuses[i].status_name);
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,29 +209,9 @@ namespace _01electronics_crm
             statusComboBox.IsEnabled = false;
         }
 
-
-        private void DisableViewButton()
-        {
-            viewButton.IsEnabled = false;
-        }
-        private void EnableViewButton()
-        {
-            viewButton.IsEnabled = true;
-        }
-
-        private void DisableReviseButton()
-        {
-            reviseButton.IsEnabled = false;
-        }
-        private void EnableReviseButton()
-        {
-            reviseButton.IsEnabled = true;
-        }
-
         private void SetDefaultSettings()
         {
-            DisableViewButton();
-            DisableReviseButton();
+           
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -308,7 +290,7 @@ namespace _01electronics_crm
         private bool SetWorkOffersStackPanel()
         {
             workOffersStackPanel.Children.Clear();
-            currentSelectedOfferItem = null;
+            
             workOffersAfterFiltering.Clear();
 
             for (int i = 0; i < workOffers.Count; i++)
@@ -414,6 +396,40 @@ namespace _01electronics_crm
 
                 borderIcon.Child = rfqStatusLabel;
 
+                Expander expander = new Expander();
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.VerticalAlignment = VerticalAlignment.Center;
+                expander.HorizontalAlignment = HorizontalAlignment.Center;
+                expander.HorizontalContentAlignment = HorizontalAlignment.Center;
+                expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+
+                ListBox listBox = new ListBox();
+                listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
+
+                ListBoxItem viewButton = new ListBoxItem();
+                viewButton.Content = "View";
+                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                ListBoxItem reviseButton = new ListBoxItem();
+                reviseButton.Content = "Revise Offer";
+                reviseButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                ListBoxItem confirmButton = new ListBoxItem();
+                confirmButton.Content = "Confirm Offer";
+                confirmButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                listBox.Items.Add(viewButton);
+
+                if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                    listBox.Items.Add(reviseButton);
+
+                if(workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                    listBox.Items.Add(confirmButton);
+
+                expander.Content = listBox;
+
                 fullStackPanel.Children.Add(offerIdLabel);
                 fullStackPanel.Children.Add(salesLabel);
                 fullStackPanel.Children.Add(preSalesLabel);
@@ -424,16 +440,22 @@ namespace _01electronics_crm
                 Grid grid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
+                ColumnDefinition column3 = new ColumnDefinition();
                 column2.MaxWidth = 95;
+                column3.MaxWidth = 50;
+
                 grid.ColumnDefinitions.Add(column1);
                 grid.ColumnDefinitions.Add(column2);
-
-                Grid.SetColumn(fullStackPanel, 0);
-                Grid.SetColumn(borderIcon, 1);
+                grid.ColumnDefinitions.Add(column3);
 
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
-                grid.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+                grid.Children.Add(expander);
+
+                Grid.SetColumn(fullStackPanel, 0);
+                Grid.SetColumn(borderIcon, 1);
+                Grid.SetColumn(expander, 2);
+
                 workOffersStackPanel.Children.Add(grid);
             }
 
@@ -447,7 +469,7 @@ namespace _01electronics_crm
             workOffersGrid.RowDefinitions.Clear();
             workOffersGrid.ColumnDefinitions.Clear();
 
-            currentSelectedOfferItem = null;
+            
 
             int counter = 0;
 
@@ -730,8 +752,6 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
-
                 currentRowNumber++;
             }
 
@@ -743,8 +763,8 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (yearComboBox.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
@@ -757,8 +777,8 @@ namespace _01electronics_crm
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (quarterComboBox.SelectedItem != null)
                 selectedQuarter = quarterComboBox.SelectedIndex + 1;
@@ -771,8 +791,8 @@ namespace _01electronics_crm
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (salesComboBox.SelectedItem != null)
                 selectedSales = salesEmployeesList[salesComboBox.SelectedIndex].employee_id;
@@ -786,8 +806,8 @@ namespace _01electronics_crm
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (preSalesComboBox.SelectedItem != null)
                 selectedPreSales = preSalesEmployeesList[preSalesComboBox.SelectedIndex].employee_id;
@@ -802,8 +822,8 @@ namespace _01electronics_crm
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (productComboBox.SelectedItem != null)
                 selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
@@ -816,8 +836,8 @@ namespace _01electronics_crm
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
+            
+            
 
             if (brandComboBox.SelectedItem != null)
                 selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
@@ -830,11 +850,9 @@ namespace _01electronics_crm
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-            DisableViewButton();
-            DisableReviseButton();
-
+        
             if (statusComboBox.SelectedItem != null)
-                selectedStatus = statusComboBox.SelectedIndex + 1;
+                selectedStatus = offerStatuses[statusComboBox.SelectedIndex].status_id;
             else
                 selectedStatus = 0;
             
@@ -1055,24 +1073,24 @@ namespace _01electronics_crm
         }
 
         
-        private void OnBtnClickView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView()
         {
             viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
 
-            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
             
             if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
             else
             {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
             
@@ -1080,24 +1098,23 @@ namespace _01electronics_crm
             viewOffer.Show();
         }
 
-        private void OnBtnClickReviseOffer(object sender, RoutedEventArgs e)
+        private void OnBtnClickReviseOffer()
         {
             viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
 
-            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].sales_person_id, ref salesPersonTeam);
-
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
             if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
             else
             {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentSelectedOfferItem)].offer_proposer_id);
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
             
@@ -1107,46 +1124,48 @@ namespace _01electronics_crm
             reviseOffer.Show();
         }
 
-        private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickConfirmOffer()
         {
-            EnableViewButton();
-            EnableReviseButton();
-            previousSelectedOfferItem = currentSelectedOfferItem;
-            currentSelectedOfferItem = (Grid)sender;
-            BrushConverter brush = new BrushConverter();
 
-            if (previousSelectedOfferItem != null)
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
+
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                previousSelectedOfferItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedOfferItem.Children[0];
-                Border previousSelectedBorder = (Border)previousSelectedOfferItem.Children[1];
-                Label previousStatusLabel = (Label)previousSelectedBorder.Child;
-
-                foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-
-                if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
-                else if (workOffers[workOffersStackPanel.Children.IndexOf(previousSelectedOfferItem)].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
-                else
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
-
-                previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
-            currentSelectedOfferItem.Background = (Brush)brush.ConvertFrom("#105A97");
+            selectedWorkOffer.ConfirmOffer();
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedOfferItem.Children[0];
-            Border currentSelectedBorder = (Border)currentSelectedOfferItem.Children[1];
-            Label currentStatusLabel = (Label)currentSelectedBorder.Child;
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            foreach (Label childLabel in currentSelectedStackPanel.Children)
-                childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                workOrder.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                workOrder.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
 
-            currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-            currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            workOrder.IssueNewOrder();
+
+            if (!GetWorkOffers())
+                return;
+
+            SetWorkOffersStackPanel();
+            
         }
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
@@ -1176,6 +1195,54 @@ namespace _01electronics_crm
 
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
+        }
+
+        private void OnExpandExpander(object sender, RoutedEventArgs e)
+        {
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
+            //expanderColumn.Width = new GridLength(Width = 120);
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            expanderColumn.MaxWidth = 120;
+        }
+
+        private void OnCollapseExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
+            currentExpander.VerticalAlignment = VerticalAlignment.Center;
+            expanderColumn.MaxWidth = 50;
+        }
+
+        private void OnSelChangedListBox(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox tempListBox = (ListBox)sender;
+            ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
+            Expander currentExpander = (Expander)tempListBox.Parent;
+
+            currentGrid = (Grid)currentExpander.Parent;
+
+            if (currentItem.Content.ToString() == "View")
+            {
+                OnBtnClickView();
+            }
+            else if (currentItem.Content.ToString() == "Revise Offer")
+            {
+                OnBtnClickReviseOffer();
+            }
+            else if (currentItem.Content.ToString() == "Confirm Offer")
+            {
+                OnBtnClickConfirmOffer();
+            }
         }
     }
 }

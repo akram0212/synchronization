@@ -35,6 +35,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> workOrdersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> orderStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -158,10 +159,14 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
+            if (!commonQueriesObject.GetWorkOrderStatus(ref orderStatuses))
+                return;
 
-            statusComboBox.Items.Add("Failed");
-            statusComboBox.Items.Add("Confirmed");
-            statusComboBox.Items.Add("Pending");
+            for (int i = 0; i < orderStatuses.Count; i++)
+            {
+                statusComboBox.Items.Add(orderStatuses[i].status_name);
+            }
+
             statusComboBox.IsEnabled = false;
         }
 
@@ -822,10 +827,11 @@ namespace _01electronics_crm
             //DisableReviseButton();
 
             if (statusComboBox.SelectedItem != null)
-                selectedStatus = statusComboBox.SelectedIndex + 1;
+                selectedStatus = orderStatuses[statusComboBox.SelectedIndex].status_id;
             else
                 selectedStatus = 0;
 
+            SetWorkOrdersStackPanel();
             SetWorkOrdersGrid();
         }
 

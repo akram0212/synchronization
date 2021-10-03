@@ -26,7 +26,7 @@
 
             <WrapPanel Name="changeAssigneeWrapPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label Style="{StaticResource tableItemLabel}" Content="Pre-Sales Engineers"/>
-                <ComboBox Style="{StaticResource comboBoxStyle}" Name="telephoneTextBox" SelectionChanged="OnSelChangedChangeAssignee"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="PreSalesEngineersComboBox" SelectionChanged="OnSelChangedChangeAssignee"/>
             </WrapPanel>
 
 
