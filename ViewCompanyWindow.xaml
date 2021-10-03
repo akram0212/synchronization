@@ -33,43 +33,49 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-
-                    <WrapPanel Grid.Row="0">
-                        <WrapPanel Name="CompanyNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
-                        </WrapPanel>
+                    
+                    <WrapPanel Name="CompanyNameWrapPanel" Grid.Row="0">
+                        <Label Style="{StaticResource tableItemLabel}" Name="CompanyName" Content="Company Name"/>
+                        <Label Style="{StaticResource tableItemValue}"  Name="companyNameLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                        <TextBox Style="{StaticResource textBoxStyle}" Visibility="Collapsed" Name="companyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="1">
-                        <WrapPanel Name="PrimaryWorkFieldWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Primay Work Field"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="primaryWorkFieldTextBox"/>
-                        </WrapPanel>
-
-                        <WrapPanel Name="SecondaryWorkFieldWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work Field"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="secondaryWorkFieldTextBox"/>
-                        </WrapPanel>
+                        <WrapPanel Name="PrimaryWorkFieldWrapPanel" Grid.Row="1">
+                        <Label Style="{StaticResource tableItemLabel}" Name="CompanyPrimaryField" Content="Primay Work Field"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="primaryWorkFieldLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="primaryWorkFieldComboBox" SelectionChanged="OnSelprimaryWorkFieldComboBox" />
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="2">
+                    <WrapPanel Name="SecondaryWorkFieldWrapPanel" Grid.Row="2">
+                        <Label Style="{StaticResource tableItemLabel}" Name="CompanySecondaryField" Content="Secondary Work &#x0a;Field"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="secondaryWorkFieldLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Visibility="Collapsed" Name="secondaryWorkFieldComboBox" SelectionChanged="OnSelSecondaryWorkFieldComboBox"/>
+                    </WrapPanel>
+
+                    <WrapPanel Grid.Row="3">
                         <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="branchComboBox" SelectionChanged="OnSelChangedBranch"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3" Name="companyPhonesWrapPanel"/>
                 </Grid>
 
             </WrapPanel>
 
         </ScrollViewer>
 
-        <Button Grid.Row="2" HorizontalAlignment="Left" Content="Add Branch"  Margin="150,0" Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
-        <Button Grid.Row="2" HorizontalAlignment="Right"  Margin="150,0" Content="Add Details" Name="addTelephoneFaxButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
-
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" HorizontalAlignment="Stretch" Content="Add Branch"  Name="addBranchButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddBranch"/>
+            <Button Grid.Column="1" HorizontalAlignment="Stretch" Content="Save Changes" Name="saveChangesButton" IsEnabled="False" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+            <Button Grid.Column="2" HorizontalAlignment="Stretch" Content="Add Details" Name="addTelephoneFaxButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
+            <Button Grid.Column="3" HorizontalAlignment="Stretch" Content="Merge" Name="mergeCompanyButton" IsEnabled="False" Style="{StaticResource buttonStyle}" Click="OnBtnClkMergeCompany"/>
+        </Grid>
     </Grid>
 
 </Window>

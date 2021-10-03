@@ -1,0 +1,75 @@
+﻿<Window x:Class="_01electronics_crm.MergeCompaniesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_01electronics_crm"
+        mc:Ignorable="d"
+        Title="MergeCompaniesWindow" 
+        Background="#EDEDED"
+        Height="730" Width="700">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Name="CompanyProfileHeader" Content="Merge Company" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+            <WrapPanel>
+
+                <Grid Name="ContactGrid" Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Grid.Row="0" Name="FirstCompanyWrapPanel">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Company Name"/>
+                        <Label Style="{StaticResource tableItemValue}" Visibility="Collapsed"  Name="companyNameLabel" MouseDoubleClick="OnDoubleClickLabel"/>
+                        <TextBox Style="{StaticResource textBoxStyle}" Visibility="Visible" Name="CompanyNameTextBox" TextChanged="OnTextChangedCompanyName"/>
+                    </WrapPanel>
+
+                    <WrapPanel  Grid.Row="1" Name="SecondCompanyWrapPanel">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Company to be &#x0a;Merged"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyToBeMergedComboBox" SelectionChanged="OnSelCompanyToBeMergedComboBox"/>
+                    </WrapPanel>
+
+                    <WrapPanel  Grid.Row="2" Name="PrimaryWorkFieldWrapPanel">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Primay Work Field"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="primaryWorkFieldComboBox" SelectionChanged="OnSelprimaryWorkFieldComboBox" />
+                    </WrapPanel>
+                    
+                    <WrapPanel  Grid.Row="3" Name="SecondaryWorkFieldWrapPanel">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work &#x0a;Field"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="secondaryWorkFieldComboBox" SelectionChanged="OnSelSecondaryWorkFieldComboBox"/>
+                    </WrapPanel>
+                    
+                    <WrapPanel  Grid.Row="4" Name="SalesPersonWrapPanel">
+                        <Label Style="{StaticResource tableItemLabel}" Content="Sales Person"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonComboBox" SelectionChanged="OnSelSalesPersonComboBox"/>
+                    </WrapPanel>
+
+                </Grid>
+
+            </WrapPanel>
+
+        </ScrollViewer>
+
+        <Button Grid.Row="2" Content="Save Changes" Name="saveChangesButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+
+    </Grid>
+
+</Window>

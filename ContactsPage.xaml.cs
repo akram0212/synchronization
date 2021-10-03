@@ -629,16 +629,17 @@ namespace _01electronics_crm
                     Company currentCompanyClass = new Company();
                     currentCompanyClass.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
 
-                    try
-                    {
+                   // try
+                    //{
                         object parent3 = selectedItem.Parent;
                         TreeViewItem currentSales = (TreeViewItem)parent3;
                         ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompanyClass);
+                        viewCompanyWindow.Closed += OnClosedAddContactWindow;
                         viewCompanyWindow.Show();
-                    }
-                    catch
-                    {
-                    }
+                    //}
+                    //catch
+                    //{
+                    //}
                 }
 
             }
@@ -652,6 +653,7 @@ namespace _01electronics_crm
                     object parent = selectedItem.Parent;
                     TreeViewItem currentSales = (TreeViewItem)parent;
                     ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompany);
+                    viewCompanyWindow.Closed += OnClosedAddContactWindow;
                     viewCompanyWindow.Show();
                 }
                 catch
