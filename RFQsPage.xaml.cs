@@ -35,6 +35,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT> stackPanelItems = new List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> rfqStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -50,6 +51,10 @@ namespace _01electronics_crm
         int viewAddCondition;
 
         private Grid currentGrid;
+
+        private Expander currentExpander;
+        private Expander previousExpander;
+
         public RFQsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -157,10 +162,14 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            statusComboBox.Items.Add("Pending");
-            statusComboBox.Items.Add("Confirmed");
-            statusComboBox.Items.Add("Failed");
-            statusComboBox.IsEnabled = false;
+
+            commonQueriesObject.GetRFQStatus(ref rfqStatuses);
+
+            for(int i = 0; i < rfqStatuses.Count; i++)
+            {
+                statusComboBox.Items.Add(rfqStatuses[i].status_name);
+            }
+            
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -344,6 +353,7 @@ namespace _01electronics_crm
                 currentItem.sales_person = rfqsList[i].sales_person_id;
                 currentItem.rfq_serial = rfqsList[i].rfq_serial;
                 currentItem.rfq_version = rfqsList[i].rfq_version;
+                currentItem.rfq_id = rfqsList[i].rfq_id;
 
                 stackPanelItems.Add(currentItem);
 
@@ -414,29 +424,45 @@ namespace _01electronics_crm
                 expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
 
                 ListBox listBox = new ListBox();
-                listBox.HorizontalContentAlignment = HorizontalAlignment.Center;
+                listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
 
-                ListBoxItem viewButton1 = new ListBoxItem();
-                viewButton1.Content = "View";
-                viewButton1.Foreground = new SolidColorBrush(Color.FromRgb(16,90,151));
+                ListBoxItem viewButton = new ListBoxItem();
+                viewButton.Content = "View";
+                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16,90,151));
                 
-                ListBoxItem reviseButton1 = new ListBoxItem();
-                reviseButton1.Content = "Revise RFQ";
-                reviseButton1.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ListBoxItem reviseButton = new ListBoxItem();
+                reviseButton.Content = "Revise RFQ";
+                reviseButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                
-                ListBoxItem resolveButton1 = new ListBoxItem();
-                resolveButton1.Content = "Resolve RFQ";
-                resolveButton1.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ListBoxItem resolveButton = new ListBoxItem();
+                resolveButton.Content = "Resolve RFQ";
+                resolveButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                ListBoxItem viewOfferButton = new ListBoxItem();
+                viewOfferButton.Content = "View Offer";
+                viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                ListBoxItem changeAssigneeButton = new ListBoxItem();
+                changeAssigneeButton.Content = "Change Assignee";
+                changeAssigneeButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                listBox.Items.Add(viewButton);
                 
-                ListBoxItem changeAssigneeButton1 = new ListBoxItem();
-                changeAssigneeButton1.Content = "Change Assignee";
-                changeAssigneeButton1.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                    listBox.Items.Add(viewOfferButton);
+
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                    listBox.Items.Add(reviseButton);
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                {
+                    listBox.Items.Add(resolveButton);
+
+                    if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                        listBox.Items.Add(changeAssigneeButton);
+                }
+
                 
-                listBox.Items.Add(viewButton1);
-                listBox.Items.Add(reviseButton1);
-                listBox.Items.Add(resolveButton1);
-                listBox.Items.Add(changeAssigneeButton1);
 
                 expander.Content = listBox;
 
@@ -843,7 +869,7 @@ namespace _01electronics_crm
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
             if (statusComboBox.SelectedItem != null)
-                selectedStatus = statusComboBox.SelectedIndex + 1;
+                selectedStatus = rfqStatuses[statusComboBox.SelectedIndex].status_id;
             else
                 selectedStatus = 0;
 
@@ -1068,19 +1094,31 @@ namespace _01electronics_crm
 
         private void OnBtnClickChangeAssignee()
         {
-            ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow("Ahmed");
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
+
+            ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow(ref selectedRFQ);
             changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
             changeAssignee.Show();
         }
-   
+
         private void OnExpandExpander(object sender, RoutedEventArgs e)
         {
-            Expander currentExpander = (Expander)sender;
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+            
             Grid currentGrid = (Grid)currentExpander.Parent;
             ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
             //expanderColumn.Width = new GridLength(Width = 120);
             currentExpander.VerticalAlignment = VerticalAlignment.Top;
             expanderColumn.MaxWidth = 120;
+
         }
 
         private void OnCollapseExpander(object sender, RoutedEventArgs e)
@@ -1100,24 +1138,28 @@ namespace _01electronics_crm
             
             currentGrid = (Grid)currentExpander.Parent;
 
-            if (tempListBox.SelectedIndex == 0)
+            if (currentItem.Content.ToString() == "View")
             {
                 OnBtnClickView();
             }
-            else if (tempListBox.SelectedIndex == 1)
+            else if (currentItem.Content.ToString() == "Revise RFQ")
             {
                 OnBtnClickRevise();
             }
-            else if (tempListBox.SelectedIndex == 2)
+            else if (currentItem.Content.ToString() == "Resolve RFQ")
             {
                 OnBtnClickResolve();
             }
-            else
+            else if(currentItem.Content.ToString() == "Change Assignee")
             {
+                OnBtnClickChangeAssignee();
+            }
+            else if(currentItem.Content.ToString() == "View Offer")
+            {
+                string rfqID = stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_id;
 
-                ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow("ahmed");
-                changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
-                changeAssignee.Show();
+                WorkOffersFilteredWithRFQSerialWindow workOffersFilteredWithRFQSerialWindow = new WorkOffersFilteredWithRFQSerialWindow(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person, ref loggedInUser);
+                workOffersFilteredWithRFQSerialWindow.Show();
             }
         }
             

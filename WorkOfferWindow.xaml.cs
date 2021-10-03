@@ -45,6 +45,7 @@ namespace _01electronics_crm
                 workOfferUploadFilesPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
 
                 this.NavigationService.Navigate(workOfferUploadFilesPage);
+
             }
             else
             {
