@@ -74,6 +74,7 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
+                InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
                 SetTypeLabels();
                 SetBrandLabels();
@@ -750,7 +751,7 @@ namespace _01electronics_crm
             if (currentPriceComboBox.SelectedItem != null)
             {
                 workOffer.SetCurrency(currencies[currentPriceComboBox.SelectedIndex].currencyId, currencies[currentPriceComboBox.SelectedIndex].currencyName);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < workOffer.GetNoOfOfferSavedProducts(); i++)
                 {
                     Grid productGrid = (Grid)mainWrapPanel.Children[i];
                     WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[5];

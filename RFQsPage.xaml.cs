@@ -28,6 +28,7 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
 
         RFQ selectedRFQ;
+        WorkOffer resolveWorkOffer;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -454,12 +455,23 @@ namespace _01electronics_crm
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
                     listBox.Items.Add(reviseButton);
+
+                bool alreadyAdded = false;
+                
+                if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+                {
+                    listBox.Items.Add(changeAssigneeButton);
+                    alreadyAdded = true;
+                }
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
                     listBox.Items.Add(resolveButton);
 
-                    if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
-                        listBox.Items.Add(changeAssigneeButton);
+                    if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                    {
+                        if(alreadyAdded == false)
+                            listBox.Items.Add(changeAssigneeButton);
+                    }
                 }
 
                 
@@ -1073,9 +1085,9 @@ namespace _01electronics_crm
         }
         private void OnBtnClickResolve()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.RFQ_RESOLVE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION;
 
-            WorkOffer resolveWorkOffer = new WorkOffer(sqlDatabase);
+            resolveWorkOffer = new WorkOffer(sqlDatabase);
 
             resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
@@ -1084,7 +1096,7 @@ namespace _01electronics_crm
 
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
 
-            resolveOffer.Closed += OnClosedRFQWindow;
+            resolveOffer.Closed += OnClosedOfferWindow;
             resolveOffer.Show();
         }
         private void OnBtnClickedExport(object sender, RoutedEventArgs e)
@@ -1133,33 +1145,37 @@ namespace _01electronics_crm
         private void OnSelChangedListBox(object sender, SelectionChangedEventArgs e)
         {
             ListBox tempListBox = (ListBox)sender;
-            ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
-            Expander currentExpander = (Expander)tempListBox.Parent;
-            
-            currentGrid = (Grid)currentExpander.Parent;
 
-            if (currentItem.Content.ToString() == "View")
+            if (tempListBox.SelectedItem != null)
             {
-                OnBtnClickView();
-            }
-            else if (currentItem.Content.ToString() == "Revise RFQ")
-            {
-                OnBtnClickRevise();
-            }
-            else if (currentItem.Content.ToString() == "Resolve RFQ")
-            {
-                OnBtnClickResolve();
-            }
-            else if(currentItem.Content.ToString() == "Change Assignee")
-            {
-                OnBtnClickChangeAssignee();
-            }
-            else if(currentItem.Content.ToString() == "View Offer")
-            {
-                string rfqID = stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_id;
+                ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
+                Expander currentExpander = (Expander)tempListBox.Parent;
 
-                WorkOffersFilteredWithRFQSerialWindow workOffersFilteredWithRFQSerialWindow = new WorkOffersFilteredWithRFQSerialWindow(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person, ref loggedInUser);
-                workOffersFilteredWithRFQSerialWindow.Show();
+                currentGrid = (Grid)currentExpander.Parent;
+
+                if (currentItem.Content.ToString() == "View")
+                {
+                    OnBtnClickView();
+                }
+                else if (currentItem.Content.ToString() == "Revise RFQ")
+                {
+                    OnBtnClickRevise();
+                }
+                else if (currentItem.Content.ToString() == "Resolve RFQ")
+                {
+                    OnBtnClickResolve();
+                }
+                else if (currentItem.Content.ToString() == "Change Assignee")
+                {
+                    OnBtnClickChangeAssignee();
+                }
+                else if (currentItem.Content.ToString() == "View Offer")
+                {
+                    WorkOffersFilteredWithRFQSerialWindow workOffersFilteredWithRFQSerialWindow = new WorkOffersFilteredWithRFQSerialWindow(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person, ref loggedInUser);
+                    workOffersFilteredWithRFQSerialWindow.Show();
+                }
+
+                tempListBox.SelectedIndex = -1;
             }
         }
             
@@ -1184,6 +1200,14 @@ namespace _01electronics_crm
 
             SetRFQsStackPanel();
             SetRFQsGrid();
+        }
+
+        private void OnClosedOfferWindow(object sender, EventArgs e)
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+            WorkOfferWindow viewWorkOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, true);
+            viewWorkOffer.Show();
         }
 
         private void OnClosedChangeAssigneeWindow(object sender, EventArgs e)

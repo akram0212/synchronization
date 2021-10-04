@@ -29,6 +29,7 @@ namespace _01electronics_crm
 
         private WorkOffer selectedWorkOffer;
 
+       
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -66,7 +67,7 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            selectedWorkOffer = new WorkOffer(sqlDatabase);
+            selectedWorkOffer = new WorkOrder(sqlDatabase);
 
             if (!GetWorkOffers())
                 return;
@@ -1064,9 +1065,9 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
 
-            selectedWorkOffer = new WorkOffer(sqlDatabase);
+            selectedWorkOffer = new WorkOrder(sqlDatabase);
 
-            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser,ref selectedWorkOffer, viewAddCondition, false);
             
             workOfferWindow.Closed += OnClosedWorkOfferWindow;
             workOfferWindow.Show();
@@ -1144,20 +1145,12 @@ namespace _01electronics_crm
 
             selectedWorkOffer.ConfirmOffer();
 
-            WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                workOrder.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                workOrder.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
+
+            
+
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+            workOrder.CopyWorkOffer(selectedWorkOffer);
 
             workOrder.IssueNewOrder();
 
@@ -1226,22 +1219,27 @@ namespace _01electronics_crm
         private void OnSelChangedListBox(object sender, SelectionChangedEventArgs e)
         {
             ListBox tempListBox = (ListBox)sender;
-            ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
-            Expander currentExpander = (Expander)tempListBox.Parent;
+            if (tempListBox.SelectedItem != null)
+            {
+                ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
+                Expander currentExpander = (Expander)tempListBox.Parent;
 
-            currentGrid = (Grid)currentExpander.Parent;
+                currentGrid = (Grid)currentExpander.Parent;
 
-            if (currentItem.Content.ToString() == "View")
-            {
-                OnBtnClickView();
-            }
-            else if (currentItem.Content.ToString() == "Revise Offer")
-            {
-                OnBtnClickReviseOffer();
-            }
-            else if (currentItem.Content.ToString() == "Confirm Offer")
-            {
-                OnBtnClickConfirmOffer();
+                if (currentItem.Content.ToString() == "View")
+                {
+                    OnBtnClickView();
+                }
+                else if (currentItem.Content.ToString() == "Revise Offer")
+                {
+                    OnBtnClickReviseOffer();
+                }
+                else if (currentItem.Content.ToString() == "Confirm Offer")
+                {
+                    OnBtnClickConfirmOffer();
+                }
+
+                tempListBox.SelectedIndex = -1;
             }
         }
     }

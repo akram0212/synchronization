@@ -48,8 +48,10 @@ namespace _01electronics_crm
         private int selectedStatus;
         private int salesPersonTeam;
 
-        private Grid previousSelectedOrderItem;
-        private Grid currentSelectedOrderItem;
+        private Grid currentGrid;
+        private Expander currentExpander;
+        private Expander previousExpander;
+
         public WorkOrdersPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -201,11 +203,11 @@ namespace _01electronics_crm
 
         private void DisableViewButton()
         {
-            viewButton.IsEnabled = false;
+            //viewButton.IsEnabled = false;
         }
         private void EnableViewButton()
         {
-            viewButton.IsEnabled = true;
+            //viewButton.IsEnabled = true;
         }
 
         //private void DisableReviseButton()
@@ -301,6 +303,8 @@ namespace _01electronics_crm
 
             workOrdersStackPanel.Children.Clear();
 
+            workOrdersAfterFiltering.Clear();
+
             for (int i = 0; i < workOrders.Count; i++)
             {
                 DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
@@ -340,6 +344,8 @@ namespace _01electronics_crm
 
                 if (statusCheckBox.IsChecked == true && workOrders[i].order_status_id != selectedStatus)
                     continue;
+
+                workOrdersAfterFiltering.Add(workOrders[i]);
 
                 StackPanel fullStackPanel = new StackPanel();
                 fullStackPanel.Orientation = Orientation.Vertical;
@@ -404,6 +410,32 @@ namespace _01electronics_crm
 
                 borderIcon.Child = rfqStatusLabel;
 
+                Expander expander = new Expander();
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.VerticalAlignment = VerticalAlignment.Center;
+                expander.HorizontalAlignment = HorizontalAlignment.Center;
+                expander.HorizontalContentAlignment = HorizontalAlignment.Center;
+                expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+
+                ListBox listBox = new ListBox();
+                listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
+
+                ListBoxItem viewRFQButton = new ListBoxItem();
+                viewRFQButton.Content = "View RFQ";
+                viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                ListBoxItem viewOfferButton = new ListBoxItem();
+                viewOfferButton.Content = "View Offer";
+                viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                listBox.Items.Add(viewRFQButton);
+
+                listBox.Items.Add(viewOfferButton);
+
+                expander.Content = listBox;
+
                 fullStackPanel.Children.Add(offerIdLabel);
                 fullStackPanel.Children.Add(salesLabel);
                 fullStackPanel.Children.Add(preSalesLabel);
@@ -414,16 +446,22 @@ namespace _01electronics_crm
                 Grid grid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
                 ColumnDefinition column2 = new ColumnDefinition();
+                ColumnDefinition column3 = new ColumnDefinition();
                 column2.MaxWidth = 95;
+                column3.MaxWidth = 50;
+
                 grid.ColumnDefinitions.Add(column1);
                 grid.ColumnDefinitions.Add(column2);
-
-                Grid.SetColumn(fullStackPanel, 0);
-                Grid.SetColumn(borderIcon, 1);
+                grid.ColumnDefinitions.Add(column3);
 
                 grid.Children.Add(fullStackPanel);
                 grid.Children.Add(borderIcon);
-                grid.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+                grid.Children.Add(expander);
+
+                Grid.SetColumn(fullStackPanel, 0);
+                Grid.SetColumn(borderIcon, 1);
+                Grid.SetColumn(expander, 2);
+
                 workOrdersStackPanel.Children.Add(grid);
             }
 
@@ -721,7 +759,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
                 currentRowNumber++;
 
@@ -964,58 +1002,58 @@ namespace _01electronics_crm
             
         }
 
-        private void OnBtnClickView(object sender, RoutedEventArgs e)
-        {
-            WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+        //private void OnBtnClickView(object sender, RoutedEventArgs e)
+        //{
+        //    WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+        //
+        //    commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
+        //
+        //    int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+        //    WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+        //    viewOffer.Show();
+        //}
 
-            commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
-
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
-            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
-            viewOffer.Show();
-        }
-
-        private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
-        {
-            EnableViewButton();
-            //EnableReviseButton();
-            previousSelectedOrderItem = currentSelectedOrderItem;
-            currentSelectedOrderItem = (Grid)sender;
-            BrushConverter brush = new BrushConverter();
-
-            if (previousSelectedOrderItem != null)
-            {
-                previousSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedOrderItem.Children[0];
-                Border previousSelectedBorder = (Border)previousSelectedOrderItem.Children[1];
-                Label previousStatusLabel = (Label)previousSelectedBorder.Child;
-
-                foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-
-                if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
-                else if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
-                else
-                    previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
-
-                previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-            }
-
-            currentSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedOrderItem.Children[0];
-            Border currentSelectedBorder = (Border)currentSelectedOrderItem.Children[1];
-            Label currentStatusLabel = (Label)currentSelectedBorder.Child;
-
-            foreach (Label childLabel in currentSelectedStackPanel.Children)
-                childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-            currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-        }
+        //private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
+        //{
+        //    EnableViewButton();
+        //    //EnableReviseButton();
+        //    previousSelectedOrderItem = currentSelectedOrderItem;
+        //    currentSelectedOrderItem = (Grid)sender;
+        //    BrushConverter brush = new BrushConverter();
+        //
+        //    if (previousSelectedOrderItem != null)
+        //    {
+        //        previousSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+        //
+        //        StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedOrderItem.Children[0];
+        //        Border previousSelectedBorder = (Border)previousSelectedOrderItem.Children[1];
+        //        Label previousStatusLabel = (Label)previousSelectedBorder.Child;
+        //
+        //        foreach (Label childLabel in previousSelectedStackPanel.Children)
+        //            childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+        //
+        //        if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
+        //        else if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
+        //        else
+        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
+        //
+        //        previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+        //    }
+        //
+        //    currentSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#105A97");
+        //
+        //    StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedOrderItem.Children[0];
+        //    Border currentSelectedBorder = (Border)currentSelectedOrderItem.Children[1];
+        //    Label currentStatusLabel = (Label)currentSelectedBorder.Child;
+        //
+        //    foreach (Label childLabel in currentSelectedStackPanel.Children)
+        //        childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+        //
+        //    currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+        //    currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+        //}
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //VIEWING TABS
@@ -1097,5 +1135,94 @@ namespace _01electronics_crm
             ExcelExport excelExport = new ExcelExport(workOrdersGrid);
         }
 
+
+        private void OnExpandExpander(object sender, RoutedEventArgs e)
+        {
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
+            //expanderColumn.Width = new GridLength(Width = 120);
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            expanderColumn.MaxWidth = 120;
+        }
+
+        private void OnCollapseExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
+            currentExpander.VerticalAlignment = VerticalAlignment.Center;
+            expanderColumn.MaxWidth = 50;
+        }
+
+        private void OnSelChangedListBox(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox tempListBox = (ListBox)sender;
+            if (tempListBox.SelectedItem != null)
+            {
+                ListBoxItem currentItem = (ListBoxItem)tempListBox.Items[tempListBox.SelectedIndex];
+                Expander currentExpander = (Expander)tempListBox.Parent;
+
+                currentGrid = (Grid)currentExpander.Parent;
+
+                if (currentItem.Content.ToString() == "View RFQ")
+                {
+                    OnBtnClickViewRFQ();
+                }
+                else if (currentItem.Content.ToString() == "View Offer")
+                {
+                    OnBtnClickViewOffer();
+                }
+
+                tempListBox.SelectedIndex = -1;
+            }
+        }
+
+        private void OnBtnClickViewRFQ()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+
+            if (workOrder.GetRFQID() != null)
+            {
+                RFQ rfq = new RFQ(sqlDatabase);
+
+                rfq.CopyRFQ(workOrder);
+
+                RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, false);
+                rfqWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Selected WorkOrder doesn't have an RFQ");
+            }
+        }
+
+        private void OnBtnClickViewOffer()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+
+            WorkOffer workOffer = new WorkOffer(sqlDatabase);
+
+            workOffer.CopyWorkOffer(workOrder);
+
+            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+            
+            workOfferWindow.Show();
+        }
     }
 }
