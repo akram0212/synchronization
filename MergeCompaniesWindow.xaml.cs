@@ -36,7 +36,7 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_MIN_STRUCT> salesPeople;
         List<KeyValuePair<int, int>> updatedObjects;
         List<int> branches;
-        int oldSalesPersonId;
+        int newSalesPersonId;
 
 
         public MergeCompaniesWindow(ref Employee mLoggedInUser, ref Company mCompany)
@@ -63,7 +63,7 @@ namespace _01electronics_crm
             initializeSecondaryWorkFieldCombo(company.GetCompanyPrimaryFieldId());
             initializeSalesPersonCombo();
 
-            oldSalesPersonId = company.GetOwnerUserId();
+            //newSalesPersonId = company.GetOwnerUserId();
             CompanyNameTextBox.Text = company.GetCompanyName();
 
             primaryWorkFieldComboBox.Text = company.GetCompanyPrimaryField();
@@ -95,7 +95,11 @@ namespace _01electronics_crm
 
         private void OnSelSalesPersonComboBox(object sender, SelectionChangedEventArgs e)
         {
+            if (salesPersonComboBox.SelectedIndex == 0 && salesPeople.Count > 1)
+                newSalesPersonId = salesPeople[1].employee_id;
 
+            else if(salesPeople.Count > 1)
+                newSalesPersonId = salesPeople[0].employee_id;
         }
 
         private void OnDoubleClickLabel(object sender, MouseButtonEventArgs e)
@@ -119,17 +123,25 @@ namespace _01electronics_crm
                 return;
             if (!company.UpdateCompanyWorkField())
                 return;
+
+            if (salesPeople[salesPersonComboBox.SelectedIndex].employee_id != company.GetOwnerUserId())
+            {
+                if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, company.GetOwnerUserId(), salesPeople[salesPersonComboBox.SelectedIndex].employee_id))
+                    return;
+            }
+            else
+            {
+                if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, newSalesPersonId, company.GetOwnerUserId()))
+                    return;
+            }
+
             if (!UpdateBranches())
                 return;
 
             if (!company.UpdateCompanyOwnerUser())
                 return;
 
-            if(oldSalesPersonId != company.GetOwnerUserId())
-            {
-                if (!commonQueries.MergeCompanyContactsInfo(company.GetCompanySerial(), oldSalesPersonId, company.GetOwnerUserId()))
-                    return;
-            }
+            
 
             if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
                 return;
@@ -154,7 +166,12 @@ namespace _01electronics_crm
                     companyToBeMergedComboBox.Items.Add(employeeCompanies[i].company_name);
                 }
                 else
-                    employeeCompanies.RemoveAt(i);
+                {
+                    ComboBoxItem comboBoxItem = new ComboBoxItem();
+                    comboBoxItem.Content = employeeCompanies[i].company_name;
+                    comboBoxItem.IsEnabled = false;
+                    companyToBeMergedComboBox.Items.Add(comboBoxItem);
+                }
 
             }
 
