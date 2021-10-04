@@ -470,10 +470,14 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to set validity period before adding a work offer!");
             else 
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
                 {
                     if (!workOffer.IssueNewOffer())
                         return;
+
+                    if (workOffer.GetRFQID() != null)
+                        if (!workOffer.ConfirmRFQ())
+                            return;
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
                 {
