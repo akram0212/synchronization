@@ -70,6 +70,8 @@ namespace _01electronics_crm
                 if (!UpdateRFQsAssignee())
                     return;
             }
+
+            this.Close();
         }
 
         private bool GetNewUpdateSerial()

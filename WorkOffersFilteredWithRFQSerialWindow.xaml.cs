@@ -277,7 +277,14 @@ namespace _01electronics_crm
 
 
             WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+            reviseOffer.Closed += OnClosedReviseOffer;
             reviseOffer.Show();
         }
+
+        private void OnClosedReviseOffer(object sender, EventArgs e)
+        {
+            SetWorkOffersStackPanel();
+        }
     }
+
 }

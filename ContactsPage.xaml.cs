@@ -112,6 +112,7 @@ namespace _01electronics_crm
         }
         private bool InitializeListOfEmployees()
         {
+            salesPersonComboBox.Items.Clear();
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
@@ -425,7 +426,7 @@ namespace _01electronics_crm
         {
             ViewBtn.IsEnabled = false;
 
-            if (salesPersonCheckBox.IsChecked == true)
+            if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null)
                 selectedEmployee = listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id;
             else
                 selectedEmployee = 0;
