@@ -141,13 +141,12 @@ namespace _01electronics_crm
             if (!company.UpdateCompanyOwnerUser())
                 return;
 
-            
-
             if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
                 return;
             if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
                 return;
 
+            this.Close();
         }
 
         private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
