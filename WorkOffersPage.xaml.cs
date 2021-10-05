@@ -423,12 +423,13 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                {
                     listBox.Items.Add(reviseButton);
 
-                if(workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
-                    listBox.Items.Add(confirmButton);
-
+                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                        listBox.Items.Add(confirmButton);
+                }
                 expander.Content = listBox;
 
                 fullStackPanel.Children.Add(offerIdLabel);
