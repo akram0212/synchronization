@@ -112,6 +112,8 @@ namespace _01electronics_crm
         }
         private bool InitializeListOfEmployees()
         {
+            salesPersonComboBox.Items.Clear();
+
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
