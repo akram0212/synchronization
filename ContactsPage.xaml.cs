@@ -112,7 +112,6 @@ namespace _01electronics_crm
         }
         private bool InitializeListOfEmployees()
         {
-            salesPersonComboBox.Items.Clear();
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
@@ -129,8 +128,6 @@ namespace _01electronics_crm
 
         private bool InitializeEmployeeComboBox()
         {
-            listOfEmployees.Clear();
-
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
                 if (!commonQueries.GetDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref listOfEmployees))
@@ -164,7 +161,7 @@ namespace _01electronics_crm
         }
         private void SetEmployeeComboBox()
         {
-            salesPersonComboBox.SelectedIndex = 0;
+            //salesPersonComboBox.SelectedIndex = 0;
 
             for (int i = 0; i < listOfEmployees.Count; i++)
                 if (loggedInUser.GetEmployeeId() == listOfEmployees[i].employee_id)
@@ -542,8 +539,6 @@ namespace _01electronics_crm
             listOfEmployees.Clear();
             employeesCompanies.Clear();
 
-            InitializeCountriesComboBox();
-
             if (!InitializeEmployeeComboBox())
                 return;
 
@@ -557,8 +552,6 @@ namespace _01electronics_crm
         {
             listOfEmployees.Clear();
             employeesCompanies.Clear();
-
-            InitializeCountriesComboBox();
 
             if (!InitializeEmployeeComboBox())
                 return;
