@@ -26,7 +26,8 @@ namespace _01electronics_crm
         private SQLServer sqlDatabase;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
-
+        
+        private WorkOrder selectedWorkOrder;
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -47,6 +48,8 @@ namespace _01electronics_crm
         private int selectedBrand;
         private int selectedStatus;
         private int salesPersonTeam;
+
+        int viewAddCondition;
 
         private Grid currentGrid;
         private Expander currentExpander;
@@ -351,7 +354,6 @@ namespace _01electronics_crm
                 fullStackPanel.Orientation = Orientation.Vertical;
                 //fullStackPanel.Height = 90;
 
-                workOrdersAfterFiltering.Add(workOrders[i]);
 
                 Label offerIdLabel = new Label();
                 offerIdLabel.Content = workOrders[i].order_id;
@@ -422,6 +424,10 @@ namespace _01electronics_crm
                 listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
 
+                ListBoxItem viewButton = new ListBoxItem();
+                viewButton.Content = "View";
+                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 ListBoxItem viewRFQButton = new ListBoxItem();
                 viewRFQButton.Content = "View RFQ";
                 viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -429,6 +435,8 @@ namespace _01electronics_crm
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                listBox.Items.Add(viewButton);
 
                 listBox.Items.Add(viewRFQButton);
 
@@ -478,7 +486,7 @@ namespace _01electronics_crm
             int counter = 0;
 
             Label offerIdHeader = new Label();
-            offerIdHeader.Content = "Offer ID";
+            offerIdHeader.Content = "Order ID";
             offerIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
             Label offerSalesHeader = new Label();
@@ -999,7 +1007,14 @@ namespace _01electronics_crm
 
         private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            
+            viewAddCondition = COMPANY_WORK_MACROS.ORDER_ADD_CONDITION;
+
+            selectedWorkOrder = new WorkOrder(sqlDatabase);
+
+            WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref selectedWorkOrder, viewAddCondition, false);
+
+            workOrderWindow.Closed += OnClosedWorkOrderWindow;
+            workOrderWindow.Show();
         }
 
         //private void OnBtnClickView(object sender, RoutedEventArgs e)
@@ -1129,12 +1144,21 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnClosedWorkOrderWindow(object sender, EventArgs e)
+        {
+            WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref selectedWorkOrder, viewAddCondition, true);
+             viewOffer.Show();
 
+            if (!GetWorkOrders())
+                return;
+
+            SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
+        }
         private void OnClickExportButton(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(workOrdersGrid);
         }
-
 
         private void OnExpandExpander(object sender, RoutedEventArgs e)
         {
@@ -1172,7 +1196,11 @@ namespace _01electronics_crm
 
                 currentGrid = (Grid)currentExpander.Parent;
 
-                if (currentItem.Content.ToString() == "View RFQ")
+                if (currentItem.Content.ToString() == "View")
+                {
+                    OnBtnClickView();
+                }
+                else if (currentItem.Content.ToString() == "View RFQ")
                 {
                     OnBtnClickViewRFQ();
                 }
@@ -1184,7 +1212,28 @@ namespace _01electronics_crm
                 tempListBox.SelectedIndex = -1;
             }
         }
+        private void OnBtnClickView()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+
+            if (workOrder.GetRFQID() != null)
+            {
+                RFQ rfq = new RFQ(sqlDatabase);
+
+                rfq.CopyRFQ(workOrder);
+
+                RFQWindow rfqWindow = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, false);
+                rfqWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Selected WorkOrder doesn't have an RFQ");
+            }
+        }
         private void OnBtnClickViewRFQ()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
