@@ -124,27 +124,65 @@ namespace _01electronics_crm
             if (!company.UpdateCompanyWorkField())
                 return;
 
+
+            //if (!company.UpdateCompanyOwnerUser(company.GetOwnerUserId(), employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+            //    return;
+
+
             if (salesPeople[salesPersonComboBox.SelectedIndex].employee_id != company.GetOwnerUserId())
             {
                 if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, company.GetOwnerUserId(), salesPeople[salesPersonComboBox.SelectedIndex].employee_id))
                     return;
+
+                if (!UpdateBranches())
+                    return;
+
+                if (!company.UpdateCompanyOwnerUser(company.GetOwnerUserId(), company.GetCompanySerial()))
+                    return;
+
+                if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                    return;
+                if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                    return;
             }
             else
             {
-                if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, newSalesPersonId, company.GetOwnerUserId()))
-                    return;
+                if (newSalesPersonId != salesPeople[salesPersonComboBox.SelectedIndex].employee_id)
+                {
+                    if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, company.GetOwnerUserId(), newSalesPersonId))
+                        return;
+
+                    if (!UpdateBranches())
+                        return;
+
+                    if (!company.UpdateCompanyOwnerUser(salesPeople[salesPersonComboBox.SelectedIndex].employee_id, company.GetCompanySerial()))
+                        return;
+
+                    if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                        return;
+                    if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                        return;
+
+                    if (!commonQueries.MergeCompanyContactsInfo(company.GetCompanySerial(),  newSalesPersonId, company.GetOwnerUserId()))
+                        return;
+                }
+                else
+                {
+                    if (!commonQueries.MergeCompanyContactsInfo(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, newSalesPersonId, company.GetOwnerUserId()))
+                        return;
+
+                    if (!UpdateBranches())
+                        return;
+
+                    if (!company.UpdateCompanyOwnerUser(company.GetOwnerUserId(), company.GetCompanySerial()))
+                        return;
+
+                    if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                        return;
+                    if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
+                        return;
+                }
             }
-
-            if (!UpdateBranches())
-                return;
-
-            if (!company.UpdateCompanyOwnerUser())
-                return;
-
-            if (!company.DeleteCompanyField(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
-                return;
-            if (!company.DeleteCompany(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial))
-                return;
 
             this.Close();
         }
@@ -287,18 +325,6 @@ namespace _01electronics_crm
 
             return true;
         }
-        private bool UpdateContactSalesPerson()
-        {
-            if (!commonQueries.GetCompanyBranches(employeeCompanies[companyToBeMergedComboBox.SelectedIndex].company_serial, ref branches))
-                return false;
-
-            for (int i = 0; i < branches.Count; i++)
-            {
-                if (!company.UpdateCompanyBranch(branches[i]))
-                    return false;
-            }
-
-            return true;
-        }
+        
     }
 }

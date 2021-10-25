@@ -85,7 +85,10 @@ namespace _01electronics_crm
 
             InitializeCountriesComboBox();
 
-            if (!InitializeEmployeeComboBox())
+            if (!CheckEmployeePosition())
+                return;
+
+            if (!InitializeCompaniesList())
                 return;
 
             GetAllContacts();
@@ -110,26 +113,32 @@ namespace _01electronics_crm
                 salesPersonComboBox.IsEnabled = false;
             }
         }
-        private bool InitializeListOfEmployees()
+        private bool InitializeSalesPersonComboBox()
         {
             salesPersonComboBox.Items.Clear();
 
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
-
-                List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
-
-
-                commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
-                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
             }
 
             return true;
         }
-
-        private bool InitializeEmployeeComboBox()
+        private bool InitializeCompaniesList()
         {
+            for (int i = 0; i < listOfEmployees.Count; i++)
+            {
+                List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
+
+                commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
+                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+            }
+            return true;
+        }
+        private bool CheckEmployeePosition()
+        {
+            listOfEmployees.Clear();
+
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
                 if (!commonQueries.GetDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref listOfEmployees))
@@ -141,7 +150,7 @@ namespace _01electronics_crm
                     return false;
             }
 
-            InitializeListOfEmployees();
+            InitializeSalesPersonComboBox();
 
             return true;
         }
@@ -538,10 +547,9 @@ namespace _01electronics_crm
 
         private void OnClosedAddCompanyWindow(object sender, EventArgs e)
         {
-            listOfEmployees.Clear();
             employeesCompanies.Clear();
 
-            if (!InitializeEmployeeComboBox())
+            if (!InitializeCompaniesList())
                 return;
 
             GetAllContacts();
@@ -552,10 +560,9 @@ namespace _01electronics_crm
         }
         private void OnClosedAddContactWindow(object sender, EventArgs e)
         {
-            listOfEmployees.Clear();
             employeesCompanies.Clear();
 
-            if (!InitializeEmployeeComboBox())
+            if (!InitializeCompaniesList())
                 return;
 
             GetAllContacts();
