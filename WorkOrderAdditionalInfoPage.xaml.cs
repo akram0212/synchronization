@@ -176,21 +176,43 @@ namespace _01electronics_crm
 
         public void SetContractTypeValue()
         {
-            contractTypeComboBox.Text = workOrder.GetOfferContractType();
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                contractTypeComboBox.Text = workOrder.GetOfferContractType();
+            }
+            else
+            {
+                contractTypeComboBox.Text = workOrder.GetOrderContractType();
+            }
+                
         }
 
         public void SetWarrantyPeriodValues()
         {
-            if (workOrder.GetWarrantyPeriod() != 0)
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
-                warrantyPeriodTextBox.Text = workOrder.GetWarrantyPeriod().ToString();
-                warrantyPeriodCombo.SelectedItem = workOrder.GetWarrantyPeriodTimeUnit();
+                if (workOrder.GetWarrantyPeriod() != 0)
+                {
+                    warrantyPeriodTextBox.Text = workOrder.GetWarrantyPeriod().ToString();
+                    warrantyPeriodCombo.SelectedItem = workOrder.GetWarrantyPeriodTimeUnit();
+                }
+            }
+            else
+            {
+                if (workOrder.GetOrderWarrantyPeriod() != 0)
+                {
+                    warrantyPeriodTextBox.Text = workOrder.GetOrderWarrantyPeriod().ToString();
+                    warrantyPeriodCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodTimeUnit();
+                }
             }
         }
 
         public void SetAdditionalDescriptionValue()
         {
-            additionalDescriptionTextBox.Text = workOrder.GetOfferNotes();
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                additionalDescriptionTextBox.Text = workOrder.GetOfferNotes();
+            else
+                additionalDescriptionTextBox.Text = workOrder.GetOrderNotes();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +238,7 @@ namespace _01electronics_crm
 
         private void WarrantyPeriodFromWhenComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,27 +423,29 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to choose company address before adding a work order!");
             else if (workOrder.GetContactId() == 0)
                 MessageBox.Show("You need to choose a contact before adding a work order!");
-            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetProduct1PriceValue() == 0)
+            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 1 before adding a work order!");
-            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetProduct2PriceValue() == 0)
+            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 2 before adding a work order!");
-            else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetProduct3PriceValue() == 0)
+            else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 3 before adding a work order!");
-            else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetProduct4PriceValue() == 0)
+            else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 4 before adding a work order!");
-            else if (workOrder.GetPercentDownPayment() + workOrder.GetPercentOnDelivery() + workOrder.GetPercentOnInstallation() != 100)
+            else if (workOrder.GetOrderPercentDownPayment() + workOrder.GetOrderPercentOnDelivery() + workOrder.GetOrderPercentOnInstallation() != 100)
                 MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
-            else if (workOrder.GetDeliveryTimeMinimum() == 0 || workOrder.GetDeliveryTimeMaximum() == 0)
+            else if (workOrder.GetOrderDeliveryTimeMinimum() == 0 || workOrder.GetOrderDeliveryTimeMaximum() == 0)
                 MessageBox.Show("You need to set delivery time min and max before adding a work order!");
-            else if (workOrder.GetDeliveryPointId() == 0)
+            else if (workOrder.GetOrderDeliveryPointId() == 0)
                 MessageBox.Show("You need to set delivery point before adding a work order!");
             else if (workOrder.GetOrderContractTypeId() == 0)
                 MessageBox.Show("You need to set contract type before adding a work order!");
-            else if (workOrder.GetWarrantyPeriod() == 0 || workOrder.GetWarrantyPeriodTimeUnitId() == 0)
+            else if (workOrder.GetOrderWarrantyPeriod() == 0 || workOrder.GetOrderWarrantyPeriodTimeUnitId() == 0)
                 MessageBox.Show("You need to set warranty period before adding a work order!");
+            //else if (workOrder.GetOrderAssignedSalesID() == 0)
+            //   MessageBox.Show("You need to choose an assigned sales person before adding a work order!");
             else
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {
                     if (!workOrder.IssueNewOrder())
                         return;
@@ -434,8 +458,15 @@ namespace _01electronics_crm
                     }
                 }
 
+                viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
+
+                WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
+                viewOffer.Show();
+
                 NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                 currentWindow.Close();
+
+
             }
         }
     }

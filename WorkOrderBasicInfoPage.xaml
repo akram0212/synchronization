@@ -78,7 +78,7 @@
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
                 </WrapPanel>
-                <WrapPanel Name="assigneeWrapPanel">
+                <WrapPanel Name="offerWrapPanel">
                     <CheckBox Name="OfferCheckBox" Margin="20,30,0,0" Checked="OnCheckOfferCheckBox" Unchecked="OnUnCheckOfferCheckBox"/>
                     <Label Style="{StaticResource labelStyle}" Content="OFFER &#x0a;Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="OfferSerialLabel" Visibility="Collapsed"/>
@@ -105,6 +105,11 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
+              <!--  <WrapPanel Name="assignedSalesWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Assigned &#x0a;Sales"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="assignedSalesLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="assignedSalesCombo" SelectionChanged="OnSelChangedAssignedSalesCombo"/>
+                </WrapPanel>-->
             </WrapPanel>
 
         </Grid>

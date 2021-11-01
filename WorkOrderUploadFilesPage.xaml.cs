@@ -106,7 +106,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOrder.GetOrderID() + "/";
+            serverFolderPath = BASIC_MACROS.ORDER_FILES_PATH + workOrder.GetOrderID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))

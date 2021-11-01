@@ -76,7 +76,7 @@
 
                 <WrapPanel Grid.Row="0">
                     <Label  Content="Total Price" Style="{StaticResource labelStyle}"/>
-                    <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  IsReadOnly="True" Name="totalPriceTextBox" />
+                    <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  IsReadOnly="True" Name="totalPriceTextBox" TextChanged="OnTextChangedTotalPrice" />
                     <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="totalPriceCombo" />
                     <ComboBox Style="{StaticResource miniComboBoxStyle}" Name="totalPriceVATCombo" SelectionChanged="OnSelChangedTotalPriceVATCombo"/>
                 </WrapPanel>
