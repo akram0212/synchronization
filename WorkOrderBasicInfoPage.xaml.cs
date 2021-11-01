@@ -175,7 +175,7 @@ namespace _01electronics_crm
 
         private void SetSalesPersonComboValue()
         {
-            salesPersonCombo.SelectedItem = workOrder.GetSalesPersonName();
+            salesPersonCombo.SelectedItem = workOrder.GetOfferProposerName();
         }
 
         private void SetOfferSerialLabel()
@@ -454,12 +454,24 @@ namespace _01electronics_crm
         }
         private void InitializeOfferSerialCombo()
         {
-            for (int i = 0; i < offersList.Count; i++)
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                if (offersList[i].sales_person_id == salesPersonID && offersList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT tmp = offersList.Find(x => x.offer_serial == workOrder.GetOfferSerial());
+
+                OfferSerialCombo.Items.Add(workOrder.GetOfferID());
+                offersAddedToComboList.Add(tmp);
+            }
+            else
+            {
+                for (int i = 0; i < offersList.Count; i++)
                 {
-                    OfferSerialCombo.Items.Add(offersList[i].offer_id);
-                    offersAddedToComboList.Add(offersList[i]);
+                    if (offersList[i].sales_person_id == salesPersonID && offersList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                    {
+                        OfferSerialCombo.Items.Add(offersList[i].offer_id);
+                        offersAddedToComboList.Add(offersList[i]);
+                    }
+
                 }
             }
            // OfferSerialCombo.IsEnabled = true;
