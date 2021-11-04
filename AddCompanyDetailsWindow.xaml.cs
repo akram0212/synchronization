@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for AddComapnyDetailsWindow.xaml
+    /// Interaction logic for AddCompanyDetailsWindow.xaml
     /// </summary>
-    public partial class AddComapnyDetailsWindow : Window
+    public partial class AddCompanyDetailsWindow : Window
     {
         protected Employee loggedInUser;
 
@@ -30,7 +30,7 @@ namespace _01electronics_crm
 
         protected int phonesCount;
         protected int faxesCount;
-        public AddComapnyDetailsWindow(ref Employee mLoggedInUser, ref Company mCompany,String mSelectedBranch)
+        public AddCompanyDetailsWindow(ref Employee mLoggedInUser, ref Company mCompany,String mSelectedBranch)
         {
             InitializeComponent();
 

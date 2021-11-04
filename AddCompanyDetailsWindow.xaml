@@ -1,11 +1,11 @@
-﻿<Window x:Class="_01electronics_crm.AddComapnyDetailsWindow"
+﻿<Window x:Class="_01electronics_crm.AddCompanyDetailsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddComapnyDetailsWindow" Background="#EDEDED"
+        Title="AddCompanyDetailsWindow" Background="#EDEDED"
         Height="450" Width="700">
 
     <Grid>
