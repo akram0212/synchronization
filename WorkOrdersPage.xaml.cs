@@ -303,7 +303,6 @@ namespace _01electronics_crm
 
         private bool SetWorkOrdersStackPanel()
         {
-
             workOrdersStackPanel.Children.Clear();
 
             workOrdersAfterFiltering.Clear();
@@ -312,9 +311,13 @@ namespace _01electronics_crm
             {
                 DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
 
-                bool salesPersonCondition = selectedPreSales != workOrders[i].sales_person_id;
+                bool salesPersonCondition = selectedSales != workOrders[i].sales_person_id;
+                bool assigneeCondition;
 
-                //bool assigneeCondition = selectedPreSales != workOrders[i].offer_proposer_id;
+                if (selectedPreSales == workOrders[i].offer_proposer_id || (selectedPreSales == workOrders[i].sales_person_id))
+                    assigneeCondition = true;
+                else
+                    assigneeCondition = false;
 
                 bool productCondition = false;
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
@@ -330,11 +333,11 @@ namespace _01electronics_crm
                 if (yearCheckBox.IsChecked == true && currentWorkOrderDate.Year != selectedYear)
                     continue;
 
-                if (preSalesCheckBox.IsChecked == true && salesPersonCondition)
+                if (salesCheckBox.IsChecked == true && salesPersonCondition)
                     continue;
 
-                //if (preSalesCheckBox.IsChecked == true && assigneeCondition)
-                //    continue;
+                if (preSalesCheckBox.IsChecked == true && !assigneeCondition)
+                    continue;
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOrderDate) != selectedQuarter)
                     continue;
@@ -362,6 +365,10 @@ namespace _01electronics_crm
                 Label salesLabel = new Label();
                 salesLabel.Content = workOrders[i].sales_person_name;
                 salesLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                Label preSalesLabel = new Label();
+                preSalesLabel.Content = workOrders[i].offer_proposer_name;
+                preSalesLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label companyAndContactLabel = new Label();
                 companyAndContactLabel.Content = workOrders[i].company_name + " -" + workOrders[i].contact_name;
@@ -452,6 +459,7 @@ namespace _01electronics_crm
 
                 fullStackPanel.Children.Add(offerIdLabel);
                 fullStackPanel.Children.Add(salesLabel);
+                fullStackPanel.Children.Add(preSalesLabel);
                 fullStackPanel.Children.Add(companyAndContactLabel);
                 fullStackPanel.Children.Add(productTypeAndBrandLabel);
                 fullStackPanel.Children.Add(contractTypeLabel);
@@ -498,6 +506,10 @@ namespace _01electronics_crm
             orderSalesHeader.Content = "Sales Engineer";
             orderSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
+            Label orderPreSalesHeader = new Label();
+            orderPreSalesHeader.Content = "Pre-Sales Engineer";
+            orderPreSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
             Label orderCompanyContactHeader = new Label();
             orderCompanyContactHeader.Content = "Contact Info";
             orderCompanyContactHeader.Style = (Style)FindResource("tableSubHeaderItem");
@@ -520,6 +532,7 @@ namespace _01electronics_crm
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             workOrdersGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -531,20 +544,24 @@ namespace _01electronics_crm
             Grid.SetColumn(orderSalesHeader, 1);
             workOrdersGrid.Children.Add(orderSalesHeader);
 
+            Grid.SetRow(orderPreSalesHeader, 0);
+            Grid.SetColumn(orderPreSalesHeader, 2);
+            workOrdersGrid.Children.Add(orderPreSalesHeader);
+
             Grid.SetRow(orderCompanyContactHeader, 0);
-            Grid.SetColumn(orderCompanyContactHeader, 2);
+            Grid.SetColumn(orderCompanyContactHeader, 3);
             workOrdersGrid.Children.Add(orderCompanyContactHeader);
 
             Grid.SetRow(orderProductsHeader, 0);
-            Grid.SetColumn(orderProductsHeader, 3);
+            Grid.SetColumn(orderProductsHeader, 4);
             workOrdersGrid.Children.Add(orderProductsHeader);
 
             Grid.SetRow(orderContractTypeHeader, 0);
-            Grid.SetColumn(orderContractTypeHeader, 4);
+            Grid.SetColumn(orderContractTypeHeader, 5);
             workOrdersGrid.Children.Add(orderContractTypeHeader);
 
             Grid.SetRow(orderStatusHeader, 0);
-            Grid.SetColumn(orderStatusHeader, 5);
+            Grid.SetColumn(orderStatusHeader, 6);
             workOrdersGrid.Children.Add(orderStatusHeader);
 
             int currentRowNumber = 1;
@@ -554,9 +571,14 @@ namespace _01electronics_crm
             {
                 DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
 
-                bool salesPersonCondition = selectedPreSales != workOrders[i].sales_person_id;
+                bool salesPersonCondition = selectedSales != workOrders[i].sales_person_id;
 
-               // bool assigneeCondition = selectedPreSales != workOrders[i].order_proposer_id;
+                bool assigneeCondition;
+
+                if (selectedPreSales == workOrders[i].offer_proposer_id || (selectedPreSales == workOrders[i].sales_person_id))
+                    assigneeCondition = true;
+                else
+                    assigneeCondition = false;
 
                 bool productCondition = false;
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
@@ -575,8 +597,8 @@ namespace _01electronics_crm
                 if (salesCheckBox.IsChecked == true && salesPersonCondition)
                     continue;
 
-               // if (preSalesCheckBox.IsChecked == true && assigneeCondition)
-                 //   continue;
+                if (preSalesCheckBox.IsChecked == true && !assigneeCondition)
+                    continue;
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOrderDate) != selectedQuarter)
                     continue;
@@ -610,6 +632,13 @@ namespace _01electronics_crm
                 Grid.SetColumn(salesLabel, 1);
                 workOrdersGrid.Children.Add(salesLabel);
 
+                Label preSalesLabel = new Label();
+                preSalesLabel.Content = workOrders[i].offer_proposer_name;
+                preSalesLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(preSalesLabel, currentRowNumber);
+                Grid.SetColumn(preSalesLabel, 2);
+                workOrdersGrid.Children.Add(preSalesLabel);
 
                 Label companyAndContactLabel = new Label();
                 companyAndContactLabel.Content = workOrders[i].company_name + " - " + workOrders[i].contact_name;
@@ -617,7 +646,7 @@ namespace _01electronics_crm
 
                 workOrdersGrid.Children.Add(companyAndContactLabel);
                 Grid.SetRow(companyAndContactLabel, currentRowNumber);
-                Grid.SetColumn(companyAndContactLabel, 2);
+                Grid.SetColumn(companyAndContactLabel, 3);
 
 
                 Grid productGrid = new Grid();
