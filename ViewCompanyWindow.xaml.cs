@@ -296,21 +296,6 @@ namespace _01electronics_crm
         }
         private void OnClosedMergeCompaniesWindow(object sender, EventArgs e)
         {
-            try
-            {
-                setCollapsedTextBoxes((WrapPanel)currentSelectedItem.Parent);
-            }
-            catch
-            {
-                try
-                {
-                    setCollapsedComboBoxes((WrapPanel)currentSelectedItem.Parent);
-                }
-                catch
-                {
-
-                }
-            }
             InitializeCompanyInfo();
             for (int i = ContactGrid.Children.Count - 1; i >= 4; i--)
             {

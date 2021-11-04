@@ -26,7 +26,8 @@ namespace _01electronics_crm
         private SQLServer sqlDatabase;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
-
+        
+        private WorkOrder selectedWorkOrder;
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -47,6 +48,8 @@ namespace _01electronics_crm
         private int selectedBrand;
         private int selectedStatus;
         private int salesPersonTeam;
+
+        int viewAddCondition;
 
         private Grid currentGrid;
         private Expander currentExpander;
@@ -309,9 +312,9 @@ namespace _01electronics_crm
             {
                 DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
 
-                bool salesPersonCondition = selectedSales != workOrders[i].sales_person_id;
+                bool salesPersonCondition = selectedPreSales != workOrders[i].sales_person_id;
 
-                bool assigneeCondition = selectedPreSales != workOrders[i].offer_proposer_id;
+                //bool assigneeCondition = selectedPreSales != workOrders[i].offer_proposer_id;
 
                 bool productCondition = false;
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
@@ -327,11 +330,11 @@ namespace _01electronics_crm
                 if (yearCheckBox.IsChecked == true && currentWorkOrderDate.Year != selectedYear)
                     continue;
 
-                if (salesCheckBox.IsChecked == true && salesPersonCondition)
+                if (preSalesCheckBox.IsChecked == true && salesPersonCondition)
                     continue;
 
-                if (preSalesCheckBox.IsChecked == true && assigneeCondition)
-                    continue;
+                //if (preSalesCheckBox.IsChecked == true && assigneeCondition)
+                //    continue;
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOrderDate) != selectedQuarter)
                     continue;
@@ -351,7 +354,6 @@ namespace _01electronics_crm
                 fullStackPanel.Orientation = Orientation.Vertical;
                 //fullStackPanel.Height = 90;
 
-                workOrdersAfterFiltering.Add(workOrders[i]);
 
                 Label offerIdLabel = new Label();
                 offerIdLabel.Content = workOrders[i].order_id;
@@ -360,10 +362,6 @@ namespace _01electronics_crm
                 Label salesLabel = new Label();
                 salesLabel.Content = workOrders[i].sales_person_name;
                 salesLabel.Style = (Style)FindResource("stackPanelItemBody");
-
-                Label preSalesLabel = new Label();
-                preSalesLabel.Content = workOrders[i].offer_proposer_name;
-                preSalesLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label companyAndContactLabel = new Label();
                 companyAndContactLabel.Content = workOrders[i].company_name + " -" + workOrders[i].contact_name;
@@ -422,6 +420,10 @@ namespace _01electronics_crm
                 listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
 
+                ListBoxItem viewButton = new ListBoxItem();
+                viewButton.Content = "View";
+                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 ListBoxItem viewRFQButton = new ListBoxItem();
                 viewRFQButton.Content = "View RFQ";
                 viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -429,16 +431,27 @@ namespace _01electronics_crm
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+               
+                listBox.Items.Add(viewButton);
 
                 listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
 
+
+                if (workOrders[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                {
+                    ListBoxItem confirmOrderButton = new ListBoxItem();
+                    confirmOrderButton.Content = "Confirm Order";
+                    confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    listBox.Items.Add(confirmOrderButton);
+
+                }
+
                 expander.Content = listBox;
 
                 fullStackPanel.Children.Add(offerIdLabel);
                 fullStackPanel.Children.Add(salesLabel);
-                fullStackPanel.Children.Add(preSalesLabel);
                 fullStackPanel.Children.Add(companyAndContactLabel);
                 fullStackPanel.Children.Add(productTypeAndBrandLabel);
                 fullStackPanel.Children.Add(contractTypeLabel);
@@ -477,35 +490,30 @@ namespace _01electronics_crm
 
             int counter = 0;
 
-            Label offerIdHeader = new Label();
-            offerIdHeader.Content = "Offer ID";
-            offerIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderIdHeader = new Label();
+            orderIdHeader.Content = "Order ID";
+            orderIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerSalesHeader = new Label();
-            offerSalesHeader.Content = "Sales Engineer";
-            offerSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderSalesHeader = new Label();
+            orderSalesHeader.Content = "Sales Engineer";
+            orderSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerPreSalesHeader = new Label();
-            offerPreSalesHeader.Content = "Pre-Sales Engineer";
-            offerPreSalesHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderCompanyContactHeader = new Label();
+            orderCompanyContactHeader.Content = "Contact Info";
+            orderCompanyContactHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerCompanyContactHeader = new Label();
-            offerCompanyContactHeader.Content = "Contact Info";
-            offerCompanyContactHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderProductsHeader = new Label();
+            orderProductsHeader.Content = "Products";
+            orderProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerProductsHeader = new Label();
-            offerProductsHeader.Content = "Products";
-            offerProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderContractTypeHeader = new Label();
+            orderContractTypeHeader.Content = "Contract Type";
+            orderContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerContractTypeHeader = new Label();
-            offerContractTypeHeader.Content = "Contract Type";
-            offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+            Label orderStatusHeader = new Label();
+            orderStatusHeader.Content = "Order Status";
+            orderStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerStatusHeader = new Label();
-            offerStatusHeader.Content = "Offer Status";
-            offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
-
-            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -515,33 +523,29 @@ namespace _01electronics_crm
 
             workOrdersGrid.RowDefinitions.Add(new RowDefinition());
 
-            Grid.SetRow(offerIdHeader, 0);
-            Grid.SetColumn(offerIdHeader, 0);
-            workOrdersGrid.Children.Add(offerIdHeader);
+            Grid.SetRow(orderIdHeader, 0);
+            Grid.SetColumn(orderIdHeader, 0);
+            workOrdersGrid.Children.Add(orderIdHeader);
 
-            Grid.SetRow(offerSalesHeader, 0);
-            Grid.SetColumn(offerSalesHeader, 1);
-            workOrdersGrid.Children.Add(offerSalesHeader);
+            Grid.SetRow(orderSalesHeader, 0);
+            Grid.SetColumn(orderSalesHeader, 1);
+            workOrdersGrid.Children.Add(orderSalesHeader);
 
-            Grid.SetRow(offerPreSalesHeader, 0);
-            Grid.SetColumn(offerPreSalesHeader, 2);
-            workOrdersGrid.Children.Add(offerPreSalesHeader);
+            Grid.SetRow(orderCompanyContactHeader, 0);
+            Grid.SetColumn(orderCompanyContactHeader, 2);
+            workOrdersGrid.Children.Add(orderCompanyContactHeader);
 
-            Grid.SetRow(offerCompanyContactHeader, 0);
-            Grid.SetColumn(offerCompanyContactHeader, 3);
-            workOrdersGrid.Children.Add(offerCompanyContactHeader);
+            Grid.SetRow(orderProductsHeader, 0);
+            Grid.SetColumn(orderProductsHeader, 3);
+            workOrdersGrid.Children.Add(orderProductsHeader);
 
-            Grid.SetRow(offerProductsHeader, 0);
-            Grid.SetColumn(offerProductsHeader, 4);
-            workOrdersGrid.Children.Add(offerProductsHeader);
+            Grid.SetRow(orderContractTypeHeader, 0);
+            Grid.SetColumn(orderContractTypeHeader, 4);
+            workOrdersGrid.Children.Add(orderContractTypeHeader);
 
-            Grid.SetRow(offerContractTypeHeader, 0);
-            Grid.SetColumn(offerContractTypeHeader, 5);
-            workOrdersGrid.Children.Add(offerContractTypeHeader);
-
-            Grid.SetRow(offerStatusHeader, 0);
-            Grid.SetColumn(offerStatusHeader, 6);
-            workOrdersGrid.Children.Add(offerStatusHeader);
+            Grid.SetRow(orderStatusHeader, 0);
+            Grid.SetColumn(orderStatusHeader, 5);
+            workOrdersGrid.Children.Add(orderStatusHeader);
 
             int currentRowNumber = 1;
 
@@ -550,9 +554,9 @@ namespace _01electronics_crm
             {
                 DateTime currentWorkOrderDate = DateTime.Parse(workOrders[i].issue_date);
 
-                bool salesPersonCondition = selectedSales != workOrders[i].sales_person_id;
+                bool salesPersonCondition = selectedPreSales != workOrders[i].sales_person_id;
 
-                bool assigneeCondition = selectedPreSales != workOrders[i].offer_proposer_id;
+               // bool assigneeCondition = selectedPreSales != workOrders[i].order_proposer_id;
 
                 bool productCondition = false;
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
@@ -571,8 +575,8 @@ namespace _01electronics_crm
                 if (salesCheckBox.IsChecked == true && salesPersonCondition)
                     continue;
 
-                if (preSalesCheckBox.IsChecked == true && assigneeCondition)
-                    continue;
+               // if (preSalesCheckBox.IsChecked == true && assigneeCondition)
+                 //   continue;
 
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentWorkOrderDate) != selectedQuarter)
                     continue;
@@ -589,13 +593,13 @@ namespace _01electronics_crm
                 RowDefinition currentRow = new RowDefinition();
                 workOrdersGrid.RowDefinitions.Add(currentRow);
 
-                Label offerIdLabel = new Label();
-                offerIdLabel.Content = workOrders[i].order_id;
-                offerIdLabel.Style = (Style)FindResource("tableSubItemLabel");
+                Label orderIdLabel = new Label();
+                orderIdLabel.Content = workOrders[i].order_id;
+                orderIdLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                Grid.SetRow(offerIdLabel, currentRowNumber);
-                Grid.SetColumn(offerIdLabel, 0);
-                workOrdersGrid.Children.Add(offerIdLabel);
+                Grid.SetRow(orderIdLabel, currentRowNumber);
+                Grid.SetColumn(orderIdLabel, 0);
+                workOrdersGrid.Children.Add(orderIdLabel);
 
 
                 Label salesLabel = new Label();
@@ -607,22 +611,13 @@ namespace _01electronics_crm
                 workOrdersGrid.Children.Add(salesLabel);
 
 
-                Label preSalesLabel = new Label();
-                preSalesLabel.Content = workOrders[i].offer_proposer_name;
-                preSalesLabel.Style = (Style)FindResource("tableSubItemLabel");
-
-                Grid.SetRow(preSalesLabel, currentRowNumber);
-                Grid.SetColumn(preSalesLabel, 2);
-                workOrdersGrid.Children.Add(preSalesLabel);
-
-
                 Label companyAndContactLabel = new Label();
                 companyAndContactLabel.Content = workOrders[i].company_name + " - " + workOrders[i].contact_name;
                 companyAndContactLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 workOrdersGrid.Children.Add(companyAndContactLabel);
                 Grid.SetRow(companyAndContactLabel, currentRowNumber);
-                Grid.SetColumn(companyAndContactLabel, 3);
+                Grid.SetColumn(companyAndContactLabel, 2);
 
 
                 Grid productGrid = new Grid();
@@ -720,7 +715,7 @@ namespace _01electronics_crm
 
                 workOrdersGrid.Children.Add(productGrid);
                 Grid.SetRow(productGrid, currentRowNumber);
-                Grid.SetColumn(productGrid, 4);
+                Grid.SetColumn(productGrid, 3);
 
 
 
@@ -730,7 +725,7 @@ namespace _01electronics_crm
 
                 workOrdersGrid.Children.Add(contractTypeLabel);
                 Grid.SetRow(contractTypeLabel, currentRowNumber);
-                Grid.SetColumn(contractTypeLabel, 5);
+                Grid.SetColumn(contractTypeLabel, 4);
 
 
                 Border borderIcon = new Border();
@@ -759,7 +754,7 @@ namespace _01electronics_crm
                 Grid.SetRow(borderIcon, currentRowNumber);
                 Grid.SetColumn(borderIcon, 6);
 
-                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
                 currentRowNumber++;
 
@@ -999,7 +994,14 @@ namespace _01electronics_crm
 
         private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            
+            viewAddCondition = COMPANY_WORK_MACROS.ORDER_ADD_CONDITION;
+
+            selectedWorkOrder = new WorkOrder(sqlDatabase);
+
+            WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref selectedWorkOrder, viewAddCondition, false);
+
+            workOrderWindow.Closed += OnClosedWorkOrderWindow;
+            workOrderWindow.Show();
         }
 
         //private void OnBtnClickView(object sender, RoutedEventArgs e)
@@ -1129,12 +1131,18 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnClosedWorkOrderWindow(object sender, EventArgs e)
+        {
+            if (!GetWorkOrders())
+                return;
 
+            SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
+        }
         private void OnClickExportButton(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(workOrdersGrid);
         }
-
 
         private void OnExpandExpander(object sender, RoutedEventArgs e)
         {
@@ -1172,7 +1180,11 @@ namespace _01electronics_crm
 
                 currentGrid = (Grid)currentExpander.Parent;
 
-                if (currentItem.Content.ToString() == "View RFQ")
+                if (currentItem.Content.ToString() == "View")
+                {
+                    OnBtnClickView();
+                }
+                else if (currentItem.Content.ToString() == "View RFQ")
                 {
                     OnBtnClickViewRFQ();
                 }
@@ -1180,11 +1192,25 @@ namespace _01electronics_crm
                 {
                     OnBtnClickViewOffer();
                 }
+                else if (currentItem.Content.ToString() == "Confirm Order")
+                {
+                    OnBtnClickConfirmOrder();
+                }
 
                 tempListBox.SelectedIndex = -1;
             }
         }
+        private void OnBtnClickView()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
+
+            workOrderWindow.Show();
+        }
         private void OnBtnClickViewRFQ()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
@@ -1216,13 +1242,34 @@ namespace _01electronics_crm
 
             workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
 
-            WorkOffer workOffer = new WorkOffer(sqlDatabase);
+            if (workOrder.GetOfferID() != null)
+            {
+                WorkOffer workOffer = new WorkOffer(sqlDatabase);
 
-            workOffer.CopyWorkOffer(workOrder);
+                workOffer.CopyWorkOffer(workOrder);
 
-            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
-            
-            workOfferWindow.Show();
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+
+                workOfferWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Selected WorkOrder doesn't have an Offer");
+            }
+        }
+        private void OnBtnClickConfirmOrder()
+        {
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+
+            workOrder.ConfirmOrder();
+
+            if (!GetWorkOrders())
+                return;
+
+            SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
         }
     }
 }

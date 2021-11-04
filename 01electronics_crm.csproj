@@ -223,8 +223,26 @@
     <Compile Include="WorkOfferWindow.xaml.cs">
       <DependentUpon>WorkOfferWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkOrderAdditionalInfoPage.xaml.cs">
+      <DependentUpon>WorkOrderAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderBasicInfoPage.xaml.cs">
+      <DependentUpon>WorkOrderBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>WorkOrderPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderProductsPage.xaml.cs">
+      <DependentUpon>WorkOrderProductsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkOrdersPage.xaml.cs">
       <DependentUpon>WorkOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderUploadFilesPage.xaml.cs">
+      <DependentUpon>WorkOrderUploadFilesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderWindow.xaml.cs">
+      <DependentUpon>WorkOrderWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="AddBranchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -409,9 +427,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="WorkOrderAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkOrdersPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WorkOrderUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

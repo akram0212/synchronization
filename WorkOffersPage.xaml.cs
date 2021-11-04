@@ -1128,6 +1128,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickConfirmOffer()
         {
+            viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
@@ -1144,22 +1145,21 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
-            selectedWorkOffer.ConfirmOffer();
-
-
-
-            
-
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
             workOrder.CopyWorkOffer(selectedWorkOffer);
+            workOrder.CopyWorkOfferToWorkOrder();
 
-            workOrder.IssueNewOrder();
+            WorkOrderWindow reviseOrder= new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
+            reviseOrder.Show();
 
             if (!GetWorkOffers())
                 return;
 
             SetWorkOffersStackPanel();
-            
+            SetWorkOffersGrid();
+
+           // selectedWorkOffer.ConfirmOffer();
+
         }
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
