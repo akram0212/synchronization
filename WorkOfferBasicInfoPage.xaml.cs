@@ -217,8 +217,8 @@ namespace _01electronics_crm
             for (int i = 0; i < contactInfo.Count(); i++)
                 contactPersonNameCombo.Items.Add(contactInfo[i].contact_name);
         
-            
-            contactPersonNameCombo.SelectedIndex = 0;
+            if(contactInfo.Count > 0)
+                contactPersonNameCombo.SelectedIndex = 0;
 
             contactPersonNameCombo.IsEnabled = true;
         }
