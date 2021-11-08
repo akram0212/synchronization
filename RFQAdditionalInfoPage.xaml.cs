@@ -254,7 +254,7 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                 rfqBasicInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
 
-            NavigationService.Navigate(rfqUploadFilesPage);
+            NavigationService.Navigate(rfqBasicInfoPage);
         }
 
         private void OnBtnClickProductsInfo(object sender, MouseButtonEventArgs e)
