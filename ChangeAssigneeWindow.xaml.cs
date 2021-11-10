@@ -24,16 +24,22 @@ namespace _01electronics_crm
         SQLServer sqlServer;
 
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> failureReasons = new List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT>();
+        
+
+        int condition;
 
         int updateSerial;
 
         String oldAssignee;
 
-        RFQ rfq = new RFQ();
+        RFQ rfq;
+        WorkOffer workOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)
         {
             InitializeComponent();
+            condition = 0;
             rfq = mrfq;
 
             commonQueries = new CommonQueries();
@@ -52,6 +58,43 @@ namespace _01electronics_crm
             
         }
 
+        public ChangeAssigneeWindow(ref WorkOffer mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
+        {
+            InitializeComponent();
+
+            condition = 1;
+            workOffer = mWorkOffer;
+            failureReasons = mFailureReasons;
+            
+            commonQueries = new CommonQueries();
+            sqlServer = new SQLServer();
+
+            headerLabel.Content = "CHOOSE FAILURE REASON";
+            comboBoxLabel.Content = "Failure Reasons";
+
+            for (int i = 0; i < mFailureReasons.Count; i++)
+                PreSalesEngineersComboBox.Items.Add(mFailureReasons[i].reason_name);
+
+        }
+
+        public ChangeAssigneeWindow(ref RFQ mRFQ, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
+        {
+            InitializeComponent();
+
+            condition = 2;
+            rfq = mRFQ;
+            failureReasons = mFailureReasons;
+
+            commonQueries = new CommonQueries();
+            sqlServer = new SQLServer();
+
+            headerLabel.Content = "CHOOSE FAILURE REASON";
+            comboBoxLabel.Content = "Failure Reasons";
+
+            for (int i = 0; i < mFailureReasons.Count; i++)
+                PreSalesEngineersComboBox.Items.Add(mFailureReasons[i].reason_name);
+
+        }
         private void OnSelChangedChangeAssignee(object sender, SelectionChangedEventArgs e)
         {
            
@@ -59,7 +102,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickSaveChanges(object sender, RoutedEventArgs e)
         {
-            if(PreSalesEngineersComboBox.Text != oldAssignee)
+            if(PreSalesEngineersComboBox.Text != oldAssignee && condition == 0)
             {
                 GetNewUpdateSerial();
                     
@@ -69,6 +112,15 @@ namespace _01electronics_crm
 
                 if (!UpdateRFQsAssignee())
                     return;
+            }
+
+            else if(condition == 1)
+            {
+                workOffer.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
+            }
+            else if(condition == 2)
+            {
+                rfq.RejectRFQ(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
 
             this.Close();

@@ -33,6 +33,10 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
         private List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT> deliveryPoints = new List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT>();
 
+        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> vatConditions = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+
         private int viewAddCondition;
         private int downPaymentPercentage;
         private int onDeliveryPercentage;
@@ -67,6 +71,9 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryPointPortCombo();
+                InitializeDeliveryTimeFromWhenCombo();
 
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
@@ -77,6 +84,9 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryPointPortCombo();
+                InitializeDeliveryTimeFromWhenCombo();
 
                 ConfigureViewUIElements();
                 SetPriceValues();
@@ -93,6 +103,10 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryPointPortCombo();
+                InitializeDeliveryTimeFromWhenCombo();
+
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
                 SetDownPaymentValues();
@@ -107,6 +121,9 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryPointPortCombo();
+                InitializeDeliveryTimeFromWhenCombo();
 
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
@@ -134,6 +151,9 @@ namespace _01electronics_crm
             deliveryTimeTextBoxFrom.IsEnabled = false;
             deliveryTimeTextBoxTo.IsEnabled = false;
             deliveryPointCombo.IsEnabled = false;
+            totalPriceVATCombo.IsEnabled = false;
+            deliveryTimeFromWhenCombo.IsEnabled = false;
+            deliveryPointPortCombo.IsEnabled = false;
         }
 
         private void DisableTotalPriceComboAndTextBox()
@@ -168,6 +188,35 @@ namespace _01electronics_crm
 
             for (int i = 0; i < deliveryPoints.Count; i++)
                 deliveryPointCombo.Items.Add(deliveryPoints[i].pointName);
+            return true;
+        }
+
+        private bool InitializeTotalPriceVATCombo()
+        {
+            if (!commonQueriesObject.GetVATConditions(ref vatConditions))
+                return false;
+
+            for (int i = 0; i < vatConditions.Count; i++)
+                totalPriceVATCombo.Items.Add(vatConditions[i].value);
+            return true;
+        }
+        private bool InitializeDeliveryTimeFromWhenCombo()
+        {
+            if (!commonQueriesObject.GetConditionStartDates(ref conditionStartDates))
+                return false;
+
+            for (int i = 0; i < conditionStartDates.Count; i++)
+                deliveryTimeFromWhenCombo.Items.Add(conditionStartDates[i].value);
+            return true;
+        }
+
+        private bool InitializeDeliveryPointPortCombo()
+        {
+            if (!commonQueriesObject.GetShipmentTypes(ref shipmentTypes))
+                return false;
+
+            for (int i = 0; i < shipmentTypes.Count; i++)
+                deliveryPointPortCombo.Items.Add(shipmentTypes[i].value);
             return true;
         }
 
@@ -369,15 +418,25 @@ namespace _01electronics_crm
         }
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
-
+            workOffer.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
         }
         private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
         {
-
+            workOffer.SetOfferShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
-
+            bool tmp;
+            if (totalPriceVATCombo.SelectedIndex == 0)
+            {
+                tmp = true;
+                workOffer.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+            }
+            else
+            {
+                tmp = false;
+                workOffer.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+            }
         }
 
 

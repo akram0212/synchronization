@@ -36,6 +36,7 @@ namespace _01electronics_crm
 
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
+        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
 
         private int viewAddCondition;
         private int warrantyPeriod = 0;
@@ -85,15 +86,21 @@ namespace _01electronics_crm
                 ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
+                InitializeDrawingDeadlineDateFromWhenComboBox();
+                InitializeWarrantyPeriodFromWhenCombo();
                 SetContractTypeValue();
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
+                InitializeDrawingDeadlineDateFromWhenComboBox();
+                InitializeWarrantyPeriodFromWhenCombo();
 
-                //if (workOffer.GetDrawingSubmissionDeadlineMinimum() != 0)
-                //    drawingConditionsCheckBox.IsChecked = true;
+
+                if (workOffer.GetDrawingSubmissionDeadlineTimeUnitId() != 0)
+                    drawingSubmissionCheckBox.IsChecked = true;
+                drawingSubmissionCheckBox.IsEnabled = false;
 
                 ConfigureUIElementsView();
                 SetDrawingSubmissionValues();
@@ -111,6 +118,9 @@ namespace _01electronics_crm
                 ConfigureDrawingSubmissionUIElements();
                 InitializeContractType();
                 InitializeTimeUnitComboBoxes();
+                InitializeDrawingDeadlineDateFromWhenComboBox();
+                InitializeWarrantyPeriodFromWhenCombo();
+
                 SetDrawingSubmissionValues();
                 SetContractTypeValue();
                 SetWarrantyPeriodValues();
@@ -142,6 +152,15 @@ namespace _01electronics_crm
             drawingDeadlineFromTextBox.IsEnabled = false;
             drawingDeadlineToTextBox.IsEnabled = false;
             drawingDeadlineDateComboBox.IsEnabled = false;
+            drawingDeadlineDateFromWhenComboBox.IsEnabled = false;
+        }
+
+        private void EnableDrawingSubmissionUIElements()
+        {
+            drawingDeadlineFromTextBox.IsEnabled = true;
+            drawingDeadlineToTextBox.IsEnabled = true;
+            drawingDeadlineDateComboBox.IsEnabled = true;
+            drawingDeadlineDateFromWhenComboBox.IsEnabled = true;
         }
 
         private void ConfigureUIElementsView()
@@ -156,6 +175,8 @@ namespace _01electronics_crm
             offerValidityCombo.IsEnabled = false;
             offerValidityTextBox.IsEnabled = false;
             additionalDescriptionTextBox.IsEnabled = false;
+            drawingDeadlineDateFromWhenComboBox.IsEnabled = false;
+            warrantyPeriodFromWhenCombo.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +205,25 @@ namespace _01electronics_crm
             return true;
         }
 
+        private bool InitializeDrawingDeadlineDateFromWhenComboBox()
+        {
+            if (!commonQueriesObject.GetConditionStartDates(ref conditionStartDates))
+                return false;
+
+            for (int i = 0; i < conditionStartDates.Count; i++)
+                drawingDeadlineDateFromWhenComboBox.Items.Add(conditionStartDates[i].value);
+            return true;
+        }
+        private bool InitializeWarrantyPeriodFromWhenCombo()
+        {
+            if (!commonQueriesObject.GetConditionStartDates(ref conditionStartDates))
+                return false;
+
+            for (int i = 0; i < conditionStartDates.Count; i++)
+                warrantyPeriodFromWhenCombo.Items.Add(conditionStartDates[i].value);
+            return true;
+        }
+
         //////////////////////////////
         ///SET FUNCTIONS
         //////////////////////////////
@@ -192,6 +232,7 @@ namespace _01electronics_crm
             drawingDeadlineFromTextBox.Text = workOffer.GetDrawingSubmissionDeadlineMinimum().ToString();
             drawingDeadlineToTextBox.Text = workOffer.GetDrawingSubmissionDeadlineMaximum().ToString();
             drawingDeadlineDateComboBox.Text = workOffer.GetDrawingDeadlineTimeUnit();
+            drawingDeadlineDateFromWhenComboBox.SelectedItem = workOffer.GetOfferDrawingSubmissionDeadlineCondition();
         }
 
         public void SetContractTypeValue()
@@ -205,6 +246,7 @@ namespace _01electronics_crm
             {
                 warrantyPeriodTextBox.Text = workOffer.GetWarrantyPeriod().ToString();
                 warrantyPeriodCombo.SelectedItem = workOffer.GetWarrantyPeriodTimeUnit();
+                warrantyPeriodFromWhenCombo.SelectedItem = workOffer.GetOfferWarrantyPeriodCondition();
             }
         }
 
@@ -245,12 +287,18 @@ namespace _01electronics_crm
 
         private void DrawingDeadlineDateFromWhenComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (drawingDeadlineDateFromWhenComboBox.SelectedIndex != -1)
+            {
+                workOffer.SetOfferDrawingSubmissionDeadlineCondition(conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].key, conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].value);
+            }
         }
 
         private void WarrantyPeriodFromWhenComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (warrantyPeriodFromWhenCombo.SelectedIndex != -1)
+            {
+                workOffer.SetOfferWarrantyPeriodCondition(conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].key, conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].value);
+            }
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -488,6 +536,16 @@ namespace _01electronics_crm
                 NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                 currentWindow.Close();
             }
+        }
+
+        private void OnCheckDrawingSubmission(object sender, RoutedEventArgs e)
+        {
+            EnableDrawingSubmissionUIElements();
+        }
+
+        private void OnUnCheckDrawingSubmission(object sender, RoutedEventArgs e)
+        {
+            ConfigureDrawingSubmissionUIElements();
         }
     }
 }

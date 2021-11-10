@@ -75,7 +75,7 @@
                     </Grid.RowDefinitions>
 
                     <WrapPanel Grid.Row="0">
-                        <CheckBox Content="Drawing &#x0a;Submission &#x0a;Deadline" Style="{StaticResource checkBoxStyle}" Width="105" Margin="24,12,12,12" Checked="OnCheckDrawingSubmission" Unchecked="OnUnCheckDrawingSubmission"/>
+                        <CheckBox Name="drawingSubmissionCheckBox" Content="Drawing &#x0a;Submission &#x0a;Deadline" Style="{StaticResource checkBoxStyle}" Width="105" Margin="24,12,12,12" Checked="OnCheckDrawingSubmission" Unchecked="OnUnCheckDrawingSubmission"/>
                         <TextBox Style="{StaticResource microTextBoxStyle}" TextChanged="DrawingDeadlineFromTextBoxTextChanged" Name="drawingDeadlineFromTextBox"/>
                         <Label Content="-" Style="{StaticResource miniLabelStyle}" HorizontalContentAlignment="Center"/>
                         <TextBox Style="{StaticResource microTextBoxStyle}" Name="drawingDeadlineToTextBox" TextChanged="DrawingDeadlineToTextBoxTextChanged" />

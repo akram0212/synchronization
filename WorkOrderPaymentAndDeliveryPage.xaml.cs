@@ -153,6 +153,9 @@ namespace _01electronics_crm
             deliveryTimeTextBoxFrom.IsEnabled = false;
             deliveryTimeTextBoxTo.IsEnabled = false;
             deliveryPointCombo.IsEnabled = false;
+            totalPriceVATCombo.IsEnabled = false;
+            deliveryTimeFromWhenCombo.IsEnabled = false;
+            deliveryPointPortCombo.IsEnabled = false;
         }
 
         private void DisableTotalPriceComboAndTextBox()
@@ -266,7 +269,10 @@ namespace _01electronics_crm
                     totalPriceTextBox.Text = workOrder.GetOrderTotalPriceValue().ToString();
                     totalPrice = workOrder.GetOrderTotalPriceValue();
                 }
+
             }
+
+            totalPriceVATCombo.SelectedItem = workOrder.GetOrderVATCondition();
         }
 
         public void SetDownPaymentValues()
@@ -358,6 +364,8 @@ namespace _01electronics_crm
                 }
                 if (workOrder.GetOrderDeliveryTimeUnit() != null)
                     deliveryTimeCombo.Text = workOrder.GetOrderDeliveryTimeUnit().ToString();
+
+                deliveryTimeFromWhenCombo.SelectedItem = workOrder.GetOrderDeliveryTimeCondition();
             }
         }
 
@@ -370,6 +378,7 @@ namespace _01electronics_crm
             else
             {
                 deliveryPointCombo.SelectedItem = workOrder.GetOrderDeliveryPoint();
+                deliveryPointPortCombo.SelectedItem = workOrder.GetOrderShipmentTypeCondition();
             }    
         }
 
@@ -481,7 +490,8 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOrder.SetOrderDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
+            if(deliveryPointCombo.SelectedIndex != -1)
+                workOrder.SetOrderDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
