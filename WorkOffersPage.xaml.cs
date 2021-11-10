@@ -1220,13 +1220,6 @@ namespace _01electronics_crm
 
         private void OnClosedWorkOfferWindow(object sender, EventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
-
-                WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, true);
-                viewOffer.Show();
-            }
 
             if (!GetWorkOffers())
                 return;

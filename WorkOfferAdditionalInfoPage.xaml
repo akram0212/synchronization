@@ -70,8 +70,6 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <WrapPanel Grid.Row="0">
@@ -84,24 +82,19 @@
                     </WrapPanel>
 
                     <WrapPanel  Grid.Row="1">
-                        <Label Content="Contract &#x0a;Type" Style="{StaticResource labelStyle}"/>
-                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="contractTypeComboBox" SelectionChanged="ContractTypeComboSelectionChanged"/>
-                    </WrapPanel>
-
-                    <WrapPanel  Grid.Row="2">
-                        <Label Content="Warranty &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                        <CheckBox Name="warrantyPeriodCheckBox" Content="Warranty &#x0a;Period" Style="{StaticResource checkBoxStyle}" Width="105" Margin="24,12,12,12" Checked="OnCheckWarrantyPeriod" Unchecked="OnUnCheckWarrantyPeriod" IsEnabled="False" />
                         <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
                         <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
                         <ComboBox Style="{StaticResource miniComboBoxStyle}"   Name="warrantyPeriodFromWhenCombo"  SelectionChanged="WarrantyPeriodFromWhenComboSelectionChanged"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="3">
+                    <WrapPanel Grid.Row="2">
                         <Label Content="Validity &#x0a;Period" Style="{StaticResource labelStyle}"/>
                         <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="offerValidityTextBox" TextChanged="OfferValidityTextBoxTextChanged"/>
                         <ComboBox Style="{StaticResource miniComboBoxStyle}" Margin="42,12,12,12" Name="offerValidityCombo" SelectionChanged="OfferValidityComboSelectionChanged"/>
                     </WrapPanel>
 
-                    <WrapPanel Grid.Row="4">
+                    <WrapPanel Grid.Row="3">
                         <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
                         <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
                     </WrapPanel>

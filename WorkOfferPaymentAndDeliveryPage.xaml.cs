@@ -36,6 +36,7 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> vatConditions = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
         private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
         private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+        private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
 
         private int viewAddCondition;
         private int downPaymentPercentage;
@@ -74,6 +75,7 @@ namespace _01electronics_crm
                 InitializeTotalPriceVATCombo();
                 InitializeDeliveryPointPortCombo();
                 InitializeDeliveryTimeFromWhenCombo();
+                InitializeContractType();
 
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
@@ -87,8 +89,10 @@ namespace _01electronics_crm
                 InitializeTotalPriceVATCombo();
                 InitializeDeliveryPointPortCombo();
                 InitializeDeliveryTimeFromWhenCombo();
+                InitializeContractType();
 
                 ConfigureViewUIElements();
+                SetContractTypeValue();
                 SetPriceValues();
                 SetDownPaymentValues();
                 SetOnDeliveryValues();
@@ -106,9 +110,10 @@ namespace _01electronics_crm
                 InitializeTotalPriceVATCombo();
                 InitializeDeliveryPointPortCombo();
                 InitializeDeliveryTimeFromWhenCombo();
+                InitializeContractType();
 
-                SetTotalPriceCurrencyComboBox();
-                SetTotalPriceTextBox();
+                SetContractTypeValue();
+                SetPriceValues();
                 SetDownPaymentValues();
                 SetOnDeliveryValues();
                 SetOnInstallationValues();
@@ -118,6 +123,7 @@ namespace _01electronics_crm
             }
             else
             {
+                InitializeContractType();
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
@@ -126,6 +132,7 @@ namespace _01electronics_crm
                 InitializeDeliveryTimeFromWhenCombo();
 
                 DisableTotalPriceComboAndTextBox();
+                SetContractTypeValue();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
@@ -139,6 +146,7 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureViewUIElements()
         {
+            contractTypeComboBox.IsEnabled = false;
             totalPriceCombo.IsEnabled = false;
             totalPriceTextBox.IsEnabled = false;
             downPaymentPercentageTextBox.IsEnabled = false;
@@ -165,6 +173,17 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private bool InitializeContractType()
+        {
+            if (!commonQueriesObject.GetContractTypes(ref contractTypes))
+                return false;
+            for (int i = 0; i < contractTypes.Count; i++)
+                contractTypeComboBox.Items.Add(contractTypes[i].contractName);
+
+            return true;
+        }
+
         private void InitializeTotalPriceCurrencyComboBox()
         {
             commonQueriesObject.GetCurrencyTypes(ref currencies);
@@ -223,6 +242,11 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SET FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public void SetContractTypeValue()
+        {
+            contractTypeComboBox.Text = workOffer.GetOfferContractType();
+        }
         public void SetTotalPriceCurrencyComboBox()
         {
             totalPriceCombo.SelectedItem = workOffer.GetCurrency();
@@ -250,6 +274,12 @@ namespace _01electronics_crm
             {
                 totalPriceCombo.Text = workOffer.GetCurrency().ToString();
                 totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
+
+                if (workOffer.GetOfferVATCondition() != "")
+                    totalPriceVATCombo.SelectedItem = workOffer.GetOfferVATCondition();
+                else
+                    totalPriceVATCombo.SelectedIndex = -1;
+
                 totalPrice = workOffer.GetTotalPriceValue();
             }
         }
@@ -293,13 +323,24 @@ namespace _01electronics_crm
                 deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
                 deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
             }
+
             if(workOffer.GetDeliveryTimeUnit() != null)
                 deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
+
+            if (workOffer.GetOfferDeliveryTimeCondition() != "")
+                deliveryTimeFromWhenCombo.Text = workOffer.GetOfferDeliveryTimeCondition();
+            else
+                deliveryTimeFromWhenCombo.SelectedIndex = deliveryTimeFromWhenCombo.Items.Count - 1;
         }
 
         private void SetDeliveryPointValue()
         {
             deliveryPointCombo.SelectedItem = workOffer.GetDeliveryPoint();
+
+            if (workOffer.GetOfferShipmentTypeCondition() != "")
+                deliveryPointPortCombo.Text = workOffer.GetOfferShipmentTypeCondition();
+            else
+                deliveryPointPortCombo.SelectedIndex = deliveryPointPortCombo.Items.Count - 1;
         }
 
         public void SetDownPaymentPercentage()
@@ -408,21 +449,60 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            workOffer.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
+
+            if (contractTypeComboBox.SelectedIndex > 1)
+            {
+                deliveryPointCheckBox.IsChecked = false;
+                deliveryTimeCheckBox.IsChecked = false;
+                workOfferAdditionalInfoPage.warrantyPeriodCheckBox.IsChecked = false;
+            }
+            else
+            {
+                deliveryPointCheckBox.IsChecked = true;
+                deliveryTimeCheckBox.IsChecked = true;
+                workOfferAdditionalInfoPage.warrantyPeriodCheckBox.IsChecked = true;
+
+                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                {
+                    deliveryTimeTextBoxFrom.IsEnabled = false;
+                    deliveryTimeTextBoxTo.IsEnabled = false;
+                    deliveryTimeCombo.IsEnabled = false;
+                    deliveryTimeFromWhenCombo.IsEnabled = false;
+
+
+                    deliveryPointCombo.IsEnabled = false;
+                    deliveryPointPortCombo.IsEnabled = false;
+
+
+                    workOfferAdditionalInfoPage.warrantyPeriodTextBox.IsEnabled = false;
+                    workOfferAdditionalInfoPage.warrantyPeriodCombo.IsEnabled = false;
+                    workOfferAdditionalInfoPage.warrantyPeriodFromWhenCombo.IsEnabled = false;
+                }
+            }
+        }
+
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
+            if(deliveryPointCombo.SelectedItem != null)
+                workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
+            if(deliveryTimeCombo.SelectedItem != null)
+                workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
+            if(deliveryTimeFromWhenCombo.SelectedItem != null)
+                workOffer.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
         }
         private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetOfferShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
+            if(deliveryPointPortCombo.SelectedItem != null)
+                workOffer.SetOfferShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -547,6 +627,45 @@ namespace _01electronics_crm
             NavigationWindow currentWindow = (NavigationWindow)this.Parent;
 
             currentWindow.Close();
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///CHECK/UNCHECK HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnCheckDeliveryTime(object sender, RoutedEventArgs e)
+        {
+            deliveryTimeCombo.IsEnabled = true;
+            deliveryTimeTextBoxFrom.IsEnabled = true;
+            deliveryTimeTextBoxTo.IsEnabled = true;
+            deliveryTimeFromWhenCombo.IsEnabled = true;
+        }
+
+        private void OnUnCheckDeliveryTime(object sender, RoutedEventArgs e)
+        {
+            deliveryTimeCombo.IsEnabled = false;
+            deliveryTimeTextBoxFrom.IsEnabled = false;
+            deliveryTimeTextBoxTo.IsEnabled = false;
+            deliveryTimeFromWhenCombo.IsEnabled = false;
+
+            deliveryTimeCombo.SelectedIndex = deliveryTimeCombo.Items.Count - 1;
+            deliveryTimeTextBoxFrom.Text = null;
+            deliveryTimeTextBoxTo.Text = null;
+            deliveryTimeFromWhenCombo.SelectedIndex = deliveryTimeFromWhenCombo.Items.Count -1;
+        }
+
+        private void OnCheckDeliveryPoint(object sender, RoutedEventArgs e)
+        {
+            deliveryPointCombo.IsEnabled = true;
+            deliveryPointPortCombo.IsEnabled = true;
+        }
+
+        private void OnUnCheckDeliveryPoint(object sender, RoutedEventArgs e)
+        {
+            deliveryPointCombo.IsEnabled = false;
+            deliveryPointPortCombo.IsEnabled = false;
+
+            deliveryPointCombo.SelectedIndex = deliveryPointCombo.Items.Count - 1;
+            deliveryPointPortCombo.SelectedIndex = deliveryPointPortCombo.Items.Count - 1;
         }
     }
 }
