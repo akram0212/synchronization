@@ -208,11 +208,31 @@ namespace _01electronics_crm
                 {
                     if (!rfq.IssueNewRFQ())
                         return;
+
+                    if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                    {
+                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                        RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, true);
+                        
+                        viewRFQ.Show();
+                    }
+
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
                     if (!rfq.ReviseRFQ())
                         return;
+
+                    if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                    {
+                        viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+
+                        RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, true);
+                        
+                        viewRFQ.Show();
+                    }
+
                 }
 
                 NavigationWindow currentWindow = (NavigationWindow)this.Parent;

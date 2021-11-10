@@ -1102,8 +1102,7 @@ namespace _01electronics_crm
             resolveWorkOffer.LinkRFQInfo();
 
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
-
-            resolveOffer.Closed += OnClosedOfferWindow;
+            resolveOffer.Closed += OnClosedRFQWindow;
             resolveOffer.Show();
         }
         private void OnBtnClickedExport(object sender, RoutedEventArgs e)
@@ -1212,14 +1211,7 @@ namespace _01electronics_crm
       
         private void OnClosedRFQWindow(object sender, EventArgs e)
         {
-            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
-
-                RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, true);
-                viewRFQ.Show();
-            }
-
+            
             if (!GetRFQs())
                 return;
 
