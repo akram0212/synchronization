@@ -175,7 +175,7 @@ namespace _01electronics_crm
 
         private void SetSalesPersonComboValue()
         {
-            salesPersonCombo.SelectedItem = workOrder.GetOfferProposerName();
+            salesPersonCombo.SelectedItem = workOrder.GetSalesPersonName();
         }
 
         private void SetOfferSerialLabel()
@@ -461,6 +461,8 @@ namespace _01electronics_crm
 
                 OfferSerialCombo.Items.Add(workOrder.GetOfferID());
                 offersAddedToComboList.Add(tmp);
+
+                OfferCheckBox.IsEnabled = true;
             }
             else
             {

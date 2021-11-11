@@ -37,6 +37,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsAddedToComboList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+        
 
         private int viewAddCondition;
         private int salesPersonID;
@@ -88,16 +89,19 @@ namespace _01electronics_crm
                 FillrfqsList(); 
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElementsForView();
+                
                 SetSalesPersonLabel();
                 SetRFQSerialLabel();
                 SetCompanyNameLabel();
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
+                
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
             }
@@ -106,6 +110,7 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                
                 SetSalesPersonComboValue();
 
                 //CHANGE CONDITIONS
@@ -117,15 +122,17 @@ namespace _01electronics_crm
                     SetContactPersonComboValue();
                 }
                 DisableSalesPersonAndRFQCombo();
-            }
+                           }
             else
             {
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                
                 SetSalesPersonComboValue();
                 InitializeRFQSerialCombo();
                 SetRFQSerialComboValue();
+                
                 
                 DisableSalesPersonAndRFQCombo();
             }
@@ -223,6 +230,8 @@ namespace _01electronics_crm
             contactPersonNameCombo.IsEnabled = true;
         }
 
+        
+
         ///////////CONFIGURE UI ELEMENTS////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureUIElemenetsForAdd()
@@ -257,6 +266,8 @@ namespace _01electronics_crm
             companyNameCombo.Visibility = Visibility.Collapsed;
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
+
+            
 
         }
         private void DisableSalesPersonAndRFQCombo()
@@ -368,6 +379,11 @@ namespace _01electronics_crm
             DisableCompanyNameaddressContactCombos();
         }
 
+        public void SetContractTypeValueFromRFQ()
+        {
+            workOfferProductsPage.workOfferPaymentAndDeliveryPage.contractTypeComboBox.Text = workOffer.GetRFQContractType();
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SELECTION CHANGED HANDLERS///////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -417,7 +433,10 @@ namespace _01electronics_crm
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
                 if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
                     workOffer.LinkRFQInfo();
+
                 SetCompanyNameAddressContactFromRFQ();
+                if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                    SetContractTypeValueFromRFQ();
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
                 {
@@ -474,6 +493,8 @@ namespace _01electronics_crm
                 workOffer.InitializeContactInfo(contactInfo[contactPersonNameCombo.SelectedIndex].contact_id);
 
         }
+
+        
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS

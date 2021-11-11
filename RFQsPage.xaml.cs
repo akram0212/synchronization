@@ -37,6 +37,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> rfqStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
+        private List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> failureReasons = new List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -448,6 +449,10 @@ namespace _01electronics_crm
                 changeAssigneeButton.Content = "Change Assignee";
                 changeAssigneeButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
+                ListBoxItem rejectButton = new ListBoxItem();
+                rejectButton.Content = "Reject RFQ";
+                rejectButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 listBox.Items.Add(viewButton);
                 
                 if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
@@ -463,6 +468,7 @@ namespace _01electronics_crm
                     listBox.Items.Add(changeAssigneeButton);
                     alreadyAdded = true;
                 }
+
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
                     listBox.Items.Add(resolveButton);
@@ -474,7 +480,8 @@ namespace _01electronics_crm
                     }
                 }
 
-                
+                if (rfqsList[i].rfq_status_id != COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                    listBox.Items.Add(rejectButton);
 
                 expander.Content = listBox;
 
@@ -1095,8 +1102,7 @@ namespace _01electronics_crm
             resolveWorkOffer.LinkRFQInfo();
 
             WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
-
-            resolveOffer.Closed += OnClosedOfferWindow;
+            resolveOffer.Closed += OnClosedRFQWindow;
             resolveOffer.Show();
         }
         private void OnBtnClickedExport(object sender, RoutedEventArgs e)
@@ -1113,6 +1119,20 @@ namespace _01electronics_crm
             ChangeAssigneeWindow changeAssignee = new ChangeAssigneeWindow(ref selectedRFQ);
             changeAssignee.Closed += new EventHandler(OnClosedChangeAssigneeWindow);
             changeAssignee.Show();
+        }
+
+        private void OnBtnClickRejectRFQ()
+        {
+            commonQueriesObject.GetRFQFailureReasons(ref failureReasons);
+
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
+
+            ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedRFQ, failureReasons);
+            failureReasonWindow.Closed += OnClosedFailureReasonWindow;
+            failureReasonWindow.Show();
+            
         }
 
         private void OnExpandExpander(object sender, RoutedEventArgs e)
@@ -1174,6 +1194,10 @@ namespace _01electronics_crm
                     WorkOffersFilteredWithRFQSerialWindow workOffersFilteredWithRFQSerialWindow = new WorkOffersFilteredWithRFQSerialWindow(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person, ref loggedInUser);
                     workOffersFilteredWithRFQSerialWindow.Show();
                 }
+                else if (currentItem.Content.ToString() == "Reject RFQ")
+                {
+                    OnBtnClickRejectRFQ();
+                }
 
                 tempListBox.SelectedIndex = -1;
             }
@@ -1187,14 +1211,16 @@ namespace _01electronics_crm
       
         private void OnClosedRFQWindow(object sender, EventArgs e)
         {
-            if(viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+            
+            if (!GetRFQs())
+                return;
 
-                RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, true);
-                viewRFQ.Show();
-            }
+            SetRFQsStackPanel();
+            SetRFQsGrid();
+        }
 
+        private void OnClosedFailureReasonWindow(object sender, EventArgs e)
+        {
             if (!GetRFQs())
                 return;
 

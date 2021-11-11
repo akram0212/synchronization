@@ -225,9 +225,12 @@ namespace _01electronics_crm
             if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false))
                 return false;
 
-            company.AddCompanyFax(outputString);
-            faxTextBox.Text = company.GetCompanyFaxes()[0];
+            if(outputString != String.Empty)
+            {
+                company.AddCompanyFax(outputString);
+                faxTextBox.Text = company.GetCompanyFaxes()[0];
 
+            }
             return true;
         }
 
