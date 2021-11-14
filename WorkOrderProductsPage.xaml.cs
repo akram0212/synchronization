@@ -1007,5 +1007,11 @@ namespace _01electronics_crm
 
             currentWindow.Close();
         }
+
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage();
+            NavigationService.Navigate(projectsPage);
+        }
     }
 }

@@ -648,5 +648,11 @@ namespace _01electronics_crm
             onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
             onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
         }
+
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage();
+            NavigationService.Navigate(projectsPage);
+        }
     }
 }

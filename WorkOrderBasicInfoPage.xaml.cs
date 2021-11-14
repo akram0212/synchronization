@@ -238,7 +238,7 @@ namespace _01electronics_crm
                 salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
                 salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
                 InitializeCompanyNameCombo();
-                OfferCheckBox.IsChecked = true;
+                //OfferCheckBox.IsChecked = true;
             }
             else
             {
@@ -252,17 +252,17 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
                 workOrder.ResetWorkOrderInfo(salesPersonTeamID);
 
-            workOrder.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
+            workOrder.SetPreSalesEngineer(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
                 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
                 workOrder.InitializeSalesPersonInfo(salesPersonID);
-                InitializeOfferSerialCombo();
+                //InitializeOfferSerialCombo();
             }
             else
             {
                // workOrder.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-                InitializeOfferSerialCombo();
+                //InitializeOfferSerialCombo();
 
                 if (OfferCheckBox.IsChecked == false)
                 {
@@ -408,6 +408,8 @@ namespace _01electronics_crm
                 companyNameCombo.Items.Add(companiesList[i].company_name);
                 companiesAddedToComboList.Add(companiesList[i]);
             }
+
+            companyNameCombo.IsEnabled = true;
 
         }
 
@@ -580,6 +582,13 @@ namespace _01electronics_crm
                 companyNameCombo.IsEnabled = true;
                 InitializeCompanyNameCombo();
             }
+        }
+
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage();
+            NavigationService.Navigate(projectsPage);
+
         }
 
         //private void OnSelChangedAssignedSalesCombo(object sender, SelectionChangedEventArgs e)
