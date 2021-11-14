@@ -18,14 +18,14 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Name="chnageAssigneeHeaderLabel" Content="CHANGE ASSIGNEE" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Label Grid.Column="0" Name="headerLabel" Content="CHANGE ASSIGNEE" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
 
 
             <WrapPanel Name="changeAssigneeWrapPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Label Style="{StaticResource tableItemLabel}" Content="Pre-Sales Engineers"/>
+                <Label Name="comboBoxLabel" Style="{StaticResource tableItemLabel}" Content="Pre-Sales Engineers"/>
                 <ComboBox Style="{StaticResource comboBoxStyle}" Name="PreSalesEngineersComboBox" SelectionChanged="OnSelChangedChangeAssignee"/>
             </WrapPanel>
 

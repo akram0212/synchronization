@@ -105,6 +105,9 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
+                
+                
+
             </WrapPanel>
             
         </Grid>

@@ -758,6 +758,8 @@ namespace _01electronics_crm
                     ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
                     currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
                 }
+
+                workOfferPaymentAndDeliveryPage.totalPriceCombo.SelectedIndex = currentPriceComboBox.SelectedIndex;
             }
         }
 
@@ -933,10 +935,6 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
-           
-            workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
-            workOfferPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
-
             workOfferPaymentAndDeliveryPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferPaymentAndDeliveryPage.workOfferProductsPage = this;
             workOfferPaymentAndDeliveryPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;

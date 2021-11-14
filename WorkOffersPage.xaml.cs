@@ -39,6 +39,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> offerStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
+        private List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> failureReasons = new List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -107,6 +108,14 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetWorkOffers(ref workOffers))
                 return false;
+            return true;
+        }
+
+        private bool GetFailureReasons()
+        {
+            if (!commonQueriesObject.GetOfferFailureReasons(ref failureReasons))
+                return false;
+
             return true;
         }
 
@@ -421,6 +430,10 @@ namespace _01electronics_crm
                 confirmButton.Content = "Confirm Offer";
                 confirmButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
+                ListBoxItem rejectButton = new ListBoxItem();
+                rejectButton.Content = "Reject Offer";
+                rejectButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 listBox.Items.Add(viewButton);
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
@@ -429,7 +442,11 @@ namespace _01electronics_crm
 
                     if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
                         listBox.Items.Add(confirmButton);
+
+                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                        listBox.Items.Add(rejectButton);
                 }
+
                 expander.Content = listBox;
 
                 fullStackPanel.Children.Add(offerIdLabel);
@@ -1120,10 +1137,7 @@ namespace _01electronics_crm
             }
 
             
-            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
-
-            reviseOffer.Closed += OnClosedWorkOfferWindow;
-            reviseOffer.Show();
+            
         }
 
         private void OnBtnClickConfirmOffer()
@@ -1162,6 +1176,33 @@ namespace _01electronics_crm
 
         }
 
+        private void OnBtnClickRejectOffer()
+        {
+            GetFailureReasons();
+
+            commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
+
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+
+
+            ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedWorkOffer, failureReasons);
+            failureReasonWindow.Closed += OnClosedFailureReasonWindow;
+
+            failureReasonWindow.Show();
+
+        }
+
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
             //WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
@@ -1176,14 +1217,15 @@ namespace _01electronics_crm
 
         private void OnClosedWorkOfferWindow(object sender, EventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
 
-                WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, true);
-                viewOffer.Show();
-            }
+            if (!GetWorkOffers())
+                return;
 
+            SetWorkOffersStackPanel();
+            SetWorkOffersGrid();
+        }
+        private void OnClosedFailureReasonWindow(object sender, EventArgs e)
+        {
             if (!GetWorkOffers())
                 return;
 
@@ -1238,6 +1280,10 @@ namespace _01electronics_crm
                 else if (currentItem.Content.ToString() == "Confirm Offer")
                 {
                     OnBtnClickConfirmOffer();
+                }
+                else if (currentItem.Content.ToString() == "Reject Offer")
+                {
+                    OnBtnClickRejectOffer();
                 }
 
                 tempListBox.SelectedIndex = -1;
