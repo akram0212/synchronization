@@ -496,15 +496,18 @@ namespace _01electronics_crm
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOrder.SetOrderDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
+            if (deliveryTimeCombo.SelectedIndex != -1)
+                workOrder.SetOrderDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOrder.SetOrderDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
+            if (deliveryTimeFromWhenCombo.SelectedIndex != -1)
+                workOrder.SetOrderDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
         }
         private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
         {
-            workOrder.SetOrderShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
+            if (deliveryPointPortCombo.SelectedIndex != -1)
+                workOrder.SetOrderShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -652,8 +655,10 @@ namespace _01electronics_crm
 
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
+
             WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
             NavigationService.Navigate(projectsPage);
+
         }
     }
 }

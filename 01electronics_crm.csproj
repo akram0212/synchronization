@@ -132,6 +132,12 @@
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddProjectLocationWindow.xaml.cs">
+      <DependentUpon>AddProjectLocationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddProjectWindow.xaml.cs">
+      <DependentUpon>AddProjectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ChangeAssigneeWindow.xaml.cs">
       <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
     </Compile>
@@ -152,6 +158,9 @@
     <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectsPage.xaml.cs">
+      <DependentUpon>ProjectsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -279,6 +288,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddProjectLocationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ChangeAssigneeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -335,6 +352,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProjectsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

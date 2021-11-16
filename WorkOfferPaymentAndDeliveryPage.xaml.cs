@@ -638,6 +638,12 @@ namespace _01electronics_crm
             deliveryTimeTextBoxFrom.IsEnabled = true;
             deliveryTimeTextBoxTo.IsEnabled = true;
             deliveryTimeFromWhenCombo.IsEnabled = true;
+
+            deliveryTimeCombo.SelectedItem= null;
+            deliveryTimeTextBoxFrom.Text = null;
+            deliveryTimeTextBoxTo.Text = null;
+            deliveryTimeFromWhenCombo.SelectedItem = null;
+          
         }
 
         private void OnUnCheckDeliveryTime(object sender, RoutedEventArgs e)
@@ -657,6 +663,9 @@ namespace _01electronics_crm
         {
             deliveryPointCombo.IsEnabled = true;
             deliveryPointPortCombo.IsEnabled = true;
+
+            deliveryPointCombo.SelectedItem = null;
+            deliveryPointPortCombo.SelectedItem = null;
         }
 
         private void OnUnCheckDeliveryPoint(object sender, RoutedEventArgs e)

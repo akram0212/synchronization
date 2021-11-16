@@ -262,8 +262,8 @@ namespace _01electronics_crm
             }
             else
             {
-                workOrder.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-                //InitializeOfferSerialCombo();
+                workOrder.InitializeSalesPersonInfo(salesPersonID);
+               // workOrder.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
 
                 if (OfferCheckBox.IsChecked == false)
                 {
@@ -587,8 +587,10 @@ namespace _01electronics_crm
 
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
+
             WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
             NavigationService.Navigate(projectsPage);
+
 
         }
 

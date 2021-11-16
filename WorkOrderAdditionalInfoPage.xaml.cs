@@ -135,6 +135,7 @@ namespace _01electronics_crm
             drawingDeadlineToTextBox.IsEnabled = false;
             drawingDeadlineDateComboBox.IsEnabled = false;
             drawingDeadlineDateFromWhenComboBox.IsEnabled = false;
+            workOrder.SetOrderHasDrawings(false);
         }
 
         private void EnableDrawingSubmissionUIElements()
@@ -143,6 +144,7 @@ namespace _01electronics_crm
             drawingDeadlineToTextBox.IsEnabled = true;
             drawingDeadlineDateComboBox.IsEnabled = true;
             drawingDeadlineDateFromWhenComboBox.IsEnabled = true;
+            workOrder.SetOrderHasDrawings(true);
         }
 
         private void ConfigureUIElementsView()
