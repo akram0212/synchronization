@@ -28,6 +28,12 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
         protected IntegrityChecks integrityChecker;
+
+        protected List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
+        protected List<BASIC_STRUCTS.STATE_STRUCT> states;
+        protected List<BASIC_STRUCTS.CITY_STRUCT> cities;
+        protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
+
         protected BASIC_STRUCTS.PROJECT_STRUCT project = new BASIC_STRUCTS.PROJECT_STRUCT();
         public AddProjectWindow(ref Employee mLoggedInUser)
         {
@@ -39,14 +45,104 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             integrityChecker = new IntegrityChecks();
+
+            countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
+            states = new List<BASIC_STRUCTS.STATE_STRUCT>();
+            cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
+            districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
+
+            InitializeCountries();
+
+            stateComboBox.IsEnabled = false;
+            cityComboBox.IsEnabled = false;
+            districtComboBox.IsEnabled = false;
+        }
+
+        private bool InitializeCountries()
+        {
+            if (!commonQueries.GetAllCountries(ref countries))
+                return false;
+
+            for (int i = 0; i < countries.Count; i++)
+                countryComboBox.Items.Add(countries[i].country_name);
+
+            return true;
         }
 
         private void OnSelChangedProjecNameTextBox(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void OnSelChangedProjecIDTextBox(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
+        {
+            if (countryComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                    return;
+
+                stateComboBox.IsEnabled = true;
+                stateComboBox.Items.Clear();
+                for (int i = 0; i < states.Count(); i++)
+                {
+                    if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
+                        stateComboBox.Items.Add(states[i].state_name);
+                }
+            }
+            else
+            {
+                stateComboBox.SelectedItem = null;
+                stateComboBox.IsEnabled = false;
+            }
+        }
+        private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
+        {
+            if (stateComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                    return;
+
+                cityComboBox.IsEnabled = true;
+                cityComboBox.Items.Clear();
+
+                for (int i = 0; i < cities.Count; i++)
+                {
+                    if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                        cityComboBox.Items.Add(cities[i].city_name);
+                }
+            }
+            else
+            {
+                cityComboBox.SelectedItem = null;
+                cityComboBox.IsEnabled = false;
+            }
+        }
+        private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
+        {
+            if (cityComboBox.SelectedItem != null)
+            {
+                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                    return;
+
+                districtComboBox.IsEnabled = true;
+                districtComboBox.Items.Clear();
+
+                for (int i = 0; i < districts.Count; i++)
+                {
+                    if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                        districtComboBox.Items.Add(districts[i].district_name);
+                }
+            }
+            else
+            {
+                districtComboBox.IsEnabled = false;
+                districtComboBox.SelectedItem = null;
+            }
+        }
+        private void OnSelChangedDistrict(object sender, SelectionChangedEventArgs e)
         {
 
         }
@@ -57,13 +153,25 @@ namespace _01electronics_crm
                 return;
             if (!CheckProjectIDEditBox())
                 return;
+            if (!CheckCountryComboBox())
+                return;
+            if (!CheckStateComboBox())
+                return;
+            if (!CheckCityComboBox())
+                return;
+            if (!CheckDistrictComboBox())
+                return;
             if (!GetMaxProjectSerial())
                 return;
             if (!InsertNewProject())
                 return;
+            if (!InsertIntoProjectLocations())
+                return;
+
             this.Close();
 
         }
+
         private bool CheckProjectIDEditBox()
         {
             if (ProjecIDTextBox.Text.Length > 15)
@@ -89,9 +197,50 @@ namespace _01electronics_crm
 
             return true;
         }
-        public bool GetMaxProjectSerial()
+        private bool CheckCountryComboBox()
         {
-            String sqlQueryPart1 = " select max(projects_info.project_serial) from erp_system.dbo.projects_info ;";
+            if (countryComboBox.SelectedItem == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Country must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+        private bool CheckStateComboBox()
+        {
+            if (stateComboBox.SelectedItem == null)
+            {
+                System.Windows.Forms.MessageBox.Show("State must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+        private bool CheckCityComboBox()
+        {
+            if (cityComboBox.SelectedItem == null)
+            {
+                System.Windows.Forms.MessageBox.Show("City must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+        private bool CheckDistrictComboBox()
+        {
+            if (districtComboBox.SelectedItem == null)
+            {
+                System.Windows.Forms.MessageBox.Show("District must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool GetMaxProjectSerial()
+        {
+            String sqlQueryPart1 = " select max(client_projects.project_serial) from erp_system.dbo.client_projects;";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
@@ -108,10 +257,9 @@ namespace _01electronics_crm
 
             return true;
         }
-        
-        public bool InsertNewProject()
+        private bool InsertNewProject()
         {
-            String sqlQueryPart1 = @"insert into erp_system.dbo.projects_info
+            String sqlQueryPart1 = @"insert into erp_system.dbo.client_projects
                                      values( ";
             String sqlQueryPart2 = " GETDATE());";
             String comma = ", ";
@@ -123,6 +271,28 @@ namespace _01electronics_crm
             sqlQuery += "'" + project.project_name + "'";
             sqlQuery += comma;
             sqlQuery += "'" + project.project_id + "'";
+            sqlQuery += comma;
+            sqlQuery += sqlQueryPart2;
+
+            if (!sqlServer.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+        private bool InsertIntoProjectLocations()
+        {
+            String sqlQueryPart1 = @"insert into erp_system.dbo.client_project_locations
+                                     values( ";
+            String sqlQueryPart2 = " GETDATE());";
+            String comma = ", ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += project.project_serial;
+            sqlQuery += comma;
+            sqlQuery += 1;
+            sqlQuery += comma;
+            sqlQuery += districts[districtComboBox.SelectedIndex].district_id;
             sqlQuery += comma;
             sqlQuery += sqlQueryPart2;
 

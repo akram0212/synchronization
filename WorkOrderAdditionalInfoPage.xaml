@@ -106,8 +106,11 @@
                     </WrapPanel>
                     
                     <WrapPanel Grid.Row="4">
-                        <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
-                        <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                        <WrapPanel>
+                            <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
+                            <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                        </WrapPanel>
+                        
                     </WrapPanel>
                 </Grid>
             </ScrollViewer>

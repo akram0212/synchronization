@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
         Background="#EDEDED"
-        Title="AddProjectWindow" Height="450" Width="800">
+        Title="AddProjectWindow" 
+        Height="730" Width="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -25,19 +26,40 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
-               
-                <WrapPanel Grid.Row="0" Name="AddProjectNameWrapPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Label Name="ProjecNameLabel" Style="{StaticResource labelStyle}" Content="Name"/>
-                <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecNameTextBox" SelectionChanged="OnSelChangedProjecNameTextBox"/>
+
+                <WrapPanel Margin="24">
+                    <WrapPanel  Name="AddProjectNameWrapPanel" >
+                        <Label Name="ProjecNameLabel" Style="{StaticResource labelStyle}" Content="Name*"/>
+                        <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecNameTextBox" SelectionChanged="OnSelChangedProjecNameTextBox"/>
+                    </WrapPanel>
+
+                    <WrapPanel Name="AddProjectIDWrapPanel" >
+                        <Label Name="ProjecIDLabel" Style="{StaticResource labelStyle}" Content="ID*"/>
+                        <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecIDTextBox" SelectionChanged="OnSelChangedProjecIDTextBox"/>
+                    </WrapPanel>
+
+                    <WrapPanel Name="CountryWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Country *"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="countryComboBox" SelectionChanged="OnSelChangedCountry"/>
+                    </WrapPanel>
+                    
+                    <WrapPanel Name="StateWrapPanel">
+                         <Label Style="{StaticResource labelStyle}" Content="State *"/>
+                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="stateComboBox" SelectionChanged="OnSelChangedState"/>
+                    </WrapPanel>
+
+                    <WrapPanel Name="CityWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="City *"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="cityComboBox" SelectionChanged="OnSelChangedCity"/>
+                    </WrapPanel>
+
+                    <WrapPanel Name="DistrictWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="District *"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="districtComboBox" SelectionChanged="OnSelChangedDistrict"/>
+                    </WrapPanel>
                 </WrapPanel>
-                
-                <WrapPanel Grid.Row="1" Name="AddProjectIDWrapPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Label Name="ProjecIDLabel" Style="{StaticResource labelStyle}" Content="ID"/>
-                <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecIDTextBox" SelectionChanged="OnSelChangedProjecIDTextBox"/>
-            </WrapPanel>
-                
+
             </Grid>
 
         </ScrollViewer>

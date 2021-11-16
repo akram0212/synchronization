@@ -33,12 +33,13 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.CITY_STRUCT> cities;
         private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
-        private List<KeyValuePair<int, TreeViewItem>> salesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
-        private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+        private List<KeyValuePair<int, TreeViewItem>> projectTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+        private List<BASIC_STRUCTS.PROJECT_STRUCT> projectNames = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
+        private List<KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>>();
 
         //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
 
-        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
+        //private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
 
         public ProjectsPage(ref Employee mLoggedInUser)
         {
@@ -63,19 +64,92 @@ namespace _01electronics_crm
 
             InitializeCountriesComboBox();
 
-            //if (!CheckEmployeePosition())
-            //    return;
+            if (!InitializeProjectsList())
+                return; 
+            if (!GetProjectLocations())
+                return;
 
-            //if (!InitializeCompaniesList())
-            //    return;
-
-            //GetAllContacts();
-
-            //SetDefaultSettings();
-
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
+        private bool InitializeProjectsList()
+        {
+            projectNames.Clear();
 
+            if (!commonQueries.GetClientProjects(ref projectNames))
+                return false;
+
+            return true;
+        }
+        public bool GetProjectLocations()
+        {
+            projectLocations.Clear();
+
+            for (int i = 0; i < projectNames.Count; i++)
+            {
+                List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> tmpList = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                commonQueries.GetProjectLocations(projectNames[i].project_serial, ref tmpList);
+
+                projectLocations.Add(new KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>(projectNames[i].project_serial, tmpList));
+
+            }
+
+            return true;
+        }
+        public bool InitializeProjectNamesTree()
+        {
+            projectsTreeView.Items.Clear();
+            projectTreeArray.Clear();
+
+            for (int j = 0; j < projectNames.Count(); j++)
+            {
+                TreeViewItem ParentItem = new TreeViewItem();
+
+                ParentItem.Header = projectNames[j].project_name;
+                ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                ParentItem.FontSize = 14;
+                ParentItem.FontWeight = FontWeights.SemiBold;
+                ParentItem.FontFamily = new FontFamily("Sans Serif");
+                ParentItem.Tag = projectNames[j].project_serial;
+
+                projectsTreeView.Items.Add(ParentItem);
+
+                projectTreeArray.Add(new KeyValuePair<int, TreeViewItem>(projectNames[j].project_serial, ParentItem));
+
+            }
+            InitializeProjectLocationsTree();
+
+            return true;
+        }
+        public bool InitializeProjectLocationsTree()
+        {
+            for (int i = 0; i < projectLocations.Count(); i++)
+            {
+                TreeViewItem currentEmployeeTreeItem = projectTreeArray.Find(tree_item => tree_item.Key == projectLocations[i].Key).Value;
+
+                for (int j = 0; j < projectLocations[i].Value.Count; j++)
+                {
+                    if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != projectLocations[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                        continue;
+                    if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != projectLocations[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                        continue;
+                    if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != projectLocations[i].Value[j].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
+                        continue;
+                    if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != projectLocations[i].Value[j].address)
+                        continue;
+
+                    TreeViewItem ChildItem = new TreeViewItem();
+                    ChildItem.Header = projectLocations[i].Value[j].branch_Info.district + ", " + projectLocations[i].Value[j].branch_Info.city + ", " + projectLocations[i].Value[j].branch_Info.state_governorate + ", " + projectLocations[i].Value[j].branch_Info.country;
+                    ChildItem.Tag = projectLocations[i].Value[j].location_id;
+                    ChildItem.FontSize = 13;
+                    ChildItem.FontWeight = FontWeights.SemiBold;
+
+                    currentEmployeeTreeItem.Items.Add(ChildItem);
+                }
+
+            }
+
+            return true;
+        }
         public bool InitializeCountriesComboBox()
         {
             countryComboBox.Items.Clear();
@@ -174,7 +248,7 @@ namespace _01electronics_crm
             if (!InitializeStatesComboBox())
                 return;
 
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
 
         private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
@@ -189,7 +263,7 @@ namespace _01electronics_crm
             if (!InitializeCitiesComboBox())
                 return;
 
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
 
         private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
@@ -201,12 +275,12 @@ namespace _01electronics_crm
             if (!InitializeDistrictsComboBox())
                 return;
 
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
 
         private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
         {
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,7 +307,8 @@ namespace _01electronics_crm
             stateCheckBox.IsChecked = false;
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
-            //InitializeSalesTree();
+
+            InitializeProjectNamesTree();
 
         }
 
@@ -252,7 +327,8 @@ namespace _01electronics_crm
 
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
-            //InitializeSalesTree();
+
+            InitializeProjectNamesTree();
         }
 
         private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
@@ -267,15 +343,16 @@ namespace _01electronics_crm
 
             cityCheckBox.IsChecked = false;
             districtCheckBox.IsChecked = false;
-            //InitializeSalesTree();
+
+            InitializeProjectNamesTree();
         }
 
         private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
         {
             districtComboBox.SelectedItem = null;
-
             districtComboBox.IsEnabled = false;
-            //InitializeSalesTree();
+
+            InitializeProjectNamesTree();
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
@@ -283,41 +360,26 @@ namespace _01electronics_crm
         private void OnBtnClickAddProjectLocation(object sender, RoutedEventArgs e)
         {
             AddProjectLocationWindow addProjectLocationWindow = new AddProjectLocationWindow(ref loggedInUser);
-            addProjectLocationWindow.Closed += OnClosedAddCompanyWindow;
+            addProjectLocationWindow.Closed += OnClosedWindowHandler;
             addProjectLocationWindow.Show();
         }
         private void OnBtnClickAddProject(object sender, RoutedEventArgs e)
         {
             AddProjectWindow addProjectWindow = new AddProjectWindow(ref loggedInUser);
-            addProjectWindow.Closed += OnClosedAddContactWindow;
+            addProjectWindow.Closed += OnClosedWindowHandler;
             addProjectWindow.Show();
         }
 
-        private void OnClosedAddCompanyWindow(object sender, EventArgs e)
+        private void OnClosedWindowHandler(object sender, EventArgs e)
         {
-            //employeesCompanies.Clear();
+            projectLocations.Clear();
 
-            //if (!InitializeCompaniesList())
-            //    return;
+            if (!InitializeProjectsList())
+                return;
+            if (!GetProjectLocations())
+                return;
 
-            //GetAllContacts();
-
-            //SetDefaultSettings();
-
-            //InitializeSalesTree();
-        }
-        private void OnClosedAddContactWindow(object sender, EventArgs e)
-        {
-            //employeesCompanies.Clear();
-
-            //if (!InitializeCompaniesList())
-            //    return;
-
-            //GetAllContacts();
-
-            //SetDefaultSettings();
-
-            //InitializeSalesTree();
+            InitializeProjectNamesTree();
         }
         private void OnSelectedItemChangedTreeViewItem(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
