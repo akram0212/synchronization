@@ -194,8 +194,8 @@ namespace _01electronics_crm
             String inputString = companyNameTextBox.Text;
             String outputString = companyNameTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyNameEditBox(inputString, ref outputString, true))
-                return false;
+            //if (!integrityChecker.CheckCompanyNameEditBox(inputString, ref outputString, true))
+              //  return false;
 
             company.SetCompanyName(outputString);
             companyNameTextBox.Text = company.GetCompanyName();

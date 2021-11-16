@@ -46,6 +46,7 @@ namespace _01electronics_crm
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
 
         public WorkOrderProductsPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition, ref WorkOrderPaymentAndDeliveryPage mWorkOrderPaymentAndDeliveryPage)
         {
