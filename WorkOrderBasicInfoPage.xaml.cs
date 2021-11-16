@@ -46,6 +46,7 @@ namespace _01electronics_crm
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
         public WorkOrderBasicInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition, ref WorkOrderProductsPage mWorkOrderProductsPage)
         {
             workOrderProductsPage = mWorkOrderProductsPage;
@@ -61,6 +62,7 @@ namespace _01electronics_crm
             //tmpWorkOffer = new WorkOffer();
 
             InitializeComponent();
+
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
                 FillOffersList();
@@ -222,8 +224,7 @@ namespace _01electronics_crm
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SELECTION CHANGED HANDLERS///////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             companyNameCombo.Items.Clear();
@@ -263,7 +264,6 @@ namespace _01electronics_crm
             {
                 workOrder.InitializeSalesPersonInfo(salesPersonID);
                // workOrder.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-                //InitializeOfferSerialCombo();
 
                 if (OfferCheckBox.IsChecked == false)
                 {

@@ -108,8 +108,8 @@ namespace _01electronics_crm
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
-            if (!CheckCompanyNameEditBox())
-                return;
+            //if (!CheckCompanyNameEditBox())
+              //  return;
             if (!CheckCompanyToBeMergedComboBox())
                 return;
             if (!CheckPrimaryWorkFieldComboBox())

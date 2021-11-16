@@ -44,7 +44,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
 
@@ -52,20 +52,20 @@
                 <Label Content="Project Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                 <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" >
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" >
-                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
 
         </Grid>
@@ -77,8 +77,8 @@
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24">
-                <CheckBox Content="Project Location" Style="{StaticResource checkBoxStyle}"/>
-                <ComboBox Name="projectComboBox" Style="{StaticResource comboBoxStyle}" />
+                <CheckBox Content="Project Location" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProjectLocation" Unchecked="OnUnCheckProjectLocation"/>
+                <ComboBox Name="projectComboBox" Style="{StaticResource comboBoxStyle}" SelectionChanged="OnSelChangedProjectLocationCombo"/>
             </WrapPanel>
 
             <ScrollViewer Grid.Row="1" Margin="24" Height="400">
@@ -100,10 +100,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" Margin="24"/>
-            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next"  Margin="24"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" Margin="24" Click="OnBtnClickBack"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next"  Margin="24" Click="OnBtnClickNext"/>
             <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
-            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel"  Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel"  Margin="24" Click="OnBtnClickCancel"/>
 
         </Grid>
 

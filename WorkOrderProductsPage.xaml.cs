@@ -46,6 +46,7 @@ namespace _01electronics_crm
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
 
         public WorkOrderProductsPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition, ref WorkOrderPaymentAndDeliveryPage mWorkOrderPaymentAndDeliveryPage)
         {
@@ -1010,8 +1011,8 @@ namespace _01electronics_crm
 
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
-            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage();
-            NavigationService.Navigate(projectsPage);
+            //WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage();
+            //NavigationService.Navigate(projectsPage);
         }
     }
 }
