@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="#EDEDED"
         Title="AddProjectLocationWindow"
-        Height="730" Width="700">
+        Height="730" Width="750">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -35,7 +35,7 @@
 
                     <WrapPanel Grid.Row="0">
                         <WrapPanel Name="ProjectNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Project Name *"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Project &#x0a;Name *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="ProjectNameComboBox" SelectionChanged="OnSelChangedProjectName"/>
                         </WrapPanel>
                     </WrapPanel>
@@ -56,11 +56,13 @@
                         <WrapPanel Name="CityWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="City *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="cityComboBox" SelectionChanged="OnSelChangedCity"/>
+                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickCityImage"/>
                         </WrapPanel>
 
                         <WrapPanel Name="DistrictWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="District *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="districtComboBox" SelectionChanged="OnSelChangedDistrict"/>
+                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickDistrictImage"/>
                         </WrapPanel>
                     </WrapPanel>
 

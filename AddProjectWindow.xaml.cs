@@ -68,7 +68,36 @@ namespace _01electronics_crm
 
             return true;
         }
+        private bool InitializeCities()
+        {
+            cityComboBox.Items.Clear();
 
+            if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
+                return false;
+
+            for (int i = 0; i < cities.Count; i++)
+            {
+                if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
+                    cityComboBox.Items.Add(cities[i].city_name);
+            }
+
+            return true;
+        }
+        private bool InitializeDistricts()
+        {
+            districtComboBox.Items.Clear();
+
+            if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
+                return false;
+
+            for (int i = 0; i < districts.Count; i++)
+            {
+                if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
+                    districtComboBox.Items.Add(districts[i].district_name);
+            }
+
+            return true;
+        }
         private void OnSelChangedProjecNameTextBox(object sender, RoutedEventArgs e)
         {
 
@@ -102,44 +131,30 @@ namespace _01electronics_crm
         {
             if (stateComboBox.SelectedItem != null)
             {
-                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
-                    return;
-
+                InitializeCities();
                 cityComboBox.IsEnabled = true;
-                cityComboBox.Items.Clear();
-
-                for (int i = 0; i < cities.Count; i++)
-                {
-                    if (stateComboBox.SelectedItem != null && cities[i].city_id / 100 == states[stateComboBox.SelectedIndex].state_id)
-                        cityComboBox.Items.Add(cities[i].city_name);
-                }
+                cityComboBox.IsEditable = true;
             }
             else
             {
                 cityComboBox.SelectedItem = null;
                 cityComboBox.IsEnabled = false;
+                cityComboBox.IsEditable = false;
             }
         }
         private void OnSelChangedCity(object sender, SelectionChangedEventArgs e)
         {
             if (cityComboBox.SelectedItem != null)
             {
-                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
-                    return;
-
+                InitializeDistricts();
                 districtComboBox.IsEnabled = true;
-                districtComboBox.Items.Clear();
-
-                for (int i = 0; i < districts.Count; i++)
-                {
-                    if (cityComboBox.SelectedItem != null && districts[i].district_id / 100 == cities[cityComboBox.SelectedIndex].city_id)
-                        districtComboBox.Items.Add(districts[i].district_name);
-                }
+                districtComboBox.IsEditable = true;
             }
             else
             {
                 districtComboBox.IsEnabled = false;
                 districtComboBox.SelectedItem = null;
+                districtComboBox.IsEditable = false;
             }
         }
         private void OnSelChangedDistrict(object sender, SelectionChangedEventArgs e)
@@ -300,6 +315,53 @@ namespace _01electronics_crm
                 return false;
 
             return true;
+        }
+        private void OnClickCityImage(object sender, MouseButtonEventArgs e)
+        {
+            if(cityComboBox.Text.ToString() != "")
+            {
+                if (!cities.Exists(cityItem => cityItem.city_name == cityComboBox.Text.ToString()))
+                {
+                    int cityID = 0;
+
+                    if (stateComboBox.SelectedItem == null || !commonQueries.GetMaxCityId(states[stateComboBox.SelectedIndex].state_id, ref cityID))
+                        return;
+                    
+                    if (!commonQueries.InsertNewCity(states[stateComboBox.SelectedIndex].state_id, cityID, cityComboBox.Text.ToString()))
+                        return;
+
+                    String tmp = cityComboBox.Text.ToString();
+
+                    if (!InitializeCities())
+                        return;
+
+                    cityComboBox.SelectedItem = tmp;
+                }
+            }
+        }
+
+        private void OnClickDistrictImage(object sender, MouseButtonEventArgs e)
+        {
+            if (districtComboBox.Text.ToString() != "")
+            {
+                if (!districts.Exists(districtItem => districtItem.district_name == districtComboBox.Text.ToString()))
+                {
+                    int districtID = 0;
+
+                    if (cityComboBox.SelectedItem == null || !commonQueries.GetMaxDistrictId(cities[cityComboBox.SelectedIndex].city_id, ref districtID))
+                        return;
+
+                    if (!commonQueries.InsertNewDistrict(cities[cityComboBox.SelectedIndex].city_id, districtID, districtComboBox.Text.ToString()))
+                        return;
+
+                    String tmp = districtComboBox.Text.ToString();
+
+                    if (!InitializeDistricts())
+                        return;
+
+                    districtComboBox.SelectedItem = tmp;
+                }
+            }
         }
     }
 }

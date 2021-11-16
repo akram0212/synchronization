@@ -634,5 +634,8 @@
     <Resource Include="photos\no_internet_icon.jpg" />
     <Resource Include="photos\models\00.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\plus_icon.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
