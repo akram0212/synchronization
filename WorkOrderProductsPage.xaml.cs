@@ -1013,7 +1013,6 @@ namespace _01electronics_crm
         {
             WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
             NavigationService.Navigate(projectsPage);
-
         }
     }
 }

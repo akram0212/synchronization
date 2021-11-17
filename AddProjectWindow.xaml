@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="#EDEDED"
         Title="AddProjectWindow" 
-        Height="730" Width="700">
+        Height="730" Width="750">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -30,33 +30,35 @@
 
                 <WrapPanel Margin="24">
                     <WrapPanel  Name="AddProjectNameWrapPanel" >
-                        <Label Name="ProjecNameLabel" Style="{StaticResource labelStyle}" Content="Name*"/>
+                        <Label Name="ProjecNameLabel" Style="{StaticResource tableItemLabel}" Content="Name*"/>
                         <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecNameTextBox" SelectionChanged="OnSelChangedProjecNameTextBox"/>
                     </WrapPanel>
 
                     <WrapPanel Name="AddProjectIDWrapPanel" >
-                        <Label Name="ProjecIDLabel" Style="{StaticResource labelStyle}" Content="ID*"/>
+                        <Label Name="ProjecIDLabel" Style="{StaticResource tableItemLabel}" Content="ID*"/>
                         <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecIDTextBox" SelectionChanged="OnSelChangedProjecIDTextBox"/>
                     </WrapPanel>
 
                     <WrapPanel Name="CountryWrapPanel">
-                        <Label Style="{StaticResource labelStyle}" Content="Country *"/>
+                        <Label Style="{StaticResource tableItemLabel}" Content="Country *"/>
                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="countryComboBox" SelectionChanged="OnSelChangedCountry"/>
                     </WrapPanel>
                     
                     <WrapPanel Name="StateWrapPanel">
-                         <Label Style="{StaticResource labelStyle}" Content="State *"/>
+                         <Label Style="{StaticResource tableItemLabel}" Content="State *"/>
                          <ComboBox Style="{StaticResource comboBoxStyle}" Name="stateComboBox" SelectionChanged="OnSelChangedState"/>
                     </WrapPanel>
 
                     <WrapPanel Name="CityWrapPanel">
-                        <Label Style="{StaticResource labelStyle}" Content="City *"/>
+                        <Label Style="{StaticResource tableItemLabel}" Content="City *"/>
                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="cityComboBox" SelectionChanged="OnSelChangedCity"/>
+                        <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickCityImage"/>
                     </WrapPanel>
 
                     <WrapPanel Name="DistrictWrapPanel">
-                        <Label Style="{StaticResource labelStyle}" Content="District *"/>
+                        <Label Style="{StaticResource tableItemLabel}" Content="District *"/>
                         <ComboBox Style="{StaticResource comboBoxStyle}" Name="districtComboBox" SelectionChanged="OnSelChangedDistrict"/>
+                        <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickDistrictImage"/>
                     </WrapPanel>
                 </WrapPanel>
 

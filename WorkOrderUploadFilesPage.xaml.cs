@@ -887,10 +887,8 @@ namespace _01electronics_crm
 
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
-
             WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
             NavigationService.Navigate(projectsPage);
-
         }
     }
 }
