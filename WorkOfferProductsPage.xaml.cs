@@ -74,8 +74,9 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
             {
-                InitializePriceCurrencyComboBoxes();
+                
                 SetUpPageUIElements();
+                InitializePriceCurrencyComboBoxes();
                 SetTypeLabels();
                 SetBrandLabels();
                 SetModelLabels();
