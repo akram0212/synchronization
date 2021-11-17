@@ -58,6 +58,7 @@ namespace _01electronics_crm
         public WorkOrderProductsPage workOrderProductsPage;
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
 
         public WorkOrderAdditionalInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition)
         {
@@ -134,6 +135,7 @@ namespace _01electronics_crm
             drawingDeadlineToTextBox.IsEnabled = false;
             drawingDeadlineDateComboBox.IsEnabled = false;
             drawingDeadlineDateFromWhenComboBox.IsEnabled = false;
+            workOrder.SetOrderHasDrawings(false);
         }
 
         private void EnableDrawingSubmissionUIElements()
@@ -142,6 +144,7 @@ namespace _01electronics_crm
             drawingDeadlineToTextBox.IsEnabled = true;
             drawingDeadlineDateComboBox.IsEnabled = true;
             drawingDeadlineDateFromWhenComboBox.IsEnabled = true;
+            workOrder.SetOrderHasDrawings(true);
         }
 
         private void ConfigureUIElementsView()

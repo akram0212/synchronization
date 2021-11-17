@@ -1,72 +1,86 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for AddBranchWindow.xaml
+    /// Interaction logic for AddProjectLocationWindow.xaml
     /// </summary>
-    public partial class AddBranchWindow : Window
+    public partial class AddProjectLocationWindow : Window
     {
-        protected CommonQueries commonQueries;
-        protected SQLServer sqlServer;
-        protected IntegrityChecks integrityChecker;
 
-        protected Company company;
-        protected Employee loggedInUser;
+        public Employee loggedInUser;
+
+        protected SQLServer sqlServer;
+        protected String sqlQuery;
+        protected CommonQueries commonQueries;
+        protected CommonFunctions commonFunctions;
+        protected IntegrityChecks integrityChecker;
 
         protected List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
         protected List<BASIC_STRUCTS.STATE_STRUCT> states;
         protected List<BASIC_STRUCTS.CITY_STRUCT> cities;
         protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
-        protected String sqlQuery;
-        public AddBranchWindow(ref Employee mloggedInUser, ref Company mCompany)
+        protected List<BASIC_STRUCTS.PROJECT_STRUCT> projects;
+        protected int projectLocationId;
+        public AddProjectLocationWindow(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
+            loggedInUser = mLoggedInUser;
+
+            sqlServer = new SQLServer();
             commonQueries = new CommonQueries();
+            commonFunctions = new CommonFunctions();
+            integrityChecker = new IntegrityChecks();
 
             countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
             states = new List<BASIC_STRUCTS.STATE_STRUCT>();
             cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
 
-            sqlServer = new SQLServer();
-            integrityChecker = new IntegrityChecks();
+            projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
 
-            loggedInUser = mloggedInUser;
-            company = mCompany;
-
-            commonQueries.GetAllCountries(ref countries);
-
-            for (int i = 0; i < countries.Count; i++)
-                countryComboBox.Items.Add(countries[i].country_name);
-
-            companyNameTextBox.IsEnabled = false;
-            primaryWorkFieldTextBox.IsEnabled = false;
-            secondaryWorkFieldTextBox.IsEnabled = false;
-
-            companyNameTextBox.Text = company.GetCompanyName();
-            primaryWorkFieldTextBox.Text = company.GetCompanyPrimaryField();
-            secondaryWorkFieldTextBox.Text = company.GetCompanySecondaryField();
+            InitializeProjects();
+            InitializeCountries();
 
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
+        }
+        private bool InitializeProjects()
+        {
+            if (!commonQueries.GetClientProjects(ref projects))
+                return false;
+
+            for (int i = 0; i < projects.Count; i++)
+                ProjectNameComboBox.Items.Add(projects[i].project_name);
+
+            return true;
+        }
+        private bool InitializeCountries()
+        {
+            if (!commonQueries.GetAllCountries(ref countries))
+                return false;
+
+            for (int i = 0; i < countries.Count; i++)
+                countryComboBox.Items.Add(countries[i].country_name);
+
+            return true;
         }
         private bool InitializeCities()
         {
@@ -98,6 +112,7 @@ namespace _01electronics_crm
 
             return true;
         }
+
         private void OnSelChangedCountry(object sender, SelectionChangedEventArgs e)
         {
             if (countryComboBox.SelectedItem != null)
@@ -119,7 +134,6 @@ namespace _01electronics_crm
                 stateComboBox.IsEnabled = false;
             }
         }
-
         private void OnSelChangedState(object sender, SelectionChangedEventArgs e)
         {
             if (stateComboBox.SelectedItem != null)
@@ -150,24 +164,19 @@ namespace _01electronics_crm
                 districtComboBox.IsEditable = false;
             }
         }
-
         private void OnSelChangedDistrict(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
-        private void OnTextChangedTelephone(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void OnTextChangedFax(object sender, TextChangedEventArgs e)
+        private void OnSelChangedProjectName(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
+            if (!CheckProjectNameEditBox())
+                return;
             if (!CheckCountryComboBox())
                 return;
             if (!CheckStateComboBox())
@@ -176,78 +185,21 @@ namespace _01electronics_crm
                 return;
             if (!CheckDistrictComboBox())
                 return;
-            if (!CheckCompanyPhoneEditBox())
+            if (!GetProjectLocationsCount())
                 return;
-            if (!CheckCompanyFaxEditBox())
+            if (!InsertIntoProjectLocations())
                 return;
-
-            //YOU DON'T NEED TO WRITE A NEW QUERY GET NEW BRANCH SERIAL
-            //COMPANY CLASS HANDLES ALL THAT
-
-            company.SetOwnerUser(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
-
-            if (telephoneTextBox.Text != "" && faxTextBox.Text != "")
-            {
-                if (!company.IssueNewBranch(telephoneTextBox.Text, faxTextBox.Text))
-                    return;
-            }
-            else
-            {
-                if (!company.GetNewAddressSerial())
-                    return;
-
-                if (!company.InsertIntoCompanyAddress())
-                    return;
-
-                if(telephoneTextBox.Text != "")
-                {
-                    if (!company.InsertIntoCompanyTelephone(telephoneTextBox.Text))
-                        return;
-                }
-
-                if (faxTextBox.Text != "")
-                {
-                    if (!company.InsertIntoCompanyFax(faxTextBox.Text))
-                        return;
-                }
-            }
-            //company.GetNewAddressSerial();
-
-            //if (!InsertIntoCompanyAddress())
-            //    return;
-
-            //if (!InsertIntoCompanyTelephone(telephoneTextBox.Text))
-            //    return;
-
-            // if (!InsertIntoCompanyFax(faxTextBox.Text))
-            //    return;
 
             this.Close();
-
         }
-        private bool CheckCompanyPhoneEditBox()
+
+        private bool CheckProjectNameEditBox()
         {
-            String inputString = telephoneTextBox.Text;
-            String outputString = telephoneTextBox.Text;
-
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, true))
+            if (ProjectNameComboBox.SelectedItem == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Project Name must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
-            company.AddCompanyPhone(outputString);
-            telephoneTextBox.Text = outputString;
-
-            return true;
-        }
-        private bool CheckCompanyFaxEditBox()
-        {
-            String inputString = faxTextBox.Text;
-            String outputString = faxTextBox.Text;
-
-            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false))
-                return false;
-
-            company.AddCompanyFax(outputString);
-            faxTextBox.Text = outputString;
+            }
 
             return true;
         }
@@ -259,11 +211,8 @@ namespace _01electronics_crm
                 return false;
             }
 
-            company.SetCompanyCountry(countries[countryComboBox.SelectedIndex].country_id, countryComboBox.SelectedItem.ToString());
-
             return true;
         }
-
         private bool CheckStateComboBox()
         {
             if (stateComboBox.SelectedItem == null)
@@ -271,11 +220,9 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("State must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            company.SetCompanyState(states[stateComboBox.SelectedIndex].state_id, stateComboBox.SelectedItem.ToString());
 
             return true;
         }
-
         private bool CheckCityComboBox()
         {
             if (cityComboBox.SelectedItem == null)
@@ -284,11 +231,8 @@ namespace _01electronics_crm
                 return false;
             }
 
-            company.SetCompanyCity(cities[cityComboBox.SelectedIndex].city_id, cityComboBox.SelectedItem.ToString());
-
             return true;
         }
-
         private bool CheckDistrictComboBox()
         {
             if (districtComboBox.SelectedItem == null)
@@ -297,7 +241,49 @@ namespace _01electronics_crm
                 return false;
             }
 
-            company.SetCompanyDistrict(districts[districtComboBox.SelectedIndex].district_id, districtComboBox.SelectedItem.ToString());
+            return true;
+        }
+
+        private bool GetProjectLocationsCount()
+        {
+            String sqlQueryPart1 = @" select count(client_project_locations.location_id)
+                                      from erp_system.dbo.client_project_locations
+                                      where project_serial = ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += projects[ProjectNameComboBox.SelectedIndex].project_serial;
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+
+            if (!sqlServer.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            projectLocationId = sqlServer.rows[0].sql_int[0] + 1;
+
+            return true;
+        }
+        private bool InsertIntoProjectLocations()
+        {
+            String sqlQueryPart1 = @"insert into erp_system.dbo.client_project_locations
+                                     values( ";
+            String sqlQueryPart2 = " GETDATE());";
+            String comma = ", ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += projects[ProjectNameComboBox.SelectedIndex].project_serial;
+            sqlQuery += comma;
+            sqlQuery += projectLocationId;
+            sqlQuery += comma;
+            sqlQuery += districts[districtComboBox.SelectedIndex].district_id;
+            sqlQuery += comma;
+            sqlQuery += sqlQueryPart2;
+
+            if (!sqlServer.InsertRows(sqlQuery))
+                return false;
 
             return true;
         }
@@ -324,7 +310,6 @@ namespace _01electronics_crm
                 }
             }
         }
-
         private void OnClickDistrictImage(object sender, MouseButtonEventArgs e)
         {
             if (districtComboBox.Text.ToString() != "")

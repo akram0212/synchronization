@@ -370,6 +370,11 @@ namespace _01electronics_crm
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
         }
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS

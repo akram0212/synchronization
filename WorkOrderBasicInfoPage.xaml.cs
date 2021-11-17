@@ -46,6 +46,7 @@ namespace _01electronics_crm
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
         public WorkOrderBasicInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition, ref WorkOrderProductsPage mWorkOrderProductsPage)
         {
             workOrderProductsPage = mWorkOrderProductsPage;
@@ -61,6 +62,7 @@ namespace _01electronics_crm
             //tmpWorkOffer = new WorkOffer();
 
             InitializeComponent();
+
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
                 FillOffersList();
@@ -222,8 +224,7 @@ namespace _01electronics_crm
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SELECTION CHANGED HANDLERS///////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             companyNameCombo.Items.Clear();
@@ -238,7 +239,7 @@ namespace _01electronics_crm
                 salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
                 salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
                 InitializeCompanyNameCombo();
-                OfferCheckBox.IsChecked = true;
+                //OfferCheckBox.IsChecked = true;
             }
             else
             {
@@ -252,17 +253,17 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
                 workOrder.ResetWorkOrderInfo(salesPersonTeamID);
 
-            workOrder.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
+            workOrder.SetPreSalesEngineer(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
                 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
                 workOrder.InitializeSalesPersonInfo(salesPersonID);
-                InitializeOfferSerialCombo();
+                //InitializeOfferSerialCombo();
             }
             else
             {
+                workOrder.InitializeSalesPersonInfo(salesPersonID);
                // workOrder.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-                InitializeOfferSerialCombo();
 
                 if (OfferCheckBox.IsChecked == false)
                 {
@@ -408,6 +409,8 @@ namespace _01electronics_crm
                 companyNameCombo.Items.Add(companiesList[i].company_name);
                 companiesAddedToComboList.Add(companiesList[i]);
             }
+
+            companyNameCombo.IsEnabled = true;
 
         }
 
@@ -580,6 +583,13 @@ namespace _01electronics_crm
                 companyNameCombo.IsEnabled = true;
                 InitializeCompanyNameCombo();
             }
+        }
+
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
+            NavigationService.Navigate(projectsPage);
+
         }
 
         //private void OnSelChangedAssignedSalesCombo(object sender, SelectionChangedEventArgs e)

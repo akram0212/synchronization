@@ -1,11 +1,11 @@
-﻿<Page x:Class="_01electronics_crm.WorkOrderProductsPage"
+﻿<Page x:Class="_01electronics_crm.WorkOrderProjectInfoPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
-      Title="WorkOrderProductsPage">
+      Title="WorkOrderProjectInfoPage">
 
     <Grid>
 
@@ -23,19 +23,20 @@
         <Grid Grid.Row="0" Background="#105A97">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Name="RFQHeader" Content="WORK ORDER PRODUCT INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOrderButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder" IsEnabled="False"/>
+            <Label Grid.Row="0" Content="WORK ORDER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -47,12 +48,12 @@
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProjectInfo">
-                <Label Content="Project Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            <Border Grid.Column="1" Style="{StaticResource selectedSecondaryTabBorder}" >
+                <Label Content="Project Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
-            
-            <Border Grid.Column="2" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
-                <Label Content="Products Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
             <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
@@ -64,14 +65,32 @@
             </Border>
 
             <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
-                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
             </Border>
 
         </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                
+            </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-            <WrapPanel Name="mainWrapPanel"/>
-        </ScrollViewer>
+            <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24">
+                <CheckBox Content="Project Location" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProjectLocation" Unchecked="OnUnCheckProjectLocation"/>
+                <ComboBox Name="projectComboBox" Style="{StaticResource comboBoxStyle}" SelectionChanged="OnSelChangedProjectLocationCombo"/>
+            </WrapPanel>
+
+            <ScrollViewer Grid.Row="1" Margin="24" Height="400">
+                <StackPanel Background="LightGray">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+        </WrapPanel>
 
         <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
@@ -81,10 +100,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="Back" Click="OnClickBackButton" Margin="24"/>
-            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnClickNextButton" Margin="24"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" Margin="24" Click="OnBtnClickBack"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next"  Margin="24" Click="OnBtnClickNext"/>
             <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
-            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel"  Margin="24" Click="OnBtnClickCancel"/>
 
         </Grid>
 
