@@ -491,7 +491,7 @@ namespace _01electronics_crm
             }
             else
             {
-                if (workOrder.GetOrderCurrencyId() != 0)
+                if (workOrder.GetOrderCurrencyId() != 0 && mainWrapPanel.Children.Count > 0)
                 {
                     Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
                     WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[5];

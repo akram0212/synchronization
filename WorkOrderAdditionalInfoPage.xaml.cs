@@ -479,10 +479,10 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to choose company address before adding a work order!");
             else if (workOrder.GetContactId() == 0)
                 MessageBox.Show("You need to choose a contact before adding a work order!");
-            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 1 before adding a work order!");
-            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 2 before adding a work order!");
+            //else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
+            //    MessageBox.Show("You need to add a price for product 1 before adding a work order!");
+            //else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
+            //    MessageBox.Show("You need to add a price for product 2 before adding a work order!");
             else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 3 before adding a work order!");
             else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4PriceValue() == 0)
