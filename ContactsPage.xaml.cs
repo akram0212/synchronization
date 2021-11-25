@@ -245,6 +245,11 @@ namespace _01electronics_crm
 
                 for (int j = 0; j < employeesCompanies[i].Value.Count; j++)
                 {
+                    string temp = employeesCompanies[i].Value[j].company_name;
+                    bool contains = temp.IndexOf(companyNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (companyNameCheckBox.IsChecked == true && companyNameTextBox.Text != null && !contains)
+                        continue;
+
                     if (primaryFieldCheckBox.IsChecked == true && primaryFieldComboBox.SelectedItem != null && primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id != employeesCompanies[i].Value[j].company_field / BASIC_MACROS.MAXIMUM_SECONDARY_FIELDS_NO)
                         continue;
                     if (secondaryFieldCheckBox.IsChecked == true && secondaryFieldComboBox.SelectedItem != null && secondaryFieldsList[secondaryFieldComboBox.SelectedIndex].field_id != employeesCompanies[i].Value[j].company_field)
@@ -280,6 +285,11 @@ namespace _01electronics_crm
                         TreeViewItem companyTreeItem = new TreeViewItem();
 
                         if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial))
+                            continue;
+
+                        string temp = employeesContacts[i].Value[j].contact_name;
+                        bool contains = temp.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                        if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !contains)
                             continue;
 
                         companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial).Value;
