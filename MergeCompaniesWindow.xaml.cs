@@ -231,7 +231,7 @@ namespace _01electronics_crm
             secondaryWorkFields.Clear();
             secondaryWorkFieldComboBox.Items.Clear();
 
-            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, secondaryWorkFields))
+            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, ref secondaryWorkFields))
                 return false;
 
             for (int i = 0; i < secondaryWorkFields.Count; i++)

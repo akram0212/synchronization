@@ -38,11 +38,9 @@ namespace _01electronics_crm
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
 
-        private List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
-        private List<BASIC_STRUCTS.STATE_STRUCT> states;
-        private List<BASIC_STRUCTS.CITY_STRUCT> cities;
-        private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
-
+        private List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT> primaryFieldsList;
+        private List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT> secondaryFieldsList;
+        
         private List<KeyValuePair<int, TreeViewItem>> salesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
         private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
 
@@ -60,30 +58,26 @@ namespace _01electronics_crm
 
             contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
 
-            countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
-            states = new List<BASIC_STRUCTS.STATE_STRUCT>();
-            cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
-            districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
-
+            primaryFieldsList = new List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT>();
+            secondaryFieldsList = new List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT>();
+            
             commonQueries = new CommonQueries();
             loggedInUser = mLoggedInUser;
 
             InitializeComponent();
 
-            countryComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            companyNameTextBox.IsEnabled = false;
+            contactNameTextBox.IsEnabled = false;
+            primaryFieldComboBox.IsEnabled = false;
+            secondaryFieldComboBox.IsEnabled = false;
             salesPersonComboBox.IsEnabled = false;
 
-            stateCheckBox.IsEnabled = false;
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
+            secondaryFieldCheckBox.IsEnabled = false;
             salesPersonCheckBox.IsEnabled = true;
 
             ViewBtn.IsEnabled = false;
 
-            InitializeCountriesComboBox();
+            InitializePrimaryFieldComboBox();
 
             if (!CheckEmployeePosition())
                 return;
@@ -178,56 +172,30 @@ namespace _01electronics_crm
                 if (loggedInUser.GetEmployeeId() == listOfEmployees[i].employee_id)
                     salesPersonComboBox.SelectedIndex = i;
         }
-        public bool InitializeCountriesComboBox()
-        {
-            countryComboBox.Items.Clear();
 
-            if (!commonQueries.GetAllCountries(ref countries))
+    
+        public bool InitializePrimaryFieldComboBox()
+        {
+            primaryFieldComboBox.Items.Clear();
+
+            if (!commonQueries.GetPrimaryWorkFields(ref primaryFieldsList))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
-                countryComboBox.Items.Add(countries[i].country_name);
+            for (int i = 0; i < primaryFieldsList.Count; i++)
+                primaryFieldComboBox.Items.Add(primaryFieldsList[i].field_name);
 
             return true;
         }
-        public bool InitializeStatesComboBox()
+        public bool InitializeSecondaryFieldComboBox()
         {
-            stateComboBox.Items.Clear();
-            if (countryComboBox.SelectedItem != null)
+            secondaryFieldComboBox.Items.Clear();
+            if (primaryFieldComboBox.SelectedItem != null)
             {
-                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                if (!commonQueries.GetSecondaryWorkFields(primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id, ref secondaryFieldsList))
                     return false;
 
-                for (int i = 0; i < states.Count(); i++)
-                    stateComboBox.Items.Add(states[i].state_name);
-            }
-
-            return true;
-        }
-        public bool InitializeCitiesComboBox()
-        {
-            cityComboBox.Items.Clear();
-            if (stateComboBox.SelectedItem != null)
-            {
-                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
-                    return false;
-
-                for (int i = 0; i < cities.Count; i++)
-                    cityComboBox.Items.Add(cities[i].city_name);
-            }
-
-            return true;
-        }
-        public bool InitializeDistrictsComboBox()
-        {
-            districtComboBox.Items.Clear();
-            if (cityComboBox.SelectedItem != null)
-            {
-                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
-                    return false;
-
-                for (int i = 0; i < districts.Count; i++)
-                    districtComboBox.Items.Add(districts[i].district_name);
+                for (int i = 0; i < secondaryFieldsList.Count; i++)
+                    secondaryFieldComboBox.Items.Add(secondaryFieldsList[i].field_name);
             }
 
             return true;
@@ -277,6 +245,11 @@ namespace _01electronics_crm
 
                 for (int j = 0; j < employeesCompanies[i].Value.Count; j++)
                 {
+                    if (primaryFieldCheckBox.IsChecked == true && primaryFieldComboBox.SelectedItem != null && primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id != employeesCompanies[i].Value[j].company_field / BASIC_MACROS.MAXIMUM_SECONDARY_FIELDS_NO)
+                        continue;
+                    if (secondaryFieldCheckBox.IsChecked == true && secondaryFieldComboBox.SelectedItem != null && secondaryFieldsList[secondaryFieldComboBox.SelectedIndex].field_id != employeesCompanies[i].Value[j].company_field)
+                        continue;
+
                     TreeViewItem ChildItem = new TreeViewItem();
                     ChildItem.Header = employeesCompanies[i].Value[j].company_name;
                     ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
@@ -304,15 +277,6 @@ namespace _01electronics_crm
                 {
                     for (int j = 0; j < employeesContacts[i].Value.Count; j++)
                     {
-                        if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                            continue;
-                        if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                            continue;
-                        if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != employeesContacts[i].Value[j].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
-                            continue;
-                        if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != employeesContacts[i].Value[j].address)
-                            continue;
-
                         TreeViewItem companyTreeItem = new TreeViewItem();
 
                         if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial))
@@ -342,27 +306,29 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnCheckedCountryCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedCompanyNameCheckBox(object sender, RoutedEventArgs e)
         {
-            countryComboBox.IsEnabled = true;
+            companyNameTextBox.IsEnabled = true;
         }
 
 
-        private void OnCheckedStateCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedContactNameCheckBox(object sender, RoutedEventArgs e)
         {
-            stateComboBox.IsEnabled = true;
+            contactNameTextBox.IsEnabled = true;
         }
 
 
-        private void OnCheckedCityCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedPrimaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            cityComboBox.IsEnabled = true;
+            primaryFieldComboBox.IsEnabled = true;
+            primaryFieldComboBox.SelectedIndex = 0;
         }
 
 
-        private void OnCheckedDistrictCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedSecondaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            districtComboBox.IsEnabled = true;
+            secondaryFieldComboBox.IsEnabled = true;
+            secondaryFieldComboBox.SelectedIndex = 0;
         }
         private void OnCheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
@@ -376,55 +342,31 @@ namespace _01electronics_crm
         /// ON SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
-        private void OnSelChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
         {
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
+            
+            InitializeSalesTree();
+        }
+
+        private void OnTextChangedContactName(object sender, TextChangedEventArgs e)
+        {
+            InitializeSalesTree();
+        }
+
+        private void OnSelChangedPrimaryFieldComboBox(object sender, SelectionChangedEventArgs e)
+        {
+            secondaryFieldCheckBox.IsEnabled = true;
+            secondaryFieldCheckBox.IsChecked = false;
+            secondaryFieldComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            stateCheckBox.IsEnabled = true;
-
-            stateCheckBox.IsChecked = false;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-
-            if (!InitializeStatesComboBox())
+            if (!InitializeSecondaryFieldComboBox())
                 return;
 
             InitializeSalesTree();
         }
 
-        private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
-        {
-            cityCheckBox.IsEnabled = true;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            districtCheckBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-
-            if (!InitializeCitiesComboBox())
-                return;
-
-            InitializeSalesTree();
-        }
-
-        private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
-        {
-            districtCheckBox.IsEnabled = true;
-            districtCheckBox.IsChecked = false;
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-
-            if (!InitializeDistrictsComboBox())
-                return;
-
-            InitializeSalesTree();
-        }
-
-        private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSecondaryFieldComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
 
@@ -446,77 +388,50 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON UNCHECKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnUncheckedCountryCheckBox(object sender, RoutedEventArgs e)
+
+        private void OnUncheckedCompanyNameCheckBox(object sender, RoutedEventArgs e)
         {
-            countryComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-
-            cityComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-            stateComboBox.SelectedItem = null;
-            countryComboBox.SelectedItem = null;
+            companyNameTextBox.IsEnabled = false;
+            companyNameTextBox.Text = null;
 
             ViewBtn.IsEnabled = false;
 
-            stateCheckBox.IsEnabled = false;
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            // salesPersonCheckBox.IsEnabled = false;
-
-            stateCheckBox.IsChecked = false;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
             InitializeSalesTree();
 
         }
 
-        private void OnUncheckedStateCheckBox(object sender, RoutedEventArgs e)
+        private void OnUncheckedContactNameCheckBox(object sender, RoutedEventArgs e)
         {
-            stateComboBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            contactNameTextBox.IsEnabled = false;
+            contactNameTextBox.Text = null;
+
             ViewBtn.IsEnabled = false;
 
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-            stateComboBox.SelectedItem = null;
+            InitializeSalesTree();
+        }
+        private void OnUncheckedPrimaryFieldCheckBox(object sender, RoutedEventArgs e)
+        {
+            primaryFieldComboBox.IsEnabled = false;
+            secondaryFieldComboBox.IsEnabled = false;
+            ViewBtn.IsEnabled = false;
 
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            // salesPersonCheckBox.IsEnabled = false;
+            secondaryFieldCheckBox.IsEnabled = false;
 
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
+            primaryFieldComboBox.SelectedItem = null;
+            secondaryFieldComboBox.SelectedItem = null;
+
+            primaryFieldCheckBox.IsChecked = false;
+            secondaryFieldCheckBox.IsChecked = false;
             InitializeSalesTree();
         }
 
-        private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
+        private void OnUncheckedSecondaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            secondaryFieldComboBox.SelectedItem = null;
+
+            secondaryFieldComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            districtCheckBox.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
-
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            InitializeSalesTree();
-        }
-
-        private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
-        {
-            districtComboBox.SelectedItem = null;
-
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
             InitializeSalesTree();
         }
         private void OnUncheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
