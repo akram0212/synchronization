@@ -85,17 +85,17 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Name="countryCheckBox" Grid.Row="0" Grid.Column="0"  Content="Country" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCountryCheckBox" Unchecked="OnUncheckedCountryCheckBox"/>
-                    <ComboBox Name="countryComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedCountryComboBox"/>
+                    <CheckBox Name="companyNameCheckBox" Grid.Row="0" Grid.Column="0"  Content="Company Name" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCompanyNameCheckBox" Unchecked="OnUncheckedCompanyNameCheckBox"/>
+                    <TextBox Name="companyNameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterTextBoxStyle}" TextChanged="OnTextChangedCompanyName"/>
 
-                    <CheckBox Name="stateCheckBox"  Grid.Row="1" Grid.Column="0" Content="State" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedStateCheckBox" Unchecked="OnUncheckedStateCheckBox"/>
-                    <ComboBox Name="stateComboBox"  Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStateComboBox"/>
+                    <CheckBox Name="contactNameCheckBox" Grid.Row="1" Grid.Column="0"  Content="Contact Name" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedContactNameCheckBox" Unchecked="OnUncheckedContactNameCheckBox"/>
+                    <TextBox Name="contactNameTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterTextBoxStyle}" TextChanged="OnTextChangedContactName"/>
+                    
+                    <CheckBox Name="primaryFieldCheckBox" Grid.Row="2" Grid.Column="0"  Content="Primary Field" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedPrimaryFieldCheckBox" Unchecked="OnUncheckedPrimaryFieldCheckBox"/>
+                    <ComboBox Name="primaryFieldComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedPrimaryFieldComboBox"/>
 
-                    <CheckBox Name="cityCheckBox" Grid.Row="2" Grid.Column="0" Content="City" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedCityCheckBox" Unchecked="OnUncheckedCityCheckBox"/>
-                    <ComboBox Name="cityComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedCityComboBox"/>
-
-                    <CheckBox Name="districtCheckBox" Grid.Row="3" Grid.Column="0" Content="District" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedDistrictCheckBox" Unchecked="OnUncheckedDistrictCheckBox"/>
-                    <ComboBox Name="districtComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedDistrictComboBox"/>
+                    <CheckBox Name="secondaryFieldCheckBox"  Grid.Row="3" Grid.Column="0" Content="Secondary Field" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedSecondaryFieldCheckBox" Unchecked="OnUncheckedSecondaryFieldCheckBox"/>
+                    <ComboBox Name="secondaryFieldComboBox"  Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSecondaryFieldComboBox"/>
 
                     <CheckBox Name="salesPersonCheckBox" Grid.Row="4" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="OnCheckedSalesPersonCheckBox" Unchecked="OnUncheckedSalesPersonCheckBox"/>
                     <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSalesPersonComboBox"/>
@@ -109,9 +109,19 @@
 
 
             </Grid>
-            <Button Grid.Row="2" HorizontalAlignment="Left" Margin="200,0" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddCompany" Name="AddCompanyBtn"/>
-            <Button Grid.Row="2" HorizontalAlignment="Center" Margin="200,0" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddContact" Name="AddContactBtn"/>
-            <Button Grid.Row="2" HorizontalAlignment="Right" Margin="200,0" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="ViewBtn"/>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddCompany" Name="AddCompanyBtn"/>
+                <Button Grid.Column="1" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddContact" Name="AddContactBtn"/>
+                <Button Grid.Column="2" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="ViewBtn"/>
+            </Grid>
+            
         </Grid>
 
     </Grid>

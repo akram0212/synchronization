@@ -163,7 +163,7 @@ namespace _01electronics_crm
         {
             secondaryWorkFields.Clear();
 
-            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, secondaryWorkFields))
+            if (!commonQueries.GetSecondaryWorkFields(primaryFieldID, ref secondaryWorkFields))
                 return false;
 
             for (int i = 0; i < secondaryWorkFields.Count; i++)
@@ -382,7 +382,7 @@ namespace _01electronics_crm
         }
         private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
         {
-            AddComapnyDetailsWindow addComapnyDetailsWindow = new AddComapnyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
+            AddCompanyDetailsWindow addComapnyDetailsWindow = new AddCompanyDetailsWindow(ref loggedInUser, ref company, branchComboBox.SelectedItem.ToString());
             addComapnyDetailsWindow.Closed += OnClosedAddBranchWindow;
             addComapnyDetailsWindow.Show();
         }

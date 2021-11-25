@@ -121,7 +121,7 @@ namespace _01electronics_crm
             secondaryWorkField.IsEnabled = true;
 
             if (primaryWorkFieldComboBox.SelectedItem != null)
-                commonQueries.GetSecondaryWorkFields(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, secondaryWorkFields);
+                commonQueries.GetSecondaryWorkFields(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id, ref secondaryWorkFields);
 
             for (int i = 0; i < secondaryWorkFields.Count; i++)
             {
