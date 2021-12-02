@@ -57,7 +57,7 @@
         </Grid>
         
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-            <WrapPanel Name="mainWrapPanel" />
+            <WrapPanel Name="mainWrapPanel"/>
         </ScrollViewer>
 
         <Grid Grid.Row="3" HorizontalAlignment="Right">
