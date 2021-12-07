@@ -225,5 +225,14 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(productsPage);
         }
 
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

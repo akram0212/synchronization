@@ -189,8 +189,8 @@ namespace _01electronics_crm
                 return;
             if (!InsertIntoProjectLocations())
                 return;
-
-            this.Close();
+            
+            //this.Close();
         }
 
         private bool CheckProjectNameEditBox()
@@ -246,7 +246,7 @@ namespace _01electronics_crm
 
         private bool GetProjectLocationsCount()
         {
-            String sqlQueryPart1 = @" select count(client_project_locations.location_id)
+            String sqlQueryPart1 = @" select max(client_project_locations.location_id)
                                       from erp_system.dbo.client_project_locations
                                       where project_serial = ";
 
@@ -285,6 +285,8 @@ namespace _01electronics_crm
             if (!sqlServer.InsertRows(sqlQuery))
                 return false;
 
+            System.Windows.Forms.MessageBox.Show("Added");
+            
             return true;
         }
         private void OnClickCityImage(object sender, MouseButtonEventArgs e)

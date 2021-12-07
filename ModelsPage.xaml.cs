@@ -436,5 +436,15 @@ namespace _01electronics_crm
             downloadProgressBar.Visibility = Visibility.Collapsed;
 
         }
+
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

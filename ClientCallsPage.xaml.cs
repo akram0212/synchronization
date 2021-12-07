@@ -546,5 +546,10 @@ namespace _01electronics_crm
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
         }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

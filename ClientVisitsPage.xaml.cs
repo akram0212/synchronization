@@ -577,5 +577,10 @@ namespace _01electronics_crm
             InitializeStackPanel();
             InitializeGrid();
         }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

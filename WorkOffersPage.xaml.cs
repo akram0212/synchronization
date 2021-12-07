@@ -1294,6 +1294,11 @@ namespace _01electronics_crm
                 tempListBox.SelectedIndex = -1;
             }
         }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
 

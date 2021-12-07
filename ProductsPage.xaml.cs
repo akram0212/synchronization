@@ -204,6 +204,10 @@ namespace _01electronics_crm
             BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(brandsPage);
         }
-       
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

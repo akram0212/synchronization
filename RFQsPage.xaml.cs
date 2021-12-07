@@ -1248,6 +1248,11 @@ namespace _01electronics_crm
             SetRFQsStackPanel();
             SetRFQsGrid();
         }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 
 }

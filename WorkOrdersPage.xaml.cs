@@ -1305,5 +1305,10 @@ namespace _01electronics_crm
             SetWorkOrdersStackPanel();
             SetWorkOrdersGrid();
         }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
