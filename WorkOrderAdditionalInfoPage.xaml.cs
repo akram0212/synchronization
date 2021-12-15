@@ -512,8 +512,8 @@ namespace _01electronics_crm
 
                 viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
-                WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
-                viewOffer.Show();
+                //WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
+                //viewOffer.Show();
 
                 NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                 currentWindow.Close();

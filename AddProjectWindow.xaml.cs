@@ -183,7 +183,8 @@ namespace _01electronics_crm
             if (!InsertIntoProjectLocations())
                 return;
 
-            this.Close();
+            System.Windows.Forms.MessageBox.Show("Done");
+            //this.Close();
 
         }
 
@@ -201,11 +202,11 @@ namespace _01electronics_crm
         }
         private bool CheckProjectNameEditBox()
         {
-            String inputString = ProjecNameTextBox.Text;
+            //String inputString = ProjecNameTextBox.Text;
             String outputString = ProjecNameTextBox.Text;
 
-            if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))
-                return false;
+            //if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))
+              //  return false;
 
             ProjecNameTextBox.Text = outputString;
             project.project_name = outputString;
@@ -283,7 +284,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += project.project_serial;
             sqlQuery += comma;
-            sqlQuery += "'" + project.project_name + "'";
+            sqlQuery += "N'" + project.project_name + "'";
             sqlQuery += comma;
             sqlQuery += "'" + project.project_id + "'";
             sqlQuery += comma;
