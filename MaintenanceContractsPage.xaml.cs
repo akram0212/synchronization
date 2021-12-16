@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,21 +13,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOrdersPage.xaml
+    /// Interaction logic for MaintenanceContractsPage.xaml
     /// </summary>
-    public partial class WorkOrdersPage : Page
+    public partial class MaintenanceContractsPage : Page
     {
         private Employee loggedInUser;
-
         private SQLServer sqlDatabase;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
-        
+
         private WorkOrder selectedWorkOrder;
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
@@ -54,52 +53,11 @@ namespace _01electronics_crm
         private Grid currentGrid;
         private Expander currentExpander;
         private Expander previousExpander;
-
-        public WorkOrdersPage(ref Employee mLoggedInUser)
+        public MaintenanceContractsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;
-
-            sqlDatabase = new SQLServer();
-            commonQueriesObject = new CommonQueries();
-            commonFunctionsObject = new CommonFunctions();
-
-            if (!GetWorkOrders())
-                return;
-
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
-
-            if (!InitializeSalesComboBox())
-                return;
-
-            if (!InitializePreSalesComboBox())
-                return;
-
-            if (!InitializeProductsComboBox())
-                return;
-
-            if (!InitializeBrandsComboBox())
-                return;
-
-            SetDefaultSettings();
-
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
         }
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //GET DATA FUNCTIONS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private bool GetWorkOrders()
-        {
-            if (!commonQueriesObject.GetWorkOrders(ref workOrders))
-                return false;
-            return true;
-        }
-
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //INTIALIZATION FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,8 +122,8 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            if (!commonQueriesObject.GetWorkOrderStatus(ref orderStatuses))
-                return;
+           // if (!commonQueriesObject.SetWorkOrdersGridtatus(ref orderStatuses))
+            //    return;
 
             for (int i = 0; i < orderStatuses.Count; i++)
             {
@@ -202,25 +160,10 @@ namespace _01electronics_crm
             brandComboBox.IsEnabled = false;
             statusComboBox.IsEnabled = false;
         }
-
-
         private void DisableViewButton()
         {
             //viewButton.IsEnabled = false;
         }
-        private void EnableViewButton()
-        {
-            //viewButton.IsEnabled = true;
-        }
-
-        //private void DisableReviseButton()
-        //{
-        //    reviseButton.IsEnabled = false;
-        //}
-        //private void EnableReviseButton()
-        //{
-        //    reviseButton.IsEnabled = true;
-        //}
 
         private void SetDefaultSettings()
         {
@@ -438,7 +381,7 @@ namespace _01electronics_crm
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-               
+
                 listBox.Items.Add(viewButton);
 
                 listBox.Items.Add(viewRFQButton);
@@ -806,8 +749,8 @@ namespace _01electronics_crm
             else
                 selectedYear = 0;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -820,8 +763,8 @@ namespace _01electronics_crm
             else
                 selectedQuarter = 0;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
@@ -836,8 +779,8 @@ namespace _01electronics_crm
 
 
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -851,8 +794,8 @@ namespace _01electronics_crm
 
 
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
@@ -865,8 +808,8 @@ namespace _01electronics_crm
             else
                 selectedProduct = 0;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
@@ -879,8 +822,8 @@ namespace _01electronics_crm
             else
                 selectedBrand = 0;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
@@ -893,8 +836,8 @@ namespace _01electronics_crm
             else
                 selectedStatus = 0;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+            //SetWorkOrdersStackPanel();
+            //SetWorkOrdersGrid();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1017,100 +960,8 @@ namespace _01electronics_crm
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //BTN CLICKED HANDLERS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
-        {
-            viewAddCondition = COMPANY_WORK_MACROS.ORDER_ADD_CONDITION;
-
-            selectedWorkOrder = new WorkOrder(sqlDatabase);
-
-            WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref selectedWorkOrder, viewAddCondition, false);
-
-            workOrderWindow.Closed += OnClosedWorkOrderWindow;
-            workOrderWindow.Show();
-        }
-
-        //private void OnBtnClickView(object sender, RoutedEventArgs e)
-        //{
-        //    WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
-        //
-        //    commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
-        //
-        //    int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
-        //    WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
-        //    viewOffer.Show();
-        //}
-
-        //private void OnBtnClickWorkOfferItem(object sender, RoutedEventArgs e)
-        //{
-        //    EnableViewButton();
-        //    //EnableReviseButton();
-        //    previousSelectedOrderItem = currentSelectedOrderItem;
-        //    currentSelectedOrderItem = (Grid)sender;
-        //    BrushConverter brush = new BrushConverter();
-        //
-        //    if (previousSelectedOrderItem != null)
-        //    {
-        //        previousSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-        //
-        //        StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedOrderItem.Children[0];
-        //        Border previousSelectedBorder = (Border)previousSelectedOrderItem.Children[1];
-        //        Label previousStatusLabel = (Label)previousSelectedBorder.Child;
-        //
-        //        foreach (Label childLabel in previousSelectedStackPanel.Children)
-        //            childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
-        //
-        //        if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFA500");
-        //        else if (workOrders[workOrdersStackPanel.Children.IndexOf(previousSelectedOrderItem)].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#008000");
-        //        else
-        //            previousSelectedBorder.Background = (Brush)brush.ConvertFrom("#FF0000");
-        //
-        //        previousStatusLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-        //    }
-        //
-        //    currentSelectedOrderItem.Background = (Brush)brush.ConvertFrom("#105A97");
-        //
-        //    StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedOrderItem.Children[0];
-        //    Border currentSelectedBorder = (Border)currentSelectedOrderItem.Children[1];
-        //    Label currentStatusLabel = (Label)currentSelectedBorder.Child;
-        //
-        //    foreach (Label childLabel in currentSelectedStackPanel.Children)
-        //        childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-        //
-        //    currentSelectedBorder.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-        //    currentStatusLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-        //}
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //VIEWING TABS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private void OnClickListView(object sender, MouseButtonEventArgs e)
-        {
-            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
-            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
-
-            stackPanelScrollViewer.Visibility = Visibility.Visible;
-            gridScrollViewer.Visibility = Visibility.Collapsed;
-        }
-
-        private void OnClickTableView(object sender, MouseButtonEventArgs e)
-        {
-            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
-            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
-
-            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
-            gridScrollViewer.Visibility = Visibility.Visible;
-        }
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
@@ -1133,8 +984,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOrders = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrders);
+            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
@@ -1165,10 +1016,17 @@ namespace _01electronics_crm
             ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
             this.NavigationService.Navigate(projectsPage);
         }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+
+
         private void OnClosedWorkOrderWindow(object sender, EventArgs e)
         {
-            if (!GetWorkOrders())
-                return;
+            //if (!SetWorkOrdersGrid())
+              //  return;
 
             SetWorkOrdersStackPanel();
             SetWorkOrdersGrid();
@@ -1299,17 +1157,33 @@ namespace _01electronics_crm
 
             workOrder.ConfirmOrder();
 
-            if (!GetWorkOrders())
-                return;
+            //if (SetWorkOrdersGrid())
+            //    return;
 
             SetWorkOrdersStackPanel();
             SetWorkOrdersGrid();
         }
-
-        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
         {
-            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
-            this.NavigationService.Navigate(maintenanceContractsPage);
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
+
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

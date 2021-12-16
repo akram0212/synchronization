@@ -148,6 +148,9 @@
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExcelExport.cs" />
+    <Compile Include="MaintenanceContractsPage.xaml.cs">
+      <DependentUpon>MaintenanceContractsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs" />
     <Compile Include="MergeCompaniesWindow.xaml.cs">
       <DependentUpon>MergeCompaniesWindow.xaml</DependentUpon>
@@ -304,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContactsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceContractsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

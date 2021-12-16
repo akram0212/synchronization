@@ -469,6 +469,11 @@ namespace _01electronics_crm
             ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
             this.NavigationService.Navigate(projectsPage);
         }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
