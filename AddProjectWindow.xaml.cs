@@ -183,7 +183,8 @@ namespace _01electronics_crm
             if (!InsertIntoProjectLocations())
                 return;
 
-            this.Close();
+            System.Windows.Forms.MessageBox.Show("Done");
+            //this.Close();
 
         }
 
@@ -201,7 +202,7 @@ namespace _01electronics_crm
         }
         private bool CheckProjectNameEditBox()
         {
-            String inputString = ProjecNameTextBox.Text;
+            //String inputString = ProjecNameTextBox.Text;
             String outputString = ProjecNameTextBox.Text;
 
             //if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))

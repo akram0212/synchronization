@@ -62,6 +62,8 @@ namespace _01electronics_crm
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
 
+            commonQueries.GetReapetedMobilePhones();
+
             InitializeCountriesComboBox();
 
             if (!InitializeProjectsList())
@@ -466,6 +468,11 @@ namespace _01electronics_crm
         {
             ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
             this.NavigationService.Navigate(projectsPage);
+        }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -207,7 +207,8 @@ namespace _01electronics_crm
 
         private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
         {
-
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
         }
     }
 }
