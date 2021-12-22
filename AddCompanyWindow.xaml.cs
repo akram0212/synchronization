@@ -391,7 +391,7 @@ namespace _01electronics_crm
 
         private void OnClickDistrictImage(object sender, MouseButtonEventArgs e)
         {
-            if (districtComboBox.Text.ToString() != "")
+            if (districtComboBox.Text.ToString() != "" && cityComboBox.Text != "Cairo")
             {
                 if (!districts.Exists(districtItem => districtItem.district_name == districtComboBox.Text.ToString()))
                 {

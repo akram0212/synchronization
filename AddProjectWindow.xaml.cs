@@ -204,8 +204,8 @@ namespace _01electronics_crm
             String inputString = ProjecNameTextBox.Text;
             String outputString = ProjecNameTextBox.Text;
 
-            if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))
-                return false;
+            //if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))
+              //  return false;
 
             ProjecNameTextBox.Text = outputString;
             project.project_name = outputString;
@@ -283,7 +283,7 @@ namespace _01electronics_crm
             sqlQuery += sqlQueryPart1;
             sqlQuery += project.project_serial;
             sqlQuery += comma;
-            sqlQuery += "'" + project.project_name + "'";
+            sqlQuery += "N'" + project.project_name + "'";
             sqlQuery += comma;
             sqlQuery += "'" + project.project_id + "'";
             sqlQuery += comma;
@@ -342,7 +342,7 @@ namespace _01electronics_crm
 
         private void OnClickDistrictImage(object sender, MouseButtonEventArgs e)
         {
-            if (districtComboBox.Text.ToString() != "")
+            if (districtComboBox.Text.ToString() != "" && cityComboBox.Text != "Cairo")
             {
                 if (!districts.Exists(districtItem => districtItem.district_name == districtComboBox.Text.ToString()))
                 {

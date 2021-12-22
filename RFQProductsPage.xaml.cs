@@ -596,7 +596,7 @@ namespace _01electronics_crm
             {
                 if (currentProductGrid == mainWrapPanel.Children[i])
                 {
-                    if (i > 0 && i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS - 1)
+                    if (i > 0 && i < COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS - 1)
                     {
                         Grid nextProductGrid = (Grid)mainWrapPanel.Children[i + 1];
                         Grid nextCheckBoxColorGrid = (Grid)nextProductGrid.Children[0];

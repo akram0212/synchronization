@@ -34,7 +34,7 @@ namespace _01electronics_crm
         String oldAssignee;
 
         RFQ rfq;
-        WorkOffer workOffer;
+        OutgoingQuotation outgoingQuotation;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)
         {
@@ -58,12 +58,12 @@ namespace _01electronics_crm
             
         }
 
-        public ChangeAssigneeWindow(ref WorkOffer mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
+        public ChangeAssigneeWindow(ref OutgoingQuotation mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
         {
             InitializeComponent();
 
             condition = 1;
-            workOffer = mWorkOffer;
+            outgoingQuotation = mWorkOffer;
             failureReasons = mFailureReasons;
             
             commonQueries = new CommonQueries();
@@ -116,7 +116,7 @@ namespace _01electronics_crm
 
             else if(condition == 1)
             {
-                workOffer.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
+                outgoingQuotation.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
             else if(condition == 2)
             {

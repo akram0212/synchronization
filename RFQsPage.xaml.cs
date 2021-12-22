@@ -28,7 +28,7 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
 
         RFQ selectedRFQ;
-        WorkOffer resolveWorkOffer;
+        OutgoingQuotation resolveWorkOffer;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -1097,9 +1097,9 @@ namespace _01electronics_crm
         }
         private void OnBtnClickResolve()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION;
 
-            resolveWorkOffer = new WorkOffer(sqlDatabase);
+            resolveWorkOffer = new OutgoingQuotation(sqlDatabase);
 
             resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
