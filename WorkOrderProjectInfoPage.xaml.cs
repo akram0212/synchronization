@@ -33,12 +33,21 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> projectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> addedLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
 
         public WorkOrderBasicInfoPage workOrderBasicInfoPage;
         public WorkOrderProductsPage workOrderProductsPage;
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
         public WorkOrderUploadFilesPage workOrderUploadFilesPage;
+
+        private List<BASIC_STRUCTS.trialStruct> trialList = new List<BASIC_STRUCTS.trialStruct>();
+        private List<BASIC_STRUCTS.trialStruct> addedList = new List<BASIC_STRUCTS.trialStruct>();
+        private List<int> skip = new List<int>();
+
+        Grid trialGrid = new Grid();
+        int rowCounter = 1;
 
         public WorkOrderProjectInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition)
         {
@@ -52,29 +61,76 @@ namespace _01electronics_crm
             workOrder = mWorkOrder;
 
             InitializeComponent();
-        }
 
+            InitializeProjectsCombo();
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INITIALIZE FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void InitializeProjectsCombo()
+        {
+            commonQueriesObject.GetClientProjects(ref projects);
+            for (int i = 0; i < projects.Count; i++)
+                projectComboBox.Items.Add(projects[i].project_name);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnSelChangedProjectLocationCombo(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
         {
+            addedLocations.Clear();
+            projectLocations.Clear();
+            locationsGrid.Children.Clear();
+            locationsGrid.RowDefinitions.Clear();
+            
+            commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
 
+            for(int i = 0; i < projectLocations.Count; i++)
+            {
+                CheckBox checkBox = new CheckBox();
+                checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                checkBox.Tag = i;
+                checkBox.Style = (Style)FindResource("checkBoxStyle");
+                checkBox.Checked += OnCheckProjectLocation;
+                checkBox.Unchecked += OnUnCheckProjectLocation;
+                checkBox.Width = 500.0;
+
+                RowDefinition row = new RowDefinition();
+                locationsGrid.RowDefinitions.Add(row);
+
+                locationsGrid.Children.Add(checkBox);
+                Grid.SetRow(checkBox, i);
+
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////CHECK/UNCHECK HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnCheckProject(object sender, RoutedEventArgs e)
+        {
+            projectComboBox.IsEnabled = true;
+        }
+
+        private void OnUnCheckProject(object sender, RoutedEventArgs e)
+        {
+            projectComboBox.IsEnabled = false;
+            locationsGrid.Children.Clear();
+        }
+
         private void OnCheckProjectLocation(object sender, RoutedEventArgs e)
         {
-
+            CheckBox currentCheckBox = (CheckBox)sender;
+            addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
         }
 
         private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
         {
-
+            CheckBox currentCheckBox = (CheckBox)sender;
+            addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,5 +218,44 @@ namespace _01electronics_crm
 
             currentWindow.Close();
         }
+
+        private void OnClickTestButton(object sender, RoutedEventArgs e)
+        {
+            InsertIntoOrderProjectLocations();
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INTERNAL TABS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        protected bool InsertIntoOrderProjectLocations()
+        {
+            String sqlQueryPart1 = "insert into erp_system.dbo.work_orders_project_locations values (";
+            String sqlQueryPart2 = "getdate());";
+            string sqlQuery;
+
+            String comma = ",";
+            String apostropheComma = "',";
+            String commaApostrophe = ",'";
+            String apostropheCommaApostrophe = "','";
+
+            for (int i = 0; i < addedLocations.Count; i++)
+            {
+                sqlQuery = String.Empty;
+                sqlQuery += sqlQueryPart1;
+                //sqlQuery += orderSerialTextBox.Text;
+                sqlQuery += comma;
+                //sqlQuery += addedLocations[i].project_serial;
+                sqlQuery += comma;
+                sqlQuery += addedLocations[i].location_id;
+                sqlQuery += comma;
+                sqlQuery += sqlQueryPart2;
+
+                if (!sqlDatabase.InsertRows(sqlQuery))
+                    return false;
+            }
+            return true;
+        }
+
     }
 }

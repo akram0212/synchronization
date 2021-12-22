@@ -291,7 +291,7 @@ namespace _01electronics_crm
         }
         private void OnClickCityImage(object sender, MouseButtonEventArgs e)
         {
-            if (cityComboBox.Text.ToString() != "")
+            if (cityComboBox.Text.ToString() != "" )
             {
                 if (!cities.Exists(cityItem => cityItem.city_name == cityComboBox.Text.ToString()))
                 {
@@ -314,7 +314,7 @@ namespace _01electronics_crm
         }
         private void OnClickDistrictImage(object sender, MouseButtonEventArgs e)
         {
-            if (districtComboBox.Text.ToString() != "")
+            if (districtComboBox.Text.ToString() != "" && cityComboBox.Text != "Cairo")
             {
                 if (!districts.Exists(districtItem => districtItem.district_name == districtComboBox.Text.ToString()))
                 {

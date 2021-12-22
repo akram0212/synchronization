@@ -23,7 +23,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         WorkOrder workOrder;
-        WorkOffer tmpWorkOffer;
+        OutgoingQuotation tmpWorkOffer;
 
 
         private CommonQueries commonQueriesObject;
@@ -35,8 +35,8 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> offersList = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> offersList = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
 
         private int viewAddCondition;
         private int salesPersonID;
@@ -59,7 +59,7 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
 
             workOrder = mWorkOrder;
-            //tmpWorkOffer = new WorkOffer();
+            //tmpWorkOffer = new OutgoingQuotation();
 
             InitializeComponent();
 
@@ -250,7 +250,7 @@ namespace _01electronics_crm
                 InitializeCompanyNameCombo();
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 workOrder.ResetWorkOrderInfo(salesPersonTeamID);
 
             workOrder.SetPreSalesEngineer(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
@@ -460,7 +460,7 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT tmp = offersList.Find(x => x.offer_serial == workOrder.GetOfferSerial());
+                COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT tmp = offersList.Find(x => x.offer_serial == workOrder.GetOfferSerial());
 
                 OfferSerialCombo.Items.Add(workOrder.GetOfferID());
                 offersAddedToComboList.Add(tmp);
@@ -481,7 +481,7 @@ namespace _01electronics_crm
             }
            // OfferSerialCombo.IsEnabled = true;
         }
-        private void OnSelChangedOFFERSerialCombo(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedOUTGOING_QUOTATIONSerialCombo(object sender, SelectionChangedEventArgs e)
         {
             if (OfferSerialCombo.SelectedItem != null)
             {
@@ -495,7 +495,7 @@ namespace _01electronics_crm
                     workOrder.InitializeTechnicalOfficeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version);
                 }
                 
-                //if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                //if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 //    workOrder.CopyWorkOffer(tmpWorkOffer);
                 SetCompanyNameAddressContactFromOffer();
 
