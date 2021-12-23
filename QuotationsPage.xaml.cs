@@ -17,9 +17,9 @@ using _01electronics_library;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOffersPage.xaml
+    /// Interaction logic for QuotationsPage.xaml
     /// </summary>
-    public partial class WorkOffersPage : Page
+    public partial class QuotationsPage : Page
     {
         private Employee loggedInUser;
 
@@ -58,7 +58,7 @@ namespace _01electronics_crm
         private Expander currentExpander;
         private Expander previousExpander;
 
-        public WorkOffersPage(ref Employee mLoggedInUser)
+        public QuotationsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
@@ -1046,7 +1046,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -1211,7 +1211,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
-            //WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            //QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             //this.NavigationService.Navigate(workOffers);
         }
 

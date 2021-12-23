@@ -1022,7 +1022,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage rfqsList = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage rfqsList = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(rfqsList);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
