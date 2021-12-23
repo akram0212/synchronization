@@ -497,8 +497,8 @@ namespace _01electronics_crm
                 if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {
 
-                    if (!workOrder.IssueNewOrder())
-                        return;
+                    //if (!workOrder.IssueNewOrder())
+                     //   return;
 
                     if (workOrder.GetOfferID() != null)
                     {

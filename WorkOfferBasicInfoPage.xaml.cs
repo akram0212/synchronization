@@ -104,6 +104,7 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetProjectLabel();
+                
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref outgoingQuotation, viewAddCondition);
             }
@@ -112,9 +113,11 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                InitializeProjectCombo();
 
                 SetSalesPersonComboValue();
                 SetProjectCombo();
+                projectSerialCombo.IsEnabled = false;
 
                 //CHANGE CONDITIONS
                 if (RFQSerialCombo.IsEnabled == true)
@@ -131,6 +134,7 @@ namespace _01electronics_crm
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
+                InitializeProjectCombo();
 
                 SetSalesPersonComboValue();
                 InitializeRFQSerialCombo();

@@ -148,7 +148,9 @@ namespace _01electronics_crm
             {
                 InitializeDistricts();
                 districtComboBox.IsEnabled = true;
-                districtComboBox.IsEditable = true;
+
+                if (cityComboBox.SelectedItem != "Cairo")
+                    districtComboBox.IsEditable = true;
             }
             else
             {
