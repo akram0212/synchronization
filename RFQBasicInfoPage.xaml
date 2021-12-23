@@ -108,8 +108,10 @@
                 </WrapPanel>
             </WrapPanel>
 
-            <WrapPanel Grid.Row="4">
-
+            <WrapPanel Grid.Row="3">
+                <Label Style="{StaticResource labelStyle}" Content="Project"/>
+                <Label Style="{StaticResource tableItemValue}" Name="projectLabel" Visibility="Collapsed"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectCombo" SelectionChanged="OnSelChangedProjectCombo"/>
             </WrapPanel>
         </Grid>
 

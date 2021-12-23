@@ -35,8 +35,8 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> offersList = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> offersList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
 
         private int viewAddCondition;
         private int salesPersonID;
@@ -451,7 +451,7 @@ namespace _01electronics_crm
         }
         private bool FillOffersList()
         {
-            if (!commonQueriesObject.GetWorkOffers(ref offersList))
+            if (!commonQueriesObject.GetOutgoingQuotations(ref offersList))
                 return false;
             return true;
         }
@@ -460,7 +460,7 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT tmp = offersList.Find(x => x.offer_serial == workOrder.GetOfferSerial());
+                COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT tmp = offersList.Find(x => x.offer_serial == workOrder.GetOfferSerial());
 
                 OfferSerialCombo.Items.Add(workOrder.GetOfferID());
                 offersAddedToComboList.Add(tmp);

@@ -24,8 +24,8 @@ namespace _01electronics_crm
         OutgoingQuotation outgoingQuotation;
         CommonQueries CommonQueries;
 
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
 
         private int salesPersonTeam;
         private int viewAddCondition;
@@ -44,7 +44,7 @@ namespace _01electronics_crm
             CommonQueries = new CommonQueries(sqlServer);
             outgoingQuotation = new OutgoingQuotation(sqlServer);
 
-            if (!CommonQueries.GetWorkOffers(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
+            if (!CommonQueries.GetOutgoingQuotations(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
                 return;
 
             SetWorkOffersStackPanel();

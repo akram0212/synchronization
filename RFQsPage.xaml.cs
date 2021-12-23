@@ -442,7 +442,7 @@ namespace _01electronics_crm
                 resolveButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 ListBoxItem viewOfferButton = new ListBoxItem();
-                viewOfferButton.Content = "View Offer";
+                viewOfferButton.Content = "View Quotation";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 ListBoxItem changeAssigneeButton = new ListBoxItem();
@@ -1194,7 +1194,7 @@ namespace _01electronics_crm
                 {
                     OnBtnClickChangeAssignee();
                 }
-                else if (currentItem.Content.ToString() == "View Offer")
+                else if (currentItem.Content.ToString() == "View Quotation")
                 {
                     WorkOffersFilteredWithRFQSerialWindow workOffersFilteredWithRFQSerialWindow = new WorkOffersFilteredWithRFQSerialWindow(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version, stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person, ref loggedInUser);
                     workOffersFilteredWithRFQSerialWindow.Show();

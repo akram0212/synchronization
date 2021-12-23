@@ -34,8 +34,8 @@ namespace _01electronics_crm
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> offerStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
@@ -70,7 +70,7 @@ namespace _01electronics_crm
 
             selectedWorkOffer = new WorkOrder(sqlDatabase);
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             InitializeYearsComboBox();
@@ -104,9 +104,9 @@ namespace _01electronics_crm
         //GET DATA FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private bool GetWorkOffers()
+        private bool GetOutgoingQuotations()
         {
-            if (!commonQueriesObject.GetWorkOffers(ref workOffers))
+            if (!commonQueriesObject.GetOutgoingQuotations(ref workOffers))
                 return false;
             return true;
         }
@@ -1141,8 +1141,9 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
-            
-            
+
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+            viewOffer.Show();
         }
 
         private void OnBtnClickConfirmOffer()
@@ -1171,7 +1172,7 @@ namespace _01electronics_crm
             WorkOrderWindow reviseOrder= new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
             reviseOrder.Show();
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();
@@ -1223,7 +1224,7 @@ namespace _01electronics_crm
         private void OnClosedWorkOfferWindow(object sender, EventArgs e)
         {
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();
@@ -1231,7 +1232,7 @@ namespace _01electronics_crm
         }
         private void OnClosedFailureReasonWindow(object sender, EventArgs e)
         {
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();

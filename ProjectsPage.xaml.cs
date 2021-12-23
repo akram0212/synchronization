@@ -62,7 +62,7 @@ namespace _01electronics_crm
             cityCheckBox.IsEnabled = false;
             districtCheckBox.IsEnabled = false;
 
-            commonQueries.GetReapetedMobilePhones();
+           // commonQueries.GetReapetedMobilePhones();
 
             InitializeCountriesComboBox();
 
