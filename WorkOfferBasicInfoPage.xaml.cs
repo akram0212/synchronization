@@ -23,7 +23,7 @@ namespace _01electronics_crm
     public partial class WorkOfferBasicInfoPage : Page
     {
         Employee loggedInUser;
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
         
 
         private CommonQueries commonQueriesObject;
@@ -48,7 +48,7 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer,int mViewAddCondition, ref WorkOfferProductsPage mWorkOfferProductsPage)
+        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer,int mViewAddCondition, ref WorkOfferProductsPage mWorkOfferProductsPage)
         {
             workOfferProductsPage = mWorkOfferProductsPage;
 
@@ -63,10 +63,10 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            //if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
             //{
             //    workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            //    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             //        if (!workOffer.GetNewOfferSerial())
             //            return;
             //    if(!workOffer.GetNewOfferVersion())
@@ -76,7 +76,7 @@ namespace _01electronics_crm
             //    
             //}
             //
-            //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             //{
             //    if (!workOffer.GetNewOfferVersion())
             //        return;
@@ -84,14 +84,14 @@ namespace _01electronics_crm
             //    workOffer.GetNewOfferID();
             //}
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 FillrfqsList(); 
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElementsForView();
@@ -105,7 +105,7 @@ namespace _01electronics_crm
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref workOffer, viewAddCondition);
             }
-            else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
@@ -139,7 +139,7 @@ namespace _01electronics_crm
 
         }
 
-        public WorkOfferBasicInfoPage(ref WorkOffer mWorkOffer)
+        public WorkOfferBasicInfoPage(ref OutgoingQuotation mWorkOffer)
         {
             workOffer = mWorkOffer;
         }
@@ -406,7 +406,7 @@ namespace _01electronics_crm
                 salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 workOffer.ResetWorkOfferInfo(salesPersonTeamID);
 
             workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
@@ -431,14 +431,14 @@ namespace _01electronics_crm
             if (RFQSerialCombo.SelectedItem != null)
             {
                 workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                     workOffer.LinkRFQInfo();
 
                 SetCompanyNameAddressContactFromRFQ();
-                if(viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                if(viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                     SetContractTypeValueFromRFQ();
 
-                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     workOfferProductsPage.SetTypeComboBoxes();
                     workOfferProductsPage.SetBrandComboBoxes();

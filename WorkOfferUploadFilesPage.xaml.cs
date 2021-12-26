@@ -27,7 +27,7 @@ namespace _01electronics_crm
     public partial class WorkOfferUploadFilesPage : Page
     {
         protected Employee loggedInUser;
-        protected WorkOffer workOffer;
+        protected OutgoingQuotation workOffer;
 
         private SQLServer sqlDatabase;
         protected FTPServer ftpObject;
@@ -72,7 +72,7 @@ namespace _01electronics_crm
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
 
-        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition)
         {
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
@@ -109,7 +109,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            serverFolderPath = BASIC_MACROS.OFFER_FILES_PATH + workOffer.GetOfferID() + "/";
+            serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + workOffer.GetOfferID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
@@ -454,7 +454,7 @@ namespace _01electronics_crm
 
         private void OnClickCancelButton(object sender, RoutedEventArgs e)
         {
-            //if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            //if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             //{
             //    if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
             //        ftpObject.DeleteFtpDirectory(serverFolderPath, BASIC_MACROS.SEVERITY_HIGH);

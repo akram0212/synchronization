@@ -400,11 +400,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOrders[i].order_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -1035,11 +1035,11 @@ namespace _01electronics_crm
 
         //private void OnBtnClickView(object sender, RoutedEventArgs e)
         //{
-        //    WorkOffer selectedWorkOffer = new WorkOffer(sqlDatabase);
+        //    OutgoingQuotation selectedWorkOffer = new OutgoingQuotation(sqlDatabase);
         //
         //    commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
         //
-        //    int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+        //    int viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
         //    WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
         //    viewOffer.Show();
         //}
@@ -1270,7 +1270,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickViewOffer()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
@@ -1278,7 +1278,7 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                WorkOffer workOffer = new WorkOffer(sqlDatabase);
+                OutgoingQuotation workOffer = new OutgoingQuotation(sqlDatabase);
 
                 workOffer.CopyWorkOffer(workOrder);
 

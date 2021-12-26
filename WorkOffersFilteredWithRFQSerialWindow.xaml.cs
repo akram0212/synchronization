@@ -21,11 +21,11 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         SQLServer sqlServer;
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
         CommonQueries CommonQueries;
 
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
 
         private int salesPersonTeam;
         private int viewAddCondition;
@@ -42,9 +42,9 @@ namespace _01electronics_crm
 
             sqlServer = new SQLServer();
             CommonQueries = new CommonQueries(sqlServer);
-            workOffer = new WorkOffer(sqlServer);
+            workOffer = new OutgoingQuotation(sqlServer);
 
-            if (!CommonQueries.GetWorkOffers(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
+            if (!CommonQueries.GetOutgoingQuotations(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
                 return;
 
             SetWorkOffersStackPanel();
@@ -88,7 +88,7 @@ namespace _01electronics_crm
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
-                List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> temp = workOffers[i].products;
+                List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
 
                 for (int j = 0; j < temp.Count(); j++)
                 {
@@ -113,11 +113,11 @@ namespace _01electronics_crm
                 statusLabel.Content = workOffers[i].offer_status;
                 statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -233,7 +233,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickView()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
             CommonQueries.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
@@ -258,7 +258,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickReviseOffer()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION;
 
             CommonQueries.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 

@@ -27,15 +27,15 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
-        private WorkOffer selectedWorkOffer;
+        private OutgoingQuotation selectedWorkOffer;
 
        
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_OFFER_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> offerStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
@@ -106,7 +106,7 @@ namespace _01electronics_crm
 
         private bool GetWorkOffers()
         {
-            if (!commonQueriesObject.GetWorkOffers(ref workOffers))
+            if (!commonQueriesObject.GetOutgoingQuotations(ref workOffers))
                 return false;
             return true;
         }
@@ -366,7 +366,7 @@ namespace _01electronics_crm
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
-                List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> temp = workOffers[i].products;
+                List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
 
                 for (int j = 0; j < temp.Count(); j++)
                 {
@@ -391,11 +391,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOffers[i].offer_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -440,10 +440,10 @@ namespace _01electronics_crm
                 {
                     listBox.Items.Add(reviseButton);
 
-                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                         listBox.Items.Add(confirmButton);
 
-                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                         listBox.Items.Add(rejectButton);
                 }
 
@@ -686,7 +686,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(modelHeader, 3);
 
 
-                List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> temp = workOffers[i].products;
+                List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
 
                 for (int j = 0; j < temp.Count(); j++)
                 {
@@ -752,11 +752,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOffers[i].offer_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -1086,7 +1086,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_ADD_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION;
 
             selectedWorkOffer = new WorkOrder(sqlDatabase);
 
@@ -1099,7 +1099,7 @@ namespace _01electronics_crm
         
         private void OnBtnClickView()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
@@ -1124,7 +1124,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickReviseOffer()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 

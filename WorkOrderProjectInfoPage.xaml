@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Content="WORK ORDER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" IsEnabled="False"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">

@@ -25,7 +25,7 @@ namespace _01electronics_crm
     public partial class WorkOfferAdditionalInfoPage : Page
     {
         Employee loggedInUser;
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
         WordAutomation wordAutomation;
 
         private CommonQueries commonQueriesObject;
@@ -61,7 +61,7 @@ namespace _01electronics_crm
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferAdditionalInfoPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition)
+        public WorkOfferAdditionalInfoPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -81,7 +81,7 @@ namespace _01electronics_crm
             ConfigureDrawingSubmissionUIElements();
 
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 ConfigureDrawingSubmissionUIElements();
                 
@@ -90,7 +90,7 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
                
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 
                 InitializeTimeUnitComboBoxes();
@@ -113,7 +113,7 @@ namespace _01electronics_crm
                 finishButton.IsEnabled = false;
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 ConfigureDrawingSubmissionUIElements();
                 
@@ -139,7 +139,7 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
             }
         }
-        public WorkOfferAdditionalInfoPage(ref WorkOffer mWorkOffer)
+        public WorkOfferAdditionalInfoPage(ref OutgoingQuotation mWorkOffer)
         {
             workOffer = mWorkOffer;
         }
@@ -451,7 +451,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
                 workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
@@ -470,7 +470,7 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
                 workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
@@ -537,7 +537,7 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to set validity period before adding a work offer!");
             else 
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OFFER_RESOLVE_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
                     if (!workOffer.IssueNewOffer())
                         return;
@@ -545,9 +545,9 @@ namespace _01electronics_crm
                     if (workOffer.GetRFQID() != null)
                         if (!workOffer.ConfirmRFQ())
                             return;
-                    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
-                        viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+                        viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
                         WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, true);
 
@@ -557,14 +557,14 @@ namespace _01electronics_crm
                         viewOffer.Show();
                     }
                 }
-                else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 {
                     if (!workOffer.ReviseOffer())
                         return;
 
-                    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
-                        viewAddCondition = COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION;
+                        viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
                         WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, true);
 

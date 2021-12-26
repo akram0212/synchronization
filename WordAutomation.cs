@@ -25,7 +25,7 @@ namespace _01electronics_crm
         SQLServer sqlServer;
         FTPServer ftpServer;
 
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
         WorkOrder workOrder;
         Document doc;
 
@@ -52,7 +52,7 @@ namespace _01electronics_crm
             doc = new Document();
         }
 
-        public void AutomateWorkOffer(WorkOffer mWorkOffer)
+        public void AutomateWorkOffer(OutgoingQuotation mWorkOffer)
         {
             workOffer = mWorkOffer;
 
@@ -60,7 +60,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OFFERS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OUTGOING_QUOTATIONS_PATH + workOffer.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
             {
                 doc.LoadFromFile(wordFilePath);
 
@@ -84,7 +84,7 @@ namespace _01electronics_crm
 
 
                 ///////////////////////////////////////////////////////////////////////////////////////////
-                /////////////OFFER INFO TABLE
+                /////////////OUTGOING_QUOTATION INFO TABLE
                 //////////////////////////////////////////////////////////////////////////////////////////
                 ITable offerInfoTable = section.Tables[counter];
                 counter++;
@@ -203,7 +203,7 @@ namespace _01electronics_crm
 
                 counter = counter + workOffer.GetNoOfOfferSavedProducts() + 1;
                 ///////////////////////////////////////////////////////////////////////////////////////////
-                /////////////COMMERTIAL OFFER TABLE
+                /////////////COMMERTIAL OUTGOING_QUOTATION TABLE
                 //////////////////////////////////////////////////////////////////////////////////////////
 
                 ITable commercialOfferTable = section.Tables[counter];

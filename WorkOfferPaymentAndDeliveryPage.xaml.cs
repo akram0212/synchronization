@@ -22,7 +22,7 @@ namespace _01electronics_crm
     public partial class WorkOfferPaymentAndDeliveryPage : Page
     {
         Employee loggedInUser;
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -50,7 +50,7 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferAdditionalInfoPage mWorkOfferAdditionalInfoPage)
+        public WorkOfferPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition, ref WorkOfferAdditionalInfoPage mWorkOfferAdditionalInfoPage)
         {
             workOfferAdditionalInfoPage = mWorkOfferAdditionalInfoPage;
 
@@ -67,7 +67,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -81,7 +81,7 @@ namespace _01electronics_crm
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -102,7 +102,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
@@ -137,7 +137,7 @@ namespace _01electronics_crm
                 SetTotalPriceTextBox();
             }
         }
-        public WorkOfferPaymentAndDeliveryPage(ref WorkOffer mWorkOffer)
+        public WorkOfferPaymentAndDeliveryPage(ref OutgoingQuotation mWorkOffer)
         {
             workOffer = mWorkOffer;
         }
@@ -256,7 +256,7 @@ namespace _01electronics_crm
         {
             totalPrice = 0;
 
-            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
+            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
                 totalPrice += workOffer.GetProductPriceValue(i) * workOffer.GetOfferProductQuantity(i);
 
             totalPriceTextBox.Text = totalPrice.ToString();
@@ -465,7 +465,7 @@ namespace _01electronics_crm
                 deliveryTimeCheckBox.IsChecked = true;
                 workOfferAdditionalInfoPage.warrantyPeriodCheckBox.IsChecked = true;
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     deliveryTimeTextBoxFrom.IsEnabled = false;
                     deliveryTimeTextBoxTo.IsEnabled = false;
@@ -525,7 +525,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 SetPercentAndValuesInWorkOffer();
             }
@@ -538,7 +538,7 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 SetPercentAndValuesInWorkOffer();
             }
@@ -558,7 +558,7 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 SetPercentAndValuesInWorkOffer();
             }
@@ -574,7 +574,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
                 workOfferUploadFilesPage.workOfferProductsPage = workOfferProductsPage;
@@ -587,7 +587,7 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 SetPercentAndValuesInWorkOffer();
             }
@@ -602,7 +602,7 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 SetPercentAndValuesInWorkOffer();
             }

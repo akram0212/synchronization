@@ -22,7 +22,7 @@ namespace _01electronics_crm
     public partial class WorkOfferProductsPage : Page
     {
         Employee loggedInUser;
-        WorkOffer workOffer;
+        OutgoingQuotation workOffer;
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -33,7 +33,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brands = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.MODEL_STRUCT> models = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
 
-        private List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT> offerProduct1 = new List<COMPANY_WORK_MACROS.OFFER_PRODUCT_STRUCT>();
+        private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> offerProduct1 = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT>();
         
         private List<BASIC_STRUCTS.CURRENCY_STRUCT> currencies = new List<BASIC_STRUCTS.CURRENCY_STRUCT>();
 
@@ -47,7 +47,7 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferProductsPage(ref Employee mLoggedInUser, ref WorkOffer mWorkOffer, int mViewAddCondition, ref WorkOfferPaymentAndDeliveryPage mWorkOfferPaymentAndDeliveryPage)
+        public WorkOfferProductsPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition, ref WorkOfferPaymentAndDeliveryPage mWorkOfferPaymentAndDeliveryPage)
         {
             workOfferPaymentAndDeliveryPage = mWorkOfferPaymentAndDeliveryPage;
 
@@ -65,14 +65,14 @@ namespace _01electronics_crm
             InitializeComponent();
 
             
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 InitializeProducts();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 
                 SetUpPageUIElements();
@@ -86,7 +86,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
 
                 InitializeProducts();
@@ -114,7 +114,7 @@ namespace _01electronics_crm
 
 
 
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
 
             {
 
@@ -319,9 +319,9 @@ namespace _01electronics_crm
         public void SetUpPageUIElements()
         {
 
-            for (int i = 0; i < COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
+            for (int i = 0; i < COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION && workOffer.GetOfferProductTypeId(i + 1) == 0)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION && workOffer.GetOfferProductTypeId(i + 1) == 0)
                     continue;
                 //if (viewAddCondition == 2 && workOffer.GetworkOfferProductTypeId(i + 1) == 0)
                 //  continue;
@@ -360,7 +360,7 @@ namespace _01electronics_crm
                 Grid.SetRow(mainLabelCheckBox, 0);
 
 
-                if (i == 0 || viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (i == 0 || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     mainLabelCheckBox.IsEnabled = false;
                 else if (i == 1)
                     mainLabelCheckBox.IsEnabled = true;
@@ -379,7 +379,7 @@ namespace _01electronics_crm
                 currentTypeLabel.Style = (Style)FindResource("labelStyle");
                 productTypeWrapPanel.Children.Add(currentTypeLabel);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     Label currentTypeLabelValue = new Label();
                     currentTypeLabelValue.Style = (Style)FindResource("labelStyle");
@@ -410,7 +410,7 @@ namespace _01electronics_crm
                 currentBrandLabel.Style = (Style)FindResource("labelStyle");
                 productBrandWrapPanel.Children.Add(currentBrandLabel);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     Label currentBrandLabelValue = new Label();
                     currentBrandLabelValue.Style = (Style)FindResource("labelStyle");
@@ -442,7 +442,7 @@ namespace _01electronics_crm
                 currentModelLabel.Style = (Style)FindResource("labelStyle");
                 productModelWrapPanel.Children.Add(currentModelLabel);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     Label currentModelLabelValue = new Label();
                     currentModelLabelValue.Style = (Style)FindResource("labelStyle");
@@ -476,7 +476,7 @@ namespace _01electronics_crm
                     currentQuantityTextBox.IsEnabled = false;
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     currentQuantityTextBox.IsEnabled = false;
 
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
@@ -511,7 +511,7 @@ namespace _01electronics_crm
                 }
                 productPriceWrapPanel.Children.Add(currentPriceComboBox);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
                     currentPriceTextBox.IsEnabled = false;
                     currentPriceComboBox.IsEnabled = false;
@@ -711,7 +711,7 @@ namespace _01electronics_crm
             WrapPanel currentPriceWrapPanel = (WrapPanel)currentPriceTextBox.Parent;
             Grid currentProductGrid = (Grid)currentPriceWrapPanel.Parent;
 
-            if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 if (IntegrityChecks.CheckInvalidCharacters(currentPriceTextBox.Text.ToString(), BASIC_MACROS.MONETARY_STRING) && currentPriceTextBox.Text != "")
                 {
@@ -721,7 +721,7 @@ namespace _01electronics_crm
                         if (currentProductGrid == mainWrapPanel.Children[k])
                         {
                             workOffer.SetOfferProductPriceValue(k + 1, (int)priceQuantity);
-                            //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                             //    workOfferPaymentAndDeliveryPage = workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage;
                             workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
 
@@ -955,7 +955,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 workOfferUploadFilesPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
                 workOfferUploadFilesPage.workOfferProductsPage = this;
