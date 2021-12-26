@@ -1133,7 +1133,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOrders = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOrders = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrders);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -1280,9 +1280,9 @@ namespace _01electronics_crm
             {
                 OutgoingQuotation workOffer = new OutgoingQuotation(sqlDatabase);
 
-                workOffer.CopyWorkOffer(workOrder);
+                outgoingQuotation.CopyWorkOffer(workOrder);
 
-                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }

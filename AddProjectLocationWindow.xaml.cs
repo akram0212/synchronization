@@ -155,7 +155,9 @@ namespace _01electronics_crm
             {
                 InitializeDistricts();
                 districtComboBox.IsEnabled = true;
-                districtComboBox.IsEditable = true;
+
+                if (cityComboBox.SelectedItem != "Cairo")
+                    districtComboBox.IsEditable = true;
             }
             else
             {
@@ -291,7 +293,7 @@ namespace _01electronics_crm
         }
         private void OnClickCityImage(object sender, MouseButtonEventArgs e)
         {
-            if (cityComboBox.Text.ToString() != "")
+            if (cityComboBox.Text.ToString() != "" )
             {
                 if (!cities.Exists(cityItem => cityItem.city_name == cityComboBox.Text.ToString()))
                 {

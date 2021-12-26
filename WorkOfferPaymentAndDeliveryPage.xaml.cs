@@ -22,7 +22,7 @@ namespace _01electronics_crm
     public partial class WorkOfferPaymentAndDeliveryPage : Page
     {
         Employee loggedInUser;
-        OutgoingQuotation workOffer;
+        OutgoingQuotation outgoingQuotation;
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -61,7 +61,7 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
             
-            workOffer = mWorkOffer;
+            outgoingQuotation = mWorkOffer;
 
             totalPrice = 0;
 
@@ -139,7 +139,7 @@ namespace _01electronics_crm
         }
         public WorkOfferPaymentAndDeliveryPage(ref OutgoingQuotation mWorkOffer)
         {
-            workOffer = mWorkOffer;
+            outgoingQuotation = mWorkOffer;
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///CONFIGURE UI ELEMENTS
@@ -245,50 +245,50 @@ namespace _01electronics_crm
 
         public void SetContractTypeValue()
         {
-            contractTypeComboBox.Text = workOffer.GetOfferContractType();
+            contractTypeComboBox.Text = outgoingQuotation.GetOfferContractType();
         }
         public void SetTotalPriceCurrencyComboBox()
         {
-            totalPriceCombo.SelectedItem = workOffer.GetCurrency();
+            totalPriceCombo.SelectedItem = outgoingQuotation.GetCurrency();
         }
 
         public void SetTotalPriceTextBox()
         {
             totalPrice = 0;
 
-            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
+            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
                 totalPrice += workOffer.GetProductPriceValue(i) * workOffer.GetOfferProductQuantity(i);
 
             totalPriceTextBox.Text = totalPrice.ToString();
-            workOffer.SetTotalValues();
+            outgoingQuotation.SetTotalValues();
         }
 
         private void SetPercentAndValuesInWorkOffer()
         {
-            workOffer.SetPercentValues();
+            outgoingQuotation.SetPercentValues();
         }
 
         private void SetPriceValues()
         {
-            if (workOffer.GetCurrency() != null)
+            if (outgoingQuotation.GetCurrency() != null)
             {
-                totalPriceCombo.Text = workOffer.GetCurrency().ToString();
-                totalPriceTextBox.Text = workOffer.GetTotalPriceValue().ToString();
+                totalPriceCombo.Text = outgoingQuotation.GetCurrency().ToString();
+                totalPriceTextBox.Text = outgoingQuotation.GetTotalPriceValue().ToString();
 
-                if (workOffer.GetOfferVATCondition() != "")
-                    totalPriceVATCombo.SelectedItem = workOffer.GetOfferVATCondition();
+                if (outgoingQuotation.GetOfferVATCondition() != "")
+                    totalPriceVATCombo.SelectedItem = outgoingQuotation.GetOfferVATCondition();
                 else
                     totalPriceVATCombo.SelectedIndex = -1;
 
-                totalPrice = workOffer.GetTotalPriceValue();
+                totalPrice = outgoingQuotation.GetTotalPriceValue();
             }
         }
 
         public void SetDownPaymentValues()
         {
-            if (workOffer.GetPercentDownPayment() != 0)
+            if (outgoingQuotation.GetPercentDownPayment() != 0)
             {
-                downPaymentPercentageTextBox.Text = workOffer.GetPercentDownPayment().ToString();
+                downPaymentPercentageTextBox.Text = outgoingQuotation.GetPercentDownPayment().ToString();
                 downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
                 downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
             }
@@ -297,9 +297,9 @@ namespace _01electronics_crm
 
         public void SetOnDeliveryValues()
         {
-            if (workOffer.GetPercentOnDelivery() != 0)
+            if (outgoingQuotation.GetPercentOnDelivery() != 0)
             {
-                onDeliveryPercentageTextBox.Text = workOffer.GetPercentOnDelivery().ToString();
+                onDeliveryPercentageTextBox.Text = outgoingQuotation.GetPercentOnDelivery().ToString();
                 onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
                 onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
             }
@@ -307,9 +307,9 @@ namespace _01electronics_crm
 
         public void SetOnInstallationValues()
         {
-            if (workOffer.GetPercentOnInstallation() != 0)
+            if (outgoingQuotation.GetPercentOnInstallation() != 0)
             {
-                onInstallationPercentageTextBox.Text = workOffer.GetPercentOnInstallation().ToString();
+                onInstallationPercentageTextBox.Text = outgoingQuotation.GetPercentOnInstallation().ToString();
                 onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
                 onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
             }
@@ -318,27 +318,27 @@ namespace _01electronics_crm
         private void SetDeliveryTimeValues()
         {
             ////////////Added by me ama get awareeh
-            if (workOffer.GetDeliveryTimeMinimum() != 0)
+            if (outgoingQuotation.GetDeliveryTimeMinimum() != 0)
             {
-                deliveryTimeTextBoxFrom.Text = workOffer.GetDeliveryTimeMinimum().ToString();
-                deliveryTimeTextBoxTo.Text = workOffer.GetDeliveryTimeMaximum().ToString();
+                deliveryTimeTextBoxFrom.Text = outgoingQuotation.GetDeliveryTimeMinimum().ToString();
+                deliveryTimeTextBoxTo.Text = outgoingQuotation.GetDeliveryTimeMaximum().ToString();
             }
 
-            if(workOffer.GetDeliveryTimeUnit() != null)
-                deliveryTimeCombo.Text = workOffer.GetDeliveryTimeUnit().ToString();
+            if(outgoingQuotation.GetDeliveryTimeUnit() != null)
+                deliveryTimeCombo.Text = outgoingQuotation.GetDeliveryTimeUnit().ToString();
 
-            if (workOffer.GetOfferDeliveryTimeCondition() != "")
-                deliveryTimeFromWhenCombo.Text = workOffer.GetOfferDeliveryTimeCondition();
+            if (outgoingQuotation.GetOfferDeliveryTimeCondition() != "")
+                deliveryTimeFromWhenCombo.Text = outgoingQuotation.GetOfferDeliveryTimeCondition();
             else
                 deliveryTimeFromWhenCombo.SelectedIndex = deliveryTimeFromWhenCombo.Items.Count - 1;
         }
 
         private void SetDeliveryPointValue()
         {
-            deliveryPointCombo.SelectedItem = workOffer.GetDeliveryPoint();
+            deliveryPointCombo.SelectedItem = outgoingQuotation.GetDeliveryPoint();
 
-            if (workOffer.GetOfferShipmentTypeCondition() != "")
-                deliveryPointPortCombo.Text = workOffer.GetOfferShipmentTypeCondition();
+            if (outgoingQuotation.GetOfferShipmentTypeCondition() != "")
+                deliveryPointPortCombo.Text = outgoingQuotation.GetOfferShipmentTypeCondition();
             else
                 deliveryPointPortCombo.SelectedIndex = deliveryPointPortCombo.Items.Count - 1;
         }
@@ -386,7 +386,7 @@ namespace _01electronics_crm
             else
             {
                 downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
-                workOffer.SetPercentDownPayment(downPaymentPercentage);
+                outgoingQuotation.SetPercentDownPayment(downPaymentPercentage);
             }
         }
         private void OnTextChangedDeliveryPercentageTextBox(object sender, TextChangedEventArgs e)
@@ -407,7 +407,7 @@ namespace _01electronics_crm
             else
             {
                 onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
-                workOffer.SetPercentOnDelivery(onDeliveryPercentage);
+                outgoingQuotation.SetPercentOnDelivery(onDeliveryPercentage);
             }
         }
         private void OnTextChangedInstallationPercentageTextBox(object sender, TextChangedEventArgs e)
@@ -428,20 +428,20 @@ namespace _01electronics_crm
             else
             {
                 onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
-                workOffer.SetPercentOnInstallation(onInstallationPercentage);
+                outgoingQuotation.SetPercentOnInstallation(onInstallationPercentage);
             }
         }
         private void OnTextChangedDeliveryTimeFromTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxFrom.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxFrom.Text != "")
-                workOffer.SetDeliveryTimeMinimum(int.Parse(deliveryTimeTextBoxFrom.Text));
+                outgoingQuotation.SetDeliveryTimeMinimum(int.Parse(deliveryTimeTextBoxFrom.Text));
             else
                 deliveryTimeTextBoxFrom.Text = null;
         }
         private void OnTextChangedDeliveryTimeToTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(deliveryTimeTextBoxTo.Text, BASIC_MACROS.PHONE_STRING) && deliveryTimeTextBoxTo.Text != "")
-                workOffer.SetDeliveryTimeMaximum(int.Parse(deliveryTimeTextBoxTo.Text));
+                outgoingQuotation.SetDeliveryTimeMaximum(int.Parse(deliveryTimeTextBoxTo.Text));
             else
                 deliveryTimeTextBoxTo.Text = null;
         }
@@ -451,7 +451,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            workOffer.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
+            outgoingQuotation.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
 
             if (contractTypeComboBox.SelectedIndex > 1)
             {
@@ -487,22 +487,22 @@ namespace _01electronics_crm
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
             if(deliveryPointCombo.SelectedItem != null)
-                workOffer.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
+                outgoingQuotation.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
             if(deliveryTimeCombo.SelectedItem != null)
-                workOffer.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
+                outgoingQuotation.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
             if(deliveryTimeFromWhenCombo.SelectedItem != null)
-                workOffer.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
+                outgoingQuotation.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
         }
         private void OnSelChangedDeliveryPointPortCombo(object sender, SelectionChangedEventArgs e)
         {
             if(deliveryPointPortCombo.SelectedItem != null)
-                workOffer.SetOfferShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
+                outgoingQuotation.SetOfferShipmentTypeCondition(shipmentTypes[deliveryPointPortCombo.SelectedIndex].key, shipmentTypes[deliveryPointPortCombo.SelectedIndex].value);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -510,12 +510,12 @@ namespace _01electronics_crm
             if (totalPriceVATCombo.SelectedIndex == 0)
             {
                 tmp = true;
-                workOffer.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+                outgoingQuotation.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
             }
             else
             {
                 tmp = false;
-                workOffer.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+                outgoingQuotation.SetOfferVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
             }
         }
 

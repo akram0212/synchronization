@@ -21,7 +21,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         SQLServer sqlServer;
-        OutgoingQuotation workOffer;
+        OutgoingQuotation outgoingQuotation;
         CommonQueries CommonQueries;
 
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
@@ -42,7 +42,7 @@ namespace _01electronics_crm
 
             sqlServer = new SQLServer();
             CommonQueries = new CommonQueries(sqlServer);
-            workOffer = new OutgoingQuotation(sqlServer);
+            workOffer = new WorkOffer(sqlServer);
 
             if (!CommonQueries.GetOutgoingQuotations(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
                 return;
@@ -113,11 +113,11 @@ namespace _01electronics_crm
                 statusLabel.Content = workOffers[i].offer_status;
                 statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -240,19 +240,19 @@ namespace _01electronics_crm
 
             if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                workOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                outgoingQuotation.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
             else
             {
-                workOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                outgoingQuotation.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
 
-            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
             viewOffer.Show();
         }
 
@@ -264,19 +264,19 @@ namespace _01electronics_crm
 
             if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                workOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                outgoingQuotation.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
             else
             {
-                workOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                outgoingQuotation.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
 
-            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
             reviseOffer.Closed += OnClosedReviseOffer;
             reviseOffer.Show();
         }

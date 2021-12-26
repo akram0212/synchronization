@@ -344,7 +344,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffersPage = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffersPage);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)

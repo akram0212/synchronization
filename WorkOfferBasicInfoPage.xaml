@@ -105,6 +105,12 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
+
+                <WrapPanel Name="projectWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Project &#x0a;Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="projectSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectSerialCombo" SelectionChanged="OnSelChangedProjectSerialCombo"/>
+                </WrapPanel>
                 
                 
 

@@ -69,21 +69,23 @@
             </Border>
 
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Name="mainGrid">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="500"/>
                 
             </Grid.RowDefinitions>
 
-            <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24">
-                <CheckBox Content="Project Location" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProjectLocation" Unchecked="OnUnCheckProjectLocation"/>
-                <ComboBox Name="projectComboBox" Style="{StaticResource comboBoxStyle}" SelectionChanged="OnSelChangedProjectLocationCombo"/>
+            <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12">
+                <CheckBox Content="Project" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProject" Unchecked="OnUnCheckProject"/>
+                <ComboBox Name="projectComboBox" Style="{StaticResource comboBoxStyle}" SelectionChanged="OnSelChangedProjectCombo" IsEnabled="False"/>
             </WrapPanel>
 
-            <ScrollViewer Grid.Row="1" Margin="24" Height="400">
-                <StackPanel Background="LightGray">
+            <ScrollViewer Name="scrollViewer" Grid.Row="1" Margin="24" Height="400">
+                <StackPanel Name="locationsStackPanel" Background="LightGray">
+                    <Grid Name="locationsGrid">
 
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
@@ -98,12 +100,14 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" Margin="24" Click="OnBtnClickBack"/>
-            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next"  Margin="24" Click="OnBtnClickNext"/>
-            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
-            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel"  Margin="24" Click="OnBtnClickCancel"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="testButton" Content="Test" Margin="24" Click="OnClickTestButton"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" Margin="24" Click="OnBtnClickBack"/>
+            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next"  Margin="24" Click="OnBtnClickNext"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="4" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel"  Margin="24" Click="OnBtnClickCancel"/>
 
         </Grid>
 

@@ -35,6 +35,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
 
         String[] contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
 
@@ -66,6 +67,7 @@ namespace _01electronics_crm
 
                 InitializeSalesPersonCombo();
                 InitializeAssigneeCombo();
+                InitializeProjectCombo();
 
                 SetSalesPerson();
                 salesPersonCombo.IsEnabled = false;
@@ -83,6 +85,7 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetContactNumberLabel();
+                SetProjectLabel();
 
                 cancelButton.IsEnabled = false;
             }  
@@ -91,14 +94,17 @@ namespace _01electronics_crm
               
                 ConfigureAddRFQUIElements();
                 InitializeSalesPersonCombo();
-                
+                InitializeProjectCombo();
+
                 InitializeAssigneeCombo();
 
                 SetSalesPersonCombo();
                 SetAssigneeCombo();
                 SetCompanyNameCombo();
+                SetProjectCombo();
 
                 salesPersonCombo.IsEnabled = false;
+                projectCombo.IsEnabled = false;
             }
 
         }
@@ -114,6 +120,7 @@ namespace _01electronics_crm
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             contactPersonPhoneLabel.Visibility = Visibility.Collapsed;
             salesPersonLabel.Visibility = Visibility.Collapsed;
+            projectLabel.Visibility = Visibility.Collapsed;
 
             //YOU SHALL MAKE SURE THAT LABELS ARE COLLAPSED AND COMBOS ARE VISIBLE EVERY TIME
             assigneeCombo.Visibility = Visibility.Visible;
@@ -122,6 +129,7 @@ namespace _01electronics_crm
             contactPersonCombo.Visibility = Visibility.Visible;
             contactPersonPhoneCombo.Visibility = Visibility.Visible;
             salesPersonCombo.Visibility = Visibility.Visible;
+            projectCombo.Visibility = Visibility.Visible;
 
             companyAddressCombo.IsEnabled = false;
             contactPersonCombo.IsEnabled = false;
@@ -136,6 +144,7 @@ namespace _01electronics_crm
             contactPersonCombo.Visibility = Visibility.Collapsed;
             contactPersonPhoneCombo.Visibility = Visibility.Collapsed;
             salesPersonCombo.Visibility = Visibility.Collapsed;
+            projectCombo.Visibility = Visibility.Collapsed;
 
             offerProposerLabel.Visibility = Visibility.Visible;
             companyNameLabel.Visibility = Visibility.Visible;
@@ -143,6 +152,7 @@ namespace _01electronics_crm
             contactPersonNameLabel.Visibility = Visibility.Visible;
             contactPersonPhoneLabel.Visibility = Visibility.Visible;
             salesPersonLabel.Visibility = Visibility.Visible;
+            projectLabel.Visibility = Visibility.Visible;
         }
 
         ///////////////INITIALIZE FUNCTIONS///////////////
@@ -200,6 +210,17 @@ namespace _01electronics_crm
             return true;
         }
 
+        private bool InitializeProjectCombo()
+        {
+            if (!commonQueriesObject.GetClientProjects(ref projects))
+                return false;
+
+            for (int i = 0; i < projects.Count; i++)
+                projectCombo.Items.Add(projects[i].project_name);
+
+            return true;
+        }
+
         /////////////SET FUNCTIONS////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -230,6 +251,11 @@ namespace _01electronics_crm
         {
             if(rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
                 contactPersonPhoneCombo.SelectedItem = rfq.GetRFQContact().GetContactPhones()[0].ToString();
+        }
+
+        private void SetProjectCombo()
+        {
+            projectCombo.SelectedItem = rfq.GetprojectName();
         }
         private void SetSalesPersonLabel()
         {
@@ -272,6 +298,11 @@ namespace _01electronics_crm
               //contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
               if(rfq.GetRFQContact().GetContactPhones()[0] != null)
                 contactPersonPhoneLabel.Content = rfq.GetRFQContact().GetContactPhones()[0].ToString();
+        }
+
+        private void SetProjectLabel()
+        {
+            projectLabel.Content = rfq.GetprojectName();
         }
 
         /////////////SELECTION CHANGED//////////////
@@ -372,6 +403,11 @@ namespace _01electronics_crm
             //rfq.GetRFQContact().AddNewContactPhone(contactPersonPhoneCombo.SelectedItem.ToString());
         }
 
+        private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
+        {
+            rfq.InitializeProjectInfo(projects[projectCombo.SelectedIndex].project_serial);
+        }
+
         //////////BUTTON CLICKED///////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -425,5 +461,7 @@ namespace _01electronics_crm
             NavigationWindow currentWindow = (NavigationWindow)this.Parent;
             currentWindow.Close();
         }
+
+        
     }
 }

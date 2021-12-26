@@ -17,9 +17,9 @@ using _01electronics_library;
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for WorkOffersPage.xaml
+    /// Interaction logic for QuotationsPage.xaml
     /// </summary>
-    public partial class WorkOffersPage : Page
+    public partial class QuotationsPage : Page
     {
         private Employee loggedInUser;
 
@@ -58,7 +58,7 @@ namespace _01electronics_crm
         private Expander currentExpander;
         private Expander previousExpander;
 
-        public WorkOffersPage(ref Employee mLoggedInUser)
+        public QuotationsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
@@ -70,7 +70,7 @@ namespace _01electronics_crm
 
             selectedWorkOffer = new WorkOrder(sqlDatabase);
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             InitializeYearsComboBox();
@@ -104,7 +104,7 @@ namespace _01electronics_crm
         //GET DATA FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private bool GetWorkOffers()
+        private bool GetOutgoingQuotations()
         {
             if (!commonQueriesObject.GetOutgoingQuotations(ref workOffers))
                 return false;
@@ -1046,7 +1046,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -1141,8 +1141,9 @@ namespace _01electronics_crm
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
-            
-            
+
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+            viewOffer.Show();
         }
 
         private void OnBtnClickConfirmOffer()
@@ -1171,7 +1172,7 @@ namespace _01electronics_crm
             WorkOrderWindow reviseOrder= new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
             reviseOrder.Show();
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();
@@ -1210,7 +1211,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
-            //WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            //QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             //this.NavigationService.Navigate(workOffers);
         }
 
@@ -1223,7 +1224,7 @@ namespace _01electronics_crm
         private void OnClosedWorkOfferWindow(object sender, EventArgs e)
         {
 
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();
@@ -1231,7 +1232,7 @@ namespace _01electronics_crm
         }
         private void OnClosedFailureReasonWindow(object sender, EventArgs e)
         {
-            if (!GetWorkOffers())
+            if (!GetOutgoingQuotations())
                 return;
 
             SetWorkOffersStackPanel();
