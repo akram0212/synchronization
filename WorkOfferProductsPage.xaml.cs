@@ -315,7 +315,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_VIEW_CONDITION && workOffer.GetOfferProductTypeId(i + 1) == 0)
+                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION && outgoingQuotation.GetOfferProductTypeId(i + 1) == 0)
                     continue;
                 //if (viewAddCondition == 2 && outgoingQuotation.GetworkOfferProductTypeId(i + 1) == 0)
                 //  continue;
@@ -714,8 +714,8 @@ namespace _01electronics_crm
                     {
                         if (currentProductGrid == mainWrapPanel.Children[k])
                         {
-                            workOffer.SetOfferProductPriceValue(k + 1, (int)priceQuantity);
-                            //if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+                            outgoingQuotation.SetOfferProductPriceValue(k + 1, (int)priceQuantity);
+                            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                             //    workOfferPaymentAndDeliveryPage = workOfferBasicInfoPage.workOfferPaymentAndDeliveryPage;
                             workOfferPaymentAndDeliveryPage.SetTotalPriceTextBox();
 

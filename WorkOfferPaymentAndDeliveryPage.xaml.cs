@@ -256,8 +256,8 @@ namespace _01electronics_crm
         {
             totalPrice = 0;
 
-            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OFFER_PRODUCTS; i++)
-                totalPrice += workOffer.GetProductPriceValue(i) * workOffer.GetOfferProductQuantity(i);
+            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
+                totalPrice += outgoingQuotation.GetProductPriceValue(i) * outgoingQuotation.GetOfferProductQuantity(i);
 
             totalPriceTextBox.Text = totalPrice.ToString();
             outgoingQuotation.SetTotalValues();

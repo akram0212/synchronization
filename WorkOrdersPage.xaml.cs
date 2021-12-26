@@ -1278,7 +1278,7 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                OutgoingQuotation workOffer = new OutgoingQuotation(sqlDatabase);
+                OutgoingQuotation outgoingQuotation = new OutgoingQuotation(sqlDatabase);
 
                 outgoingQuotation.CopyWorkOffer(workOrder);
 

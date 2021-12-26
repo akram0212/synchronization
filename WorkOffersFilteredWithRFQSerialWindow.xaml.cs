@@ -42,7 +42,7 @@ namespace _01electronics_crm
 
             sqlServer = new SQLServer();
             CommonQueries = new CommonQueries(sqlServer);
-            workOffer = new WorkOffer(sqlServer);
+            outgoingQuotation = new OutgoingQuotation(sqlServer);
 
             if (!CommonQueries.GetOutgoingQuotations(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
                 return;
@@ -113,11 +113,11 @@ namespace _01electronics_crm
                 statusLabel.Content = workOffers[i].offer_status;
                 statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OFFER)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OFFER)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }

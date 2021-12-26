@@ -1136,11 +1136,11 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                OutgoingQuotation workOffer = new OutgoingQuotation(sqlDatabase);
+                OutgoingQuotation outgoingQuotation = new OutgoingQuotation(sqlDatabase);
 
-                workOffer.CopyWorkOffer(workOrder);
+                outgoingQuotation.CopyWorkOffer(workOrder);
 
-                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }

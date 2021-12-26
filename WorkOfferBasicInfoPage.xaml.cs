@@ -67,9 +67,9 @@ namespace _01electronics_crm
 
             //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
             //{
-            //    workOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
-            //        if (!workOffer.GetNewOfferSerial())
+            //    outgoingQuotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
+            //    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+            //        if (!outgoingQuotation.GetNewOfferSerial())
             //            return;
             //    if(!outgoingQuotation.GetNewOfferVersion())
             //        return;
@@ -108,7 +108,7 @@ namespace _01electronics_crm
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref outgoingQuotation, viewAddCondition);
             }
-            else if(viewAddCondition == COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
+            else if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
@@ -443,8 +443,8 @@ namespace _01electronics_crm
                 salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OFFER_ADD_CONDITION)
-                workOffer.ResetWorkOfferInfo(salesPersonTeamID);
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+                outgoingQuotation.ResetWorkOfferInfo(salesPersonTeamID);
 
             outgoingQuotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
 
@@ -467,9 +467,9 @@ namespace _01electronics_crm
         {
             if (RFQSerialCombo.SelectedItem != null)
             {
-                workOffer.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
-                if (viewAddCondition != COMPANY_WORK_MACROS.OFFER_REVISE_CONDITION)
-                    workOffer.LinkRFQInfo();
+                outgoingQuotation.InitializeRFQInfo(rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_serial, rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].rfq_version);
+                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+                    outgoingQuotation.LinkRFQInfo();
 
                 SetCompanyNameAddressContactFromRFQ();
                 if(viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
