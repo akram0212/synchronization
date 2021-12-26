@@ -343,11 +343,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOrders[i].order_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OUTGOING_QUOTATION)
+                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OUTGOING_QUOTATION)
+                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -1136,11 +1136,11 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                OutgoingQuotation workOffer = new OutgoingQuotation(sqlDatabase);
+                OutgoingQuotation outgoingQuotation = new OutgoingQuotation(sqlDatabase);
 
-                workOffer.CopyWorkOffer(workOrder);
+                outgoingQuotation.CopyWorkOffer(workOrder);
 
-                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref workOffer, viewAddCondition, false);
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }

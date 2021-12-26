@@ -108,7 +108,7 @@ namespace _01electronics_crm
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref outgoingQuotation, viewAddCondition);
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+            else if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();

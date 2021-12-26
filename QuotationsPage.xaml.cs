@@ -391,11 +391,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOffers[i].offer_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OUTGOING_QUOTATION)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OUTGOING_QUOTATION)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -440,10 +440,10 @@ namespace _01electronics_crm
                 {
                     listBox.Items.Add(reviseButton);
 
-                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OUTGOING_QUOTATION)
+                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                         listBox.Items.Add(confirmButton);
 
-                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_WORK_OUTGOING_QUOTATION)
+                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                         listBox.Items.Add(rejectButton);
                 }
 
@@ -752,11 +752,11 @@ namespace _01electronics_crm
                 rfqStatusLabel.Content = workOffers[i].offer_status;
                 rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_WORK_OUTGOING_QUOTATION)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_WORK_OUTGOING_QUOTATION)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
