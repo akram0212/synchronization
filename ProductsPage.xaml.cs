@@ -188,6 +188,16 @@ namespace _01electronics_crm
             ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
             this.NavigationService.Navigate(projectsPage);
         }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //MOUSE DOWN HANDLERS
@@ -205,10 +215,5 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(brandsPage);
         }
 
-        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
-        {
-            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
-            this.NavigationService.Navigate(maintenanceContractsPage);
-        }
     }
 }

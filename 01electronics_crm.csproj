@@ -145,8 +145,50 @@
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExcelExport.cs" />
+    <Compile Include="MaintContractsAdditionalInfoPage.xaml.cs">
+      <DependentUpon>MaintContractsAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsBasicInfoPage.xaml.cs">
+      <DependentUpon>MaintContractsBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>MaintContractsPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsProductsPage.xaml.cs">
+      <DependentUpon>MaintContractsProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsProjectsPage.xaml.cs">
+      <DependentUpon>MaintContractsProjectsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsUploadFilesPage.xaml.cs">
+      <DependentUpon>MaintContractsUploadFilesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MaintenanceContractsPage.xaml.cs">
       <DependentUpon>MaintenanceContractsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceContractsWindow.xaml.cs">
+      <DependentUpon>MaintenanceContractsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceOffersPage.xaml.cs">
+      <DependentUpon>MaintenanceOffersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceOffersWindow.xaml.cs">
+      <DependentUpon>MaintenanceOffersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersAdditionalInfoPage.xaml.cs">
+      <DependentUpon>MaintOffersAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersBasicInfoPage.xaml.cs">
+      <DependentUpon>MaintOffersBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>MaintOffersPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersProductsPage.xaml.cs">
+      <DependentUpon>MaintOffersProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersUploadFilesPage.xaml.cs">
+      <DependentUpon>MaintOffersUploadFilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs" />
     <Compile Include="MergeCompaniesWindow.xaml.cs">
@@ -307,7 +349,63 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MaintContractsAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsProjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MaintenanceContractsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceContractsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceOffersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceOffersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersUploadFilesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

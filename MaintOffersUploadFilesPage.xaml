@@ -1,4 +1,4 @@
-﻿<Page x:Class="_01electronics_crm.WorkOfferUploadFilesPage"
+﻿<Page x:Class="_01electronics_crm.MaintOffersUploadFilesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:_01electronics_crm"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UploadFilesPage">
+      Title="MaintOffersUploadFilesPage">
+
 
     <Grid>
         <Grid>
@@ -31,8 +32,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Name="RFQHeader" Content="OUTGOING QUOTATION FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+                <Label Grid.Column="0" Name="MaintOfferHeader" Content="MAINTENANCE OFFER FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
+                <Button Grid.Column="1" Name="automateMaintOfferButton" Content="GENERATE &#x0a;WORD FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateMaintOffer"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -55,7 +56,7 @@
                 <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
                     <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
-    
+
                 <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>

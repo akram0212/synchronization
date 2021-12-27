@@ -17,7 +17,7 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Name="WorkOffers" Content="SELECT WORK OUTGOING_QUOTATION" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Label Grid.Column="0" Name="WorkOffers" Content="SELECT OUTGOING QUOTATION" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="24">
             <StackPanel Name="workOffersStackPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGray"/>
