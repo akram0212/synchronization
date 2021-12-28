@@ -22,6 +22,7 @@ namespace _01electronics_crm
     public partial class WorkOrderWindow : NavigationWindow
     {
         public WorkOrderBasicInfoPage workOrderBasicInfoPage;
+        public WorkOrderProjectInfoPage workOrderProjectInfoPage;
         public WorkOrderProductsPage workOrderProductsPage;
         public WorkOrderPaymentAndDeliveryPage workOrderPaymentAndDeliveryPage;
         public WorkOrderAdditionalInfoPage workOrderAdditionalInfoPage;
@@ -34,7 +35,8 @@ namespace _01electronics_crm
             workOrderAdditionalInfoPage = new WorkOrderAdditionalInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition);
             workOrderPaymentAndDeliveryPage = new WorkOrderPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderAdditionalInfoPage);
             workOrderProductsPage = new WorkOrderProductsPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderPaymentAndDeliveryPage);
-            workOrderBasicInfoPage = new WorkOrderBasicInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProductsPage);
+            workOrderProjectInfoPage = new WorkOrderProjectInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProductsPage);
+            workOrderBasicInfoPage = new WorkOrderBasicInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProjectInfoPage);
             workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition);
 
             if (openFilesPage)

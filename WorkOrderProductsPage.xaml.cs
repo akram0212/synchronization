@@ -915,14 +915,26 @@ namespace _01electronics_crm
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderBasicInfoPage.workOrderProductsPage = this;
+            workOrderBasicInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderBasicInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
             NavigationService.Navigate(workOrderBasicInfoPage);
         }
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProjectInfoPage.workOrderProductsPage = this;
+            workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
+            workOrderProjectInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
+            workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
+
+            NavigationService.Navigate(workOrderProjectInfoPage);
+        }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
+
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
@@ -936,6 +948,7 @@ namespace _01electronics_crm
             workOrderPaymentAndDeliveryPage.SetDeliveryPointValue();
 
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = this;
             workOrderPaymentAndDeliveryPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -945,6 +958,7 @@ namespace _01electronics_crm
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderAdditionalInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = this;
             workOrderAdditionalInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderAdditionalInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -957,6 +971,7 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+                workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
                 workOrderUploadFilesPage.workOrderProductsPage = this;
                 workOrderUploadFilesPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -976,6 +991,7 @@ namespace _01electronics_crm
             workOrderPaymentAndDeliveryPage.SetDeliveryPointValue();
 
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = this;
             workOrderPaymentAndDeliveryPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -985,12 +1001,13 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
-            workOrderBasicInfoPage.workOrderProductsPage = this;
-            workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
-            workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
-            workOrderBasicInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
+            workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProjectInfoPage.workOrderProductsPage = this;
+            workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
+            workOrderProjectInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
+            workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
-            NavigationService.Navigate(workOrderBasicInfoPage);
+            NavigationService.Navigate(workOrderProjectInfoPage);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1009,10 +1026,6 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
-        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
-            NavigationService.Navigate(projectsPage);
-        }
+        
     }
 }

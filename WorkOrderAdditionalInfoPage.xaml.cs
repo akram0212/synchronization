@@ -385,6 +385,7 @@ namespace _01electronics_crm
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
+            workOrderBasicInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderBasicInfoPage.workOrderAdditionalInfoPage = this;
             workOrderBasicInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -394,6 +395,7 @@ namespace _01electronics_crm
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProductsPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderProductsPage.workOrderAdditionalInfoPage = this;
             workOrderProductsPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -403,6 +405,7 @@ namespace _01electronics_crm
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = workOrderProductsPage;
             workOrderPaymentAndDeliveryPage.workOrderAdditionalInfoPage = this;
             workOrderPaymentAndDeliveryPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -418,6 +421,7 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+                workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
                 workOrderUploadFilesPage.workOrderProductsPage = workOrderProductsPage;
                 workOrderUploadFilesPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = this;
@@ -426,17 +430,12 @@ namespace _01electronics_crm
             }
         }
 
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BUTTON CLICKED HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+                workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
                 workOrderUploadFilesPage.workOrderProductsPage = workOrderProductsPage;
                 workOrderUploadFilesPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = this;
@@ -448,12 +447,18 @@ namespace _01electronics_crm
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = workOrderProductsPage;
             workOrderPaymentAndDeliveryPage.workOrderAdditionalInfoPage = this;
             workOrderPaymentAndDeliveryPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
             NavigationService.Navigate(workOrderPaymentAndDeliveryPage);
         }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///BUTTON CLICKED HANDLERS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnButtonClickAutomateWorkOrder(object sender, RoutedEventArgs e)
         {

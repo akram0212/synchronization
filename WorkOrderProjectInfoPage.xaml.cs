@@ -49,8 +49,9 @@ namespace _01electronics_crm
         Grid trialGrid = new Grid();
         int rowCounter = 1;
 
-        public WorkOrderProjectInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition)
+        public WorkOrderProjectInfoPage(ref Employee mLoggedInUser, ref WorkOrder mWorkOrder, int mViewAddCondition, ref WorkOrderProductsPage mWorkOrderProductsPage)
         {
+            workOrderProductsPage = mWorkOrderProductsPage;
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
@@ -63,6 +64,14 @@ namespace _01electronics_crm
             InitializeComponent();
 
             InitializeProjectsCombo();
+
+            if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                checkAllCheckBox.IsEnabled = false;
+                projectCheckBox.IsChecked = true;
+                projectComboBox.SelectedItem = workOrder.GetprojectName();
+
+            }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZE FUNCTIONS
@@ -71,6 +80,7 @@ namespace _01electronics_crm
         private void InitializeProjectsCombo()
         {
             commonQueriesObject.GetClientProjects(ref projects);
+
             for (int i = 0; i < projects.Count; i++)
                 projectComboBox.Items.Add(projects[i].project_name);
         }
@@ -81,35 +91,81 @@ namespace _01electronics_crm
 
         private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
         {
-            addedLocations.Clear();
-            projectLocations.Clear();
-            locationsGrid.Children.Clear();
-            locationsGrid.RowDefinitions.Clear();
-            
-            commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
-
-            for(int i = 0; i < projectLocations.Count; i++)
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
-                CheckBox checkBox = new CheckBox();
-                checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
-                checkBox.Tag = i;
-                checkBox.Style = (Style)FindResource("checkBoxStyle");
-                checkBox.Checked += OnCheckProjectLocation;
-                checkBox.Unchecked += OnUnCheckProjectLocation;
-                checkBox.Width = 500.0;
+                addedLocations.Clear();
+                projectLocations.Clear();
+                locationsGrid.Children.Clear();
+                locationsGrid.RowDefinitions.Clear();
 
-                RowDefinition row = new RowDefinition();
-                locationsGrid.RowDefinitions.Add(row);
+                workOrder.InitializeProjectInfo(projects[projectComboBox.SelectedIndex].project_serial);
 
-                locationsGrid.Children.Add(checkBox);
-                Grid.SetRow(checkBox, i);
+                commonQueriesObject.GetProjectLocations(workOrder.GetprojectSerial(), ref projectLocations);
 
+                for (int i = 0; i < projectLocations.Count; i++)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.Tag = i;
+                    checkBox.Style = (Style)FindResource("checkBoxStyle");
+                    checkBox.Checked += OnCheckProjectLocation;
+                    checkBox.Unchecked += OnUnCheckProjectLocation;
+                    checkBox.Width = 500.0;
+
+                    RowDefinition row = new RowDefinition();
+                    locationsGrid.RowDefinitions.Add(row);
+
+                    locationsGrid.Children.Add(checkBox);
+                    Grid.SetRow(checkBox, i);
+
+                }
+            }
+            else
+            {
+                projectLocations.Clear();
+                workOrder.GetProjectLocations(ref projectLocations);
+
+                for (int i = 0; i < projectLocations.Count; i++)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.IsEnabled = false;
+                    checkBox.IsChecked = true;
+                    checkBox.Style = (Style)FindResource("checkBoxStyle");
+                    checkBox.Width = 500.0;
+
+                    RowDefinition row = new RowDefinition();
+                    locationsGrid.RowDefinitions.Add(row);
+
+                    locationsGrid.Children.Add(checkBox);
+                    Grid.SetRow(checkBox, i);
+
+                }
             }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////CHECK/UNCHECK HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnCheckCheckAllCheckBox(object sender, RoutedEventArgs e)
+        {
+            for(int i = 0; i < locationsGrid.Children.Count; i++)
+            {
+                CheckBox currentcheckBox = (CheckBox)locationsGrid.Children[i];
+                currentcheckBox.IsChecked = true;
+            }
+        }
+
+        private void OnUnCheckCheckAllCheckBox(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < locationsGrid.Children.Count; i++)
+            {
+                CheckBox currentcheckBox = (CheckBox)locationsGrid.Children[i];
+                currentcheckBox.IsChecked = false;
+            }
+        }
+
         private void OnCheckProject(object sender, RoutedEventArgs e)
         {
             projectComboBox.IsEnabled = true;
@@ -117,6 +173,7 @@ namespace _01electronics_crm
 
         private void OnUnCheckProject(object sender, RoutedEventArgs e)
         {
+            projectComboBox.SelectedItem = null;
             projectComboBox.IsEnabled = false;
             locationsGrid.Children.Clear();
         }
@@ -125,12 +182,16 @@ namespace _01electronics_crm
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
+
+            workOrder.SetProjectLocations(addedLocations);
         }
 
         private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
+
+            workOrder.SetProjectLocations(addedLocations);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,5 +318,6 @@ namespace _01electronics_crm
             return true;
         }
 
+        
     }
 }

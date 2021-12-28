@@ -535,11 +535,26 @@ namespace _01electronics_crm
                 SetPercentAndValuesInWorkOrder();
             }
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
+            workOrderBasicInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = this;
             workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderBasicInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
             NavigationService.Navigate(workOrderBasicInfoPage);
+        }
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                SetPercentAndValuesInWorkOrder();
+            }
+            workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProjectInfoPage.workOrderProductsPage = workOrderProductsPage;
+            workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = this;
+            workOrderProjectInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
+            workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
+
+            NavigationService.Navigate(workOrderProjectInfoPage);
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
@@ -549,6 +564,7 @@ namespace _01electronics_crm
             }
 
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProductsPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = this;
             workOrderProductsPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderProductsPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -573,6 +589,7 @@ namespace _01electronics_crm
             workOrderAdditionalInfoPage.SetAdditionalDescriptionValue();
 
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderAdditionalInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderAdditionalInfoPage.workOrderPaymentAndDeliveryPage = this;
             workOrderAdditionalInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -585,6 +602,7 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+                workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
                 workOrderUploadFilesPage.workOrderProductsPage = workOrderProductsPage;
                 workOrderUploadFilesPage.workOrderPaymentAndDeliveryPage = this;
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -599,11 +617,13 @@ namespace _01electronics_crm
             {
                 SetPercentAndValuesInWorkOrder();
             }
+
             workOrderAdditionalInfoPage.SetContractTypeValue();
             workOrderAdditionalInfoPage.SetWarrantyPeriodValues();
             workOrderAdditionalInfoPage.SetAdditionalDescriptionValue();
 
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderAdditionalInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderAdditionalInfoPage.workOrderPaymentAndDeliveryPage = this;
             workOrderAdditionalInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -619,6 +639,7 @@ namespace _01electronics_crm
             }
 
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProductsPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = this;
             workOrderProductsPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderProductsPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
@@ -653,10 +674,6 @@ namespace _01electronics_crm
             onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
         }
 
-        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
-        {
-            WorkOrderProjectInfoPage projectsPage = new WorkOrderProjectInfoPage(ref loggedInUser, ref workOrder, viewAddCondition);
-            NavigationService.Navigate(projectsPage);
-        }
+        
     }
 }
