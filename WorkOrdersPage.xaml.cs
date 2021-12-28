@@ -1165,6 +1165,16 @@ namespace _01electronics_crm
             ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
             this.NavigationService.Navigate(projectsPage);
         }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
         private void OnClosedWorkOrderWindow(object sender, EventArgs e)
         {
             if (!GetWorkOrders())
@@ -1306,10 +1316,5 @@ namespace _01electronics_crm
             SetWorkOrdersGrid();
         }
 
-        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
-        {
-            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
-            this.NavigationService.Navigate(maintenanceContractsPage);
-        }
     }
 }
