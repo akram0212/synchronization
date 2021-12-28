@@ -66,11 +66,10 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 ConfigureAddMaintOfferUIElements();
+                SetOfferProposer();
 
-                InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
-                SetOfferProposer();
                 offerProposerCombo.IsEnabled = false;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
@@ -92,7 +91,6 @@ namespace _01electronics_crm
             {
 
                 ConfigureAddMaintOfferUIElements();
-                InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
                 SetOfferProposerCombo();
@@ -176,17 +174,6 @@ namespace _01electronics_crm
             return true;
         }
 
-        private bool InitializeOfferProposerCombo()
-        {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
-                return false;
-
-            //NO NEED FOR TEMP VARIABLES
-            for (int i = 0; i < preSalesEmployees.Count(); i++)
-                offerProposerCombo.Items.Add(preSalesEmployees[i].employee_name);
-
-            return true;
-        }
 
         private bool InitializeProjectCombo()
         {
@@ -204,7 +191,7 @@ namespace _01electronics_crm
 
         private void SetOfferProposer()
         {
-            maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
+            maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
             SetOfferProposerCombo();
         }
         private void SetOfferProposerCombo()
@@ -373,10 +360,6 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
-        {
-
-        }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
             maintOffersProductsPage.maintOffersBasicInfoPage = this;
@@ -427,46 +410,11 @@ namespace _01electronics_crm
             maintOffersProductsPage.maintOffersBasicInfoPage = this;
             maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
 
-           // if (viewAddCondition == COMPANY_WORK_MACROS.MaintOffer_VIEW_CONDITION)
-             //   maintOffersProductsPage.maintOffersUploadFilesPage = maintOffersUploadFilesPage;
-
-            NavigationService.Navigate(maintOffersProductsPage);
-        }
-
-        private void OnBtnClickProductsInfo(object sender, MouseButtonEventArgs e)
-        {
-            maintOffersProductsPage.maintOffersBasicInfoPage = this;
-            maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
-
-           // if (viewAddCondition == COMPANY_WORK_MACROS.MaintOffer_VIEW_CONDITION)
-             //   maintOffersProductsPage.maintOffersUploadFilesPage = maintOffersUploadFilesPage;
-
-            NavigationService.Navigate(maintOffersProductsPage);
-        }
-
-        private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
-        {
-            //maintOffersAdditionalInfoPage.maintOffersBasicInfoPage = this;
-            //maintOffersAdditionalInfoPage.maintOffersProductsPage = maintOffersProductsPage;
-
-            //if (viewAddCondition == COMPANY_WORK_MACROS.MaintOffer_VIEW_CONDITION)
-              //  maintOffersAdditionalInfoPage.maintOffersUploadFilesPage = maintOffersUploadFilesPage;
-
-            NavigationService.Navigate(maintOffersAdditionalInfoPage);
-        }
-
-        private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
-        {
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffersUploadFilesPage.maintOffersBasicInfoPage = this;
-                maintOffersUploadFilesPage.maintOffersProductsPage = maintOffersProductsPage;
-                maintOffersUploadFilesPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
+                maintOffersProductsPage.maintOffersUploadFilesPage = maintOffersUploadFilesPage;
 
-                NavigationService.Navigate(maintOffersUploadFilesPage);
-            }
+            NavigationService.Navigate(maintOffersProductsPage);
         }
-
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
         {
             NavigationWindow currentWindow = (NavigationWindow)this.Parent;

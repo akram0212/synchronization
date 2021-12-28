@@ -37,8 +37,8 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
 
-        private int viewAddCondition;
-        
+        private int viewAddCondition; 
+
         private Decimal totalPrice;
 
         public MaintOffersBasicInfoPage maintOffersBasicInfoPage;
@@ -82,6 +82,7 @@ namespace _01electronics_crm
                 ConfigureViewUIElements();
                 SetContractTypeValue();
                 SetPriceValues();
+                SetConditionsCheckBoxes();
 
                 cancelButton.IsEnabled = false;
             }
@@ -93,6 +94,7 @@ namespace _01electronics_crm
 
                 SetContractTypeValue();
                 SetPriceValues();
+                SetConditionsCheckBoxes();
                 DisableTotalPriceComboAndTextBox();
             }
             else
@@ -154,8 +156,6 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetVATConditions(ref vatConditions))
                 return false;
 
-            //for (int i = 0; i < vatConditions.Count; i++)
-            //    totalPriceVATCombo.Items.Add(vatConditions[i].value);
             return true;
         }
 
@@ -183,11 +183,6 @@ namespace _01electronics_crm
             maintOffers.SetTotalValues();
         }
 
-        private void SetPercentAndValuesInWorkOffer()
-        {
-            maintOffers.SetPercentValues();
-        }
-
         private void SetPriceValues()
         {
             if (maintOffers.GetCurrency() != null)
@@ -195,34 +190,62 @@ namespace _01electronics_crm
                 totalPriceCombo.Text = maintOffers.GetCurrency().ToString();
                 totalPriceTextBox.Text = maintOffers.GetTotalPriceValue().ToString();
 
-              //  if (maintOffers.GetMaintOfferVATCondition() != "")
-              //      totalPriceVATCombo.SelectedItem = maintOffers.GetMaintOfferVATCondition();
-              //  else
-              //      totalPriceVATCombo.SelectedIndex = -1;
-
                 totalPrice = maintOffers.GetTotalPriceValue();
             }
         }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///GET FUNCTIONS
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private double GetPercentage(Decimal percentage, Decimal total)
+        private void SetConditionsCheckBoxes()
         {
-            if (percentage != 0)
-            {
-                var value = (percentage / 100) * total;
-                var percentage1 = Convert.ToInt32(Math.Round(value, 0));
-                return percentage1;
-            }
+            if (maintOffers.GetMaintOfferVATConditionID())
+                VatConditionCheckBox.IsChecked = true;
             else
-                return 0;
+                VatConditionCheckBox.IsChecked = false;
 
+            if (maintOffers.GetMaintOfferSparePartsConditionID())
+                SparePartsCheckBox.IsChecked = true;
+            else
+                SparePartsCheckBox.IsChecked = false;
+
+            if (maintOffers.GetMaintOfferBatteriesConditionID())
+                BatteriesCheckBox.IsChecked = true;
+            else
+                BatteriesCheckBox.IsChecked = false;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///TEXT CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnTextChangedVisitsFrequencyTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(visitsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && visitsFrequencyTextBox.Text != "")
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text));
+            else
+            {
+                maintOffers.SetVisitsFrequency(0);
+                visitsFrequencyTextBox.Text = null;
+            }
+        }
+        private void OnTextChangedPaymentsFrequencyTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(paymentsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && paymentsFrequencyTextBox.Text != "")
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text));
+            else
+            {
+                maintOffers.SetPaymentsFrequency(0);
+                paymentsFrequencyTextBox.Text = null;
+            }
+        }
+
+        private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (IntegrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text));
+            else
+            {
+                maintOffers.SetEmergenciesFrequency(0);
+                emergenciesFrequencyTextBox.Text = null;
+            }
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SELECTION CHANGED HANDLERS
@@ -231,20 +254,11 @@ namespace _01electronics_crm
         {
             maintOffers.SetMaintOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
 
-            if (contractTypeComboBox.SelectedIndex > 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-               // maintOffersAdditionalInfoPage.warrantyPeriodCheckBox.IsChecked = false;
-            }
-            else
-            {
-                //maintOffersAdditionalInfoPage.warrantyPeriodCheckBox.IsChecked = true;
-
-                if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-                {
-                   // maintOffersAdditionalInfoPage.warrantyPeriodTextBox.IsEnabled = false;
-                   // maintOffersAdditionalInfoPage.warrantyPeriodCombo.IsEnabled = false;
-                   // maintOffersAdditionalInfoPage.warrantyPeriodFromWhenCombo.IsEnabled = false;
-                }
+                maintOffersAdditionalInfoPage.warrantyPeriodTextBox.IsEnabled = false;
+                maintOffersAdditionalInfoPage.warrantyPeriodCombo.IsEnabled = false;
+                maintOffersAdditionalInfoPage.warrantyPeriodFromWhenCombo.IsEnabled = false;
             }
         }
 
@@ -255,7 +269,9 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                SetPercentAndValuesInWorkOffer();
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
             }
             maintOffersBasicInfoPage.maintOffersProductsPage = maintOffersProductsPage;
             maintOffersBasicInfoPage.maintOffersPaymentAndDeliveryPage = this;
@@ -268,9 +284,10 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                SetPercentAndValuesInWorkOffer();
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
             }
-
             maintOffersProductsPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersProductsPage.maintOffersPaymentAndDeliveryPage = this;
             maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
@@ -288,9 +305,10 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                SetPercentAndValuesInWorkOffer();
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
             }
-
 
             maintOffersAdditionalInfoPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersAdditionalInfoPage.maintOffersProductsPage = maintOffersProductsPage;
@@ -317,9 +335,10 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                SetPercentAndValuesInWorkOffer();
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
             }
-
             maintOffersAdditionalInfoPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersAdditionalInfoPage.maintOffersProductsPage = maintOffersProductsPage;
             maintOffersAdditionalInfoPage.maintOffersPaymentAndDeliveryPage = this;
@@ -332,9 +351,10 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                SetPercentAndValuesInWorkOffer();
+                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
+                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
             }
-
             maintOffersProductsPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersProductsPage.maintOffersPaymentAndDeliveryPage = this;
             maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
