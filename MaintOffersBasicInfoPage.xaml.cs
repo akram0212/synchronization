@@ -67,12 +67,11 @@ namespace _01electronics_crm
             {
                 ConfigureAddMaintOfferUIElements();
 
-                InitializeSalesPersonCombo();
-                InitializeAssigneeCombo();
+                InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
-                SetSalesPerson();
-                salesPersonCombo.IsEnabled = false;
+                SetOfferProposer();
+                offerProposerCombo.IsEnabled = false;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
@@ -81,8 +80,6 @@ namespace _01electronics_crm
 
                 ConfigureViewMaintOfferUIElements();
 
-                SetSalesPersonLabel();
-                SetAssigneeLabel();
                 SetCompanyNameLabel();
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
@@ -95,17 +92,14 @@ namespace _01electronics_crm
             {
 
                 ConfigureAddMaintOfferUIElements();
-                InitializeSalesPersonCombo();
+                InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
-                InitializeAssigneeCombo();
-
-                SetSalesPersonCombo();
-                SetAssigneeCombo();
+                SetOfferProposerCombo();
                 SetCompanyNameCombo();
                 SetProjectCombo();
 
-                salesPersonCombo.IsEnabled = false;
+                offerProposerCombo.IsEnabled = false;
                 projectCombo.IsEnabled = false;
             }
         }
@@ -117,16 +111,15 @@ namespace _01electronics_crm
             companyAddressLabel.Visibility = Visibility.Collapsed;
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             contactPersonPhoneLabel.Visibility = Visibility.Collapsed;
-            salesPersonLabel.Visibility = Visibility.Collapsed;
+            offerProposerLabel.Visibility = Visibility.Collapsed;
             projectLabel.Visibility = Visibility.Collapsed;
 
             //YOU SHALL MAKE SURE THAT LABELS ARE COLLAPSED AND COMBOS ARE VISIBLE EVERY TIME
-            assigneeCombo.Visibility = Visibility.Visible;
             companyNameCombo.Visibility = Visibility.Visible;
             companyAddressCombo.Visibility = Visibility.Visible;
             contactPersonNameCombo.Visibility = Visibility.Visible;
             contactPersonPhoneCombo.Visibility = Visibility.Visible;
-            salesPersonCombo.Visibility = Visibility.Visible;
+            offerProposerCombo.Visibility = Visibility.Visible;
             projectCombo.Visibility = Visibility.Visible;
 
             companyAddressCombo.IsEnabled = false;
@@ -136,12 +129,11 @@ namespace _01electronics_crm
 
         private void ConfigureViewMaintOfferUIElements()
         {
-            assigneeCombo.Visibility = Visibility.Collapsed;
             companyNameCombo.Visibility = Visibility.Collapsed;
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
             contactPersonPhoneCombo.Visibility = Visibility.Collapsed;
-            salesPersonCombo.Visibility = Visibility.Collapsed;
+            offerProposerCombo.Visibility = Visibility.Collapsed;
             projectCombo.Visibility = Visibility.Collapsed;
 
             offerProposerLabel.Visibility = Visibility.Visible;
@@ -149,7 +141,7 @@ namespace _01electronics_crm
             companyAddressLabel.Visibility = Visibility.Visible;
             contactPersonNameLabel.Visibility = Visibility.Visible;
             contactPersonPhoneLabel.Visibility = Visibility.Visible;
-            salesPersonLabel.Visibility = Visibility.Visible;
+            offerProposerLabel.Visibility = Visibility.Visible;
             projectLabel.Visibility = Visibility.Visible;
         }
         ///////////////INITIALIZE FUNCTIONS///////////////
@@ -166,19 +158,8 @@ namespace _01electronics_crm
         private bool InitializeContactInfo()
         {
 
-            if (!commonQueriesObject.GetCompanyContacts(maintOffer.GetSalesPersonId(), maintOffer.GetAddressSerial(), ref contactInfo))
+            if (!commonQueriesObject.GetCompanyContacts(maintOffer.GetMaintOfferProposerId(), maintOffer.GetAddressSerial(), ref contactInfo))
                 return false;
-
-            return true;
-        }
-
-
-        private bool InitializeSalesPersonCombo()
-        {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployees))
-                return false;
-            for (int i = 0; i < salesEmployees.Count(); i++)
-                salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
 
             return true;
         }
@@ -186,7 +167,7 @@ namespace _01electronics_crm
         //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
-            if (!commonQueriesObject.GetEmployeeCompanies(maintOffer.GetSalesPersonId(), ref companiesList))
+            if (!commonQueriesObject.GetEmployeeCompanies(maintOffer.GetMaintOfferProposerId(), ref companiesList))
                 return false;
 
             for (int i = 0; i < companiesList.Count(); i++)
@@ -195,14 +176,14 @@ namespace _01electronics_crm
             return true;
         }
 
-        private bool InitializeAssigneeCombo()
+        private bool InitializeOfferProposerCombo()
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
                 return false;
 
             //NO NEED FOR TEMP VARIABLES
             for (int i = 0; i < preSalesEmployees.Count(); i++)
-                assigneeCombo.Items.Add(preSalesEmployees[i].employee_name);
+                offerProposerCombo.Items.Add(preSalesEmployees[i].employee_name);
 
             return true;
         }
@@ -221,63 +202,53 @@ namespace _01electronics_crm
         /////////////SET FUNCTIONS////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void SetSalesPerson()
+        private void SetOfferProposer()
         {
-            maintOffer.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
-            SetSalesPersonCombo();
+            maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
+            SetOfferProposerCombo();
         }
-        private void SetSalesPersonCombo()
+        private void SetOfferProposerCombo()
         {
-            //  salesPersonCombo.SelectedItem = maintOffer.GetSalesPersonName();
-        }
-        private void SetAssigneeCombo()
-        {
-           // assigneeCombo.SelectedItem = maintOffer.GetAssigneeName();
+              offerProposerCombo.SelectedItem = maintOffer.GetMaintOfferProposerName();
         }
 
         private void SetCompanyNameCombo()
         {
-            //companyNameCombo.SelectedItem = maintOffer.GetMaintOfferCompany().GetCompanyName();
+            companyNameCombo.SelectedItem = maintOffer.GetMaintOfferContact().GetCompanyName();
         }
         private void SetcontactPersonNameCombo()
         {
-            //contactPersonNameCombo.SelectedItem = maintOffer.GetMaintOfferContact().GetContactName().ToString();
-            //contactPersonNameCombo.Text = contactInfo[0].contact_name;
+            contactPersonNameCombo.SelectedItem = maintOffer.GetMaintOfferContact().GetContactName().ToString();
+            contactPersonNameCombo.Text = contactInfo[0].contact_name;
         }
         private void SetContactPhoneCombo()
         {
-            //if (maintOffer.GetMaintOfferContact().GetNumberOfSavedContactPhones() != 0)
-           //     contactPersonPhoneCombo.SelectedItem = maintOffer.GetMaintOfferContact().GetContactPhones()[0].ToString();
+           if (maintOffer.GetMaintOfferContact().GetNumberOfSavedContactPhones() != 0)
+               contactPersonPhoneCombo.SelectedItem = maintOffer.GetMaintOfferContact().GetContactPhones()[0].ToString();
         }
 
         private void SetProjectCombo()
         {
-         //   projectCombo.SelectedItem = maintOffer.GetprojectName();
-        }
-        private void SetSalesPersonLabel()
-        {
-            //salesPersonLabel.Content = maintOffer.GetSalesPersonName();
+            projectCombo.SelectedItem = maintOffer.GetMaintOfferProjectName();
         }
 
-        private void SetAssigneeLabel()
+        private void SetOfferProposerLabel()
         {
-            //offerProposerLabel.Content = maintOffer.GetAssigneeName();
+            offerProposerLabel.Content = maintOffer.GetMaintOfferProposerName();
         }
 
         private void SetCompanyNameLabel()
         {
             //YOU SHALL ACCESS THE COMPANY INFO LIKE THIS
-            //companyNameLabel.Content = maintOffer.GetMaintOfferContact().GetCompanyName();
+            companyNameLabel.Content = maintOffer.GetMaintOfferContact().GetCompanyName();
         }
 
         private void SetCompanyAddressLabel()
         {
+            string address;
 
-            //string address;
-
-            //address = maintOffer.GetMaintOfferCompany().GetCompanyDistrict() + ", " + maintOffer.GetMaintOfferCompany().GetCompanyCity() + ", " + maintOffer.GetMaintOfferCompany().GetCompanyState() + ", " + maintOffer.GetMaintOfferCompany().GetCompanyCountry();
-            //companyAddressLabel.Content += address;
-
+            address = maintOffer.GetMaintOfferContact().GetCompanyDistrict() + ", " + maintOffer.GetMaintOfferContact().GetCompanyCity() + ", " + maintOffer.GetMaintOfferContact().GetCompanyState() + ", " + maintOffer.GetMaintOfferContact().GetCompanyCountry();
+            companyAddressLabel.Content += address;
         }
 
         private void SetContactPersonLabel()
@@ -304,20 +275,15 @@ namespace _01electronics_crm
 
         /////////////SELECTION CHANGED//////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedOfferProposerCombo(object sender, SelectionChangedEventArgs e)
         {
             if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-                maintOffer.InitializeSalesPersonInfo(salesEmployees[salesPersonCombo.SelectedIndex].employee_id);
+                maintOffer.InitializeMaintOfferProposerInfo(salesEmployees[offerProposerCombo.SelectedIndex].employee_id, salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
 
             InitializeCompanyNameCombo();
 
         }
-        private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
-        {
-            if (assigneeCombo.SelectedItem != null)
-                maintOffer.InitializeAssignedEngineerInfo(preSalesEmployees[assigneeCombo.SelectedIndex].employee_id);
-        }
-
+       
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
@@ -362,7 +328,7 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    if (!commonQueriesObject.GetCompanyContacts(maintOffer.GetSalesPersonId(), addressSerial, ref contactInfo))
+                    if (!commonQueriesObject.GetCompanyContacts(maintOffer.GetMaintOfferProposerId(), addressSerial, ref contactInfo))
                         return;
                 }
 
@@ -385,11 +351,11 @@ namespace _01electronics_crm
             }
 
             //YOU SHALL ACCESS THE CONTACT PHONE LIKE THIS
-            //for (int i = 0; i < maintOffer.GetMaintOfferContact().GetNumberOfSavedContactPhones(); i++)
-            //{
-            //    contactPersonPhoneCombo.Items.Add(maintOffer.GetMaintOfferContact().GetContactPhones()[i]);
-            //    contactPhones[i] = maintOffer.GetMaintOfferContact().GetContactPhones()[i];
-            //}
+            for (int i = 0; i < maintOffer.GetMaintOfferContact().GetNumberOfSavedContactPhones(); i++)
+            {
+                contactPersonPhoneCombo.Items.Add(maintOffer.GetMaintOfferContact().GetContactPhones()[i]);
+                contactPhones[i] = maintOffer.GetMaintOfferContact().GetContactPhones()[i];
+            }
 
 
             contactPersonPhoneCombo.SelectedIndex = 0;
@@ -397,12 +363,12 @@ namespace _01electronics_crm
         }
         private void OnSelChangedContactPersonPhoneCombo(object sender, SelectionChangedEventArgs e)
         {
-            //maintOffer.GetMaintOfferContact().AddNewContactPhone(contactPersonPhoneCombo.SelectedItem.ToString());
+            maintOffer.GetMaintOfferContact().AddNewContactPhone(contactPersonPhoneCombo.SelectedItem.ToString());
         }
 
         private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
         {
-            //maintOffer.InitializeProjectInfo(projects[projectCombo.SelectedIndex].project_serial);
+            maintOffer.InitializeProjectInfo(projects[projectCombo.SelectedIndex].project_serial);
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS

@@ -75,14 +75,9 @@
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
-                </WrapPanel>
-                <WrapPanel Name="assigneeWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Assignee"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Offer &#x0a;Proposer"/>
                     <Label Style="{StaticResource tableItemValue}" Name="offerProposerLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="assigneeCombo" SelectionChanged="OnSelChangedAssigneeCombo"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="offerProposerCombo" SelectionChanged="OnSelChangedOfferProposerCombo"/>
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Grid.Row="1">

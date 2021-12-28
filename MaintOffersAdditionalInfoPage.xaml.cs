@@ -338,7 +338,7 @@ namespace _01electronics_crm
         {
             //PLEASE CHANGE THESE MESSAGE
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
-            if (maintenanceOffer.GetSalesPersonId() == 0)
+            if (maintenanceOffer.GetMaintOfferProposerId() == 0)
                 MessageBox.Show("You need to choose sales person before adding a work offer!");
             else if (maintenanceOffer.GetCompanyName() == null)
                 MessageBox.Show("You need to choose a company before adding a work offer!");
