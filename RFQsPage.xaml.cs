@@ -321,12 +321,12 @@ namespace _01electronics_crm
                 bool assigneeCondition = selectedPreSales != rfqsList[i].assignee_id;
 
                 bool productCondition = false;
-                for (int productNo = 0; productNo < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; productNo++)
+                for (int productNo = 0; productNo < rfqsList[i].products.Count; productNo++)
                     if (rfqsList[i].products[productNo].productType.typeId == selectedProduct)
                         productCondition |= true;
 
                 bool brandCondition = false;
-                for (int productNo = 0; productNo < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; productNo++)
+                for (int productNo = 0; productNo < rfqsList[i].products.Count; productNo++)
                     if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
 
@@ -379,7 +379,7 @@ namespace _01electronics_crm
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
-                for (int j = 0; j < COMPANY_WORK_MACROS.MAX_RFQ_PRODUCTS; j++)
+                for (int j = 0; j < rfqsList[i].products.Count; j++)
                 {
                     
                     List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
