@@ -31,11 +31,12 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Name="RFQHeader" Content="WORK ORDER FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOrderButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder"/>
+                <Button Grid.Column="1" Name="automateWorkOrderButon" Content="GENERATE &#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

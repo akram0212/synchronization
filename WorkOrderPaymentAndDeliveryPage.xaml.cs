@@ -256,8 +256,7 @@ namespace _01electronics_crm
 
         private void SetPriceValues()
         {
-            if (workOrder.GetCurrency() != null)
-            {
+          
                 if (workOrder.GetOfferID() != null)
                 {
                     totalPriceCombo.Text = workOrder.GetCurrency().ToString();
@@ -271,8 +270,7 @@ namespace _01electronics_crm
                     totalPrice = workOrder.GetOrderTotalPriceValue();
                 }
 
-            }
-
+            
             totalPriceVATCombo.SelectedItem = workOrder.GetOrderVATCondition();
         }
 
@@ -282,9 +280,16 @@ namespace _01electronics_crm
             {
                 if (workOrder.GetPercentDownPayment() != 0)
                 {
+                    downPaymentPercentageTextBox.Text = null;
+                    onDeliveryPercentageTextBox.Text = null;
+                    onInstallationPercentageTextBox.Text = null;
+
                     downPaymentPercentageTextBox.Text = workOrder.GetPercentDownPayment().ToString();
-                    downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
-                    downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+                    if (downPaymentPercentageTextBox.Text != "")
+                    {
+                        downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
+                        downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+                    }
                 }
             }
             else
@@ -306,8 +311,11 @@ namespace _01electronics_crm
                 if (workOrder.GetPercentOnDelivery() != 0)
                 {
                     onDeliveryPercentageTextBox.Text = workOrder.GetPercentOnDelivery().ToString();
-                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
-                    onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+                    if (onDeliveryPercentageTextBox.Text != "")
+                    {
+                        onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                        onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+                    }
                 }
             }
             else
@@ -328,8 +336,11 @@ namespace _01electronics_crm
                 if (workOrder.GetPercentOnInstallation() != 0)
                 {
                     onInstallationPercentageTextBox.Text = workOrder.GetPercentOnInstallation().ToString();
-                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
-                    onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
+                    if (onInstallationPercentageTextBox.Text != "")
+                    {
+                        onDeliveryPercentage = int.Parse(onInstallationPercentageTextBox.Text);
+                        onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
+                    }
                 }
             }
             else

@@ -66,13 +66,6 @@ namespace _01electronics_crm
             InitializeComponent();
 
 
-            //if (viewAddCondition == COMPANY_WORK_MACROS.Order_ADD_CONDITION)
-            //{
-                //InitializeProducts();
-                //InitializeBrandCombo();
-                //InitializePriceCurrencyComboBoxes();
-                //SetUpPageUIElements();
-            //}
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
@@ -179,6 +172,7 @@ namespace _01electronics_crm
                 {
                     Label currentTypeLabelValue = new Label();
                     currentTypeLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentTypeLabelValue.Width = 150.00;
                     currentTypeLabelValue.Content = workOrder.GetOrderProductType(i + 1);
                     productTypeWrapPanel.Children.Add(currentTypeLabelValue);
                 }
@@ -210,6 +204,7 @@ namespace _01electronics_crm
                 {
                     Label currentBrandLabelValue = new Label();
                     currentBrandLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentBrandLabelValue.Width = 150.00;
                     currentBrandLabelValue.Content = workOrder.GetOrderProductBrand(i + 1);
                     productBrandWrapPanel.Children.Add(currentBrandLabelValue);
                 }
@@ -242,6 +237,7 @@ namespace _01electronics_crm
                 {
                     Label currentModelLabelValue = new Label();
                     currentModelLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentModelLabelValue.Width = 150.00;
                     currentModelLabelValue.Content = workOrder.GetOrderProductModel(i + 1);
                     productModelWrapPanel.Children.Add(currentModelLabelValue);
                 }
@@ -299,7 +295,9 @@ namespace _01electronics_crm
                 currentPriceComboBox.Margin = new System.Windows.Thickness(42, 12, 12, 12);
                 currentPriceComboBox.SelectionChanged += new SelectionChangedEventHandler(PriceComboBoxesSelectionChanged);
                 for (int j = 0; j < currencies.Count; j++)
+                {
                     currentPriceComboBox.Items.Add(currencies[j].currencyName);
+                }
                 if (i != 0)
                 {
                     currentPriceTextBox.IsEnabled = false;

@@ -30,12 +30,13 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Content="WORK ORDER ADDITIONAL INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOrderButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder" IsEnabled="False"/>
+                <Label Grid.Row="0" Content="ADDITIONAL INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+                <Button Grid.Column="1" Name="automateWorkOrderButon" Content="GENERATE &#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder" IsEnabled="False"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -47,19 +48,23 @@
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProjectInfo">
+                    <Label Content="Projects Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                     <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                     <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="3" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Border Grid.Column="4" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
                     <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
             </Grid>
@@ -99,6 +104,11 @@
                         <WrapPanel>
                             <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
                             <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBox Name="orderSerialTextBox" Style="{StaticResource miniTextBoxStyle}" Text="OrderSerial" Visibility="Collapsed"/>
+                            <TextBox Name="orderIDTextBox" Style="{StaticResource miniTextBoxStyle}" Text="Order ID" Visibility="Collapsed"/>
+                            <DatePicker Name="issueDatePicker" Style="{StaticResource datePickerStyle}" Visibility="Collapsed"/>
                         </WrapPanel>
                         
                     </WrapPanel>

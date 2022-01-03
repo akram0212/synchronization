@@ -60,7 +60,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OUTGOING_QUOTATIONS_PATH + outgoingQuotation.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OUTGOING_QUOTATION_PATH + outgoingQuotation.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
             {
                 doc.LoadFromFile(wordFilePath);
 

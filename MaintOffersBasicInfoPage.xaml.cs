@@ -35,6 +35,8 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsAddedToComboList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
         private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
 
         String[] contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
@@ -67,11 +69,10 @@ namespace _01electronics_crm
             {
                 ConfigureAddMaintOfferUIElements();
 
-                InitializeOfferProposerCombo();
+                //InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
-                SetOfferProposer();
-                offerProposerCombo.IsEnabled = false;
+                //offerProposerCombo.IsEnabled = false;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
@@ -92,26 +93,24 @@ namespace _01electronics_crm
             {
 
                 ConfigureAddMaintOfferUIElements();
-                InitializeOfferProposerCombo();
                 InitializeProjectCombo();
 
-                SetOfferProposerCombo();
                 SetCompanyNameCombo();
                 SetProjectCombo();
 
-                offerProposerCombo.IsEnabled = false;
+                //offerProposerCombo.IsEnabled = false;
                 projectCombo.IsEnabled = false;
             }
         }
         private void ConfigureAddMaintOfferUIElements()
         {
             //USE COLLAPSED VISIBILITY NOT HIDDEN VISIBILITY
-            offerProposerLabel.Visibility = Visibility.Collapsed;
+            //offerProposerLabel.Visibility = Visibility.Collapsed;
+            salesPersonLabel.Visibility = Visibility.Collapsed;
             companyNameLabel.Visibility = Visibility.Collapsed;
             companyAddressLabel.Visibility = Visibility.Collapsed;
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             contactPersonPhoneLabel.Visibility = Visibility.Collapsed;
-            offerProposerLabel.Visibility = Visibility.Collapsed;
             projectLabel.Visibility = Visibility.Collapsed;
 
             //YOU SHALL MAKE SURE THAT LABELS ARE COLLAPSED AND COMBOS ARE VISIBLE EVERY TIME
@@ -119,7 +118,8 @@ namespace _01electronics_crm
             companyAddressCombo.Visibility = Visibility.Visible;
             contactPersonNameCombo.Visibility = Visibility.Visible;
             contactPersonPhoneCombo.Visibility = Visibility.Visible;
-            offerProposerCombo.Visibility = Visibility.Visible;
+            //offerProposerCombo.Visibility = Visibility.Visible;
+            salesPersonCombo.Visibility = Visibility.Visible;
             projectCombo.Visibility = Visibility.Visible;
 
             companyAddressCombo.IsEnabled = false;
@@ -133,20 +133,39 @@ namespace _01electronics_crm
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
             contactPersonPhoneCombo.Visibility = Visibility.Collapsed;
-            offerProposerCombo.Visibility = Visibility.Collapsed;
+            //offerProposerCombo.Visibility = Visibility.Collapsed;
+            salesPersonCombo.Visibility = Visibility.Collapsed;
             projectCombo.Visibility = Visibility.Collapsed;
 
-            offerProposerLabel.Visibility = Visibility.Visible;
+            //offerProposerLabel.Visibility = Visibility.Visible;
             companyNameLabel.Visibility = Visibility.Visible;
             companyAddressLabel.Visibility = Visibility.Visible;
             contactPersonNameLabel.Visibility = Visibility.Visible;
             contactPersonPhoneLabel.Visibility = Visibility.Visible;
-            offerProposerLabel.Visibility = Visibility.Visible;
+            salesPersonLabel.Visibility = Visibility.Visible;
             projectLabel.Visibility = Visibility.Visible;
         }
         ///////////////INITIALIZE FUNCTIONS///////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private bool FillrfqsList()
+        {
+            if (!commonQueriesObject.GetRFQs(ref rfqsList))
+                return false;
+            return true;
+        }
 
+        private void InitializeRFQSerialCombo()
+        {
+            for (int i = 0; i < rfqsList.Count; i++)
+            {
+                //if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId())
+                //{
+                  //  RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
+                   // rfqsAddedToComboList.Add(rfqsList[i]);
+                //}
+            }
+            RFQSerialCombo.IsEnabled = true;
+        }
         private void InitializeCompanyInfo()
         {
             int companySerial = maintOffer.GetCompanySerial();
@@ -164,7 +183,6 @@ namespace _01electronics_crm
             return true;
         }
 
-        //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
             if (!commonQueriesObject.GetEmployeeCompanies(maintOffer.GetMaintOfferProposerId(), ref companiesList))
@@ -176,15 +194,16 @@ namespace _01electronics_crm
             return true;
         }
 
-        private bool InitializeOfferProposerCombo()
+        private bool InitializeSalesPersonCombo()
         {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployees))
                 return false;
 
-            //NO NEED FOR TEMP VARIABLES
-            for (int i = 0; i < preSalesEmployees.Count(); i++)
-                offerProposerCombo.Items.Add(preSalesEmployees[i].employee_name);
-
+            for (int i = 0; i < salesEmployees.Count(); i++)
+            {
+                salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
+            }
+            salesPersonCombo.Items.Add(loggedInUser.GetEmployeeName());
             return true;
         }
 
@@ -202,15 +221,7 @@ namespace _01electronics_crm
         /////////////SET FUNCTIONS////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void SetOfferProposer()
-        {
-            maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
-            SetOfferProposerCombo();
-        }
-        private void SetOfferProposerCombo()
-        {
-              offerProposerCombo.SelectedItem = maintOffer.GetMaintOfferProposerName();
-        }
+      
 
         private void SetCompanyNameCombo()
         {
@@ -234,7 +245,7 @@ namespace _01electronics_crm
 
         private void SetOfferProposerLabel()
         {
-            offerProposerLabel.Content = maintOffer.GetMaintOfferProposerName();
+            //offerProposerLabel.Content = maintOffer.GetMaintOfferProposerName();
         }
 
         private void SetCompanyNameLabel()
@@ -277,13 +288,18 @@ namespace _01electronics_crm
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedOfferProposerCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-                maintOffer.InitializeMaintOfferProposerInfo(salesEmployees[offerProposerCombo.SelectedIndex].employee_id, salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
+            //if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+                //maintOffer.InitializeMaintOfferProposerInfo(salesEmployees[offerProposerCombo.SelectedIndex].employee_id, salesEmployees[offerProposerCombo.SelectedIndex].team.team_id);
 
             InitializeCompanyNameCombo();
 
         }
-       
+
+        private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
@@ -477,5 +493,6 @@ namespace _01electronics_crm
 
         }
 
+        
     }
 }

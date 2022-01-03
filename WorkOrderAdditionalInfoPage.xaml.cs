@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -392,6 +393,18 @@ namespace _01electronics_crm
 
             NavigationService.Navigate(workOrderBasicInfoPage);
         }
+
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
+            workOrderProjectInfoPage.workOrderProductsPage = workOrderProductsPage;
+            workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
+            workOrderProjectInfoPage.workOrderAdditionalInfoPage = this;
+            workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
+
+            NavigationService.Navigate(workOrderProjectInfoPage);
+        }
+
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
@@ -475,51 +488,52 @@ namespace _01electronics_crm
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
             //PLEASE CHANGE THESE MESSAGE
+            System.Windows.Forms.MessageBox.Show("Incorrect Password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (workOrder.GetSalesPersonId() == 0)
-                MessageBox.Show("You need to choose sales person before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("Sales Person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetCompanyName() == null)
-                MessageBox.Show("You need to choose a company before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("Company is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetAddressSerial() == 0)
-                MessageBox.Show("You need to choose company address before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("company address is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetContactId() == 0)
-                MessageBox.Show("You need to choose a contact before adding a work order!");
-            //else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
-            //    MessageBox.Show("You need to add a price for product 1 before adding a work order!");
-            //else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
-            //    MessageBox.Show("You need to add a price for product 2 before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("Contact is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("product 1 price  is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("product 2 price  is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 3 before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("product 3 price is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 4 before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("product 4 price is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderPercentDownPayment() + workOrder.GetOrderPercentOnDelivery() + workOrder.GetOrderPercentOnInstallation() != 100)
-                MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
+                System.Windows.Forms.MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderContractTypeId() == 0)
-                MessageBox.Show("You need to set contract type before adding a work order!");
+                System.Windows.Forms.MessageBox.Show("Contract type is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             
             else
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-                {
+              if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+              {
+                  //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
+                  if (!workOrder.IssueNewOrder())
+                      return;
 
-                    //if (!workOrder.IssueNewOrder())
-                     //   return;
+                  if (workOrder.GetOfferID() != null)
+                  {
+                      if (!workOrder.ConfirmOffer())
+                          return;
 
-                    if (workOrder.GetOfferID() != null)
-                    {
-                        if (!workOrder.ConfirmOffer())
-                            return;
+                  }
+              }
 
-                    }
-                }
+              viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
-                viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
+              WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
+              viewOffer.Show();
 
-                //WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
-                //viewOffer.Show();
-
-                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                currentWindow.Close();
+              NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+              currentWindow.Close();
 
 
             }
@@ -529,7 +543,6 @@ namespace _01electronics_crm
         {
 
         }
-
         private void OnSelChangedOrderIssueDate(object sender, SelectionChangedEventArgs e)
         {
 
@@ -549,5 +562,7 @@ namespace _01electronics_crm
         {
             ConfigureDrawingSubmissionUIElements();
         }
+
+        
     }
 }

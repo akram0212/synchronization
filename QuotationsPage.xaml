@@ -62,7 +62,7 @@
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="OUTGOING QUOTATIONS" Style="{StaticResource primaryHeaderTextStyle}"/>
+            <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="OUTGOING QUOTATION" Style="{StaticResource primaryHeaderTextStyle}"/>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>

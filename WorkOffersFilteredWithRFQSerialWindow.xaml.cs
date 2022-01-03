@@ -113,11 +113,11 @@ namespace _01electronics_crm
                 statusLabel.Content = workOffers[i].offer_status;
                 statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATIONS)
+                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATIONS)
+                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }

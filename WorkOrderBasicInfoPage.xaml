@@ -30,8 +30,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="WORK ORDER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder" IsEnabled="False"/>
+            <Label Grid.Row="0" Content="BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOrder" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -84,9 +84,9 @@
                 </WrapPanel>
                 <WrapPanel Name="offerWrapPanel">
                     <CheckBox Name="OfferCheckBox" Margin="20,30,0,0" Checked="OnCheckOfferCheckBox" Unchecked="OnUnCheckOfferCheckBox"/>
-                    <Label Style="{StaticResource labelStyle}" Content="OUTGOING_QUOTATION &#x0a;Serial"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Quotation &#x0a;Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="OfferSerialLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="OfferSerialCombo" SelectionChanged="OnSelChangedOUTGOING_QUOTATIONSerialCombo"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="OfferSerialCombo" SelectionChanged="OnSelChangedQuotationSerialCombo"/>
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Grid.Row="1">

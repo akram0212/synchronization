@@ -75,10 +75,16 @@
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Offer &#x0a;Proposer"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="offerProposerLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="offerProposerCombo" SelectionChanged="OnSelChangedOfferProposerCombo"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedOfferProposerCombo"/>
                 </WrapPanel>
+                <WrapPanel>
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;ID"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
+                </WrapPanel>
+                
             </WrapPanel>
             <WrapPanel Grid.Row="1">
                 <WrapPanel Name="companyNameWrapPanel">
@@ -107,9 +113,12 @@
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Grid.Row="3">
-                <Label Style="{StaticResource labelStyle}" Content="Project"/>
-                <Label Style="{StaticResource tableItemValue}" Name="projectLabel" Visibility="Collapsed"/>
-                <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectCombo" SelectionChanged="OnSelChangedProjectCombo"/>
+                <WrapPanel Grid.Row="3">
+                    <Label Style="{StaticResource labelStyle}" Content="Project"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="projectLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectCombo" SelectionChanged="OnSelChangedProjectCombo"/>
+                </WrapPanel>
+                
             </WrapPanel>
 
         </Grid>

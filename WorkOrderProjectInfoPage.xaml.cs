@@ -69,7 +69,10 @@ namespace _01electronics_crm
             {
                 checkAllCheckBox.IsEnabled = false;
                 projectCheckBox.IsChecked = true;
+                projectCheckBox.IsEnabled = false;
                 projectComboBox.SelectedItem = workOrder.GetprojectName();
+                projectComboBox.IsEnabled = false;
+                checkAllCheckBox.IsChecked = true;
 
             }
         }
@@ -123,6 +126,7 @@ namespace _01electronics_crm
             else
             {
                 projectLocations.Clear();
+                addedLocations.Clear();
                 workOrder.GetProjectLocations(ref projectLocations);
 
                 for (int i = 0; i < projectLocations.Count; i++)
@@ -139,7 +143,6 @@ namespace _01electronics_crm
 
                     locationsGrid.Children.Add(checkBox);
                     Grid.SetRow(checkBox, i);
-
                 }
             }
         }
@@ -183,7 +186,6 @@ namespace _01electronics_crm
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
 
-            workOrder.SetProjectLocations(addedLocations);
         }
 
         private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
@@ -191,7 +193,6 @@ namespace _01electronics_crm
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
 
-            workOrder.SetProjectLocations(addedLocations);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +200,10 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -209,6 +214,10 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderProductsPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -219,6 +228,10 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = workOrderProductsPage;
             workOrderPaymentAndDeliveryPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -229,6 +242,10 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderAdditionalInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -239,6 +256,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
+
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
@@ -253,6 +271,9 @@ namespace _01electronics_crm
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
+            if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderProductsPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -264,6 +285,9 @@ namespace _01electronics_crm
 
         private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                workOrder.SetProjectLocations(addedLocations);
+
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
             workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
@@ -280,44 +304,22 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
-        private void OnClickTestButton(object sender, RoutedEventArgs e)
-        {
-            InsertIntoOrderProjectLocations();
-        }
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///INTERNAL TABS
+        ///SET FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        protected bool InsertIntoOrderProjectLocations()
+        public void SetProjectComboBox()
         {
-            String sqlQueryPart1 = "insert into erp_system.dbo.work_orders_project_locations values (";
-            String sqlQueryPart2 = "getdate());";
-            string sqlQuery;
-
-            String comma = ",";
-            String apostropheComma = "',";
-            String commaApostrophe = ",'";
-            String apostropheCommaApostrophe = "','";
-
-            for (int i = 0; i < addedLocations.Count; i++)
+            projectComboBox.SelectedItem = workOrder.GetprojectName();
+            if (projectComboBox.SelectedItem != null)
             {
-                sqlQuery = String.Empty;
-                sqlQuery += sqlQueryPart1;
-                //sqlQuery += orderSerialTextBox.Text;
-                sqlQuery += comma;
-                //sqlQuery += addedLocations[i].project_serial;
-                sqlQuery += comma;
-                sqlQuery += addedLocations[i].location_id;
-                sqlQuery += comma;
-                sqlQuery += sqlQueryPart2;
-
-                if (!sqlDatabase.InsertRows(sqlQuery))
-                    return false;
+                projectCheckBox.IsChecked = true;
+                checkAllCheckBox.IsChecked = true;
+                checkAllCheckBox.IsEnabled = false;
+                projectCheckBox.IsEnabled = false;
             }
-            return true;
         }
-
-        
     }
 }
