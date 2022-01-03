@@ -38,12 +38,6 @@ namespace _01electronics_crm
 
         private int viewAddCondition;
         private int warrantyPeriod = 0;
-        private int offerValidityPeriod = 0;
-        private int drawingDeadlineFrom = 0;
-        private int drawingDeadlineTo = 0;
-        private int isDrawing = 0;
-
-        private string additionalDescription;
 
         protected String serverFolderPath;
         protected String serverFileName;
@@ -108,7 +102,6 @@ namespace _01electronics_crm
             }
             else
             {
-                //ConfigureDrawingSubmissionUIElements();
                 
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -220,7 +213,6 @@ namespace _01electronics_crm
 
         private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            //additionalDescription = additionalDescriptionTextBox.Text;
             maintenanceOffer.SetMaintOfferNotes(additionalDescriptionTextBox.Text);
         }
 
@@ -340,12 +332,12 @@ namespace _01electronics_crm
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (maintenanceOffer.GetMaintOfferProposerId() == 0)
                 MessageBox.Show("You need to choose sales person before adding a work offer!");
-            else if (maintenanceOffer.GetCompanyName() == null)
-                MessageBox.Show("You need to choose a company before adding a work offer!");
-            else if (maintenanceOffer.GetAddressSerial() == 0)
-                MessageBox.Show("You need to choose company address before adding a work offer!");
-            else if (maintenanceOffer.GetContactId() == 0)
-                MessageBox.Show("You need to choose a contact before adding a work offer!");
+            //else if (maintenanceOffer.GetCompanyName() == null)
+            //    MessageBox.Show("You need to choose a company before adding a work offer!");
+            //else if (maintenanceOffer.GetAddressSerial() == 0)
+            //    MessageBox.Show("You need to choose company address before adding a work offer!");
+            //else if (maintenanceOffer.GetContactId() == 0)
+            //    MessageBox.Show("You need to choose a contact before adding a work offer!");
             else if (maintenanceOffer.GetMaintOfferProduct1TypeId() != 0 && maintenanceOffer.GetProduct1PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
             else if (maintenanceOffer.GetMaintOfferProduct2TypeId() != 0 && maintenanceOffer.GetProduct2PriceValue() == 0)
@@ -360,12 +352,12 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
-                   // if (!maintenanceOffer.IssueNewOffer())
-                     //   return;
+                   if (!maintenanceOffer.IssueNewMaintOffer())
+                        return;
 
-                    //if (maintenanceOffer.GetRFQID() != null)
-                      //  if (!maintenanceOffer.ConfirmRFQ())
-                        //    return;
+                    if (maintenanceOffer.GetRFQID() != null)
+                        if (!maintenanceOffer.ConfirmRFQ())
+                            return;
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
@@ -380,8 +372,8 @@ namespace _01electronics_crm
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 {
-                    //if (!maintenanceOffer.ReviseOffer())
-                      //  return;
+                    if (!maintenanceOffer.ReviseMaintOffer())
+                        return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
