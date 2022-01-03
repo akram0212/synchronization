@@ -30,8 +30,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="OUTGOING QUOTATION BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OUTGOING_QUOTATION FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer" IsEnabled="False"/>
+            <Label Grid.Row="0" Content="BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;QUOTATION" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">

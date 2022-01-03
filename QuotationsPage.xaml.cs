@@ -93,11 +93,6 @@ namespace _01electronics_crm
 
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
-
-            if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-            {
-                addButton.IsEnabled = false;
-            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,8 +215,7 @@ namespace _01electronics_crm
         }
 
         private void SetDefaultSettings()
-        {
-           
+        {  
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -277,6 +271,11 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
+            }
+
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
             }
         }
 

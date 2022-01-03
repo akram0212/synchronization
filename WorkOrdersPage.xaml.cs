@@ -203,7 +203,6 @@ namespace _01electronics_crm
             statusComboBox.IsEnabled = false;
         }
 
-
         private void DisableViewButton()
         {
             //viewButton.IsEnabled = false;
@@ -281,6 +280,11 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
+            }
+
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
             }
         }
 
@@ -371,7 +375,7 @@ namespace _01electronics_crm
                 preSalesLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label companyAndContactLabel = new Label();
-                companyAndContactLabel.Content = workOrders[i].company_name + " -" + workOrders[i].contact_name;
+                companyAndContactLabel.Content = workOrders[i].company_name + " - " + workOrders[i].contact_name;
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
@@ -382,7 +386,7 @@ namespace _01electronics_crm
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
 
-                    productTypeAndBrandLabel.Content += tempType1.typeName + " -" + tempBrand1.brandName;
+                    productTypeAndBrandLabel.Content += tempType1.typeName + " - " + tempBrand1.brandName;
 
                     if (j != temp.Count() - 1)
                         productTypeAndBrandLabel.Content += ", ";
@@ -1274,7 +1278,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Selected WorkOrder doesn't have an RFQ");
+                System.Windows.Forms.MessageBox.Show("Selected work order doesn't have an associated RFQ");
             }
         }
 
@@ -1298,7 +1302,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Selected WorkOrder doesn't have an Offer");
+                MessageBox.Show("Selected work order doesn't have an associated offer", "Error");
             }
         }
         private void OnBtnClickConfirmOrder()
