@@ -365,7 +365,7 @@ namespace _01electronics_crm
                 companyAndContactLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                 Label productTypeAndBrandLabel = new Label();
-                List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
+                List<COMPANY_WORK_MACROS.QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
 
                 for (int j = 0; j < temp.Count(); j++)
                 {
@@ -685,7 +685,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(modelHeader, 3);
 
 
-                List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
+                List<COMPANY_WORK_MACROS.QUOTATION_PRODUCT_STRUCT> temp = workOffers[i].products;
 
                 for (int j = 0; j < temp.Count(); j++)
                 {
