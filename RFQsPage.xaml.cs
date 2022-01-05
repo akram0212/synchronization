@@ -180,6 +180,7 @@ namespace _01electronics_crm
 
         private void ResetComboBoxes()
         {
+            searchTextBox.Text = null;
             yearComboBox.SelectedIndex = -1;
             quarterComboBox.SelectedIndex = -1;
 
@@ -193,6 +194,7 @@ namespace _01electronics_crm
 
         private void DisableComboBoxes()
         {
+            searchTextBox.IsEnabled = false;
             yearComboBox.IsEnabled = false;
             quarterComboBox.IsEnabled = false;
             salesComboBox.IsEnabled = false;
@@ -329,6 +331,23 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < rfqsList[i].products.Count; productNo++)
                     if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
+
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = rfqsList[i].rfq_id;
+                    String tempCompanyName = rfqsList[i].company_name;
+                    String tempContactName = rfqsList[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
 
                 if (yearCheckBox.IsChecked == true && currentRFQDate.Year != selectedYear)
                     continue;
@@ -553,6 +572,11 @@ namespace _01electronics_crm
             offerStatusHeader.Content = "RFQ Status";
             offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
+            Label offerProjectHeader = new Label();
+            offerProjectHeader.Content = "RFQ Project";
+            offerProjectHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             rfqsGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -563,33 +587,45 @@ namespace _01electronics_crm
 
             rfqsGrid.RowDefinitions.Add(new RowDefinition());
 
+            rfqsGrid.Children.Add(offerIdHeader);
             Grid.SetRow(offerIdHeader, 0);
             Grid.SetColumn(offerIdHeader, 0);
-            rfqsGrid.Children.Add(offerIdHeader);
+            
 
+            rfqsGrid.Children.Add(offerSalesHeader);
             Grid.SetRow(offerSalesHeader, 0);
             Grid.SetColumn(offerSalesHeader, 1);
-            rfqsGrid.Children.Add(offerSalesHeader);
+            
 
+            rfqsGrid.Children.Add(offerPreSalesHeader);
             Grid.SetRow(offerPreSalesHeader, 0);
             Grid.SetColumn(offerPreSalesHeader, 2);
-            rfqsGrid.Children.Add(offerPreSalesHeader);
+            
 
+            rfqsGrid.Children.Add(offerCompanyContactHeader);
             Grid.SetRow(offerCompanyContactHeader, 0);
             Grid.SetColumn(offerCompanyContactHeader, 3);
-            rfqsGrid.Children.Add(offerCompanyContactHeader);
+            
 
+            rfqsGrid.Children.Add(offerProductsHeader);
             Grid.SetRow(offerProductsHeader, 0);
             Grid.SetColumn(offerProductsHeader, 4);
-            rfqsGrid.Children.Add(offerProductsHeader);
+            
 
+            rfqsGrid.Children.Add(offerContractTypeHeader);
             Grid.SetRow(offerContractTypeHeader, 0);
             Grid.SetColumn(offerContractTypeHeader, 5);
-            rfqsGrid.Children.Add(offerContractTypeHeader);
+            
 
+            rfqsGrid.Children.Add(offerStatusHeader);
             Grid.SetRow(offerStatusHeader, 0);
             Grid.SetColumn(offerStatusHeader, 6);
-            rfqsGrid.Children.Add(offerStatusHeader);
+            
+
+            rfqsGrid.Children.Add(offerProjectHeader);
+            Grid.SetRow(offerProjectHeader, 0);
+            Grid.SetColumn(offerProjectHeader, 7);
+            
 
             int currentRowNumber = 1;
 
@@ -610,6 +646,23 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < rfqsList[i].products.Count(); productNo++)
                     if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
+
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = rfqsList[i].rfq_id;
+                    String tempCompanyName = rfqsList[i].company_name;
+                    String tempContactName = rfqsList[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
 
 
                 if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
@@ -780,32 +833,21 @@ namespace _01electronics_crm
                 Grid.SetRow(contractTypeLabel, currentRowNumber);
                 Grid.SetColumn(contractTypeLabel, 5);
 
-
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
-
                 Label rfqStatusLabel = new Label();
                 rfqStatusLabel.Content = rfqsList[i].rfq_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                rfqStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
-                }
-                else
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
+                rfqsGrid.Children.Add(rfqStatusLabel);
+                Grid.SetRow(rfqStatusLabel, currentRowNumber);
+                Grid.SetColumn(rfqStatusLabel, 6);
 
-                borderIcon.Child = rfqStatusLabel;
+                Label rfqProjectLabel = new Label();
+                rfqProjectLabel.Content = rfqsList[i].project_Name;
+                rfqProjectLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                rfqsGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
+                rfqsGrid.Children.Add(rfqProjectLabel);
+                Grid.SetRow(rfqProjectLabel, currentRowNumber);
+                Grid.SetColumn(rfqProjectLabel, 7);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
 
@@ -819,6 +861,12 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnTextChangedSearchTextBox(object sender, TextChangedEventArgs e)
+        {
+            SetRFQsStackPanel();
+            SetRFQsGrid();
+        }
 
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -899,7 +947,13 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+
+        private void OnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = true;
+        }
+
+
         private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = true;
@@ -936,7 +990,14 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        
+        
+        private void OnUnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = false;
+            searchTextBox.Text = null;
+        }
+
         private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = false;
@@ -1259,6 +1320,10 @@ namespace _01electronics_crm
             MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintenanceContractsPage);
         }
+
+        
+
+        
     }
 
 }

@@ -7,12 +7,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _01electronics_library;
+using Label = System.Windows.Controls.Label;
+using ListBox = System.Windows.Controls.ListBox;
+using Orientation = System.Windows.Controls.Orientation;
 
 namespace _01electronics_crm
 {
@@ -332,6 +336,23 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
                     if (workOrders[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
+                
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = workOrders[i].order_id;
+                    String tempCompanyName = workOrders[i].company_name;
+                    String tempContactName = workOrders[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
 
 
                 if (yearCheckBox.IsChecked == true && currentWorkOrderDate.Year != selectedYear)
@@ -422,13 +443,13 @@ namespace _01electronics_crm
                 Expander expander = new Expander();
                 expander.ExpandDirection = ExpandDirection.Down;
                 expander.VerticalAlignment = VerticalAlignment.Center;
-                expander.HorizontalAlignment = HorizontalAlignment.Center;
-                expander.HorizontalContentAlignment = HorizontalAlignment.Center;
+                expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
                 expander.Expanded += new RoutedEventHandler(OnExpandExpander);
                 expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
 
                 ListBox listBox = new ListBox();
-                listBox.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                listBox.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
                 listBox.SelectionChanged += new SelectionChangedEventHandler(OnSelChangedListBox);
 
                 ListBoxItem viewButton = new ListBoxItem();
@@ -530,6 +551,16 @@ namespace _01electronics_crm
             orderStatusHeader.Content = "Order Status";
             orderStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
+            Label orderProjectHeader = new Label();
+            orderProjectHeader.Content = "Order Project";
+            orderProjectHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label orderProjectLocationsHeader = new Label();
+            orderProjectLocationsHeader.Content = "Project Locations";
+            orderProjectLocationsHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -568,6 +599,14 @@ namespace _01electronics_crm
             Grid.SetColumn(orderStatusHeader, 6);
             workOrdersGrid.Children.Add(orderStatusHeader);
 
+            Grid.SetRow(orderProjectHeader, 0);
+            Grid.SetColumn(orderProjectHeader, 7);
+            workOrdersGrid.Children.Add(orderProjectHeader);
+
+            Grid.SetRow(orderProjectLocationsHeader, 0);
+            Grid.SetColumn(orderProjectLocationsHeader, 8);
+            workOrdersGrid.Children.Add(orderProjectLocationsHeader);
+
             int currentRowNumber = 1;
 
 
@@ -594,6 +633,23 @@ namespace _01electronics_crm
                     if (workOrders[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
 
+
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = workOrders[i].order_id;
+                    String tempCompanyName = workOrders[i].company_name;
+                    String tempContactName = workOrders[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
 
                 if (yearCheckBox.IsChecked == true && currentWorkOrderDate.Year != selectedYear)
                     continue;
@@ -761,31 +817,21 @@ namespace _01electronics_crm
                 Grid.SetColumn(contractTypeLabel, 4);
 
 
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
-
                 Label rfqStatusLabel = new Label();
                 rfqStatusLabel.Content = workOrders[i].order_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                rfqStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.OPEN_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CLOSED_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
-                //else
-                //{
-                //    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                //}
+                workOrdersGrid.Children.Add(rfqStatusLabel);
+                Grid.SetRow(rfqStatusLabel, currentRowNumber);
+                Grid.SetColumn(rfqStatusLabel, 6);
 
-                borderIcon.Child = rfqStatusLabel;
+                Label rfqProjectLabel = new Label();
+                rfqProjectLabel.Content = workOrders[i].order_status;
+                rfqProjectLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                workOrdersGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
+                workOrdersGrid.Children.Add(rfqProjectLabel);
+                Grid.SetRow(rfqProjectLabel, currentRowNumber);
+                Grid.SetColumn(rfqProjectLabel, 7);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
@@ -800,6 +846,12 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnTextChangedSearchTextBox(object sender, TextChangedEventArgs e)
+        {
+            SetWorkOrdersStackPanel();
+            SetWorkOrdersGrid();
+        }
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
             DisableViewButton();
@@ -905,6 +957,12 @@ namespace _01electronics_crm
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void OnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = true;
+        }
+
+        
         private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = true;
@@ -969,7 +1027,13 @@ namespace _01electronics_crm
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void OnUnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = false;
+            searchTextBox.Text = null;
+        }
 
+        
         private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.SelectedItem = null;
@@ -1278,7 +1342,7 @@ namespace _01electronics_crm
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Selected work order doesn't have an associated RFQ");
+                System.Windows.Forms.MessageBox.Show("Selected work order doesn't have an associated RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1302,7 +1366,7 @@ namespace _01electronics_crm
             }
             else
             {
-                MessageBox.Show("Selected work order doesn't have an associated offer", "Error");
+                System.Windows.Forms.MessageBox.Show("Selected work order doesn't have an associated offer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void OnBtnClickConfirmOrder()
@@ -1320,5 +1384,6 @@ namespace _01electronics_crm
             SetWorkOrdersGrid();
         }
 
+        
     }
 }

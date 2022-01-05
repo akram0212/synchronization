@@ -192,6 +192,7 @@ namespace _01electronics_crm
 
         private void ResetComboBoxes()
         {
+            searchTextBox.Text = null;
             yearComboBox.SelectedIndex = -1;
             quarterComboBox.SelectedIndex = -1;
 
@@ -205,6 +206,7 @@ namespace _01electronics_crm
         }
         private void DisableComboBoxes()
         {
+            searchTextBox.IsEnabled = false;
             yearComboBox.IsEnabled = false;
             quarterComboBox.IsEnabled = false;
             salesComboBox.IsEnabled = false;
@@ -218,6 +220,7 @@ namespace _01electronics_crm
         {  
             DisableComboBoxes();
             ResetComboBoxes();
+
 
             yearCheckBox.IsChecked = true;
             yearCheckBox.IsEnabled = false;
@@ -319,8 +322,23 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
                     if (workOffers[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = workOffers[i].offer_id;
+                    String tempCompanyName = workOffers[i].company_name;
+                    String tempContactName = workOffers[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 
-                
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
+
                 if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
                     continue;
 
@@ -519,6 +537,11 @@ namespace _01electronics_crm
             offerStatusHeader.Content = "Offer Status";
             offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
+            Label offerProjectHeader = new Label();
+            offerProjectHeader.Content = "Offer Project";
+            offerProjectHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            workOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -557,6 +580,10 @@ namespace _01electronics_crm
             Grid.SetColumn(offerStatusHeader, 6);
             workOffersGrid.Children.Add(offerStatusHeader);
 
+            Grid.SetRow(offerStatusHeader, 0);
+            Grid.SetColumn(offerStatusHeader, 7);
+            workOffersGrid.Children.Add(offerProjectHeader);
+
             int currentRowNumber = 1;
 
             for (int i = 0; i < workOffers.Count; i++)
@@ -576,7 +603,23 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
                     if (workOffers[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
+                
+                if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
+                {
+                    String tempId = workOffers[i].offer_id;
+                    String tempCompanyName = workOffers[i].company_name;
+                    String tempContactName = workOffers[i].contact_name;
+                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 
+                    if (containsID || containsCompanyName || containsContactName)
+                    {
+
+                    }
+                    else
+                        continue;
+                }
 
                 if (yearCheckBox.IsChecked == true && currentWorkOfferDate.Year != selectedYear)
                     continue;
@@ -744,31 +787,21 @@ namespace _01electronics_crm
                 Grid.SetColumn(contractTypeLabel, 5);
 
 
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
-
                 Label rfqStatusLabel = new Label();
                 rfqStatusLabel.Content = workOffers[i].offer_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                rfqStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
-                }
-                else
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
+                workOffersGrid.Children.Add(rfqStatusLabel);
+                Grid.SetRow(rfqStatusLabel, currentRowNumber);
+                Grid.SetColumn(rfqStatusLabel, 6);
 
-                borderIcon.Child = rfqStatusLabel;
+                Label rfqProjectLabel = new Label();
+                rfqProjectLabel.Content = workOffers[i].project_name;
+                rfqProjectLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                workOffersGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
+                workOffersGrid.Children.Add(rfqProjectLabel);
+                Grid.SetRow(rfqProjectLabel, currentRowNumber);
+                Grid.SetColumn(rfqProjectLabel, 7);
 
                 currentRowNumber++;
             }
@@ -779,11 +812,16 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnTextChangedSearchTextBox(object sender, TextChangedEventArgs e)
+        {
+            SetWorkOffersStackPanel();
+            SetWorkOffersGrid();
+        }
+
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
             
-            
-
             if (yearComboBox.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
@@ -882,6 +920,11 @@ namespace _01electronics_crm
         //CHECKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void OnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = true;
+        }
+
         private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = true;
@@ -946,6 +989,11 @@ namespace _01electronics_crm
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void OnUnCheckSearchCheckBox(object sender, RoutedEventArgs e)
+        {
+            searchTextBox.IsEnabled = false;
+            searchTextBox.Text = null;
+        }
 
         private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
@@ -1305,6 +1353,10 @@ namespace _01electronics_crm
             MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintenanceContractsPage);
         }
+
+        
+
+        
     }
 }
 
