@@ -89,9 +89,9 @@
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Margin="15,0,0,0">
-                    <CheckBox Style="{StaticResource checkBoxStyle}" Width="200" Name="VatConditionCheckBox" Content="Including Vat"/>
-                    <CheckBox Style="{StaticResource checkBoxStyle}"  Margin="-40,0,0,0" Width="200" Name="SparePartsCheckBox" Content="Including Spare Parts"/>
-                    <CheckBox Style="{StaticResource checkBoxStyle}" Margin="30,0,0,0" Width="200" Name="BatteriesCheckBox" Content="Including Batteries"/>
+                    <CheckBox Style="{StaticResource checkBoxStyle}" Width="200" Name="VatConditionCheckBox" Content="Including Vat" Checked="OnCheckVatCheckBox" Unchecked="OnUnCheckVatCheckBox"/>
+                    <CheckBox Style="{StaticResource checkBoxStyle}"  Margin="-40,0,0,0" Width="200" Name="SparePartsCheckBox" Content="Including Spare Parts" Checked="OnCheckSparePartsCheckBox" Unchecked="OnUnCheckSparePartsCheckBox"/>
+                    <CheckBox Style="{StaticResource checkBoxStyle}" Margin="30,0,0,0" Width="200" Name="BatteriesCheckBox" Content="Including Batteries" Checked="OnCheckBatteriesCheckBox" Unchecked="OnUnCheckBatteriesCheckBox"/>
                 </WrapPanel>
                 <WrapPanel Grid.Row="3">
                     <Label  Content="Payments &#x0a;Per Year" Style="{StaticResource labelStyle}"/>

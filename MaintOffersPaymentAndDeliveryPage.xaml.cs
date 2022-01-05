@@ -235,7 +235,6 @@ namespace _01electronics_crm
                 paymentsFrequencyTextBox.Text = null;
             }
         }
-
         private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
@@ -267,12 +266,6 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
-            }
             maintOffersBasicInfoPage.maintOffersProductsPage = maintOffersProductsPage;
             maintOffersBasicInfoPage.maintOffersPaymentAndDeliveryPage = this;
             maintOffersBasicInfoPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
@@ -282,12 +275,6 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
-            }
             maintOffersProductsPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersProductsPage.maintOffersPaymentAndDeliveryPage = this;
             maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
@@ -303,13 +290,6 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
-            }
-
             maintOffersAdditionalInfoPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersAdditionalInfoPage.maintOffersProductsPage = maintOffersProductsPage;
             maintOffersAdditionalInfoPage.maintOffersPaymentAndDeliveryPage = this;
@@ -333,12 +313,6 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
-            }
             maintOffersAdditionalInfoPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersAdditionalInfoPage.maintOffersProductsPage = maintOffersProductsPage;
             maintOffersAdditionalInfoPage.maintOffersPaymentAndDeliveryPage = this;
@@ -349,12 +323,6 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffers.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text.ToString()));
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text.ToString()));
-            }
             maintOffersProductsPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;
             maintOffersProductsPage.maintOffersPaymentAndDeliveryPage = this;
             maintOffersProductsPage.maintOffersAdditionalInfoPage = maintOffersAdditionalInfoPage;
@@ -377,9 +345,35 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
+        private void OnCheckSparePartsCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferSparePartsCondition(true);
+        } 
+        private void OnCheckVatCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferVATCondition(true);
+        } 
+        private void OnCheckBatteriesCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferBatteriesCondition(true);
+        }
+
+        private void OnUnCheckSparePartsCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferSparePartsCondition(false);
+        }
+        private void OnUnCheckVatCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferVATCondition(false);
+        }
+        private void OnUnCheckBatteriesCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintOffers.SetMaintOfferBatteriesCondition(false);
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///CHECK/UNCHECK HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
     }
 }
