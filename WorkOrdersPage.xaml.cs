@@ -1318,7 +1318,7 @@ namespace _01electronics_crm
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
             WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
 
             workOrderWindow.Show();
@@ -1329,7 +1329,7 @@ namespace _01electronics_crm
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
 
             if (workOrder.GetRFQID() != null)
             {
@@ -1352,7 +1352,7 @@ namespace _01electronics_crm
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
 
             if (workOrder.GetOfferID() != null)
             {
@@ -1373,7 +1373,7 @@ namespace _01electronics_crm
         {
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial, workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
 
             workOrder.ConfirmOrder();
 
