@@ -1140,7 +1140,7 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION;
 
-            selectedWorkOffer = new WorkOrder(sqlDatabase);
+            selectedWorkOffer = new OutgoingQuotation(sqlDatabase);
 
             WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser,ref selectedWorkOffer, viewAddCondition, false);
             

@@ -501,7 +501,7 @@ namespace _01electronics_crm
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 {
-
+                    workOrderProductsPage.SetCategoryComboBoxes();
                     workOrderProductsPage.SetTypeComboBoxes();
                     workOrderProductsPage.SetBrandComboBoxes();
                     workOrderProductsPage.SetModelComboBoxes();
@@ -512,6 +512,7 @@ namespace _01electronics_crm
                 }
                 else
                 {
+                    workOrderProductsPage.SetCategoryLabels();
                     workOrderProductsPage.SetTypeLabels();
                     workOrderProductsPage.SetBrandLabels();
                     workOrderProductsPage.SetModelLabels();

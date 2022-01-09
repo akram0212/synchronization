@@ -499,7 +499,7 @@ namespace _01electronics_crm
                     }
                 }
 
-                if (rfqsList[i].rfq_status_id != COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+                if (rfqsList[i].rfq_status_id != COMPANY_WORK_MACROS.CONFIRMED_RFQ && rfqsList[i].rfq_status_id != COMPANY_WORK_MACROS.REJECTED_RFQ)
                     listBox.Items.Add(rejectButton);
 
                 expander.Content = listBox;

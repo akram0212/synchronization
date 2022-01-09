@@ -104,6 +104,10 @@ namespace _01electronics_crm
                 SetProjectCombo();
 
                 salesPersonCombo.IsEnabled = false;
+                companyNameCombo.IsEnabled = false;
+                companyAddressCombo.IsEnabled = false;
+                contactPersonCombo.IsEnabled = false;
+                contactPersonPhoneCombo.IsEnabled = false;
                 projectCombo.IsEnabled = false;
             }
 

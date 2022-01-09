@@ -487,8 +487,6 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
-            //PLEASE CHANGE THESE MESSAGE
-            System.Windows.Forms.MessageBox.Show("Incorrect Password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (workOrder.GetSalesPersonId() == 0)
                 System.Windows.Forms.MessageBox.Show("Sales Person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

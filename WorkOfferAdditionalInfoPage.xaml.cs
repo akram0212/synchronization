@@ -78,12 +78,12 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
+            outgoingQuotation.SetHasDrawings(false);
             ConfigureDrawingSubmissionUIElements();
 
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
-                ConfigureDrawingSubmissionUIElements();
                 
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
@@ -115,7 +115,6 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
-                ConfigureDrawingSubmissionUIElements();
                 
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
@@ -132,8 +131,6 @@ namespace _01electronics_crm
             }
             else
             {
-                //ConfigureDrawingSubmissionUIElements();
-                
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();

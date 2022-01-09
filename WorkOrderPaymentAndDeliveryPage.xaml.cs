@@ -256,19 +256,25 @@ namespace _01electronics_crm
 
         private void SetPriceValues()
         {
-          
-                if (workOrder.GetOfferID() != null)
+
+            if (workOrder.GetOfferID() != null)
+            {
+                if (workOrder.GetCurrencyId() != 0)
                 {
                     totalPriceCombo.Text = workOrder.GetCurrency().ToString();
                     totalPriceTextBox.Text = workOrder.GetTotalPriceValue().ToString();
                     totalPrice = workOrder.GetTotalPriceValue();
                 }
-                else
+            }
+            else
+            {
+                if (workOrder.GetOrderCurrencyId() != 0)
                 {
-                    totalPriceCombo.Text = workOrder.GetOrderCurrency().ToString();
+                    totalPriceCombo.SelectedItem = workOrder.GetOrderCurrency().ToString();
                     totalPriceTextBox.Text = workOrder.GetOrderTotalPriceValue().ToString();
                     totalPrice = workOrder.GetOrderTotalPriceValue();
                 }
+            }
 
             
             totalPriceVATCombo.SelectedItem = workOrder.GetOrderVATCondition();

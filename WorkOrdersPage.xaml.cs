@@ -804,7 +804,7 @@ namespace _01electronics_crm
 
                 workOrdersGrid.Children.Add(productGrid);
                 Grid.SetRow(productGrid, currentRowNumber);
-                Grid.SetColumn(productGrid, 3);
+                Grid.SetColumn(productGrid, 4);
 
 
 
@@ -814,7 +814,7 @@ namespace _01electronics_crm
 
                 workOrdersGrid.Children.Add(contractTypeLabel);
                 Grid.SetRow(contractTypeLabel, currentRowNumber);
-                Grid.SetColumn(contractTypeLabel, 4);
+                Grid.SetColumn(contractTypeLabel, 5);
 
 
                 Label rfqStatusLabel = new Label();
@@ -826,12 +826,41 @@ namespace _01electronics_crm
                 Grid.SetColumn(rfqStatusLabel, 6);
 
                 Label rfqProjectLabel = new Label();
-                rfqProjectLabel.Content = workOrders[i].order_status;
+                rfqProjectLabel.Content = workOrders[i].project_name;
                 rfqProjectLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 workOrdersGrid.Children.Add(rfqProjectLabel);
                 Grid.SetRow(rfqProjectLabel, currentRowNumber);
                 Grid.SetColumn(rfqProjectLabel, 7);
+
+                
+                Grid projectLocationsGrid = new Grid();
+                projectLocationsGrid.ShowGridLines = true;
+
+                projectLocationsGrid.RowDefinitions.Add(new RowDefinition());
+
+                Label projectLocationsHeaderLabel = new Label();
+                projectLocationsHeaderLabel.Content = "Projects Locations";
+                projectLocationsHeaderLabel.Style = (Style)FindResource("tableSubHeaderItem");
+
+                projectLocationsGrid.Children.Add(projectLocationsHeaderLabel);
+                Grid.SetRow(projectLocationsHeaderLabel, 0);
+
+                for(int k = 0; k < workOrders[i].project_locations.Count; k++)
+                {
+                    projectLocationsGrid.RowDefinitions.Add(new RowDefinition());
+
+                    Label locationLabel = new Label();
+                    locationLabel.Content = workOrders[i].project_locations[k].branch_Info.district + ", " + workOrders[i].project_locations[k].branch_Info.state_governorate + ", " + workOrders[i].project_locations[k].branch_Info.city + ", " + workOrders[i].project_locations[k].branch_Info.country;
+                    locationLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                    projectLocationsGrid.Children.Add(locationLabel);
+                    Grid.SetRow(locationLabel, k + 1);
+                }
+
+                workOrdersGrid.Children.Add(projectLocationsGrid);
+                Grid.SetRow(projectLocationsGrid, currentRowNumber);
+                Grid.SetColumn(projectLocationsGrid, 8);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
