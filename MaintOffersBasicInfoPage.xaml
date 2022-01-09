@@ -31,12 +31,11 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Content="BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateMaintOfferButton" Content="GENERATE&#x0a;OFFER" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateMaintOffer" IsEnabled="False"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;QUOTATION" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateMaintOffers" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -48,19 +47,19 @@
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
                 <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
                 <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
                 <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
@@ -70,22 +69,22 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0">
                 <WrapPanel Name="salesPersonWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedOfferProposerCombo"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
                 </WrapPanel>
-                <WrapPanel>
-                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;ID"/>
+
+                <WrapPanel Name="assigneeWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedRFQSerialCombo"/>
                 </WrapPanel>
-                
             </WrapPanel>
+
             <WrapPanel Grid.Row="1">
                 <WrapPanel Name="companyNameWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
@@ -104,21 +103,17 @@
                 <WrapPanel Name="contactPersonNameWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonNameCombo"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
-                <WrapPanel Name="contactPersonPhoneWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Phone"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="contactPersonPhoneLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonPhoneCombo" SelectionChanged="OnSelChangedContactPersonPhoneCombo"/>
+
+                <WrapPanel Name="projectWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Project &#x0a;Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="projectSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectSerialCombo" SelectionChanged="OnSelChangedProjectSerialCombo"/>
                 </WrapPanel>
-            </WrapPanel>
-            <WrapPanel Grid.Row="3">
-                <WrapPanel Grid.Row="3">
-                    <Label Style="{StaticResource labelStyle}" Content="Project"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="projectLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectCombo" SelectionChanged="OnSelChangedProjectCombo"/>
-                </WrapPanel>
-                
+
+
+
             </WrapPanel>
 
         </Grid>
@@ -127,7 +122,7 @@
 
         </WrapPanel>
 
-        <Grid Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
