@@ -191,17 +191,25 @@ namespace _01electronics_crm
             //YOUR MESSAGE MUST BE SPECIFIC
             //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
             if (rfq.GetSalesPersonId() == 0)
-                System.Windows.Forms.MessageBox.Show("Please make sure you filled all the details before you add an RFQ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Sales person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (rfq.GetAssigneeId() == 0)
-                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an assignee for the rfq!");
+                System.Windows.Forms.MessageBox.Show("Assignee is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (rfq.GetAddressSerial() == 0)
-                System.Windows.Forms.MessageBox.Show("Please make sure that you chose an address for the rfq!");
+                System.Windows.Forms.MessageBox.Show("Company Address is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (rfq.GetContactId() == 0)
-                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contact for the rfq!");
+                System.Windows.Forms.MessageBox.Show("Contact is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetRFQProduct1TypeId() != 0 && rfq.GetRFQProduct1Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetRFQProduct2TypeId() != 0 && rfq.GetRFQProduct2Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 2!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetRFQProduct3TypeId() != 0 && rfq.GetRFQProduct3Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 3!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (rfq.GetRFQProduct4TypeId() != 0 && rfq.GetRFQProduct4Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 4!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (rfq.GetRFQContractTypeId() == 0)
-                System.Windows.Forms.MessageBox.Show("Please make sure that you chose a contract type for the rfq!");
+                System.Windows.Forms.MessageBox.Show("Contract type is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (rfq.GetRFQStatusId() == 0)
-                System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!");
+                System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)

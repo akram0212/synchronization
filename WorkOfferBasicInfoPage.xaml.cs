@@ -128,6 +128,8 @@ namespace _01electronics_crm
                     SetContactPersonComboValue();
                 }
                 DisableSalesPersonAndRFQCombo();
+
+                projectSerialCombo.IsEnabled = false;
             }
             else
             {
@@ -140,9 +142,9 @@ namespace _01electronics_crm
                 InitializeRFQSerialCombo();
                 SetRFQSerialComboValue();
                 SetProjectCombo();
-                projectSerialCombo.IsEnabled = false;
-
+                
                 DisableSalesPersonAndRFQCombo();
+                projectSerialCombo.IsEnabled = false;
             }
 
         }
@@ -431,6 +433,7 @@ namespace _01electronics_crm
             companyNameCombo.Items.Clear();
             RFQSerialCombo.SelectedIndex = -1;
             companyNameCombo.SelectedIndex = -1;
+            rfqsAddedToComboList.Clear();
 
             if (salesPersonCombo.SelectedIndex != employeesList.Count())
             {
@@ -477,6 +480,7 @@ namespace _01electronics_crm
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
+                    workOfferProductsPage.SetCategoryComboBoxes();
                     workOfferProductsPage.SetTypeComboBoxes();
                     workOfferProductsPage.SetBrandComboBoxes();
                     workOfferProductsPage.SetModelComboBoxes();
@@ -484,12 +488,18 @@ namespace _01electronics_crm
                 }
                 else
                 {
+                    workOfferProductsPage.SetCategoryLabels();
                     workOfferProductsPage.SetTypeLabels();
                     workOfferProductsPage.SetBrandLabels();
                     workOfferProductsPage.SetModelLabels();
                     workOfferProductsPage.SetQuantityTextBoxes();
                 }
+
+                projectSerialCombo.IsEnabled = false;
             }
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+                projectSerialCombo.IsEnabled = true;
         }
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {

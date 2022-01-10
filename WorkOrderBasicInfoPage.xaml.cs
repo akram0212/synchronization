@@ -501,7 +501,7 @@ namespace _01electronics_crm
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 {
-
+                    workOrderProductsPage.SetCategoryComboBoxes();
                     workOrderProductsPage.SetTypeComboBoxes();
                     workOrderProductsPage.SetBrandComboBoxes();
                     workOrderProductsPage.SetModelComboBoxes();
@@ -512,6 +512,7 @@ namespace _01electronics_crm
                 }
                 else
                 {
+                    workOrderProductsPage.SetCategoryLabels();
                     workOrderProductsPage.SetTypeLabels();
                     workOrderProductsPage.SetBrandLabels();
                     workOrderProductsPage.SetModelLabels();
@@ -606,14 +607,14 @@ namespace _01electronics_crm
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
-            workOrderProductsPage.workOrderBasicInfoPage = this;
-            workOrderProductsPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
-            workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
-            workOrderProductsPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
-            workOrderProductsPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
+            workOrderProjectInfoPage.workOrderBasicInfoPage = this;
+            workOrderProjectInfoPage.workOrderProductsPage = workOrderProductsPage;
+            workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
+            workOrderProjectInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
+            workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
 
-            NavigationService.Navigate(workOrderProductsPage);
+            NavigationService.Navigate(workOrderProjectInfoPage);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -664,11 +665,11 @@ namespace _01electronics_crm
             contactPersonNameCombo.SelectedItem = null;
 
 
-            if (salesPersonCombo.SelectedItem == loggedInUser.GetEmployeeName())
-            {
+            //if (salesPersonCombo.SelectedItem == loggedInUser.GetEmployeeName())
+            //{
                 companyNameCombo.IsEnabled = true;
                 InitializeCompanyNameCombo();
-            }
+            //}
         }
 
         

@@ -451,7 +451,8 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            outgoingQuotation.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
+            if(contractTypeComboBox.SelectedIndex != -1)
+                outgoingQuotation.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
 
             if (contractTypeComboBox.SelectedIndex > 1)
             {

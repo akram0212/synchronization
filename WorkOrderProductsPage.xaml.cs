@@ -29,6 +29,7 @@ namespace _01electronics_crm
         private SQLServer sqlDatabase;
         private IntegrityChecks IntegrityChecks = new IntegrityChecks();
 
+        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> categories = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brands = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.MODEL_STRUCT> models = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
@@ -69,7 +70,7 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
-                InitializeProducts();
+                InitializeCategories();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
@@ -78,6 +79,7 @@ namespace _01electronics_crm
             {
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
+                SetCategoryLabels();
                 SetTypeLabels();
                 SetBrandLabels();
                 SetModelLabels();
@@ -89,11 +91,11 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-
-                InitializeProducts();
+                InitializeCategories();
                 InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
+                SetCategoryLabels();
                 SetTypeComboBoxes();
                 SetBrandComboBoxes();
                 SetModelComboBoxes();
@@ -124,6 +126,7 @@ namespace _01electronics_crm
                 RowDefinition row4 = new RowDefinition();
                 RowDefinition row5 = new RowDefinition();
                 RowDefinition row6 = new RowDefinition();
+                RowDefinition row7 = new RowDefinition();
 
                 currentProductGrid.RowDefinitions.Add(row1);
                 currentProductGrid.RowDefinitions.Add(row2);
@@ -131,6 +134,7 @@ namespace _01electronics_crm
                 currentProductGrid.RowDefinitions.Add(row4);
                 currentProductGrid.RowDefinitions.Add(row5);
                 currentProductGrid.RowDefinitions.Add(row6);
+                currentProductGrid.RowDefinitions.Add(row7);
 
                 Grid backgroundColour = new Grid();
                 RowDefinition firstRow = new RowDefinition();
@@ -159,12 +163,44 @@ namespace _01electronics_crm
                 currentProductGrid.Children.Add(backgroundColour);
                 Grid.SetRow(backgroundColour, 0);
 
+                /////////CATEGORY WRAPPANEL////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////
+                WrapPanel productCategoryWrapPanel = new WrapPanel();
+
+                Label currentCategoryLabel = new Label();
+                currentCategoryLabel.Content = "Category*";
+                currentCategoryLabel.Style = (Style)FindResource("labelStyle");
+                productCategoryWrapPanel.Children.Add(currentCategoryLabel);
+
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                {
+                    Label currentCategoryLabelValue = new Label();
+                    currentCategoryLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentCategoryLabelValue.Width = 150.00;
+                    currentCategoryLabelValue.Content = workOrder.GetOrderProductCategory(i + 1);
+                    productCategoryWrapPanel.Children.Add(currentCategoryLabelValue);
+                }
+                else
+                {
+                    ComboBox currentCategoryCombo = new ComboBox();
+                    currentCategoryCombo.Style = (Style)FindResource("comboBoxStyle");
+                    currentCategoryCombo.SelectionChanged += new SelectionChangedEventHandler(CategoryComboBoxesSelectionChanged);
+                    if (i != 0)
+                        currentCategoryCombo.IsEnabled = false;
+                    for (int j = 0; j < categories.Count(); j++)
+                        currentCategoryCombo.Items.Add(categories[j].category);
+                    productCategoryWrapPanel.Children.Add(currentCategoryCombo);
+                }
+
+                currentProductGrid.Children.Add(productCategoryWrapPanel);
+                Grid.SetRow(productCategoryWrapPanel, 1);
+
                 /////////TYPE WRAPPANEL////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////
                 WrapPanel productTypeWrapPanel = new WrapPanel();
 
                 Label currentTypeLabel = new Label();
-                currentTypeLabel.Content = "Type";
+                currentTypeLabel.Content = "Type*";
                 currentTypeLabel.Style = (Style)FindResource("labelStyle");
                 productTypeWrapPanel.Children.Add(currentTypeLabel);
 
@@ -186,10 +222,11 @@ namespace _01electronics_crm
                     for (int j = 0; j < products.Count(); j++)
                         currentTypeCombo.Items.Add(products[j].typeName);
                     productTypeWrapPanel.Children.Add(currentTypeCombo);
+                    currentTypeCombo.IsEnabled = false;
                 }
 
                 currentProductGrid.Children.Add(productTypeWrapPanel);
-                Grid.SetRow(productTypeWrapPanel, 1);
+                Grid.SetRow(productTypeWrapPanel, 2);
 
                 ////////BRAND WRAPPANEL////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +259,7 @@ namespace _01electronics_crm
                 }
 
                 currentProductGrid.Children.Add(productBrandWrapPanel);
-                Grid.SetRow(productBrandWrapPanel, 2);
+                Grid.SetRow(productBrandWrapPanel, 3);
 
                 //////////MODEL WRAPPANEL/////////////////////////
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,7 +287,7 @@ namespace _01electronics_crm
                     productModelWrapPanel.Children.Add(currentModelCombo);
                 }
                 currentProductGrid.Children.Add(productModelWrapPanel);
-                Grid.SetRow(productModelWrapPanel, 3);
+                Grid.SetRow(productModelWrapPanel, 4);
 
                 /////////////QUANTITY WRAPPANEL///////////////////////
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +309,7 @@ namespace _01electronics_crm
                     currentQuantityTextBox.IsEnabled = false;
 
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
-                Grid.SetRow(productQuantityWrapPanel, 4);
+                Grid.SetRow(productQuantityWrapPanel, 5);
 
                 /////////////PRICE WRAPPANEL//////////////////
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -312,13 +349,21 @@ namespace _01electronics_crm
                 }
 
                 currentProductGrid.Children.Add(productPriceWrapPanel);
-                Grid.SetRow(productPriceWrapPanel, 5);
+                Grid.SetRow(productPriceWrapPanel, 6);
 
 
                 mainWrapPanel.Children.Add(currentProductGrid);
 
                 numberOfProductsAdded += 1;
             }
+        }
+
+        private bool InitializeCategories()
+        {
+            if (!commonQueriesObject.GetProductCategories(ref categories))
+                return false;
+
+            return true;
         }
         private void InitializeProducts()
         {
@@ -343,6 +388,20 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+        public void SetCategoryComboBoxes()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                if (workOrder.GetOfferProductTypeId(i + 1) != 0)
+                {
+                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                    ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+                    CurrentCategoryComboBox.SelectedItem = workOrder.GetOfferProductCategory(i + 1);
+                }
+            }
+        }
         public void SetTypeComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
@@ -350,7 +409,7 @@ namespace _01electronics_crm
                 if (workOrder.GetOfferProductTypeId(i + 1) != 0)
                 {
                     Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                    WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                    WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
                     ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
                     if (workOrder.GetOfferProductTypeId(i + 1) != 0)
                         CurrentTypeComboBox.SelectedItem = workOrder.GetOfferProductType(i + 1);
@@ -362,13 +421,10 @@ namespace _01electronics_crm
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
                 ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
-                if (workOrder.GetOfferProductBrandId(i + 1) == 0)
-                    continue;
-                else
-                    currentBrandComboBox.SelectedItem = workOrder.GetOfferProductBrand(i + 1);
+                currentBrandComboBox.SelectedItem = workOrder.GetOfferProductBrand(i + 1);
             }
         }
 
@@ -377,7 +433,7 @@ namespace _01electronics_crm
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
                 //if (workOrder.GetOfferProductModelId(i + 1) == 0)
@@ -387,12 +443,22 @@ namespace _01electronics_crm
             }
         }
 
+        public void SetCategoryLabels()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                Label currentCategoryLabelValue = (Label)currentCategoryWrapPanel.Children[1];
+                currentCategoryLabelValue.Content = workOrder.GetOrderProductCategory(i + 1);
+            }
+        }
         public void SetTypeLabels()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
                 Label currentTypeLabelValue = (Label)currentTypeWrapPanel.Children[1];
                 currentTypeLabelValue.Content = workOrder.GetOrderProductType(i + 1);
             }
@@ -403,7 +469,7 @@ namespace _01electronics_crm
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
                 Label currentBrandLabelValue = (Label)currentBrandWrapPanel.Children[1];
                 currentBrandLabelValue.Content = workOrder.GetOrderProductBrand(i + 1);
             }
@@ -414,7 +480,7 @@ namespace _01electronics_crm
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 Label currentModelLabelValue = (Label)currentModelWrapPanel.Children[1];
                 currentModelLabelValue.Content = workOrder.GetOrderProductModel(i + 1);
             }
@@ -426,24 +492,20 @@ namespace _01electronics_crm
             {
                 if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 {
-                    if (workOrder.GetOfferProductQuantity(i + 1) != 0)
-                    {
                         Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                        WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                         TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
                         currentQuantityTextBoxValue.Text = workOrder.GetOfferProductQuantity(i + 1).ToString();
-                    }
+                    
 
                 }
                 else
                 {
-                    if (workOrder.GetOrderProductQuantity(i + 1) != 0)
-                    {
                         Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                        WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                         TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
                         currentQuantityTextBoxValue.Text = workOrder.GetOrderProductQuantity(i + 1).ToString();
-                    }
+                    
                 }
             }
         }
@@ -453,25 +515,21 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 {
-                    if (workOrder.GetProductPriceValue(i + 1) != 0)
-                    {
                         Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                        WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
                         TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
                         int price = (int)workOrder.GetProductPriceValue(i + 1);
                         currentPriceTextBoxValue.Text = price.ToString();
-                    }
+                    
                 }
                 else
                 {
-                    if (workOrder.GetOrderProductPriceValue(i + 1) != 0)
-                    {
                         Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                        WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
                         TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
                         int price = (int)workOrder.GetOrderProductPriceValue(i + 1);
                         currentPriceTextBoxValue.Text = price.ToString();
-                    }
+                    
                 }
             }
         }
@@ -479,29 +537,77 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
-                if (workOrder.GetCurrencyId() != 0)
-                {
+                
                     Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
-                    WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[5];
+                    WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
                     ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
                     currentPriceComboBox.SelectedItem = workOrder.GetCurrency();
-                }
+                
             }
             else
             {
-                if (workOrder.GetOrderCurrencyId() != 0 && mainWrapPanel.Children.Count > 0)
-                {
                     Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
-                    WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[5];
+                    WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
                     ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
                     currentPriceComboBox.SelectedItem = workOrder.GetOrderCurrency();
-                }
+                
             }
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////SELECTION CHANGED HANDLERS///////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void CategoryComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            ComboBox currentCategoryComboBox = (ComboBox)sender;
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentCategoryComboBox.Parent;
+            Grid currentProductGrid = (Grid)currentCategoryWrapPanel.Parent;
+
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+
+            Grid checkBoxGrid = (Grid)currentProductGrid.Children[0];
+            CheckBox currentProductCheckBox = (CheckBox)checkBoxGrid.Children[0];
+
+            products.Clear();
+            currentTypeComboBox.Items.Clear();
+            currentTypeComboBox.IsEnabled = false;
+
+            if (currentCategoryComboBox.SelectedItem != null)
+            {
+
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                    {
+                        if (k != 0)
+                            currentProductCheckBox.IsChecked = true;
+
+                        workOrder.SetOrderProductCategory(k + 1, categories[currentCategoryComboBox.SelectedIndex].categoryId, categories[currentCategoryComboBox.SelectedIndex].category);
+
+                        if (!commonQueriesObject.GetCompanyProducts(ref products, categories[currentCategoryComboBox.SelectedIndex].categoryId))
+                            return;
+                        for (int i = 0; i < products.Count; i++)
+                            currentTypeComboBox.Items.Add(products[i].typeName);
+                    }
+                }
+
+                currentTypeComboBox.IsEnabled = true;
+            }
+            else
+            {
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (k != 0)
+                        currentProductCheckBox.IsChecked = false;
+
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        workOrder.SetOrderProductCategory(k + 1, 0, "Others");
+                }
+            }
+        }
 
         private void TypeComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -510,10 +616,10 @@ namespace _01electronics_crm
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentTypeComboBox.Parent;
             Grid currentProductGrid = (Grid)currentTypeWrapPanel.Parent;
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
-            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
             Grid checkBoxGrid = (Grid)currentProductGrid.Children[0];
@@ -571,10 +677,10 @@ namespace _01electronics_crm
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentBrandComboBox.Parent;
             Grid currentProductGrid = (Grid)currentBrandWrapPanel.Parent;
 
-            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
-            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
             currentModelComboBox.Items.Clear();
@@ -620,10 +726,10 @@ namespace _01electronics_crm
             WrapPanel currentModelWrapPanel = (WrapPanel)currentModelComboBox.Parent;
             Grid currentProductGrid = (Grid)currentModelWrapPanel.Parent;
 
-            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
 
@@ -733,7 +839,7 @@ namespace _01electronics_crm
                     for (int i = 0; i < workOrder.GetNoOfOfferSavedProducts(); i++)
                     {
                         Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[5];
+                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
                         ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
                         currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
                     }
@@ -743,7 +849,7 @@ namespace _01electronics_crm
                     for (int i = 0; i < workOrder.GetNoOfOrderSavedProducts(); i++)
                     {
                         Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[5];
+                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
                         ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
                         currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
                     }
@@ -773,23 +879,27 @@ namespace _01electronics_crm
                 }
             }
 
-            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
-            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-            currentTypeComboBox.IsEnabled = true;
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+            currentCategoryComboBox.IsEnabled = true;
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+            currentTypeComboBox.IsEnabled = false;
+
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
             currentBrandComboBox.IsEnabled = true;
 
-            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
             currentModelComboBox.IsEnabled = false;
 
-            WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+            WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[5];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
             currentQuantityTextBox.IsEnabled = true;
 
-            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
             TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
             currentPriceTextBox.IsEnabled = true;
             ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
@@ -802,19 +912,22 @@ namespace _01electronics_crm
             Grid checkBoxColorGrid = (Grid)currentCheckBox.Parent;
             Grid currentProductGrid = (Grid)checkBoxColorGrid.Parent;
 
-            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+
+            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
-            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
-            WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+            WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
             TextBox currentQuantityTextBox = (TextBox)currentQuantityWrapPanel.Children[1];
 
-            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
             TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
 
             for (int i = 0; i < numberOfProductsAdded; i++)
@@ -829,21 +942,25 @@ namespace _01electronics_crm
 
                         if (nextCheckBox.IsChecked == true)
                         {
-                            WrapPanel nextTypeWrapPanel = (WrapPanel)nextProductGrid.Children[1];
+                            WrapPanel nextCategoryWrapPanel = (WrapPanel)nextProductGrid.Children[1];
+                            ComboBox nextCategoryCombo = (ComboBox)nextCategoryWrapPanel.Children[1];
+
+                            WrapPanel nextTypeWrapPanel = (WrapPanel)nextProductGrid.Children[2];
                             ComboBox nextTypeCombo = (ComboBox)nextTypeWrapPanel.Children[1];
 
-                            WrapPanel nextBrandWrapPanel = (WrapPanel)nextProductGrid.Children[2];
+                            WrapPanel nextBrandWrapPanel = (WrapPanel)nextProductGrid.Children[3];
                             ComboBox nextBrandCombo = (ComboBox)nextBrandWrapPanel.Children[1];
 
-                            WrapPanel nextModelWrapPanel = (WrapPanel)nextProductGrid.Children[3];
+                            WrapPanel nextModelWrapPanel = (WrapPanel)nextProductGrid.Children[4];
                             ComboBox nextModelCombo = (ComboBox)nextModelWrapPanel.Children[1];
 
-                            WrapPanel nextQuantityWrapPanel = (WrapPanel)nextProductGrid.Children[4];
+                            WrapPanel nextQuantityWrapPanel = (WrapPanel)nextProductGrid.Children[5];
                             TextBox nextQuantityTextBox = (TextBox)nextQuantityWrapPanel.Children[1];
 
-                            WrapPanel nextPriceWrapPanel = (WrapPanel)nextProductGrid.Children[5];
+                            WrapPanel nextPriceWrapPanel = (WrapPanel)nextProductGrid.Children[6];
                             TextBox nextPriceTextBox = (TextBox)nextPriceWrapPanel.Children[1];
 
+                            currentCategoryComboBox.SelectedItem = nextCategoryCombo.SelectedItem;
                             currentTypeComboBox.SelectedItem = nextTypeCombo.SelectedItem;
                             currentBrandComboBox.SelectedItem = nextBrandCombo.SelectedItem;
                             currentModelComboBox.SelectedItem = nextModelCombo.SelectedItem;
@@ -855,6 +972,9 @@ namespace _01electronics_crm
                         }
                         else
                         {
+                            currentCategoryComboBox.SelectedItem = null;
+                            currentCategoryComboBox.IsEnabled = false;
+
                             currentTypeComboBox.SelectedItem = null;
                             currentTypeComboBox.IsEnabled = false;
 
@@ -881,6 +1001,9 @@ namespace _01electronics_crm
                     }
                     else
                     {
+                        currentCategoryComboBox.SelectedItem = null;
+                        currentCategoryComboBox.IsEnabled = false;
+
                         currentTypeComboBox.SelectedItem = null;
                         currentTypeComboBox.IsEnabled = false;
 
