@@ -35,6 +35,7 @@ namespace _01electronics_crm
 
         RFQ rfq;
         OutgoingQuotation outgoingQuotation;
+        MaintenanceOffer maintOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)
         {
@@ -95,6 +96,24 @@ namespace _01electronics_crm
                 PreSalesEngineersComboBox.Items.Add(mFailureReasons[i].reason_name);
 
         }
+        public ChangeAssigneeWindow(ref MaintenanceOffer mRFQ, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
+        {
+            InitializeComponent();
+
+            condition = 3;
+            maintOffer = mRFQ;
+            failureReasons = mFailureReasons;
+
+            commonQueries = new CommonQueries();
+            sqlServer = new SQLServer();
+
+            headerLabel.Content = "CHOOSE FAILURE REASON";
+            comboBoxLabel.Content = "Failure Reasons";
+
+            for (int i = 0; i < mFailureReasons.Count; i++)
+                PreSalesEngineersComboBox.Items.Add(mFailureReasons[i].reason_name);
+
+        }
         private void OnSelChangedChangeAssignee(object sender, SelectionChangedEventArgs e)
         {
            
@@ -121,6 +140,10 @@ namespace _01electronics_crm
             else if(condition == 2)
             {
                 rfq.RejectRFQ(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
+            }
+            else if(condition == 3)
+            {
+                maintOffer.RejectMaintOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
 
             this.Close();
