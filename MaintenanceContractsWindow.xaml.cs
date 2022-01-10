@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace _01electronics_crm
@@ -18,43 +19,45 @@ namespace _01electronics_crm
     /// <summary>
     /// Interaction logic for MaintenanceContractsWindow.xaml
     /// </summary>
-    public partial class MaintenanceContractsWindow : Window
+    public partial class MaintenanceContractsWindow : NavigationWindow
     {
-        public MaintContractsBasicInfoPage MaintContractsBasicInfoPage;
-        public MaintContractsProductsPage MaintContractsProductsPage;
-        public MaintContractsPaymentAndDeliveryPage MaintContractsPaymentAndDeliveryPage;
-        public MaintContractsAdditionalInfoPage MaintContractsAdditionalInfoPage;
-        public MaintContractsUploadFilesPage MaintContractsUploadFilesPage;
+        public MaintContractsBasicInfoPage maintContractsBasicInfoPage;
+        public MaintContractsProjectsPage maintContractsProjectInfoPage;
+        public MaintContractsProductsPage maintContractsProductsPage;
+        public MaintContractsPaymentAndDeliveryPage maintContractsPaymentAndDeliveryPage;
+        public MaintContractsAdditionalInfoPage maintContractsAdditionalInfoPage;
+        public MaintContractsUploadFilesPage maintContractsUploadFilesPage;
 
         public MaintenanceContractsWindow(ref Employee mLoggedInUser, ref MaintenanceContract mMaintContracts, int mViewAddCondition, bool openFilesPage)
         {
             InitializeComponent();
 
-        //    MaintContractsAdditionalInfoPage = new MaintContractsAdditionalInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
-        //    MaintContractsPaymentAndDeliveryPage = new MaintContractsPaymentAndDeliveryPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref MaintContractsAdditionalInfoPage);
-        //    MaintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref MaintContractsPaymentAndDeliveryPage);
-        //    MaintContractsBasicInfoPage = new MaintContractsBasicInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref MaintContractsProductsPage);
-        //    MaintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
+            maintContractsAdditionalInfoPage = new MaintContractsAdditionalInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
+            maintContractsPaymentAndDeliveryPage = new MaintContractsPaymentAndDeliveryPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsAdditionalInfoPage);
+            maintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsPaymentAndDeliveryPage);
+            maintContractsProjectInfoPage = new MaintContractsProjectsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProductsPage);
+            maintContractsBasicInfoPage = new MaintContractsBasicInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProjectInfoPage);
+            maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
 
-        //    if (openFilesPage)
-        //    {
-        //        MaintContractsUploadFilesPage.MaintContractsBasicInfoPage = MaintContractsBasicInfoPage;
-        //        MaintContractsUploadFilesPage.MaintContractsProductsPage = MaintContractsProductsPage;
-        //        MaintContractsUploadFilesPage.MaintContractsPaymentAndDeliveryPage = MaintContractsPaymentAndDeliveryPage;
-        //        MaintContractsUploadFilesPage.MaintContractsAdditionalInfoPage = MaintContractsAdditionalInfoPage;
+            if (openFilesPage)
+            {
+                maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+                maintContractsUploadFilesPage.maintContractsProductsPage = maintContractsProductsPage;
+                maintContractsUploadFilesPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+                maintContractsUploadFilesPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
 
-        //        this.NavigationService.Navigate(MaintContractsUploadFilesPage);
+                this.NavigationService.Navigate(maintContractsUploadFilesPage);
 
-        //    }
-        //    else
-        //    {
-        //        MaintContractsBasicInfoPage.MaintContractsProductsPage = MaintContractsProductsPage;
-        //        MaintContractsBasicInfoPage.MaintContractsAdditionalInfoPage = MaintContractsAdditionalInfoPage;
-        //        MaintContractsBasicInfoPage.MaintContractsPaymentAndDeliveryPage = MaintContractsPaymentAndDeliveryPage;
-        //        MaintContractsBasicInfoPage.MaintContractsUploadFilesPage = MaintContractsUploadFilesPage;
+            }
+            else
+            {
+                maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+                maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+                maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+                maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
 
-        //        this.NavigationService.Navigate(MaintContractsBasicInfoPage);
-        //    }
+                this.NavigationService.Navigate(maintContractsBasicInfoPage);
+            }
         }
     }
 }
