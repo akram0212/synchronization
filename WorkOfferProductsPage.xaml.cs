@@ -113,13 +113,6 @@ namespace _01electronics_crm
                 SetQuantityTextBoxesResolve();
             }
 
-
-
-            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-
-            }
-
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
