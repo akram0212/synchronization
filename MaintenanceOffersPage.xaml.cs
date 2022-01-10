@@ -1134,8 +1134,7 @@ namespace _01electronics_crm
             int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
             MaintenanceOffer maintOffer = new MaintenanceOffer(sqlDatabase);
-
-            //maintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].order_serial, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            maintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             MaintenanceOffersWindow maintOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref maintOffer, viewAddCondition, false);
 
             maintOfferWindow.Show();
