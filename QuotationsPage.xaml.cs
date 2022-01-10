@@ -1221,14 +1221,9 @@ namespace _01electronics_crm
             workOrder.CopyWorkOffer(selectedWorkOffer);
             workOrder.CopyWorkOfferToWorkOrder();
 
-            WorkOrderWindow reviseOrder= new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
+            WorkOrderWindow reviseOrder = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
+            reviseOrder.Closed += OnClosedResolveOfferWindow;
             reviseOrder.Show();
-
-            if (!GetOutgoingQuotations())
-                return;
-
-            SetWorkOffersStackPanel();
-            SetWorkOffersGrid();
 
            // selectedWorkOffer.ConfirmOffer();
 
@@ -1276,6 +1271,15 @@ namespace _01electronics_crm
         private void OnClosedWorkOfferWindow(object sender, EventArgs e)
         {
 
+            if (!GetOutgoingQuotations())
+                return;
+
+            SetWorkOffersStackPanel();
+            SetWorkOffersGrid();
+        }
+
+        private void OnClosedResolveOfferWindow(object sender, EventArgs e)
+        {
             if (!GetOutgoingQuotations())
                 return;
 

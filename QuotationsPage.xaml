@@ -104,8 +104,8 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Name="searchCheckBox" Grid.Row="0" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSearchCheckBox" Unchecked="OnUnCheckSearchCheckBox"/>
-                    <TextBox Name="searchTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource textBoxStyle}" TextChanged="OnTextChangedSearchTextBox"/>
+                    <CheckBox Name="searchCheckBox" Grid.Row="0" Grid.Column="0"  Content="Search" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSearchCheckBox" Unchecked="OnUnCheckSearchCheckBox"/>
+                    <TextBox Name="searchTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterTextBoxStyle}" TextChanged="OnTextChangedSearchTextBox"/>
                     
                     <CheckBox Name="yearCheckBox" Grid.Row="1" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="OnCheckYearCheckBox" Unchecked="OnUncheckYearCheckBox"/>
                     <ComboBox Name="yearComboBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedYearCombo"/>
