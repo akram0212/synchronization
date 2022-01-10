@@ -342,11 +342,9 @@ namespace _01electronics_crm
                     String tempId = workOrders[i].order_id;
                     String tempCompanyName = workOrders[i].company_name;
                     String tempContactName = workOrders[i].contact_name;
-                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    
 
-                    if (containsID || containsCompanyName || containsContactName)
+                    if (tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0 || tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0 || tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
 
                     }

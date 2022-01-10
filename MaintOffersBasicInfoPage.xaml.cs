@@ -477,6 +477,7 @@ namespace _01electronics_crm
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
+                    maintOffersProductsPage.SetCategoryComboBoxes();
                     maintOffersProductsPage.SetTypeComboBoxes();
                     maintOffersProductsPage.SetBrandComboBoxes();
                     maintOffersProductsPage.SetModelComboBoxes();
@@ -484,6 +485,7 @@ namespace _01electronics_crm
                 }
                 else
                 {
+                    maintOffersProductsPage.SetCategoryLabels();
                     maintOffersProductsPage.SetTypeLabels();
                     maintOffersProductsPage.SetBrandLabels();
                     maintOffersProductsPage.SetModelLabels();
