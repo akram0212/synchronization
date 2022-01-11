@@ -786,7 +786,7 @@ namespace _01electronics_crm
             ProductsPage productsPage = new ProductsPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
-        private void OnButtonClickedMaintOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
             MaintenanceOffersPage maintOffers = new MaintenanceOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(maintOffers);
@@ -796,7 +796,7 @@ namespace _01electronics_crm
             WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrders);
         }
-        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedmaintOffers(object sender, RoutedEventArgs e)
         {
             QuotationsPage maintOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintOffers);
@@ -1066,8 +1066,8 @@ namespace _01electronics_crm
 
         private void OnClosedMaintOfferWindow(object sender, EventArgs e)
         {
-            //if (!SetMaintOffersGrid())
-            //  return;
+            if (!GetMaintenanceOffers())
+              return;
 
            SetMaintOffersStackPanel();
            SetMaintOffersGrid();
@@ -1117,13 +1117,17 @@ namespace _01electronics_crm
                 {
                     OnBtnClickView();
                 }
-                else if (currentItem.Content.ToString() == "View Offer")
+                else if (currentItem.Content.ToString() == "Revise Offer")
                 {
-                    OnBtnClickViewOffer();
+                    OnBtnClickReviseOffer();
                 }
-                else if (currentItem.Content.ToString() == "Confirm Order")
+                else if (currentItem.Content.ToString() == "Confirm Offer")
                 {
-                    OnBtnClickConfirmOrder();
+                    OnBtnClickConfirmOffer();
+                }
+                else if (currentItem.Content.ToString() == "Reject Offer")
+                {
+                    OnBtnClickRejectOffer();
                 }
 
                 tempListBox.SelectedIndex = -1;
@@ -1132,51 +1136,106 @@ namespace _01electronics_crm
         private void OnBtnClickView()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
-
-            MaintenanceOffer maintOffer = new MaintenanceOffer(sqlDatabase);
-
-            //maintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].order_serial, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
-            MaintenanceOffersWindow maintOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref maintOffer, viewAddCondition, false);
-
-            maintOfferWindow.Show();
-        }
-       
-        private void OnBtnClickViewOffer()
-        {
-            int viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
-
-            MaintenanceOffer maintOffer = new MaintenanceOffer(sqlDatabase);
-
-            //maintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].order_serial, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
-
-            if (maintOffer.GetMaintOfferID() != null)
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                MaintenanceOffer maintenanceOffer = new MaintenanceOffer(sqlDatabase);
-
-                //maintenanceOffer.CopyMaintOffer(maintOffer);
-
-                MaintenanceOffersWindow workOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref maintenanceOffer, viewAddCondition, false);
-
-                workOfferWindow.Show();
+                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
             else
             {
-                MessageBox.Show("Selected maintOffer doesn't have an Offer");
+                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
+
+            MaintenanceOffersWindow maintOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref selectedMaintOffer, viewAddCondition, false);
+            
+            maintOfferWindow.Show();
         }
-        private void OnBtnClickConfirmOrder()
+        private void OnBtnClickReviseOffer()
         {
-            MaintenanceOffer maintOffer = new MaintenanceOffer(sqlDatabase);
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION;
 
-           // maintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].order_serial, maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id);
+            commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            //maintOffer.ConfirmOrder();
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
 
-            //if (SetMaintOffersGrid())
-            //    return;
+            MaintenanceOffersWindow viewOffer = new MaintenanceOffersWindow(ref loggedInUser, ref selectedMaintOffer, viewAddCondition, false);
+            viewOffer.Show();
+        }
+        private void OnBtnClickConfirmOffer()
+        {
+            viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
 
-           SetMaintOffersStackPanel();
-           SetMaintOffersGrid();
+            commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
+
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+
+            //MaintenanceContract maintContract = new MaintenanceContract(sqlDatabase);
+            //maintContract.CopyWorkOffer(selectedMaintOffer);
+            //maintContract.CopyWorkOfferToWorkOrder();
+
+           // MaintenanceContractsWindow viewOffer = new MaintenanceContractsWindow(ref loggedInUser, ref maintContract, viewAddCondition, false);
+            //viewOffer.Show();
+
+            if (!GetMaintenanceOffers())
+                return;
+
+            SetMaintOffersStackPanel();
+            SetMaintOffersGrid();
+
+            // selectedMaintOffer.ConfirmOffer();
+
+        }
+
+        private void OnBtnClickRejectOffer()
+        {
+            GetFailureReasons();
+
+            commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
+
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            {
+                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+            else
+            {
+                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+            }
+
+
+            ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedMaintOffer, failureReasons);
+            failureReasonWindow.Closed += OnClosedFailureReasonWindow;
+
+            failureReasonWindow.Show();
+
         }
         private void OnClickListView(object sender, MouseButtonEventArgs e)
         {
@@ -1206,6 +1265,14 @@ namespace _01electronics_crm
 
             workOfferWindow.Closed += OnClosedMaintOfferWindow;
             workOfferWindow.Show();
+        }
+        private void OnClosedFailureReasonWindow(object sender, EventArgs e)
+        {
+            if (!GetMaintenanceOffers())
+                return;
+
+            SetMaintOffersStackPanel();
+            SetMaintOffersGrid();
         }
     }
 }

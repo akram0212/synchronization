@@ -83,6 +83,9 @@ namespace _01electronics_crm
                 SetContractTypeValue();
                 SetPriceValues();
                 SetConditionsCheckBoxes();
+                SetFrequenciesValue();
+                DisableFrequenciesTextBoxes();
+                DisableCheckBoxes();
 
                 cancelButton.IsEnabled = false;
             }
@@ -95,6 +98,7 @@ namespace _01electronics_crm
                 SetContractTypeValue();
                 SetPriceValues();
                 SetConditionsCheckBoxes();
+                SetFrequenciesValue();
                 DisableTotalPriceComboAndTextBox();
             }
             else
@@ -166,6 +170,24 @@ namespace _01electronics_crm
         public void SetContractTypeValue()
         {
             contractTypeComboBox.Text = maintOffers.GetMaintOfferContractType();
+        }
+        public void SetFrequenciesValue()
+        {
+            paymentsFrequencyTextBox.Text = maintOffers.GetPaymentsFrequency().ToString();
+            visitsFrequencyTextBox.Text = maintOffers.GetVisitsFrequency().ToString();
+            emergenciesFrequencyTextBox.Text = maintOffers.GetEmergenciesFrequency().ToString();
+        }
+        public void DisableFrequenciesTextBoxes()
+        {
+            paymentsFrequencyTextBox.IsEnabled = false;
+            visitsFrequencyTextBox.IsEnabled = false;
+            emergenciesFrequencyTextBox.IsEnabled = false;
+        }
+        public void DisableCheckBoxes()
+        {
+            VatConditionCheckBox.IsEnabled = false;
+            SparePartsCheckBox.IsEnabled = false;
+            BatteriesCheckBox.IsEnabled = false;
         }
         public void SetTotalPriceCurrencyComboBox()
         {
