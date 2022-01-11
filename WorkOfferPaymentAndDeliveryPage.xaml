@@ -119,8 +119,7 @@
                     <CheckBox Name="deliveryPointCheckBox" Content="Delivery &#x0a;Point" Style="{StaticResource checkBoxStyle}"  Width="105" Margin="24,12,12,12" Checked="OnCheckDeliveryPoint" Unchecked="OnUnCheckDeliveryPoint" IsEnabled="False" />
 
                     <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
-                    <ComboBox Name="deliveryPointPortCombo" Style="{StaticResource miniComboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointPortCombo"/>
-                </WrapPanel>
+                 </WrapPanel>
             </Grid>
         </ScrollViewer>
 

@@ -53,7 +53,7 @@
                 </Border>
 
                 <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
-                    <Label Content="Payment and Delivery" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                    <Label Content="Payment Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
                 <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">

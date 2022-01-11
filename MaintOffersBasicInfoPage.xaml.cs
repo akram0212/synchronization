@@ -405,11 +405,6 @@ namespace _01electronics_crm
             DisableCompanyNameaddressContactCombos();
         }
 
-        public void SetContractTypeValueFromRFQ()
-        {
-            maintOffersProductsPage.maintOffersPaymentAndDeliveryPage.contractTypeComboBox.Text = maintOffer.GetRFQContractType();
-        }
-
         private void SetProjectCombo()
         {
             projectSerialCombo.SelectedItem = maintOffer.GetprojectName();
@@ -472,8 +467,6 @@ namespace _01electronics_crm
                     maintOffer.LinkRFQInfo();
 
                 SetCompanyNameAddressContactFromRFQ();
-                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-                    SetContractTypeValueFromRFQ();
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {

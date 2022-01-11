@@ -118,8 +118,7 @@
                     <Label Content="Delivery &#x0a;Point" Style="{StaticResource labelStyle}" />
 
                     <ComboBox Name="deliveryPointCombo" Style="{StaticResource comboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointCombo"/>
-                    <ComboBox Name="deliveryPointPortCombo" Style="{StaticResource miniComboBoxStyle}"   SelectionChanged="OnSelChangedDeliveryPointPortCombo"/>
-                </WrapPanel>
+                 </WrapPanel>
             </Grid>
         </ScrollViewer>
 
