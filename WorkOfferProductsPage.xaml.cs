@@ -76,13 +76,13 @@ namespace _01electronics_crm
                 
                 SetUpPageUIElements();
                 InitializePriceCurrencyComboBoxes();
-                SetCategoryLabels();
-                SetTypeLabels();
-                SetBrandLabels();
-                SetModelLabels();
-                SetQuantityTextBoxes();
-                SetPriceTextBoxes();
-                SetPriceComboBoxes();
+                //SetCategoryLabels();
+                //SetTypeLabels();
+                //SetBrandLabels();
+                //SetModelLabels();
+                //SetQuantityTextBoxes();
+                //SetPriceTextBoxes();
+                //SetPriceComboBoxes();
 
                 cancelButton.IsEnabled = false;
             }
@@ -555,8 +555,10 @@ namespace _01electronics_crm
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+                {
                     currentQuantityTextBox.IsEnabled = false;
-
+                    currentQuantityTextBox.Text = outgoingQuotation.GetOfferProductQuantity(i + 1).ToString();
+                }
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
                 Grid.SetRow(productQuantityWrapPanel, 5);
 
@@ -593,6 +595,8 @@ namespace _01electronics_crm
                 {
                     currentPriceTextBox.IsEnabled = false;
                     currentPriceComboBox.IsEnabled = false;
+                    currentPriceTextBox.Text = outgoingQuotation.GetProductPriceValue(i + 1).ToString();
+                    currentPriceComboBox.SelectedItem = outgoingQuotation.GetCurrency();
                 }
 
                 currentProductGrid.Children.Add(productPriceWrapPanel);
@@ -921,31 +925,34 @@ namespace _01electronics_crm
                     nextCheckBox.IsEnabled = true;
                 }
             }
-            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
-            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
-            currentCategoryComboBox.IsEnabled = true;
+            if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+            {
+                WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+                currentCategoryComboBox.IsEnabled = true;
 
-            WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
-            ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-            currentTypeComboBox.IsEnabled = false;
+                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+                currentTypeComboBox.IsEnabled = false;
 
-            WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
-            ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
-            currentBrandComboBox.IsEnabled = true;
+                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
+                currentBrandComboBox.IsEnabled = true;
 
-            WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
-            ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
-            currentModelComboBox.IsEnabled = false;
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+                currentModelComboBox.IsEnabled = false;
 
-            WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[5];
-            TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
-            currentQuantityTextBox.IsEnabled = true;
+                WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
+                currentQuantityTextBox.IsEnabled = true;
 
-            WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
-            TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
-            currentPriceTextBox.IsEnabled = true;
-            ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
-            currentPriceCurrencyComboBox.IsEnabled = true;
+                WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
+                TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
+                currentPriceTextBox.IsEnabled = true;
+                ComboBox currentPriceCurrencyComboBox = (ComboBox)currentPriceWrapPanel.Children[2];
+                currentPriceCurrencyComboBox.IsEnabled = true;
+            }
         }
 
         private void OnUnCheckMainLabelCheckBox(object sender, RoutedEventArgs e)

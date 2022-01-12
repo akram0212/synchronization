@@ -389,7 +389,7 @@ namespace _01electronics_crm
                 if (brandCheckBox.IsChecked == true && !brandCondition)
                     continue;
 
-                if (contractTypeCheckBox.IsChecked == true && !contractTypeCondition)
+                if (contractTypeCheckBox.IsChecked == true && contractTypeCondition)
                     continue;
 
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
@@ -710,7 +710,7 @@ namespace _01electronics_crm
                 if (brandCheckBox.IsChecked == true && !brandCondition)
                     continue;
 
-                if (contractTypeCheckBox.IsChecked == true && !contractTypeCondition)
+                if (contractTypeCheckBox.IsChecked == true && contractTypeCondition)
                     continue;
 
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
@@ -802,15 +802,12 @@ namespace _01electronics_crm
                 Grid.SetColumn(modelHeader, 3);
 
 
-                List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
+                ;
 
-                for (int j = 0; j < temp.Count(); j++)
+                for (int j = 0; j < rfqsList[i].products.Count(); j++)
                 {
-                    COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
-                    COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
-                    COMPANY_WORK_MACROS.MODEL_STRUCT tempModel1 = temp[j].productModel;
-
-                    if (tempType1.typeId != 0)
+                    COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT temp = rfqsList[i].products[j];
+                    if (temp.productType.typeId != 0)
                     {
                         productGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -824,7 +821,7 @@ namespace _01electronics_crm
                         Grid.SetColumn(productNumberHeader, 0);
 
                         Label type = new Label();
-                        type.Content = tempType1.typeName;
+                        type.Content = temp.productType.typeName;
                         type.Style = (Style)FindResource("tableSubItemLabel");
 
                         productGrid.Children.Add(type);
@@ -832,7 +829,7 @@ namespace _01electronics_crm
                         Grid.SetColumn(type, 1);
 
                         Label brand = new Label();
-                        brand.Content = tempBrand1.brandName;
+                        brand.Content = temp.productBrand.brandName;
                         brand.Style = (Style)FindResource("tableSubItemLabel");
 
                         productGrid.Children.Add(brand);
@@ -840,7 +837,7 @@ namespace _01electronics_crm
                         Grid.SetColumn(brand, 2);
 
                         Label model = new Label();
-                        model.Content = tempModel1.modelName;
+                        model.Content = temp.productModel.modelName;
                         model.Style = (Style)FindResource("tableSubItemLabel");
 
                         productGrid.Children.Add(model);

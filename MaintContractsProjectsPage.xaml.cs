@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,305 @@ namespace _01electronics_crm
     /// </summary>
     public partial class MaintContractsProjectsPage : Page
     {
-        public MaintContractsProjectsPage()
+        Employee loggedInUser;
+        MaintenanceContract maintContract;
+
+        private CommonQueries commonQueriesObject;
+        private CommonFunctions commonFunctionsObject;
+        private SQLServer sqlDatabase;
+        private IntegrityChecks IntegrityChecks = new IntegrityChecks();
+
+        private int viewAddCondition;
+
+        private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> projectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> addedLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+
+        public MaintContractsBasicInfoPage maintContractsBasicInfoPage;
+        public MaintContractsProductsPage maintContractsProductsPage;
+        public MaintContractsPaymentAndDeliveryPage maintContractsPaymentAndDeliveryPage;
+        public MaintContractsAdditionalInfoPage maintContractsAdditionalInfoPage;
+        public MaintContractsUploadFilesPage maintContractsUploadFilesPage;
+
+        private List<BASIC_STRUCTS.trialStruct> trialList = new List<BASIC_STRUCTS.trialStruct>();
+        private List<BASIC_STRUCTS.trialStruct> addedList = new List<BASIC_STRUCTS.trialStruct>();
+        private List<int> skip = new List<int>();
+
+        Grid trialGrid = new Grid();
+        int rowCounter = 1;
+
+        public MaintContractsProjectsPage(ref Employee mLoggedInUser, ref MaintenanceContract mMaintContracts, int mViewAddCondition, ref MaintContractsProductsPage mMaintContractsProductsPage)
         {
+            maintContractsProductsPage = mMaintContractsProductsPage;
+            loggedInUser = mLoggedInUser;
+            viewAddCondition = mViewAddCondition;
+
+            sqlDatabase = new SQLServer();
+            commonQueriesObject = new CommonQueries();
+            commonFunctionsObject = new CommonFunctions();
+
+            maintContract = mMaintContracts;
+
             InitializeComponent();
+
+            InitializeProjectsCombo();
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                checkAllCheckBox.IsEnabled = false;
+                projectCheckBox.IsChecked = true;
+                projectCheckBox.IsEnabled = false;
+                projectComboBox.SelectedItem = maintContract.GetprojectName();
+                projectComboBox.IsEnabled = false;
+                checkAllCheckBox.IsChecked = true;
+
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INITIALIZE FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void InitializeProjectsCombo()
+        {
+            commonQueriesObject.GetClientProjects(ref projects);
+
+            for (int i = 0; i < projects.Count; i++)
+                projectComboBox.Items.Add(projects[i].project_name);
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////SELECTION CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                addedLocations.Clear();
+                projectLocations.Clear();
+                locationsGrid.Children.Clear();
+                locationsGrid.RowDefinitions.Clear();
+
+                maintContract.InitializeProjectInfo(projects[projectComboBox.SelectedIndex].project_serial);
+
+                commonQueriesObject.GetProjectLocations(maintContract.GetprojectSerial(), ref projectLocations);
+
+                for (int i = 0; i < projectLocations.Count; i++)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.Tag = i;
+                    checkBox.Style = (Style)FindResource("checkBoxStyle");
+                    checkBox.Checked += OnCheckProjectLocation;
+                    checkBox.Unchecked += OnUnCheckProjectLocation;
+                    checkBox.Width = 500.0;
+
+                    RowDefinition row = new RowDefinition();
+                    locationsGrid.RowDefinitions.Add(row);
+
+                    locationsGrid.Children.Add(checkBox);
+                    Grid.SetRow(checkBox, i);
+
+                }
+            }
+            else
+            {
+                projectLocations.Clear();
+                addedLocations.Clear();
+                maintContract.GetProjectLocations(ref projectLocations);
+
+                for (int i = 0; i < projectLocations.Count; i++)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.IsEnabled = false;
+                    checkBox.IsChecked = true;
+                    checkBox.Style = (Style)FindResource("checkBoxStyle");
+                    checkBox.Width = 500.0;
+
+                    RowDefinition row = new RowDefinition();
+                    locationsGrid.RowDefinitions.Add(row);
+
+                    locationsGrid.Children.Add(checkBox);
+                    Grid.SetRow(checkBox, i);
+                }
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////CHECK/UNCHECK HANDLERS
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnCheckCheckAllCheckBox(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < locationsGrid.Children.Count; i++)
+            {
+                CheckBox currentcheckBox = (CheckBox)locationsGrid.Children[i];
+                currentcheckBox.IsChecked = true;
+            }
+        }
+
+        private void OnUnCheckCheckAllCheckBox(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < locationsGrid.Children.Count; i++)
+            {
+                CheckBox currentcheckBox = (CheckBox)locationsGrid.Children[i];
+                currentcheckBox.IsChecked = false;
+            }
+        }
+
+        private void OnCheckProject(object sender, RoutedEventArgs e)
+        {
+            projectComboBox.IsEnabled = true;
+        }
+
+        private void OnUnCheckProject(object sender, RoutedEventArgs e)
+        {
+            projectComboBox.SelectedItem = null;
+            projectComboBox.IsEnabled = false;
+            locationsGrid.Children.Clear();
+        }
+
+        private void OnCheckProjectLocation(object sender, RoutedEventArgs e)
+        {
+            CheckBox currentCheckBox = (CheckBox)sender;
+            addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
+
+        }
+
+        private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
+        {
+            CheckBox currentCheckBox = (CheckBox)sender;
+            addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
+
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///INTERNAL TABS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsBasicInfoPage.maintContractsProjectInfoPage = this;
+
+            NavigationService.Navigate(maintContractsBasicInfoPage);
+        }
+        private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsProductsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsProductsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsProductsPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsProductsPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsProductsPage.maintContractsProjectsPage = this;
+
+            NavigationService.Navigate(maintContractsProductsPage);
+        }
+        private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
+        {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsPaymentAndDeliveryPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsProjectsPage = this;
+
+            NavigationService.Navigate(maintContractsPaymentAndDeliveryPage);
+        }
+        private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsAdditionalInfoPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsAdditionalInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsAdditionalInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsAdditionalInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsAdditionalInfoPage.maintContractsProjectsPage = this;
+
+            NavigationService.Navigate(maintContractsAdditionalInfoPage);
+        }
+        private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            {
+                maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+                maintContractsUploadFilesPage.maintContractsProductsPage = maintContractsProductsPage;
+                maintContractsUploadFilesPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+                maintContractsUploadFilesPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+                maintContractsUploadFilesPage.maintContractsProjectsPage = this;
+
+                NavigationService.Navigate(maintContractsUploadFilesPage);
+            }
+        }
+
+        private void OnBtnClickNext(object sender, RoutedEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsProductsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsProductsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsProductsPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsProductsPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsProductsPage.maintContractsProjectsPage = this;
+
+            NavigationService.Navigate(maintContractsProductsPage);
+        }
+
+        private void OnBtnClickBack(object sender, RoutedEventArgs e)
+        {
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                maintContract.SetProjectLocations(addedLocations);
+
+            maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
+            maintContractsBasicInfoPage.maintContractsProjectInfoPage = this;
+
+            NavigationService.Navigate(maintContractsBasicInfoPage);
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+
+            currentWindow.Close();
+        }
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///SET FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public void SetProjectComboBox()
+        {
+            projectComboBox.SelectedItem = maintContract.GetprojectName();
+            if (projectComboBox.SelectedItem != null)
+            {
+                projectCheckBox.IsChecked = true;
+                checkAllCheckBox.IsChecked = true;
+                checkAllCheckBox.IsEnabled = false;
+                projectCheckBox.IsEnabled = false;
+            }
         }
     }
 }
+

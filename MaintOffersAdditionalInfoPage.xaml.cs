@@ -86,6 +86,8 @@ namespace _01electronics_crm
                 ConfigureUIElementsView();
                 SetWarrantyPeriodValues();
                 SetAdditionalDescriptionValue();
+                SetFrequenciesValue();
+                DisableFrequenciesTextBoxes();
 
                 nextButton.IsEnabled = true;
                 finishButton.IsEnabled = false;
@@ -98,6 +100,7 @@ namespace _01electronics_crm
 
                 SetWarrantyPeriodValues();
                 SetAdditionalDescriptionValue();
+                SetFrequenciesValue();
 
             }
             else
@@ -172,13 +175,41 @@ namespace _01electronics_crm
         {
             additionalDescriptionTextBox.Text = maintenanceOffer.GetMaintOfferNotes();
         }
-
+        public void SetFrequenciesValue()
+        {
+            visitsFrequencyTextBox.Text = maintenanceOffer.GetVisitsFrequency().ToString();
+            emergenciesFrequencyTextBox.Text = maintenanceOffer.GetEmergenciesFrequency().ToString();
+        }
+        public void DisableFrequenciesTextBoxes()
+        {
+            visitsFrequencyTextBox.IsEnabled = false;
+            emergenciesFrequencyTextBox.IsEnabled = false;
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        private void OnTextChangedVisitsFrequencyTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (integrityChecks.CheckInvalidCharacters(visitsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && visitsFrequencyTextBox.Text != "")
+                maintenanceOffer.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text));
+            else
+            {
+                maintenanceOffer.SetVisitsFrequency(0);
+                visitsFrequencyTextBox.Text = null;
+            }
+        }
 
-
+        private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (integrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
+                maintenanceOffer.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text));
+            else
+            {
+                maintenanceOffer.SetEmergenciesFrequency(0);
+                emergenciesFrequencyTextBox.Text = null;
+            }
+        }
         private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (warrantyPeriodCombo.SelectedItem != null)
@@ -346,8 +377,6 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
             else if (maintenanceOffer.GetMaintOfferProduct4TypeId() != 0 && maintenanceOffer.GetProduct4PriceValue() == 0)
                 MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
-            else if (maintenanceOffer.GetMaintOfferContractTypeId() == 0)
-                MessageBox.Show("You need to set contract type before adding a work offer!");
             else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)

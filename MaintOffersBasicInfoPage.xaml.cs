@@ -177,8 +177,10 @@ namespace _01electronics_crm
         private void InitializeRFQSerialCombo()
         {
             for (int i = 0; i < rfqsList.Count; i++)
-            {
-                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId())
+            {/////////////////////
+             ////THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
+             /////////////////////
+                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id == 5)
                 {
                     RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
                     rfqsAddedToComboList.Add(rfqsList[i]);
@@ -405,11 +407,6 @@ namespace _01electronics_crm
             DisableCompanyNameaddressContactCombos();
         }
 
-        public void SetContractTypeValueFromRFQ()
-        {
-            maintOffersProductsPage.maintOffersPaymentAndDeliveryPage.contractTypeComboBox.Text = maintOffer.GetRFQContractType();
-        }
-
         private void SetProjectCombo()
         {
             projectSerialCombo.SelectedItem = maintOffer.GetprojectName();
@@ -452,8 +449,8 @@ namespace _01electronics_crm
             {
                 maintOffer.InitializeSalesPersonInfo(salesPersonID);
                 InitializeRFQSerialCombo();
+                projectSerialCombo.IsEnabled = false;
                 companyNameCombo.SelectedItem = null;
-                companyNameCombo.IsEnabled = false;
             }
             else
             {
@@ -472,8 +469,6 @@ namespace _01electronics_crm
                     maintOffer.LinkRFQInfo();
 
                 SetCompanyNameAddressContactFromRFQ();
-                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-                    SetContractTypeValueFromRFQ();
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
@@ -491,6 +486,9 @@ namespace _01electronics_crm
                     maintOffersProductsPage.SetModelLabels();
                     maintOffersProductsPage.SetQuantityTextBoxes();
                 }
+
+                SetProjectCombo();
+                projectSerialCombo.IsEnabled = false;
             }
         }
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)

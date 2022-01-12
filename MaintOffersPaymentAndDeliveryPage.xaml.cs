@@ -67,7 +67,6 @@ namespace _01electronics_crm
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
-                InitializeContractType();
 
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
@@ -77,10 +76,8 @@ namespace _01electronics_crm
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
-                InitializeContractType();
 
                 ConfigureViewUIElements();
-                SetContractTypeValue();
                 SetPriceValues();
                 SetConditionsCheckBoxes();
                 SetFrequenciesValue();
@@ -93,9 +90,7 @@ namespace _01electronics_crm
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
-                InitializeContractType();
 
-                SetContractTypeValue();
                 SetPriceValues();
                 SetConditionsCheckBoxes();
                 SetFrequenciesValue();
@@ -103,12 +98,10 @@ namespace _01electronics_crm
             }
             else
             {
-                InitializeContractType();
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
 
                 DisableTotalPriceComboAndTextBox();
-                SetContractTypeValue();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
@@ -122,7 +115,6 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         private void ConfigureViewUIElements()
         {
-            contractTypeComboBox.IsEnabled = false;
             totalPriceCombo.IsEnabled = false;
             totalPriceTextBox.IsEnabled = false;
         }
@@ -136,16 +128,6 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private bool InitializeContractType()
-        {
-            if (!commonQueriesObject.GetContractTypes(ref contractTypes))
-                return false;
-            for (int i = 0; i < contractTypes.Count; i++)
-                contractTypeComboBox.Items.Add(contractTypes[i].contractName);
-
-            return true;
-        }
 
         private void InitializeTotalPriceCurrencyComboBox()
         {
@@ -167,21 +149,13 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public void SetContractTypeValue()
-        {
-            contractTypeComboBox.Text = maintOffers.GetMaintOfferContractType();
-        }
         public void SetFrequenciesValue()
         {
             paymentsFrequencyTextBox.Text = maintOffers.GetPaymentsFrequency().ToString();
-            visitsFrequencyTextBox.Text = maintOffers.GetVisitsFrequency().ToString();
-            emergenciesFrequencyTextBox.Text = maintOffers.GetEmergenciesFrequency().ToString();
         }
         public void DisableFrequenciesTextBoxes()
         {
             paymentsFrequencyTextBox.IsEnabled = false;
-            visitsFrequencyTextBox.IsEnabled = false;
-            emergenciesFrequencyTextBox.IsEnabled = false;
         }
         public void DisableCheckBoxes()
         {
@@ -237,16 +211,7 @@ namespace _01electronics_crm
         ///TEXT CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnTextChangedVisitsFrequencyTextBox(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(visitsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && visitsFrequencyTextBox.Text != "")
-                maintOffers.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text));
-            else
-            {
-                maintOffers.SetVisitsFrequency(0);
-                visitsFrequencyTextBox.Text = null;
-            }
-        }
+       
         private void OnTextChangedPaymentsFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(paymentsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && paymentsFrequencyTextBox.Text != "")
@@ -255,31 +220,6 @@ namespace _01electronics_crm
             {
                 maintOffers.SetPaymentsFrequency(0);
                 paymentsFrequencyTextBox.Text = null;
-            }
-        }
-        private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
-        {
-            if (IntegrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
-                maintOffers.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text));
-            else
-            {
-                maintOffers.SetEmergenciesFrequency(0);
-                emergenciesFrequencyTextBox.Text = null;
-            }
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///SELECTION CHANGED HANDLERS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            maintOffers.SetMaintOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-            {
-                maintOffersAdditionalInfoPage.warrantyPeriodTextBox.IsEnabled = false;
-                maintOffersAdditionalInfoPage.warrantyPeriodCombo.IsEnabled = false;
-                maintOffersAdditionalInfoPage.warrantyPeriodFromWhenCombo.IsEnabled = false;
             }
         }
 

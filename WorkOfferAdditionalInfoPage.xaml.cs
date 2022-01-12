@@ -360,7 +360,7 @@ namespace _01electronics_crm
         }
         private void DrawingDeadlineDateComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (drawingDeadlineDateComboBox.SelectedItem != null)
+            if (drawingDeadlineDateComboBox.SelectedItem != null && drawingSubmissionCheckBox.IsChecked == true)
             {
                 outgoingQuotation.SetHasDrawings(true);
                 outgoingQuotation.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
@@ -532,14 +532,14 @@ namespace _01electronics_crm
                 MessageBox.Show("You need to set warranty period before adding a work offer!");
             else if (outgoingQuotation.GetOfferValidityPeriod() == 0 || outgoingQuotation.GetOfferValidityTimeUnitId() == 0)
                 MessageBox.Show("You need to set validity period before adding a work offer!");
-            else 
+            else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
                     if (!outgoingQuotation.IssueNewOffer())
                         return;
 
-                    if (outgoingQuotation.GetRFQID() != null)
+                     if (outgoingQuotation.GetRFQID() != null)
                         if (!outgoingQuotation.ConfirmRFQ())
                             return;
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)

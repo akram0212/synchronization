@@ -69,12 +69,12 @@ namespace _01electronics_crm
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
                 SetUpPageUIElements();
-                SetCategoryLabels();
-                SetTypeLabels();
-                SetBrandLabels();
-                SetModelLabels();
-                SetQuantityTextBoxes();
-
+                //SetCategoryLabels();
+                //SetTypeLabels();
+                //SetBrandLabels();
+                //SetModelLabels();
+                //SetQuantityTextBoxes();
+                //
                 cancelButton.IsEnabled = false;
             }
             else
@@ -265,7 +265,7 @@ namespace _01electronics_crm
                 
                 if (i == 0 || viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                     mainLabelCheckBox.IsEnabled = false;
-                else if (i == 1)
+                else if (i == 1 && viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                     mainLabelCheckBox.IsEnabled = true;
                 else
                     mainLabelCheckBox.IsEnabled = false;
@@ -430,8 +430,10 @@ namespace _01electronics_crm
                 //currentQuantityTextBox.Text = rfq.GetRFQProductQuantity(i + 1).ToString();
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                {
                     currentQuantityTextBox.IsEnabled = false;
-
+                    currentQuantityTextBox.Text = rfq.GetRFQProductQuantity(i + 1).ToString();
+                }
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
                 Grid.SetRow(productQuantityWrapPanel, 5);
 

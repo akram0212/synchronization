@@ -180,8 +180,10 @@ namespace _01electronics_crm
         private void InitializeRFQSerialCombo()
         {
             for (int i = 0; i < rfqsList.Count; i++)
-            {
-                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId())
+            {////////////////////////////
+             //// THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
+             ////////////////////////////
+                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id != 5)
                 {
                     RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
                     rfqsAddedToComboList.Add(rfqsList[i]);
@@ -455,6 +457,7 @@ namespace _01electronics_crm
             {
                 outgoingQuotation.InitializeSalesPersonInfo(salesPersonID);
                 InitializeRFQSerialCombo();
+                projectSerialCombo.IsEnabled = false;
                 companyNameCombo.SelectedItem = null;
                 companyNameCombo.IsEnabled = false;
             }
@@ -495,11 +498,11 @@ namespace _01electronics_crm
                     workOfferProductsPage.SetQuantityTextBoxes();
                 }
 
+                SetProjectCombo();
                 projectSerialCombo.IsEnabled = false;
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
-                projectSerialCombo.IsEnabled = true;
+            
         }
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
