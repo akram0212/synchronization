@@ -1012,8 +1012,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
-            MaintenanceContractsPage maintContracts = new MaintenanceContractsPage(ref loggedInUser);
-            this.NavigationService.Navigate(maintContracts);
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
