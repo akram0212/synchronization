@@ -136,7 +136,7 @@ namespace _01electronics_crm
                 InitializeProjectCombo();
 
                 SetSalesPersonComboValue();
-                InitializeRFQSerialCombo();
+                //InitializeRFQSerialCombo();
                 SetRFQSerialComboValue();
                 SetProjectCombo();
                 projectSerialCombo.IsEnabled = false;

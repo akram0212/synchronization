@@ -36,6 +36,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT> stackPanelItems = new List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> rfqStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
         private List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> failureReasons = new List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT>();
 
@@ -48,6 +49,7 @@ namespace _01electronics_crm
         private int selectedTeam;
         private int selectedProduct;
         private int selectedBrand;
+        private int selectedContractType;
         private int selectedStatus;
 
         int viewAddCondition;
@@ -86,6 +88,9 @@ namespace _01electronics_crm
                 return;
 
             if (!InitializeBrandsComboBox())
+                return;
+
+            if (!InitializeContractTypeComboBox())
                 return;
 
 
@@ -162,6 +167,18 @@ namespace _01electronics_crm
             return true;
         }
 
+        private bool InitializeContractTypeComboBox()
+        {
+
+            if (!commonQueriesObject.GetContractTypes(ref contractTypes))
+                return false;
+
+            for (int i = 0; i < contractTypes.Count; i++)
+                contractTypeComboBox.Items.Add(contractTypes[i].contractName);
+
+            return true;
+        }
+
         private void InitializeStatusComboBox()
         {
 
@@ -189,6 +206,8 @@ namespace _01electronics_crm
             productComboBox.SelectedIndex = -1;
             brandComboBox.SelectedIndex = -1;
 
+            contractTypeComboBox.SelectedItem = -1;
+
             statusComboBox.SelectedIndex = -1;
         }
 
@@ -200,6 +219,7 @@ namespace _01electronics_crm
             salesComboBox.IsEnabled = false;
             productComboBox.IsEnabled = false;
             brandComboBox.IsEnabled = false;
+            contractTypeComboBox.IsEnabled = false;
             statusComboBox.IsEnabled = false;
         }
 
@@ -332,6 +352,8 @@ namespace _01electronics_crm
                     if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
 
+                bool contractTypeCondition = selectedContractType != rfqsList[i].contract_type_id;
+
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
                     String tempId = rfqsList[i].rfq_id;
@@ -365,6 +387,9 @@ namespace _01electronics_crm
                     continue;
 
                 if (brandCheckBox.IsChecked == true && !brandCondition)
+                    continue;
+
+                if (contractTypeCheckBox.IsChecked == true && !contractTypeCondition)
                     continue;
 
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
@@ -647,6 +672,8 @@ namespace _01electronics_crm
                     if (rfqsList[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
 
+                bool contractTypeCondition = selectedContractType != rfqsList[i].contract_type_id;
+
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
                     String tempId = rfqsList[i].rfq_id;
@@ -681,6 +708,9 @@ namespace _01electronics_crm
                     continue;
 
                 if (brandCheckBox.IsChecked == true && !brandCondition)
+                    continue;
+
+                if (contractTypeCheckBox.IsChecked == true && !contractTypeCondition)
                     continue;
 
                 if (statusCheckBox.IsChecked == true && rfqsList[i].rfq_status_id != selectedStatus)
@@ -933,6 +963,17 @@ namespace _01electronics_crm
             SetRFQsGrid();
         }
 
+        private void OnSelChangedContractTypeCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (contractTypeComboBox.SelectedItem != null)
+                selectedContractType = contractTypes[contractTypeComboBox.SelectedIndex].contractId;
+            else
+                selectedContractType = 0;
+
+            SetRFQsStackPanel();
+            SetRFQsGrid();
+        }
+
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
             if (statusComboBox.SelectedItem != null)
@@ -982,6 +1023,10 @@ namespace _01electronics_crm
         {
             brandComboBox.IsEnabled = true;
         }
+        private void OnCheckContractTypeCheckBox(object sender, RoutedEventArgs e)
+        {
+            contractTypeComboBox.IsEnabled = true;
+        }
         private void OnCheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
             statusComboBox.IsEnabled = true;
@@ -1028,6 +1073,11 @@ namespace _01electronics_crm
         {
             brandComboBox.SelectedItem = null;
             brandComboBox.IsEnabled = false;
+        }
+        private void OnUnCheckContractTypeCheckBox(object sender, RoutedEventArgs e)
+        {
+            contractTypeComboBox.SelectedItem = null;
+            contractTypeComboBox.IsEnabled = false;
         }
         private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
@@ -1165,16 +1215,32 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION;
 
-            resolveWorkOffer = new OutgoingQuotation(sqlDatabase);
-
-            resolveWorkOffer.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+           selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
-            resolveWorkOffer.LinkRFQInfo();
 
-            WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
-            resolveOffer.Closed += OnClosedRFQWindow;
-            resolveOffer.Show();
+            if (selectedRFQ.GetRFQContractType() == "Maintenance On Request")
+            {
+                MaintenanceOffer resolveMaintOffer = new MaintenanceOffer(sqlDatabase);
+
+                resolveMaintOffer.CopyRFQ(selectedRFQ);
+                resolveMaintOffer.LinkRFQInfo();
+
+                MaintenanceOffersWindow resolveMaintenanceOffer = new MaintenanceOffersWindow(ref loggedInUser, ref resolveMaintOffer, viewAddCondition, false);
+                resolveMaintenanceOffer.Closed += OnClosedRFQWindow;
+                resolveMaintenanceOffer.Show();
+            }
+            else
+            {
+                resolveWorkOffer = new OutgoingQuotation(sqlDatabase);
+
+                resolveWorkOffer.CopyRFQ(selectedRFQ);
+                resolveWorkOffer.LinkRFQInfo();
+
+                WorkOfferWindow resolveOffer = new WorkOfferWindow(ref loggedInUser, ref resolveWorkOffer, viewAddCondition, false);
+                resolveOffer.Closed += OnClosedRFQWindow;
+                resolveOffer.Show();
+            }
         }
         private void OnBtnClickedExport(object sender, RoutedEventArgs e)
         {

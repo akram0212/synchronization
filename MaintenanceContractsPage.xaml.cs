@@ -339,9 +339,9 @@ namespace _01electronics_crm
                 Border borderIcon = new Border();
                 borderIcon.Style = (Style)FindResource("BorderIcon");
 
-                Label rfqStatusLabel = new Label();
-                rfqStatusLabel.Content = workOrders[i].order_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                Label contractStatusLabel = new Label();
+                contractStatusLabel.Content = workOrders[i].order_status;
+                contractStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
                 if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
@@ -356,7 +356,7 @@ namespace _01electronics_crm
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
                 }
 
-                borderIcon.Child = rfqStatusLabel;
+                borderIcon.Child = contractStatusLabel;
 
                 Expander expander = new Expander();
                 expander.ExpandDirection = ExpandDirection.Down;
@@ -699,32 +699,13 @@ namespace _01electronics_crm
                 Grid.SetRow(contractTypeLabel, currentRowNumber);
                 Grid.SetColumn(contractTypeLabel, 4);
 
+                Label contractStatusLabel = new Label();
+                contractStatusLabel.Content = workOrders[i].order_status;
+                contractStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
-
-                Label rfqStatusLabel = new Label();
-                rfqStatusLabel.Content = workOrders[i].order_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
-
-                if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.OPEN_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CLOSED_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
-                //else
-                //{
-                //    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                //}
-
-                borderIcon.Child = rfqStatusLabel;
-
-                workOrdersGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
+                workOrdersGrid.Children.Add(contractStatusLabel);
+                Grid.SetRow(contractStatusLabel, currentRowNumber);
+                Grid.SetColumn(contractStatusLabel, 6);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
