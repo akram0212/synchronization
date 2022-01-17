@@ -372,9 +372,10 @@ namespace _01electronics_crm
                 Border borderIcon = new Border();
                 borderIcon.Style = (Style)FindResource("BorderIcon");
 
-                Label rfqStatusLabel = new Label();
-                rfqStatusLabel.Content = maintContracts[i].order_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                Label contractStatusLabel = new Label();
+                contractStatusLabel.Content = maintContracts[i].order_status;
+                contractStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
 
                 if (maintContracts[i].order_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
@@ -389,7 +390,7 @@ namespace _01electronics_crm
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
                 }
 
-                borderIcon.Child = rfqStatusLabel;
+                borderIcon.Child = contractStatusLabel;
 
                 Expander expander = new Expander();
                 expander.ExpandDirection = ExpandDirection.Down;
@@ -732,32 +733,14 @@ namespace _01electronics_crm
                 Grid.SetRow(contractTypeLabel, currentRowNumber);
                 Grid.SetColumn(contractTypeLabel, 4);
 
+                Label contractStatusLabel = new Label();
+                contractStatusLabel.Content = maintContracts[i].order_status;
+                contractStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
+                maintContractsGrid.Children.Add(contractStatusLabel);
+                Grid.SetRow(contractStatusLabel, currentRowNumber);
+                Grid.SetColumn(contractStatusLabel, 6);
 
-                Label rfqStatusLabel = new Label();
-                rfqStatusLabel.Content = maintContracts[i].order_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
-
-                if (maintContracts[i].order_status_id == COMPANY_WORK_MACROS.OPEN_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (maintContracts[i].order_status_id == COMPANY_WORK_MACROS.CLOSED_WORK_ORDER)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
-                //else
-                //{
-                //    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                //}
-
-                borderIcon.Child = rfqStatusLabel;
-
-                maintContractsGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
@@ -1012,8 +995,8 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
-            MaintenanceContractsPage maintContracts = new MaintenanceContractsPage(ref loggedInUser);
-            this.NavigationService.Navigate(maintContracts);
+            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
+            this.NavigationService.Navigate(workOrdersPage);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {

@@ -580,8 +580,8 @@ namespace _01electronics_crm
             Grid.SetColumn(offerStatusHeader, 6);
             workOffersGrid.Children.Add(offerStatusHeader);
 
-            Grid.SetRow(offerStatusHeader, 0);
-            Grid.SetColumn(offerStatusHeader, 7);
+            Grid.SetRow(offerProjectHeader, 0);
+            Grid.SetColumn(offerProjectHeader, 7);
             workOffersGrid.Children.Add(offerProjectHeader);
 
             int currentRowNumber = 1;

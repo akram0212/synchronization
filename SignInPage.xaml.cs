@@ -47,8 +47,13 @@ namespace _01electronics_crm
 
             employeePassword = employeePasswordTextBox.Password;
 
+<<<<<<< HEAD
            // if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
              //   return;
+=======
+            //if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
+              //  return;
+>>>>>>> d48e2263a4f04f299ec881757c2a6e29b7b0654e
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
 

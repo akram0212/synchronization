@@ -76,13 +76,13 @@ namespace _01electronics_crm
                 
                 SetUpPageUIElements();
                 InitializePriceCurrencyComboBoxes();
-                SetCategoryLabels();
-                SetTypeLabels();
-                SetBrandLabels();
-                SetModelLabels();
-                SetQuantityTextBoxes();
-                SetPriceTextBoxes();
-                SetPriceComboBoxes();
+                //SetCategoryLabels();
+                //SetTypeLabels();
+                //SetBrandLabels();
+                //SetModelLabels();
+                //SetQuantityTextBoxes();
+                //SetPriceTextBoxes();
+                //SetPriceComboBoxes();
 
                 cancelButton.IsEnabled = false;
             }
@@ -555,8 +555,10 @@ namespace _01electronics_crm
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+                {
                     currentQuantityTextBox.IsEnabled = false;
-
+                    currentQuantityTextBox.Text = outgoingQuotation.GetOfferProductQuantity(i + 1).ToString();
+                }
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
                 Grid.SetRow(productQuantityWrapPanel, 5);
 
@@ -593,6 +595,8 @@ namespace _01electronics_crm
                 {
                     currentPriceTextBox.IsEnabled = false;
                     currentPriceComboBox.IsEnabled = false;
+                    currentPriceTextBox.Text = outgoingQuotation.GetProductPriceValue(i + 1).ToString();
+                    currentPriceComboBox.SelectedItem = outgoingQuotation.GetCurrency();
                 }
 
                 currentProductGrid.Children.Add(productPriceWrapPanel);

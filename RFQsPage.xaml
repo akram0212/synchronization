@@ -103,6 +103,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <CheckBox Name="searchCheckBox" Grid.Row="0" Grid.Column="0"  Content="Search" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSearchCheckBox" Unchecked="OnUnCheckSearchCheckBox" />
@@ -126,8 +127,11 @@
                     <CheckBox Name="brandCheckBox" Grid.Row="6" Grid.Column="0" Content="Brand" Style="{StaticResource checkBoxStyle}" Checked="OnCheckBrandCheckBox" Unchecked="OnUncheckBrandCheckBox"/>
                     <ComboBox Name="brandComboBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedBrandCombo"/>
 
-                    <CheckBox Name="statusCheckBox" Grid.Row="7" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="OnCheckStatusCheckBox" Unchecked="OnUncheckStatusCheckBox"/>
-                    <ComboBox Name="statusComboBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStatusCombo"/>
+                    <CheckBox Name="contractTypeCheckBox" Grid.Row="7" Grid.Column="0" Content="Contract Type" Style="{StaticResource checkBoxStyle}" Checked="OnCheckContractTypeCheckBox" Unchecked="OnUnCheckContractTypeCheckBox"/>
+                    <ComboBox Name="contractTypeComboBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedContractTypeCombo"/>
+                    
+                    <CheckBox Name="statusCheckBox" Grid.Row="8" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="OnCheckStatusCheckBox" Unchecked="OnUncheckStatusCheckBox"/>
+                    <ComboBox Name="statusComboBox" Grid.Row="8" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStatusCombo"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400" >

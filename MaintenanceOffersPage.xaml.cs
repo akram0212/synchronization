@@ -489,15 +489,10 @@ namespace _01electronics_crm
             offerProductsHeader.Content = "Products";
             offerProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label offerContractTypeHeader = new Label();
-            offerContractTypeHeader.Content = "Contract Type";
-            offerContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
-
             Label offerStatusHeader = new Label();
             offerStatusHeader.Content = "Offer Status";
             offerStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            maintOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintOffersGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -527,12 +522,8 @@ namespace _01electronics_crm
             Grid.SetColumn(offerProductsHeader, 4);
             maintOffersGrid.Children.Add(offerProductsHeader);
 
-            Grid.SetRow(offerContractTypeHeader, 0);
-            Grid.SetColumn(offerContractTypeHeader, 5);
-            maintOffersGrid.Children.Add(offerContractTypeHeader);
-
             Grid.SetRow(offerStatusHeader, 0);
-            Grid.SetColumn(offerStatusHeader, 6);
+            Grid.SetColumn(offerStatusHeader, 5);
             maintOffersGrid.Children.Add(offerStatusHeader);
 
             int currentRowNumber = 1;
@@ -711,42 +702,13 @@ namespace _01electronics_crm
                 Grid.SetRow(productGrid, currentRowNumber);
                 Grid.SetColumn(productGrid, 4);
 
-
-
-                Label contractTypeLabel = new Label();
-                contractTypeLabel.Content = maintOffers[i].contract_type;
-                contractTypeLabel.Style = (Style)FindResource("tableSubItemLabel");
-
-                maintOffersGrid.Children.Add(contractTypeLabel);
-                Grid.SetRow(contractTypeLabel, currentRowNumber);
-                Grid.SetColumn(contractTypeLabel, 5);
-
-
-                Border borderIcon = new Border();
-                borderIcon.Style = (Style)FindResource("BorderIcon");
-
                 Label rfqStatusLabel = new Label();
                 rfqStatusLabel.Content = maintOffers[i].offer_status;
-                rfqStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+                rfqStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                if (maintOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
-                }
-                else if (maintOffers[i].offer_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
-                }
-                else
-                {
-                    borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
-                }
-
-                borderIcon.Child = rfqStatusLabel;
-
-                maintOffersGrid.Children.Add(borderIcon);
-                Grid.SetRow(borderIcon, currentRowNumber);
-                Grid.SetColumn(borderIcon, 6);
+                maintOffersGrid.Children.Add(rfqStatusLabel);
+                Grid.SetRow(rfqStatusLabel, currentRowNumber);
+                Grid.SetColumn(rfqStatusLabel, 5);
 
                 currentRowNumber++;
             }
