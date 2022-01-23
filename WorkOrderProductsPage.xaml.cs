@@ -85,7 +85,7 @@ namespace _01electronics_crm
                 //SetModelLabels();
                 //SetQuantityTextBoxes();
                 //SetPriceTextBoxes();
-                //SetPriceComboBoxes();
+                SetPriceComboBoxes();
 
                 cancelButton.IsEnabled = false;
             }
@@ -349,7 +349,7 @@ namespace _01electronics_crm
                     currentPriceTextBox.IsEnabled = false;
                     currentPriceComboBox.IsEnabled = false;
                     currentPriceTextBox.Text = workOrder.GetOrderProductPriceValue(i + 1).ToString();
-                    currentPriceComboBox.SelectedItem = workOrder.GetOrderCurrency();
+                    //currentPriceComboBox.SelectedItem = workOrder.GetOrderCurrency();
                 }
 
                 currentProductGrid.Children.Add(productPriceWrapPanel);
