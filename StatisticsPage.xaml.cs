@@ -84,21 +84,27 @@ namespace _01electronics_crm
         private void InitializePieChart(Grid currentGrid ,PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> mRefreshList)
         {
             EmptyGrid(currentGrid);
-
+            mRefreshList.Sort((s1, s2) => s2.value.CompareTo(s1.value));
             for(int i = 0; i < mRefreshList.Count; i++)
             {
                 currentGrid.RowDefinitions.Add(new RowDefinition());
 
                 Label salesLabel = new Label();
+                salesLabel.Width = 150.00;
+                salesLabel.Height = 30.00;
+                salesLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
                 salesLabel.Content = mRefreshList[i].name;
                 currentGrid.Children.Add(salesLabel);
-                Grid.SetRow(salesLabel, i + 1);
+                Grid.SetRow(salesLabel, i);
                 Grid.SetColumn(salesLabel, 0);
 
                 Label valueLabel = new Label();
+                valueLabel.Width = 150.00;
+                valueLabel.Height = 30.00;
+                valueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
                 valueLabel.Content = mRefreshList[i].value;
                 currentGrid.Children.Add(valueLabel);
-                Grid.SetRow(valueLabel, i + 1);
+                Grid.SetRow(valueLabel, i);
                 Grid.SetColumn(valueLabel, 1);
 
                 mPieChart.Series.Add(new PieSeries { Title = mRefreshList[i].name, StrokeThickness = 0, Values = new ChartValues<Decimal> { mRefreshList[i].value } });
@@ -107,6 +113,9 @@ namespace _01electronics_crm
             currentGrid.RowDefinitions.Add(new RowDefinition());
 
             Label totalLabel = new Label();
+            totalLabel.Width = 150.00;
+            totalLabel.Height = 30.00;
+            totalLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
             totalLabel.Content = "Total";
             Grid.SetRow(totalLabel, currentGrid.RowDefinitions.Count - 1);
             Grid.SetColumn(totalLabel, 0);
@@ -114,6 +123,9 @@ namespace _01electronics_crm
             
 
             Label totalValueLabel = new Label();
+            totalValueLabel.Width = 150.00;
+            totalValueLabel.Height = 30.00;
+            totalValueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
             totalValueLabel.Content = summationVariable.ToString();
             currentGrid.Children.Add(totalValueLabel);
             Grid.SetRow(totalValueLabel, currentGrid.RowDefinitions.Count - 1);
@@ -125,13 +137,13 @@ namespace _01electronics_crm
 
         private void EmptyGrid(Grid currentGrid)
         {
-            for (int i = currentGrid.Children.Count - 1; i > 1 ; i--)
+            for (int i = currentGrid.Children.Count - 1; i >= 0 ; i--)
             {
                 Label currentLabel = (Label)currentGrid.Children[i];
                 currentGrid.Children.Remove(currentLabel);
             }
 
-            for (int i = currentGrid.RowDefinitions.Count - 1; i > 0; i--)
+            for (int i = currentGrid.RowDefinitions.Count - 1; i >= 0; i--)
                 currentGrid.RowDefinitions.RemoveAt(i);
         }
         internal void RefreshData(PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> valuesList)
@@ -189,7 +201,7 @@ namespace _01electronics_crm
                 modelOrderManagerPieChart.Series.Clear();
                 salesAnalytics.SetRefresListModelOrdersCount();
                 GetTotalValue();
-                typeOrderManagerLabel.Content = "Model Total Ordered Count";
+                modelOrderManagerLabel.Content = "Model Total Ordered Count";
                 InitializePieChart(modelOrderManagerGrid, modelOrderManagerPieChart, salesAnalytics.refreshList);
 
                 ///////////STATUS ORDER////////////////////////

@@ -50,7 +50,7 @@
 
         <Grid ShowGridLines="True" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="270"/>
+                <RowDefinition Height="170"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -58,23 +58,26 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="350"/>
+                </Grid.ColumnDefinitions>
 
-                <Label Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="DASHBOARD" Style="{StaticResource primaryHeaderTextStyle}"/>
+                <Label Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="DASHBOARD" Style="{StaticResource primaryHeaderTextStyle}"/>
 
                 <WrapPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
                     <Label Content="Count/Amount" Style="{StaticResource labelStyle}" Width="125"/>
                     <ComboBox Name="countAmountComboBox" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedCountAmountFilterCombo"/>
                 </WrapPanel>
 
-                <WrapPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
+                <WrapPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
                     <Label Content="Start Date" Style="{StaticResource labelStyle}" Width="125"/>
                     <DatePicker Name="startDatePicker" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="150" Margin="10" SelectedDateChanged="OnSelChangedStartDate"/>
                 </WrapPanel>
 
-                <WrapPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center">
+                <WrapPanel Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center">
                     <Label Content="End Date" Style="{StaticResource labelStyle}" Width="125"/>
                     <DatePicker Name="endDatePicker" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="150" Margin="10" SelectedDateChanged="OnSelChangedEndDate"/>
                 </WrapPanel>
@@ -82,7 +85,7 @@
 
             </Grid>
 
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,0,24">
                 <Grid x:Name="ordersManagerGrid" Grid.Row="0" ShowGridLines="True">
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -97,112 +100,159 @@
                             <RowDefinition Height="220"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="520"/>
+                            <ColumnDefinition Width="520"/>
+                            <ColumnDefinition Width="520"/>
+                            <ColumnDefinition Width="520"/>
+                            <ColumnDefinition Width="520"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Name="salesPersonOrderManagerLabel" Content="Sales Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="left">
-                            <ScrollViewer>
-                                <Grid Name="salesPersonOrderManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Sales" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Sales" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="salesPersonOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" />
+                            
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Grid Name="salesPersonOrderManagerGrid" ShowGridLines="True" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
 
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1"  x:Name="salesPersonOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                        </Grid>
+                        
+                        
+                            
+                            
+                        
 
                         <Label Grid.Row="0" Grid.Column="1" Name="categoryOrderManagerLabel" Content="Category Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <ScrollViewer>
-                                <Grid Name="categoryOrderManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Category" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Category" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2"  x:Name="categoryOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Grid Name="categoryOrderManagerGrid" ShowGridLines="True" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
 
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1"  x:Name="categoryOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                        </Grid>
+
+
 
                         <Label Grid.Row="0" Grid.Column="2" Name="typeOrderManagerLabel" Content="Type Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Type" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" x:Name="typeOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" />
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="typeOrderManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Type" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1"  x:Name="typeOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                        </Grid>
+
+
 
                         <Label Grid.Row="0" Grid.Column="3" Name="modelOrderManagerLabel" Content="Model Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Model" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" x:Name="modelOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="modelOrderManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Model" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1"  x:Name="modelOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+
+                        </Grid>
 
                         <Label Grid.Row="0" Grid.Column="4" Name="statusOrderManagerLabel" Content="Status Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" x:Name="statusOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
+                            
+                            <ScrollViewer  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="statusOrderManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1"  x:Name="statusOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                            
+                        </Grid>
                     </Grid>
 
                     <Grid Grid.Row="1" ShowGridLines="True">
@@ -219,104 +269,143 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Name="salesPersonQuotedManagerLabel" Content="Sales Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="220" >
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Sales" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="salesPersonQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" />
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="salesPersonQuotedManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Sales" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
 
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1" x:Name="salesPersonQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                        </Grid>
 
                         <Label Grid.Row="0" Grid.Column="1" Name="categoryQuotedManagerLabel" Content="Category Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Height="220" >
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Category" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="categoryQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="categoryQuotedManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Category" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1" x:Name="categoryQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                            
+                        </Grid>
 
                         <Label Grid.Row="0" Grid.Column="2" Name="typeQuotedManagerLabel" Content="Type Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Height="220" >
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Type" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="typeQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
+                            
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="typeQuotedManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Type" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1" x:Name="typeQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                            
+                        </Grid>
 
                         <Label Grid.Row="0" Grid.Column="3" Name="modelQuotedManagerLabel" Content="Model Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Height="220" >
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Model" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="modelQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="modelQuotedManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Model" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1" x:Name="modelQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                        </Grid>
 
                         <Label Grid.Row="0" Grid.Column="4" Name="statusQuotedManagerLabel" Content="Status Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
-                        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" HorizontalAlignment="Left" Height="220" >
-                            <ScrollViewer>
+                        <Grid Grid.Row="1" Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource tableHeaderItem}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
+                            <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="statusQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
+
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="statusQuotedManagerGrid" ShowGridLines="True" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-
-                                    <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource tableHeaderItem}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
-
+                                    
                                 </Grid>
                             </ScrollViewer>
-                            <lvc:PieChart Grid.Row="1" x:Name="statusQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                        </WrapPanel>
+                            
+                        </Grid>
 
                     </Grid>
                 </Grid>
