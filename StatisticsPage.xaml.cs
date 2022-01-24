@@ -63,7 +63,7 @@ namespace _01electronics_crm
         private void InitializeDatePickers()
         {
             startDatePicker.SelectedDate = DateTime.Parse("1/1/2021");
-            endDatePicker.SelectedDate = DateTime.Parse("12/31/2021");
+            endDatePicker.SelectedDate = DateTime.Parse("31/12/2021");
         }
 
         private bool InitializeComboBoxes()
