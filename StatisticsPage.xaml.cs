@@ -34,6 +34,9 @@ namespace _01electronics_crm
         private int countAmountComboSelectedIndex;
         private int summationVariable;
 
+        private DateTime startDate;
+        private DateTime endDate;
+
         private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> categories = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> types = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> brands= new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
@@ -62,8 +65,10 @@ namespace _01electronics_crm
         
         private void InitializeDatePickers()
         {
-            startDatePicker.SelectedDate = DateTime.Parse("1/1/2021");
-            endDatePicker.SelectedDate = DateTime.Parse("31/12/2021");
+            startDate = new DateTime(2021,1,1);
+            endDate = new DateTime(2021,12,31);
+            startDatePicker.SelectedDate = startDate;
+            endDatePicker.SelectedDate = endDate;
         }
 
         private bool InitializeComboBoxes()
