@@ -136,6 +136,19 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
 
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                salesEmployeesList.Add(loggedInUserStruct);
+            }
+
             for (int i = 0; i < salesEmployeesList.Count; i++)
                 salesComboBox.Items.Add(salesEmployeesList[i].employee_name);
              
@@ -145,6 +158,19 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployeesList))
                 return false;
+
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                preSalesEmployeesList.Add(loggedInUserStruct);
+            }
 
             for (int i = 0; i < preSalesEmployeesList.Count; i++)
                 preSalesComboBox.Items.Add(preSalesEmployeesList[i].employee_name);
@@ -225,7 +251,7 @@ namespace _01electronics_crm
             yearCheckBox.IsChecked = true;
             yearCheckBox.IsEnabled = false;
 
-            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
@@ -244,6 +270,8 @@ namespace _01electronics_crm
                 preSalesCheckBox.IsChecked = false;
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
+
+                addButton.IsEnabled = false;
             }
             else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
@@ -264,6 +292,8 @@ namespace _01electronics_crm
                 preSalesCheckBox.IsChecked = false;
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
+
+                addButton.IsEnabled = false;
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
@@ -274,11 +304,6 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
-            }
-
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
-            {
-                addButton.IsEnabled = false;
             }
         }
 
