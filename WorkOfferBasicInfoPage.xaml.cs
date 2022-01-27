@@ -35,6 +35,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> techOfficeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsAddedToComboList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
 
@@ -64,27 +65,6 @@ namespace _01electronics_crm
             outgoingQuotation = mWorkOffer;
 
             InitializeComponent();
-
-            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
-            //{
-            //    outgoingQuotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //        if (!outgoingQuotation.GetNewOfferSerial())
-            //            return;
-            //    if(!outgoingQuotation.GetNewOfferVersion())
-            //        return;
-            //    outgoingQuotation.SetOfferIssueDateToToday();
-            //    outgoingQuotation.GetNewOfferID();
-            //    
-            //}
-            //
-            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //{
-            //    if (!outgoingQuotation.GetNewOfferVersion())
-            //        return;
-            //    outgoingQuotation.SetOfferIssueDateToToday();
-            //    outgoingQuotation.GetNewOfferID();
-            //}
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
@@ -162,12 +142,20 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
                 return false;
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref techOfficeList))
+                return false;
 
             for (int i = 0; i < employeesList.Count(); i++)
             {
                 salesPersonCombo.Items.Add(employeesList[i].employee_name);
             }
-            salesPersonCombo.Items.Add(loggedInUser.GetEmployeeName());
+            for(int i = 0; i < techOfficeList.Count(); i++)
+            {
+                salesPersonCombo.Items.Add(techOfficeList[i].employee_name);
+            }
+            
+            salesPersonCombo.Items.Add("Ahmed Ayman Farid");
+
             return true;
         }
 
@@ -437,25 +425,30 @@ namespace _01electronics_crm
             companyNameCombo.SelectedIndex = -1;
             rfqsAddedToComboList.Clear();
 
-            if (salesPersonCombo.SelectedIndex != employeesList.Count())
+            if (salesPersonCombo.SelectedIndex < employeesList.Count())
             {
                 salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
                 salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
             }
+            else if(salesPersonCombo.SelectedIndex < employeesList.Count() + techOfficeList.Count())
+            {
+                salesPersonID = techOfficeList[salesPersonCombo.SelectedIndex - employeesList.Count].employee_id;
+                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
+            }
             else
             {
-                salesPersonID = loggedInUser.GetEmployeeId();
-                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
+                salesPersonID = 3;
+                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID;
             }
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 outgoingQuotation.ResetWorkOfferInfo(salesPersonTeamID);
 
             outgoingQuotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
+            outgoingQuotation.InitializeSalesPersonInfo(salesPersonID);
 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
-                outgoingQuotation.InitializeSalesPersonInfo(salesPersonID);
                 InitializeRFQSerialCombo();
                 projectSerialCombo.IsEnabled = false;
                 companyNameCombo.SelectedItem = null;
@@ -463,7 +456,6 @@ namespace _01electronics_crm
             }
             else
             {
-                outgoingQuotation.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
                 InitializeCompanyNameCombo();
                 RFQSerialCombo.SelectedItem = null;
                 RFQSerialCombo.IsEnabled = false;

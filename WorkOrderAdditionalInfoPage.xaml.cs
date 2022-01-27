@@ -516,13 +516,6 @@ namespace _01electronics_crm
                   //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
                   if (!workOrder.IssueNewOrder())
                       return;
-
-                  if (workOrder.GetOfferID() != null)
-                  {
-                      if (!workOrder.ConfirmOffer())
-                          return;
-
-                  }
               }
 
               viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;

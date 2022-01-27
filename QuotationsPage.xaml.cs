@@ -1181,7 +1181,7 @@ namespace _01electronics_crm
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
             
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
             {
                 selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
@@ -1205,7 +1205,7 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
             {
                 selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
@@ -1228,8 +1228,9 @@ namespace _01electronics_crm
             viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
-
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            
+            
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
             {
                 selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
@@ -1260,7 +1261,7 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
             {
                 selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,

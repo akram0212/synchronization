@@ -36,7 +36,7 @@ namespace _01electronics_crm
             workOrderPaymentAndDeliveryPage = new WorkOrderPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderAdditionalInfoPage);
             workOrderProductsPage = new WorkOrderProductsPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderPaymentAndDeliveryPage);
             workOrderProjectInfoPage = new WorkOrderProjectInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProductsPage);
-            workOrderBasicInfoPage = new WorkOrderBasicInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProjectInfoPage);
+            workOrderBasicInfoPage = new WorkOrderBasicInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProjectInfoPage, ref workOrderProductsPage);
             workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition);
 
             if (openFilesPage)
@@ -51,7 +51,7 @@ namespace _01electronics_crm
             }
             else
             {
-                workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
+                workOrderBasicInfoPage.workOrderProductsPage = workOrderProjectInfoPage.workOrderProductsPage;
                 workOrderBasicInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
                 workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
                 workOrderBasicInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;

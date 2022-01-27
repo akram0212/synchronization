@@ -71,7 +71,6 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
                 InitializeCategories();
-                InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
             }
@@ -92,7 +91,6 @@ namespace _01electronics_crm
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 InitializeCategories();
-                InitializeBrandCombo();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
                 SetCategoryLabels();
@@ -217,8 +215,7 @@ namespace _01electronics_crm
                     ComboBox currentTypeCombo = new ComboBox();
                     currentTypeCombo.Style = (Style)FindResource("comboBoxStyle");
                     currentTypeCombo.SelectionChanged += new SelectionChangedEventHandler(TypeComboBoxesSelectionChanged);
-                    if (i != 0)
-                        currentTypeCombo.IsEnabled = false;
+                    currentTypeCombo.IsEnabled = false;
                     for (int j = 0; j < products.Count(); j++)
                         currentTypeCombo.Items.Add(products[j].typeName);
                     productTypeWrapPanel.Children.Add(currentTypeCombo);
@@ -251,8 +248,7 @@ namespace _01electronics_crm
                     ComboBox currentBrandCombo = new ComboBox();
                     currentBrandCombo.Style = (Style)FindResource("comboBoxStyle");
                     currentBrandCombo.SelectionChanged += new SelectionChangedEventHandler(BrandComboBoxesSelectionChanged);
-                    if (i != 0)
-                        currentBrandCombo.IsEnabled = false;
+                    currentBrandCombo.IsEnabled = false;
                     for (int j = 0; j < brands.Count(); j++)
                         currentBrandCombo.Items.Add(brands[j].brandName);
                     productBrandWrapPanel.Children.Add(currentBrandCombo);
@@ -371,9 +367,9 @@ namespace _01electronics_crm
                 return;
         }
 
-        private void InitializeBrandCombo()
+        private void InitializeBrandCombo(int productId)
         {
-            if (!commonQueriesObject.GetCompanyBrands(ref brands))
+            if (!commonQueriesObject.GetProductBrands(productId, ref brands))
                 return;
         }
 
@@ -598,6 +594,9 @@ namespace _01electronics_crm
             }
             else
             {
+                currentTypeComboBox.IsEnabled = false;
+                currentTypeComboBox.SelectedItem = null;
+
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (k != 0)
@@ -616,6 +615,9 @@ namespace _01electronics_crm
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentTypeComboBox.Parent;
             Grid currentProductGrid = (Grid)currentTypeWrapPanel.Parent;
 
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
 
@@ -630,17 +632,16 @@ namespace _01electronics_crm
 
             if (currentTypeComboBox.SelectedItem != null)
             {
-                if (currentBrandComboBox.SelectedItem != null)
+                if (!commonQueriesObject.GetCompanyProducts(ref products, categories[currentCategoryComboBox.SelectedIndex].categoryId))
+                    return;
+                currentBrandComboBox.IsEnabled = true;
+                InitializeBrandCombo(products[currentTypeComboBox.SelectedIndex].typeId);
+                currentBrandComboBox.Items.Clear();
+                for (int m = 0; m < brands.Count; m++)
                 {
-                    currentModelComboBox.IsEnabled = true;
-                    if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
-                        return;
-
-                    for (int i = 0; i < models.Count(); i++)
-                    {
-                        currentModelComboBox.Items.Add(models[i].modelName);
-                    }
+                    currentBrandComboBox.Items.Add(brands[m].brandName);
                 }
+
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
@@ -649,17 +650,14 @@ namespace _01electronics_crm
                             currentProductCheckBox.IsChecked = true;
 
                         maintContracts.SetMaintContractProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
-
-                        if (maintContracts.GetMaintOfferProductModelId(k + 1) != 0)
-                        {
-                            currentModelComboBox.SelectedItem = maintContracts.GetMaintOfferProductModel(k + 1);
-                            maintContracts.SetNoOfSavedMaintContractProducts();
-                        }
                     }
                 }
             }
             else
             {
+                currentBrandComboBox.IsEnabled = false;
+                currentBrandComboBox.SelectedItem = null;
+
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (k != 0)
@@ -677,6 +675,9 @@ namespace _01electronics_crm
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentBrandComboBox.Parent;
             Grid currentProductGrid = (Grid)currentBrandWrapPanel.Parent;
 
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
@@ -689,6 +690,10 @@ namespace _01electronics_crm
             {
                 if (currentTypeComboBox.SelectedItem != null)
                 {
+                    if (!commonQueriesObject.GetCompanyProducts(ref products, categories[currentCategoryComboBox.SelectedIndex].categoryId))
+                        return;
+                    InitializeBrandCombo(products[currentTypeComboBox.SelectedIndex].typeId);
+
                     currentModelComboBox.IsEnabled = true;
                     if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                         return;
@@ -704,14 +709,14 @@ namespace _01electronics_crm
                     if (currentProductGrid == mainWrapPanel.Children[k])
                     {
                         maintContracts.SetMaintContractProductBrand(k + 1, brands[currentBrandComboBox.SelectedIndex].brandId, currentBrandComboBox.SelectedItem.ToString());
-
-                        if (maintContracts.GetMaintOfferProductModelId(k + 1) != 0)
-                            currentModelComboBox.SelectedItem = maintContracts.GetMaintOfferProductModel(k + 1);
                     }
                 }
             }
             else
             {
+                currentModelComboBox.IsEnabled = false;
+                currentModelComboBox.SelectedItem = null;
+
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
@@ -726,6 +731,9 @@ namespace _01electronics_crm
             WrapPanel currentModelWrapPanel = (WrapPanel)currentModelComboBox.Parent;
             Grid currentProductGrid = (Grid)currentModelWrapPanel.Parent;
 
+            WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+            ComboBox currentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+
             WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
             ComboBox currentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
@@ -735,6 +743,9 @@ namespace _01electronics_crm
 
             if (currentModelComboBox.SelectedItem != null)
             {
+                if (!commonQueriesObject.GetCompanyProducts(ref products, categories[currentCategoryComboBox.SelectedIndex].categoryId))
+                   return;
+                InitializeBrandCombo(products[currentTypeComboBox.SelectedIndex].typeId);
 
                 if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
                     return;
@@ -889,7 +900,7 @@ namespace _01electronics_crm
 
             WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
             ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
-            currentBrandComboBox.IsEnabled = true;
+            currentBrandComboBox.IsEnabled = false;
 
             WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
             ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
