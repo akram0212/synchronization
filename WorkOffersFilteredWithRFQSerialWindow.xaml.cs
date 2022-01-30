@@ -21,7 +21,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         SQLServer sqlServer;
-        OutgoingQuotation outgoingQuotation;
+        Quotation quotation;
         CommonQueries CommonQueries;
 
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
@@ -42,7 +42,7 @@ namespace _01electronics_crm
 
             sqlServer = new SQLServer();
             CommonQueries = new CommonQueries(sqlServer);
-            outgoingQuotation = new OutgoingQuotation(sqlServer);
+            quotation = new Quotation(sqlServer);
 
             if (!CommonQueries.GetOutgoingQuotations(ref workOffers, rfqSerial, rfqVersion, salesPersonId))
                 return;
@@ -238,21 +238,12 @@ namespace _01electronics_crm
             CommonQueries.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                outgoingQuotation.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+            quotation.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                outgoingQuotation.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
 
 
-            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
+            WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, false);
             viewOffer.Show();
         }
 
@@ -262,21 +253,12 @@ namespace _01electronics_crm
 
             CommonQueries.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                outgoingQuotation.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+            quotation.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                outgoingQuotation.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
 
 
-            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
+            WorkOfferWindow reviseOffer = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, false);
             reviseOffer.Closed += OnClosedReviseOffer;
             reviseOffer.Show();
         }

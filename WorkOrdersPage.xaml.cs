@@ -1155,7 +1155,7 @@ namespace _01electronics_crm
 
         //private void OnBtnClickView(object sender, RoutedEventArgs e)
         //{
-        //    OutgoingQuotation selectedWorkOffer = new OutgoingQuotation(sqlDatabase);
+        //    Quotation selectedWorkOffer = new Quotation(sqlDatabase);
         //
         //    commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
         //
@@ -1408,11 +1408,11 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                OutgoingQuotation outgoingQuotation = new OutgoingQuotation(sqlDatabase);
+                Quotation quotation = new Quotation(sqlDatabase);
 
-                outgoingQuotation.CopyWorkOffer(workOrder);
+                quotation.CopyWorkOffer(workOrder);
 
-                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }

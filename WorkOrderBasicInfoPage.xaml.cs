@@ -23,7 +23,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         WorkOrder workOrder;
-        OutgoingQuotation tmpWorkOffer;
+        Quotation tmpWorkOffer;
 
 
         private CommonQueries commonQueriesObject;
@@ -61,7 +61,7 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
 
             workOrder = mWorkOrder;
-            //tmpWorkOffer = new OutgoingQuotation();
+            //tmpWorkOffer = new Quotation();
 
             InitializeComponent();
 
@@ -163,21 +163,30 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private bool InitializeSalesPersonCombo()
         {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
+            List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref tempEmployeesList))
                 return false;
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref techOfficeList))
+
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref tempEmployeesList))
                 return false;
+
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            if (!commonQueriesObject.GetManagerEmployees(ref tempEmployeesList))
+                return false;
+
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            employeesList.Sort();
 
             for (int i = 0; i < employeesList.Count(); i++)
-            {
                 salesPersonCombo.Items.Add(employeesList[i].employee_name);
-            }
-            for (int i = 0; i < techOfficeList.Count(); i++)
-            {
-                salesPersonCombo.Items.Add(techOfficeList[i].employee_name);
-            }
-
-            salesPersonCombo.Items.Add("Ahmed Ayman Farid");
 
             return true;
         }
@@ -514,14 +523,7 @@ namespace _01electronics_crm
         {
             if (OfferSerialCombo.SelectedItem != null)
             {
-                if (salesPersonCombo.SelectedIndex != employeesList.Count())
-                {
-                    workOrder.InitializeSalesWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
-                }
-                else
-                {
-                    workOrder.InitializeTechnicalOfficeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version);
-                }
+                workOrder.InitializeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
 
                 SetCompanyNameAddressContactFromOffer();
 

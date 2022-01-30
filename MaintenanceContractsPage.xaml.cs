@@ -1185,11 +1185,11 @@ namespace _01electronics_crm
 
             if (MaintContract.GetMaintOfferID() != null)
             {
-                MaintenanceOffer outgoingQuotation = new MaintenanceOffer(sqlDatabase);
+                MaintenanceOffer quotation = new MaintenanceOffer(sqlDatabase);
 
-                outgoingQuotation.CopyMaintOffer(MaintContract);
+                quotation.CopyMaintOffer(MaintContract);
 
-                MaintenanceOffersWindow workOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
+                MaintenanceOffersWindow workOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref quotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }

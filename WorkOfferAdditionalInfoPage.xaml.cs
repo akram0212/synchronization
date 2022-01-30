@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -25,7 +26,7 @@ namespace _01electronics_crm
     public partial class WorkOfferAdditionalInfoPage : Page
     {
         Employee loggedInUser;
-        OutgoingQuotation outgoingQuotation;
+        Quotation quotation;
         WordAutomation wordAutomation;
 
         private CommonQueries commonQueriesObject;
@@ -61,11 +62,11 @@ namespace _01electronics_crm
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferAdditionalInfoPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition)
+        public WorkOfferAdditionalInfoPage(ref Employee mLoggedInUser, ref Quotation mWorkOffer, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            outgoingQuotation = mWorkOffer;
+            quotation = mWorkOffer;
 
             sqlDatabase = new SQLServer();
             fTPObject = new FTPServer();
@@ -78,7 +79,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            outgoingQuotation.SetHasDrawings(false);
+            quotation.SetHasDrawings(false);
             ConfigureDrawingSubmissionUIElements();
 
 
@@ -98,7 +99,7 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
 
 
-                if (outgoingQuotation.GetDrawingSubmissionDeadlineTimeUnitId() != 0)
+                if (quotation.GetDrawingSubmissionDeadlineTimeUnitId() != 0)
                     drawingSubmissionCheckBox.IsChecked = true;
                 
                 drawingSubmissionCheckBox.IsEnabled = false;
@@ -125,7 +126,7 @@ namespace _01electronics_crm
                 SetValidityPeriodValues();
                 SetAdditionalDescriptionValue();
 
-                if (outgoingQuotation.GetDrawingSubmissionDeadlineMinimum() != 0)
+                if (quotation.GetDrawingSubmissionDeadlineMinimum() != 0)
                     drawingSubmissionCheckBox.IsChecked = true;
 
             }
@@ -136,9 +137,9 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
             }
         }
-        public WorkOfferAdditionalInfoPage(ref OutgoingQuotation mWorkOffer)
+        public WorkOfferAdditionalInfoPage(ref Quotation mWorkOffer)
         {
-            outgoingQuotation = mWorkOffer;
+            quotation = mWorkOffer;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -225,25 +226,25 @@ namespace _01electronics_crm
         //////////////////////////////
         private void SetDrawingSubmissionValues()
         {
-            drawingDeadlineFromTextBox.Text = outgoingQuotation.GetDrawingSubmissionDeadlineMinimum().ToString();
-            drawingDeadlineToTextBox.Text = outgoingQuotation.GetDrawingSubmissionDeadlineMaximum().ToString();
-            drawingDeadlineDateComboBox.Text = outgoingQuotation.GetDrawingDeadlineTimeUnit();
-            drawingDeadlineDateFromWhenComboBox.SelectedItem = outgoingQuotation.GetOfferDrawingSubmissionDeadlineCondition();
+            drawingDeadlineFromTextBox.Text = quotation.GetDrawingSubmissionDeadlineMinimum().ToString();
+            drawingDeadlineToTextBox.Text = quotation.GetDrawingSubmissionDeadlineMaximum().ToString();
+            drawingDeadlineDateComboBox.Text = quotation.GetDrawingDeadlineTimeUnit();
+            drawingDeadlineDateFromWhenComboBox.SelectedItem = quotation.GetOfferDrawingSubmissionDeadlineCondition();
         }
 
         
 
         private void SetWarrantyPeriodValues()
         {
-           warrantyPeriodTextBox.Text = outgoingQuotation.GetWarrantyPeriod().ToString();
+           warrantyPeriodTextBox.Text = quotation.GetWarrantyPeriod().ToString();
 
-                if (outgoingQuotation.GetWarrantyPeriodTimeUnit() != "")
-                    warrantyPeriodCombo.SelectedItem = outgoingQuotation.GetWarrantyPeriodTimeUnit();
+                if (quotation.GetWarrantyPeriodTimeUnit() != "")
+                    warrantyPeriodCombo.SelectedItem = quotation.GetWarrantyPeriodTimeUnit();
                 else
                     warrantyPeriodCombo.SelectedIndex = warrantyPeriodCombo.Items.Count - 1;
 
-                if (outgoingQuotation.GetOfferWarrantyPeriodCondition() != "")
-                    warrantyPeriodFromWhenCombo.SelectedItem = outgoingQuotation.GetOfferWarrantyPeriodCondition();
+                if (quotation.GetOfferWarrantyPeriodCondition() != "")
+                    warrantyPeriodFromWhenCombo.SelectedItem = quotation.GetOfferWarrantyPeriodCondition();
                 else
                     warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
            
@@ -251,16 +252,16 @@ namespace _01electronics_crm
 
         private void SetValidityPeriodValues()
         {
-            if (outgoingQuotation.GetOfferValidityPeriod() != 0)
+            if (quotation.GetOfferValidityPeriod() != 0)
             {
-                offerValidityTextBox.Text = outgoingQuotation.GetOfferValidityPeriod().ToString();
-                offerValidityCombo.Text = outgoingQuotation.GetOfferValidityTimeUnit();
+                offerValidityTextBox.Text = quotation.GetOfferValidityPeriod().ToString();
+                offerValidityCombo.Text = quotation.GetOfferValidityTimeUnit();
             }
         }
 
         private void SetAdditionalDescriptionValue()
         {
-            additionalDescriptionTextBox.Text = outgoingQuotation.GetOfferNotes();
+            additionalDescriptionTextBox.Text = quotation.GetOfferNotes();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,19 +273,19 @@ namespace _01electronics_crm
         private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (warrantyPeriodCombo.SelectedItem != null)
-                outgoingQuotation.SetWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
+                quotation.SetWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
         }
 
         private void OfferValidityComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            outgoingQuotation.SetOfferValidityTimeUnit(timeUnits[offerValidityCombo.SelectedIndex].timeUnitId, timeUnits[offerValidityCombo.SelectedIndex].timeUnit);
+            quotation.SetOfferValidityTimeUnit(timeUnits[offerValidityCombo.SelectedIndex].timeUnitId, timeUnits[offerValidityCombo.SelectedIndex].timeUnit);
         }
 
         private void DrawingDeadlineDateFromWhenComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (drawingDeadlineDateFromWhenComboBox.SelectedIndex != -1)
             {
-                outgoingQuotation.SetOfferDrawingSubmissionDeadlineCondition(conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].key, conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].value);
+                quotation.SetOfferDrawingSubmissionDeadlineCondition(conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].key, conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].value);
             }
         }
 
@@ -292,7 +293,7 @@ namespace _01electronics_crm
         {
             if (warrantyPeriodFromWhenCombo.SelectedIndex != -1)
             {
-                outgoingQuotation.SetOfferWarrantyPeriodCondition(conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].key, conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].value);
+                quotation.SetOfferWarrantyPeriodCondition(conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].key, conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].value);
             }
         }
 
@@ -305,7 +306,7 @@ namespace _01electronics_crm
             if (integrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
             {
                 warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
-                outgoingQuotation.SetWarrantyPeriod(warrantyPeriod);
+                quotation.SetWarrantyPeriod(warrantyPeriod);
             }
             else
             {
@@ -319,7 +320,7 @@ namespace _01electronics_crm
             if (integrityChecks.CheckInvalidCharacters(offerValidityTextBox.Text, BASIC_MACROS.PHONE_STRING) && offerValidityTextBox.Text != "")
             {
                 offerValidityPeriod = int.Parse(offerValidityTextBox.Text);
-                outgoingQuotation.SetOfferValidityPeriod(offerValidityPeriod);
+                quotation.SetOfferValidityPeriod(offerValidityPeriod);
             }
             else
             {
@@ -330,14 +331,14 @@ namespace _01electronics_crm
         private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             //additionalDescription = additionalDescriptionTextBox.Text;
-            outgoingQuotation.SetOfferNotes(additionalDescriptionTextBox.Text);
+            quotation.SetOfferNotes(additionalDescriptionTextBox.Text);
         }
         private void DrawingDeadlineFromTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(drawingDeadlineFromTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineFromTextBox.Text != "")
             {
                 drawingDeadlineFrom = int.Parse(drawingDeadlineFromTextBox.Text);
-                outgoingQuotation.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
+                quotation.SetDrawingSubmissionDeadlineMinimum(drawingDeadlineFrom);
             }
             else
             {
@@ -350,7 +351,7 @@ namespace _01electronics_crm
             if (integrityChecks.CheckInvalidCharacters(drawingDeadlineToTextBox.Text, BASIC_MACROS.PHONE_STRING) && drawingDeadlineToTextBox.Text != "")
             {
                 drawingDeadlineTo = int.Parse(drawingDeadlineToTextBox.Text);
-                outgoingQuotation.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
+                quotation.SetDrawingSubmissionDeadlineMaximum(drawingDeadlineTo);
             }
             else
             {
@@ -362,12 +363,12 @@ namespace _01electronics_crm
         {
             if (drawingDeadlineDateComboBox.SelectedItem != null && drawingSubmissionCheckBox.IsChecked == true)
             {
-                outgoingQuotation.SetHasDrawings(true);
-                outgoingQuotation.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
+                quotation.SetHasDrawings(true);
+                quotation.SetDrawingSubmissionDeadlineTimeUnit(timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnitId, timeUnits[drawingDeadlineDateComboBox.SelectedIndex].timeUnit);
             }
             else
             {
-                outgoingQuotation.SetHasDrawings(false);
+                quotation.SetHasDrawings(false);
             }
         }
 
@@ -379,7 +380,7 @@ namespace _01electronics_crm
         {
             EnableDrawingSubmissionUIElements();
             isDrawing = 1;
-            outgoingQuotation.SetHasDrawings(true);
+            quotation.SetHasDrawings(true);
         }
 
         private void OnUnCheckDrawingSubmission(object sender, RoutedEventArgs e)
@@ -391,7 +392,7 @@ namespace _01electronics_crm
             drawingDeadlineDateComboBox.Text = null;
             drawingDeadlineDateFromWhenComboBox.SelectedIndex = drawingDeadlineDateFromWhenComboBox.Items.Count - 1;
             isDrawing = 0;
-            outgoingQuotation.SetHasDrawings(false);
+            quotation.SetHasDrawings(false);
         }
 
         private void OnCheckWarrantyPeriod(object sender, RoutedEventArgs e)
@@ -490,7 +491,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
-            wordAutomation.AutomateWorkOffer(outgoingQuotation);
+            wordAutomation.AutomateWorkOffer(quotation);
         }
 
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
@@ -504,49 +505,41 @@ namespace _01electronics_crm
         {
             //PLEASE CHANGE THESE MESSAGE
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
-            if (outgoingQuotation.GetSalesPersonId() == 0)
-                MessageBox.Show("You need to choose sales person before adding a work offer!");
-            else if (outgoingQuotation.GetCompanyName() == null)
-                MessageBox.Show("You need to choose a company before adding a work offer!");
-            else if (outgoingQuotation.GetAddressSerial() == 0)
-                MessageBox.Show("You need to choose company address before adding a work offer!");
-            else if (outgoingQuotation.GetContactId() == 0)
-                MessageBox.Show("You need to choose a contact before adding a work offer!");
-            else if (outgoingQuotation.GetOfferProduct1TypeId() != 0 && outgoingQuotation.GetProduct1PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
-            else if (outgoingQuotation.GetOfferProduct2TypeId() != 0 && outgoingQuotation.GetProduct2PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
-            else if (outgoingQuotation.GetOfferProduct3TypeId() != 0 && outgoingQuotation.GetProduct3PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
-            else if (outgoingQuotation.GetOfferProduct4TypeId() != 0 && outgoingQuotation.GetProduct4PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
-            else if (outgoingQuotation.GetPercentDownPayment() + outgoingQuotation.GetPercentOnDelivery() + outgoingQuotation.GetPercentOnInstallation() != 100)
-                MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!");
-            else if ((workOfferPaymentAndDeliveryPage.deliveryTimeCheckBox.IsChecked == true && outgoingQuotation.GetDeliveryTimeMinimum() == 0) || (workOfferPaymentAndDeliveryPage.deliveryTimeCheckBox.IsChecked == true && outgoingQuotation.GetDeliveryTimeMaximum() == 0))
-                MessageBox.Show("You need to set delivery time min and max before adding a work offer!");
-            else if (workOfferPaymentAndDeliveryPage.deliveryPointCheckBox.IsChecked == true && outgoingQuotation.GetDeliveryPointId() == 0)
-                MessageBox.Show("You need to set delivery point before adding a work offer!");
-            else if (outgoingQuotation.GetOfferContractTypeId() == 0)
-                MessageBox.Show("You need to set contract type before adding a work offer!");
-            else if ((warrantyPeriodCheckBox.IsChecked == true && outgoingQuotation.GetWarrantyPeriod() == 0) || (warrantyPeriodCheckBox.IsChecked == true && outgoingQuotation.GetWarrantyPeriodTimeUnitId() == 0))
-                MessageBox.Show("You need to set warranty period before adding a work offer!");
-            else if (outgoingQuotation.GetOfferValidityPeriod() == 0 || outgoingQuotation.GetOfferValidityTimeUnitId() == 0)
-                MessageBox.Show("You need to set validity period before adding a work offer!");
+            if (quotation.GetSalesPersonId() == 0)
+                System.Windows.Forms.MessageBox.Show("Sales person must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetCompanyName() == null)
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetAddressSerial() == 0)
+                System.Windows.Forms.MessageBox.Show("Company address must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetContactId() == 0)
+                System.Windows.Forms.MessageBox.Show("Contact must be specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetOfferProduct1TypeId() != 0 && quotation.GetProduct1PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 1 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetOfferProduct2TypeId() != 0 && quotation.GetProduct2PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 2 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetOfferProduct3TypeId() != 0 && quotation.GetProduct3PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 3 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetOfferProduct4TypeId() != 0 && quotation.GetProduct4PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 4 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetPercentDownPayment() + quotation.GetPercentOnDelivery() + quotation.GetPercentOnInstallation() != 100)
+                System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (quotation.GetOfferContractTypeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
-                    if (!outgoingQuotation.IssueNewOffer())
+                    if (!quotation.IssueNewOffer())
                         return;
 
-                     //if (outgoingQuotation.GetRFQID() != null)
-                       // if (!outgoingQuotation.ConfirmRFQ())
+                     //if (quotation.GetRFQID() != null)
+                       // if (!quotation.ConfirmRFQ())
                          //   return;
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
-                        WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, true);
+                        WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, true);
 
                         NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                         currentWindow.Close();
@@ -556,14 +549,14 @@ namespace _01electronics_crm
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 {
-                    if (!outgoingQuotation.ReviseOffer())
+                    if (!quotation.ReviseOffer())
                         return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
-                        WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, true);
+                        WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, true);
 
                         NavigationWindow currentWindow = (NavigationWindow)this.Parent;
                         currentWindow.Close();
