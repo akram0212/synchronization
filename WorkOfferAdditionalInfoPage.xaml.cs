@@ -539,9 +539,9 @@ namespace _01electronics_crm
                     if (!outgoingQuotation.IssueNewOffer())
                         return;
 
-                     //if (outgoingQuotation.GetRFQID() != null)
-                       // if (!outgoingQuotation.ConfirmRFQ())
-                         //   return;
+                     if (outgoingQuotation.GetRFQID() != null)
+                        if (!outgoingQuotation.ConfirmRFQ())
+                            return;
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
