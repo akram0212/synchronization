@@ -27,7 +27,7 @@ namespace _01electronics_crm
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferWindow(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition, bool openFilesPage)
+        public WorkOfferWindow(ref Employee mLoggedInUser, ref Quotation mWorkOffer, int mViewAddCondition, bool openFilesPage)
         {
             InitializeComponent();
 

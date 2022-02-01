@@ -27,7 +27,7 @@ namespace _01electronics_crm
     public partial class WorkOfferUploadFilesPage : Page
     {
         protected Employee loggedInUser;
-        protected OutgoingQuotation outgoingQuotation;
+        protected Quotation quotation;
 
         private SQLServer sqlDatabase;
         protected FTPServer ftpObject;
@@ -72,7 +72,7 @@ namespace _01electronics_crm
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
 
-        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref OutgoingQuotation mWorkOffer, int mViewAddCondition)
+        public WorkOfferUploadFilesPage(ref Employee mLoggedInUser, ref Quotation mWorkOffer, int mViewAddCondition)
         {
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
@@ -82,7 +82,7 @@ namespace _01electronics_crm
             wordAutomation = new WordAutomation();
 
             loggedInUser = mLoggedInUser;
-            outgoingQuotation = mWorkOffer;
+            quotation = mWorkOffer;
             viewAddCondition = mViewAddCondition;
 
             ftpFiles = new List<string>();
@@ -109,7 +109,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + outgoingQuotation.GetOfferID() + "/";
+            serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + quotation.GetOfferID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
@@ -476,7 +476,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
-            wordAutomation.AutomateWorkOffer(outgoingQuotation);
+            wordAutomation.AutomateWorkOffer(quotation);
         }
 
         

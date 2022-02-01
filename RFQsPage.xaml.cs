@@ -28,7 +28,7 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
 
         RFQ selectedRFQ;
-        OutgoingQuotation resolveWorkOffer;
+        Quotation resolveWorkOffer;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -1255,7 +1255,7 @@ namespace _01electronics_crm
             }
             else
             {
-                resolveWorkOffer = new OutgoingQuotation(sqlDatabase);
+                resolveWorkOffer = new Quotation(sqlDatabase);
 
                 resolveWorkOffer.CopyRFQ(selectedRFQ);
                 resolveWorkOffer.LinkRFQInfo();

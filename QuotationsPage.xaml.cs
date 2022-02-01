@@ -27,7 +27,7 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
 
-        private OutgoingQuotation selectedWorkOffer;
+        private Quotation selectedWorkOffer;
 
        
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
@@ -1165,7 +1165,7 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION;
 
-            selectedWorkOffer = new OutgoingQuotation(sqlDatabase);
+            selectedWorkOffer = new Quotation(sqlDatabase);
 
             WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser,ref selectedWorkOffer, viewAddCondition, false);
             
@@ -1180,21 +1180,11 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
-            {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
 
-            
+            selectedWorkOffer.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+
             WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
             viewOffer.Show();
         }
@@ -1205,19 +1195,9 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
-            {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+            selectedWorkOffer.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-
 
             WorkOfferWindow viewOffer = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
             viewOffer.Show();
@@ -1228,20 +1208,11 @@ namespace _01electronics_crm
             viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
-            
-            
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
-            {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+
+
+            selectedWorkOffer.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
             workOrder.CopyWorkOffer(selectedWorkOffer);
@@ -1261,18 +1232,9 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id == 3)
-            {
-                selectedWorkOffer.InitializeSalesWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+            selectedWorkOffer.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedWorkOffer.InitializeTechnicalOfficeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
 
 
             ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedWorkOffer, failureReasons);

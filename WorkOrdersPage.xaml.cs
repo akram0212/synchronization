@@ -486,10 +486,16 @@ namespace _01electronics_crm
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-               
+
+                ListBoxItem addCollectionButton = new ListBoxItem();
+                addCollectionButton.Content = "View Offer";
+                addCollectionButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 listBox.Items.Add(viewButton);
 
                 listBox.Items.Add(viewRFQButton);
+
+                listBox.Items.Add(viewOfferButton);
 
                 listBox.Items.Add(viewOfferButton);
 
@@ -1155,7 +1161,7 @@ namespace _01electronics_crm
 
         //private void OnBtnClickView(object sender, RoutedEventArgs e)
         //{
-        //    OutgoingQuotation selectedWorkOffer = new OutgoingQuotation(sqlDatabase);
+        //    Quotation selectedWorkOffer = new Quotation(sqlDatabase);
         //
         //    commonQueriesObject.GetEmployeeTeam(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentSelectedOrderItem)].sales_person_id, ref salesPersonTeam);
         //
@@ -1408,11 +1414,11 @@ namespace _01electronics_crm
 
             if (workOrder.GetOfferID() != null)
             {
-                OutgoingQuotation outgoingQuotation = new OutgoingQuotation(sqlDatabase);
+                Quotation quotation = new Quotation(sqlDatabase);
 
-                outgoingQuotation.CopyWorkOffer(workOrder);
+                quotation.CopyWorkOffer(workOrder);
 
-                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref outgoingQuotation, viewAddCondition, false);
+                WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref quotation, viewAddCondition, false);
 
                 workOfferWindow.Show();
             }
