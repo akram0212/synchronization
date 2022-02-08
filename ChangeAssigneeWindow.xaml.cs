@@ -34,7 +34,7 @@ namespace _01electronics_crm
         String oldAssignee;
 
         RFQ rfq;
-        OutgoingQuotation outgoingQuotation;
+        Quotation outgoingQuotation;
         MaintenanceOffer maintOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)
@@ -59,7 +59,7 @@ namespace _01electronics_crm
             
         }
 
-        public ChangeAssigneeWindow(ref OutgoingQuotation mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
+        public ChangeAssigneeWindow(ref Quotation mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
         {
             InitializeComponent();
 
