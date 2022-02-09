@@ -28,7 +28,7 @@ namespace _01electronics_crm
         private CommonFunctions commonFunctionsObject;
 
         RFQ selectedRFQ;
-        OutgoingQuotation resolveWorkOffer;
+        Quotation resolveWorkOffer;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -129,6 +129,19 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
 
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                salesEmployeesList.Add(loggedInUserStruct);
+            }
+
             for (int i = 0; i < salesEmployeesList.Count; i++)
                 salesComboBox.Items.Add(salesEmployeesList[i].employee_name);
 
@@ -138,6 +151,19 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployeesList))
                 return false;
+
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                preSalesEmployeesList.Add(loggedInUserStruct);
+            }
 
             for (int i = 0; i < preSalesEmployeesList.Count; i++)
                 preSalesComboBox.Items.Add(preSalesEmployeesList[i].employee_name);
@@ -231,10 +257,6 @@ namespace _01electronics_crm
        
         private void SetDefaultSettings()
         {
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-                DisableAddButton();
-            
-            
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -270,6 +292,8 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
+
+                DisableAddButton();
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
@@ -290,6 +314,8 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
+
+                DisableAddButton();
             }
         }
 
@@ -1229,7 +1255,7 @@ namespace _01electronics_crm
             }
             else
             {
-                resolveWorkOffer = new OutgoingQuotation(sqlDatabase);
+                resolveWorkOffer = new Quotation(sqlDatabase);
 
                 resolveWorkOffer.CopyRFQ(selectedRFQ);
                 resolveWorkOffer.LinkRFQInfo();

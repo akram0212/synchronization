@@ -34,7 +34,11 @@ namespace _01electronics_crm
         String oldAssignee;
 
         RFQ rfq;
+<<<<<<< HEAD
         Quotation outgoingQuotation;
+=======
+        Quotation quotation;
+>>>>>>> dbf586f5f8765193e7b6ef6579949af296cdbbd0
         MaintenanceOffer maintOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)
@@ -64,7 +68,7 @@ namespace _01electronics_crm
             InitializeComponent();
 
             condition = 1;
-            outgoingQuotation = mWorkOffer;
+            quotation = mWorkOffer;
             failureReasons = mFailureReasons;
             
             commonQueries = new CommonQueries();
@@ -135,7 +139,7 @@ namespace _01electronics_crm
 
             else if(condition == 1)
             {
-                outgoingQuotation.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
+                quotation.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
             else if(condition == 2)
             {

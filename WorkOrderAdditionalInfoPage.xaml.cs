@@ -489,25 +489,25 @@ namespace _01electronics_crm
         {
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (workOrder.GetSalesPersonId() == 0)
-                System.Windows.Forms.MessageBox.Show("Sales Person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Sales person must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetCompanyName() == null)
-                System.Windows.Forms.MessageBox.Show("Company is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetAddressSerial() == 0)
-                System.Windows.Forms.MessageBox.Show("company address is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Company address must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetContactId() == 0)
-                System.Windows.Forms.MessageBox.Show("Contact is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Contact must be specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("product 1 price  is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Product 1 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("product 2 price  is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Product 2 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("product 3 price is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Product 3 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("product 4 price is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Product 4 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderPercentDownPayment() + workOrder.GetOrderPercentOnDelivery() + workOrder.GetOrderPercentOnInstallation() != 100)
-                System.Windows.Forms.MessageBox.Show("Down payement, on delivery and on installation percentages total is less than 100%!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderContractTypeId() == 0)
-                System.Windows.Forms.MessageBox.Show("Contract type is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             
             else
             {
@@ -516,14 +516,10 @@ namespace _01electronics_crm
                   //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
                   if (!workOrder.IssueNewOrder())
                       return;
-
                   if (workOrder.GetOfferID() != null)
-                  {
                       if (!workOrder.ConfirmOffer())
                           return;
-
-                  }
-              }
+                }
 
               viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 

@@ -184,9 +184,25 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployees))
                 return false;
+
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                salesEmployees.Add(loggedInUserStruct);
+            }
+
+
             for (int i = 0; i < salesEmployees.Count(); i++)
                 salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
 
+            
             return true;
         }
 
@@ -207,7 +223,19 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
                 return false;
 
-            //NO NEED FOR TEMP VARIABLES
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                preSalesEmployees.Add(loggedInUserStruct);
+            }
+
             for (int i = 0; i < preSalesEmployees.Count(); i++)
                 assigneeCombo.Items.Add(preSalesEmployees[i].employee_name);
 
