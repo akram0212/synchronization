@@ -129,6 +129,9 @@
     <Compile Include="AddClientVisitWindow.xaml.cs">
       <DependentUpon>AddClientVisitWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddCollectionWindow.xaml.cs">
+      <DependentUpon>AddCollectionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddCompanyDetailsWindow.xaml.cs">
       <DependentUpon>AddCompanyDetailsWindow.xaml</DependentUpon>
     </Compile>
@@ -319,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddClientVisitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddCollectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

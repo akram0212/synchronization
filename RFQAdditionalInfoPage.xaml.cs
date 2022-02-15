@@ -26,6 +26,7 @@ namespace _01electronics_crm
         RFQ rfq;
         CommonQueries commonQueriesObject;
         CommonFunctions commonFunctionsObject;
+        IntegrityChecks integrityChecks;
         SQLServer sqlDatabase;
 
 
@@ -41,14 +42,15 @@ namespace _01electronics_crm
         public RFQProductsPage rfqProductsPage;
         public RFQUploadFilesPage rfqUploadFilesPage;
 
+
         public RFQAdditionalInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+            integrityChecks = new IntegrityChecks();
             
             //YOU DONT NEED TO INITIALIZE RFQ IF YOU ARE GOING TO LINK IT TO ANOTHER ONE
             //rfq = new RFQ(sqlDatabase);
@@ -179,6 +181,11 @@ namespace _01electronics_crm
         }
         private void OnTextChangedNotes(object sender, TextChangedEventArgs e)
         {
+            if (notesTextBox.Text.Length <= COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE)
+                notes = notesTextBox.Text;
+            notesTextBox.Text = notes;
+            notesTextBox.Select(notesTextBox.Text.Length, 0);
+            counterLabel.Content = COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE - notesTextBox.Text.Length;
             rfq.SetRFQNotes(notesTextBox.Text);
         }
 

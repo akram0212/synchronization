@@ -173,6 +173,7 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetContractTypes(ref contractTypes))
                 return false;
+            contractTypes.Remove(contractTypes.Find(s1 => s1.contractId == 5));
             for (int i = 0; i < contractTypes.Count; i++)
                 contractTypeComboBox.Items.Add(contractTypes[i].contractName);
 

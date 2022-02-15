@@ -35,7 +35,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> techOfficeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        //private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> techOfficeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> outgoingQuotationsList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
 
@@ -234,7 +234,8 @@ namespace _01electronics_crm
 
             companyAddressCombo.SelectedIndex = 0;
 
-            companyAddressCombo.IsEnabled = true;
+            if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                companyAddressCombo.IsEnabled = true;
         }
 
         private void InitializeCompanyContactCombo()
@@ -250,7 +251,8 @@ namespace _01electronics_crm
 
             contactPersonNameCombo.SelectedIndex = 0;
 
-            contactPersonNameCombo.IsEnabled = true;
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                contactPersonNameCombo.IsEnabled = true;
         }
 
         private void InitializeOfferSerialCombo()
@@ -288,11 +290,11 @@ namespace _01electronics_crm
 
             if (salesPersonCombo.SelectedItem != null)
             {
-                if (salesPersonCombo.SelectedIndex < employeesList.Count())
+                if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == employeesList[salesPersonCombo.SelectedIndex].employee_id && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);
@@ -300,23 +302,11 @@ namespace _01electronics_crm
                     }
                 }
 
-                else if (salesPersonCombo.SelectedIndex < employeesList.Count() + techOfficeList.Count())
+                else 
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
-                        {
-                            OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
-                            offersAddedToComboList.Add(outgoingQuotationsList[i]);
-                        }
-                    }
-                }
-
-                else
-                {
-                    for (int i = 0; i < outgoingQuotationsList.Count(); i++)
-                    {
-                        if (outgoingQuotationsList[i].sales_person_id == 3 && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);
@@ -363,6 +353,7 @@ namespace _01electronics_crm
         private void SetCompanyNameComboValue()
         {
             companyNameCombo.Text = workOrder.GetCompanyName();
+            companyNameCombo.IsEnabled = false;
         }
 
         private void SetCompanyAddressLabel()
@@ -428,32 +419,23 @@ namespace _01electronics_crm
 
             companyNameCombo.IsEnabled = false;
 
-            if (salesPersonCombo.SelectedIndex < employeesList.Count())
+            salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
+            commonQueriesObject.GetEmployeeTeam(salesPersonID, ref salesPersonTeamID);
+
+            if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
-                salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
-                salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
                 InitializeCompanyNameCombo();
                 companyNameCombo.IsEnabled = false;
-                OfferCheckBox.IsChecked = true;
+                if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || workOrder.GetOfferID() != null)
+                    OfferCheckBox.IsChecked = true;
             }
-            else if (salesPersonCombo.SelectedIndex < employeesList.Count() + techOfficeList.Count())
+            else
             {
-                salesPersonID = loggedInUser.GetEmployeeId();
-                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
-
                 InitializeCompanyNameCombo();
                 //OfferCheckBox.IsChecked = false;
                 //SetOfferSerialComboValue();
             }
-            else
-            {
-                salesPersonID = 3;
-                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID;
-
-                InitializeCompanyNameCombo();
-                companyNameCombo.IsEnabled = false;
-                OfferCheckBox.IsChecked = true;
-            }
+          
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 workOrder.ResetWorkOrderInfo(salesPersonTeamID);
@@ -521,7 +503,7 @@ namespace _01electronics_crm
 
         private void OnSelChangedQuotationSerialCombo(object sender, SelectionChangedEventArgs e)
         {
-            if (OfferSerialCombo.SelectedItem != null)
+            if (OfferSerialCombo.SelectedItem != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 workOrder.InitializeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
 

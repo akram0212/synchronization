@@ -126,8 +126,13 @@ namespace _01electronics_crm
                 DisableTotalPriceComboAndTextBox();
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
+                SetTotalPriceCondition();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
                 SetDeliveryTimeValues();
                 SetDeliveryPointValue();
+                SetNullsToZeros();
             }
         }
         public WorkOrderPaymentAndDeliveryPage(ref WorkOrder mWorkOrder)
@@ -214,7 +219,7 @@ namespace _01electronics_crm
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         public void SetTotalPriceCurrencyComboBox()
         {
-            if (workOrder.GetOfferID() != null)
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 totalPriceCombo.SelectedItem = workOrder.GetCurrency();
             else
                 totalPriceCombo.SelectedItem = workOrder.GetOrderCurrency();
@@ -226,7 +231,7 @@ namespace _01electronics_crm
 
             for (int i = 1; i <= COMPANY_WORK_MACROS.MAX_ORDER_PRODUCTS; i++)
             {
-                if(workOrder.GetOfferID() != null)
+                if(workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                     totalPrice += workOrder.GetProductPriceValue(i) * workOrder.GetOfferProductQuantity(i);
                 else
                     totalPrice += workOrder.GetOrderProductPriceValue(i) * workOrder.GetOrderProductQuantity(i);
@@ -234,6 +239,14 @@ namespace _01electronics_crm
 
             totalPriceTextBox.Text = totalPrice.ToString();
             workOrder.SetOrderTotalValues();
+        }
+
+        public void SetTotalPriceCondition()
+        {
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                totalPriceVATCombo.SelectedItem = workOrder.GetOfferVATCondition();
+            else
+                totalPriceVATCombo.SelectedItem = workOrder.GetOrderVATCondition();
         }
 
         private void SetPercentAndValuesInWorkOrder()
@@ -244,7 +257,7 @@ namespace _01electronics_crm
         private void SetPriceValues()
         {
 
-            if (workOrder.GetOfferID() != null)
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 if (workOrder.GetCurrencyId() != 0)
                 {
@@ -263,27 +276,23 @@ namespace _01electronics_crm
                 }
             }
 
-            
-            totalPriceVATCombo.SelectedItem = workOrder.GetOrderVATCondition();
         }
 
         public void SetDownPaymentValues()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                if (workOrder.GetPercentDownPayment() != 0)
-                {
-                    downPaymentPercentageTextBox.Text = null;
-                    onDeliveryPercentageTextBox.Text = null;
-                    onInstallationPercentageTextBox.Text = null;
+                downPaymentPercentageTextBox.Text = null;
+                onDeliveryPercentageTextBox.Text = null;
+                onInstallationPercentageTextBox.Text = null;
 
-                    downPaymentPercentageTextBox.Text = workOrder.GetPercentDownPayment().ToString();
-                    if (downPaymentPercentageTextBox.Text != "")
-                    {
-                        downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
-                        downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
-                    }
+                downPaymentPercentageTextBox.Text = workOrder.GetPercentDownPayment().ToString();
+                if (downPaymentPercentageTextBox.Text != "")
+                {
+                    downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
+                    downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
                 }
+
             }
             else
             {
@@ -299,18 +308,18 @@ namespace _01electronics_crm
 
         public void SetOnDeliveryValues()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                if (workOrder.GetPercentOnDelivery() != 0)
+
+                onDeliveryPercentageTextBox.Text = workOrder.GetPercentOnDelivery().ToString();
+                if (onDeliveryPercentageTextBox.Text != "")
                 {
-                    onDeliveryPercentageTextBox.Text = workOrder.GetPercentOnDelivery().ToString();
-                    if (onDeliveryPercentageTextBox.Text != "")
-                    {
-                        onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
-                        onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
-                    }
+                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                    onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
                 }
             }
+
             else
             {
                 if (workOrder.GetOrderPercentOnDelivery() != 0)
@@ -324,16 +333,15 @@ namespace _01electronics_crm
 
         public void SetOnInstallationValues()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                if (workOrder.GetPercentOnInstallation() != 0)
+                onInstallationPercentageTextBox.Text = workOrder.GetPercentOnInstallation().ToString();
+                
+                if (onInstallationPercentageTextBox.Text != "")
                 {
-                    onInstallationPercentageTextBox.Text = workOrder.GetPercentOnInstallation().ToString();
-                    if (onInstallationPercentageTextBox.Text != "")
-                    {
-                        onDeliveryPercentage = int.Parse(onInstallationPercentageTextBox.Text);
-                        onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
-                    }
+                    onDeliveryPercentage = int.Parse(onInstallationPercentageTextBox.Text);
+                    onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
                 }
             }
             else
@@ -350,23 +358,21 @@ namespace _01electronics_crm
         public void SetDeliveryTimeValues()
         {
             ////////////Added by me ama get awareeh
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                if (workOrder.GetDeliveryTimeMinimum() != 0)
-                {
-                    deliveryTimeTextBoxFrom.Text = workOrder.GetDeliveryTimeMinimum().ToString();
-                    deliveryTimeTextBoxTo.Text = workOrder.GetDeliveryTimeMaximum().ToString();
-                }
+                deliveryTimeTextBoxFrom.Text = workOrder.GetDeliveryTimeMinimum().ToString();
+                deliveryTimeTextBoxTo.Text = workOrder.GetDeliveryTimeMaximum().ToString();
+
                 if (workOrder.GetDeliveryTimeUnit() != null)
                     deliveryTimeCombo.Text = workOrder.GetDeliveryTimeUnit().ToString();
             }
             else
             {
-                if (workOrder.GetOrderDeliveryTimeMinimum() != 0)
-                {
-                    deliveryTimeTextBoxFrom.Text = workOrder.GetOrderDeliveryTimeMinimum().ToString();
-                    deliveryTimeTextBoxTo.Text = workOrder.GetOrderDeliveryTimeMaximum().ToString();
-                }
+
+                deliveryTimeTextBoxFrom.Text = workOrder.GetOrderDeliveryTimeMinimum().ToString();
+                deliveryTimeTextBoxTo.Text = workOrder.GetOrderDeliveryTimeMaximum().ToString();
+
                 if (workOrder.GetOrderDeliveryTimeUnit() != null)
                     deliveryTimeCombo.Text = workOrder.GetOrderDeliveryTimeUnit().ToString();
 
@@ -376,7 +382,7 @@ namespace _01electronics_crm
 
         public void SetDeliveryPointValue()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 deliveryPointCombo.SelectedItem = workOrder.GetDeliveryPoint();
             }
@@ -389,6 +395,24 @@ namespace _01electronics_crm
         public void SetDownPaymentPercentage()
         {
             downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+        }
+
+        public void SetNullsToZeros()
+        {
+            if (downPaymentActualTextBox.Text == "0")
+                downPaymentPercentageTextBox.Text = "0";
+
+            if (onDeliveryActualTextBox.Text == "0")
+                onDeliveryPercentageTextBox.Text = "0";
+
+            if (onInstallationActualTextBox.Text == "0")
+                onInstallationPercentageTextBox.Text = "0";
+
+            if (deliveryTimeTextBoxFrom.Text == null)
+                deliveryTimeTextBoxFrom.Text = "0";
+
+            if (deliveryTimeTextBoxTo.Text == null)
+                deliveryTimeTextBoxTo.Text = "0";
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
