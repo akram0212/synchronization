@@ -57,13 +57,29 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="CONTACTS" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400">
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource selectedMainTabBorder}" MouseLeftButtonDown="OnClickListView">
+                    <Label Name="listViewLabel" Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource unselectedMainTabBorder}" MouseLeftButtonDown="OnClickTreeView">
+                    <Label Name="treeViewLabel" Content="Tree View" Style="{StaticResource unselectedMainTabLabelItem}"/>
+                </Border>
+            </Grid>
+            
+            <Grid Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -105,16 +121,22 @@
                     <ComboBox Name="salesPersonComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSalesPersonComboBox"/>
                 </Grid>
 
-                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360">
-                    <TreeView Name="contactTreeView" SelectedItemChanged="OnSelectedItemChangedTreeViewItem" >
-
-                    </TreeView>
+                <ScrollViewer x:Name="contactTreeScrollViewer" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360" Visibility="Collapsed">
+                    <Border BorderBrush="#000000" BorderThickness="3">
+                        <TreeView Name="contactTreeView" SelectedItemChanged="OnSelectedItemChangedTreeViewItem"/>
+                    </Border>
+                </ScrollViewer>
+                
+                <ScrollViewer x:Name="contactStackScrollViewer" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,48" MinHeight="400" MinWidth="360" Visibility="Visible">
+                    <Border BorderBrush="#000000" BorderThickness="3">
+                        <StackPanel Name="contactStackView" Background="#FFFFFF"/>
+                    </Border>
                 </ScrollViewer>
 
 
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -129,4 +151,5 @@
         </Grid>
 
     </Grid>
+    
 </Page>
