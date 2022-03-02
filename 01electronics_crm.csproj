@@ -30,10 +30,10 @@
     <ProductName>CRM</ProductName>
     <PublisherName>01 Electronics</PublisherName>
     <SuiteName>ERP System</SuiteName>
-    <MinimumRequiredVersion>5.4.0.3</MinimumRequiredVersion>
+    <MinimumRequiredVersion>5.4.0.4</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>5.4.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -762,6 +762,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\plus_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\budget_icon.jpg" />
+    <Resource Include="Icons\budget_icon_blue.png" />
+    <Resource Include="Icons\client_attempt_icon.png" />
+    <Resource Include="Icons\client_call_icon.png" />
+    <Resource Include="Icons\client_followup_icon.png" />
+    <Resource Include="Icons\client_visit_icon.png" />
+    <Resource Include="Icons\company_icon.png" />
+    <Resource Include="Icons\company_icon_blue.png" />
+    <Resource Include="Icons\contact_icon.png" />
+    <Resource Include="Icons\contact_icon_blue.png" />
+    <Resource Include="Icons\email_icon.png" />
+    <Resource Include="Icons\email_icon_blue.png" />
+    <Resource Include="Icons\field_icon.png" />
+    <Resource Include="Icons\field_icon_blue.png" />
+    <Resource Include="Icons\phone_icon.png" />
+    <Resource Include="Icons\phone_icon_blue.png" />
+    <Resource Include="Icons\status_icon.png" />
+    <Resource Include="Icons\status_icon_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -350,6 +350,7 @@
             <Setter Property="FontFamily" Value="Sans Serif" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
         <Style x:Key="stackPanelItemBody" TargetType="{x:Type Label}">
@@ -357,6 +358,7 @@
             <Setter Property="Padding" Value="10,0,0,0" />
             <Setter Property="FontFamily" Value="Sans Serif" />
             <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
         <Style x:Key="BorderIcon" TargetType="{x:Type Border}">
