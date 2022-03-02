@@ -48,7 +48,7 @@ namespace _01electronics_crm
             return true;
         }
 
-        private void InitializeOrderStackPanel()
+        private void InitializeOrderGrid()
         {
             salesPersonLabel.Content = workOrder.GetSalesPersonName();
             companyNameLabel.Content = workOrder.GetCompanyName();
@@ -72,12 +72,17 @@ namespace _01electronics_crm
                 orderSerialCombo.IsEnabled = false;
         }
 
+        private bool GetCollectionHistory()
+        {
+            return true;
+        }
+
         private void OnSelChangedOrderSerialCombo(object sender, SelectionChangedEventArgs e)
         {
             if (workOrders[orderSerialCombo.SelectedIndex].order_serial != workOrder.GetOrderSerial())
                 workOrder.InitializeWorkOrderInfo(workOrders[orderSerialCombo.SelectedIndex].order_serial);
 
-            InitializeOrderStackPanel();
+            InitializeOrderGrid();
         }
 
         private void OnSelChangedCollectionTypeCombo(object sender, SelectionChangedEventArgs e)

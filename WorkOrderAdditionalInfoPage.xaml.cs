@@ -216,59 +216,34 @@ namespace _01electronics_crm
         //////////////////////////////
         public void SetDrawingSubmissionValues()
         {
-            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-            {
-                drawingDeadlineFromTextBox.Text = workOrder.GetDrawingSubmissionDeadlineMinimum().ToString();
-                drawingDeadlineToTextBox.Text = workOrder.GetDrawingSubmissionDeadlineMaximum().ToString();
-                drawingDeadlineDateComboBox.Text = workOrder.GetDrawingDeadlineTimeUnit();
-                drawingDeadlineDateFromWhenComboBox.SelectedItem = workOrder.GetOrderDrawingSubmissionDeadlineCondition();
-            }
-            else
-            {
-                drawingDeadlineFromTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMinimum().ToString();
-                drawingDeadlineToTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMaximum().ToString();
-                drawingDeadlineDateComboBox.Text = workOrder.GetOrderDrawingDeadlineTimeUnit();
-                drawingDeadlineDateFromWhenComboBox.SelectedItem = workOrder.GetOrderDrawingSubmissionDeadlineCondition();
-            }
+
+            drawingDeadlineFromTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMinimum().ToString();
+            drawingDeadlineToTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMaximum().ToString();
+            drawingDeadlineDateComboBox.Text = workOrder.GetOrderDrawingDeadlineTimeUnit();
+            drawingDeadlineDateFromWhenComboBox.SelectedItem = workOrder.GetOrderDrawingSubmissionDeadlineCondition();
+
         }
 
         public void SetContractTypeValue()
         {
-            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-            {
-                contractTypeComboBox.SelectedItem = workOrder.GetOfferContractType();
-            }
-            else
-            {
-                contractTypeComboBox.SelectedItem = workOrder.GetOrderContractType();
-            }
-                
+
+            contractTypeComboBox.SelectedItem = workOrder.GetOrderContractType();
+
+
         }
 
         public void SetWarrantyPeriodValues()
         {
-            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-            {
 
-                warrantyPeriodTextBox.Text = workOrder.GetWarrantyPeriod().ToString();
-                warrantyPeriodCombo.SelectedItem = workOrder.GetWarrantyPeriodTimeUnit();
-                warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOfferWarrantyPeriodCondition();
+            warrantyPeriodTextBox.Text = workOrder.GetOrderWarrantyPeriod().ToString();
+            warrantyPeriodCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodTimeUnit();
+            warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodCondition();
 
-            }
-            else
-            {
-                warrantyPeriodTextBox.Text = workOrder.GetOrderWarrantyPeriod().ToString();
-                warrantyPeriodCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodTimeUnit();
-                warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodCondition();
-            }
         }
 
         public void SetAdditionalDescriptionValue()
         {
-            if (workOrder.GetOfferID() != null && viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-                additionalDescriptionTextBox.Text = workOrder.GetOfferNotes();
-            else
-                additionalDescriptionTextBox.Text = workOrder.GetOrderNotes();
+            additionalDescriptionTextBox.Text = workOrder.GetOrderNotes();
         }
 
         public void SetNullsToZeros()
@@ -534,14 +509,19 @@ namespace _01electronics_crm
             
             else
             {
-              if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-              {
-                  //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
-                  if (!workOrder.IssueNewOrder())
-                      return;
-                  if (workOrder.GetOfferID() != null)
-                      if (!workOrder.ConfirmOffer())
-                          return;
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                {
+                    //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
+                    if (!workOrder.IssueNewOrder())
+                        return;
+                    //if (workOrder.GetOfferID() != null)
+                    //    if (!workOrder.ConfirmOffer())
+                    //        return;
+                }
+                else if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                {
+                    if (!workOrder.EditWorkOrder(workOrderBasicInfoPage.oldWorkOrder))
+                        return;
                 }
 
               viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;

@@ -34,6 +34,7 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
 
                     <WrapPanel Grid.Row="0">
@@ -99,6 +100,23 @@
                         <WrapPanel Name="ContactPersonalEmailWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Email"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalEmailTextBox" TextChanged="OnTextChangedPersonalEmail"/>
+                        </WrapPanel>
+                    </WrapPanel>
+
+                    <WrapPanel Grid.Row="5">
+                        <WrapPanel Name="ContactLastVisitWrapPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Last Visit"/>
+                            <DatePicker Style="{StaticResource datePickerStyle}" Name="LastVisitDatePicker"/>
+                        </WrapPanel>
+
+                        <WrapPanel Name="ContactLastCallWrapPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Last Call"/>
+                            <DatePicker Style="{StaticResource datePickerStyle}" Name="lastCallDatePicker"/>
+                        </WrapPanel>
+
+                        <WrapPanel Name="ContactLastOfficeMeetingWrapPanel">
+                            <Label Style="{StaticResource tableItemLabel}" Content="Last Office Meeting"/>
+                            <DatePicker Style="{StaticResource datePickerStyle}" Name="lastOfficeMeetingDatePicker"/>
                         </WrapPanel>
                     </WrapPanel>
                 </Grid>

@@ -64,7 +64,7 @@
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 
-            <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+            <Border Grid.Column="5" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles" x:Name="uploadFilesPageBorder">
                 <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
 

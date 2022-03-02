@@ -185,8 +185,8 @@ namespace _01electronics_crm
             if (!InsertIntoProjectLocations())
                 return;
 
-            System.Windows.Forms.MessageBox.Show("Done");
-            //this.Close();
+            
+            this.Close();
 
         }
 

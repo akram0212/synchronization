@@ -158,7 +158,7 @@ namespace _01electronics_crm
                 List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
                 commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref tmpList);
 
-                 employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
                 
             }
 
@@ -215,7 +215,10 @@ namespace _01electronics_crm
                 TreeViewItem ParentItem = new TreeViewItem();
 
                 ParentItem.Header = listOfEmployees[j].employee_name;
-                ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                if(listOfEmployees[j].currently_employed == true)
+                    ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                else
+                    ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                 ParentItem.FontSize = 14;
                 ParentItem.FontWeight = FontWeights.SemiBold;
                 ParentItem.FontFamily = new FontFamily("Sans Serif");
@@ -293,13 +296,14 @@ namespace _01electronics_crm
                             continue;
 
                         companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial).Value;
-                        
                         TreeViewItem contactTreeItem = new TreeViewItem();
 
                         contactTreeItem.Header = employeesContacts[i].Value[j].contact_name;
                         contactTreeItem.Tag = employeesContacts[i].Value[j].contact_id;
                         contactTreeItem.FontSize = 12;
                         contactTreeItem.FontWeight = FontWeights.Normal;
+                        if(employeesContacts[i].Value[j].is_valid == false)
+                            contactTreeItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
 
                         companyTreeItem.Items.Add(contactTreeItem);
 

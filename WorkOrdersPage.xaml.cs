@@ -497,7 +497,8 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                listBox.Items.Add(editButton);
+                if(loggedInUser.GetEmployeePositionId() == 8 || loggedInUser.GetEmployeePositionId() == 800)
+                    listBox.Items.Add(editButton);
                 
                 listBox.Items.Add(viewRFQButton);
 
@@ -670,12 +671,9 @@ namespace _01electronics_crm
 
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
-                    String tempId = workOrders[i].order_id;
-                    String tempCompanyName = workOrders[i].company_name;
-                    String tempContactName = workOrders[i].contact_name;
-                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsID = workOrders[i].order_id.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = workOrders[i].company_name.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = workOrders[i].contact_name.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 
                     if (containsID || containsCompanyName || containsContactName)
                     {

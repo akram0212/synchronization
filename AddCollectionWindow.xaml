@@ -51,33 +51,41 @@
                 <DatePicker Name="collectionDatePicker" Style="{StaticResource datePickerStyle}"/>
             </WrapPanel>
 
-            <StackPanel Grid.Column="1" Grid.RowSpan="5" Name="orderStackPanel" Background="LightGray" Margin="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
-                <WrapPanel>
-                    <Label Content="Sales Person" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
-                    <Label Name="salesPersonLabel" Style="{StaticResource labelStyle}" Width="250"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label Content="Company" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
-                    <Label Name="companyNameLabel" Style="{StaticResource labelStyle}" Width="250"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label Content="Contract Type" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
-                    <Label Name="contractTypeLabel" Style="{StaticResource labelStyle}" Width="250"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <Label Content="Total Order Amount" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
-                    <Label Name="totalAmountLabel" Style="{StaticResource labelStyle}" Width="250"/>
-                </WrapPanel>
-                <Label Style="{StaticResource tableHeaderItem}" Content="Collection History"/>
-                <ScrollViewer HorizontalAlignment="Stretch" Height="120">
+            <Grid Grid.Column="1" Grid.RowSpan="5" Name="orderGrid" Background="LightGray" Margin="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="50"/>
+                    <RowDefinition MinHeight="50"/>
+                    <RowDefinition MinHeight="50"/>
+                    <RowDefinition MinHeight="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition MinHeight="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition MinWidth="300"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Content="Sales Person" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Company" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Contract Type" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="Total Order Amount" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
+                <Label Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource tableHeaderItem}" Content="Collection History"/>
+
+                <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
                     <StackPanel Name="collectionHistoryStackPanel"/>
                 </ScrollViewer>
-                <WrapPanel >
-                    <Label Content="Remaining Amount" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
-                    <Label Name="remainingAmountLabel" Style="{StaticResource labelStyle}" Width="250"/>
-                </WrapPanel>
                 
-            </StackPanel>
+                <Label Grid.Row="6" Grid.Column="0" Content="Remaining Amount" Style="{StaticResource stackPanelItemHeader}" Margin="10"/>
+
+
+                <Label Grid.Row="0" Grid.Column="1" Name="salesPersonLabel" Style="{StaticResource labelStyle}" Width="300"/>
+                <Label Grid.Row="1" Grid.Column="1" Name="companyNameLabel" Style="{StaticResource labelStyle}" Width="300"/>
+                <Label Grid.Row="2" Grid.Column="1" Name="contractTypeLabel" Style="{StaticResource labelStyle}" Width="300"/>
+                <Label Grid.Row="3" Grid.Column="1" Name="totalAmountLabel" Style="{StaticResource labelStyle}" Width="300"/>
+                <Label Grid.Row="6" Grid.Column="1" Name="remainingAmountLabel" Style="{StaticResource labelStyle}" Width="300"/>
+                
+            </Grid>
         </Grid>
 
         <Button Grid.Row="2" Name="saveChangesButton" Content="Save Changes" Style="{StaticResource buttonStyle}" Click="OnBtnClickSaveChanges"/>

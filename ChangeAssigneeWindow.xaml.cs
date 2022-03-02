@@ -34,11 +34,9 @@ namespace _01electronics_crm
         String oldAssignee;
 
         RFQ rfq;
-<<<<<<< HEAD
-        Quotation outgoingQuotation;
-=======
+
         Quotation quotation;
->>>>>>> dbf586f5f8765193e7b6ef6579949af296cdbbd0
+
         MaintenanceOffer maintOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)

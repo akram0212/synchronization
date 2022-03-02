@@ -1205,7 +1205,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickConfirmOffer()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.ORDER_ADD_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
