@@ -44,7 +44,7 @@ namespace _01electronics_crm
 
         private int viewAddCondition;
         private int salesPersonID;
-        //private int salesPersonTeamID;
+        private int salesPersonTeamID;
 
         public WorkOfferProductsPage workOfferProductsPage;
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
@@ -436,14 +436,15 @@ namespace _01electronics_crm
             rfqsAddedToComboList.Clear();
 
             salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
-            
+            commonQueriesObject.GetEmployeeTeam(salesPersonID, ref salesPersonTeamID);
+
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 quotation.ResetWorkOfferInfo();
 
             quotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId());
             quotation.InitializeSalesPersonInfo(salesPersonID);
 
-            if (quotation.GetRFQSerial() != 0)
+            if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 InitializeRFQSerialCombo();
                 projectSerialCombo.IsEnabled = false;

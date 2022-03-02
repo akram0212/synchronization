@@ -486,10 +486,16 @@ namespace _01electronics_crm
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-               
+
+                ListBoxItem addCollectionButton = new ListBoxItem();
+                addCollectionButton.Content = "View Offer";
+                addCollectionButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 listBox.Items.Add(viewButton);
 
                 listBox.Items.Add(viewRFQButton);
+
+                listBox.Items.Add(viewOfferButton);
 
                 listBox.Items.Add(viewOfferButton);
 
