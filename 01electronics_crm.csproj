@@ -758,11 +758,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Resource Include="Icons\budget_icon.jpg" />
-    <Resource Include="Icons\budget_icon_blue.png" />
-    <Resource Include="Icons\client_attempt_icon.png" />
     <Resource Include="Icons\client_call_icon.png" />
-    <Resource Include="Icons\client_followup_icon.png" />
     <Resource Include="Icons\client_visit_icon.png" />
     <Resource Include="Icons\company_icon.png" />
     <Resource Include="Icons\company_icon_blue.png" />
