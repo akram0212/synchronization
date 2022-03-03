@@ -173,6 +173,7 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetContractTypes(ref contractTypes))
                 return false;
+            contractTypes.Remove(contractTypes.Find(s1 => s1.contractId == 5));
             for (int i = 0; i < contractTypes.Count; i++)
                 contractTypeComboBox.Items.Add(contractTypes[i].contractName);
 
@@ -274,8 +275,11 @@ namespace _01electronics_crm
             if (quotation.GetPercentDownPayment() != 0)
             {
                 downPaymentPercentageTextBox.Text = quotation.GetPercentDownPayment().ToString();
-                downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
-                downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+                if (downPaymentPercentageTextBox.Text != "")
+                {
+                    downPaymentPercentage = int.Parse(downPaymentPercentageTextBox.Text);
+                    downPaymentActualTextBox.Text = GetPercentage(downPaymentPercentage, totalPrice).ToString();
+                }
             }
 
         }
@@ -285,8 +289,11 @@ namespace _01electronics_crm
             if (quotation.GetPercentOnDelivery() != 0)
             {
                 onDeliveryPercentageTextBox.Text = quotation.GetPercentOnDelivery().ToString();
-                onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
-                onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+                if (onDeliveryPercentageTextBox.Text != "")
+                {
+                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                    onDeliveryActualTextBox.Text = GetPercentage(onDeliveryPercentage, totalPrice).ToString();
+                }
             }
         }
 
@@ -295,8 +302,11 @@ namespace _01electronics_crm
             if (quotation.GetPercentOnInstallation() != 0)
             {
                 onInstallationPercentageTextBox.Text = quotation.GetPercentOnInstallation().ToString();
-                onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
-                onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
+                if (onInstallationPercentageTextBox.Text != "")
+                {
+                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                    onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
+                }
             }
         }
 

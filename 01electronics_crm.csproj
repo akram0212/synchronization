@@ -129,6 +129,9 @@
     <Compile Include="AddClientVisitWindow.xaml.cs">
       <DependentUpon>AddClientVisitWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddCollectionWindow.xaml.cs">
+      <DependentUpon>AddCollectionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddCompanyDetailsWindow.xaml.cs">
       <DependentUpon>AddCompanyDetailsWindow.xaml</DependentUpon>
     </Compile>
@@ -319,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddClientVisitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddCollectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -756,7 +763,9 @@
   <ItemGroup>
     <Resource Include="photos\plus_icon.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\office_meeting_icon.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\client_call_icon.png" />
     <Resource Include="Icons\client_visit_icon.png" />
@@ -772,6 +781,15 @@
     <Resource Include="Icons\phone_icon_blue.png" />
     <Resource Include="Icons\status_icon.png" />
     <Resource Include="Icons\status_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\office_meeting_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_call_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

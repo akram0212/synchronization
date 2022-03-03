@@ -41,8 +41,10 @@ namespace _01electronics_crm
 
             if (openFilesPage)
             {
+                
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
-                workOrderUploadFilesPage.workOrderProductsPage = workOrderProductsPage;
+                workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
+                workOrderUploadFilesPage.workOrderProductsPage = workOrderProjectInfoPage.workOrderProductsPage;
                 workOrderUploadFilesPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
 

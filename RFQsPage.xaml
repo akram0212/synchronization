@@ -30,7 +30,6 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MyProfileLabel" Text="My Profile" MouseLeftButtonDown="OnButtonClickedMyProfile"/>
@@ -45,7 +44,6 @@
             <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
             <TextBlock Grid.Row="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
             <TextBlock Grid.Row="11" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
-            <TextBlock Grid.Row="12" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
 
         </Grid>
 

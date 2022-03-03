@@ -196,14 +196,18 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                ColumnDefinition column1 = new ColumnDefinition();
-
-                newGrid.ColumnDefinitions.Add(column1);
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 newGrid.MouseLeftButtonDown += OnBtnClickCallItem;
 
-                Grid.SetColumn(currentStackPanel, 0);
+                Image clientCallIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_call_icon.png", UriKind.Relative)) };
+                ResizeImage(ref clientCallIcon, 40, 40);
+                newGrid.Children.Add(clientCallIcon);
+                Grid.SetColumn(clientCallIcon, 0);
 
                 newGrid.Children.Add(currentStackPanel);
+                Grid.SetColumn(currentStackPanel, 1);
+
                 ClientCallsStackPanel.Children.Add(newGrid);
             }
         }
@@ -333,15 +337,24 @@ namespace _01electronics_crm
             {
                 previousSelectedCallItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[0];
+                Image previousClientCallIcon = (Image)previousSelectedCallItem.Children[0];
+                previousClientCallIcon.Source = new BitmapImage(new Uri(@"icons\client_call_icon.png", UriKind.Relative));
+                ResizeImage(ref previousClientCallIcon, 40, 40);
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[1];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
 
             currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[0];
+            
+            Image clientCallIcon = (Image)currentSelectedCallItem.Children[0];
+            clientCallIcon.Source = new BitmapImage(new Uri(@"icons\client_call_icon_blue.png", UriKind.Relative));
+            ResizeImage(ref clientCallIcon, 40, 40);
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[1];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
@@ -385,11 +398,6 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -556,6 +564,31 @@ namespace _01electronics_crm
         {
             MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
         }
     }
 }

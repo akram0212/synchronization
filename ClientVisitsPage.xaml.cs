@@ -201,14 +201,19 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                ColumnDefinition column1 = new ColumnDefinition();
-
-                newGrid.ColumnDefinitions.Add(column1);
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 newGrid.MouseLeftButtonDown += OnBtnClickVisitItem;
 
-                Grid.SetColumn(currentStackPanel, 0);
+                Image clientVisitIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_visit_icon.png", UriKind.Relative)) };
+                ResizeImage(ref clientVisitIcon, 40, 40);
+                newGrid.Children.Add(clientVisitIcon);
+                Grid.SetColumn(clientVisitIcon, 0);
 
+                
                 newGrid.Children.Add(currentStackPanel);
+                Grid.SetColumn(currentStackPanel, 1);
+                
                 ClientVisitsStackPanel.Children.Add(newGrid);
 
             }
@@ -382,16 +387,24 @@ namespace _01electronics_crm
             {
                 previousSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[0];
+                Image previousClientVistIcon = (Image)previousSelectedVisitItem.Children[0];
+                previousClientVistIcon.Source = new BitmapImage(new Uri(@"icons\client_visit_icon.png", UriKind.Relative));
+                ResizeImage(ref previousClientVistIcon, 40, 40);
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[1];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
                 
             }
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[0];
+            Image currentClientVistIcon = (Image)currentSelectedVisitItem.Children[0];
+            currentClientVistIcon.Source = new BitmapImage(new Uri(@"icons\client_visit_icon_blue.png", UriKind.Relative));
+            ResizeImage(ref currentClientVistIcon, 40, 40);
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[1];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
@@ -402,11 +415,6 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -587,6 +595,24 @@ namespace _01electronics_crm
         {
             MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+
+
+
+
+
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
         }
     }
 }

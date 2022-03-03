@@ -26,6 +26,7 @@ namespace _01electronics_crm
         private Employee loggedInUser;
 
         private CommonQueries commonQueries;
+        private CommonFunctions commonFunctions;
 
         private SalesAnalytics salesAnalytics;
 
@@ -37,25 +38,24 @@ namespace _01electronics_crm
         private DateTime startDate;
         private DateTime endDate;
 
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> categories = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> types = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> brands= new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> models = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> employees = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> rfqStatus = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> quotationtatus = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> orderStatus = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
-        public StatisticsPage( ref Employee mLoggedInUser)
+        private bool initializationComplete;
+
+        public StatisticsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
             sqlServer = new SQLServer();
             loggedInUser = mLoggedInUser;
             commonQueries = new CommonQueries(sqlServer);
+            commonFunctions = new CommonFunctions();
+
+            initializationComplete = false;
 
             InitializeDatePickers();
-            salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
 
+            salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
+            InitializeEmployeesList();
             InitializeComboBoxes();
             
         }
@@ -65,12 +65,36 @@ namespace _01electronics_crm
         
         private void InitializeDatePickers()
         {
-            startDate = new DateTime(2021,1,1);
-            endDate = new DateTime(2021,12,31);
-            startDatePicker.SelectedDate = startDate;
+            endDate = commonFunctions.GetTodaysDate();
+            startDatePicker.SelectedDate = DateTime.Parse("1/1/" + endDate.Year.ToString());
             endDatePicker.SelectedDate = endDate;
         }
 
+        public bool InitializeEmployeesList()
+        {
+            employees.Clear();
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employees))
+                    return false;
+            }
+            else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+            {
+                if (!commonQueries.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref employees))
+                    return false;
+            }
+            else
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                tempEmployee.employee_id = loggedInUser.GetEmployeeId();
+                tempEmployee.employee_name = loggedInUser.GetEmployeeName();
+
+                employees.Add(tempEmployee);
+            }
+
+            return true;
+        }
         private bool InitializeComboBoxes()
         {
             countAmountComboBox.Items.Clear();
@@ -79,23 +103,46 @@ namespace _01electronics_crm
 
             countAmountComboBox.SelectedIndex = 0;
 
-            if (!commonQueries.GetProductCategories(ref categories))
-                return false;
+            employeeComboBox.Items.Clear();
 
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employeeComboBox.Items.Add(employees[i].employee_name);
+            }
 
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+            {
+                employeeComboBox.Items.Add("All");
+            }
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+            {
+                initializationComplete = true;
+                employeeComboBox.SelectedIndex = employeeComboBox.Items.Count - 1;
+            }
+            else
+            {
+                employeeComboBox.IsEnabled = false;
+                initializationComplete = true;
+                employeeComboBox.SelectedIndex = 0;
+            }
             return true;
         }
 
-        private void InitializePieChart(Grid currentGrid ,PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> mRefreshList)
+        private void InitializePieChart(Grid currentGrid ,PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> mRefreshList, bool isModel)
         {
             EmptyGrid(currentGrid);
             mRefreshList.Sort((s1, s2) => s2.value.CompareTo(s1.value));
+
             for(int i = 0; i < mRefreshList.Count; i++)
             {
                 currentGrid.RowDefinitions.Add(new RowDefinition());
 
                 Label salesLabel = new Label();
-                salesLabel.Width = 150.00;
+                if (isModel == true)
+                    salesLabel.Width = 350.00;
+                else
+                    salesLabel.Width = 150;
                 salesLabel.Height = 30.00;
                 salesLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
                 salesLabel.Content = mRefreshList[i].name;
@@ -118,7 +165,10 @@ namespace _01electronics_crm
             currentGrid.RowDefinitions.Add(new RowDefinition());
 
             Label totalLabel = new Label();
-            totalLabel.Width = 150.00;
+            if (isModel == true)
+                totalLabel.Width = 350.00;
+            else
+                totalLabel.Width = 150;
             totalLabel.Height = 30.00;
             totalLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
             totalLabel.Content = "Total";
@@ -159,6 +209,181 @@ namespace _01electronics_crm
             }
         }
 
+        private void SetPieChartsAmount(int salesPersonId)
+        {
+            ///////////SALES PERSON ORDER////////////////////////
+            salesPersonOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesOrdersAmount(salesPersonId);
+            GetTotalValue();
+            salesPersonOrderManagerLabel.Content = "Sales Total Ordered Amount";
+            InitializePieChart(salesPersonOrderManagerGrid, salesPersonOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////CATEGORY ORDER/////////////////////////////
+            categoryOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListCategoryOrdersAmount(salesPersonId);
+            GetTotalValue();
+            categoryOrderManagerLabel.Content = "Category Total Ordered Amount";
+            InitializePieChart(categoryOrderManagerGrid, categoryOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////TYPE ORDER////////////////////////////////
+            typeOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListTypeOrdersAmount(salesPersonId);
+            GetTotalValue();
+            typeOrderManagerLabel.Content = "Type Total Ordered Amount";
+            InitializePieChart(typeOrderManagerGrid, typeOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////BRAND ORDER////////////////////////////////
+            brandOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListBrandOrdersAmount(salesPersonId);
+            GetTotalValue();
+            brandOrderManagerLabel.Content = "Brand Total Ordered Amount";
+            InitializePieChart(brandOrderManagerGrid, brandOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////MODEL ORDER////////////////////////
+            modelOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListModelOrdersAmount(salesPersonId);
+            GetTotalValue();
+            modelOrderManagerLabel.Content = "Model Total Ordered Amount";
+            InitializePieChart(modelOrderManagerGrid, modelOrderManagerPieChart, salesAnalytics.refreshList, true);
+
+            ///////////STATUS ORDER////////////////////////
+            statusOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesOrdersAmountStatus(salesPersonId);
+            GetTotalValue();
+            statusOrderManagerLabel.Content = "Status Total Ordered Amount";
+            InitializePieChart(statusOrderManagerGrid, statusOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////SALES PERSON QUOTATION////////////////////////
+            salesPersonQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesQuotationsAmount(salesPersonId);
+            GetTotalValue();
+            salesPersonQuotedManagerLabel.Content = "Sales Total Quoted Amount";
+            InitializePieChart(salesPersonQuotedManagerGrid, salesPersonQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////CATEGORY QUOTATION/////////////////////////////
+            categoryQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListCategoryQuotationsAmount(salesPersonId);
+            GetTotalValue();
+            categoryQuotedManagerLabel.Content = "Category Total Quoted Amount";
+            InitializePieChart(categoryQuotedManagerGrid, categoryQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////TYPE QUOTATION/////////////////////////////
+            typeQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListTypeQuotationsAmount(salesPersonId);
+            GetTotalValue();
+            typeQuotedManagerLabel.Content = "Type Total Quoted Amount";
+            InitializePieChart(typeQuotedManagerGrid, typeQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////BRAND QUOTATION/////////////////////////////
+            brandQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListBrandQuotationsAmount(salesPersonId);
+            GetTotalValue();
+            brandQuotedManagerLabel.Content = "Brand Total Quoted Amount";
+            InitializePieChart(brandQuotedManagerGrid, brandQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////MODEL QUOTATION/////////////////////////////
+            modelQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListModelQuotationsAmount(salesPersonId);
+            GetTotalValue();
+            modelQuotedManagerLabel.Content = "Model Total Quoted Amount";
+            InitializePieChart(modelQuotedManagerGrid, modelQuotedManagerPieChart, salesAnalytics.refreshList, true);
+
+            ///////////STATUS QUOTATION////////////////////////
+            statusQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesQuotedAmountStatus(salesPersonId);
+            GetTotalValue();
+            statusQuotedManagerLabel.Content = "Status Total Quoted Amount";
+            InitializePieChart(statusQuotedManagerGrid, statusQuotedManagerPieChart, salesAnalytics.refreshList, false);
+        }
+
+        private void SetPieChartsCount(int salesPersonId)
+        {
+            ///////////SALES PERSON ORDER////////////////////////
+            salesPersonOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesOrdersCount(salesPersonId);
+            GetTotalValue();
+            salesPersonOrderManagerLabel.Content = "Sales Total Ordered Count";
+            InitializePieChart(salesPersonOrderManagerGrid, salesPersonOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////CATEGORY ORDER/////////////////////////////
+            categoryOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListCategoryOrdersCount(salesPersonId);
+            GetTotalValue();
+            categoryOrderManagerLabel.Content = "Category Total Ordered Count";
+            InitializePieChart(categoryOrderManagerGrid, categoryOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////TYPE ORDER////////////////////////////////
+            typeOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListTypeOrdersCount(salesPersonId);
+            GetTotalValue();
+            typeOrderManagerLabel.Content = "Type Total Ordered Count";
+            InitializePieChart(typeOrderManagerGrid, typeOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////Brand ORDER////////////////////////////////
+            brandOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListBrandOrdersCount(salesPersonId);
+            GetTotalValue();
+            brandOrderManagerLabel.Content = "Brand Total Ordered Count";
+            InitializePieChart(brandOrderManagerGrid, brandOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////MODEL ORDER////////////////////////
+            modelOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListModelOrdersCount(salesPersonId);
+            GetTotalValue();
+            modelOrderManagerLabel.Content = "Model Total Ordered Count";
+            InitializePieChart(modelOrderManagerGrid, modelOrderManagerPieChart, salesAnalytics.refreshList, true);
+
+            ///////////STATUS ORDER////////////////////////
+            statusOrderManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesOrdersCountStatus(salesPersonId);
+            GetTotalValue();
+            statusOrderManagerLabel.Content = "Status Total Ordered Count";
+            InitializePieChart(statusOrderManagerGrid, statusOrderManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////SALES PERSON QUOTATION////////////////////////
+            salesPersonQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesQuotationsCount(salesPersonId);
+            GetTotalValue();
+            salesPersonQuotedManagerLabel.Content = "Sales Total Quoted Count";
+            InitializePieChart(salesPersonQuotedManagerGrid, salesPersonQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////CATEGORY QUOTATION/////////////////////////////
+            categoryQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListCategoryQuotationsCount(salesPersonId);
+            GetTotalValue();
+            categoryQuotedManagerLabel.Content = "Category Total Quoted Count";
+            InitializePieChart(categoryQuotedManagerGrid, categoryQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////TYPE QUOTATION/////////////////////////////
+            typeQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListTypeQuotationsCount(salesPersonId);
+            GetTotalValue();
+            typeQuotedManagerLabel.Content = "Type Total Quoted Count";
+            InitializePieChart(typeQuotedManagerGrid, typeQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////BRAND QUOTATION/////////////////////////////
+            brandQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListBrandQuotationsCount(salesPersonId);
+            GetTotalValue();
+            brandQuotedManagerLabel.Content = "Brand Total Quoted Count";
+            InitializePieChart(brandQuotedManagerGrid, brandQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+            ///////////MODEL QUOTATION/////////////////////////////
+            modelQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListModelQuotationsCount(salesPersonId);
+            GetTotalValue();
+            modelQuotedManagerLabel.Content = "Model Total Quoted Count";
+            InitializePieChart(modelQuotedManagerGrid, modelQuotedManagerPieChart, salesAnalytics.refreshList, true);
+
+            ///////////STATUS QUOTATION////////////////////////
+            statusQuotedManagerPieChart.Series.Clear();
+            salesAnalytics.SetRefresListSalesQuotedCountStatus(salesPersonId);
+            GetTotalValue();
+            statusQuotedManagerLabel.Content = "Status Total Quoted Count";
+            InitializePieChart(statusQuotedManagerGrid, statusQuotedManagerPieChart, salesAnalytics.refreshList, false);
+
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GET FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,157 +404,127 @@ namespace _01electronics_crm
             if(countAmountComboBox.SelectedItem != null)
                 countAmountComboSelectedIndex = countAmountComboBox.SelectedIndex;
 
-            if(countAmountComboBox.SelectedIndex == 0)
+            if (initializationComplete == true)
             {
-                ///////////SALES PERSON ORDER////////////////////////
-                salesPersonOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesOrdersCount();
-                GetTotalValue();
-                salesPersonOrderManagerLabel.Content = "Sales Total Ordered Count"; 
-                InitializePieChart(salesPersonOrderManagerGrid, salesPersonOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////CATEGORY ORDER/////////////////////////////
-                categoryOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListCategoryOrdersCount();
-                GetTotalValue();
-                categoryOrderManagerLabel.Content = "Category Total Ordered Count";
-                InitializePieChart(categoryOrderManagerGrid, categoryOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////TYPE ORDER////////////////////////////////
-                typeOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListTypeOrdersCount();
-                GetTotalValue();
-                typeOrderManagerLabel.Content = "Type Total Ordered Count";
-                InitializePieChart(typeOrderManagerGrid, typeOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////MODEL ORDER////////////////////////
-                modelOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListModelOrdersCount();
-                GetTotalValue();
-                modelOrderManagerLabel.Content = "Model Total Ordered Count";
-                InitializePieChart(modelOrderManagerGrid, modelOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////STATUS ORDER////////////////////////
-                statusOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesOrdersCountStatus();
-                GetTotalValue();
-                statusOrderManagerLabel.Content = "Status Total Ordered Count";
-                InitializePieChart(statusOrderManagerGrid, statusOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////SALES PERSON QUOTATION////////////////////////
-                salesPersonQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesQuotationsCount();
-                GetTotalValue();
-                salesPersonQuotedManagerLabel.Content = "Sales Total Quoted Count";
-                InitializePieChart(salesPersonQuotedManagerGrid, salesPersonQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////CATEGORY QUOTATION/////////////////////////////
-                categoryQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListCategoryQuotationsCount();
-                GetTotalValue();
-                categoryQuotedManagerLabel.Content = "Category Total Quoted Count";
-                InitializePieChart(categoryQuotedManagerGrid, categoryQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////TYPE QUOTATION/////////////////////////////
-                typeQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListTypeQuotationsCount();
-                GetTotalValue();
-                typeQuotedManagerLabel.Content = "Type Total Quoted Count";
-                InitializePieChart(typeQuotedManagerGrid, typeQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////MODEL QUOTATION/////////////////////////////
-                modelQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListModelQuotationsCount();
-                GetTotalValue();
-                modelQuotedManagerLabel.Content = "Model Total Quoted Count";
-                InitializePieChart(modelQuotedManagerGrid, modelQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////STATUS QUOTATION////////////////////////
-                statusQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesQuotedCountStatus();
-                GetTotalValue();
-                statusOrderManagerLabel.Content = "Status Total Quoted Count";
-                InitializePieChart(statusQuotedManagerGrid, statusQuotedManagerPieChart, salesAnalytics.refreshList);
-
-            }
-            else
-            {
-                ///////////SALES PERSON ORDER////////////////////////
-                salesPersonOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesOrdersAmount();
-                GetTotalValue();
-                salesPersonOrderManagerLabel.Content = "Sales Total Ordered Amount";
-                InitializePieChart(salesPersonOrderManagerGrid, salesPersonOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////CATEGORY ORDER/////////////////////////////
-                categoryOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListCategoryOrdersAmount();
-                GetTotalValue();
-                categoryOrderManagerLabel.Content = "Category Total Ordered Amount";
-                InitializePieChart(categoryOrderManagerGrid, categoryOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////TYPE ORDER////////////////////////////////
-                typeOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListTypeOrdersAmount();
-                GetTotalValue();
-                typeOrderManagerLabel.Content = "Type Total Ordered Amount";
-                InitializePieChart(typeOrderManagerGrid, typeOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////MODEL ORDER////////////////////////
-                modelOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListModelOrdersAmount();
-                GetTotalValue();
-                typeOrderManagerLabel.Content = "Model Total Ordered Amount";
-                InitializePieChart(modelOrderManagerGrid, modelOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////STATUS ORDER////////////////////////
-                statusOrderManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesOrdersAmountStatus();
-                GetTotalValue();
-                statusOrderManagerLabel.Content = "Status Total Ordered Amount";
-                InitializePieChart(statusOrderManagerGrid, statusOrderManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////SALES PERSON QUOTATION////////////////////////
-                salesPersonQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesQuotationsAmount();
-                GetTotalValue();
-                salesPersonQuotedManagerLabel.Content = "Sales Total Quoted Amount";
-                InitializePieChart(salesPersonQuotedManagerGrid, salesPersonQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////CATEGORY QUOTATION/////////////////////////////
-                categoryQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListCategoryQuotationsAmount();
-                GetTotalValue();
-                categoryQuotedManagerLabel.Content = "Category Total Quoted Amount";
-                InitializePieChart(categoryQuotedManagerGrid, categoryQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////TYPE QUOTATION/////////////////////////////
-                typeQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListTypeQuotationsAmount();
-                GetTotalValue();
-                typeQuotedManagerLabel.Content = "Type Total Quoted Amount";
-                InitializePieChart(typeQuotedManagerGrid, typeQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////MODEL QUOTATION/////////////////////////////
-                modelQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListModelQuotationsAmount();
-                GetTotalValue();
-                modelQuotedManagerLabel.Content = "Model Total Quoted Amount";
-                InitializePieChart(modelQuotedManagerGrid, modelQuotedManagerPieChart, salesAnalytics.refreshList);
-
-                ///////////STATUS QUOTATION////////////////////////
-                statusQuotedManagerPieChart.Series.Clear();
-                salesAnalytics.SetRefresListSalesQuotedAmountStatus();
-                GetTotalValue();
-                statusQuotedManagerLabel.Content = "Status Total Quoted Amount";
-                InitializePieChart(statusQuotedManagerGrid, statusQuotedManagerPieChart, salesAnalytics.refreshList);
+                if (employeeComboBox.SelectedIndex != employees.Count)
+                {
+                    if (countAmountComboBox.SelectedIndex == 0)
+                    {
+                        SetPieChartsCount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    }
+                    else
+                    {
+                        SetPieChartsAmount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    }
+                }
+                else
+                {
+                    if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+                    {
+                        if (countAmountComboBox.SelectedIndex == 0)
+                        {
+                            SetPieChartsCount(0);
+                        }
+                        else
+                        {
+                            SetPieChartsAmount(0);
+                        }
+                    }
+                    else
+                    {
+                        if (countAmountComboBox.SelectedIndex == 0)
+                        {
+                            SetPieChartsCount(1);
+                        }
+                        else
+                        {
+                            SetPieChartsAmount(1);
+                        }
+                    }
+                }
             }
         }
+
+        private void OnSelChangeEmployeeCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (countAmountComboBox.SelectedItem != null)
+                countAmountComboSelectedIndex = countAmountComboBox.SelectedIndex;
+
+            if (initializationComplete == true)
+            {
+                if (employeeComboBox.SelectedIndex != employees.Count)
+                {
+                    COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                    List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+                    tempEmployee.employee_id = employees[employeeComboBox.SelectedIndex].employee_id;
+                    tempEmployeeList.Add(tempEmployee);
+
+                    salesAnalytics.SetEmployeesList(tempEmployeeList);
+
+                    //if (countAmountComboBox.SelectedIndex == 0)
+                    //{
+                    //    SetPieChartsCount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    //}
+                    //else
+                    //{
+                    //    SetPieChartsAmount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    //}
+
+                    countAmountComboBox.SelectedIndex = -1;
+                    countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
+                }
+                else
+                {
+                    salesAnalytics.SetEmployeesList(employees);
+
+                    //if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+                    //{
+                    //    if (countAmountComboBox.SelectedIndex == 0)
+                    //    {
+                    //        SetPieChartsCount(0);
+                    //    }
+                    //    else
+                    //    {
+                    //        SetPieChartsAmount(0);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (countAmountComboBox.SelectedIndex == 0)
+                    //    {
+                    //        SetPieChartsCount(1);
+                    //    }
+                    //    else
+                    //    {
+                    //        SetPieChartsAmount(1);
+                    //    }
+                    //}
+                    
+                    countAmountComboBox.SelectedIndex = -1;
+                    countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
+                }
+            }
+        }
+
         private void OnSelChangedStartDate(object sender, SelectionChangedEventArgs e)
         {
             if (countAmountComboBox.SelectedItem != null && startDatePicker.SelectedDate != null && endDatePicker.SelectedDate != null)
             {
                 salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
+
+                if (employeeComboBox.SelectedIndex != employees.Count)
+                {
+                    COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                    List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+                    tempEmployee.employee_id = employees[employeeComboBox.SelectedIndex].employee_id;
+                    tempEmployeeList.Add(tempEmployee);
+
+                    salesAnalytics.SetEmployeesList(tempEmployeeList);
+                }
+                else
+                    salesAnalytics.SetEmployeesList(employees);
+
+                
                 countAmountComboBox.SelectedIndex = -1;
                 countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
             }
@@ -340,6 +535,19 @@ namespace _01electronics_crm
             if (countAmountComboBox.SelectedItem != null && startDatePicker.SelectedDate != null && endDatePicker.SelectedDate != null)
             {
                 salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
+
+                if (employeeComboBox.SelectedIndex != employees.Count)
+                {
+                    COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                    List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+                    tempEmployee.employee_id = employees[employeeComboBox.SelectedIndex].employee_id;
+                    tempEmployeeList.Add(tempEmployee);
+
+                    salesAnalytics.SetEmployeesList(tempEmployeeList);
+                }
+                else
+                    salesAnalytics.SetEmployeesList(employees);
+
                 countAmountComboBox.SelectedIndex = -1;
                 countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
             }
