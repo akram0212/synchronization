@@ -168,8 +168,7 @@ namespace _01electronics_crm
         {
             if (!CheckProjectNameEditBox())
                 return;
-            if (!CheckProjectIDEditBox())
-                return;
+            
             if (!CheckCountryComboBox())
                 return;
             if (!CheckStateComboBox())
@@ -190,18 +189,7 @@ namespace _01electronics_crm
 
         }
 
-        private bool CheckProjectIDEditBox()
-        {
-            if (ProjecIDTextBox.Text.Length > 15)
-            {
-                System.Windows.Forms.MessageBox.Show("Project ID can't exceed 15 letters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            project.project_id = ProjecIDTextBox.Text.ToString();
-
-            return true;
-        }
+        
         private bool CheckProjectNameEditBox()
         {
             //String inputString = ProjecNameTextBox.Text;
@@ -287,8 +275,6 @@ namespace _01electronics_crm
             sqlQuery += project.project_serial;
             sqlQuery += comma;
             sqlQuery += "N'" + project.project_name + "'";
-            sqlQuery += comma;
-            sqlQuery += "'" + project.project_id + "'";
             sqlQuery += comma;
             sqlQuery += sqlQueryPart2;
 

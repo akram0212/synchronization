@@ -34,10 +34,6 @@
                         <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecNameTextBox" SelectionChanged="OnSelChangedProjecNameTextBox"/>
                     </WrapPanel>
 
-                    <WrapPanel Name="AddProjectIDWrapPanel" >
-                        <Label Name="ProjecIDLabel" Style="{StaticResource tableItemLabel}" Content="ID*"/>
-                        <TextBox Style="{StaticResource textBoxStyle}" Name="ProjecIDTextBox" SelectionChanged="OnSelChangedProjecIDTextBox"/>
-                    </WrapPanel>
 
                     <WrapPanel Name="CountryWrapPanel">
                         <Label Style="{StaticResource tableItemLabel}" Content="Country *"/>
