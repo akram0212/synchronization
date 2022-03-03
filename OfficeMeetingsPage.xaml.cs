@@ -193,14 +193,19 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                ColumnDefinition column1 = new ColumnDefinition();
-
-                newGrid.ColumnDefinitions.Add(column1);
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 newGrid.MouseLeftButtonDown += OnBtnClickMeetingItem;
 
-                Grid.SetColumn(currentStackPanel, 0);
+                Image officeMeetingIcon = new Image { Source = new BitmapImage(new Uri(@"icons\office_meeting_icon.png", UriKind.Relative)) };
+                ResizeImage(ref officeMeetingIcon, 40, 40);
+                newGrid.Children.Add(officeMeetingIcon);
+                Grid.SetColumn(officeMeetingIcon, 0);
+
 
                 newGrid.Children.Add(currentStackPanel);
+                Grid.SetColumn(currentStackPanel, 1);
+
                 OfficeMeetingsStackPanel.Children.Add(newGrid);
                 
             }
@@ -323,8 +328,8 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
@@ -429,15 +434,23 @@ namespace _01electronics_crm
             {
                 previousSelectedCallItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[0];
+                Image previousOfficeMeetingIcon = (Image)previousSelectedCallItem.Children[0];
+                previousOfficeMeetingIcon.Source = new BitmapImage(new Uri(@"icons\office_meeting_icon.png", UriKind.Relative));
+                ResizeImage(ref previousOfficeMeetingIcon, 40, 40);
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[1];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
 
             currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[0];
+            Image currentOfficeMeetingIcon = (Image)currentSelectedCallItem.Children[0];
+            currentOfficeMeetingIcon.Source = new BitmapImage(new Uri(@"icons\office_meeting_icon_blue.png", UriKind.Relative));
+            ResizeImage(ref currentOfficeMeetingIcon, 40, 40);
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[1];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
@@ -533,5 +546,15 @@ namespace _01electronics_crm
             previousSelectedCallItem = null;
         }
 
+
+
+
+
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
     }
 }

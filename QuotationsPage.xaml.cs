@@ -1096,11 +1096,6 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -1346,9 +1341,12 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(maintenanceContractsPage);
         }
 
-        
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
 
-        
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
+        }
     }
 }
 

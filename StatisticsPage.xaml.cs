@@ -56,7 +56,6 @@ namespace _01electronics_crm
 
             salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
             InitializeEmployeesList();
-            salesAnalytics.SetEmployeesList(employees);
             InitializeComboBoxes();
             
         }
@@ -420,47 +419,6 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    if (countAmountComboBox.SelectedIndex == 0)
-                    {
-                        SetPieChartsCount(0);
-                    }
-                    else
-                    {
-                        SetPieChartsAmount(0);
-                    }
-                }
-            }
-        }
-
-        private void OnSelChangeEmployeeCombo(object sender, SelectionChangedEventArgs e)
-        {
-            if (countAmountComboBox.SelectedItem != null)
-                countAmountComboSelectedIndex = countAmountComboBox.SelectedIndex;
-
-            if (initializationComplete == true)
-            {
-                if (employeeComboBox.SelectedIndex != employees.Count)
-                {
-                    COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
-                    List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-                    tempEmployee.employee_id = employees[employeeComboBox.SelectedIndex].employee_id;
-                    tempEmployeeList.Add(tempEmployee);
-
-                    salesAnalytics.SetEmployeesList(tempEmployeeList);
-
-                    if (countAmountComboBox.SelectedIndex == 0)
-                    {
-                        SetPieChartsCount(employees[employeeComboBox.SelectedIndex].employee_id);
-                    }
-                    else
-                    {
-                        SetPieChartsAmount(employees[employeeComboBox.SelectedIndex].employee_id);
-                    }
-                }
-                else
-                {
-                    salesAnalytics.SetEmployeesList(employees);
-
                     if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
                     {
                         if (countAmountComboBox.SelectedIndex == 0)
@@ -483,6 +441,67 @@ namespace _01electronics_crm
                             SetPieChartsAmount(1);
                         }
                     }
+                }
+            }
+        }
+
+        private void OnSelChangeEmployeeCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if (countAmountComboBox.SelectedItem != null)
+                countAmountComboSelectedIndex = countAmountComboBox.SelectedIndex;
+
+            if (initializationComplete == true)
+            {
+                if (employeeComboBox.SelectedIndex != employees.Count)
+                {
+                    COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                    List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeeList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+                    tempEmployee.employee_id = employees[employeeComboBox.SelectedIndex].employee_id;
+                    tempEmployeeList.Add(tempEmployee);
+
+                    salesAnalytics.SetEmployeesList(tempEmployeeList);
+
+                    //if (countAmountComboBox.SelectedIndex == 0)
+                    //{
+                    //    SetPieChartsCount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    //}
+                    //else
+                    //{
+                    //    SetPieChartsAmount(employees[employeeComboBox.SelectedIndex].employee_id);
+                    //}
+
+                    countAmountComboBox.SelectedIndex = -1;
+                    countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
+                }
+                else
+                {
+                    salesAnalytics.SetEmployeesList(employees);
+
+                    //if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+                    //{
+                    //    if (countAmountComboBox.SelectedIndex == 0)
+                    //    {
+                    //        SetPieChartsCount(0);
+                    //    }
+                    //    else
+                    //    {
+                    //        SetPieChartsAmount(0);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (countAmountComboBox.SelectedIndex == 0)
+                    //    {
+                    //        SetPieChartsCount(1);
+                    //    }
+                    //    else
+                    //    {
+                    //        SetPieChartsAmount(1);
+                    //    }
+                    //}
+                    
+                    countAmountComboBox.SelectedIndex = -1;
+                    countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
                 }
             }
         }

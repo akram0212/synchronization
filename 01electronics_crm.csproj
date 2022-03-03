@@ -763,13 +763,11 @@
   <ItemGroup>
     <Resource Include="photos\plus_icon.jpg" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Icons\budget_icon.jpg" />
-    <Resource Include="Icons\budget_icon_blue.png" />
-    <Resource Include="Icons\client_attempt_icon.png" />
+    <Resource Include="Icons\office_meeting_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Icons\client_call_icon.png" />
-    <Resource Include="Icons\client_followup_icon.png" />
     <Resource Include="Icons\client_visit_icon.png" />
     <Resource Include="Icons\company_icon.png" />
     <Resource Include="Icons\company_icon_blue.png" />
@@ -783,6 +781,15 @@
     <Resource Include="Icons\phone_icon_blue.png" />
     <Resource Include="Icons\status_icon.png" />
     <Resource Include="Icons\status_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\office_meeting_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_call_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
