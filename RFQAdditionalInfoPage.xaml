@@ -77,10 +77,12 @@
             </WrapPanel>
 
             <WrapPanel Grid.Row="2" Name="notesWrapPanel">
-                <Label Style="{StaticResource labelStyle}" Content="Notes"/>
+                <Label Style="{StaticResource labelStyle}" Content="Notes" VerticalAlignment="Top"/>
                 <Label Style="{StaticResource tableItemValue}" Name="notesLabel" Visibility="Collapsed"/>
-                <TextBox Style="{StaticResource commentsTextBoxStyle}" Name="notesTextBox" TextChanged="OnTextChangedNotes"/>
-
+                <WrapPanel Orientation="Vertical">
+                    <TextBox Style="{StaticResource commentsTextBoxStyle}" Name="notesTextBox" TextChanged="OnTextChangedNotes"/>
+                    <Label Name="counterLabel" Style="{StaticResource labelStyle}" HorizontalAlignment="Right" Content="150" HorizontalContentAlignment="Center"/>
+                </WrapPanel>
             </WrapPanel>
 
             <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">

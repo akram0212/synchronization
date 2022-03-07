@@ -479,6 +479,10 @@ namespace _01electronics_crm
                 viewButton.Content = "View";
                 viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
+                ListBoxItem editButton = new ListBoxItem();
+                editButton.Content = "Edit Order";
+                editButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 ListBoxItem viewRFQButton = new ListBoxItem();
                 viewRFQButton.Content = "View RFQ";
                 viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -488,16 +492,19 @@ namespace _01electronics_crm
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 ListBoxItem addCollectionButton = new ListBoxItem();
-                addCollectionButton.Content = "View Offer";
+                addCollectionButton.Content = "Add Collection";
                 addCollectionButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 listBox.Items.Add(viewButton);
 
+                if(loggedInUser.GetEmployeePositionId() == 8 || loggedInUser.GetEmployeePositionId() == 800)
+                    listBox.Items.Add(editButton);
+                
                 listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
 
-                listBox.Items.Add(viewOfferButton);
+                listBox.Items.Add(addCollectionButton);
 
 
                 if (workOrders[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
@@ -506,7 +513,6 @@ namespace _01electronics_crm
                     confirmOrderButton.Content = "Confirm Order";
                     confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                     listBox.Items.Add(confirmOrderButton);
-
                 }
 
                 expander.Content = listBox;
@@ -665,12 +671,9 @@ namespace _01electronics_crm
 
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
-                    String tempId = workOrders[i].order_id;
-                    String tempCompanyName = workOrders[i].company_name;
-                    String tempContactName = workOrders[i].contact_name;
-                    bool containsID = tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsCompanyName = tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool containsContactName = tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsID = workOrders[i].order_id.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsCompanyName = workOrders[i].company_name.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool containsContactName = workOrders[i].contact_name.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 
                     if (containsID || containsCompanyName || containsContactName)
                     {
@@ -1237,11 +1240,6 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -1354,6 +1352,10 @@ namespace _01electronics_crm
                 {
                     OnBtnClickView();
                 }
+                else if (currentItem.Content.ToString() == "Edit Order")
+                {
+                    OnBtnClickEditOrder();
+                }
                 else if (currentItem.Content.ToString() == "View RFQ")
                 {
                     OnBtnClickViewRFQ();
@@ -1365,6 +1367,10 @@ namespace _01electronics_crm
                 else if (currentItem.Content.ToString() == "Confirm Order")
                 {
                     OnBtnClickConfirmOrder();
+                }
+                else if(currentItem.Content.ToString() == "Add Collection")
+                {
+                    OnBtnClickAddCollection();
                 }
 
                 tempListBox.SelectedIndex = -1;
@@ -1381,6 +1387,19 @@ namespace _01electronics_crm
 
             workOrderWindow.Show();
         }
+
+        private void OnBtnClickEditOrder()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
+
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
+            WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
+
+            workOrderWindow.Show();
+        }
+
         private void OnBtnClickViewRFQ()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
@@ -1442,6 +1461,23 @@ namespace _01electronics_crm
             SetWorkOrdersGrid();
         }
 
-        
+        private void OnBtnClickAddCollection()
+        {
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
+            workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
+
+            AddCollectionWindow addCollectionWindow = new AddCollectionWindow(workOrder);
+            addCollectionWindow.Closing += OnClosedWorkOrderWindow;
+
+            addCollectionWindow.Show();
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
+        }
     }
 }

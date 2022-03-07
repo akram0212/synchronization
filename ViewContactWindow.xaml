@@ -65,6 +65,11 @@
                             <Label Style="{StaticResource tableItemLabel}" Content="Department"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="departmentTextBox"/>
                         </WrapPanel>
+
+                        <WrapPanel>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Assignee"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="assigneeLabel"/>
+                        </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="3" Name="wrapPanel3"/>

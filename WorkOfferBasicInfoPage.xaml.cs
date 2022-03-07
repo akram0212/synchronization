@@ -45,6 +45,7 @@ namespace _01electronics_crm
         private int viewAddCondition;
         private int salesPersonID;
         private int salesPersonTeamID;
+        
 
         public WorkOfferProductsPage workOfferProductsPage;
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
@@ -57,6 +58,7 @@ namespace _01electronics_crm
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
+            
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
@@ -440,7 +442,7 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
                 quotation.ResetWorkOfferInfo();
-
+            
             quotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId());
             quotation.InitializeSalesPersonInfo(salesPersonID);
 

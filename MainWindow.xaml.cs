@@ -26,8 +26,9 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
-            UserPortalPage userPortal = new UserPortalPage(ref mLoggedInUser);
-            this.NavigationService.Navigate(userPortal);
+             
+            StatisticsPage statisticsPage = new StatisticsPage(ref mLoggedInUser);
+            this.NavigationService.Navigate(statisticsPage);
         }
         public MainWindow()
         {

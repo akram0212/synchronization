@@ -35,6 +35,7 @@ namespace _01electronics_crm
 
         RFQ rfq;
         Quotation quotation;
+
         MaintenanceOffer maintOffer;
 
         public ChangeAssigneeWindow(ref RFQ mrfq)

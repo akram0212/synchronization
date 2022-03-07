@@ -192,7 +192,7 @@ namespace _01electronics_crm
             if (!InsertIntoProjectLocations())
                 return;
             
-            //this.Close();
+            this.Close();
         }
 
         private bool CheckProjectNameEditBox()

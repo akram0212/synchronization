@@ -119,6 +119,11 @@ namespace _01electronics_crm
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();
 
+                SetDrawingSubmissionValues();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetAdditionalDescriptionValue();
+
             }
         }
         public WorkOrderAdditionalInfoPage(ref WorkOrder mWorkOrder)
@@ -169,9 +174,10 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetContractTypes(ref contractTypes))
                 return false;
+            contractTypes.Remove(contractTypes.Find(s1 => s1.contractId == 5));
             for (int i = 0; i < contractTypes.Count; i++)
                 contractTypeComboBox.Items.Add(contractTypes[i].contractName);
-
+            
             return true;
         }
 
@@ -210,55 +216,47 @@ namespace _01electronics_crm
         //////////////////////////////
         public void SetDrawingSubmissionValues()
         {
-            drawingDeadlineFromTextBox.Text = workOrder.GetDrawingSubmissionDeadlineMinimum().ToString();
-            drawingDeadlineToTextBox.Text = workOrder.GetDrawingSubmissionDeadlineMaximum().ToString();
-            drawingDeadlineDateComboBox.Text = workOrder.GetDrawingDeadlineTimeUnit();
+
+            drawingDeadlineFromTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMinimum().ToString();
+            drawingDeadlineToTextBox.Text = workOrder.GetOrderDrawingSubmissionDeadlineMaximum().ToString();
+            drawingDeadlineDateComboBox.Text = workOrder.GetOrderDrawingDeadlineTimeUnit();
             drawingDeadlineDateFromWhenComboBox.SelectedItem = workOrder.GetOrderDrawingSubmissionDeadlineCondition();
+
         }
 
         public void SetContractTypeValue()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
-            {
-                contractTypeComboBox.Text = workOrder.GetOfferContractType();
-            }
-            else
-            {
-                contractTypeComboBox.Text = workOrder.GetOrderContractType();
-            }
-                
+
+            contractTypeComboBox.SelectedItem = workOrder.GetOrderContractType();
+
+
         }
 
         public void SetWarrantyPeriodValues()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
-            {
-                if (workOrder.GetWarrantyPeriod() != 0)
-                {
-                    warrantyPeriodTextBox.Text = workOrder.GetWarrantyPeriod().ToString();
-                    warrantyPeriodCombo.SelectedItem = workOrder.GetWarrantyPeriodTimeUnit();
-                    warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOfferWarrantyPeriodCondition();
-                }
-            }
-            else
-            {
-                if (workOrder.GetOrderWarrantyPeriod() != 0)
-                {
-                    warrantyPeriodTextBox.Text = workOrder.GetOrderWarrantyPeriod().ToString();
-                    warrantyPeriodCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodTimeUnit();
-                    warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodCondition();
-                }
-            }
+
+            warrantyPeriodTextBox.Text = workOrder.GetOrderWarrantyPeriod().ToString();
+            warrantyPeriodCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodTimeUnit();
+            warrantyPeriodFromWhenCombo.SelectedItem = workOrder.GetOrderWarrantyPeriodCondition();
+
         }
 
         public void SetAdditionalDescriptionValue()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
-                additionalDescriptionTextBox.Text = workOrder.GetOfferNotes();
-            else
-                additionalDescriptionTextBox.Text = workOrder.GetOrderNotes();
+            additionalDescriptionTextBox.Text = workOrder.GetOrderNotes();
         }
 
+        public void SetNullsToZeros()
+        {
+            if (drawingDeadlineFromTextBox.Text == null)
+                drawingDeadlineFromTextBox.Text = "0";
+
+            if (drawingDeadlineToTextBox.Text == null)
+                drawingDeadlineToTextBox.Text = "0";
+
+            if (warrantyPeriodTextBox.Text == null)
+                warrantyPeriodTextBox.Text = "0";
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -511,14 +509,19 @@ namespace _01electronics_crm
             
             else
             {
-              if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-              {
-                  //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
-                  if (!workOrder.IssueNewOrder())
-                      return;
-                  if (workOrder.GetOfferID() != null)
-                      if (!workOrder.ConfirmOffer())
-                          return;
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                {
+                    //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
+                    if (!workOrder.IssueNewOrder())
+                        return;
+                    //if (workOrder.GetOfferID() != null)
+                    //    if (!workOrder.ConfirmOffer())
+                    //        return;
+                }
+                else if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                {
+                    if (!workOrder.EditWorkOrder(workOrderBasicInfoPage.oldWorkOrder))
+                        return;
                 }
 
               viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
