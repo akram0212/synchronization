@@ -70,7 +70,7 @@ namespace _01electronics_crm
                         }
 
                     }
-                    else if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + j].GetType().Equals(typeof(Grid)))
+                    else if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + j].GetType().Equals(typeof(Grid)) && gridInserted == false)
                     {
                         Grid childGrid = (Grid)gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + j];
 

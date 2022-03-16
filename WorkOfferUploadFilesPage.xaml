@@ -32,7 +32,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Name="RFQHeader" Content="QUOTATION FILES" Style="{StaticResource secondaryHeaderTextStyle}"/>
-                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;QUOTATION" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+                <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Left">

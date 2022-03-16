@@ -155,7 +155,7 @@ namespace _01electronics_crm
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> employeeContactList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
-                commonQueries.GetAllEmployeeContacts(listOfEmployees[i].employee_id, ref employeeContactList);
+                commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref employeeContactList);
 
                  employeesContacts.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i], employeeContactList));
                 
