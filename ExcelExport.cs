@@ -34,7 +34,7 @@ namespace _01electronics_crm
             workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
 
             currentStyle = new FrameworkElement();
-            
+
             brush = new BrushConverter();
 
             workSheet.Columns.EntireColumn.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
@@ -53,7 +53,7 @@ namespace _01electronics_crm
 
                 for (int j = 0; j < gridToExport.ColumnDefinitions.Count; j++)
                 {
-                    
+
                     if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + j].GetType().Equals(typeof(Label)))
                     {
                         Label currentLabel = (Label)gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + j];
@@ -111,7 +111,6 @@ namespace _01electronics_crm
                             columnsAdded = childGrid.ColumnDefinitions.Count - 1;
                             columnCount += columnsAdded;
 
-                            //if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + m].GetType().Equals(typeof(Label)))
                             workSheet.Range[workSheet.Range["A1"].Offset[0, j], workSheet.Range["A1"].Offset[0, j + columnsAdded]].Merge();
 
                         }
@@ -123,17 +122,11 @@ namespace _01electronics_crm
 
                             else if (m < j)
                             {
-                                //if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + m].GetType().Equals(typeof(Label)))
-                                //    workSheet.Range[workSheet.Range["A1"].Offset[(i - 1) * childGrid.RowDefinitions.Count + 1, m], workSheet.Range["A1"].Offset[i * childGrid.RowDefinitions.Count, m]].Merge();
-
                                 if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + m].GetType().Equals(typeof(Label)))
                                     workSheet.Range[workSheet.Range["A1"].Offset[currentRow, m], workSheet.Range["A1"].Offset[currentRow + childGridRows, m]].Merge();
                             }
                             else
                             {
-                                //if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + m].GetType().Equals(typeof(Label)))
-                                //    workSheet.Range[workSheet.Range["A1"].Offset[(i - 1) * childGrid.RowDefinitions.Count + 1, m + columnsAdded], workSheet.Range["A1"].Offset[i * childGrid.RowDefinitions.Count, m + columnsAdded]].Merge();
-
                                 if (gridToExport.Children[i * gridToExport.ColumnDefinitions.Count + m].GetType().Equals(typeof(Label)))
                                     workSheet.Range[workSheet.Range["A1"].Offset[currentRow, m + columnsAdded], workSheet.Range["A1"].Offset[currentRow + childGridRows, m + columnsAdded]].Merge();
                             }
@@ -144,7 +137,7 @@ namespace _01electronics_crm
 
                 currentRow++;
             }
-                
+
             excelApplication.Visible = true;
             workSheet.Columns.AutoFit();
             workBook.Activate();

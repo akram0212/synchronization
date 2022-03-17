@@ -56,12 +56,15 @@ namespace _01electronics_crm
             //rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
 
+
             InitializeComponent();
 
             if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureUIElementsForAdd();
                 InitializeContractTypeCombo();
+                deadlineDate = commonFunctionsObject.GetTodaysDate();
+                deadlineDateDatePicker.SelectedDate = deadlineDate;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {

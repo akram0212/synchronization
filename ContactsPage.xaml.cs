@@ -155,7 +155,7 @@ namespace _01electronics_crm
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
                 List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> employeeContactList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
-                commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref employeeContactList);
+                commonQueries.GetEmployeeCompaniesAndContacts(listOfEmployees[i].employee_id, ref employeeContactList);
 
                  employeesContacts.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i], employeeContactList));
                 
@@ -259,19 +259,21 @@ namespace _01electronics_crm
                     if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !containsContactName)
                         continue;
 
-                    TreeViewItem contactTreeItem = new TreeViewItem();
+                    if (employeesContacts[i].Value[j].contact.contact_id != 0)
+                    {
+                        TreeViewItem contactTreeItem = new TreeViewItem();
 
-                    contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
-                    contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
-                    contactTreeItem.FontSize = 12;
-                    contactTreeItem.FontWeight = FontWeights.Normal;
+                        contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
+                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
+                        contactTreeItem.FontSize = 12;
+                        contactTreeItem.FontWeight = FontWeights.Normal;
 
-                    companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
+                        companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
 
-                    companyTreeItem.Items.Add(contactTreeItem);
+                        companyTreeItem.Items.Add(contactTreeItem);
 
-                    contactsTreeArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>(employeesContacts[i].Value[j], contactTreeItem));
-
+                        contactsTreeArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>(employeesContacts[i].Value[j], contactTreeItem));
+                    }
                 }
 
             }
@@ -302,7 +304,7 @@ namespace _01electronics_crm
                 Grid employeeGrid = new Grid();
                 employeeGrid.RowDefinitions.Add(new RowDefinition());
                 employeeGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
+                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30)});
 
                 Label employeeNameLabel = new Label();
 
@@ -315,6 +317,9 @@ namespace _01electronics_crm
                 expander.VerticalAlignment = VerticalAlignment.Center;
                 expander.Expanded += new RoutedEventHandler(OnExpandEmployeeExpander);
                 expander.Collapsed += new RoutedEventHandler(OnCollapseEmployeeExpander);
+
+                if (employeesContacts[i].Value.Count == 0)
+                    expander.IsEnabled = false;
 
                 employeeGrid.Children.Add(employeeNameLabel);
                 Grid.SetColumn(employeeNameLabel, 0);
@@ -386,7 +391,7 @@ namespace _01electronics_crm
 
                         Grid companyGrid = new Grid();
                         companyGrid.RowDefinitions.Add(new RowDefinition());
-                        companyGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                        companyGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(300) });
                         companyGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
                         Label companyNameLabel = new Label();
@@ -397,10 +402,12 @@ namespace _01electronics_crm
 
                         Expander companyExpander = new Expander();
                         companyExpander.ExpandDirection = ExpandDirection.Left;
-                        companyExpander.HorizontalAlignment = HorizontalAlignment.Center;
+                        companyExpander.HorizontalAlignment = HorizontalAlignment.Left;
                         companyExpander.VerticalAlignment = VerticalAlignment.Center;
                         companyExpander.Expanded += new RoutedEventHandler(OnExpandCompanyExpander);
                         companyExpander.Collapsed += new RoutedEventHandler(OnCollapseCompanyExpander);
+                        if (employeesContacts[i].Value[j].contact.contact_id == 0)
+                            companyExpander.IsEnabled = false;
                         companyGrid.Children.Add(companyExpander);
                         Grid.SetColumn(companyExpander, 1);
 
@@ -413,13 +420,13 @@ namespace _01electronics_crm
                         ColumnDefinition companyIconColumn = new ColumnDefinition();
                         ColumnDefinition companyStackColumn = new ColumnDefinition();
 
-                        companyIconColumn.MaxWidth = 50;
+                        companyIconColumn.MaxWidth = 60;
 
                         companyGridItem.ColumnDefinitions.Add(companyIconColumn);
                         companyGridItem.ColumnDefinitions.Add(companyStackColumn);
 
                         Image companyIcon = new Image { Source = new BitmapImage(new Uri(@"icons\company_icon.png", UriKind.Relative)) };
-                        ResizeImage(ref companyIcon, 40, 40);
+                        ResizeImage(ref companyIcon, 60, 60);
 
                         companyGridItem.Children.Add(companyIcon);
                         Grid.SetRow(companyIcon, 0);
@@ -433,70 +440,72 @@ namespace _01electronics_crm
                         companiesStackArray.Add(new KeyValuePair<int, StackPanel>(employeesContacts[i].Value[j].company.company_serial, companyStackPanel));
                     }
 
-                    bool containsContactName = employeesContacts[i].Value[j].contact.contact_name.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (employeesContacts[i].Value[j].contact.contact_id != 0)
+                    {
+                        bool containsContactName = employeesContacts[i].Value[j].contact.contact_name.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 
-                    if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !containsContactName)
-                        continue;
+                        if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !containsContactName)
+                            continue;
 
-                    StackPanel contactStackPanel = new StackPanel();
-                    contactStackPanel.Margin = new Thickness(36, 0, 0, 0);
-                    contactStackPanel.Visibility = Visibility.Collapsed;
+                        StackPanel contactStackPanel = new StackPanel();
+                        contactStackPanel.Margin = new Thickness(36, 0, 0, 0);
+                        contactStackPanel.Visibility = Visibility.Collapsed;
 
-                    companyStackPanel = companiesStackArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
+                        companyStackPanel = companiesStackArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
 
-                    StackPanel contactDetailsStackPanel = new StackPanel();
-                    contactDetailsStackPanel.Orientation = Orientation.Vertical;
-                    contactDetailsStackPanel.MouseDown += OnMouseDownContactStackPanel;
-
-
-                    Grid contactDetailsGrid = new Grid();
-
-                    ColumnDefinition gridIconColumn = new ColumnDefinition();
-                    ColumnDefinition gridDetailColumn = new ColumnDefinition();
-
-                    gridIconColumn.MaxWidth = 30;
-
-                    contactDetailsGrid.ColumnDefinitions.Add(gridIconColumn);
-                    contactDetailsGrid.ColumnDefinitions.Add(gridDetailColumn);
-
-                    Label contactNameLabel = new Label();
-                    contactNameLabel.Content = employeesContacts[i].Value[j].contact.contact_name;
-                    contactNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
-                    contactDetailsStackPanel.Children.Add(contactNameLabel);
-
-                    for (int k = 0; k < employeesContacts[i].Value[j].contact_phones.Count; k++)
-                        SetContactPhoneRow(k, employeesContacts[i].Value[j].contact_phones[k], ref contactDetailsGrid);
-
-                    for (int k = 0; k < employeesContacts[i].Value[j].contact_emails.Count; k++)
-                        SetContactEmailRow(employeesContacts[i].Value[j].contact_phones.Count + k, employeesContacts[i].Value[j].contact_emails[k], ref contactDetailsGrid);
+                        StackPanel contactDetailsStackPanel = new StackPanel();
+                        contactDetailsStackPanel.Orientation = Orientation.Vertical;
+                        contactDetailsStackPanel.MouseDown += OnMouseDownContactStackPanel;
 
 
-                    contactDetailsStackPanel.Children.Add(contactDetailsGrid);
+                        Grid contactDetailsGrid = new Grid();
 
-                    Grid contactGridItem = new Grid();
+                        ColumnDefinition gridIconColumn = new ColumnDefinition();
+                        ColumnDefinition gridDetailColumn = new ColumnDefinition();
 
-                    ColumnDefinition iconColumn = new ColumnDefinition();
-                    ColumnDefinition stackColumn = new ColumnDefinition();
+                        gridIconColumn.MaxWidth = 30;
 
-                    iconColumn.MaxWidth = 50;
+                        contactDetailsGrid.ColumnDefinitions.Add(gridIconColumn);
+                        contactDetailsGrid.ColumnDefinitions.Add(gridDetailColumn);
 
-                    contactGridItem.ColumnDefinitions.Add(iconColumn);
-                    contactGridItem.ColumnDefinitions.Add(stackColumn);
+                        Label contactNameLabel = new Label();
+                        contactNameLabel.Content = employeesContacts[i].Value[j].contact.contact_name;
+                        contactNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
+                        contactDetailsStackPanel.Children.Add(contactNameLabel);
 
-                    Image contactIcon = new Image { Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative)) };
-                    ResizeImage(ref contactIcon, 40, 40);
+                        for (int k = 0; k < employeesContacts[i].Value[j].contact_phones.Count; k++)
+                            SetContactPhoneRow(k, employeesContacts[i].Value[j].contact_phones[k], ref contactDetailsGrid);
 
-                    contactGridItem.Children.Add(contactIcon);
-                    Grid.SetRow(contactIcon, 0);
+                        for (int k = 0; k < employeesContacts[i].Value[j].contact_emails.Count; k++)
+                            SetContactEmailRow(employeesContacts[i].Value[j].contact_phones.Count + k, employeesContacts[i].Value[j].contact_emails[k], ref contactDetailsGrid);
 
-                    contactGridItem.Children.Add(contactDetailsStackPanel);
-                    Grid.SetColumn(contactDetailsStackPanel, 1);
 
-                    contactStackPanel.Children.Add(contactGridItem);
-                    companyStackPanel.Children.Add(contactStackPanel);
+                        contactDetailsStackPanel.Children.Add(contactDetailsGrid);
 
-                    contactsStackArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, StackPanel>(employeesContacts[i].Value[j], contactStackPanel));
+                        Grid contactGridItem = new Grid();
 
+                        ColumnDefinition iconColumn = new ColumnDefinition();
+                        ColumnDefinition stackColumn = new ColumnDefinition();
+
+                        iconColumn.MaxWidth = 50;
+
+                        contactGridItem.ColumnDefinitions.Add(iconColumn);
+                        contactGridItem.ColumnDefinitions.Add(stackColumn);
+
+                        Image contactIcon = new Image { Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative)) };
+                        ResizeImage(ref contactIcon, 40, 40);
+
+                        contactGridItem.Children.Add(contactIcon);
+                        Grid.SetRow(contactIcon, 0);
+
+                        contactGridItem.Children.Add(contactDetailsStackPanel);
+                        Grid.SetColumn(contactDetailsStackPanel, 1);
+
+                        contactStackPanel.Children.Add(contactGridItem);
+                        companyStackPanel.Children.Add(contactStackPanel);
+
+                        contactsStackArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, StackPanel>(employeesContacts[i].Value[j], contactStackPanel));
+                    }
                 }
 
             }
