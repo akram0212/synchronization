@@ -64,27 +64,6 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
-            //{
-            //    maintOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //        if (!maintOffer.GetNewOfferSerial())
-            //            return;
-            //    if(!maintOffer.GetNewOfferVersion())
-            //        return;
-            //    maintOffer.SetOfferIssueDateToToday();
-            //    maintOffer.GetNewOfferID();
-            //    
-            //}
-            //
-            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //{
-            //    if (!maintOffer.GetNewOfferVersion())
-            //        return;
-            //    maintOffer.SetOfferIssueDateToToday();
-            //    maintOffer.GetNewOfferID();
-            //}
-
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 FillrfqsList();
@@ -440,8 +419,8 @@ namespace _01electronics_crm
                 salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
-                maintOffer.ResetMaintOfferInfo(salesPersonTeamID);
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            //    maintOffer.ResetMaintOfferInfo(salesPersonTeamID);
 
             maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
 

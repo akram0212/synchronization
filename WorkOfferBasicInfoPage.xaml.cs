@@ -440,8 +440,8 @@ namespace _01electronics_crm
             salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
             commonQueriesObject.GetEmployeeTeam(salesPersonID, ref salesPersonTeamID);
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
-                quotation.ResetWorkOfferInfo();
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            //    quotation.ResetWorkOfferInfo();
             
             quotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId());
             quotation.InitializeSalesPersonInfo(salesPersonID);

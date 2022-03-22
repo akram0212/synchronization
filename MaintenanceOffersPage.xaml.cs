@@ -250,6 +250,9 @@ namespace _01electronics_crm
                 preSalesCheckBox.IsChecked = false;
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
+
+                if(loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID)
+                    addButton.IsEnabled = true;
             }
             else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
@@ -272,6 +275,8 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
+
+                addButton.IsEnabled = true;
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {
@@ -282,6 +287,8 @@ namespace _01electronics_crm
                 preSalesCheckBox.IsChecked = false;
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
+
+                addButton.IsEnabled = false;
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
@@ -293,7 +300,7 @@ namespace _01electronics_crm
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
 
-                addButton.IsEnabled = false;
+                addButton.IsEnabled = true;
             }
         }
 

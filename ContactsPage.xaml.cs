@@ -157,7 +157,7 @@ namespace _01electronics_crm
                 List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> employeeContactList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
                 commonQueries.GetEmployeeCompaniesAndContacts(listOfEmployees[i].employee_id, ref employeeContactList);
 
-                 employeesContacts.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i], employeeContactList));
+                employeesContacts.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i], employeeContactList));
                 
             }
 
@@ -293,6 +293,8 @@ namespace _01electronics_crm
             companiesStackArray.Clear();
             contactsStackArray.Clear();
 
+            BrushConverter brush = new BrushConverter();
+
             for (int i = 0; i < listOfEmployees.Count(); i++)
             {
                 if (salesPersonComboBox.SelectedItem != null && listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id != listOfEmployees[i].employee_id)
@@ -300,8 +302,9 @@ namespace _01electronics_crm
 
                 StackPanel employeeStackPanel = new StackPanel();
                 employeeStackPanel.Orientation = Orientation.Vertical;
-
+                
                 Grid employeeGrid = new Grid();
+                employeeGrid.Background = (Brush)brush.ConvertFrom("#D3D3D3"); 
                 employeeGrid.RowDefinitions.Add(new RowDefinition());
                 employeeGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30)});
@@ -354,7 +357,6 @@ namespace _01electronics_crm
                         Grid companyDetailsGrid = new Grid();
 
                         companyDetailsGrid.RowDefinitions.Add(new RowDefinition());
-                        companyDetailsGrid.RowDefinitions.Add(new RowDefinition());
                         ColumnDefinition companyGridIconColumn = new ColumnDefinition();
                         ColumnDefinition companyGridDetailColumn = new ColumnDefinition();
 
@@ -371,23 +373,29 @@ namespace _01electronics_crm
 
                         Label companyWorkField = new Label();
                         companyWorkField.Content = employeesContacts[i].Value[j].company.primary_field.field_name + " - " + employeesContacts[i].Value[j].company.secondary_field.field_name;
-                        companyWorkField.Style = (Style)FindResource("stackPanelItemHeader");
+                        companyWorkField.Style = (Style)FindResource("stackPanelItemBody");
                         companyDetailsGrid.Children.Add(companyWorkField);
                         Grid.SetRow(companyWorkField, 0);
                         Grid.SetColumn(companyWorkField, 1);
 
                         Image companyNumberIcon = new Image { Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative)) };
                         ResizeImage(ref companyNumberIcon, 25, 25);
-                        companyDetailsGrid.Children.Add(companyNumberIcon);
-                        Grid.SetRow(companyNumberIcon, 1);
-                        Grid.SetColumn(companyNumberIcon, 0);
+                        
 
                         Label companyNumberLabel = new Label();
                         companyNumberLabel.Content = employeesContacts[i].Value[j].company.company_number;
-                        companyNumberLabel.Style = (Style)FindResource("stackPanelItemHeader");
-                        companyDetailsGrid.Children.Add(companyNumberLabel);
-                        Grid.SetRow(companyNumberLabel, 1);
-                        Grid.SetColumn(companyNumberLabel, 1);
+                        companyNumberLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                        if (companyNumberLabel.Content != "")
+                        {
+                            companyDetailsGrid.RowDefinitions.Add(new RowDefinition());
+                            companyDetailsGrid.Children.Add(companyNumberIcon);
+                            Grid.SetRow(companyNumberIcon, 1);
+                            Grid.SetColumn(companyNumberIcon, 0);
+                            companyDetailsGrid.Children.Add(companyNumberLabel);
+                            Grid.SetRow(companyNumberLabel, 1);
+                            Grid.SetColumn(companyNumberLabel, 1);
+                        }
 
                         Grid companyGrid = new Grid();
                         companyGrid.RowDefinitions.Add(new RowDefinition());
@@ -406,8 +414,10 @@ namespace _01electronics_crm
                         companyExpander.VerticalAlignment = VerticalAlignment.Center;
                         companyExpander.Expanded += new RoutedEventHandler(OnExpandCompanyExpander);
                         companyExpander.Collapsed += new RoutedEventHandler(OnCollapseCompanyExpander);
+
                         if (employeesContacts[i].Value[j].contact.contact_id == 0)
                             companyExpander.IsEnabled = false;
+                        
                         companyGrid.Children.Add(companyExpander);
                         Grid.SetColumn(companyExpander, 1);
 
@@ -416,7 +426,6 @@ namespace _01electronics_crm
                         companyDetailsStackPanel.Children.Add(companyDetailsGrid);
 
                         Grid companyGridItem = new Grid();
-
                         ColumnDefinition companyIconColumn = new ColumnDefinition();
                         ColumnDefinition companyStackColumn = new ColumnDefinition();
 
@@ -799,14 +808,16 @@ namespace _01electronics_crm
                 previousworkFieldLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
                 previousworkFieldLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
-                previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+                if (previousCompanyDetailsGrid.RowDefinitions.Count > 1)
+                {
+                    Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
+                    previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
 
-                Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
+                    Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
 
-                previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-                previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
+                    previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
             }
 
             
@@ -836,13 +847,16 @@ namespace _01electronics_crm
             workFieldLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
             workFieldLabel.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            Image CompanyNumberImage = (Image)currentCompanyDetailsGrid.Children[2];
-            CompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
+            if (currentCompanyDetailsGrid.RowDefinitions.Count > 1)
+            {
+                Image CompanyNumberImage = (Image)currentCompanyDetailsGrid.Children[2];
+                CompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
 
-            Label CompanyNumberLabel = (Label)currentCompanyDetailsGrid.Children[3];
+                Label CompanyNumberLabel = (Label)currentCompanyDetailsGrid.Children[3];
 
-            CompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-            CompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+                CompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+                CompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+            }
 
             ViewBtn.IsEnabled = true;
 
@@ -885,13 +899,16 @@ namespace _01electronics_crm
                 previousworkFieldLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
                 previousworkFieldLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
-                previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+                if (previousCompanyDetailsGrid.RowDefinitions.Count > 1)
+                {
+                    Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
+                    previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
 
-                Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
+                    Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
 
-                previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-                previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                    previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
 
                 currentSelectedCompanyItem = null;
             }
@@ -984,90 +1001,6 @@ namespace _01electronics_crm
 
         }
 
-        private void ResetCompanyStackPanelColors()
-        {
-            BrushConverter brush = new BrushConverter();
-
-            Grid previousParentGrid = (Grid)currentSelectedCompanyItem.Parent;
-            previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
-            COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT previousCompanyItem = contactsStackArray.Find(company_item => company_item.Value == prevoiusParentStackPanel).Key;
-
-            Image previousCompanyIcon = (Image)previousParentGrid.Children[0];
-            previousCompanyIcon.Source = new BitmapImage(new Uri(@"icons\company_icon.png", UriKind.Relative));
-
-            Grid previousSelectedCompanyGrid = (Grid)currentSelectedCompanyItem.Children[0];
-            previousSelectedCompanyGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            Label previousSelectedCompanyLabel = (Label)previousSelectedCompanyGrid.Children[0];
-            previousSelectedCompanyLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-            previousSelectedCompanyLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-
-
-            Grid previousCompanyDetailsGrid = (Grid)currentSelectedCompanyItem.Children[1];
-            previousCompanyDetailsGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            Image previousworkFieldImage = (Image)previousCompanyDetailsGrid.Children[0];
-            previousworkFieldImage.Source = new BitmapImage(new Uri(@"icons\field_icon.png", UriKind.Relative));
-
-            Label previousworkFieldLabel = (Label)previousCompanyDetailsGrid.Children[1];
-
-            previousworkFieldLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-            previousworkFieldLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
-            previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
-
-            Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
-
-            previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-            previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
-
-            currentSelectedCompanyItem = (StackPanel)previousParentGrid.Children[1];
-        }
-
-        private void ReapplyCompanyStackPanelColors()
-        {
-            BrushConverter brush = new BrushConverter();
-
-            Grid currentParentGrid = (Grid)currentSelectedCompanyItem.Parent;
-            currentParentGrid.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            StackPanel currentParentStackPanel = (StackPanel)currentParentGrid.Parent;
-            COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentCompanyItem = contactsStackArray.Find(company_item => company_item.Value == currentParentStackPanel).Key;
-
-            Image currentCompanyIcon = (Image)currentParentGrid.Children[0];
-            currentCompanyIcon.Source = new BitmapImage(new Uri(@"icons\company_icon_blue.png", UriKind.Relative));
-
-            Grid currentSelectedCompanyGrid = (Grid)currentSelectedCompanyItem.Children[0];
-            currentSelectedCompanyGrid.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            Label currentSelectedCompanyLabel = (Label)currentSelectedCompanyGrid.Children[0];
-            currentSelectedCompanyLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-            currentSelectedCompanyLabel.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            Grid currentCompanyDetailsGrid = (Grid)currentSelectedCompanyItem.Children[1];
-            currentCompanyDetailsGrid.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            Image currentworkFieldImage = (Image)currentCompanyDetailsGrid.Children[0];
-            currentworkFieldImage.Source = new BitmapImage(new Uri(@"icons\field_icon_blue.png", UriKind.Relative));
-
-            Label workFieldLabel = (Label)currentCompanyDetailsGrid.Children[1];
-            workFieldLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-            workFieldLabel.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            Image CompanyNumberImage = (Image)currentCompanyDetailsGrid.Children[2];
-            CompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
-
-            Label CompanyNumberLabel = (Label)currentCompanyDetailsGrid.Children[3];
-
-            CompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
-            CompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#105A97");
-
-            currentSelectedCompanyItem = (StackPanel)currentParentGrid.Children[1];
-        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON UNCHECKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
