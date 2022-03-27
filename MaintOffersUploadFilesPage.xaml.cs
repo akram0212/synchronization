@@ -109,7 +109,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            //serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + maintOffers.GetOfferID() + "/";
+            serverFolderPath = COMPANY_WORK_MACROS.MAINTENANCE_OFFERS_FILES_PATH + maintOffers.GetMaintOfferID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))

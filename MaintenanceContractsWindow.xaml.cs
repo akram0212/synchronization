@@ -37,21 +37,24 @@ namespace _01electronics_crm
             maintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsPaymentAndDeliveryPage);
             maintContractsProjectInfoPage = new MaintContractsProjectsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProductsPage);
             maintContractsBasicInfoPage = new MaintContractsBasicInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProjectInfoPage);
-            maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
-
             if (openFilesPage)
             {
-                maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
-                maintContractsUploadFilesPage.maintContractsProductsPage = maintContractsProductsPage;
-                maintContractsUploadFilesPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+                maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
+            }
+            if (openFilesPage)
+            {
                 maintContractsUploadFilesPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+                maintContractsUploadFilesPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+                maintContractsUploadFilesPage.maintContractsProductsPage = maintContractsProductsPage;
+                maintContractsUploadFilesPage.maintContractsProjectsPage = maintContractsProjectInfoPage;
+                maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
 
                 this.NavigationService.Navigate(maintContractsUploadFilesPage);
 
             }
             else
             {
-                maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+                maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProjectInfoPage.maintContractsProductsPage;
                 maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
                 maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
                 maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;

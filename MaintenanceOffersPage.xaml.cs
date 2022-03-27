@@ -1162,11 +1162,12 @@ namespace _01electronics_crm
             }
 
             MaintenanceOffersWindow viewOffer = new MaintenanceOffersWindow(ref loggedInUser, ref selectedMaintOffer, viewAddCondition, false);
+            viewOffer.Closed += OnClosedMaintOfferWindow;
             viewOffer.Show();
         }
         private void OnBtnClickConfirmOffer()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
@@ -1183,20 +1184,13 @@ namespace _01electronics_crm
                                                                 maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
             }
 
-            //MaintenanceContract maintContract = new MaintenanceContract(sqlDatabase);
-            //maintContract.CopyWorkOffer(selectedMaintOffer);
-            //maintContract.CopyWorkOfferToWorkOrder();
+            MaintenanceContract maintContract = new MaintenanceContract(sqlDatabase);
+            maintContract.CopyMaintOffer(selectedMaintOffer);
 
-           // MaintenanceContractsWindow viewOffer = new MaintenanceContractsWindow(ref loggedInUser, ref maintContract, viewAddCondition, false);
-            //viewOffer.Show();
+            MaintenanceContractsWindow viewOffer = new MaintenanceContractsWindow(ref loggedInUser, ref maintContract, viewAddCondition, false);
+            viewOffer.Closed += OnClosedMaintOfferWindow;
+            viewOffer.Show();
 
-            if (!GetMaintenanceOffers())
-                return;
-
-            SetMaintOffersStackPanel();
-            SetMaintOffersGrid();
-
-            // selectedMaintOffer.ConfirmOffer();
 
         }
 

@@ -453,15 +453,12 @@ namespace _01electronics_crm
             if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 InitializeCompanyNameCombo();
-                //companyNameCombo.IsEnabled = false;
                 if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || workOrder.GetOfferID() != null)
                     OfferCheckBox.IsChecked = true;
             }
             else
             {
                 InitializeCompanyNameCombo();
-                //OfferCheckBox.IsChecked = false;
-                //SetOfferSerialComboValue();
             }
           
 
@@ -495,7 +492,6 @@ namespace _01electronics_crm
             if (companyNameCombo.SelectedItem == null)
             {
                 companyAddressCombo.SelectedItem = null;
-                //companyAddressCombo.IsEnabled = false;
             }
 
 

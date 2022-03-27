@@ -35,8 +35,10 @@ namespace _01electronics_crm
             maintOffersPaymentAndDeliveryPage = new MaintOffersPaymentAndDeliveryPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersAdditionalInfoPage);
             maintOffersProductsPage = new MaintOffersProductsPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersPaymentAndDeliveryPage);
             maintOffersBasicInfoPage = new MaintOffersBasicInfoPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersProductsPage);
-            maintOffersUploadFilesPage = new MaintOffersUploadFilesPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition);
-
+            if (openFilesPage)
+            {
+                maintOffersUploadFilesPage = new MaintOffersUploadFilesPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition);
+            }
             if (openFilesPage)
             {
                 maintOffersUploadFilesPage.maintOffersBasicInfoPage = maintOffersBasicInfoPage;

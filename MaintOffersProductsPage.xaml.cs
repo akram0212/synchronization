@@ -73,8 +73,8 @@ namespace _01electronics_crm
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
 
-                SetUpPageUIElements();
                 InitializePriceCurrencyComboBoxes();
+                SetUpPageUIElements();
                 SetCategoryLabels();
                 SetTypeLabels();
                 SetBrandLabels();
@@ -138,6 +138,7 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetCurrencyTypes(ref currencies))
                 return;
+
 
         }
 
@@ -337,12 +338,13 @@ namespace _01electronics_crm
         }
         private void SetPriceComboBoxes()
         {
-            if (maintOffer.GetCurrencyId() != 0)
+            if (maintOffer.GetCurrencyId() != 0 && mainWrapPanel.Children.Count != 0)
             {
                 Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
                 WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
                 ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
-                currentPriceComboBox.SelectedItem = maintOffer.GetCurrency();
+                String priceCurrency = maintOffer.GetCurrency().ToString();
+                currentPriceComboBox.SelectedItem = priceCurrency;
             }
         }
 
