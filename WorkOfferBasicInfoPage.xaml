@@ -17,20 +17,21 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="#105A97">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="WORK OFFER BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
-            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE &#x0a;OFFER FILE" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer"/>
+            <Label Grid.Row="0" Content="BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateWorkOffer" IsEnabled="False"/>
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Left">
@@ -42,7 +43,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+            <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
             </Border>
 
@@ -68,9 +69,6 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0">
@@ -81,7 +79,7 @@
                 </WrapPanel>
 
                 <WrapPanel Name="assigneeWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="RFQ Serial"/>
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;Serial"/>
                     <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedRFQSerialCombo"/>
                 </WrapPanel>
@@ -107,11 +105,37 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
-            </WrapPanel>
 
+                <WrapPanel Name="projectWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Project &#x0a;Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="projectSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectSerialCombo" SelectionChanged="OnSelChangedProjectSerialCombo"/>
+                </WrapPanel>
+                
+                
+
+            </WrapPanel>
             
         </Grid>
 
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            
+        </WrapPanel>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
+
+        </Grid>
 
     </Grid>
 </Page>

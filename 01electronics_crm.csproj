@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>F:\Work\01 Electronics\Software Development\install\crm v5.0\</PublishUrl>
+    <PublishUrl>F:\Work\01 Electronics\Software Development\install\crm v6.0\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -30,11 +30,11 @@
     <ProductName>CRM</ProductName>
     <PublisherName>01 Electronics</PublisherName>
     <SuiteName>ERP System</SuiteName>
-    <MinimumRequiredVersion>5.0.0.0</MinimumRequiredVersion>
+    <MinimumRequiredVersion>6.0.0.1</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>5.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>6.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -72,14 +72,24 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Spire.Doc, Version=9.8.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.Doc.dll</HintPath>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=9.12.12.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.9.12.12\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
     <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.License.dll</HintPath>
+      <HintPath>..\packages\Spire.Doc.9.12.12\lib\net40\Spire.License.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.Pdf, Version=7.8.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.9.8.6\lib\net40\Spire.Pdf.dll</HintPath>
+    <Reference Include="Spire.Pdf, Version=7.12.1.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.Doc.9.12.12\lib\net40\Spire.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -119,8 +129,11 @@
     <Compile Include="AddClientVisitWindow.xaml.cs">
       <DependentUpon>AddClientVisitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddComapnyDetailsWindow.xaml.cs">
-      <DependentUpon>AddComapnyDetailsWindow.xaml</DependentUpon>
+    <Compile Include="AddCollectionWindow.xaml.cs">
+      <DependentUpon>AddCollectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddCompanyDetailsWindow.xaml.cs">
+      <DependentUpon>AddCompanyDetailsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddContactDetailsWindow.xaml.cs">
       <DependentUpon>AddContactDetailsWindow.xaml</DependentUpon>
@@ -128,10 +141,68 @@
     <Compile Include="AddOfficeMeetingWindow.xaml.cs">
       <DependentUpon>AddOfficeMeetingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddProjectLocationWindow.xaml.cs">
+      <DependentUpon>AddProjectLocationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddProjectWindow.xaml.cs">
+      <DependentUpon>AddProjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeAssigneeWindow.xaml.cs">
+      <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExcelExport.cs" />
+    <Compile Include="MaintContractsAdditionalInfoPage.xaml.cs">
+      <DependentUpon>MaintContractsAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsBasicInfoPage.xaml.cs">
+      <DependentUpon>MaintContractsBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>MaintContractsPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsProductsPage.xaml.cs">
+      <DependentUpon>MaintContractsProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsProjectsPage.xaml.cs">
+      <DependentUpon>MaintContractsProjectsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintContractsUploadFilesPage.xaml.cs">
+      <DependentUpon>MaintContractsUploadFilesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceContractsPage.xaml.cs">
+      <DependentUpon>MaintenanceContractsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceContractsWindow.xaml.cs">
+      <DependentUpon>MaintenanceContractsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceOffersPage.xaml.cs">
+      <DependentUpon>MaintenanceOffersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintenanceOffersWindow.xaml.cs">
+      <DependentUpon>MaintenanceOffersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersAdditionalInfoPage.xaml.cs">
+      <DependentUpon>MaintOffersAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersBasicInfoPage.xaml.cs">
+      <DependentUpon>MaintOffersBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>MaintOffersPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersProductsPage.xaml.cs">
+      <DependentUpon>MaintOffersProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintOffersUploadFilesPage.xaml.cs">
+      <DependentUpon>MaintOffersUploadFilesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs" />
+    <Compile Include="MergeCompaniesWindow.xaml.cs">
+      <DependentUpon>MergeCompaniesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModelsPage.xaml.cs">
       <DependentUpon>ModelsPage.xaml</DependentUpon>
     </Compile>
@@ -141,6 +212,9 @@
     <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectsPage.xaml.cs">
+      <DependentUpon>ProjectsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
@@ -154,6 +228,9 @@
     <Compile Include="RFQsPage.xaml.cs">
       <DependentUpon>RFQsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RFQUploadFilesPage.xaml.cs">
+      <DependentUpon>RFQUploadFilesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQWindow.xaml.cs">
       <DependentUpon>RFQWindow.xaml</DependentUpon>
     </Compile>
@@ -166,11 +243,14 @@
     <Compile Include="SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StatisticsPage.xaml.cs">
+      <DependentUpon>StatisticsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOffersFilteredWithRFQSerialWindow.xaml.cs">
+      <DependentUpon>WorkOffersFilteredWithRFQSerialWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkOfferUploadFilesPage.xaml.cs">
       <DependentUpon>WorkOfferUploadFilesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UploadFilesWindow.xaml.cs">
-      <DependentUpon>UploadFilesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserPortalPage.xaml.cs">
       <DependentUpon>UserPortalPage.xaml</DependentUpon>
@@ -203,14 +283,35 @@
     <Compile Include="WorkOfferProductsPage.xaml.cs">
       <DependentUpon>WorkOfferProductsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorkOffersPage.xaml.cs">
-      <DependentUpon>WorkOffersPage.xaml</DependentUpon>
+    <Compile Include="QuotationsPage.xaml.cs">
+      <DependentUpon>QuotationsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkOfferWindow.xaml.cs">
       <DependentUpon>WorkOfferWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkOrderAdditionalInfoPage.xaml.cs">
+      <DependentUpon>WorkOrderAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderBasicInfoPage.xaml.cs">
+      <DependentUpon>WorkOrderBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderPaymentAndDeliveryPage.xaml.cs">
+      <DependentUpon>WorkOrderPaymentAndDeliveryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderProductsPage.xaml.cs">
+      <DependentUpon>WorkOrderProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderProjectInfoPage.xaml.cs">
+      <DependentUpon>WorkOrderProjectInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkOrdersPage.xaml.cs">
       <DependentUpon>WorkOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderUploadFilesPage.xaml.cs">
+      <DependentUpon>WorkOrderUploadFilesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderWindow.xaml.cs">
+      <DependentUpon>WorkOrderWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="AddBranchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -224,7 +325,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddComapnyDetailsWindow.xaml">
+    <Page Include="AddCollectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddCompanyDetailsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -244,13 +349,89 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddProjectLocationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangeAssigneeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContactsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsProjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintContractsUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceContractsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceContractsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceOffersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintenanceOffersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaintOffersUploadFilesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MergeCompaniesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModelsPage.xaml">
       <SubType>Designer</SubType>
@@ -295,6 +476,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ProjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RFQAdditionalInfoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -310,6 +495,10 @@
     <Page Include="RFQsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RFQUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RFQWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -327,11 +516,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorkOfferUploadFilesPage.xaml">
+    <Page Include="StatisticsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UploadFilesWindow.xaml">
+    <Page Include="WorkOffersFilteredWithRFQSerialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOfferUploadFilesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -375,7 +568,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WorkOffersPage.xaml">
+    <Page Include="QuotationsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -383,9 +576,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="WorkOrderAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderPaymentAndDeliveryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderProjectInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkOrdersPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WorkOrderUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -408,6 +629,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -445,6 +667,129 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\addfiles_icon.jpg" />
+    <Resource Include="photos\drop_files_icon.jpg" />
+    <Resource Include="photos\excel_icon.jpg" />
+    <Resource Include="photos\image_icon.jpg" />
+    <Resource Include="photos\pdf_icon.jpg" />
+    <Resource Include="photos\powerpoint_icon.jpg" />
+    <Resource Include="photos\text_icon.jpg" />
+    <Resource Include="photos\unknown_icon.jpg" />
+    <Resource Include="photos\winrar_icon.jpg" />
+    <Resource Include="photos\word_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\1.jpg" />
+    <Resource Include="photos\products\11.jpg" />
+    <Resource Include="photos\products\15.jpg" />
+    <Resource Include="photos\products\16.jpg" />
+    <Resource Include="photos\products\17.jpg" />
+    <Resource Include="photos\products\18.jpg" />
+    <Resource Include="photos\products\2.jpg" />
+    <Resource Include="photos\products\20.jpg" />
+    <Resource Include="photos\products\21.jpg" />
+    <Resource Include="photos\products\23.jpg" />
+    <Resource Include="photos\products\24.jpg" />
+    <Resource Include="photos\products\25.jpg" />
+    <Resource Include="photos\products\26.jpg" />
+    <Resource Include="photos\products\28.jpg" />
+    <Resource Include="photos\products\29.jpg" />
+    <Resource Include="photos\products\3.jpg" />
+    <Resource Include="photos\products\30.jpg" />
+    <Resource Include="photos\products\31.jpg" />
+    <Resource Include="photos\products\32.jpg" />
+    <Resource Include="photos\products\35.jpg" />
+    <Resource Include="photos\products\39.jpg" />
+    <Resource Include="photos\products\4.jpg" />
+    <Resource Include="photos\products\5.jpg" />
+    <Resource Include="photos\products\50.jpg" />
+    <Resource Include="photos\products\51.jpg" />
+    <Resource Include="photos\products\52.jpg" />
+    <Resource Include="photos\products\6.jpg" />
+    <Resource Include="photos\products\7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\10.jpg" />
+    <Resource Include="photos\products\12.jpg" />
+    <Resource Include="photos\products\13.jpg" />
+    <Resource Include="photos\products\14.jpg" />
+    <Resource Include="photos\products\19.jpg" />
+    <Resource Include="photos\products\27.jpg" />
+    <Resource Include="photos\products\33.jpg" />
+    <Resource Include="photos\products\34.jpg" />
+    <Resource Include="photos\products\36.jpg" />
+    <Resource Include="photos\products\37.jpg" />
+    <Resource Include="photos\products\38.jpg" />
+    <Resource Include="photos\products\40.jpg" />
+    <Resource Include="photos\products\43.jpg" />
+    <Resource Include="photos\products\44.jpg" />
+    <Resource Include="photos\products\45.jpg" />
+    <Resource Include="photos\products\46.jpg" />
+    <Resource Include="photos\products\47.jpg" />
+    <Resource Include="photos\products\48.jpg" />
+    <Resource Include="photos\products\49.jpg" />
+    <Resource Include="photos\products\53.jpg" />
+    <Resource Include="photos\products\54.jpg" />
+    <Resource Include="photos\products\8.jpg" />
+    <Resource Include="photos\products\9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\22.jpg" />
+    <Resource Include="photos\products\42.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\41.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\0.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\1.jpg" />
+    <Resource Include="photos\brands\10.jpg" />
+    <Resource Include="photos\brands\2.jpg" />
+    <Resource Include="photos\brands\3.jpg" />
+    <Resource Include="photos\brands\4.jpg" />
+    <Resource Include="photos\brands\5.jpg" />
+    <Resource Include="photos\brands\6.jpg" />
+    <Resource Include="photos\brands\7.jpg" />
+    <Resource Include="photos\brands\8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\no_internet_icon.jpg" />
+    <Resource Include="photos\models\00.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\plus_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\office_meeting_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_call_icon.png" />
+    <Resource Include="Icons\client_visit_icon.png" />
+    <Resource Include="Icons\company_icon.png" />
+    <Resource Include="Icons\company_icon_blue.png" />
+    <Resource Include="Icons\contact_icon.png" />
+    <Resource Include="Icons\contact_icon_blue.png" />
+    <Resource Include="Icons\email_icon.png" />
+    <Resource Include="Icons\email_icon_blue.png" />
+    <Resource Include="Icons\field_icon.png" />
+    <Resource Include="Icons\field_icon_blue.png" />
+    <Resource Include="Icons\phone_icon.png" />
+    <Resource Include="Icons\phone_icon_blue.png" />
+    <Resource Include="Icons\status_icon.png" />
+    <Resource Include="Icons\status_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\office_meeting_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_call_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

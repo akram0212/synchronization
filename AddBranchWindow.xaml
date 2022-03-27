@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
         Background="#EDEDED"
-        Height="730" Width="700"
+        Height="730" Width="750"
         Title="Add Branch Window">
 
     <Grid>
@@ -50,7 +50,7 @@
                         </WrapPanel>
 
                         <WrapPanel Name="SecondaryWorkFieldWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work Field"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Secondary Work &#x0a;Field"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="secondaryWorkFieldTextBox"/>
                         </WrapPanel>
                     </WrapPanel>
@@ -71,17 +71,19 @@
                         <WrapPanel Name="CityWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="City *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="cityComboBox" SelectionChanged="OnSelChangedCity"/>
+                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickCityImage"/>
                         </WrapPanel>
 
                         <WrapPanel Name="DistrictWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="District *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="districtComboBox" SelectionChanged="OnSelChangedDistrict"/>
+                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickDistrictImage"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="4">
                         <WrapPanel Name="telephoneWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Telephone"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Telephone*"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
                         </WrapPanel>
 

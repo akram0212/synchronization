@@ -28,18 +28,22 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MyProfileLabel" Text="My Profile" MouseLeftButtonDown="OnButtonClickedMyProfile"/>
             <TextBlock Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ContactsLabel" Text="Contacts" MouseLeftButtonDown="OnButtonClickedContacts"/>
-            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ProductsLabel" Text="Products" MouseLeftButtonDown="OnButtonClickedProducts"/>
-            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedWorkOrders"/>
-            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Work Offers" MouseLeftButtonDown="OnButtonClickedWorkOffers"/>
-            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs"/>
-            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
-            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
-            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
-            <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="StatisticsLabel" Text="Statistics" MouseLeftButtonDown="OnButtonClickedStatistics"/>
+            <TextBlock Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ProjectsLabel" Text="Projects" MouseLeftButtonDown="OnButtonClickedProjects"/>
+            <TextBlock Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ProductsLabel" Text="Products" MouseLeftButtonDown="OnButtonClickedProducts"/>
+            <TextBlock Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOrdersLabel" Text="Work Orders" MouseLeftButtonDown="OnButtonClickedWorkOrders"/>
+            <TextBlock Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MaintenanceOffersLabel" Text="Maintenance Offers" MouseLeftButtonDown="OnButtonClickedMaintenanceOffer"/>
+            <TextBlock Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MaintenanceContractsLabel" Text="Maintenance Contracts" MouseLeftButtonDown="OnButtonClickedMaintenanceContracts"/>
+            <TextBlock Grid.Row="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="WorkOffersLabel" Text="Quotations" MouseLeftButtonDown="OnButtonClickedWorkOffers"/>
+            <TextBlock Grid.Row="8" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="RFQsLabel" Text="RFQs" MouseLeftButtonDown="OnButtonClickedRFQs" Background="#EDEDED" Foreground="#105A97"/>
+            <TextBlock Grid.Row="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientVisitsLabel" Text="Client Visits" MouseLeftButtonDown="OnButtonClickedVisits"/>
+            <TextBlock Grid.Row="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="ClientCallsLabel" Text="Client Calls" MouseLeftButtonDown="OnButtonClickedCalls"/>
+            <TextBlock Grid.Row="11" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
 
         </Grid>
 
@@ -51,13 +55,30 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>                
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="RFQS" Style="{StaticResource primaryHeaderTextStyle}"/>
 
-            <Grid Grid.Row="1" Margin="48,24">
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"  Style="{StaticResource selectedMainTabBorder}" MouseLeftButtonDown="OnClickListView">
+                    <Label Name="listViewLabel" Content="List View" Style="{StaticResource selectedMainTabLabelItem}"/>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource unselectedMainTabBorder}" MouseLeftButtonDown="OnClickTableView">
+                    <Label Name="tableViewLabel" Content="Table View" Style="{StaticResource unselectedMainTabLabelItem}"/>
+                </Border>
+
+            </Grid>
+            
+            <Grid Grid.Row="2" Margin="48,24">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -79,48 +100,56 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox Name="yearCheckBox" Grid.Row="0" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="OnCheckYearCheckBox" Unchecked="OnUncheckYearCheckBox"/>
-                    <ComboBox Name="yearComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedYearCombo"/>
+                    <CheckBox Name="searchCheckBox" Grid.Row="0" Grid.Column="0"  Content="Search" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSearchCheckBox" Unchecked="OnUnCheckSearchCheckBox" />
+                    <TextBox Name="searchTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource filterTextBoxStyle}" TextChanged="OnTextChangedSearchTextBox"/>
 
-                    <CheckBox Name="quarterCheckBox" Grid.Row="1" Grid.Column="0" Content="Quarter" Style="{StaticResource checkBoxStyle}" Checked="OnCheckQuarterCheckBox" Unchecked="OnUncheckQuarterCheckBox"/>
-                    <ComboBox Name="quarterComboBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedQuarterCombo"/>
+                    <CheckBox Name="yearCheckBox" Grid.Row="1" Grid.Column="0"  Content="Year" Style="{StaticResource checkBoxStyle}" Checked="OnCheckYearCheckBox" Unchecked="OnUncheckYearCheckBox"/>
+                    <ComboBox Name="yearComboBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedYearCombo"/>
 
-                    <CheckBox Name="salesCheckBox" Grid.Row="2" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSalesCheckBox" Unchecked="OnUncheckSalesCheckBox"/>
-                    <ComboBox Name="salesComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSalesCombo"/>
+                    <CheckBox Name="quarterCheckBox" Grid.Row="2" Grid.Column="0" Content="Quarter" Style="{StaticResource checkBoxStyle}" Checked="OnCheckQuarterCheckBox" Unchecked="OnUncheckQuarterCheckBox"/>
+                    <ComboBox Name="quarterComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedQuarterCombo"/>
 
-                    <CheckBox Name="preSalesCheckBox" Grid.Row="3" Grid.Column="0" Content="Pre-Sales Engineer" Style="{StaticResource checkBoxStyle}" Checked="OnCheckPreSalesCheckBox" Unchecked="OnUncheckedPreSalesCheckBox"/>
-                    <ComboBox Name="preSalesComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedPreSalesCombo" />
+                    <CheckBox Name="salesCheckBox" Grid.Row="3" Grid.Column="0" Content="Sales Person" Style="{StaticResource checkBoxStyle}" Checked="OnCheckSalesCheckBox" Unchecked="OnUncheckSalesCheckBox"/>
+                    <ComboBox Name="salesComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedSalesCombo"/>
 
-                    <CheckBox Name="productCheckBox" Grid.Row="4" Grid.Column="0" Content="Product" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProductCheckBox" Unchecked="OnUncheckProductCheckBox"/>
-                    <ComboBox Name="productComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedProductCombo"/>
+                    <CheckBox Name="preSalesCheckBox" Grid.Row="4" Grid.Column="0" Content="Pre-Sales Engineer" Style="{StaticResource checkBoxStyle}" Checked="OnCheckPreSalesCheckBox" Unchecked="OnUncheckedPreSalesCheckBox"/>
+                    <ComboBox Name="preSalesComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedPreSalesCombo" />
 
-                    <CheckBox Name="brandCheckBox" Grid.Row="5" Grid.Column="0" Content="Brand" Style="{StaticResource checkBoxStyle}" Checked="OnCheckBrandCheckBox" Unchecked="OnUncheckBrandCheckBox"/>
-                    <ComboBox Name="brandComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedBrandCombo"/>
+                    <CheckBox Name="productCheckBox" Grid.Row="5" Grid.Column="0" Content="Product" Style="{StaticResource checkBoxStyle}" Checked="OnCheckProductCheckBox" Unchecked="OnUncheckProductCheckBox"/>
+                    <ComboBox Name="productComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedProductCombo"/>
 
-                    <CheckBox Name="statusCheckBox" Grid.Row="6" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="OnCheckStatusCheckBox" Unchecked="OnUncheckStatusCheckBox"/>
-                    <ComboBox Name="statusComboBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStatusCombo"/>
+                    <CheckBox Name="brandCheckBox" Grid.Row="6" Grid.Column="0" Content="Brand" Style="{StaticResource checkBoxStyle}" Checked="OnCheckBrandCheckBox" Unchecked="OnUncheckBrandCheckBox"/>
+                    <ComboBox Name="brandComboBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedBrandCombo"/>
+
+                    <CheckBox Name="contractTypeCheckBox" Grid.Row="7" Grid.Column="0" Content="Contract Type" Style="{StaticResource checkBoxStyle}" Checked="OnCheckContractTypeCheckBox" Unchecked="OnUnCheckContractTypeCheckBox"/>
+                    <ComboBox Name="contractTypeComboBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedContractTypeCombo"/>
+                    
+                    <CheckBox Name="statusCheckBox" Grid.Row="8" Grid.Column="0" Content="Status" Style="{StaticResource checkBoxStyle}" Checked="OnCheckStatusCheckBox" Unchecked="OnUncheckStatusCheckBox"/>
+                    <ComboBox Name="statusComboBox" Grid.Row="8" Grid.Column="1" Style="{StaticResource filterComboBoxStyle}" SelectionChanged="OnSelChangedStatusCombo"/>
                 </Grid>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400" >
                     <StackPanel Name="RFQsStackPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF"/>
+                </ScrollViewer>
 
+                <ScrollViewer Name="gridScrollViewer" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,0,0,0" MinHeight="400" Visibility="Collapsed" >
+                    <Grid Name="rfqsGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFFFFF" ShowGridLines="True"/>
                 </ScrollViewer>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickedAdd" Name="addButton"/>
-                <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickedView" Name="viewButton"/>
-                <Button Grid.Column="2" Content="Revise RFQ" Style="{StaticResource buttonStyle}" Click="OnBtnClickedReviseRFQ" Name="reviseButton"/>
-                <Button Grid.Column="3" Content="Resolve RFQ" Style="{StaticResource buttonStyle}" Click="ResolveButtonClick" Name="resolveButton"/>
+                <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickAdd" Name="addButton" />
+                <Button Grid.Column="1" Content="Export" Style="{StaticResource buttonStyle}" Name="exportButton" Click="OnBtnClickedExport"/>
+                
             </Grid>
             
         </Grid>

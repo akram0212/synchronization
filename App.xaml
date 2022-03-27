@@ -202,6 +202,17 @@
             <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
+        <Style x:Key="filterTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="12"/>
+            <Setter Property="FontFamily" Value="Sans Serif" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
+        </Style>
+        
         <Style x:Key="comboBoxStyle" TargetType="{x:Type ComboBox}">
             <Setter Property="Width" Value="384" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -218,6 +229,17 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="30,12,12,12"/>
+            <Setter Property="FontFamily" Value="Sans Serif" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
+        </Style>
+
+        <Style x:Key="filterComboBoxStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="12"/>
             <Setter Property="FontFamily" Value="Sans Serif" />
             <Setter Property="FontWeight" Value="DemiBold" />
             <Setter Property="FontSize" Value="16" />
@@ -328,6 +350,7 @@
             <Setter Property="FontFamily" Value="Sans Serif" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
         <Style x:Key="stackPanelItemBody" TargetType="{x:Type Label}">
@@ -335,12 +358,13 @@
             <Setter Property="Padding" Value="10,0,0,0" />
             <Setter Property="FontFamily" Value="Sans Serif" />
             <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
         <Style x:Key="BorderIcon" TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Height" Value="25" />
-            <Setter Property="Width" Value="65" />
+            <Setter Property="Width" Value="75" />
             <Setter Property="Margin" Value="6,0" />
         </Style>
 
@@ -378,17 +402,6 @@
             <Setter Property="Foreground" Value="#FFFFFF" />
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <Style x:Key="filterComboBoxStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="Width" Value="100" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="12"/>
-            <Setter Property="FontFamily" Value="Sans Serif" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="#105A97" />
         </Style>
 
         <!--added by salma-->

@@ -34,6 +34,7 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
 
                     <WrapPanel Grid.Row="0">
@@ -101,6 +102,8 @@
                             <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalEmailTextBox" TextChanged="OnTextChangedPersonalEmail"/>
                         </WrapPanel>
                     </WrapPanel>
+
+                   
                 </Grid>
 
             </WrapPanel>

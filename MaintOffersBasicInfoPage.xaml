@@ -1,0 +1,141 @@
+﻿<Page x:Class="_01electronics_crm.MaintOffersBasicInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_01electronics_crm"
+      mc:Ignorable="d" 
+      Title="MaintOffersBasicInfoPage">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.3*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#105A97">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="BASIC INFO" Style="{StaticResource secondaryHeaderTextStyle}"/>
+            <Button Grid.Column="1" Name="automateWorkOfferButon" Content="GENERATE&#x0a;WORD" Style="{StaticResource buttonNegativeStyle}" Click="OnButtonClickAutomateMaintOffers" IsEnabled="False"/>
+        </Grid>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" >
+                <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}" />
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDeliveryInfo">
+                <Label Content="Payment Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
+            <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickUploadFiles">
+                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <WrapPanel Grid.Row="0">
+                <WrapPanel Name="salesPersonWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
+                </WrapPanel>
+
+                <WrapPanel Name="assigneeWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="RFQ &#x0a;Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="RFQSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="RFQSerialCombo" SelectionChanged="OnSelChangedRFQSerialCombo"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="1">
+                <WrapPanel Name="companyNameWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
+                </WrapPanel>
+
+                <WrapPanel Name="companyAddressWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Address"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
+                </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="2">
+                <WrapPanel Name="contactPersonNameWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
+                </WrapPanel>
+
+                <WrapPanel Name="projectWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Project &#x0a;Serial"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="projectSerialLabel" Visibility="Collapsed"/>
+                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="projectSerialCombo" SelectionChanged="OnSelChangedProjectSerialCombo"/>
+                </WrapPanel>
+
+
+
+            </WrapPanel>
+
+        </Grid>
+
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+        </WrapPanel>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
+
+        </Grid>
+
+    </Grid>
+</Page>

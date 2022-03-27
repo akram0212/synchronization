@@ -71,7 +71,7 @@ namespace _01electronics_crm
             }
             catch
             {
-                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath))
+                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath, BASIC_MACROS.SEVERITY_LOW))
                 {
                     Image employeePhoto = new Image();
 
@@ -118,7 +118,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -141,16 +141,34 @@ namespace _01electronics_crm
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
 
         }
 
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
+
+        private void OnBtnClickedStatistics(object sender, MouseButtonEventArgs e)
+        {
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            this.NavigationService.Navigate(statisticsPage);
+        }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

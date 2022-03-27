@@ -26,6 +26,10 @@ namespace _01electronics_crm
         public Employee loggedInUser;
         public Contact contact;
 
+        public ClientVisit clientVisit;
+        public ClientCall clientCall;
+        public OfficeMeeting officeMeeting;
+
         protected SQLServer sqlServer;
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
@@ -53,6 +57,9 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             commonFunctions = new CommonFunctions();
             integrityChecker = new IntegrityChecks();
+            clientCall = new ClientCall(sqlServer);
+            clientVisit = new ClientVisit(sqlServer);
+            officeMeeting = new OfficeMeeting(sqlServer);
 
             contact = new Contact();
 

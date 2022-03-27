@@ -70,6 +70,7 @@ namespace _01electronics_crm
 
             GetCalls();
             InitializeStackPanel();
+            InitializeGrid();
             SetDefaultSettings();
         }
         private void GetCalls()
@@ -195,22 +196,137 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                ColumnDefinition column1 = new ColumnDefinition();
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                newGrid.MouseLeftButtonDown += OnBtnClickCallItem;
 
-                newGrid.ColumnDefinitions.Add(column1);
-                newGrid.MouseLeftButtonDown += OnBtnClickedCallItem;
-
-                Grid.SetColumn(currentStackPanel, 0);
+                Image clientCallIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_call_icon.png", UriKind.Relative)) };
+                ResizeImage(ref clientCallIcon, 40, 40);
+                newGrid.Children.Add(clientCallIcon);
+                Grid.SetColumn(clientCallIcon, 0);
 
                 newGrid.Children.Add(currentStackPanel);
+                Grid.SetColumn(currentStackPanel, 1);
+
                 ClientCallsStackPanel.Children.Add(newGrid);
             }
+        }
+
+        private bool InitializeGrid()
+        {
+
+            clienCallsGrid.Children.Clear();
+            clienCallsGrid.RowDefinitions.Clear();
+            clienCallsGrid.ColumnDefinitions.Clear();
+
+            Label salesPersonHeader = new Label();
+            salesPersonHeader.Content = "Sales Person";
+            salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label dateOfCallHeader = new Label();
+            dateOfCallHeader.Content = "Visit Date";
+            dateOfCallHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label contactInfoHeader = new Label();
+            contactInfoHeader.Content = "Contact Info";
+            contactInfoHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label purposeAndResultHeader = new Label();
+            purposeAndResultHeader.Content = "Purpose - Result";
+            purposeAndResultHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clienCallsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            clienCallsGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetRow(salesPersonHeader, 0);
+            Grid.SetColumn(salesPersonHeader, 0);
+            clienCallsGrid.Children.Add(salesPersonHeader);
+
+            Grid.SetRow(dateOfCallHeader, 0);
+            Grid.SetColumn(dateOfCallHeader, 1);
+            clienCallsGrid.Children.Add(dateOfCallHeader);
+
+            Grid.SetRow(contactInfoHeader, 0);
+            Grid.SetColumn(contactInfoHeader, 2);
+            clienCallsGrid.Children.Add(contactInfoHeader);
+
+            Grid.SetRow(purposeAndResultHeader, 0);
+            Grid.SetColumn(purposeAndResultHeader, 3);
+            clienCallsGrid.Children.Add(purposeAndResultHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < clientCalls.Count; i++)
+            {
+                DateTime currentVisitDate = DateTime.Parse(clientCalls[i].call_date);
+
+                if (yearCheckBox.IsChecked == true && currentVisitDate.Year != selectedYear)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctions.GetQuarter(currentVisitDate) != selectedQuarter)
+                    continue;
+
+                if (employeeCheckBox.IsChecked == true && clientCalls[i].sales_person_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                filteredCalls.Add(clientCalls[i]);
+
+
+                RowDefinition currentRow = new RowDefinition();
+                clienCallsGrid.RowDefinitions.Add(currentRow);
+
+                Label salesPersonLabel = new Label();
+                salesPersonLabel.Content = clientCalls[i].sales_person_name;
+                salesPersonLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesPersonLabel, currentRowNumber);
+                Grid.SetColumn(salesPersonLabel, 0);
+                clienCallsGrid.Children.Add(salesPersonLabel);
+
+
+                Label dateOfVisitLabel = new Label();
+                dateOfVisitLabel.Content = clientCalls[i].call_date;
+                dateOfVisitLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(dateOfVisitLabel, currentRowNumber);
+                Grid.SetColumn(dateOfVisitLabel, 1);
+                clienCallsGrid.Children.Add(dateOfVisitLabel);
+
+
+                Label contactInfoLabel = new Label();
+                contactInfoLabel.Content = clientCalls[i].company_name + " - " + clientCalls[i].contact_name;
+                contactInfoLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(contactInfoLabel, currentRowNumber);
+                Grid.SetColumn(contactInfoLabel, 2);
+                clienCallsGrid.Children.Add(contactInfoLabel);
+
+
+                Label purposeAndResultLabel = new Label();
+                purposeAndResultLabel.Content = clientCalls[i].call_purpose + " - " + clientCalls[i].call_result;
+                purposeAndResultLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clienCallsGrid.Children.Add(purposeAndResultLabel);
+                Grid.SetRow(purposeAndResultLabel, currentRowNumber);
+                Grid.SetColumn(purposeAndResultLabel, 3);
+
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+            return true;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedCallItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickCallItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
             previousSelectedCallItem = currentSelectedCallItem;
@@ -221,15 +337,24 @@ namespace _01electronics_crm
             {
                 previousSelectedCallItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[0];
+                Image previousClientCallIcon = (Image)previousSelectedCallItem.Children[0];
+                previousClientCallIcon.Source = new BitmapImage(new Uri(@"icons\client_call_icon.png", UriKind.Relative));
+                ResizeImage(ref previousClientCallIcon, 40, 40);
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedCallItem.Children[1];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
 
             currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[0];
+            
+            Image clientCallIcon = (Image)currentSelectedCallItem.Children[0];
+            clientCallIcon.Source = new BitmapImage(new Uri(@"icons\client_call_icon_blue.png", UriKind.Relative));
+            ResizeImage(ref clientCallIcon, 40, 40);
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedCallItem.Children[1];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
@@ -239,17 +364,40 @@ namespace _01electronics_crm
         {
             GetCalls();
             InitializeStackPanel();
+            InitializeGrid();
+        }
+
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(clienCallsGrid);
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            clientCallsStackPanel.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            clientCallsStackPanel.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -267,7 +415,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -294,17 +442,27 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
             AddClientCallWindow addClientCallWindow = new AddClientCallWindow(ref loggedInUser);
             addClientCallWindow.Closed += OnClosedAddCallWindow;
             addClientCallWindow.Show();
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             ClientCall selectedCall = new ClientCall();
             selectedCall.InitializeClientCallInfo(filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial, filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].sales_person_id);
@@ -325,6 +483,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -335,6 +494,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -346,6 +506,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -397,6 +558,37 @@ namespace _01electronics_crm
 
             currentSelectedCallItem = null;
             previousSelectedCallItem = null;
+        }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
         }
     }
 }

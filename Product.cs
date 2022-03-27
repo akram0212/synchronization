@@ -109,7 +109,7 @@ namespace _01electronics_crm
             queryColumns.sql_string = 1;
             queryColumns.sql_int = 1;
 
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             for (int i = 0; i < sqlDatabase.rows.Count; i++)
@@ -449,14 +449,14 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public bool DownloadPhotoFromServer()
         {
-            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath))
+            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             return true;
         }
         public bool UploadPhotoToServer()
         {
-            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath))
+            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW))
                 return false;
 
             return true;
@@ -567,7 +567,7 @@ namespace _01electronics_crm
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = Directory.GetCurrentDirectory() + "\\" + "Photos\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = "..\\..\\Photos\\models\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
         }
         public bool GetNewProductID()
         {

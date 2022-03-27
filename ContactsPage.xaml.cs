@@ -27,73 +27,81 @@ namespace _01electronics_crm
 
         private SQLServer initializationObject;
 
-        CommonQueries commonQueries;
+        private CommonQueries commonQueries;
         private Employee loggedInUser;
         private int selectedEmployee;
 
-        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>> employeesCompanies;
+        private StackPanel previousSelectedContactItem;
+        private StackPanel currentSelectedContactItem;
 
-        private List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>> employeesContacts;
-        private List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> contactsList;
+        private StackPanel previousSelectedCompanyItem;
+        private StackPanel currentSelectedCompanyItem;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> listOfEmployees;
 
-        private List<BASIC_STRUCTS.COUNTRY_STRUCT> countries;
-        private List<BASIC_STRUCTS.STATE_STRUCT> states;
-        private List<BASIC_STRUCTS.CITY_STRUCT> cities;
-        private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
+        private List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT> primaryFieldsList;
+        private List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT> secondaryFieldsList;
 
-        private List<KeyValuePair<int, TreeViewItem>> salesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
-        private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+        private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>> employeesContacts;
+        
+        private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray;
+        private List<KeyValuePair<int, StackPanel>> companiesStackArray;
 
-        //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
+        private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>> contactsTreeArray;
+        private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, StackPanel>> contactsStackArray;
 
-        private List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>> contactsTreeArray = new List<KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>();
+        bool InitializationComplete;
 
         public ContactsPage(ref Employee mLoggedInUser)
         {
+            InitializationComplete = false;
+
             initializationObject = new SQLServer();
 
-            employeesCompanies = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>>();
-            employeesContacts = new List<KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>>();
             listOfEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
-            contactsList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
+            primaryFieldsList = new List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT>();
+            secondaryFieldsList = new List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT>();
 
-            countries = new List<BASIC_STRUCTS.COUNTRY_STRUCT>();
-            states = new List<BASIC_STRUCTS.STATE_STRUCT>();
-            cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
-            districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
+            employeesContacts = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>>();
+            
+            companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+            companiesStackArray = new List<KeyValuePair<int, StackPanel>>();
+
+            contactsTreeArray = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>>();
+            contactsStackArray = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, StackPanel>>();
 
             commonQueries = new CommonQueries();
             loggedInUser = mLoggedInUser;
 
             InitializeComponent();
 
-            countryComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            companyNameTextBox.IsEnabled = false;
+            contactNameTextBox.IsEnabled = false;
+            primaryFieldComboBox.IsEnabled = false;
+            secondaryFieldComboBox.IsEnabled = false;
             salesPersonComboBox.IsEnabled = false;
 
-            stateCheckBox.IsEnabled = false;
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
+            secondaryFieldCheckBox.IsEnabled = false;
             salesPersonCheckBox.IsEnabled = true;
 
             ViewBtn.IsEnabled = false;
 
-            InitializeCountriesComboBox();
+            InitializePrimaryFieldComboBox();
 
-            if (!InitializeEmployeeComboBox())
+            if (!CheckEmployeePosition())
+                return;
+            if (!InitializeSalesPersonComboBox())
                 return;
 
             GetAllContacts();
 
             SetDefaultSettings();
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
 
+            InitializationComplete = true;
         }
         private void SetDefaultSettings()
         {
@@ -110,38 +118,32 @@ namespace _01electronics_crm
                 salesPersonComboBox.IsEnabled = false;
             }
         }
-        private bool InitializeListOfEmployees()
+        private bool InitializeSalesPersonComboBox()
         {
+            salesPersonComboBox.Items.Clear();
+
             for (int i = 0; i < listOfEmployees.Count; i++)
-            {
                 salesPersonComboBox.Items.Add(listOfEmployees[i].employee_name);
-
-                List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
-
-
-                commonQueries.GetEmployeeCompanies(listOfEmployees[i].employee_id, ref tmpList);
-                employeesCompanies.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
-            }
 
             return true;
         }
-
-        private bool InitializeEmployeeComboBox()
+        
+        private bool CheckEmployeePosition()
         {
             listOfEmployees.Clear();
 
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
-                if (!commonQueries.GetDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref listOfEmployees))
+                if (!commonQueries.GetAllDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref listOfEmployees))
                     return false;
             }
             else
             {
-                if (!commonQueries.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
+                if (!commonQueries.GetAllTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                     return false;
             }
 
-            InitializeListOfEmployees();
+            InitializeSalesPersonComboBox();
 
             return true;
         }
@@ -152,10 +154,10 @@ namespace _01electronics_crm
 
             for (int i = 0; i < listOfEmployees.Count; i++)
             {
-                List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> tmpList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
-                commonQueries.GetEmployeeContacts(listOfEmployees[i].employee_id, ref tmpList);
+                List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT> employeeContactList = new List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>();
+                commonQueries.GetEmployeeCompaniesAndContacts(listOfEmployees[i].employee_id, ref employeeContactList);
 
-                 employeesContacts.Add(new KeyValuePair<int, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i].employee_id, tmpList));
+                employeesContacts.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>>(listOfEmployees[i], employeeContactList));
                 
             }
 
@@ -163,212 +165,503 @@ namespace _01electronics_crm
         }
         private void SetEmployeeComboBox()
         {
-            salesPersonComboBox.SelectedIndex = 0;
+            //salesPersonComboBox.SelectedIndex = 0;
 
             for (int i = 0; i < listOfEmployees.Count; i++)
                 if (loggedInUser.GetEmployeeId() == listOfEmployees[i].employee_id)
                     salesPersonComboBox.SelectedIndex = i;
         }
-        public bool InitializeCountriesComboBox()
-        {
-            countryComboBox.Items.Clear();
 
-            if (!commonQueries.GetAllCountries(ref countries))
+    
+        public bool InitializePrimaryFieldComboBox()
+        {
+            primaryFieldComboBox.Items.Clear();
+
+            if (!commonQueries.GetPrimaryWorkFields(ref primaryFieldsList))
                 return false;
 
-            for (int i = 0; i < countries.Count; i++)
-                countryComboBox.Items.Add(countries[i].country_name);
+            for (int i = 0; i < primaryFieldsList.Count; i++)
+                primaryFieldComboBox.Items.Add(primaryFieldsList[i].field_name);
 
             return true;
         }
-        public bool InitializeStatesComboBox()
+        public bool InitializeSecondaryFieldComboBox()
         {
-            stateComboBox.Items.Clear();
-            if (countryComboBox.SelectedItem != null)
+            secondaryFieldComboBox.Items.Clear();
+            if (primaryFieldComboBox.SelectedItem != null)
             {
-                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                if (!commonQueries.GetSecondaryWorkFields(primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id, ref secondaryFieldsList))
                     return false;
 
-                for (int i = 0; i < states.Count(); i++)
-                    stateComboBox.Items.Add(states[i].state_name);
-            }
-
-            return true;
-        }
-        public bool InitializeCitiesComboBox()
-        {
-            cityComboBox.Items.Clear();
-            if (stateComboBox.SelectedItem != null)
-            {
-                if (!commonQueries.GetAllStateCities(states[stateComboBox.SelectedIndex].state_id, ref cities))
-                    return false;
-
-                for (int i = 0; i < cities.Count; i++)
-                    cityComboBox.Items.Add(cities[i].city_name);
-            }
-
-            return true;
-        }
-        public bool InitializeDistrictsComboBox()
-        {
-            districtComboBox.Items.Clear();
-            if (cityComboBox.SelectedItem != null)
-            {
-                if (!commonQueries.GetAllCityDistricts(cities[cityComboBox.SelectedIndex].city_id, ref districts))
-                    return false;
-
-                for (int i = 0; i < districts.Count; i++)
-                    districtComboBox.Items.Add(districts[i].district_name);
+                for (int i = 0; i < secondaryFieldsList.Count; i++)
+                    secondaryFieldComboBox.Items.Add(secondaryFieldsList[i].field_name);
             }
 
             return true;
         }
 
-        public bool InitializeSalesTree()
-        {
-            contactTreeView.Items.Clear();
-
-            salesTreeArray.Clear();
-
-            for (int j = 0; j < listOfEmployees.Count(); j++)
-            {
-                if (salesPersonComboBox.SelectedItem != null && listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id != listOfEmployees[j].employee_id)
-                    continue;
-
-                TreeViewItem ParentItem = new TreeViewItem();
-
-                ParentItem.Header = listOfEmployees[j].employee_name;
-                ParentItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                ParentItem.FontSize = 14;
-                ParentItem.FontWeight = FontWeights.SemiBold;
-                ParentItem.FontFamily = new FontFamily("Sans Serif");
-                ParentItem.Tag = listOfEmployees[j].employee_id;
-
-                contactTreeView.Items.Add(ParentItem);
-
-                salesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(listOfEmployees[j].employee_id, ParentItem));
-
-            }
-
-            InitializeCompaniesTree();
-            InitializeContactsTree();
-
-            return true;
-        }
-        public bool InitializeCompaniesTree()
-        {
-            companiesTreeArray.Clear();
-
-            for (int i = 0; i < employeesCompanies.Count(); i++)
-            {
-                if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null && employeesCompanies[i].Key != listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id)
-                    continue;
-
-                TreeViewItem currentEmployeeTreeItem = salesTreeArray.Find(tree_item => tree_item.Key == employeesCompanies[i].Key).Value;
-
-                for (int j = 0; j < employeesCompanies[i].Value.Count; j++)
-                {
-                    TreeViewItem ChildItem = new TreeViewItem();
-                    ChildItem.Header = employeesCompanies[i].Value[j].company_name;
-                    ChildItem.Tag = employeesCompanies[i].Value[j].company_serial;
-                    ChildItem.FontSize = 13;
-                    ChildItem.FontWeight = FontWeights.SemiBold;
-
-                    companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesCompanies[i].Value[j].company_serial, ChildItem));
-
-                    currentEmployeeTreeItem.Items.Add(ChildItem);
-                }
-
-            }
-
-
-            return true;
-        }
-
+   
         public bool InitializeContactsTree()
         {
+            companiesTreeArray.Clear();
             contactsTreeArray.Clear();
+
+            contactTreeView.Items.Clear();
 
             for (int i = 0; i < employeesContacts.Count(); i++)
             {
-                if(salesTreeArray.Exists(sales_item => sales_item.Key == employeesContacts[i].Key))
+                if (salesPersonComboBox.SelectedItem != null && listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id != employeesContacts[i].Key.employee_id)
+                    continue;
+
+                TreeViewItem salesPersonItem = new TreeViewItem();
+
+
+                salesPersonItem.Header = employeesContacts[i].Key.employee_name;
+                if(listOfEmployees[i].currently_employed == true)
+                    salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                else
+                    salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                salesPersonItem.FontSize = 14;
+                salesPersonItem.FontWeight = FontWeights.SemiBold;
+                salesPersonItem.FontFamily = new FontFamily("Sans Serif");
+                salesPersonItem.Tag = employeesContacts[i].Key.employee_id;
+
+                contactTreeView.Items.Add(salesPersonItem);
+
+                for (int j = 0; j < employeesContacts[i].Value.Count; j++)
                 {
-                    for (int j = 0; j < employeesContacts[i].Value.Count; j++)
+                    TreeViewItem companyTreeItem = new TreeViewItem();
+
+                    bool containsCompanyName = employeesContacts[i].Value[j].company.company_name.IndexOf(companyNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (companyNameCheckBox.IsChecked == true && companyNameTextBox.Text != null && !containsCompanyName)
+                        continue;
+
+                    if (primaryFieldCheckBox.IsChecked == true && primaryFieldComboBox.SelectedIndex != -1 && employeesContacts[i].Value[j].company.primary_field.field_id != primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id)
+                        continue;
+                    if (secondaryFieldCheckBox.IsChecked == true && secondaryFieldComboBox.SelectedIndex != -1 && employeesContacts[i].Value[j].company.secondary_field.field_id != secondaryFieldsList[secondaryFieldComboBox.SelectedIndex].field_id)
+                        continue;
+
+                    if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial))
                     {
-                        if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                            continue;
-                        if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != employeesContacts[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
-                            continue;
-                        if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != employeesContacts[i].Value[j].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
-                            continue;
-                        if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != employeesContacts[i].Value[j].address)
-                            continue;
+                        companyTreeItem.Header = employeesContacts[i].Value[j].company.company_name;
+                        companyTreeItem.Tag = employeesContacts[i].Value[j].company.company_serial;
+                        companyTreeItem.FontSize = 13;
+                        companyTreeItem.FontWeight = FontWeights.SemiBold;
 
-                        TreeViewItem companyTreeItem = new TreeViewItem();
+                        salesPersonItem.Items.Add(companyTreeItem);
 
-                        if (!companiesTreeArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial))
-                            continue;
+                        companiesTreeArray.Add(new KeyValuePair<int, TreeViewItem>(employeesContacts[i].Value[j].company.company_serial, companyTreeItem));
+                    }
 
-                        companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company_serial).Value;
-                        
+                    bool containsContactName = employeesContacts[i].Value[j].contact.contact_name.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !containsContactName)
+                        continue;
+
+                    if (employeesContacts[i].Value[j].contact.contact_id != 0)
+                    {
                         TreeViewItem contactTreeItem = new TreeViewItem();
 
-                        contactTreeItem.Header = employeesContacts[i].Value[j].contact_name;
-                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact_id;
+                        contactTreeItem.Header = employeesContacts[i].Value[j].contact.contact_name;
+                        contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
                         contactTreeItem.FontSize = 12;
                         contactTreeItem.FontWeight = FontWeights.Normal;
 
+                        companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
+
                         companyTreeItem.Items.Add(contactTreeItem);
 
-                        contactsTreeArray.Add(new KeyValuePair<TreeViewItem, COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT>(contactTreeItem, employeesContacts[i].Value[j]));
-
+                        contactsTreeArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, TreeViewItem>(employeesContacts[i].Value[j], contactTreeItem));
                     }
                 }
-                
-            }
 
-            for (int i = 0; i < companiesTreeArray.Count(); i++)
-            {
-                TreeViewItem companyTreeItem = new TreeViewItem();
-                companyTreeItem = companiesTreeArray[i].Value;
-
-                TreeViewItem parentTreeItem = new TreeViewItem();
-                parentTreeItem = (TreeViewItem)companyTreeItem.Parent;
-
-                if (!companyTreeItem.HasItems)
-                {
-                    parentTreeItem.Items.Remove(companyTreeItem);
-
-                }
             }
 
             return true;
         }
+        public void InitializeContactsStackPanel()
+        {
+            contactStackView.Children.Clear();
 
+            currentSelectedContactItem = null;
+            previousSelectedContactItem = null;
+
+            currentSelectedCompanyItem = null;
+            previousSelectedCompanyItem = null;
+
+            companiesStackArray.Clear();
+            contactsStackArray.Clear();
+
+            BrushConverter brush = new BrushConverter();
+
+            for (int i = 0; i < listOfEmployees.Count(); i++)
+            {
+                if (salesPersonComboBox.SelectedItem != null && listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id != listOfEmployees[i].employee_id)
+                    continue;
+
+                StackPanel employeeStackPanel = new StackPanel();
+                employeeStackPanel.Orientation = Orientation.Vertical;
+                
+                Grid employeeGrid = new Grid();
+                employeeGrid.Background = (Brush)brush.ConvertFrom("#D3D3D3"); 
+                employeeGrid.RowDefinitions.Add(new RowDefinition());
+                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30)});
+
+                Label employeeNameLabel = new Label();
+
+                employeeNameLabel.Content = listOfEmployees[i].employee_name;
+                employeeNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
+
+                Expander expander = new Expander();
+                expander.ExpandDirection = ExpandDirection.Left;
+                expander.HorizontalAlignment = HorizontalAlignment.Center;
+                expander.VerticalAlignment = VerticalAlignment.Center;
+                expander.Expanded += new RoutedEventHandler(OnExpandEmployeeExpander);
+                expander.Collapsed += new RoutedEventHandler(OnCollapseEmployeeExpander);
+
+                if (employeesContacts[i].Value.Count == 0)
+                    expander.IsEnabled = false;
+
+                employeeGrid.Children.Add(employeeNameLabel);
+                Grid.SetColumn(employeeNameLabel, 0);
+
+                employeeGrid.Children.Add(expander);
+                Grid.SetColumn(expander, 1);
+
+                employeeStackPanel.Children.Add(employeeGrid);
+                contactStackView.Children.Add(employeeStackPanel);
+
+                for (int j = 0; j < employeesContacts[i].Value.Count; j++)
+                {
+                    StackPanel companyStackPanel = new StackPanel();
+                    companyStackPanel.Margin = new Thickness(12, 0, 0, 0);
+                    companyStackPanel.Visibility = Visibility.Collapsed;
+
+                    bool containsCompanyName = employeesContacts[i].Value[j].company.company_name.IndexOf(companyNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                    if (companyNameCheckBox.IsChecked == true && companyNameTextBox.Text != null && !containsCompanyName)
+                        continue;
+                    if (primaryFieldCheckBox.IsChecked == true && primaryFieldComboBox.SelectedIndex != -1 && employeesContacts[i].Value[j].company.primary_field.field_id != primaryFieldsList[primaryFieldComboBox.SelectedIndex].field_id)
+                        continue;
+                    if (secondaryFieldCheckBox.IsChecked == true && secondaryFieldComboBox.SelectedIndex != -1 && employeesContacts[i].Value[j].company.secondary_field.field_id != secondaryFieldsList[secondaryFieldComboBox.SelectedIndex].field_id)
+                        continue;
+
+                    if (!companiesStackArray.Exists(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial))
+                    {
+                        StackPanel companyDetailsStackPanel = new StackPanel();
+                        companyDetailsStackPanel.Orientation = Orientation.Vertical;
+                        companyDetailsStackPanel.MouseDown += OnMouseDownCompanyStackPanel;
+
+                        Grid companyDetailsGrid = new Grid();
+
+                        companyDetailsGrid.RowDefinitions.Add(new RowDefinition());
+                        ColumnDefinition companyGridIconColumn = new ColumnDefinition();
+                        ColumnDefinition companyGridDetailColumn = new ColumnDefinition();
+
+                        companyGridIconColumn.MaxWidth = 30;
+
+                        companyDetailsGrid.ColumnDefinitions.Add(companyGridIconColumn);
+                        companyDetailsGrid.ColumnDefinitions.Add(companyGridDetailColumn);
+
+                        Image companyFieldIcon = new Image { Source = new BitmapImage(new Uri(@"icons\field_icon.png", UriKind.Relative)) };
+                        ResizeImage(ref companyFieldIcon, 25, 25);
+                        companyDetailsGrid.Children.Add(companyFieldIcon);
+                        Grid.SetRow(companyFieldIcon, 0);
+                        Grid.SetColumn(companyFieldIcon, 0);
+
+                        Label companyWorkField = new Label();
+                        companyWorkField.Content = employeesContacts[i].Value[j].company.primary_field.field_name + " - " + employeesContacts[i].Value[j].company.secondary_field.field_name;
+                        companyWorkField.Style = (Style)FindResource("stackPanelItemBody");
+                        companyDetailsGrid.Children.Add(companyWorkField);
+                        Grid.SetRow(companyWorkField, 0);
+                        Grid.SetColumn(companyWorkField, 1);
+
+                        Image companyNumberIcon = new Image { Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative)) };
+                        ResizeImage(ref companyNumberIcon, 25, 25);
+                        
+
+                        Label companyNumberLabel = new Label();
+                        companyNumberLabel.Content = employeesContacts[i].Value[j].company.company_number;
+                        companyNumberLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                        if (companyNumberLabel.Content != "")
+                        {
+                            companyDetailsGrid.RowDefinitions.Add(new RowDefinition());
+                            companyDetailsGrid.Children.Add(companyNumberIcon);
+                            Grid.SetRow(companyNumberIcon, 1);
+                            Grid.SetColumn(companyNumberIcon, 0);
+                            companyDetailsGrid.Children.Add(companyNumberLabel);
+                            Grid.SetRow(companyNumberLabel, 1);
+                            Grid.SetColumn(companyNumberLabel, 1);
+                        }
+
+                        Grid companyGrid = new Grid();
+                        companyGrid.RowDefinitions.Add(new RowDefinition());
+                        companyGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(300) });
+                        companyGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                        Label companyNameLabel = new Label();
+                        companyNameLabel.Content = employeesContacts[i].Value[j].company.company_name;
+                        companyNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
+                        companyGrid.Children.Add(companyNameLabel);
+                        Grid.SetColumn(companyNameLabel, 0);
+
+                        Expander companyExpander = new Expander();
+                        companyExpander.ExpandDirection = ExpandDirection.Left;
+                        companyExpander.HorizontalAlignment = HorizontalAlignment.Left;
+                        companyExpander.VerticalAlignment = VerticalAlignment.Center;
+                        companyExpander.Expanded += new RoutedEventHandler(OnExpandCompanyExpander);
+                        companyExpander.Collapsed += new RoutedEventHandler(OnCollapseCompanyExpander);
+
+                        if (employeesContacts[i].Value[j].contact.contact_id == 0)
+                            companyExpander.IsEnabled = false;
+                        
+                        companyGrid.Children.Add(companyExpander);
+                        Grid.SetColumn(companyExpander, 1);
+
+
+                        companyDetailsStackPanel.Children.Add(companyGrid);
+                        companyDetailsStackPanel.Children.Add(companyDetailsGrid);
+
+                        Grid companyGridItem = new Grid();
+                        ColumnDefinition companyIconColumn = new ColumnDefinition();
+                        ColumnDefinition companyStackColumn = new ColumnDefinition();
+
+                        companyIconColumn.MaxWidth = 60;
+
+                        companyGridItem.ColumnDefinitions.Add(companyIconColumn);
+                        companyGridItem.ColumnDefinitions.Add(companyStackColumn);
+
+                        Image companyIcon = new Image { Source = new BitmapImage(new Uri(@"icons\company_icon.png", UriKind.Relative)) };
+                        ResizeImage(ref companyIcon, 60, 60);
+
+                        companyGridItem.Children.Add(companyIcon);
+                        Grid.SetRow(companyIcon, 0);
+
+                        companyGridItem.Children.Add(companyDetailsStackPanel);
+                        Grid.SetColumn(companyDetailsStackPanel, 1);
+
+                        companyStackPanel.Children.Add(companyGridItem);
+                        employeeStackPanel.Children.Add(companyStackPanel);
+
+                        companiesStackArray.Add(new KeyValuePair<int, StackPanel>(employeesContacts[i].Value[j].company.company_serial, companyStackPanel));
+                    }
+
+                    if (employeesContacts[i].Value[j].contact.contact_id != 0)
+                    {
+                        bool containsContactName = employeesContacts[i].Value[j].contact.contact_name.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                        if (contactNameCheckBox.IsChecked == true && contactNameTextBox.Text != null && !containsContactName)
+                            continue;
+
+                        StackPanel contactStackPanel = new StackPanel();
+                        contactStackPanel.Margin = new Thickness(36, 0, 0, 0);
+                        contactStackPanel.Visibility = Visibility.Collapsed;
+
+                        companyStackPanel = companiesStackArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
+
+                        StackPanel contactDetailsStackPanel = new StackPanel();
+                        contactDetailsStackPanel.Orientation = Orientation.Vertical;
+                        contactDetailsStackPanel.MouseDown += OnMouseDownContactStackPanel;
+
+
+                        Grid contactDetailsGrid = new Grid();
+
+                        ColumnDefinition gridIconColumn = new ColumnDefinition();
+                        ColumnDefinition gridDetailColumn = new ColumnDefinition();
+
+                        gridIconColumn.MaxWidth = 30;
+
+                        contactDetailsGrid.ColumnDefinitions.Add(gridIconColumn);
+                        contactDetailsGrid.ColumnDefinitions.Add(gridDetailColumn);
+
+                        Label contactNameLabel = new Label();
+                        contactNameLabel.Content = employeesContacts[i].Value[j].contact.contact_name;
+                        contactNameLabel.Style = (Style)FindResource("stackPanelItemHeader");
+                        contactDetailsStackPanel.Children.Add(contactNameLabel);
+
+                        for (int k = 0; k < employeesContacts[i].Value[j].contact_phones.Count; k++)
+                            SetContactPhoneRow(k, employeesContacts[i].Value[j].contact_phones[k], ref contactDetailsGrid);
+
+                        for (int k = 0; k < employeesContacts[i].Value[j].contact_emails.Count; k++)
+                            SetContactEmailRow(employeesContacts[i].Value[j].contact_phones.Count + k, employeesContacts[i].Value[j].contact_emails[k], ref contactDetailsGrid);
+
+
+                        contactDetailsStackPanel.Children.Add(contactDetailsGrid);
+
+                        Grid contactGridItem = new Grid();
+
+                        ColumnDefinition iconColumn = new ColumnDefinition();
+                        ColumnDefinition stackColumn = new ColumnDefinition();
+
+                        iconColumn.MaxWidth = 50;
+
+                        contactGridItem.ColumnDefinitions.Add(iconColumn);
+                        contactGridItem.ColumnDefinitions.Add(stackColumn);
+
+                        Image contactIcon = new Image { Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative)) };
+                        ResizeImage(ref contactIcon, 40, 40);
+
+                        contactGridItem.Children.Add(contactIcon);
+                        Grid.SetRow(contactIcon, 0);
+
+                        contactGridItem.Children.Add(contactDetailsStackPanel);
+                        Grid.SetColumn(contactDetailsStackPanel, 1);
+
+                        contactStackPanel.Children.Add(contactGridItem);
+                        companyStackPanel.Children.Add(contactStackPanel);
+
+                        contactsStackArray.Add(new KeyValuePair<COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT, StackPanel>(employeesContacts[i].Value[j], contactStackPanel));
+                    }
+                }
+
+            }
+        }
+
+        public void SetCompanyFieldRow(int row, String companyField, ref Grid companyGrid)
+        {
+            RowDefinition contactPhoneRow = new RowDefinition();
+            companyGrid.RowDefinitions.Add(contactPhoneRow);
+
+
+            Image phoneIcon = new Image { Source = new BitmapImage(new Uri(@"icons\field_icon.png", UriKind.Relative)) };
+            ResizeImage(ref phoneIcon, 25, 25);
+
+            companyGrid.Children.Add(phoneIcon);
+            Grid.SetRow(phoneIcon, row);
+            Grid.SetColumn(phoneIcon, 0);
+
+
+            Label companyPhoneLabel = new Label();
+            companyPhoneLabel.Content = companyField;
+            companyPhoneLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+            companyGrid.Children.Add(companyPhoneLabel);
+            Grid.SetRow(companyPhoneLabel, row);
+            Grid.SetColumn(companyPhoneLabel, 1);
+        }
+        public void SetCompanyPhoneRow(int row, String companyPhone, ref Grid companyGrid)
+        {
+            RowDefinition contactPhoneRow = new RowDefinition();
+            companyGrid.RowDefinitions.Add(contactPhoneRow);
+
+
+            Image phoneIcon = new Image { Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative)) };
+            ResizeImage(ref phoneIcon, 25, 25);
+
+            companyGrid.Children.Add(phoneIcon);
+            Grid.SetRow(phoneIcon, row);
+            Grid.SetColumn(phoneIcon, 0);
+
+
+            Label companyPhoneLabel = new Label();
+            companyPhoneLabel.Content = companyPhone;
+            companyPhoneLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+            companyGrid.Children.Add(companyPhoneLabel);
+            Grid.SetRow(companyPhoneLabel, row);
+            Grid.SetColumn(companyPhoneLabel, 1);
+        }
+
+        public void SetContactPhoneRow(int row, String contactPhone, ref Grid contactGrid)
+        {
+            RowDefinition contactPhoneRow = new RowDefinition();
+            contactGrid.RowDefinitions.Add(contactPhoneRow);
+
+
+            Image phoneIcon = new Image { Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative)) };
+            ResizeImage(ref phoneIcon, 25, 25);
+
+            contactGrid.Children.Add(phoneIcon);
+            Grid.SetRow(phoneIcon, row);
+            Grid.SetColumn(phoneIcon, 0);
+
+
+            Label contactPhoneLabel = new Label();
+            contactPhoneLabel.Content = contactPhone;
+            contactPhoneLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+            contactGrid.Children.Add(contactPhoneLabel);
+            Grid.SetRow(contactPhoneLabel, row);
+            Grid.SetColumn(contactPhoneLabel, 1);
+        }
+
+        public void SetContactEmailRow(int row, String contactEmail, ref Grid contactGrid)
+        {
+            RowDefinition contactStatusRow = new RowDefinition();
+            contactGrid.RowDefinitions.Add(contactStatusRow);
+
+            Image statusIcon = new Image { Source = new BitmapImage(new Uri(@"icons\email_icon.png", UriKind.Relative)) };
+            ResizeImage(ref statusIcon, 25, 25);
+
+            contactGrid.Children.Add(statusIcon);
+            Grid.SetRow(statusIcon, row);
+            Grid.SetColumn(statusIcon, 0);
+
+            Label contactStatusLabel = new Label();
+            contactStatusLabel.Content = contactEmail;
+            contactStatusLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+            contactGrid.Children.Add(contactStatusLabel);
+            Grid.SetRow(contactStatusLabel, row);
+            Grid.SetColumn(contactStatusLabel, 1);
+        }
+        public void SetContactBudgetRow(int row, String contactBudget, ref Grid contactGrid)
+        {
+            RowDefinition contactStatusRow = new RowDefinition();
+            contactGrid.RowDefinitions.Add(contactStatusRow);
+
+
+            Image budgetIcon = new Image { Source = new BitmapImage(new Uri(@"icons\budget_icon.jpg", UriKind.Relative)) };
+            ResizeImage(ref budgetIcon, 25, 25);
+
+            contactGrid.Children.Add(budgetIcon);
+            Grid.SetRow(budgetIcon, row);
+            Grid.SetColumn(budgetIcon, 0);
+
+
+            Label contactBudgeRangeLabel = new Label();
+            contactBudgeRangeLabel.Content = contactBudget;
+            contactBudgeRangeLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+            contactGrid.Children.Add(contactBudgeRangeLabel);
+            Grid.SetRow(contactBudgeRangeLabel, row);
+            Grid.SetColumn(contactBudgeRangeLabel, 1);
+        }
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON CHECK HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnCheckedCountryCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedCompanyNameCheckBox(object sender, RoutedEventArgs e)
         {
-            countryComboBox.IsEnabled = true;
+            companyNameTextBox.IsEnabled = true;
         }
 
 
-        private void OnCheckedStateCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedContactNameCheckBox(object sender, RoutedEventArgs e)
         {
-            stateComboBox.IsEnabled = true;
+            contactNameTextBox.IsEnabled = true;
         }
 
 
-        private void OnCheckedCityCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedPrimaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            cityComboBox.IsEnabled = true;
+            primaryFieldComboBox.IsEnabled = true;
+            primaryFieldComboBox.SelectedIndex = 0;
         }
 
 
-        private void OnCheckedDistrictCheckBox(object sender, RoutedEventArgs e)
+        private void OnCheckedSecondaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            districtComboBox.IsEnabled = true;
+            secondaryFieldComboBox.IsEnabled = true;
+            secondaryFieldComboBox.SelectedIndex = 0;
         }
         private void OnCheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
@@ -382,167 +675,407 @@ namespace _01electronics_crm
         /// ON SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///
-        private void OnSelChangedCountryComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
         {
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-
-            stateCheckBox.IsEnabled = true;
-
-            stateCheckBox.IsChecked = false;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-
-            if (!InitializeStatesComboBox())
-                return;
-
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
-        private void OnSelChangedStateComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnTextChangedContactName(object sender, TextChangedEventArgs e)
         {
-            cityCheckBox.IsEnabled = true;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            districtCheckBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-
-            if (!InitializeCitiesComboBox())
-                return;
-
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
-        private void OnSelChangedCityComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedPrimaryFieldComboBox(object sender, SelectionChangedEventArgs e)
         {
-            districtCheckBox.IsEnabled = true;
-            districtCheckBox.IsChecked = false;
-            districtComboBox.IsEnabled = false;
+            secondaryFieldCheckBox.IsEnabled = true;
+            secondaryFieldCheckBox.IsChecked = false;
+            secondaryFieldComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            if (!InitializeDistrictsComboBox())
+            if (!InitializeSecondaryFieldComboBox())
                 return;
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
-        private void OnSelChangedDistrictComboBox(object sender, SelectionChangedEventArgs e)
+        private void OnSelChangedSecondaryFieldComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
         private void OnSelChangedSalesPersonComboBox(object sender, SelectionChangedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
 
-            if (salesPersonCheckBox.IsChecked == true)
+            if (salesPersonCheckBox.IsChecked == true && salesPersonComboBox.SelectedItem != null)
                 selectedEmployee = listOfEmployees[salesPersonComboBox.SelectedIndex].employee_id;
             else
                 selectedEmployee = 0;
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //ON SELECTED ITEM CHANGED HANDLERS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnMouseDownCompanyStackPanel(object sender, RoutedEventArgs e)
+        {
+            previousSelectedCompanyItem = currentSelectedCompanyItem;
+            currentSelectedCompanyItem = (StackPanel)sender;
+
+            BrushConverter brush = new BrushConverter();
+
+            if (currentSelectedContactItem != null)
+            {
+                Grid previousParentGrid = (Grid)currentSelectedContactItem.Parent;
+                previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF"); ;
+
+                StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key;
+
+                Image previousSontactIcon = (Image)previousParentGrid.Children[0];
+                previousSontactIcon.Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative));
+
+                Label previousSelectedContactLabel = (Label)currentSelectedContactItem.Children[0];
+                previousSelectedContactLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousSelectedContactLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Label previouscontactNameLabel = (Label)currentSelectedContactItem.Children[0];
+
+                previouscontactNameLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previouscontactNameLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Grid previousContactDetailsGrid = (Grid)currentSelectedContactItem.Children[1];
+
+
+                for (int i = 1; i < previousContactDetailsGrid.Children.Count; i += 2)
+                {
+                    Label currentLabel = (Label)previousContactDetailsGrid.Children[i];
+
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    currentLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
+
+                int previousContactDetailsCount = 0;
+                for (int i = 0; i < previousContactDetailsGrid.Children.Count; i += 2)
+                {
+                    Image currentIcon = (Image)previousContactDetailsGrid.Children[i];
+
+                    if (previousContactDetailsCount++ < previousContactItem.contact_phones.Count)
+                        currentIcon.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+                    else
+                        currentIcon.Source = new BitmapImage(new Uri(@"icons\email_icon.png", UriKind.Relative));
+                }
+
+                currentSelectedContactItem = null;
+            }
+
+            if (previousSelectedCompanyItem != null)
+            {
+                Grid previousParentGrid = (Grid)previousSelectedCompanyItem.Parent;
+                previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT previousCompanyItem = contactsStackArray.Find(company_item => company_item.Value == prevoiusParentStackPanel).Key;
+
+                Image previousCompanyIcon = (Image)previousParentGrid.Children[0];
+                previousCompanyIcon.Source = new BitmapImage(new Uri(@"icons\company_icon.png", UriKind.Relative));
+
+                Grid previousSelectedCompanyGrid = (Grid)previousSelectedCompanyItem.Children[0];
+                previousSelectedCompanyGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Label previousSelectedCompanyLabel = (Label)previousSelectedCompanyGrid.Children[0];
+                previousSelectedCompanyLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousSelectedCompanyLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+
+
+                Grid previousCompanyDetailsGrid = (Grid)previousSelectedCompanyItem.Children[1];
+                previousCompanyDetailsGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Image previousworkFieldImage = (Image)previousCompanyDetailsGrid.Children[0];
+                previousworkFieldImage.Source = new BitmapImage(new Uri(@"icons\field_icon.png", UriKind.Relative));
+
+                Label previousworkFieldLabel = (Label)previousCompanyDetailsGrid.Children[1];
+
+                previousworkFieldLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousworkFieldLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                if (previousCompanyDetailsGrid.RowDefinitions.Count > 1)
+                {
+                    Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
+                    previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+
+                    Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
+
+                    previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
+            }
+
+            
+            Grid currentParentGrid = (Grid)currentSelectedCompanyItem.Parent;
+            currentParentGrid.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            StackPanel currentParentStackPanel = (StackPanel)currentParentGrid.Parent;
+            COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentCompanyItem = contactsStackArray.Find(company_item => company_item.Value == currentParentStackPanel).Key;
+
+            Image currentCompanyIcon = (Image)currentParentGrid.Children[0];
+            currentCompanyIcon.Source = new BitmapImage(new Uri(@"icons\company_icon_blue.png", UriKind.Relative));
+
+            Grid currentSelectedCompanyGrid = (Grid)currentSelectedCompanyItem.Children[0];
+            currentSelectedCompanyGrid.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            Label currentSelectedCompanyLabel = (Label)currentSelectedCompanyGrid.Children[0];
+            currentSelectedCompanyLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            currentSelectedCompanyLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            Grid currentCompanyDetailsGrid = (Grid)currentSelectedCompanyItem.Children[1];
+            currentCompanyDetailsGrid.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            Image currentworkFieldImage = (Image)currentCompanyDetailsGrid.Children[0];
+            currentworkFieldImage.Source = new BitmapImage(new Uri(@"icons\field_icon_blue.png", UriKind.Relative));
+
+            Label workFieldLabel = (Label)currentCompanyDetailsGrid.Children[1];
+            workFieldLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            workFieldLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            if (currentCompanyDetailsGrid.RowDefinitions.Count > 1)
+            {
+                Image CompanyNumberImage = (Image)currentCompanyDetailsGrid.Children[2];
+                CompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
+
+                Label CompanyNumberLabel = (Label)currentCompanyDetailsGrid.Children[3];
+
+                CompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+                CompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+            }
+
+            ViewBtn.IsEnabled = true;
+
+        }
+        private void OnMouseDownContactStackPanel(object sender, RoutedEventArgs e)
+        {
+            previousSelectedContactItem = currentSelectedContactItem;
+            currentSelectedContactItem = (StackPanel)sender;
+
+            BrushConverter brush = new BrushConverter();
+
+            if (currentSelectedCompanyItem != null)
+            {
+                Grid previousParentGrid = (Grid)currentSelectedCompanyItem.Parent;
+                previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT previousCompanyItem = contactsStackArray.Find(company_item => company_item.Value == prevoiusParentStackPanel).Key;
+
+                Image previousCompanyIcon = (Image)previousParentGrid.Children[0];
+                previousCompanyIcon.Source = new BitmapImage(new Uri(@"icons\company_icon.png", UriKind.Relative));
+
+                Grid previousSelectedCompanyGrid = (Grid)currentSelectedCompanyItem.Children[0];
+                previousSelectedCompanyGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Label previousSelectedCompanyLabel = (Label)previousSelectedCompanyGrid.Children[0];
+                previousSelectedCompanyLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousSelectedCompanyLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+
+
+                Grid previousCompanyDetailsGrid = (Grid)currentSelectedCompanyItem.Children[1];
+                previousCompanyDetailsGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Image previousworkFieldImage = (Image)previousCompanyDetailsGrid.Children[0];
+                previousworkFieldImage.Source = new BitmapImage(new Uri(@"icons\field_icon.png", UriKind.Relative));
+
+                Label previousworkFieldLabel = (Label)previousCompanyDetailsGrid.Children[1];
+
+                previousworkFieldLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousworkFieldLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                if (previousCompanyDetailsGrid.RowDefinitions.Count > 1)
+                {
+                    Image previousCompanyNumberImage = (Image)previousCompanyDetailsGrid.Children[2];
+                    previousCompanyNumberImage.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+
+                    Label previousCompanyNumberLabel = (Label)previousCompanyDetailsGrid.Children[3];
+
+                    previousCompanyNumberLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    previousCompanyNumberLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
+
+                currentSelectedCompanyItem = null;
+            }
+
+            if (previousSelectedContactItem != null)
+            {
+                Grid previousParentGrid = (Grid)previousSelectedContactItem.Parent;
+                previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF"); ;
+
+                StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
+                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key;
+
+                Image previousSontactIcon = (Image)previousParentGrid.Children[0];
+                previousSontactIcon.Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative));
+
+                Label previousSelectedContactLabel = (Label)previousSelectedContactItem.Children[0];
+                previousSelectedContactLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previousSelectedContactLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Label previouscontactNameLabel = (Label)previousSelectedContactItem.Children[0];
+
+                previouscontactNameLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                previouscontactNameLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+
+                Grid previousContactDetailsGrid = (Grid)previousSelectedContactItem.Children[1];
+
+
+                for (int i = 1; i < previousContactDetailsGrid.Children.Count; i += 2)
+                {
+                    Label currentLabel = (Label)previousContactDetailsGrid.Children[i];
+
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+                    currentLabel.Background = (Brush)brush.ConvertFrom("#FFFFFF");
+                }
+
+                int previousContactDetailsCount = 0;
+                for (int i = 0; i < previousContactDetailsGrid.Children.Count; i += 2)
+                {
+                    Image currentIcon = (Image)previousContactDetailsGrid.Children[i];
+
+                    if (previousContactDetailsCount++ < previousContactItem.contact_phones.Count)
+                        currentIcon.Source = new BitmapImage(new Uri(@"icons\phone_icon.png", UriKind.Relative));
+                    else
+                        currentIcon.Source = new BitmapImage(new Uri(@"icons\email_icon.png", UriKind.Relative));
+                }
+            }
+
+            Grid parentGrid = (Grid)currentSelectedContactItem.Parent;
+            parentGrid.Background = (Brush)brush.ConvertFrom("#105A97"); ;
+
+            StackPanel parentStackPanel = (StackPanel)parentGrid.Parent;
+            COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactItem = contactsStackArray.Find(contact_item => contact_item.Value == parentStackPanel).Key;
+
+            Image contactIcon = (Image)parentGrid.Children[0];
+            contactIcon.Source = new BitmapImage(new Uri(@"icons\contact_icon_blue.png", UriKind.Relative));
+
+            Label currentSelectedContactLabel = (Label)currentSelectedContactItem.Children[0];
+            currentSelectedContactLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            currentSelectedContactLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            Label contactNameLabel = (Label)currentSelectedContactItem.Children[0];
+
+            contactNameLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+            contactNameLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+
+            Grid contactDetailsGrid = (Grid)currentSelectedContactItem.Children[1];
+
+
+            for (int i = 1; i < contactDetailsGrid.Children.Count; i += 2)
+            {
+                Label currentLabel = (Label)contactDetailsGrid.Children[i];
+
+                currentLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
+                currentLabel.Background = (Brush)brush.ConvertFrom("#105A97");
+            }
+
+            int contactDetailsCount = 0;
+            for (int i = 0; i < contactDetailsGrid.Children.Count; i += 2)
+            {
+                Image currentIcon = (Image)contactDetailsGrid.Children[i];
+
+                if (contactDetailsCount++ < currentContactItem.contact_phones.Count) 
+                    currentIcon.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
+                else
+                    currentIcon.Source = new BitmapImage(new Uri(@"icons\email_icon_blue.png", UriKind.Relative));
+                    
+            }
+
+            ViewBtn.IsEnabled = true;
 
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON UNCHECKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnUncheckedCountryCheckBox(object sender, RoutedEventArgs e)
+
+        private void OnUncheckedCompanyNameCheckBox(object sender, RoutedEventArgs e)
         {
-            countryComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-
-            cityComboBox.IsEnabled = false;
-            stateComboBox.IsEnabled = false;
-
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-            stateComboBox.SelectedItem = null;
-            countryComboBox.SelectedItem = null;
+            companyNameTextBox.IsEnabled = false;
+            companyNameTextBox.Text = null;
 
             ViewBtn.IsEnabled = false;
 
-            stateCheckBox.IsEnabled = false;
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            // salesPersonCheckBox.IsEnabled = false;
-
-            stateCheckBox.IsChecked = false;
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            InitializeSalesTree();
-
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
-        private void OnUncheckedStateCheckBox(object sender, RoutedEventArgs e)
+        private void OnUncheckedContactNameCheckBox(object sender, RoutedEventArgs e)
         {
-            stateComboBox.IsEnabled = false;
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            contactNameTextBox.IsEnabled = false;
+            contactNameTextBox.Text = null;
+
             ViewBtn.IsEnabled = false;
 
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-            stateComboBox.SelectedItem = null;
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
+        }
+        private void OnUncheckedPrimaryFieldCheckBox(object sender, RoutedEventArgs e)
+        {
+            primaryFieldComboBox.IsEnabled = false;
+            secondaryFieldComboBox.IsEnabled = false;
+            ViewBtn.IsEnabled = false;
 
-            cityCheckBox.IsEnabled = false;
-            districtCheckBox.IsEnabled = false;
-            // salesPersonCheckBox.IsEnabled = false;
+            secondaryFieldCheckBox.IsEnabled = false;
 
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            InitializeSalesTree();
+            primaryFieldComboBox.SelectedItem = null;
+            secondaryFieldComboBox.SelectedItem = null;
+
+            primaryFieldCheckBox.IsChecked = false;
+            secondaryFieldCheckBox.IsChecked = false;
+
+            secondaryFieldCheckBox.IsEnabled = false;
+
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
-        private void OnUncheckedCityCheckBox(object sender, RoutedEventArgs e)
+        private void OnUncheckedSecondaryFieldCheckBox(object sender, RoutedEventArgs e)
         {
-            cityComboBox.IsEnabled = false;
-            districtComboBox.IsEnabled = false;
+            secondaryFieldComboBox.SelectedItem = null;
+
+            secondaryFieldComboBox.IsEnabled = false;
             ViewBtn.IsEnabled = false;
 
-            districtCheckBox.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
-
-            cityComboBox.SelectedItem = null;
-            districtComboBox.SelectedItem = null;
-
-            cityCheckBox.IsChecked = false;
-            districtCheckBox.IsChecked = false;
-            InitializeSalesTree();
-        }
-
-        private void OnUncheckedDistrictCheckBox(object sender, RoutedEventArgs e)
-        {
-            districtComboBox.SelectedItem = null;
-
-            districtComboBox.IsEnabled = false;
-            ViewBtn.IsEnabled = false;
-            //salesPersonCheckBox.IsEnabled = false;
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
         private void OnUncheckedSalesPersonCheckBox(object sender, RoutedEventArgs e)
         {
             salesPersonComboBox.IsEnabled = false;
             salesPersonComboBox.SelectedItem = null;
-            InitializeSalesTree();
+
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedAddCompany(object sender, RoutedEventArgs e)
+        private void OnBtnClickAddCompany(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
             AddCompanyWindow addCompanyWindow = new AddCompanyWindow(ref loggedInUser);
             addCompanyWindow.Closed += OnClosedAddCompanyWindow;
             addCompanyWindow.Show();
         }
-        private void OnBtnClickedAddContact(object sender, RoutedEventArgs e)
+        private void OnBtnClickAddContact(object sender, RoutedEventArgs e)
         {
             ViewBtn.IsEnabled = false;
 
@@ -553,127 +1086,122 @@ namespace _01electronics_crm
 
         private void OnClosedAddCompanyWindow(object sender, EventArgs e)
         {
-            listOfEmployees.Clear();
-            employeesCompanies.Clear();
-
-            InitializeCountriesComboBox();
-
-            if (!InitializeEmployeeComboBox())
-                return;
+            employeesContacts.Clear();
 
             GetAllContacts();
 
             SetDefaultSettings();
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
         private void OnClosedAddContactWindow(object sender, EventArgs e)
         {
-            listOfEmployees.Clear();
-            employeesCompanies.Clear();
-
-            InitializeCountriesComboBox();
-
-            if (!InitializeEmployeeComboBox())
-                return;
+            employeesContacts.Clear();
 
             GetAllContacts();
 
             SetDefaultSettings();
 
-            InitializeSalesTree();
+            InitializeContactsTree();
+            InitializeContactsStackPanel();
         }
         private void OnSelectedItemChangedTreeViewItem(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            //VIEW BUTTON IS ENABLED ONCE ANY ITEM IS SELECTED
             ViewBtn.IsEnabled = false;
             TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
+
             if (selectedItem != null)
-            {
-                try
-                {
-                    object parent = selectedItem.Parent;
-                    TreeViewItem currentCompany = (TreeViewItem)parent;
-                    ViewBtn.IsEnabled = true;
-
-                    try
-                    {
-                        object parent2 = currentCompany.Parent;
-                        TreeViewItem currentSales = (TreeViewItem)parent2;
-                        ViewBtn.IsEnabled = true;
-
-                    }
-                    catch
-                    {
-                    }
-
-                }
-                catch
-                {
-                }
-            }
-
+                ViewBtn.IsEnabled = true;
         }
 
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
-            TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
-
-            if (!selectedItem.HasItems)
+            if (contactTreeScrollViewer.Visibility == Visibility.Visible)
             {
-                COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
-                currentContactStruct = contactsTreeArray.Find(current_item => current_item.Key.Tag == selectedItem.Tag).Value;
-
-                Contact selectedContact = new Contact();
-                object parent = selectedItem.Parent;
-                TreeViewItem currentCompany = (TreeViewItem)parent;
-
-                try
+                TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
+            
+                if (!selectedItem.HasItems)
                 {
-                    object parent2 = currentCompany.Parent;
-                    TreeViewItem currentSales = (TreeViewItem)parent2;
+                    COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
+                    currentContactStruct = contactsTreeArray.Find(current_item => current_item.Value == selectedItem).Key;
+            
+                    Contact selectedContact = new Contact();
+                    selectedContact.InitializeContactInfo(currentContactStruct.sales_person_id, currentContactStruct.company.address_serial, currentContactStruct.contact.contact_id);
+            
+                    ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
+                    viewContactWindow.Show();
+            
+                }
+                else if(selectedItem.Parent != null)
+                {
+                    int selectedCompanySerial = companiesTreeArray.Find(current_item => current_item.Value == selectedItem).Key; 
+            
+                    Company selectedCompany = new Company();
+                    selectedCompany.InitializeCompanyInfo(selectedCompanySerial);
+            
+                    ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref selectedCompany);
+                    viewCompanyWindow.Show();
+                }
+            }
+            else if (contactStackScrollViewer.Visibility == Visibility.Visible)
+            {
+                if (currentSelectedContactItem != null)
+                {
+                    COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT currentContactStruct = new COMPANY_ORGANISATION_MACROS.CONTACT_LIST_STRUCT();
 
-                    selectedContact.InitializeContactInfo(Convert.ToInt32
-                        (currentSales.Tag), currentContactStruct.address_serial, currentContactStruct.contact_id);
+                    Grid currentGrid = (Grid)currentSelectedContactItem.Parent;
+                    StackPanel currentContactStackPanel = (StackPanel)currentGrid.Parent;
+
+                    currentContactStruct = contactsStackArray.Find(current_item => current_item.Value == currentContactStackPanel).Key;
+
+                    Contact selectedContact = new Contact();
+                    selectedContact.InitializeContactInfo(currentContactStruct.sales_person_id, currentContactStruct.company.address_serial, currentContactStruct.contact.contact_id);
 
                     ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
                     viewContactWindow.Show();
                 }
-                catch
+                else if(currentSelectedCompanyItem != null)
                 {
-                    Company currentCompanyClass = new Company();
-                    currentCompanyClass.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
+                    int currentCompanySerial = 0;
 
-                    try
-                    {
-                        object parent3 = selectedItem.Parent;
-                        TreeViewItem currentSales = (TreeViewItem)parent3;
-                        ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompanyClass);
-                        viewCompanyWindow.Show();
-                    }
-                    catch
-                    {
-                    }
-                }
+                    Grid currentGrid = (Grid)currentSelectedCompanyItem.Parent;
+                    StackPanel currentCompanyStackPanel = (StackPanel)currentGrid.Parent;
 
-            }
-            else
-            {
-                Company currentCompany = new Company();
-                currentCompany.InitializeCompanyInfo(Convert.ToInt32(selectedItem.Tag));
+                    currentCompanySerial = companiesStackArray.Find(current_item => current_item.Value == currentCompanyStackPanel).Key;
 
-                try
-                {
-                    object parent = selectedItem.Parent;
-                    TreeViewItem currentSales = (TreeViewItem)parent;
-                    ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref currentCompany);
+                    Company selectedCompany = new Company();
+                    selectedCompany.InitializeCompanyInfo(currentCompanySerial);
+
+                    ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref selectedCompany);
                     viewCompanyWindow.Show();
                 }
-                catch
-                {
-                }
-
             }
+
+           
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            treeViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            contactStackScrollViewer.Visibility = Visibility.Visible;
+            contactTreeScrollViewer.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void OnClickTreeView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            treeViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            contactStackScrollViewer.Visibility = Visibility.Collapsed;
+            contactTreeScrollViewer.Visibility = Visibility.Visible;
 
         }
 
@@ -681,11 +1209,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
+        
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -703,7 +1227,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -730,10 +1254,90 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnExpandEmployeeExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            currentExpander.ExpandDirection = ExpandDirection.Up;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            StackPanel employeeStackPanel = (StackPanel)currentGrid.Parent;
+
+            for(int i = 1; i < employeeStackPanel.Children.Count; i++)
+            {
+                StackPanel companyStackPanel = (StackPanel)employeeStackPanel.Children[i];
+                companyStackPanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void OnCollapseEmployeeExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            currentExpander.ExpandDirection = ExpandDirection.Left;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            StackPanel employeeStackPanel = (StackPanel)currentGrid.Parent;
+
+            for (int i = 1; i < employeeStackPanel.Children.Count; i++)
+            {
+                StackPanel companyStackPanel = (StackPanel)employeeStackPanel.Children[i];
+                companyStackPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void OnExpandCompanyExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            currentExpander.ExpandDirection = ExpandDirection.Up;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            StackPanel companyDetailsStackPanel = (StackPanel)currentGrid.Parent;
+            Grid companyGrid = (Grid)companyDetailsStackPanel.Parent;
+            StackPanel companyStackPanel = (StackPanel)companyGrid.Parent;
+
+            for (int i = 1; i < companyStackPanel.Children.Count; i++)
+            {
+                StackPanel contactStackPanel = (StackPanel)companyStackPanel.Children[i];
+                contactStackPanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void OnCollapseCompanyExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            currentExpander.ExpandDirection = ExpandDirection.Left;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            StackPanel companyDetailsStackPanel = (StackPanel)currentGrid.Parent;
+            Grid companyGrid = (Grid)companyDetailsStackPanel.Parent;
+            StackPanel companyStackPanel = (StackPanel)companyGrid.Parent;
+
+            for (int i = 1; i < companyStackPanel.Children.Count; i++)
+            {
+                StackPanel contactStackPanel = (StackPanel)companyStackPanel.Children[i];
+                contactStackPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
+        }
     }
 
 

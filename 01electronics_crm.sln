@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-<<<<<<< HEAD
-VisualStudioVersion = 16.0.31129.286
-=======
-VisualStudioVersion = 16.0.31005.135
->>>>>>> f4166287fea9a83fd4201ecc1b49dc8b4d71ed22
+VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_crm", "01electronics_crm.csproj", "{5BFC3AC5-345F-4D60-A6D5-B8FC8968396C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01electronics_library", "..\01electronics_library\01electronics_library.csproj", "{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31856F57-C934-4582-88E9-1DAD9E03188A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +28,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-<<<<<<< HEAD
 		SolutionGuid = {4DD69175-7CFC-4648-9FD4-6085FB77FDBF}
-=======
-		SolutionGuid = {F7156EEB-AB01-4DC9-8CBE-1613DF093D59}
->>>>>>> f4166287fea9a83fd4201ecc1b49dc8b4d71ed22
 	EndGlobalSection
 EndGlobal

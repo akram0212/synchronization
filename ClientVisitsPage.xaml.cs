@@ -70,6 +70,7 @@ namespace _01electronics_crm
 
             GetVisits();
             InitializeStackPanel();
+            InitializeGrid();
 
             SetDefaultSettings();
         }
@@ -137,8 +138,7 @@ namespace _01electronics_crm
                 quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
-
-        private bool InitializeEmployeeComboBox()
+                private bool InitializeEmployeeComboBox()
         {
             if (!commonQueriesObject.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                 return false;
@@ -201,23 +201,182 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                ColumnDefinition column1 = new ColumnDefinition();
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                newGrid.MouseLeftButtonDown += OnBtnClickVisitItem;
 
-                newGrid.ColumnDefinitions.Add(column1);
-                newGrid.MouseLeftButtonDown += OnBtnClickedVisitItem;
+                Image clientVisitIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_visit_icon.png", UriKind.Relative)) };
+                ResizeImage(ref clientVisitIcon, 40, 40);
+                newGrid.Children.Add(clientVisitIcon);
+                Grid.SetColumn(clientVisitIcon, 0);
 
-                Grid.SetColumn(currentStackPanel, 0);
-
+                
                 newGrid.Children.Add(currentStackPanel);
+                Grid.SetColumn(currentStackPanel, 1);
+                
                 ClientVisitsStackPanel.Children.Add(newGrid);
 
             }
         }
 
+        private bool InitializeGrid()
+        {
+             
+            clientVisitsGrid.Children.Clear();
+            clientVisitsGrid.RowDefinitions.Clear();
+            clientVisitsGrid.ColumnDefinitions.Clear();
+
+            filteredVisits.Clear();
+
+            Label salesPersonHeader = new Label();
+            salesPersonHeader.Content = "Sales Person";
+            salesPersonHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label dateOfVisitHeader = new Label();
+            dateOfVisitHeader.Content = "Visit Date";
+            dateOfVisitHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label contactInfoHeader = new Label();
+            contactInfoHeader.Content = "Contact Info";
+            contactInfoHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label purposeHeader = new Label();
+            purposeHeader.Content = "Visit Purpose";
+            purposeHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            Label resultHeader = new Label();
+            resultHeader.Content = "Visit Result";
+            resultHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            
+            clientVisitsGrid.RowDefinitions.Add(new RowDefinition());
+
+            
+
+            Grid.SetRow(salesPersonHeader, 0);
+            Grid.SetColumn(salesPersonHeader, 0);
+            clientVisitsGrid.Children.Add(salesPersonHeader);
+
+            Grid.SetRow(dateOfVisitHeader, 0);
+            Grid.SetColumn(dateOfVisitHeader, 1);
+            clientVisitsGrid.Children.Add(dateOfVisitHeader);
+
+            Grid.SetRow(contactInfoHeader, 0);
+            Grid.SetColumn(contactInfoHeader, 2);
+            clientVisitsGrid.Children.Add(contactInfoHeader);
+
+            Grid.SetRow(purposeHeader, 0);
+            Grid.SetColumn(purposeHeader, 3);
+            clientVisitsGrid.Children.Add(purposeHeader);
+
+            Grid.SetRow(resultHeader, 0);
+            Grid.SetColumn(resultHeader, 4);
+            clientVisitsGrid.Children.Add(resultHeader);
+
+            int currentRowNumber = 1;
+
+            for (int i = 0; i < visitsInfo.Count; i++)
+            {
+                DateTime currentVisitDate = DateTime.Parse(visitsInfo[i].visit_date);
+
+                if (yearCheckBox.IsChecked == true && currentVisitDate.Year != selectedYear)
+                    continue;
+
+                if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentVisitDate) != selectedQuarter)
+                    continue;
+
+                if (employeeCheckBox.IsChecked == true && visitsInfo[i].sales_person_id != listOfEmployees[employeeComboBox.SelectedIndex].employee_id)
+                    continue;
+
+                filteredVisits.Add(visitsInfo[i]);
+
+
+                RowDefinition currentRow = new RowDefinition();
+
+                clientVisitsGrid.RowDefinitions.Add(currentRow);
+
+                Label salesPersonLabel = new Label();
+                salesPersonLabel.Content = visitsInfo[i].sales_person_name;
+                salesPersonLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(salesPersonLabel, currentRowNumber);
+                Grid.SetColumn(salesPersonLabel, 0);
+                clientVisitsGrid.Children.Add(salesPersonLabel);
+
+
+                Label dateOfVisitLabel = new Label();
+                dateOfVisitLabel.Content = visitsInfo[i].visit_date;
+                dateOfVisitLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(dateOfVisitLabel, currentRowNumber);
+                Grid.SetColumn(dateOfVisitLabel, 1);
+                clientVisitsGrid.Children.Add(dateOfVisitLabel);
+
+
+                Label contactInfoLabel = new Label();
+                contactInfoLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                contactInfoLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                Grid.SetRow(contactInfoLabel, currentRowNumber);
+                Grid.SetColumn(contactInfoLabel, 2);
+                clientVisitsGrid.Children.Add(contactInfoLabel);
+
+
+                Label purposeLabel = new Label();
+                purposeLabel.Content = visitsInfo[i].visit_purpose;
+                purposeLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clientVisitsGrid.Children.Add(purposeLabel);
+                Grid.SetRow(purposeLabel, currentRowNumber);
+                Grid.SetColumn(purposeLabel, 3);
+
+                Label resultLabel = new Label();
+                resultLabel.Content = visitsInfo[i].visit_result;
+                resultLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                clientVisitsGrid.Children.Add(resultLabel);
+                Grid.SetRow(resultLabel, currentRowNumber);
+                Grid.SetColumn(resultLabel, 4);
+
+                //currentRow.MouseLeftButtonDown += OnBtnClickWorkOfferItem;
+
+                currentRowNumber++;
+            }
+
+            return true;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Visible;
+            gridScrollViewer.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnClickTableView(object sender, MouseButtonEventArgs e)
+        {
+            listViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
+            tableViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
+
+            stackPanelScrollViewer.Visibility = Visibility.Collapsed;
+            gridScrollViewer.Visibility = Visibility.Visible;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// ON BTN CLICKED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnBtnClickedVisitItem(object sender, RoutedEventArgs e)
+        private void OnBtnClickVisitItem(object sender, RoutedEventArgs e)
         {
             viewButton.IsEnabled = true;
             previousSelectedVisitItem = currentSelectedVisitItem;
@@ -228,16 +387,24 @@ namespace _01electronics_crm
             {
                 previousSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#FFFFFF");
 
-                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[0];
+                Image previousClientVistIcon = (Image)previousSelectedVisitItem.Children[0];
+                previousClientVistIcon.Source = new BitmapImage(new Uri(@"icons\client_visit_icon.png", UriKind.Relative));
+                ResizeImage(ref previousClientVistIcon, 40, 40);
+
+                StackPanel previousSelectedStackPanel = (StackPanel)previousSelectedVisitItem.Children[1];
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
-                    childLabel.Foreground = (Brush)brush.ConvertFrom("#000000");
+                    childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
                 
             }
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[0];
+            Image currentClientVistIcon = (Image)currentSelectedVisitItem.Children[0];
+            currentClientVistIcon.Source = new BitmapImage(new Uri(@"icons\client_visit_icon_blue.png", UriKind.Relative));
+            ResizeImage(ref currentClientVistIcon, 40, 40);
+
+            StackPanel currentSelectedStackPanel = (StackPanel)currentSelectedVisitItem.Children[1];
 
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
@@ -248,11 +415,6 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -270,7 +432,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -297,24 +459,39 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //BTN CLICKED HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnBtnClickedAdd(object sender, RoutedEventArgs e)
+        private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
             AddClientVisitWindow addClientVisitWindow = new AddClientVisitWindow(ref loggedInUser);
             addClientVisitWindow.Closed += OnClosedAddVisitWindow;
             addClientVisitWindow.Show();
         }
-        private void OnBtnClickedView(object sender, RoutedEventArgs e)
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
             ClientVisit selectedVisit = new ClientVisit();
             selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);
 
             ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
             viewClientVisitWindow.Show();
+        }
+
+        private void OnBtnClickExport(object sender, RoutedEventArgs e)
+        {
+            ExcelExport excelExport = new ExcelExport(clientVisitsGrid);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,6 +505,7 @@ namespace _01electronics_crm
                 selectedYear = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -339,6 +517,7 @@ namespace _01electronics_crm
                 selectedQuarter = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -350,6 +529,7 @@ namespace _01electronics_crm
                 selectedEmployee = 0;
 
             InitializeStackPanel();
+            InitializeGrid();
             viewButton.IsEnabled = false;
         }
 
@@ -408,6 +588,31 @@ namespace _01electronics_crm
         {
             GetVisits();
             InitializeStackPanel();
+            InitializeGrid();
+        }
+
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+
+
+
+
+
+
+        public void ResizeImage(ref Image imgToResize, int width, int height)
+        {
+            imgToResize.Width = width;
+            imgToResize.Height = height;
+        }
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
         }
     }
 }

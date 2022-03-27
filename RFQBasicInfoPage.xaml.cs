@@ -21,26 +21,21 @@ namespace _01electronics_crm
     /// </summary>
     public partial class RFQBasicInfoPage : Page
     {
-        
-
         Employee loggedInUser;
         RFQ rfq;
 
-        //NO NEED FOR THESE OBJECTS, RFQ OBJECT ALREADY CONTAINS A CONTACT OBJECT WHICH INHERETS COMPANY CLASS
-        //Company company;
-        //Contact contact;
-
+        
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
 
-        //I MADE A STRUCT FOR THIS LIST
-        //AND A QUERY FUNCTION IN COMMONQUERIES
+        
         private List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> companiesList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
 
         String[] contactPhones = new String[COMPANY_ORGANISATION_MACROS.MAX_TELEPHONES_PER_CONTACT];
 
@@ -48,42 +43,34 @@ namespace _01electronics_crm
         private int companySerial;
         private int addressSerial;
 
-        //NICE WORK HERE, I LIKE YOUR WORK
-        //YOUR CODING STYLE IS GETTING BETTER
+        public RFQProductsPage rfqProductsPage;
+        public RFQAdditionalInfoPage rfqAdditionalInfoPage;
+        public RFQUploadFilesPage rfqUploadFilesPage;
 
-        //PLEASE DONT CHANGE/ADD STYLES, WE SHALL STICK TO THE STYLES USED BY ALL THE ERP SYSTEM
         public RFQBasicInfoPage(ref Employee mLoggedInUser, ref RFQ mRFQ, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
 
-            InitializeComponent();
-
             sqlDatabase = new SQLServer();
+
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            rfq = new RFQ(sqlDatabase);
+
             rfq = mRFQ;
-            
+
+            InitializeComponent();
 
             if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureAddRFQUIElements();
 
                 InitializeSalesPersonCombo();
-                InitializeCompanyNameCombo();
                 InitializeAssigneeCombo();
+                InitializeProjectCombo();
 
                 SetSalesPerson();
-
-                if (rfq.GetSalesPersonName() != null)
-                    salesPersonCombo.Text = rfq.GetSalesPersonName();
-                if (rfq.GetAssigneeName() != null)
-                    assigneeCombo.Text = rfq.GetAssigneeName();
-                if (rfq.GetRFQCompany().GetCompanyName() != null)
-                    companyNameCombo.Text = rfq.GetRFQCompany().GetCompanyName();
-
-                
+                salesPersonCombo.IsEnabled = false;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
@@ -98,24 +85,32 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetContactNumberLabel();
+                SetProjectLabel();
+
+                cancelButton.IsEnabled = false;
             }  
             else
             {
               
                 ConfigureAddRFQUIElements();
                 InitializeSalesPersonCombo();
-                
+                InitializeProjectCombo();
+
                 InitializeAssigneeCombo();
-                
-                InitializeCompanyNameCombo();
-                
-            }
-            if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            {
+
                 SetSalesPersonCombo();
                 SetAssigneeCombo();
                 SetCompanyNameCombo();
+                SetProjectCombo();
+
+                salesPersonCombo.IsEnabled = false;
+                companyNameCombo.IsEnabled = false;
+                companyAddressCombo.IsEnabled = false;
+                contactPersonCombo.IsEnabled = false;
+                contactPersonPhoneCombo.IsEnabled = false;
+                projectCombo.IsEnabled = false;
             }
+
         }
 
         /////////////////UI ELEMENTS CINFIGURATION//////////////
@@ -129,6 +124,7 @@ namespace _01electronics_crm
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             contactPersonPhoneLabel.Visibility = Visibility.Collapsed;
             salesPersonLabel.Visibility = Visibility.Collapsed;
+            projectLabel.Visibility = Visibility.Collapsed;
 
             //YOU SHALL MAKE SURE THAT LABELS ARE COLLAPSED AND COMBOS ARE VISIBLE EVERY TIME
             assigneeCombo.Visibility = Visibility.Visible;
@@ -137,6 +133,7 @@ namespace _01electronics_crm
             contactPersonCombo.Visibility = Visibility.Visible;
             contactPersonPhoneCombo.Visibility = Visibility.Visible;
             salesPersonCombo.Visibility = Visibility.Visible;
+            projectCombo.Visibility = Visibility.Visible;
 
             companyAddressCombo.IsEnabled = false;
             contactPersonCombo.IsEnabled = false;
@@ -151,6 +148,7 @@ namespace _01electronics_crm
             contactPersonCombo.Visibility = Visibility.Collapsed;
             contactPersonPhoneCombo.Visibility = Visibility.Collapsed;
             salesPersonCombo.Visibility = Visibility.Collapsed;
+            projectCombo.Visibility = Visibility.Collapsed;
 
             offerProposerLabel.Visibility = Visibility.Visible;
             companyNameLabel.Visibility = Visibility.Visible;
@@ -158,6 +156,7 @@ namespace _01electronics_crm
             contactPersonNameLabel.Visibility = Visibility.Visible;
             contactPersonPhoneLabel.Visibility = Visibility.Visible;
             salesPersonLabel.Visibility = Visibility.Visible;
+            projectLabel.Visibility = Visibility.Visible;
         }
 
         ///////////////INITIALIZE FUNCTIONS///////////////
@@ -173,16 +172,10 @@ namespace _01electronics_crm
         }
         private bool InitializeContactInfo()
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
-            {
-                if (!commonQueriesObject.GetCompanyContacts(loggedInUser.GetEmployeeId(), rfq.GetAddressSerial(), ref contactInfo))
-                    return false;
-            }
-            else
-            {
-                if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), rfq.GetAddressSerial(), ref contactInfo))
-                    return false;
-            }
+
+            if (!commonQueriesObject.GetCompanyContacts(rfq.GetSalesPersonId(), rfq.GetAddressSerial(), ref contactInfo))
+                return false;
+
             return true;
         }
         
@@ -191,28 +184,36 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployees))
                 return false;
+
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                salesEmployees.Add(loggedInUserStruct);
+            }
+
+
             for (int i = 0; i < salesEmployees.Count(); i++)
                 salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
 
+            
             return true;
         }
 
         //ANY FUNCTION THAT ACCESS A DATABASE MUST BE BOOL NOT VOID
         private bool InitializeCompanyNameCombo()
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
-            {
-                if (!commonQueriesObject.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companiesList))
+            if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
                     return false;
-            }
-            else
-            { 
-                if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
-                    return false;
-            }
 
-                for (int i = 0; i < companiesList.Count(); i++)
-                    companyNameCombo.Items.Add(companiesList[i].company_name);
+            for (int i = 0; i < companiesList.Count(); i++)
+                companyNameCombo.Items.Add(companiesList[i].company_name);
 
             return true;
         }
@@ -222,9 +223,32 @@ namespace _01electronics_crm
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref preSalesEmployees))
                 return false;
 
-            //NO NEED FOR TEMP VARIABLES
+            if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT loggedInUserStruct = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                loggedInUserStruct.employee_id = loggedInUser.GetEmployeeId();
+                loggedInUserStruct.employee_name = loggedInUser.GetEmployeeName();
+                loggedInUserStruct.department.department_id = loggedInUser.GetEmployeeDepartmentId();
+                loggedInUserStruct.department.department_name = loggedInUser.GetEmployeeDepartment();
+                loggedInUserStruct.team.team_id = loggedInUser.GetEmployeeTeamId();
+                loggedInUserStruct.team.team_name = loggedInUser.GetEmployeeTeam();
+
+                preSalesEmployees.Add(loggedInUserStruct);
+            }
+
             for (int i = 0; i < preSalesEmployees.Count(); i++)
                 assigneeCombo.Items.Add(preSalesEmployees[i].employee_name);
+
+            return true;
+        }
+
+        private bool InitializeProjectCombo()
+        {
+            if (!commonQueriesObject.GetClientProjects(ref projects))
+                return false;
+
+            for (int i = 0; i < projects.Count; i++)
+                projectCombo.Items.Add(projects[i].project_name);
 
             return true;
         }
@@ -259,6 +283,11 @@ namespace _01electronics_crm
         {
             if(rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
                 contactPersonPhoneCombo.SelectedItem = rfq.GetRFQContact().GetContactPhones()[0].ToString();
+        }
+
+        private void SetProjectCombo()
+        {
+            projectCombo.SelectedItem = rfq.GetprojectName();
         }
         private void SetSalesPersonLabel()
         {
@@ -303,12 +332,19 @@ namespace _01electronics_crm
                 contactPersonPhoneLabel.Content = rfq.GetRFQContact().GetContactPhones()[0].ToString();
         }
 
+        private void SetProjectLabel()
+        {
+            projectLabel.Content = rfq.GetprojectName();
+        }
+
         /////////////SELECTION CHANGED//////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedSalesPersonCombo(object sender, SelectionChangedEventArgs e)
         {
             if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
                 rfq.InitializeSalesPersonInfo(salesEmployees[salesPersonCombo.SelectedIndex].employee_id);
+
+            InitializeCompanyNameCombo();
 
         }
         private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
@@ -399,33 +435,65 @@ namespace _01electronics_crm
             //rfq.GetRFQContact().AddNewContactPhone(contactPersonPhoneCombo.SelectedItem.ToString());
         }
 
+        private void OnSelChangedProjectCombo(object sender, SelectionChangedEventArgs e)
+        {
+            rfq.InitializeProjectInfo(projects[projectCombo.SelectedIndex].project_serial);
+        }
+
         //////////BUTTON CLICKED///////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnClickBasicInfo(object sender, RoutedEventArgs e)
+
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-           /* if(viewAddCondition == 0)
+            rfqProductsPage.rfqBasicInfoPage = this;
+            rfqProductsPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+            
+            if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
+
+        private void OnBtnClickProductsInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqProductsPage.rfqBasicInfoPage = this;
+            rfqProductsPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqProductsPage);
+        }
+
+        private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
+        {
+            rfqAdditionalInfoPage.rfqBasicInfoPage = this;
+            rfqAdditionalInfoPage.rfqProductsPage = rfqProductsPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+                rfqAdditionalInfoPage.rfqUploadFilesPage = rfqUploadFilesPage;
+
+            NavigationService.Navigate(rfqAdditionalInfoPage);
+        }
+
+        private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
             {
-                RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser, ref rfq);
-                NavigationService.Navigate(basicInfoPage);
+                rfqUploadFilesPage.rfqBasicInfoPage = this;
+                rfqUploadFilesPage.rfqProductsPage = rfqProductsPage;
+                rfqUploadFilesPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
+
+                NavigationService.Navigate(rfqUploadFilesPage);
             }
-            else
-            {
-                RFQBasicInfoPage basicInfoPage = new RFQBasicInfoPage(ref loggedInUser);
-                NavigationService.Navigate(basicInfoPage);
-            }*/
         }
 
-        private void OnClickProductsInfo(object sender, RoutedEventArgs e)
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
         {
-            RFQProductsPage productsPage = new RFQProductsPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(productsPage);
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
         }
 
-        private void OnClickAdditionalInfo(object sender, RoutedEventArgs e)
-        {
-            RFQAdditionalInfoPage additionalInfoPage = new RFQAdditionalInfoPage(ref loggedInUser, ref rfq, viewAddCondition);
-            NavigationService.Navigate(additionalInfoPage);
-        }
-
+        
     }
 }

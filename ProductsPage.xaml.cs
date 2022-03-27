@@ -31,6 +31,7 @@ namespace _01electronics_crm
         protected String sqlQuery;
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
+
         public ProductsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -43,7 +44,7 @@ namespace _01electronics_crm
             productSummaryPoints = new List<string>();
 
             InitializeProducts();
-            InitializeProducSummaryPoints();
+            InitializeProductSummaryPoints();
             SetUpPageUIElements();
         }
         private void InitializeProducts()
@@ -51,32 +52,10 @@ namespace _01electronics_crm
             if (!commonQueries.GetCompanyProducts(ref products))
                 return;
         }
-        public bool InitializeProducSummaryPoints()
+        public void InitializeProductSummaryPoints()
         {
-            productSummaryPoints.Clear();
-
-            String sqlQueryPart1 = @"select summary_points
-                                     from erp_system.dbo.products_summary_points
-                                     where summary_points != 'others' ;";
-
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            queryColumns.sql_string = 1;
-
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
-                return false;
-
-            for (int i = 0; i < sqlDatabase.rows.Count(); i++)
-            {
-                productSummaryPoints.Add(sqlDatabase.rows[i].sql_string[0]);
-            }
-
-            productSummaryPoints.Add("others");
-
-            return true;
+            if (!commonQueries.GetProductsSummaryPoints(ref productSummaryPoints))
+                return;
         }
 
         public void SetUpPageUIElements()
@@ -91,105 +70,71 @@ namespace _01electronics_crm
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
-                String[] productName = new String[3];
-                try
-                {
-                    try
-                    {
-                        productName = products[i].typeName.Split(' ');
-                        Image productImage = new Image();
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\Photos\\" + productName[0] + "_" + productName[1] + "_cover_photo.jpg", UriKind.Absolute);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
-                        src.EndInit();
-                        productImage.Source = src;
-                        productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                        productImage.MouseDown += ImageMouseDown;
-                        productImage.Tag = products[i].typeId.ToString();
-                        //productImage.Name = products[i].typeName;
+                Image productImage = new Image();
 
-                        gridI.Children.Add(productImage);
-                        Grid.SetRow(productImage, 0);
+                string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
+                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
+                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                productImage.MouseDown += ImageMouseDown;
+                productImage.Tag = products[i].typeId.ToString();
+                gridI.Children.Add(productImage);
+                Grid.SetRow(productImage, 0);
 
-                        TextBlock imageTextBlock = new TextBlock();
-                        imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                        imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                        imageTextBlock.Width = 350;
-                        imageTextBlock.Height = 150;
-                        imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
-                        imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
-                        imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                        imageTextBlock.FontSize = 16;
-                        imageTextBlock.TextWrapping = TextWrapping.Wrap;
-                        imageTextBlock.Text = "  " + products[i].typeName;
-                        imageTextBlock.Text += "\n\n";
+                Grid imageGrid = new Grid();
+                imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
+                imageGrid.Width = 350;
+                imageGrid.Height = 150;
+                imageGrid.Margin = new Thickness(100, -20, 0, 0);
+                imageGrid.HorizontalAlignment = HorizontalAlignment.Left;
 
-                        imageTextBlock.Text += productSummaryPoints[i];
-                        gridI.Children.Add(imageTextBlock);
-                        Grid.SetRow(imageTextBlock, 0);
-                        ProductsGrid.Children.Add(gridI);
-                        Grid.SetRow(gridI, i);
-                        
-                    }
-                    catch
-                    {
-                        productName[0] = products[i].typeName;
-                        Image productImage = new Image();
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\" + "Photos\\" + productName[0] + "_cover_photo.jpg", UriKind.Absolute);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
-                        src.EndInit();
-                        productImage.Source = src;
-                        productImage.Width = 900;
-                        productImage.Height = 400;
-                        productImage.MouseDown += ImageMouseDown;
-                        productImage.Tag = products[i].typeId.ToString();
-                        //productImage.Name = products[i].typeName;
-                        gridI.Children.Add(productImage);
-                        Grid.SetRow(productImage, 0);
+                RowDefinition headerRow = new RowDefinition();
+                imageGrid.RowDefinitions.Add(headerRow);
+                headerRow.Height = new GridLength(40);
 
-                        TextBlock imageTextBlock = new TextBlock();
-                        imageTextBlock.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
-                        imageTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                        imageTextBlock.Width = 350;
-                        imageTextBlock.Height = 150;
-                        imageTextBlock.Margin = new Thickness(100, -20, 0, 0);
-                        imageTextBlock.Padding = new Thickness(15, 15, 15, 15);
-                        imageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                        imageTextBlock.FontSize = 16;
-                        imageTextBlock.TextWrapping = TextWrapping.Wrap;
-                        imageTextBlock.Text = "  " + products[i].typeName;
-                        imageTextBlock.Text += "\n\n";
 
-                        imageTextBlock.Text += productSummaryPoints[i];
-                        Grid.SetRow(imageTextBlock, 0);
+                RowDefinition pointsRow = new RowDefinition();
+                imageGrid.RowDefinitions.Add(pointsRow);
 
-                        gridI.Children.Add(imageTextBlock);
-                        ProductsGrid.Children.Add(gridI);
-                        Grid.SetRow(gridI, i);
-                    
+                Grid headerGrid = new Grid();
+                RowDefinition headerGridRow = new RowDefinition();
+                headerGrid.RowDefinitions.Add(headerGridRow);
+                Grid.SetRow(headerGrid, 0);
 
-                    }
-                }
-                catch
-                {
+                Label headerLabel = new Label();
+                headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                headerLabel.FontFamily = new FontFamily("Sans Serif");
+                headerLabel.FontSize = 17;
+                headerLabel.FontWeight = FontWeights.Bold;
+                headerLabel.Padding = new Thickness(10);
+                headerLabel.Content = products[i].typeName;
 
-                }
-                
+                Grid.SetRow(headerLabel, 0);
+                headerGrid.Children.Add(headerLabel);
+                imageGrid.Children.Add(headerGrid);
+
+                TextBlock pointsTextBlock = new TextBlock();
+                pointsTextBlock.Foreground = Brushes.Black;
+                pointsTextBlock.TextWrapping = TextWrapping.Wrap;
+                pointsTextBlock.FontSize = 15;
+                pointsTextBlock.FontStyle = FontStyles.Italic;
+                pointsTextBlock.Text = productSummaryPoints[i];
+                pointsTextBlock.Padding = new Thickness(20);
+
+                Grid.SetRow(pointsTextBlock, 1);
+                imageGrid.Children.Add(pointsTextBlock);
+
+                gridI.Children.Add(imageGrid);
+                Grid.SetRow(imageGrid, 0);
+                ProductsGrid.Children.Add(gridI);
+                Grid.SetRow(gridI, i);
             }
         }
-
+      
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
+
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -207,7 +152,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            WorkOffersPage workOffers = new WorkOffersPage(ref loggedInUser);
+            QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -234,6 +179,21 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
+        {
+            ProjectsPage projectsPage = new ProjectsPage(ref loggedInUser);
+            this.NavigationService.Navigate(projectsPage);
+        }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //MOUSE DOWN HANDLERS
@@ -247,9 +207,14 @@ namespace _01electronics_crm
             Product selectedProduct = new Product();
             selectedProduct.SetProductID(int.Parse(tmp));
 
-            BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(productsPage);
+            BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
+            this.NavigationService.Navigate(brandsPage);
         }
-       
+
+        private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
+        {
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            NavigationService.Navigate(statisticsPage);
+        }
     }
 }
