@@ -520,14 +520,8 @@ namespace _01electronics_crm
         {
             if (OfferSerialCombo.SelectedItem != null)
             {
-                if (salesPersonCombo.SelectedIndex != employeesList.Count())
-                {
-                    maintContract.InitializeSalesWorkMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
-                }
-                else
-                {
-                    maintContract.InitializeTechnicalOfficeWorkMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
-                }
+                maintContract.InitializeMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
+                
 
                 SetCompanyNameAddressContactFromOffer();
 

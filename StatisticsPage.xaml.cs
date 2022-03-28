@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-﻿using _01electronics_erp;
-using System;
-=======
+
 ﻿using System;
->>>>>>> 27c2762041c709aa39b3c9d5e54eb7d2dcca48cc
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,37 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-namespace TempCRM
-=======
-namespace _01electronics_crm
->>>>>>> salma
-{
-    /// <summary>
-    /// Interaction logic for StatisticsPage.xaml
-    /// </summary>
-    public partial class StatisticsPage : Page
-    {
-        private Employee loggedInUser;
-
-        public StatisticsPage(ref Employee mLoggedInUser)
-        {
-            InitializeComponent();
-
-            loggedInUser = mLoggedInUser;
-        }
-        private void OnButtonClickedOrders(object sender, RoutedEventArgs e)
-        {
-            WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOrdersPage);
-        }
-        private void OnButtonClickedOffers(object sender, RoutedEventArgs e)
-        {
-            WorkOffersPage workOffersPage = new WorkOffersPage(ref loggedInUser);
-            this.NavigationService.Navigate(workOffersPage);
-=======
 using LiveCharts;
 using LiveCharts.Wpf;
 using _01electronics_library;
@@ -604,11 +569,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
+       
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -628,7 +589,6 @@ namespace _01electronics_crm
         {
             QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
->>>>>>> 27c2762041c709aa39b3c9d5e54eb7d2dcca48cc
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
@@ -650,30 +610,10 @@ namespace _01electronics_crm
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-<<<<<<< HEAD
-            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
-            this.NavigationService.Navigate(statisticsPage);
-=======
-
->>>>>>> 27c2762041c709aa39b3c9d5e54eb7d2dcca48cc
-        }
-
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
-<<<<<<< HEAD
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
-
-        private void OnButtonClickedContacts(object sender, MouseButtonEventArgs e)
-        {
-            ContactsPage contactsPage = new ContactsPage(ref loggedInUser);
-            this.NavigationService.Navigate(contactsPage);
-        }
-=======
-
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            this.NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
@@ -693,12 +633,6 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
 
-        private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
-        {
 
-        }
-
-        
->>>>>>> 27c2762041c709aa39b3c9d5e54eb7d2dcca48cc
     }
 }

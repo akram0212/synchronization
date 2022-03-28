@@ -1125,21 +1125,14 @@ namespace _01electronics_crm
         private void OnBtnClickView()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
+
+            selectedMaintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+
 
             MaintenanceOffersWindow maintOfferWindow = new MaintenanceOffersWindow(ref loggedInUser, ref selectedMaintOffer, viewAddCondition, false);
-            
+
             maintOfferWindow.Show();
         }
         private void OnBtnClickReviseOffer()
@@ -1148,18 +1141,10 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
+            selectedMaintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+
 
             MaintenanceOffersWindow viewOffer = new MaintenanceOffersWindow(ref loggedInUser, ref selectedMaintOffer, viewAddCondition, false);
             viewOffer.Closed += OnClosedMaintOfferWindow;
@@ -1171,18 +1156,10 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
+            selectedMaintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+
 
             MaintenanceContract maintContract = new MaintenanceContract(sqlDatabase);
             maintContract.CopyMaintOffer(selectedMaintOffer);
@@ -1200,18 +1177,10 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetEmployeeTeam(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
-            if (salesPersonTeam == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
-            {
-                selectedMaintOffer.InitializeSalesWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
-            else
-            {
-                selectedMaintOffer.InitializeTechnicalOfficeWorkMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
-                                                                maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
-            }
+            selectedMaintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
+                                                            maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
+
 
 
             ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedMaintOffer, failureReasons);

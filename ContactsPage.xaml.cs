@@ -307,7 +307,7 @@ namespace _01electronics_crm
                 employeeGrid.Background = (Brush)brush.ConvertFrom("#D3D3D3"); 
                 employeeGrid.RowDefinitions.Add(new RowDefinition());
                 employeeGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30)});
+                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
 
                 Label employeeNameLabel = new Label();
 
@@ -316,7 +316,7 @@ namespace _01electronics_crm
 
                 Expander expander = new Expander();
                 expander.ExpandDirection = ExpandDirection.Left;
-                expander.HorizontalAlignment = HorizontalAlignment.Center;
+                expander.HorizontalAlignment = HorizontalAlignment.Left;
                 expander.VerticalAlignment = VerticalAlignment.Center;
                 expander.Expanded += new RoutedEventHandler(OnExpandEmployeeExpander);
                 expander.Collapsed += new RoutedEventHandler(OnCollapseEmployeeExpander);
