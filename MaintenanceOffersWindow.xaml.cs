@@ -35,7 +35,7 @@ namespace _01electronics_crm
             maintOffersPaymentAndDeliveryPage = new MaintOffersPaymentAndDeliveryPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersAdditionalInfoPage);
             maintOffersProductsPage = new MaintOffersProductsPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersPaymentAndDeliveryPage);
             maintOffersBasicInfoPage = new MaintOffersBasicInfoPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition, ref maintOffersProductsPage);
-            if (openFilesPage)
+            if (mViewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 maintOffersUploadFilesPage = new MaintOffersUploadFilesPage(ref mLoggedInUser, ref mMaintOffers, mViewAddCondition);
             }

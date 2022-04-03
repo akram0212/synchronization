@@ -445,8 +445,13 @@ namespace _01electronics_crm
             {
                 InitializeCompanyNameCombo();
             }
+<<<<<<< HEAD
             
             maintContract.InitializeMaintContractProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
+=======
+            if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                maintContract.InitializeMaintContractProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
+>>>>>>> 948416fefdf8868698b2fe4191d6126e3b5c4ad8
 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
             {

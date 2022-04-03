@@ -233,7 +233,7 @@ namespace _01electronics_crm
             for (int i = 0; i < maintOffer.GetNoOfMaintOfferSavedProducts(); i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
 
