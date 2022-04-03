@@ -29,7 +29,6 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="MyProfileLabel" Text="My Profile" MouseLeftButtonDown="OnButtonClickedMyProfile"/>

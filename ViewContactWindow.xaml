@@ -37,38 +37,44 @@
                     </Grid.RowDefinitions>
 
                     <WrapPanel Grid.Row="0">
-                        <WrapPanel Name="FirstNameWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Contact Name"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeFirstNameTextBox"/>
+                        <WrapPanel Name="FirstNameWrapPanel" >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Contact Name" PreviewMouseDoubleClick="OnClickTextBoxLabels"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="employeeFirstNameLabel" />
+                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeFirstNameTextBox" Visibility="Collapsed" TextChanged="OnTextChangedEditTextBoxes"/>
                         </WrapPanel>
-                        <WrapPanel Name="ContactGender">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Gender"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="contactGenderTextBox"/>
+                        <WrapPanel Name="ContactGender" >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Gender" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="contactGenderLabel" />
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactGenderCombo" Visibility="Collapsed" SelectionChanged="OnSelChangedEditComboBoxes"/>
                         </WrapPanel>
 
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="1">
-                        <WrapPanel Name="CompanyWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Company"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyNameTextBox"/>
+                        <WrapPanel Name="CompanyWrapPanel" >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Company" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" />
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" Visibility="Collapsed" SelectionChanged="OnSelChangedCompanyName"/>
                         </WrapPanel>
 
-                        <WrapPanel Name="BranchWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Branch"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="companyBranchTextBox"/>
+                        <WrapPanel Name="BranchWrapPanel" >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Branch" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="companyBranchLabel" />
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyBranchCombo" Visibility="Collapsed"/>
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="2">
-                        <WrapPanel Name="ContactDepartmentWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Department"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="departmentTextBox"/>
+                        <WrapPanel Name="ContactDepartmentWrapPanel" >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Department" />
+                            <Label Style="{StaticResource tableItemValue}" Name="departmentLabel" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="departmentComboBox" Visibility="Collapsed"/>
                         </WrapPanel>
 
-                        <WrapPanel>
-                            <Label Style="{StaticResource tableItemLabel}" Content="Assignee"/>
-                            <Label Style="{StaticResource tableItemValue}" Name="assigneeLabel"/>
+                        <WrapPanel >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Assignee" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <Label Style="{StaticResource tableItemValue}" Name="assigneeLabel" />
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="assigneeComboBox" Visibility="Collapsed"/>
                         </WrapPanel>
                     </WrapPanel>
 
@@ -81,8 +87,11 @@
             </WrapPanel>
 
         </ScrollViewer>
-        <Button Grid.Row="2" HorizontalAlignment="Center" Content="Add Details" Name="addTelephoneEmailButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
-        
+
+        <WrapPanel Grid.Row="2"  HorizontalAlignment="Center">
+            <Button  Content="Add Details" Name="addTelephoneEmailButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkAddDetails"/>
+            <Button Margin="24,0,0,0"  Content="Save Changes" Name="saveChangesButton" Style="{StaticResource buttonStyle}" Click="OnBtnClickSaveChanges" IsEnabled="False" Visibility="Collapsed"/>
+        </WrapPanel>
 
     </Grid>
 

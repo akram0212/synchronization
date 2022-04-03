@@ -328,7 +328,7 @@ namespace _01electronics_crm
 
 
                 Label purposeLabel = new Label();
-                purposeLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                purposeLabel.Content = visitsInfo[i].visit_purpose;
                 purposeLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 clientVisitsGrid.Children.Add(purposeLabel);
@@ -336,7 +336,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(purposeLabel, 3);
 
                 Label resultLabel = new Label();
-                resultLabel.Content = visitsInfo[i].company_name + " - " + visitsInfo[i].contact_name;
+                resultLabel.Content = visitsInfo[i].visit_result;
                 resultLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 clientVisitsGrid.Children.Add(resultLabel);

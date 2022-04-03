@@ -72,13 +72,13 @@ namespace _01electronics_crm
             InitializeComponent();
 
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
 
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
 
                 InitializeTimeUnitComboBoxes();
@@ -96,7 +96,7 @@ namespace _01electronics_crm
                 finishButton.IsEnabled = false;
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -111,6 +111,7 @@ namespace _01electronics_crm
 
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
+
             }
         }
         public MaintContractsAdditionalInfoPage(ref MaintenanceContract mMaintContracts)
@@ -161,10 +162,10 @@ namespace _01electronics_crm
         //////////////////////////////
         private void SetWarrantyPeriodValues()
         {
-            warrantyPeriodTextBox.Text = maintenanceContract.GetWarrantyPeriod().ToString();
+            warrantyPeriodTextBox.Text = maintenanceContract.GetMaintContractWarrantyPeriod().ToString();
 
-            if (maintenanceContract.GetWarrantyPeriodTimeUnit() != "")
-                warrantyPeriodCombo.SelectedItem = maintenanceContract.GetWarrantyPeriodTimeUnit();
+            if (maintenanceContract.GetMaintContractWarrantyPeriodTimeUnit() != "")
+                warrantyPeriodCombo.SelectedItem = maintenanceContract.GetMaintContractWarrantyPeriodTimeUnit();
             else
                 warrantyPeriodCombo.SelectedIndex = warrantyPeriodCombo.Items.Count - 1;
 
@@ -174,11 +175,34 @@ namespace _01electronics_crm
                 warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
 
         }
+
+        public void SetWarrantyPeriodValuesFromOffer()
+        {
+            warrantyPeriodTextBox.Text = maintenanceContract.GetWarrantyPeriod().ToString();
+
+            if (maintenanceContract.GetWarrantyPeriodTimeUnit() != "")
+                warrantyPeriodCombo.SelectedItem = maintenanceContract.GetWarrantyPeriodTimeUnit();
+            
+            if (maintenanceContract.GetMaintOfferWarrantyPeriodCondition() != "")
+                warrantyPeriodFromWhenCombo.SelectedItem = maintenanceContract.GetMaintOfferWarrantyPeriodCondition();
+            
+        }
         private void SetAdditionalDescriptionValue()
         {
             additionalDescriptionTextBox.Text = maintenanceContract.GetMaintContractNotes();
         }
-        public void SetFrequenciesValue()
+
+        public void SetAdditionalDescriptionValueFromOffer()
+        {
+            additionalDescriptionTextBox.Text = maintenanceContract.GetMaintOfferNotes();
+        }
+        private void SetFrequenciesValue()
+        {
+            visitsFrequencyTextBox.Text = maintenanceContract.GetMaintContractVisitsFrequency().ToString();
+            emergenciesFrequencyTextBox.Text = maintenanceContract.GetMaintContractEmergenciesFrequency().ToString();
+        }
+
+        public void SetFrequenciesValueFromOffer()
         {
             visitsFrequencyTextBox.Text = maintenanceContract.GetVisitsFrequency().ToString();
             emergenciesFrequencyTextBox.Text = maintenanceContract.GetEmergenciesFrequency().ToString();
@@ -198,7 +222,7 @@ namespace _01electronics_crm
         private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (warrantyPeriodCombo.SelectedItem != null)
-                maintenanceContract.SetWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
+                maintenanceContract.SetMaintContractWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
         }
 
         private void WarrantyPeriodFromWhenComboSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -218,7 +242,7 @@ namespace _01electronics_crm
             if (integrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
             {
                 warrantyPeriod = int.Parse(warrantyPeriodTextBox.Text);
-                maintenanceContract.SetWarrantyPeriod(warrantyPeriod);
+                maintenanceContract.SetMaintContractWarrantyPeriod(warrantyPeriod);
             }
             else
             {
@@ -235,10 +259,10 @@ namespace _01electronics_crm
         private void OnTextChangedVisitsFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(visitsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && visitsFrequencyTextBox.Text != "")
-                maintenanceContract.SetVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text));
+                maintenanceContract.SetMaintContractVisitsFrequency(Int32.Parse(visitsFrequencyTextBox.Text));
             else
             {
-                maintenanceContract.SetVisitsFrequency(0);
+                maintenanceContract.SetMaintContractVisitsFrequency(0);
                 visitsFrequencyTextBox.Text = null;
             }
         }
@@ -246,10 +270,10 @@ namespace _01electronics_crm
         private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
-                maintenanceContract.SetEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text));
+                maintenanceContract.SetMaintContractEmergenciesFrequency(Int32.Parse(emergenciesFrequencyTextBox.Text));
             else
             {
-                maintenanceContract.SetEmergenciesFrequency(0);
+                maintenanceContract.SetMaintContractEmergenciesFrequency(0);
                 emergenciesFrequencyTextBox.Text = null;
             }
         }
@@ -282,6 +306,7 @@ namespace _01electronics_crm
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsBasicInfoPage.maintContractsProjectInfoPage = maintContractsProjectsPage;
             maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = this;
             maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
@@ -301,6 +326,7 @@ namespace _01electronics_crm
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsProductsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsProductsPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsProductsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsProductsPage.maintContractsAdditionalInfoPage = this;
             maintContractsProductsPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
@@ -310,6 +336,7 @@ namespace _01electronics_crm
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsPaymentAndDeliveryPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsAdditionalInfoPage = this;
             maintContractsPaymentAndDeliveryPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
@@ -325,6 +352,7 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+                maintContractsUploadFilesPage.maintContractsProjectsPage = maintContractsProjectsPage;
                 maintContractsUploadFilesPage.maintContractsProductsPage = maintContractsProductsPage;
                 maintContractsUploadFilesPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
                 maintContractsUploadFilesPage.maintContractsAdditionalInfoPage = this;
@@ -386,14 +414,14 @@ namespace _01electronics_crm
             //    MessageBox.Show("You need to choose company address before adding a work offer!");
             //else if (maintenanceContract.GetContactId() == 0)
             //    MessageBox.Show("You need to choose a contact before adding a work offer!");
-            else if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetProduct1PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 1 before adding a work offer!");
-            else if (maintenanceContract.GetMaintContractProduct2TypeId() != 0 && maintenanceContract.GetProduct2PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 2 before adding a work offer!");
-            else if (maintenanceContract.GetMaintContractProduct3TypeId() != 0 && maintenanceContract.GetProduct3PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 3 before adding a work offer!");
-            else if (maintenanceContract.GetMaintContractProduct4TypeId() != 0 && maintenanceContract.GetProduct4PriceValue() == 0)
-                MessageBox.Show("You need to add a price for product 4 before adding a work offer!");
+            else if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
+                MessageBox.Show("Product 1 price must be specified!");
+            else if (maintenanceContract.GetMaintContractProduct2TypeId() != 0 && maintenanceContract.GetMaintContractProduct2PriceValue() == 0)
+                MessageBox.Show("Product 2 price must be specified!");
+            else if (maintenanceContract.GetMaintContractProduct3TypeId() != 0 && maintenanceContract.GetMaintContractProduct3PriceValue() == 0)
+                MessageBox.Show("Product 3 price must be specified!");
+            else if (maintenanceContract.GetMaintContractProduct4TypeId() != 0 && maintenanceContract.GetMaintContractProduct4PriceValue() == 0)
+                MessageBox.Show("Product 4 price must be specified!");
             else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
@@ -401,9 +429,10 @@ namespace _01electronics_crm
                     if (!maintenanceContract.IssueNewMaintContract())
                         return;
 
-                    //if (maintenanceContract.GetRFQID() != null)
-                    //  if (!maintenanceContract.ConfirmRFQ())
-                    //    return;
+                    if (maintenanceContract.GetMaintOfferID() != null)
+                      if (!maintenanceContract.ConfirmMaintOffer())
+                        return;
+
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;

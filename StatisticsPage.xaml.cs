@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -568,11 +569,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
+       
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -613,14 +610,10 @@ namespace _01electronics_crm
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
-
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            this.NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
@@ -640,11 +633,6 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
 
-        private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
-        {
 
-        }
-
-        
     }
 }

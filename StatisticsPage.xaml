@@ -3,7 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:_01electronics_crm" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+
+      Background="#EDEDED"
+      xmlns:local="clr-namespace:_01electronics_crm"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       Title="StatisticsPage">
 
@@ -26,6 +29,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -127,7 +131,7 @@
                             <Label Grid.Column="0" Grid.Row="0" Content="Sales" Style="{StaticResource tableHeaderItem}" Width="200"/>
                             <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
                             <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="salesPersonOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" />
-                            
+
                             <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="salesPersonOrderManagerGrid" ShowGridLines="True" >
                                     <Grid.ColumnDefinitions>
@@ -138,11 +142,11 @@
                                 </Grid>
                             </ScrollViewer>
                         </Grid>
-                        
-                        
-                            
-                            
-                        
+
+
+
+
+
 
                         <Label Grid.Row="0" Grid.Column="1" Name="categoryOrderManagerLabel" Content="Category Total Ordered Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
                         <Grid Grid.Row="1" Grid.Column="1">
@@ -273,7 +277,7 @@
                             <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource tableHeaderItem}" Width="200"/>
                             <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
                             <lvc:PieChart Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" x:Name="statusOrderManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand" VerticalAlignment="Top"/>
-                            
+
                             <ScrollViewer  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="statusOrderManagerGrid" ShowGridLines="True" >
                                     <Grid.ColumnDefinitions>
@@ -283,7 +287,7 @@
 
                                 </Grid>
                             </ScrollViewer>
-                            
+
                         </Grid>
                     </Grid>
 
@@ -354,7 +358,7 @@
 
                                 </Grid>
                             </ScrollViewer>
-                            
+
                         </Grid>
 
                         <Label Grid.Row="0" Grid.Column="2" Name="typeQuotedManagerLabel" Content="Type Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
@@ -372,7 +376,7 @@
                             <Label Grid.Column="0" Grid.Row="0" Content="Type" Style="{StaticResource tableHeaderItem}" Width="200"/>
                             <Label Grid.Column="1" Grid.Row="0" Content="Value" Style="{StaticResource tableHeaderItem}"/>
                             <lvc:PieChart Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="typeQuotedManagerPieChart" StartingRotationAngle="0" Height="220" Width="220" Cursor="Hand"/>
-                            
+
                             <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Grid Name="typeQuotedManagerGrid" ShowGridLines="True" >
                                     <Grid.ColumnDefinitions>
@@ -382,7 +386,7 @@
 
                                 </Grid>
                             </ScrollViewer>
-                            
+
                         </Grid>
 
                         <Label Grid.Row="0" Grid.Column="3" Name="brandQuotedManagerLabel" Content="Brand Total Quoted Count" Style="{StaticResource labelStyle}" HorizontalAlignment="Center" Width="250" FontSize="14"/>
@@ -462,10 +466,10 @@
                                         <ColumnDefinition Width="200"/>
                                         <ColumnDefinition Width="150"/>
                                     </Grid.ColumnDefinitions>
-                                    
+
                                 </Grid>
                             </ScrollViewer>
-                            
+
                         </Grid>
 
                     </Grid>

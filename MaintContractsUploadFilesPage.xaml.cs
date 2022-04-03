@@ -107,7 +107,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            //serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + maintContracts.GetOfferID() + "/";
+            serverFolderPath = BASIC_MACROS.OUTGOING_QUOTATION_FILES_PATH + maintContracts.GetMaintContractID() + "/";
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
@@ -391,6 +391,7 @@ namespace _01electronics_crm
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
             maintContractsAdditionalInfoPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsAdditionalInfoPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsAdditionalInfoPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsAdditionalInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsAdditionalInfoPage.maintContractsUploadFilesPage = this;
@@ -400,6 +401,7 @@ namespace _01electronics_crm
 
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            maintContractsBasicInfoPage.maintContractsProjectInfoPage = maintContractsProjectsPage;
             maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
@@ -408,9 +410,21 @@ namespace _01electronics_crm
             NavigationService.Navigate(maintContractsBasicInfoPage);
         }
 
+        private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
+        {
+            maintContractsProjectsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsProjectsPage.maintContractsProductsPage = maintContractsProductsPage;
+            maintContractsProjectsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
+            maintContractsProjectsPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
+            maintContractsProjectsPage.maintContractsUploadFilesPage = this;
+
+            NavigationService.Navigate(maintContractsBasicInfoPage);
+        }
+
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsProductsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsProductsPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsProductsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsProductsPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
             maintContractsProductsPage.maintContractsUploadFilesPage = this;
@@ -421,6 +435,7 @@ namespace _01electronics_crm
         private void OnClickPaymentAndDelivery(object sender, MouseButtonEventArgs e)
         {
             maintContractsPaymentAndDeliveryPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsPaymentAndDeliveryPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
             maintContractsPaymentAndDeliveryPage.maintContractsUploadFilesPage = this;
@@ -431,6 +446,7 @@ namespace _01electronics_crm
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsAdditionalInfoPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
+            maintContractsAdditionalInfoPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsAdditionalInfoPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsAdditionalInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
             maintContractsAdditionalInfoPage.maintContractsUploadFilesPage = this;
@@ -885,5 +901,6 @@ namespace _01electronics_crm
 
         }
 
+        
     }
 }

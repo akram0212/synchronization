@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>F:\Work\01 Electronics\Software Development\install\crm v5.0\</PublishUrl>
+    <PublishUrl>F:\Work\01 Electronics\Software Development\install\crm v6.0\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -30,11 +30,11 @@
     <ProductName>CRM</ProductName>
     <PublisherName>01 Electronics</PublisherName>
     <SuiteName>ERP System</SuiteName>
-    <MinimumRequiredVersion>5.4.0.4</MinimumRequiredVersion>
+    <MinimumRequiredVersion>6.0.0.1</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>5.4.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>6.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>

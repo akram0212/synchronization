@@ -42,25 +42,30 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
                     <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProductsInfo">
+                <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickBasicInfo">
+                    <Label Content="Project Info" Style="{StaticResource unselectedSecondaryTabLabelItem}" />
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickProjectInfo">
                     <Label Content="Products Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
+                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickPaymentAndDelivery">
                     <Label Content="Payment Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
+                <Border Grid.Column="4" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnClickAdditionalInfo">
                     <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
                 </Border>
 
-                <Border Grid.Column="4" Style="{StaticResource selectedSecondaryTabBorder}" >
+                <Border Grid.Column="5" Style="{StaticResource selectedSecondaryTabBorder}" >
                     <Label Content="Upload Files" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
                 </Border>
 

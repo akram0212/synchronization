@@ -31,8 +31,8 @@ namespace _01electronics_crm
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> maintContracts = new List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT>();
-        private List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> maintContractsAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT> maintContracts = new List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT> maintContractsAfterFiltering = new List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
         private List<COMPANY_WORK_MACROS.STATUS_STRUCT> orderStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
@@ -280,8 +280,8 @@ namespace _01electronics_crm
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
-                preSalesCheckBox.IsChecked = true;
-                preSalesCheckBox.IsEnabled = false;
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
 
                 salesCheckBox.IsChecked = false;
@@ -320,7 +320,7 @@ namespace _01electronics_crm
                 bool salesPersonCondition = selectedSales != maintContracts[i].sales_person_id;
                 bool assigneeCondition;
 
-                if (selectedPreSales == maintContracts[i].offer_proposer_id || (selectedPreSales == maintContracts[i].sales_person_id))
+                if (selectedPreSales == maintContracts[i].maintenance_contract_proposer_id || (selectedPreSales == maintContracts[i].sales_person_id))
                     assigneeCondition = true;
                 else
                     assigneeCondition = false;
@@ -354,7 +354,7 @@ namespace _01electronics_crm
                 if (brandCheckBox.IsChecked == true && !brandCondition)
                     continue;
 
-                if (statusCheckBox.IsChecked == true && maintContracts[i].order_status_id != selectedStatus)
+                if (statusCheckBox.IsChecked == true && maintContracts[i].maintenance_contract_status_id != selectedStatus)
                     continue;
 
                 maintContractsAfterFiltering.Add(maintContracts[i]);
@@ -365,7 +365,7 @@ namespace _01electronics_crm
 
 
                 Label offerIdLabel = new Label();
-                offerIdLabel.Content = maintContracts[i].order_id;
+                offerIdLabel.Content = maintContracts[i].maintenance_contract_id;
                 offerIdLabel.Style = (Style)FindResource("stackPanelItemHeader");
 
                 Label salesLabel = new Label();
@@ -395,23 +395,19 @@ namespace _01electronics_crm
                 }
                 productTypeAndBrandLabel.Style = (Style)FindResource("stackPanelItemBody");
 
-                Label contractTypeLabel = new Label();
-                contractTypeLabel.Content = maintContracts[i].contract_type;
-                contractTypeLabel.Style = (Style)FindResource("stackPanelItemBody");
-
                 Border borderIcon = new Border();
                 borderIcon.Style = (Style)FindResource("BorderIcon");
 
                 Label contractStatusLabel = new Label();
-                contractStatusLabel.Content = maintContracts[i].order_status;
+                contractStatusLabel.Content = maintContracts[i].maintenance_contract_status;
                 contractStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
 
-                if (maintContracts[i].order_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
+                if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (maintContracts[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
+                else if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -438,6 +434,11 @@ namespace _01electronics_crm
                 viewButton.Content = "View";
                 viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
+                ListBoxItem editContractButton = new ListBoxItem();
+                editContractButton.Content = "Edit Contract";
+                editContractButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+
                 ListBoxItem viewRFQButton = new ListBoxItem();
                 viewRFQButton.Content = "View RFQ";
                 viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -448,15 +449,18 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
+                if((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) )
+                    listBox.Items.Add(editContractButton);
+
                 listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
 
 
-                if (maintContracts[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
                     ListBoxItem confirmOrderButton = new ListBoxItem();
-                    confirmOrderButton.Content = "Confirm MaintContract";
+                    confirmOrderButton.Content = "Confirm Contract";
                     confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                     listBox.Items.Add(confirmOrderButton);
 
@@ -469,7 +473,6 @@ namespace _01electronics_crm
                 fullStackPanel.Children.Add(preSalesLabel);
                 fullStackPanel.Children.Add(companyAndContactLabel);
                 fullStackPanel.Children.Add(productTypeAndBrandLabel);
-                fullStackPanel.Children.Add(contractTypeLabel);
 
                 Grid grid = new Grid();
                 ColumnDefinition column1 = new ColumnDefinition();
@@ -525,15 +528,10 @@ namespace _01electronics_crm
             orderProductsHeader.Content = "Products";
             orderProductsHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            Label orderContractTypeHeader = new Label();
-            orderContractTypeHeader.Content = "Contract Type";
-            orderContractTypeHeader.Style = (Style)FindResource("tableSubHeaderItem");
-
             Label orderStatusHeader = new Label();
             orderStatusHeader.Content = "MaintContract Status";
             orderStatusHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
-            maintContractsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintContractsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintContractsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             maintContractsGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -563,12 +561,8 @@ namespace _01electronics_crm
             Grid.SetColumn(orderProductsHeader, 4);
             maintContractsGrid.Children.Add(orderProductsHeader);
 
-            Grid.SetRow(orderContractTypeHeader, 0);
-            Grid.SetColumn(orderContractTypeHeader, 5);
-            maintContractsGrid.Children.Add(orderContractTypeHeader);
-
             Grid.SetRow(orderStatusHeader, 0);
-            Grid.SetColumn(orderStatusHeader, 6);
+            Grid.SetColumn(orderStatusHeader, 5);
             maintContractsGrid.Children.Add(orderStatusHeader);
 
             int currentRowNumber = 1;
@@ -582,7 +576,7 @@ namespace _01electronics_crm
 
                 bool assigneeCondition;
 
-                if (selectedPreSales == maintContracts[i].offer_proposer_id || (selectedPreSales == maintContracts[i].sales_person_id))
+                if (selectedPreSales == maintContracts[i].maintenance_contract_proposer_id || (selectedPreSales == maintContracts[i].sales_person_id))
                     assigneeCondition = true;
                 else
                     assigneeCondition = false;
@@ -616,14 +610,14 @@ namespace _01electronics_crm
                 if (brandCheckBox.IsChecked == true && !brandCondition)
                     continue;
 
-                if (statusCheckBox.IsChecked == true && maintContracts[i].order_status_id != selectedStatus)
+                if (statusCheckBox.IsChecked == true && maintContracts[i].maintenance_contract_status_id != selectedStatus)
                     continue;
 
                 RowDefinition currentRow = new RowDefinition();
                 maintContractsGrid.RowDefinitions.Add(currentRow);
 
                 Label orderIdLabel = new Label();
-                orderIdLabel.Content = maintContracts[i].order_id;
+                orderIdLabel.Content = maintContracts[i].maintenance_contract_id;
                 orderIdLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 Grid.SetRow(orderIdLabel, currentRowNumber);
@@ -753,23 +747,13 @@ namespace _01electronics_crm
                 Grid.SetRow(productGrid, currentRowNumber);
                 Grid.SetColumn(productGrid, 3);
 
-
-
-                Label contractTypeLabel = new Label();
-                contractTypeLabel.Content = maintContracts[i].contract_type;
-                contractTypeLabel.Style = (Style)FindResource("tableSubItemLabel");
-
-                maintContractsGrid.Children.Add(contractTypeLabel);
-                Grid.SetRow(contractTypeLabel, currentRowNumber);
-                Grid.SetColumn(contractTypeLabel, 4);
-
                 Label contractStatusLabel = new Label();
-                contractStatusLabel.Content = maintContracts[i].order_status;
+                contractStatusLabel.Content = maintContracts[i].maintenance_contract_status;
                 contractStatusLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                 maintContractsGrid.Children.Add(contractStatusLabel);
                 Grid.SetRow(contractStatusLabel, currentRowNumber);
-                Grid.SetColumn(contractStatusLabel, 6);
+                Grid.SetColumn(contractStatusLabel, 5);
 
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
@@ -1128,9 +1112,13 @@ namespace _01electronics_crm
                 {
                     OnBtnClickViewOffer();
                 }
-                else if (currentItem.Content.ToString() == "Confirm MaintContract")
+                else if (currentItem.Content.ToString() == "Confirm Contract")
                 {
                     OnBtnClickConfirmOrder();
+                }
+                else if (currentItem.Content.ToString() == "Edit Contract")
+                {
+                    OnBtnClickEdit();
                 }
 
                 tempListBox.SelectedIndex = -1;
@@ -1142,11 +1130,26 @@ namespace _01electronics_crm
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            //MaintContract.InitializeMaintContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].order_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
             MaintenanceContractsWindow workOrderWindow = new MaintenanceContractsWindow(ref loggedInUser, ref MaintContract, viewAddCondition, false);
 
             workOrderWindow.Show();
         }
+
+        private void OnBtnClickEdit()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
+
+            MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
+
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+
+            MaintenanceContractsWindow workOrderWindow = new MaintenanceContractsWindow(ref loggedInUser, ref MaintContract, viewAddCondition, false);
+
+            workOrderWindow.Closed += OnClosedMaintContractWindow;
+            workOrderWindow.Show();
+        }
+
         private void OnBtnClickViewRFQ()
         {
             int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
