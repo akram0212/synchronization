@@ -30,8 +30,16 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employees;
 
         Contact contact;
+
+        int contactEmployeeId;
+
+        int assigneeId = 0;
+
+        bool initializationComplete;
         public ViewContactWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
+            initializationComplete = false;
+
             InitializeComponent();
 
             commonQueries = new CommonQueries();
@@ -56,7 +64,9 @@ namespace _01electronics_crm
                 saveChangesButton.Visibility = Visibility.Visible;
             }
 
+            contactEmployeeId = contact.GetSalesPersonId();
 
+            initializationComplete = true;
         }
 
         private void SetUpUIElementsForSaveChanges()
@@ -86,12 +96,26 @@ namespace _01electronics_crm
 
         private void InitializeCompanyNameCombo()
         {
-            if (!commonQueries.GetEmployeeCompanies(contact.GetSalesPersonId(), ref companies))
-                return;
+            ///////If Assignee is changed we get selected assignee companies
+            if (assigneeId == 0)
+            {
+                if (!commonQueries.GetEmployeeCompanies(contact.GetSalesPersonId(), ref companies))
+                    return;
+            }
+            else
+            {
+                if (!commonQueries.GetEmployeeCompanies(assigneeId, ref companies))
+                    return;
+            }
+
+            companyNameCombo.Items.Clear();
+
             for (int i = 0; i < companies.Count; i++)
             {
                 companyNameCombo.Items.Add(companies[i].company_name);
             }
+
+            companyNameCombo.Text = contact.GetCompanyName();
         }
 
         private void InitializeCompanyAddressCombo()
@@ -105,12 +129,16 @@ namespace _01electronics_crm
             {
                 companyBranchCombo.Items.Add(companyAddresses[i].country + ", " + companyAddresses[i].state_governorate + ", " + companyAddresses[i].city + ", " + companyAddresses[i].district);
             }
+
+            companyBranchCombo.Text = contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict();
         }
 
         private void InitializeGenderCombo()
         {
             contactGenderCombo.Items.Add("Male");
             contactGenderCombo.Items.Add("Female");
+
+            contactGenderCombo.Text = contact.GetContactGender();
         }
 
         private void InitializeDepartmentsCombo()
@@ -121,6 +149,8 @@ namespace _01electronics_crm
             {
                 departmentComboBox.Items.Add(departments[i].department_name);
             }
+
+            departmentComboBox.Text = contact.GetContactDepartment();
         }
 
         private void InitializeAssigneeCombo()
@@ -145,10 +175,21 @@ namespace _01electronics_crm
                 employees.Add(tempEmployeesList[i]);
             }
 
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            {
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT temp = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                temp.employee_id = loggedInUser.GetEmployeeId();
+                temp.employee_name = loggedInUser.GetEmployeeName();
+
+                employees.Add(temp);
+            }
+
             for(int i = 0; i < employees.Count; i++)
             {
                 assigneeComboBox.Items.Add(employees[i].employee_name);
             }
+
+            assigneeComboBox.SelectedItem = contact.GetSalesPerson().GetEmployeeName();
         }
 
         private void InitializeContactInfo()
@@ -163,8 +204,9 @@ namespace _01electronics_crm
 
             assigneeLabel.Content = contact.GetSalesPerson().GetEmployeeName();
 
-            wrapPanel4.Children.Clear();
-            wrapPanel3.Children.Clear();
+            businessEmailWrapPanel.Children.Clear();
+            contactPhoneWrapPanel.Children.Clear();
+            personalEmailWrapPanel.Children.Clear();
 
             AddBusinessEmail();
 
@@ -186,20 +228,27 @@ namespace _01electronics_crm
         }
         private void AddPersonalPhone(String Phone)
         {
-             WrapPanel ContactPersonalPhoneWrapPanel = new WrapPanel();
+            WrapPanel ContactPersonalPhoneWrapPanel = new WrapPanel();
 
-             Label PersonalPhoneLabel = new Label();
-             PersonalPhoneLabel.Style = (Style)FindResource("tableItemLabel");
-             PersonalPhoneLabel.Content = "Personal Phone";
+            Label PersonalPhoneLabel = new Label();
+            PersonalPhoneLabel.Style = (Style)FindResource("tableItemLabel");
+            PersonalPhoneLabel.Content = "Personal Phone";
 
-             TextBox employeePersonalPhoneTextBox = new TextBox();
-             employeePersonalPhoneTextBox.IsEnabled = false;
-             employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
-             employeePersonalPhoneTextBox.Text = Phone;
+            Label PersonalPhoneLabelValue = new Label();
+            PersonalPhoneLabelValue.Style = (Style)FindResource("tableItemValue");
+            PersonalPhoneLabelValue.Content = Phone;
+            PersonalPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
 
-             ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabel);
-             ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
-            wrapPanel4.Children.Add(ContactPersonalPhoneWrapPanel);
+            TextBox employeePersonalPhoneTextBox = new TextBox();
+            employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
+            employeePersonalPhoneTextBox.Text = Phone;
+            employeePersonalPhoneTextBox.Visibility = Visibility.Collapsed;
+            employeePersonalPhoneTextBox.MouseLeave += TextBoxesMouseLeave;
+
+            ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabel);
+            ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabelValue);
+            ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
+            contactPersonalPhoneWrapPanel.Children.Add(ContactPersonalPhoneWrapPanel);
 
         } 
         
@@ -211,14 +260,21 @@ namespace _01electronics_crm
             BusinessPhoneLabel.Style = (Style)FindResource("tableItemLabel");
             BusinessPhoneLabel.Content = "Business Phone";
 
+            Label BusinessPhoneLabelValue = new Label();
+            BusinessPhoneLabelValue.Content = contact.GetContactPhones()[0];
+            BusinessPhoneLabelValue.Style = (Style)FindResource("tableItemValue");
+            BusinessPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
+
             TextBox employeeBusinessPhoneTextBox = new TextBox();
-            employeeBusinessPhoneTextBox.IsEnabled = false;
             employeeBusinessPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
             employeeBusinessPhoneTextBox.Text = contact.GetContactPhones()[0];
+            employeeBusinessPhoneTextBox.Visibility = Visibility.Collapsed;
+            employeeBusinessPhoneTextBox.MouseLeave += TextBoxesMouseLeave;
 
             ContactBusinessPhoneWrapPanel.Children.Add(BusinessPhoneLabel);
+            ContactBusinessPhoneWrapPanel.Children.Add(BusinessPhoneLabelValue);
             ContactBusinessPhoneWrapPanel.Children.Add(employeeBusinessPhoneTextBox);
-            wrapPanel4.Children.Add(ContactBusinessPhoneWrapPanel);
+            contactPhoneWrapPanel.Children.Add(ContactBusinessPhoneWrapPanel);
 
         }
         private void AddBusinessEmail()
@@ -229,15 +285,22 @@ namespace _01electronics_crm
             BusinessEmailLabel.Style = (Style)FindResource("tableItemLabel");
             BusinessEmailLabel.Content = "Business Email";
 
+            Label BusinessEmailLabelValue = new Label();
+            BusinessEmailLabelValue.Content = contact.GetContactBusinessEmail();
+            BusinessEmailLabelValue.Style = (Style)FindResource("tableItemValue");
+            BusinessEmailLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
+
             TextBox employeeBusinessEmailTextBox = new TextBox();
-            employeeBusinessEmailTextBox.IsEnabled = false;
             employeeBusinessEmailTextBox.Style = (Style)FindResource("textBoxStyle");
             employeeBusinessEmailTextBox.Text = contact.GetContactBusinessEmail();
+            employeeBusinessEmailTextBox.Visibility = Visibility.Collapsed;
+            employeeBusinessEmailTextBox.MouseLeave += TextBoxesMouseLeave;
 
             ContactBusinessEmailWrapPanel.Children.Add(BusinessEmailLabel);
+            ContactBusinessEmailWrapPanel.Children.Add(BusinessEmailLabelValue);
             ContactBusinessEmailWrapPanel.Children.Add(employeeBusinessEmailTextBox);
 
-            wrapPanel3.Children.Add(ContactBusinessEmailWrapPanel);
+            businessEmailWrapPanel.Children.Add(ContactBusinessEmailWrapPanel);
         } 
         private void AddPersonalEmail(String Email)
         {
@@ -247,15 +310,22 @@ namespace _01electronics_crm
             PersonalEmailLabel.Style = (Style)FindResource("tableItemLabel");
             PersonalEmailLabel.Content = "Personal Email";
 
+            Label PersonalEmailLabelValue = new Label();
+            PersonalEmailLabelValue.Content = Email;
+            PersonalEmailLabelValue.Style = (Style)FindResource("tableItemValue");
+            PersonalEmailLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
+
             TextBox employeePersonalEmailTextBox = new TextBox();
-            employeePersonalEmailTextBox.IsEnabled = false;
             employeePersonalEmailTextBox.Style = (Style)FindResource("textBoxStyle");
             employeePersonalEmailTextBox.Text = Email;
+            employeePersonalEmailTextBox.Visibility = Visibility.Collapsed;
+            employeePersonalEmailTextBox.MouseLeave += TextBoxesMouseLeave;
 
             ContactPersonalEmailWrapPanel.Children.Add(PersonalEmailLabel);
+            ContactPersonalEmailWrapPanel.Children.Add(PersonalEmailLabelValue);
             ContactPersonalEmailWrapPanel.Children.Add(employeePersonalEmailTextBox);
 
-            wrapPanel3.Children.Add(ContactPersonalEmailWrapPanel);
+            personalEmailWrapPanel.Children.Add(ContactPersonalEmailWrapPanel);
         }
 
         private void OnBtnClkAddDetails(object sender, RoutedEventArgs e)
@@ -274,9 +344,8 @@ namespace _01electronics_crm
 
         private void OnClickTextBoxLabels(object sender, RoutedEventArgs e)
         {
-            Label nameLabel = (Label)sender;
-            WrapPanel currentWrapPanel = (WrapPanel)nameLabel.Parent;
-            Label currentLabel = (Label)currentWrapPanel.Children[1];
+            Label currentLabel = (Label)sender;
+            WrapPanel currentWrapPanel = (WrapPanel)currentLabel.Parent;
             TextBox currentTextBox = (TextBox)currentWrapPanel.Children[2];
 
             if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentTextBox.Visibility == Visibility.Collapsed)
@@ -286,25 +355,12 @@ namespace _01electronics_crm
 
                 currentTextBox.Text = currentLabel.Content.ToString();
             }
-            else if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentTextBox.Visibility == Visibility.Visible)
-            {
-                currentTextBox.Visibility = Visibility.Collapsed;
-                currentLabel.Visibility = Visibility.Visible;
-
-                currentLabel.Content = currentTextBox.Text;
-
-                if (currentLabel.Content.ToString() != contact.GetContactName())
-                    currentLabel.Foreground = Brushes.Red;
-                else
-                    currentLabel.Foreground = Brushes.Black;
-            }
         }
 
         private void OnClickComboBoxLabels(object sender, RoutedEventArgs e)
         {
-            Label nameLabel = (Label)sender;
-            WrapPanel currentWrapPanel = (WrapPanel)nameLabel.Parent;
-            Label currentLabel = (Label)currentWrapPanel.Children[1];
+            Label currentLabel = (Label)sender;
+            WrapPanel currentWrapPanel = (WrapPanel)currentLabel.Parent;
             ComboBox currentComboBox = (ComboBox)currentWrapPanel.Children[2];
 
             if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentComboBox.Visibility == Visibility.Collapsed)
@@ -340,102 +396,244 @@ namespace _01electronics_crm
                     }
                 }
             }
-            else if((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentComboBox.Visibility == Visibility.Visible)
-            {
-                currentComboBox.Visibility = Visibility.Collapsed;
-                currentLabel.Visibility = Visibility.Visible;
-
-                currentLabel.Content = currentComboBox.Text;
-
-                if(currentLabel.Name == "contactGenderLabel")
-                {
-                    if (currentLabel.Content.ToString() != contact.GetContactGender())
-                        currentLabel.Foreground = Brushes.Red;
-                    else
-                        currentLabel.Foreground = Brushes.Black;
-                }
-                else if (currentLabel.Name == "companyNameLabel")
-                {
-                    if (currentLabel.Content.ToString() != contact.GetCompanyName())
-                        currentLabel.Foreground = Brushes.Red;
-                    else
-                        currentLabel.Foreground = Brushes.Black;
-                }
-                else if (currentLabel.Name == "companyBranchLabel")
-                {
-                    if (currentLabel.Content.ToString() != contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict())
-                        currentLabel.Foreground = Brushes.Red;
-                    else
-                        currentLabel.Foreground = Brushes.Black;
-                }
-                else if (currentLabel.Name == "departmentLabel")
-                {
-                    if (currentLabel.Content.ToString() != contact.GetContactDepartment())
-                        currentLabel.Foreground = Brushes.Red;
-                    else
-                        currentLabel.Foreground = Brushes.Black;
-                }
-                else if (currentLabel.Name == "assigneeLabel")
-                {
-                    if (currentLabel.Content.ToString() != contact.GetSalesPerson().GetEmployeeName())
-                        currentLabel.Foreground = Brushes.Red;
-                    else
-                        currentLabel.Foreground = Brushes.Black;
-                }
-            }
         }
 
 
         private void OnTextChangedEditTextBoxes(object sender, TextChangedEventArgs e)
         {
-            TextBox currentTextBox = (TextBox)sender;
-            WrapPanel currentWrapPanel = (WrapPanel)currentTextBox.Parent;
-            Label currentLabel = (Label)currentWrapPanel.Children[1];
-
-            if (currentTextBox.Text != currentLabel.Content.ToString())
-                currentTextBox.Foreground = Brushes.Red;
-            else
-                currentTextBox.Foreground = Brushes.Black;
         }
 
         private void OnSelChangedEditComboBoxes(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox currentComboBox = (ComboBox)sender;
-            WrapPanel currentWrapPanel = (WrapPanel)currentComboBox.Parent;
-            Label currentLabel = (Label)currentWrapPanel.Children[1];
+        }
 
-            if (currentComboBox.Text != currentLabel.Content.ToString())
-                currentComboBox.Background = Brushes.Red;
-            else
-                currentComboBox.Background = Brushes.LightGray;
+        private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (initializationComplete == true)
+            {
+                ComboBox currentComboBox = (ComboBox)sender;
+
+                Employee selectedEmployee = new Employee();
+
+                selectedEmployee.InitializeEmployeeInfo(employees[currentComboBox.SelectedIndex].employee_id);
+
+                assigneeId = selectedEmployee.GetEmployeeId();
+
+                InitializeCompanyNameCombo();
+
+                companyNameCombo.Visibility = Visibility.Visible;
+                companyNameLabel.Visibility = Visibility.Collapsed;
+
+                companyBranchCombo.Visibility = Visibility.Visible;
+                companyBranchLabel.Visibility = Visibility.Collapsed;
+
+                companyBranchCombo.Items.Clear();
+                companyBranchCombo.SelectedIndex = -1;
+            }
         }
 
         private void OnSelChangedCompanyName(object sender, SelectionChangedEventArgs e)
         {
-            if (companyNameCombo.SelectedItem != null)
+            if (initializationComplete == true)
             {
-                if (!commonQueries.GetCompanyAddresses(companies[companyNameCombo.SelectedIndex].company_serial, ref companyAddresses))
-                    return;
+                saveChangesButton.IsEnabled = true;
 
-                companyBranchCombo.Items.Clear();
-                companyBranchCombo.IsEnabled = true;
-                for (int i = 0; i < companyAddresses.Count; i++)
+                if (companyNameCombo.SelectedItem != null)
                 {
-                    companyBranchCombo.Items.Add(companyAddresses[i].country + ", " + companyAddresses[i].state_governorate + ", " + companyAddresses[i].city + ", " + companyAddresses[i].district);
+                    if (!commonQueries.GetCompanyAddresses(companies[companyNameCombo.SelectedIndex].company_serial, ref companyAddresses))
+                        return;
+
+                    companyBranchCombo.Items.Clear();
+                    companyBranchCombo.IsEnabled = true;
+                    for (int i = 0; i < companyAddresses.Count; i++)
+                    {
+                        companyBranchCombo.Items.Add(companyAddresses[i].country + ", " + companyAddresses[i].state_governorate + ", " + companyAddresses[i].city + ", " + companyAddresses[i].district);
+                    }
+                    companyBranchCombo.SelectedIndex = 0;
                 }
-                companyBranchCombo.SelectedIndex = 0;
+                else
+                {
+                    companyBranchCombo.IsEnabled = true;
+                    companyBranchCombo.SelectedItem = null;
+                }
             }
-            else
+        }
+
+
+        
+
+        private void TextBoxesMouseLeave(object sender, MouseEventArgs e)
+        {
+            saveChangesButton.IsEnabled = true;
+
+            TextBox currentTextBox = (TextBox)sender;
+            WrapPanel currentWrapPanel = (WrapPanel)currentTextBox.Parent;
+            Label currentLabel = (Label)currentWrapPanel.Children[1];
+
+            WrapPanel parentWrapPanel = (WrapPanel)currentWrapPanel.Parent;
+
+            currentTextBox.Visibility = Visibility.Collapsed;
+            currentLabel.Visibility = Visibility.Visible;
+
+            BrushConverter brush = new BrushConverter();
+
+            currentLabel.Content = currentTextBox.Text;
+
+            if (currentLabel.Name == "employeeFirstNameLabel")
             {
-                companyBranchCombo.IsEnabled = true;
-                companyBranchCombo.SelectedItem = null;
+                if (currentLabel.Content.ToString() != contact.GetContactName())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if(parentWrapPanel.Name == "contactPhoneWrapPanel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetContactPhones()[0])
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (parentWrapPanel.Name == "businessEmailWrapPanel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetContactBusinessEmail())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (parentWrapPanel.Name == "contactPersonalPhoneWrapPanel")
+            {
+                int index = 0;
+                for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
+                {
+                    WrapPanel selectedWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
+                    if (selectedWrapPanel == currentWrapPanel)
+                        index = i + 1;
+                }
+                if (currentLabel.Content.ToString() != contact.GetContactPhones()[index].ToString())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (parentWrapPanel.Name == "personalEmailWrapPanel")
+            {
+                int index = 0;
+                for (int i = 0; i < personalEmailWrapPanel.Children.Count; i++)
+                {
+                    WrapPanel selectedWrapPanel = (WrapPanel)personalEmailWrapPanel.Children[i];
+                    if (selectedWrapPanel == currentWrapPanel)
+                        index = i;
+                }
+                if (currentLabel.Content.ToString() != contact.GetContactPersonalEmails()[index].ToString())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+
+        }
+
+        private void ComboBoxesMouseLeave(object sender, MouseEventArgs e)
+        {
+            saveChangesButton.IsEnabled = true;
+
+            ComboBox currentComboBox = (ComboBox)sender;
+            WrapPanel currentWrapPanel = (WrapPanel)currentComboBox.Parent;
+            Label currentLabel = (Label)currentWrapPanel.Children[1];
+
+            BrushConverter brush = new BrushConverter();
+
+            currentComboBox.Visibility = Visibility.Collapsed;
+            currentLabel.Visibility = Visibility.Visible;
+
+            currentLabel.Content = currentComboBox.Text;
+
+            if (currentLabel.Name == "contactGenderLabel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetContactGender())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (currentLabel.Name == "companyNameLabel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetCompanyName())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (currentLabel.Name == "companyBranchLabel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (currentLabel.Name == "departmentLabel")
+            {
+                if (currentLabel.Content.ToString() != contact.GetContactDepartment())
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
+            }
+            else if (currentLabel.Name == "assigneeLabel")
+            {
+                if (employees[currentComboBox.SelectedIndex].employee_id != contactEmployeeId)
+                    currentLabel.Foreground = Brushes.Red;
+                else
+                    currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
         }
 
 
         private void OnBtnClickSaveChanges(object sender, RoutedEventArgs e)
         {
+            Contact newContact = new Contact();
+            bool assigneeChanged = false;
 
+            newContact.SetContactName(employeeFirstNameLabel.Content.ToString());
+            newContact.SetContactGender(contactGenderLabel.Content.ToString());
+
+            newContact.InitializeSalesPersonInfo(employees[assigneeComboBox.SelectedIndex].employee_id);
+
+            if (assigneeLabel.Foreground == Brushes.Red)
+            {
+                assigneeChanged = true;
+            }
+            newContact.InitializeCompanyInfo(companies[companyNameCombo.SelectedIndex].company_serial);
+            newContact.InitializeBranchInfo(companyAddresses[companyBranchCombo.SelectedIndex].address_serial);
+            newContact.SetContactDepartment(departments[departmentComboBox.SelectedIndex].department_id, departments[departmentComboBox.SelectedIndex].department_name);
+
+            WrapPanel businessPhoneWrap = (WrapPanel)contactPhoneWrapPanel.Children[0];
+            Label businessPhone = (Label)businessPhoneWrap.Children[1];
+            newContact.AddNewContactPhone(businessPhone.Content.ToString());
+
+            if (contactPersonalPhoneWrapPanel.Children.Count > 0)
+            {
+                for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
+                {
+                    WrapPanel personalPhoneWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
+                    Label personalPhone = (Label)personalPhoneWrapPanel.Children[1];
+                    newContact.AddNewContactPhone(personalPhone.Content.ToString());
+                }
+            }
+
+            WrapPanel businessEmailWrap = (WrapPanel)businessEmailWrapPanel.Children[0];
+            Label businessEmail = (Label)businessEmailWrap.Children[1];
+            newContact.SetContactBusinessEmail(businessEmail.Content.ToString());
+
+            if (personalEmailWrapPanel.Children.Count > 0)
+            {
+                for (int i = 0; i < personalEmailWrapPanel.Children.Count; i++)
+                {
+                    WrapPanel personalEmailWrap = (WrapPanel)personalEmailWrapPanel.Children[i];
+                    Label personalEmail = (Label)personalEmailWrap.Children[1];
+                    newContact.AddNewContactEmail(personalEmail.Content.ToString());
+                }
+            }
+
+
+            contact.EditContactInfo(newContact, assigneeChanged);
+            this.Close();
         }
 
         

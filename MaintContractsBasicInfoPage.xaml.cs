@@ -445,7 +445,7 @@ namespace _01electronics_crm
             {
                 InitializeCompanyNameCombo();
             }
-
+            
             maintContract.InitializeMaintContractProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
 
             if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)

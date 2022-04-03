@@ -267,6 +267,10 @@ namespace _01electronics_crm
                         contactTreeItem.Tag = employeesContacts[i].Value[j].contact.contact_id;
                         contactTreeItem.FontSize = 12;
                         contactTreeItem.FontWeight = FontWeights.Normal;
+                        if (employeesContacts[i].Value[j].is_valid == true)
+                            contactTreeItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                        else
+                            contactTreeItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
 
                         companyTreeItem = companiesTreeArray.Find(company_item => company_item.Key == employeesContacts[i].Value[j].company.company_serial).Value;
 
@@ -449,7 +453,7 @@ namespace _01electronics_crm
                         companiesStackArray.Add(new KeyValuePair<int, StackPanel>(employeesContacts[i].Value[j].company.company_serial, companyStackPanel));
                     }
 
-                    if (employeesContacts[i].Value[j].contact.contact_id != 0)
+                    if (employeesContacts[i].Value[j].contact.contact_id != 0 && employeesContacts[i].Value[j].is_valid == true)
                     {
                         bool containsContactName = employeesContacts[i].Value[j].contact.contact_name.IndexOf(contactNameTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
 

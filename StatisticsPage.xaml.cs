@@ -79,6 +79,12 @@ namespace _01electronics_crm
             {
                 if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employees))
                     return false;
+
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                tempEmployee.employee_id = loggedInUser.GetEmployeeId();
+                tempEmployee.employee_name = loggedInUser.GetEmployeeName();
+
+                employees.Add(tempEmployee);
             }
             else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
             {
@@ -90,7 +96,7 @@ namespace _01electronics_crm
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
                 tempEmployee.employee_id = loggedInUser.GetEmployeeId();
                 tempEmployee.employee_name = loggedInUser.GetEmployeeName();
-
+                
                 employees.Add(tempEmployee);
             }
 
