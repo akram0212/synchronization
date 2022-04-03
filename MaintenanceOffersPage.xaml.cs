@@ -1124,7 +1124,7 @@ namespace _01electronics_crm
         }
         private void OnBtnClickView()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
 
             selectedMaintOffer.InitializeMaintOfferInfo(maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                             maintOffersAfterFiltering[maintOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,

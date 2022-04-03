@@ -455,22 +455,12 @@ namespace _01electronics_crm
 
                 SetCompanyNameAddressContactFromRFQ();
 
-                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-                {
-                    maintOffersProductsPage.SetCategoryComboBoxes();
-                    maintOffersProductsPage.SetTypeComboBoxes();
-                    maintOffersProductsPage.SetBrandComboBoxes();
-                    maintOffersProductsPage.SetModelComboBoxes();
-                    maintOffersProductsPage.SetQuantityTextBoxes();
-                }
-                else
-                {
-                    maintOffersProductsPage.SetCategoryLabels();
-                    maintOffersProductsPage.SetTypeLabels();
-                    maintOffersProductsPage.SetBrandLabels();
-                    maintOffersProductsPage.SetModelLabels();
-                    maintOffersProductsPage.SetQuantityTextBoxes();
-                }
+                maintOffersProductsPage.SetCategoryComboBoxes();
+                maintOffersProductsPage.SetTypeComboBoxes();
+                maintOffersProductsPage.SetBrandComboBoxes();
+                maintOffersProductsPage.SetModelComboBoxes();
+                maintOffersProductsPage.SetQuantityTextBoxes();
+
 
                 SetProjectCombo();
                 projectSerialCombo.IsEnabled = false;
