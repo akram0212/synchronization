@@ -446,34 +446,42 @@ namespace _01electronics_crm
 
         private void SetCategoryComboBoxes()
         {
-            for (int i = 0; i < numberOfProductsAdded; i++)
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
             {
-                if (maintContracts.GetMaintOfferProductTypeId(i + 1) != 0)
+
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+
+                if (maintContracts.GetMaintContractProductCategory(i + 1) != "" && i != 0)
                 {
-                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                    WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
-                    ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
-                    CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintContractProductCategory(i + 1);
+                    Grid backgroundColorGrid = (Grid)currentProductGrid.Children[0];
+                    CheckBox mainCheckBox = (CheckBox)backgroundColorGrid.Children[0];
+
+                    mainCheckBox.IsEnabled = true;
+                    mainCheckBox.IsChecked = true;
                 }
+
+                WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+                CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintContractProductCategory(i + 1);
+
+                
             }
         }
         private void SetTypeComboBoxes()
         {
-            for (int i = 0; i < numberOfProductsAdded; i++)
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
             {
-                if (maintContracts.GetMaintOfferProductTypeId(i + 1) != 0)
-                {
-                    Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                    WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
-                    ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-                    if (maintContracts.GetMaintOfferProductTypeId(i + 1) != 0)
-                        CurrentTypeComboBox.SelectedItem = maintContracts.GetMaintContractProductType(i + 1);
-                }
+
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+                CurrentTypeComboBox.SelectedItem = maintContracts.GetMaintContractProductType(i + 1);
+
             }
         }
         private void SetBrandComboBoxes()
         {
-            for (int i = 0; i < numberOfProductsAdded; i++)
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
@@ -485,15 +493,12 @@ namespace _01electronics_crm
 
         private void SetModelComboBoxes()
         {
-            for (int i = 0; i < numberOfProductsAdded; i++)
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
 
-                //if (maintContracts.GetMaintOfferProductModelId(i + 1) == 0)
-                //    continue;
-                // else
                 currentModelComboBox.SelectedItem = maintContracts.GetMaintContractProductModel(i + 1);
             }
         }

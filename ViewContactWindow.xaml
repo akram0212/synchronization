@@ -51,6 +51,12 @@
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="1">
+                        <WrapPanel >
+                            <Label Style="{StaticResource tableItemLabel}" Content="Assignee" />
+                            <Label Style="{StaticResource tableItemValue}" Name="assigneeLabel" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
+                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="assigneeComboBox" Visibility="Collapsed" SelectionChanged="OnSelChangedAssigneeCombo" MouseLeave="ComboBoxesMouseLeave"/>
+                        </WrapPanel>
+                        
                         <WrapPanel Name="CompanyWrapPanel" >
                             <Label Style="{StaticResource tableItemLabel}" Content="Company" />
                             <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
@@ -71,11 +77,7 @@
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="departmentComboBox" Visibility="Collapsed" MouseLeave="ComboBoxesMouseLeave"/>
                         </WrapPanel>
 
-                        <WrapPanel >
-                            <Label Style="{StaticResource tableItemLabel}" Content="Assignee" />
-                            <Label Style="{StaticResource tableItemValue}" Name="assigneeLabel" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="assigneeComboBox" Visibility="Collapsed" SelectionChanged="OnSelChangedAssigneeCombo" MouseLeave="ComboBoxesMouseLeave"/>
-                        </WrapPanel>
+                        
                     </WrapPanel>
                     <WrapPanel Grid.Row="3">
                         <WrapPanel  Name="businessEmailWrapPanel"/>

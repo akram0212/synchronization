@@ -81,6 +81,10 @@ namespace _01electronics_crm
             {
                 projectCheckBox.IsEnabled = true;
                 projectCheckBox.IsChecked = true;
+
+                projectComboBox.SelectedItem = maintContract.GetprojectName();
+
+                checkAllCheckBox.IsEnabled = true;
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +107,7 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
-                checkAllCheckBox.IsEnabled = true;
+                
                 addedLocations.Clear();
                 projectLocations.Clear();
                 locationsGrid.Children.Clear();
@@ -113,6 +117,11 @@ namespace _01electronics_crm
 
 
                 commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
+
+
+                List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> temp = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                maintContract.GetProjectLocations(ref temp);
+
 
                 for (int i = 0; i < projectLocations.Count; i++)
                 {
@@ -124,6 +133,9 @@ namespace _01electronics_crm
                     checkBox.Unchecked += OnUnCheckProjectLocation;
                     checkBox.Width = 500.0;
 
+                    if (temp.Exists(x1 => x1.location_id == projectLocations[i].location_id))
+                        checkBox.IsChecked = true;
+
                     RowDefinition row = new RowDefinition();
                     locationsGrid.RowDefinitions.Add(row);
 
@@ -131,6 +143,8 @@ namespace _01electronics_crm
                     Grid.SetRow(checkBox, i);
 
                 }
+
+                checkAllCheckBox.IsEnabled = true;
             }
             else
             {

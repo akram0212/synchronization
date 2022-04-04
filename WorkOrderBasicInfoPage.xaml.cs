@@ -321,7 +321,7 @@ namespace _01electronics_crm
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_status_id == 3)
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);
@@ -333,7 +333,7 @@ namespace _01electronics_crm
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_status_id == 3)
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);

@@ -37,7 +37,7 @@ namespace _01electronics_crm
             maintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsPaymentAndDeliveryPage);
             maintContractsProjectInfoPage = new MaintContractsProjectsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProductsPage);
             maintContractsBasicInfoPage = new MaintContractsBasicInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProjectInfoPage);
-            if (openFilesPage)
+            if (mViewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
             }
@@ -54,7 +54,8 @@ namespace _01electronics_crm
             }
             else
             {
-                maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProjectInfoPage.maintContractsProductsPage;
+                maintContractsBasicInfoPage.maintContractsProjectInfoPage = maintContractsProjectInfoPage;
+                maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
                 maintContractsBasicInfoPage.maintContractsAdditionalInfoPage = maintContractsAdditionalInfoPage;
                 maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
                 maintContractsBasicInfoPage.maintContractsUploadFilesPage = maintContractsUploadFilesPage;
