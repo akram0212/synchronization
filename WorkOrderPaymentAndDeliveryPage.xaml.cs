@@ -101,20 +101,20 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            //else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-            //{
-            //    InitializeTotalPriceCurrencyComboBox();
-            //    InitializeDeliveryTimeComboBox();
-            //    InitializeDeliveryPointComboBox();
-            //    SetTotalPriceCurrencyComboBox();
-            //    SetTotalPriceTextBox();
-            //    SetDownPaymentValues();
-            //    SetOnDeliveryValues();
-            //    SetOnInstallationValues();
-            //    SetDeliveryTimeValues();
-            //    SetDeliveryPointValue();
-            //    DisableTotalPriceComboAndTextBox();
-            //}
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            {
+                InitializeTotalPriceCurrencyComboBox();
+                InitializeDeliveryTimeComboBox();
+                InitializeDeliveryPointComboBox();
+                SetTotalPriceCurrencyComboBox();
+                SetTotalPriceTextBox();
+                SetDownPaymentValues();
+                SetOnDeliveryValues();
+                SetOnInstallationValues();
+                SetDeliveryTimeValues();
+                SetDeliveryPointValue();
+                DisableTotalPriceComboAndTextBox();
+            }
             else
             {
                 InitializeTotalPriceCurrencyComboBox();
@@ -123,16 +123,16 @@ namespace _01electronics_crm
                 InitializeTotalPriceVATCombo();
                 InitializeDeliveryTimeFromWhenCombo();
 
-                DisableTotalPriceComboAndTextBox();
-                SetTotalPriceCurrencyComboBox();
-                SetTotalPriceTextBox();
-                SetTotalPriceCondition();
-                SetDownPaymentValues();
-                SetOnDeliveryValues();
-                SetOnInstallationValues();
-                SetDeliveryTimeValues();
-                SetDeliveryPointValue();
-                SetNullsToZeros();
+                //DisableTotalPriceComboAndTextBox();
+                //SetTotalPriceCurrencyComboBox();
+                //SetTotalPriceTextBox();
+                //SetTotalPriceCondition();
+                //SetDownPaymentValues();
+                //SetOnDeliveryValues();
+                //SetOnInstallationValues();
+                //SetDeliveryTimeValues();
+                //SetDeliveryPointValue();
+                //SetNullsToZeros();
             }
         }
         public WorkOrderPaymentAndDeliveryPage(ref WorkOrder mWorkOrder)

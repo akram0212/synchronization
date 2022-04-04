@@ -119,10 +119,10 @@ namespace _01electronics_crm
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();
 
-                SetDrawingSubmissionValues();
-                SetContractTypeValue();
-                SetWarrantyPeriodValues();
-                SetAdditionalDescriptionValue();
+                //SetDrawingSubmissionValues();
+                //SetContractTypeValue();
+                //SetWarrantyPeriodValues();
+                //SetAdditionalDescriptionValue();
 
             }
         }
@@ -511,12 +511,11 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
                 {
-                    //workOrder.SetOrderIssueDate(issueDatePicker.DisplayDate);
                     if (!workOrder.IssueNewOrder())
                         return;
-                    //if (workOrder.GetOfferID() != null)
-                    //    if (!workOrder.ConfirmOffer())
-                    //        return;
+                    if (workOrder.GetOfferID() != null)
+                        if (!workOrder.ConfirmOffer())
+                            return;
                 }
                 else if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {

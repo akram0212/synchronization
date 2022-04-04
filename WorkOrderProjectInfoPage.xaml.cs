@@ -72,12 +72,21 @@ namespace _01electronics_crm
                 checkAllCheckBox.IsChecked = true;
                 checkAllCheckBox.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            //else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            //{
+            //    workOrder.GetProjectLocations(ref orderProjectLocations);
+            //    projectCheckBox.IsChecked = true;
+            //    projectComboBox.SelectedItem = workOrder.GetprojectName();
+            //    InitializeProjectLocationsGridRevise();
+            //}
+            else
             {
-                workOrder.GetProjectLocations(ref orderProjectLocations);
+                projectCheckBox.IsEnabled = true;
                 projectCheckBox.IsChecked = true;
+
                 projectComboBox.SelectedItem = workOrder.GetprojectName();
-                InitializeProjectLocationsGridRevise();
+
+                checkAllCheckBox.IsEnabled = true;
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,6 +140,9 @@ namespace _01electronics_crm
                     if (!commonQueriesObject.GetProjectLocations(workOrder.GetprojectSerial(), ref projectLocations))
                         return;
 
+                    List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> temp = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                    workOrder.GetProjectLocations(ref temp);
+
                     for (int i = 0; i < projectLocations.Count; i++)
                     {
                         CheckBox checkBox = new CheckBox();
@@ -140,6 +152,9 @@ namespace _01electronics_crm
                         checkBox.Checked += OnCheckProjectLocation;
                         checkBox.Unchecked += OnUnCheckProjectLocation;
                         checkBox.Width = 500.0;
+
+                        if (temp.Exists(x1 => x1.location_id == projectLocations[i].location_id))
+                            checkBox.IsChecked = true;
 
                         RowDefinition row = new RowDefinition();
                         locationsGrid.RowDefinitions.Add(row);
@@ -162,7 +177,7 @@ namespace _01electronics_crm
                         CheckBox checkBox = new CheckBox();
                         checkBox.Content = orderProjectLocations[i].branch_Info.country + "," + orderProjectLocations[i].branch_Info.state_governorate + "," + orderProjectLocations[i].branch_Info.city + "," + orderProjectLocations[i].branch_Info.district;
                         checkBox.IsEnabled = false;
-                        //checkBox.IsChecked = true;
+                        checkBox.IsChecked = true;
                         checkBox.Style = (Style)FindResource("checkBoxStyle");
                         checkBox.Width = 500.0;
 

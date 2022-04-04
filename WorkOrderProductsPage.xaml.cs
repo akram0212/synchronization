@@ -101,6 +101,12 @@ namespace _01electronics_crm
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
             }
+            else
+            {
+                InitializeCategories();
+                InitializePriceCurrencyComboBoxes();
+                SetUpPageUIElements();
+            }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
