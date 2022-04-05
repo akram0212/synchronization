@@ -64,7 +64,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
@@ -73,7 +73,7 @@ namespace _01electronics_crm
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
@@ -87,7 +87,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeTotalPriceVATCombo();
@@ -150,7 +150,11 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public void SetFrequenciesValue()
+        private void SetFrequenciesValue()
+        {
+            paymentsFrequencyTextBox.Text = maintContracts.GetMaintContractPaymentsFrequency().ToString();
+        }
+        public void SetFrequenciesValueFromOffer()
         {
             paymentsFrequencyTextBox.Text = maintContracts.GetPaymentsFrequency().ToString();
         }
@@ -166,10 +170,26 @@ namespace _01electronics_crm
         }
         public void SetTotalPriceCurrencyComboBox()
         {
+            totalPriceCombo.SelectedItem = maintContracts.GetMaintContractCurrency();
+        }
+
+        public void SetTotalPriceCurrencyComboBoxFromOffer()
+        {
             totalPriceCombo.SelectedItem = maintContracts.GetCurrency();
         }
 
         public void SetTotalPriceTextBox()
+        {
+            totalPrice = 0;
+
+            for (int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
+                totalPrice += maintContracts.GetMaintContractProductPriceValue(i) * maintContracts.GetMaintContractProductQuantity(i);
+
+            totalPriceTextBox.Text = totalPrice.ToString();
+            maintContracts.SetTotalValues();
+        }
+
+        public void SetTotalPriceTextBoxFromOffer()
         {
             totalPrice = 0;
 
@@ -180,17 +200,35 @@ namespace _01electronics_crm
             maintContracts.SetTotalValues();
         }
 
-        private void SetPriceValues()
+        public void SetPriceValues()
         {
             if (maintContracts.GetCurrency() != null)
             {
-                totalPriceCombo.Text = maintContracts.GetCurrency().ToString();
-                totalPriceTextBox.Text = maintContracts.GetTotalPriceValue().ToString();
+                totalPriceCombo.Text = maintContracts.GetMaintContractCurrency().ToString();
+                totalPriceTextBox.Text = maintContracts.GetMaintContractTotalPriceValue().ToString();
 
-                totalPrice = maintContracts.GetTotalPriceValue();
+                totalPrice = maintContracts.GetMaintContractTotalPriceValue();
             }
         }
         private void SetConditionsCheckBoxes()
+        {
+            if (maintContracts.GetMaintContractVATConditionID())
+                VatConditionCheckBox.IsChecked = true;
+            else
+                VatConditionCheckBox.IsChecked = false;
+
+            if (maintContracts.GetMaintContractSparePartsConditionID())
+                SparePartsCheckBox.IsChecked = true;
+            else
+                SparePartsCheckBox.IsChecked = false;
+
+            if (maintContracts.GetMaintContractBatteriesConditionID())
+                BatteriesCheckBox.IsChecked = true;
+            else
+                BatteriesCheckBox.IsChecked = false;
+        }
+
+        public void SetConditionsCheckBoxesFromOffer()
         {
             if (maintContracts.GetMaintOfferVATConditionID())
                 VatConditionCheckBox.IsChecked = true;
@@ -215,10 +253,10 @@ namespace _01electronics_crm
         private void OnTextChangedPaymentsFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(paymentsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && paymentsFrequencyTextBox.Text != "")
-                maintContracts.SetPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text));
+                maintContracts.SetMaintContractPaymentsFrequency(Int32.Parse(paymentsFrequencyTextBox.Text));
             else
             {
-                maintContracts.SetPaymentsFrequency(0);
+                maintContracts.SetMaintContractPaymentsFrequency(0);
                 paymentsFrequencyTextBox.Text = null;
             }
         }
@@ -310,7 +348,7 @@ namespace _01electronics_crm
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///BUTTON CLICKED HANDLERS
+        ///CHECK/UNCHECK HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
@@ -325,28 +363,28 @@ namespace _01electronics_crm
 
         private void OnCheckSparePartsCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferSparePartsCondition(true);
+            maintContracts.SetMaintContractSparePartsCondition(true);
         }
         private void OnCheckVatCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferVATCondition(true);
+            maintContracts.SetMaintContractVATCondition(true);
         }
         private void OnCheckBatteriesCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferBatteriesCondition(true);
+            maintContracts.SetMaintContractBatteriesCondition(true);
         }
 
         private void OnUnCheckSparePartsCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferSparePartsCondition(false);
+            maintContracts.SetMaintContractSparePartsCondition(false);
         }
         private void OnUnCheckVatCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferVATCondition(false);
+            maintContracts.SetMaintContractVATCondition(false);
         }
         private void OnUnCheckBatteriesCheckBox(object sender, RoutedEventArgs e)
         {
-            maintContracts.SetMaintOfferBatteriesCondition(false);
+            maintContracts.SetMaintContractBatteriesCondition(false);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,3 +393,4 @@ namespace _01electronics_crm
 
     }
 }
+    

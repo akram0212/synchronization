@@ -254,7 +254,7 @@ namespace _01electronics_crm
         private void SetDefaultSettings()
         {
             DisableViewButton();
-            ////DisableReviseButton();
+            //DisableReviseButton();
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -307,8 +307,8 @@ namespace _01electronics_crm
             }
             else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
-                preSalesCheckBox.IsChecked = true;
-                preSalesCheckBox.IsEnabled = false;
+                preSalesCheckBox.IsChecked = false;
+                preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
 
                 salesCheckBox.IsChecked = false;

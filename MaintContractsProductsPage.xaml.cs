@@ -93,13 +93,19 @@ namespace _01electronics_crm
                 InitializeCategories();
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                SetCategoryLabels();
+                SetCategoryComboBoxes();
                 SetTypeComboBoxes();
                 SetBrandComboBoxes();
                 SetModelComboBoxes();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
+            }
+            else
+            {
+                InitializeCategories();
+                InitializePriceCurrencyComboBoxes();
+                SetUpPageUIElements();
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,8 +390,7 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-        public void SetCategoryComboBoxes()
+        public void SetCategoryComboBoxesFromOffer()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -394,11 +399,11 @@ namespace _01electronics_crm
                     Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                     WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
                     ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
-                    CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintContractProductCategory(i + 1);
+                    CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintOfferProductCategory(i + 1);
                 }
             }
         }
-        public void SetTypeComboBoxes()
+        public void SetTypeComboBoxesFromOffer()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -412,7 +417,7 @@ namespace _01electronics_crm
                 }
             }
         }
-        public void SetBrandComboBoxes()
+        public void SetBrandComboBoxesFromOffer()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -424,7 +429,7 @@ namespace _01electronics_crm
             }
         }
 
-        public void SetModelComboBoxes()
+        public void SetModelComboBoxesFromOffer()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -436,6 +441,65 @@ namespace _01electronics_crm
                 //    continue;
                 // else
                 currentModelComboBox.SelectedItem = maintContracts.GetMaintOfferProductModel(i + 1);
+            }
+        }
+
+        private void SetCategoryComboBoxes()
+        {
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
+            {
+
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+
+                if (maintContracts.GetMaintContractProductCategory(i + 1) != "" && i != 0)
+                {
+                    Grid backgroundColorGrid = (Grid)currentProductGrid.Children[0];
+                    CheckBox mainCheckBox = (CheckBox)backgroundColorGrid.Children[0];
+
+                    mainCheckBox.IsEnabled = true;
+                    mainCheckBox.IsChecked = true;
+                }
+
+                WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
+                ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
+                CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintContractProductCategory(i + 1);
+
+                
+            }
+        }
+        private void SetTypeComboBoxes()
+        {
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
+            {
+
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
+                ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
+                CurrentTypeComboBox.SelectedItem = maintContracts.GetMaintContractProductType(i + 1);
+
+            }
+        }
+        private void SetBrandComboBoxes()
+        {
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
+                ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
+
+                currentBrandComboBox.SelectedItem = maintContracts.GetMaintContractProductBrand(i + 1);
+            }
+        }
+
+        private void SetModelComboBoxes()
+        {
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
+                ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+
+                currentModelComboBox.SelectedItem = maintContracts.GetMaintContractProductModel(i + 1);
             }
         }
 
@@ -531,7 +595,7 @@ namespace _01electronics_crm
         }
         public void SetPriceComboBoxes()
         {
-            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && mainWrapPanel.Children.Count != 0)
             {
 
                 Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
@@ -540,7 +604,7 @@ namespace _01electronics_crm
                 currentPriceComboBox.SelectedItem = maintContracts.GetCurrency();
 
             }
-            else
+            else if (mainWrapPanel.Children.Count != 0)
             {
                 Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
                 WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
@@ -548,6 +612,39 @@ namespace _01electronics_crm
                 currentPriceComboBox.SelectedItem = maintContracts.GetMaintContractCurrency();
 
             }
+        }
+
+        public void SetQuantityTextBoxesFromOffer()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
+                currentQuantityTextBoxValue.Text = maintContracts.GetMaintOfferProductQuantity(i + 1).ToString();
+            }
+        }
+        public void SetPriceTextBoxesFromOffer()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
+                TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
+                int price = (int)maintContracts.GetProductPriceValue(i + 1);
+                currentPriceTextBoxValue.Text = price.ToString();
+
+
+            }
+        }
+        public void SetPriceComboBoxesFromOffer()
+        {
+            Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
+            WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
+            ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
+            currentPriceComboBox.SelectedItem = maintContracts.GetCurrency();
+
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -779,6 +876,9 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
+                    
+                    maintContractsPaymentAndDeliveryPage.SetTotalPriceTextBox();
+                    maintContracts.SetMaintContractTotalValues();
                 }
             }
             else
@@ -788,10 +888,10 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
+                    
                 }
                 currentQuantityTextBox.Text = null;
 
-                //CALL TOTAL PRICE HERE
             }
         }
         private void PriceTextBoxesTextChanged(Object sender, TextChangedEventArgs e)
@@ -811,11 +911,9 @@ namespace _01electronics_crm
                         if (currentProductGrid == mainWrapPanel.Children[k])
                         {
                             maintContracts.SetMaintContractProductPriceValue(k + 1, (int)priceQuantity);
-                            //if(viewAddCondition == COMPANY_WORK_MACROS.MaintContract_REVISE_CONDITION)
-                            //    maintContractsPaymentAndDeliveryPage = maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage;
-                            maintContractsPaymentAndDeliveryPage.SetTotalPriceTextBox();
 
-                            //REMOVE THIS FROM HERE, SHALL BE ADDED ON ANY SELECTION CHANGE FOR CURRENCY COMBO BOX
+                            maintContractsPaymentAndDeliveryPage.SetTotalPriceTextBox();
+                            maintContracts.SetMaintContractTotalValues();
 
                         }
                     }
@@ -845,27 +943,17 @@ namespace _01electronics_crm
             {
                 maintContracts.SetMaintContractCurrency(currencies[currentPriceComboBox.SelectedIndex].currencyId, currencies[currentPriceComboBox.SelectedIndex].currencyName);
 
-                if (maintContracts.GetMaintOfferID() != null)
+
+                for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
                 {
-                    for (int i = 0; i < maintContracts.GetNoOfMaintOfferSavedProducts(); i++)
-                    {
-                        Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
-                        ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
-                        currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
-                    }
+                    Grid productGrid = (Grid)mainWrapPanel.Children[i];
+                    WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
+                    ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
+                    currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
                 }
-                else
-                {
-                    for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
-                    {
-                        Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                        WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
-                        ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
-                        currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
-                    }
-                }
+
                 maintContractsPaymentAndDeliveryPage.SetTotalPriceCurrencyComboBox();
+
             }
         }
 

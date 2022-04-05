@@ -482,7 +482,7 @@ namespace _01electronics_crm
                 {
                     listBox.Items.Add(reviseButton);
 
-                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
+                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION && workOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId())
                         listBox.Items.Add(confirmButton);
 
                     if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
@@ -1200,24 +1200,25 @@ namespace _01electronics_crm
 
         private void OnBtnClickConfirmOffer()
         {
-            viewAddCondition = COMPANY_WORK_MACROS.ORDER_ADD_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION;
 
             commonQueriesObject.GetEmployeeTeam(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].sales_person_id, ref salesPersonTeam);
 
+            WorkOrder workOrder = new WorkOrder(sqlDatabase);
 
-            selectedWorkOffer.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
+            workOrder.InitializeWorkOfferInfo(workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_serial,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_version,
                                                                 workOffersAfterFiltering[workOffersStackPanel.Children.IndexOf(currentGrid)].offer_proposer_id);
 
-            WorkOrder workOrder = new WorkOrder(sqlDatabase);
-            workOrder.CopyWorkOffer(selectedWorkOffer);
-            workOrder.CopyWorkOfferToWorkOrder();
+            //WorkOrder workOrder = new WorkOrder(sqlDatabase);
+            //workOrder.CopyWorkOffer(selectedWorkOffer);
+            //workOrder.CopyWorkOfferToWorkOrder();
 
             WorkOrderWindow reviseOrder = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
             reviseOrder.Closed += OnClosedResolveOfferWindow;
             reviseOrder.Show();
 
-           // selectedWorkOffer.ConfirmOffer();
+            //selectedWorkOffer.ConfirmOffer();
 
         }
 

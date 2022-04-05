@@ -34,7 +34,6 @@ namespace _01electronics_crm
         String oldAssignee;
 
         RFQ rfq;
-
         Quotation quotation;
 
         MaintenanceOffer maintOffer;

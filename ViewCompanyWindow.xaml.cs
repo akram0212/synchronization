@@ -491,7 +491,6 @@ namespace _01electronics_crm
             initializeSecondaryWorkFieldCombo(primaryWorkFields[primaryWorkFieldComboBox.SelectedIndex].field_id);
             secondaryWorkFieldLabel.Content = "Others";
             secondaryWorkFieldLabel.Foreground = Brushes.Red;
-
         }
         private void OnSelSecondaryWorkFieldComboBox(object sender, SelectionChangedEventArgs e)
         {

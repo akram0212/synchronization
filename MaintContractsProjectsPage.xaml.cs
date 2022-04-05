@@ -32,8 +32,8 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> projectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
-        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> addedLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> projectLocations;
+        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> addedLocations;
 
         public MaintContractsBasicInfoPage maintContractsBasicInfoPage;
         public MaintContractsProductsPage maintContractsProductsPage;
@@ -60,6 +60,9 @@ namespace _01electronics_crm
 
             maintContract = mMaintContracts;
 
+            projectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+            addedLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+
             InitializeComponent();
 
             InitializeProjectsCombo();
@@ -73,6 +76,15 @@ namespace _01electronics_crm
                 projectComboBox.IsEnabled = false;
                 checkAllCheckBox.IsChecked = true;
 
+            }
+            else
+            {
+                projectCheckBox.IsEnabled = true;
+                projectCheckBox.IsChecked = true;
+
+                projectComboBox.SelectedItem = maintContract.GetprojectName();
+
+                checkAllCheckBox.IsEnabled = true;
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,14 +107,21 @@ namespace _01electronics_crm
         {
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
+                
                 addedLocations.Clear();
                 projectLocations.Clear();
                 locationsGrid.Children.Clear();
                 locationsGrid.RowDefinitions.Clear();
 
-                maintContract.InitializeProjectInfo(projects[projectComboBox.SelectedIndex].project_serial);
+                maintContract.SetMaintContractProjectInfo(projects[projectComboBox.SelectedIndex].project_serial, projects[projectComboBox.SelectedIndex].project_name);
 
-                commonQueriesObject.GetProjectLocations(maintContract.GetprojectSerial(), ref projectLocations);
+
+                commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
+
+
+                List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> temp = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                maintContract.GetProjectLocations(ref temp);
+
 
                 for (int i = 0; i < projectLocations.Count; i++)
                 {
@@ -114,6 +133,9 @@ namespace _01electronics_crm
                     checkBox.Unchecked += OnUnCheckProjectLocation;
                     checkBox.Width = 500.0;
 
+                    if (temp.Exists(x1 => x1.location_id == projectLocations[i].location_id))
+                        checkBox.IsChecked = true;
+
                     RowDefinition row = new RowDefinition();
                     locationsGrid.RowDefinitions.Add(row);
 
@@ -121,6 +143,8 @@ namespace _01electronics_crm
                     Grid.SetRow(checkBox, i);
 
                 }
+
+                checkAllCheckBox.IsEnabled = true;
             }
             else
             {
@@ -184,14 +208,12 @@ namespace _01electronics_crm
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
-
         }
 
         private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
-
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,9 +337,7 @@ namespace _01electronics_crm
             if (projectComboBox.SelectedItem != null)
             {
                 projectCheckBox.IsChecked = true;
-                checkAllCheckBox.IsChecked = true;
-                checkAllCheckBox.IsEnabled = false;
-                projectCheckBox.IsEnabled = false;
+                projectCheckBox.IsEnabled = true;
             }
         }
     }

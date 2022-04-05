@@ -64,27 +64,6 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
-            //{
-            //    maintOffer.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeTeamId());
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //        if (!maintOffer.GetNewOfferSerial())
-            //            return;
-            //    if(!maintOffer.GetNewOfferVersion())
-            //        return;
-            //    maintOffer.SetOfferIssueDateToToday();
-            //    maintOffer.GetNewOfferID();
-            //    
-            //}
-            //
-            //if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
-            //{
-            //    if (!maintOffer.GetNewOfferVersion())
-            //        return;
-            //    maintOffer.SetOfferIssueDateToToday();
-            //    maintOffer.GetNewOfferID();
-            //}
-
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
                 FillrfqsList();
@@ -157,14 +136,31 @@ namespace _01electronics_crm
 
         private bool InitializeSalesPersonCombo()
         {
-            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref employeesList))
+            List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref tempEmployeesList))
                 return false;
 
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref tempEmployeesList))
+                return false;
+
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            if (!commonQueriesObject.GetManagerEmployees(ref tempEmployeesList))
+                return false;
+
+            for (int i = 0; i < tempEmployeesList.Count; i++)
+                employeesList.Add(tempEmployeesList[i]);
+
+            employeesList.Sort();
+
             for (int i = 0; i < employeesList.Count(); i++)
-            {
                 salesPersonCombo.Items.Add(employeesList[i].employee_name);
-            }
-            salesPersonCombo.Items.Add(loggedInUser.GetEmployeeName());
+
             return true;
         }
 
@@ -180,7 +176,7 @@ namespace _01electronics_crm
             {/////////////////////
              ////THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
              /////////////////////
-                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id == 5)
+                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id == 5 && rfqsList[i].rfq_status_id == 1)
                 {
                     RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
                     rfqsAddedToComboList.Add(rfqsList[i]);
@@ -429,32 +425,21 @@ namespace _01electronics_crm
             RFQSerialCombo.SelectedIndex = -1;
             companyNameCombo.SelectedIndex = -1;
 
-            if (salesPersonCombo.SelectedIndex != employeesList.Count())
-            {
-                salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
-                salesPersonTeamID = employeesList[salesPersonCombo.SelectedIndex].team.team_id;
-            }
-            else
-            {
-                salesPersonID = loggedInUser.GetEmployeeId();
-                salesPersonTeamID = COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID;
-            }
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
-                maintOffer.ResetMaintOfferInfo(salesPersonTeamID);
+            salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
+            commonQueriesObject.GetEmployeeTeam(salesPersonID, ref salesPersonTeamID);
 
             maintOffer.InitializeMaintOfferProposerInfo(loggedInUser.GetEmployeeId(), salesPersonTeamID);
+            maintOffer.InitializeSalesPersonInfo(salesPersonID);
 
-            if (salesPersonTeamID == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
-                maintOffer.InitializeSalesPersonInfo(salesPersonID);
                 InitializeRFQSerialCombo();
                 projectSerialCombo.IsEnabled = false;
                 companyNameCombo.SelectedItem = null;
+                companyNameCombo.IsEnabled = false;
             }
             else
             {
-                maintOffer.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
                 InitializeCompanyNameCombo();
                 RFQSerialCombo.SelectedItem = null;
                 RFQSerialCombo.IsEnabled = false;
@@ -470,22 +455,12 @@ namespace _01electronics_crm
 
                 SetCompanyNameAddressContactFromRFQ();
 
-                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
-                {
-                    maintOffersProductsPage.SetCategoryComboBoxes();
-                    maintOffersProductsPage.SetTypeComboBoxes();
-                    maintOffersProductsPage.SetBrandComboBoxes();
-                    maintOffersProductsPage.SetModelComboBoxes();
-                    maintOffersProductsPage.SetQuantityTextBoxes();
-                }
-                else
-                {
-                    maintOffersProductsPage.SetCategoryLabels();
-                    maintOffersProductsPage.SetTypeLabels();
-                    maintOffersProductsPage.SetBrandLabels();
-                    maintOffersProductsPage.SetModelLabels();
-                    maintOffersProductsPage.SetQuantityTextBoxes();
-                }
+                maintOffersProductsPage.SetCategoryComboBoxes();
+                maintOffersProductsPage.SetTypeComboBoxes();
+                maintOffersProductsPage.SetBrandComboBoxes();
+                maintOffersProductsPage.SetModelComboBoxes();
+                maintOffersProductsPage.SetQuantityTextBoxes();
+
 
                 SetProjectCombo();
                 projectSerialCombo.IsEnabled = false;

@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,12 @@ namespace _01electronics_crm
             {
                 if (!commonQueries.GetDepartmentEmployees(COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID, ref employees))
                     return false;
+
+                COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
+                tempEmployee.employee_id = loggedInUser.GetEmployeeId();
+                tempEmployee.employee_name = loggedInUser.GetEmployeeName();
+
+                employees.Add(tempEmployee);
             }
             else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
             {
@@ -89,7 +96,7 @@ namespace _01electronics_crm
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
                 tempEmployee.employee_id = loggedInUser.GetEmployeeId();
                 tempEmployee.employee_name = loggedInUser.GetEmployeeName();
-
+                
                 employees.Add(tempEmployee);
             }
 
@@ -568,11 +575,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
-        {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
-            this.NavigationService.Navigate(userPortal);
-        }
+       
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -613,14 +616,10 @@ namespace _01electronics_crm
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-        private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
-
+            StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
+            this.NavigationService.Navigate(statisticsPage);
         }
 
         private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
@@ -640,11 +639,6 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
 
-        private void OnButtonClickedStatistics(object sender, MouseButtonEventArgs e)
-        {
 
-        }
-
-        
     }
 }

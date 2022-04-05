@@ -384,9 +384,9 @@ namespace _01electronics_crm
                    if (!maintenanceOffer.IssueNewMaintOffer())
                         return;
 
-                    //if (maintenanceOffer.GetRFQID() != null)
-                      //  if (!maintenanceOffer.ConfirmRFQ())
-                        //    return;
+                    if (maintenanceOffer.GetRFQID() != null)
+                        if (!maintenanceOffer.ConfirmRFQ())
+                            return;
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
                         viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;

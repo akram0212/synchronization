@@ -183,7 +183,7 @@ namespace _01electronics_crm
              ////////////////////////////
              //// THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
              ////////////////////////////
-                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id != 5)
+                if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id != 5 && rfqsList[i].rfq_status_id == 1)
                 {
                     RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
                     rfqsAddedToComboList.Add(rfqsList[i]);
@@ -440,8 +440,8 @@ namespace _01electronics_crm
             salesPersonID = employeesList[salesPersonCombo.SelectedIndex].employee_id;
             commonQueriesObject.GetEmployeeTeam(salesPersonID, ref salesPersonTeamID);
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
-                quotation.ResetWorkOfferInfo();
+            //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            //    quotation.ResetWorkOfferInfo();
             
             quotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId());
             quotation.InitializeSalesPersonInfo(salesPersonID);

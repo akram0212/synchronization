@@ -304,7 +304,7 @@ namespace _01electronics_crm
                 onInstallationPercentageTextBox.Text = quotation.GetPercentOnInstallation().ToString();
                 if (onInstallationPercentageTextBox.Text != "")
                 {
-                    onDeliveryPercentage = int.Parse(onDeliveryPercentageTextBox.Text);
+                    onDeliveryPercentage = int.Parse(onInstallationPercentageTextBox.Text.ToString());
                     onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
                 }
             }
