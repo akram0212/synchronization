@@ -25,7 +25,7 @@ namespace _01electronics_crm
         WorkOrder workOrder;
         public WorkOrder oldWorkOrder;
         Quotation tmpWorkOffer;
-
+        private IntegrityChecks integrityChecks = new IntegrityChecks();
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -96,6 +96,9 @@ namespace _01electronics_crm
                 SetContactPersonLabel();
 
                 workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref loggedInUser, ref workOrder, viewAddCondition);
+
+                orderSerialTextBox.IsEnabled = false;
+                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
@@ -116,6 +119,8 @@ namespace _01electronics_crm
                     OfferCheckBox.IsEnabled = false;
                 companyAddressCombo.IsEnabled = true;
                 contactPersonNameCombo.IsEnabled = true;
+
+                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
 
                 //DisableSalesPersonAndOfferCombo();
             }
@@ -749,8 +754,12 @@ namespace _01electronics_crm
             //}
         }
 
-        
-
-        
+        private void OnTextChangedOrderSerialTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (integrityChecks.CheckInvalidCharacters(orderSerialTextBox.Text, BASIC_MACROS.PHONE_STRING) && orderSerialTextBox.Text != "")
+            {
+                workOrder.orderSerial = int.Parse(orderSerialTextBox.Text.ToString());
+            }
+        }
     }
 }

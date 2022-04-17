@@ -109,11 +109,11 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
-              <!--  <WrapPanel Name="assignedSalesWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Assigned &#x0a;Sales"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="assignedSalesLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="assignedSalesCombo" SelectionChanged="OnSelChangedAssignedSalesCombo"/>
-                </WrapPanel>-->
+                <WrapPanel Name="workOrderSerialWrapPanel">
+                    <Label Style="{StaticResource labelStyle}" Content="Order &#x0a;Serial*"/>
+                    <Label Style="{StaticResource tableItemValue}" Name="orderSerialLabel" Visibility="Collapsed"/>
+                    <TextBox Style="{StaticResource miniTextBoxStyle}" Name="orderSerialTextBox" TextChanged="OnTextChangedOrderSerialTextBox"/>
+                </WrapPanel>
             </WrapPanel>
 
         </Grid>

@@ -116,7 +116,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < COMPANY_WORK_MACROS.MAX_ORDER_PRODUCTS; i++)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && workOrder.GetOrderProductTypeId(i + 1) == 0)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && workOrder.GetOrderProductPriceValue(i + 1) == 0 && workOrder.GetOrderProductQuantity(i + 1) == 0)
                     continue;
                 //if (viewAddCondition == 2 && workOrder.GetworkOrderProductTypeId(i + 1) == 0)
                 //  continue;
@@ -517,12 +517,14 @@ namespace _01electronics_crm
         }
         public void SetPriceComboBoxes()
         {
+            if (numberOfProductsAdded > 0)
+            {
+                Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
+                WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
+                ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
 
-            Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
-            WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
-            ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
-            
-            currentPriceComboBox.SelectedItem = workOrder.GetOrderCurrency();
+                currentPriceComboBox.SelectedItem = workOrder.GetOrderCurrency();
+            }
         }
 
         public void SetCategoryComboBoxesFromOffer()

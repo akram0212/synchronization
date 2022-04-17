@@ -118,7 +118,10 @@ namespace _01electronics_crm
                 pointsTextBlock.TextWrapping = TextWrapping.Wrap;
                 pointsTextBlock.FontSize = 15;
                 pointsTextBlock.FontStyle = FontStyles.Italic;
-                pointsTextBlock.Text = productSummaryPoints[i];
+                if (i < productSummaryPoints.Count)
+                {
+                    pointsTextBlock.Text = productSummaryPoints[i];
+                }
                 pointsTextBlock.Padding = new Thickness(20);
 
                 Grid.SetRow(pointsTextBlock, 1);

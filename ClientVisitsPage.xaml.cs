@@ -614,5 +614,6 @@ namespace _01electronics_crm
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
         }
+
     }
 }

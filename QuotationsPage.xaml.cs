@@ -1116,7 +1116,7 @@ namespace _01electronics_crm
             QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
-        private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
+        private void OnButtonClickedRFQs(object sender, MouseButtonEventArgs e)
         {
             RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
             this.NavigationService.Navigate(rFQsPage);
@@ -1348,6 +1348,8 @@ namespace _01electronics_crm
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
         }
+
+
     }
 }
 
