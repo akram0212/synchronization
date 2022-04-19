@@ -715,9 +715,9 @@ namespace _01electronics_crm
 
                         workOrder.SetOrderProductType(k + 1, products[currentTypeComboBox.SelectedIndex].typeId, products[currentTypeComboBox.SelectedIndex].typeName);
 
-                        if (workOrder.GetOfferProductModelId(k + 1) != 0)
+                        if (workOrder.GetOrderProductModelId(k + 1) != 0)
                         {
-                            currentModelComboBox.SelectedItem = workOrder.GetOfferProductModel(k + 1);
+                            currentModelComboBox.SelectedItem = workOrder.GetOrderProductModel(k + 1);
                             workOrder.SetNoOfSavedOrderProducts();
                         }
                     }

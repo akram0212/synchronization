@@ -478,14 +478,14 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && (workOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId() || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION))
                 {
                     listBox.Items.Add(reviseButton);
 
-                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION && workOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId())
+                    if (workOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                         listBox.Items.Add(confirmButton);
 
-                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
+                    if (workOffers[i].offer_status_id != COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION && workOffers[i].offer_status_id != COMPANY_WORK_MACROS.FAILED_OUTGOING_QUOTATION)
                         listBox.Items.Add(rejectButton);
                 }
 

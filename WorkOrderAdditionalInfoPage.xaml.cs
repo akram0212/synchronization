@@ -511,7 +511,7 @@ namespace _01electronics_crm
 
             else
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
                     if (!workOrder.IssueNewOrder())
                         return;

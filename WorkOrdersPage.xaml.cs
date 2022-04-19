@@ -497,22 +497,25 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if(loggedInUser.GetEmployeePositionId() == 8 || loggedInUser.GetEmployeePositionId() == 800)
+                if(loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     listBox.Items.Add(editButton);
                 
                 listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
 
-                listBox.Items.Add(addCollectionButton);
+                //listBox.Items.Add(addCollectionButton);
 
 
                 if (workOrders[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
-                    ListBoxItem confirmOrderButton = new ListBoxItem();
-                    confirmOrderButton.Content = "Confirm Order";
-                    confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                    listBox.Items.Add(confirmOrderButton);
+                    if (loggedInUser.GetEmployeeId() == workOrders[i].offer_proposer_id || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                    {
+                        ListBoxItem confirmOrderButton = new ListBoxItem();
+                        confirmOrderButton.Content = "Confirm Order";
+                        confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                        listBox.Items.Add(confirmOrderButton);
+                    }
                 }
 
                 expander.Content = listBox;
