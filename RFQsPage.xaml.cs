@@ -1159,7 +1159,7 @@ namespace _01electronics_crm
             RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
             this.NavigationService.Navigate(rFQsPage);
         }
-        private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
+        private void OnButtonClickedVisits(object sender, MouseButtonEventArgs e)
         {
             ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientVisitsPage);
@@ -1411,6 +1411,8 @@ namespace _01electronics_crm
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
         }
+
+        
     }
 
 }

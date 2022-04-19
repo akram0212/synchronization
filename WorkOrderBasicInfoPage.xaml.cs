@@ -25,7 +25,7 @@ namespace _01electronics_crm
         WorkOrder workOrder;
         public WorkOrder oldWorkOrder;
         Quotation tmpWorkOffer;
-
+        private IntegrityChecks integrityChecks = new IntegrityChecks();
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -96,6 +96,9 @@ namespace _01electronics_crm
                 SetContactPersonLabel();
 
                 workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref loggedInUser, ref workOrder, viewAddCondition);
+
+                orderSerialTextBox.IsEnabled = false;
+                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
@@ -116,6 +119,8 @@ namespace _01electronics_crm
                     OfferCheckBox.IsEnabled = false;
                 companyAddressCombo.IsEnabled = true;
                 contactPersonNameCombo.IsEnabled = true;
+
+                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
 
                 //DisableSalesPersonAndOfferCombo();
             }
@@ -326,11 +331,11 @@ namespace _01electronics_crm
 
             if (salesPersonCombo.SelectedItem != null)
             {
-                if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_status_id == 3)
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);
@@ -342,7 +347,7 @@ namespace _01electronics_crm
                 {
                     for (int i = 0; i < outgoingQuotationsList.Count(); i++)
                     {
-                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_status_id == 3)
+                        if (outgoingQuotationsList[i].sales_person_id == salesPersonID && outgoingQuotationsList[i].offer_proposer_id == loggedInUser.GetEmployeeId() && outgoingQuotationsList[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
                         {
                             OfferSerialCombo.Items.Add(outgoingQuotationsList[i].offer_id);
                             offersAddedToComboList.Add(outgoingQuotationsList[i]);
@@ -471,11 +476,11 @@ namespace _01electronics_crm
             }
           
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
                 workOrder.ResetWorkOrderInfo(salesPersonTeamID);
 
-            
-            workOrder.SetPreSalesEngineer(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
+            if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                workOrder.SetPreSalesEngineer(loggedInUser.GetEmployeeId(), loggedInUser.GetEmployeeName());
 
 
             workOrder.InitializeSalesPersonInfo(salesPersonID);
@@ -541,7 +546,8 @@ namespace _01electronics_crm
             {
                 if (InitializationComplete == true || workOrder.GetOrderID() == null)
                 {
-                    workOrder.InitializeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, loggedInUser.GetEmployeeId());
+                    if(workOrder.GetOfferSerial() == 0)
+                        workOrder.InitializeWorkOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_proposer_id);
 
                     SetCompanyNameAddressContactFromOffer();
 
@@ -552,6 +558,7 @@ namespace _01electronics_crm
                         workOrderProjectInfoPage.projectCheckBox.IsChecked = true;
 
                     }
+
                     workOrderProjectInfoPage.workOrderProductsPage.SetCategoryComboBoxesFromOffer();
                     workOrderProjectInfoPage.workOrderProductsPage.SetTypeComboBoxesFromOffer();
                     workOrderProjectInfoPage.workOrderProductsPage.SetBrandComboBoxesFromOffer();
@@ -749,8 +756,12 @@ namespace _01electronics_crm
             //}
         }
 
-        
-
-        
+        private void OnTextChangedOrderSerialTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (integrityChecks.CheckInvalidCharacters(orderSerialTextBox.Text, BASIC_MACROS.PHONE_STRING) && orderSerialTextBox.Text != "")
+            {
+                workOrder.orderSerial = int.Parse(orderSerialTextBox.Text.ToString());
+            }
+        }
     }
 }

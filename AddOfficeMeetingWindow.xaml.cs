@@ -43,7 +43,7 @@ namespace _01electronics_crm
             maxDate = lastDay - today + 1;
             CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
             MeetingDatePicker.BlackoutDates.Add(cdr);
-
+            
             CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
             MeetingDatePicker.BlackoutDates.Add(cdr2);
 

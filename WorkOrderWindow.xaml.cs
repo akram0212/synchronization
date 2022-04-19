@@ -37,7 +37,7 @@ namespace _01electronics_crm
             workOrderProductsPage = new WorkOrderProductsPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderPaymentAndDeliveryPage);
             workOrderProjectInfoPage = new WorkOrderProjectInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProductsPage);
             workOrderBasicInfoPage = new WorkOrderBasicInfoPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition, ref workOrderProjectInfoPage, ref workOrderProductsPage);
-            if (openFilesPage)
+            if (mViewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref mLoggedInUser, ref mWorkOrder, mViewAddCondition);
             }

@@ -506,10 +506,12 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderContractTypeId() == 0)
                 System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            
+            else if (workOrder.orderSerial == 0)
+                System.Windows.Forms.MessageBox.Show("Work order serial must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             else
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
                     if (!workOrder.IssueNewOrder())
                         return;

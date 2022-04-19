@@ -1007,7 +1007,7 @@ namespace _01electronics_crm
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrdersPage);
         }
-        private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
+        private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
             QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
@@ -1246,5 +1246,7 @@ namespace _01electronics_crm
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
         }
+
+        
     }
 }
