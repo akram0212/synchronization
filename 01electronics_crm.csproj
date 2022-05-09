@@ -663,12 +663,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
-      <Project>{A0CB9E08-2813-48DB-96C4-7F9FF208CE32}</Project>
-      <Name>01electronics_library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -793,6 +787,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\client_visit_icon_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\01electronics_library\01electronics_library.csproj">
+      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
+      <Name>01electronics_library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

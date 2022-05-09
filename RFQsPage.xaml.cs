@@ -541,7 +541,8 @@ namespace _01electronics_crm
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
-                    listBox.Items.Add(resolveButton);
+                    if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                        listBox.Items.Add(resolveButton);
 
                     if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     {
