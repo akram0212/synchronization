@@ -524,7 +524,9 @@ namespace _01electronics_crm
             {
                 //if (OfferCheckBox.IsChecked != true)
                 //{
-                    InitializeCompanyContactCombo();
+                InitializeCompanyContactCombo();
+                if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+                    contactPersonNameCombo.IsEnabled = true;
                 //}
             }
 
