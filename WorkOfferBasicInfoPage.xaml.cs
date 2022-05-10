@@ -386,9 +386,9 @@ namespace _01electronics_crm
         {
             
             InitializeCompanyNameCombo();
-            
-           
-            companyNameCombo.SelectedItem = rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].company_name;
+
+
+            companyNameCombo.SelectedIndex = companiesList.FindIndex(s1 => s1.company_serial == rfqsAddedToComboList[RFQSerialCombo.SelectedIndex].company_serial);
 
 
             if (!commonQueriesObject.GetCompanyAddresses(companiesList[companyNameCombo.SelectedIndex].company_serial, ref branchInfo))
