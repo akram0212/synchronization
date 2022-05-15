@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
 using _01electronics_library;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -40,6 +41,12 @@ namespace _01electronics_crm
         {
             employeeEmail = employeeEmailTextBox.Text;
 
+            if (employeeEmailTextBox.Text == "")
+            {
+                System.Windows.Forms.MessageBox.Show("Email must be specified", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, false))
                return;
 
@@ -47,8 +54,8 @@ namespace _01electronics_crm
 
             employeePassword = employeePasswordTextBox.Password;
 
-           //if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
-           //     return;
+           if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId()))
+                return;
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
 

@@ -116,7 +116,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < COMPANY_WORK_MACROS.MAX_ORDER_PRODUCTS; i++)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && workOrder.GetOrderProductPriceValue(i + 1) == 0 && workOrder.GetOrderProductQuantity(i + 1) == 0)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && workOrder.GetOrderProductQuantity(i + 1) == 0)
                     continue;
                 //if (viewAddCondition == 2 && workOrder.GetworkOrderProductTypeId(i + 1) == 0)
                 //  continue;
@@ -299,7 +299,7 @@ namespace _01electronics_crm
                 WrapPanel productQuantityWrapPanel = new WrapPanel();
 
                 Label currentQuantityLabel = new Label();
-                currentQuantityLabel.Content = "Quantity";
+                currentQuantityLabel.Content = "Quantity*";
                 currentQuantityLabel.Style = (Style)FindResource("labelStyle");
                 productQuantityWrapPanel.Children.Add(currentQuantityLabel);
 

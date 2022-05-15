@@ -494,14 +494,14 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Company address must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetContactId() == 0)
                 System.Windows.Forms.MessageBox.Show("Contact must be specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("Product 1 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("Product 2 price  must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("Product 3 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4PriceValue() == 0)
-                System.Windows.Forms.MessageBox.Show("Product 4 price must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct1TypeId() != 0 && workOrder.GetOrderProduct1Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 1 quantity must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct2TypeId() != 0 && workOrder.GetOrderProduct2Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 2 quantity must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct3TypeId() != 0 && workOrder.GetOrderProduct3Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 3 quantity must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderProduct4TypeId() != 0 && workOrder.GetOrderProduct4Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 4 quantity must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderPercentDownPayment() + workOrder.GetOrderPercentOnDelivery() + workOrder.GetOrderPercentOnInstallation() != 100)
                 System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderContractTypeId() == 0)
