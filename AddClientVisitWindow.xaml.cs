@@ -48,11 +48,11 @@ namespace _01electronics_crm
             minDate = today - firstDay + 1 ;
             maxDate = lastDay - today + 1;
 
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
-            visitDatePicker.BlackoutDates.Add(cdr);
+            //CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
+            //visitDatePicker.BlackoutDates.Add(cdr);
 
-            CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
-            visitDatePicker.BlackoutDates.Add(cdr2);
+            //CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
+            //visitDatePicker.BlackoutDates.Add(cdr2);
 
             clientVisit = new ClientVisit(loggedInUser);
             commonQueries = new CommonQueries();
