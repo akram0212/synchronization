@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Wpf;
 using _01electronics_library;
+using System.Globalization;
 
 namespace _01electronics_crm
 {
@@ -161,7 +162,13 @@ namespace _01electronics_crm
                 valueLabel.Width = 150.00;
                 valueLabel.Height = 30.00;
                 valueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
-                valueLabel.Content = mRefreshList[i].value;
+                if (countAmountComboBox.SelectedIndex == 1)
+                {
+                    string temp = "EGP " + mRefreshList[i].value.ToString("C").Split('$')[1];
+                    valueLabel.Content = temp;
+                }
+                else
+                    valueLabel.Content = mRefreshList[i].value.ToString();
                 currentGrid.Children.Add(valueLabel);
                 Grid.SetRow(valueLabel, i);
                 Grid.SetColumn(valueLabel, 1);
@@ -182,13 +189,18 @@ namespace _01electronics_crm
             Grid.SetRow(totalLabel, currentGrid.RowDefinitions.Count - 1);
             Grid.SetColumn(totalLabel, 0);
             currentGrid.Children.Add(totalLabel);
-            
 
             Label totalValueLabel = new Label();
             totalValueLabel.Width = 150.00;
             totalValueLabel.Height = 30.00;
             totalValueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
-            totalValueLabel.Content = summationVariable.ToString();
+            if (countAmountComboBox.SelectedIndex == 1)
+            {
+                string temp = "EGP " + summationVariable.ToString("C").Split('$')[1];
+                totalValueLabel.Content = temp;
+            }
+            else
+                totalValueLabel.Content = summationVariable.ToString();
             currentGrid.Children.Add(totalValueLabel);
             Grid.SetRow(totalValueLabel, currentGrid.RowDefinitions.Count - 1);
             Grid.SetColumn(totalValueLabel, 1);
