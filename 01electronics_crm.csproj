@@ -764,6 +764,10 @@
     <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ProductSupportApp\01electronics_product_support\01electronics_product_support.csproj">
+      <Project>{c11b0cb0-0daa-474a-8a9d-4d76f9dcc90b}</Project>
+      <Name>01electronics_product_support</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Library\01electronics_library\01electronics_library.csproj">
       <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
       <Name>01electronics_library</Name>
