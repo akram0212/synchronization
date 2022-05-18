@@ -284,6 +284,7 @@ namespace _01electronics_crm
                 {
                     Label currentCategoryLabelValue = new Label();
                     currentCategoryLabelValue.Style = (Style)FindResource("tableItemValue");
+                    currentCategoryLabelValue.Width = 150;
                     currentCategoryLabelValue.Content = rfq.GetRFQProductCategory(i + 1);
                     productCategoryWrapPanel.Children.Add(currentCategoryLabelValue);
                 }
@@ -322,6 +323,7 @@ namespace _01electronics_crm
                 {
                     Label currentTypeLabelValue = new Label();
                     currentTypeLabelValue.Style = (Style)FindResource("tableItemValue");
+                    currentTypeLabelValue.Width = 150;
                     currentTypeLabelValue.Content = rfq.GetRFQProductType(i + 1);
                     productTypeWrapPanel.Children.Add(currentTypeLabelValue);
                 }
@@ -358,6 +360,7 @@ namespace _01electronics_crm
                 {
                     Label currentBrandLabelValue = new Label();
                     currentBrandLabelValue.Style = (Style)FindResource("tableItemValue");
+                    currentBrandLabelValue.Width = 150;
                     currentBrandLabelValue.Content = rfq.GetRFQProductBrand(i + 1);
                     productBrandWrapPanel.Children.Add(currentBrandLabelValue);
                 }
@@ -394,6 +397,7 @@ namespace _01electronics_crm
                 {
                     Label currentModelLabelValue = new Label();
                     currentModelLabelValue.Style = (Style)FindResource("tableItemValue");
+                    currentModelLabelValue.Width = 150;
                     currentModelLabelValue.Content = rfq.GetRFQProductModel(i + 1);
                     productModelWrapPanel.Children.Add(currentModelLabelValue);
                 }

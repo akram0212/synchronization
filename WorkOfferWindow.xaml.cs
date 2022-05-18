@@ -35,7 +35,7 @@ namespace _01electronics_crm
             workOfferPaymentAndDeliveryPage = new WorkOfferPaymentAndDeliveryPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition, ref workOfferAdditionalInfoPage);
             workOfferProductsPage = new WorkOfferProductsPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition, ref workOfferPaymentAndDeliveryPage);
             workOfferBasicInfoPage = new WorkOfferBasicInfoPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition, ref workOfferProductsPage);
-            if (openFilesPage)
+            if (mViewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref mLoggedInUser, ref mWorkOffer, mViewAddCondition);
             }

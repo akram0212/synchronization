@@ -102,15 +102,20 @@
                    
                     <WrapPanel Grid.Row="4">
                         <WrapPanel>
-                            <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}"/>
-                            <TextBox Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                            <Label Content="Additional &#x0a;Description" Style="{StaticResource labelStyle}" VerticalAlignment="Top"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                                <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Name="remainingCharactersWrapPanel">
+                                    <Label Width="180" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Right"/>
+                                    <Label Width="50" Margin="0,0,10,0" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Center"/>
+                                </WrapPanel>
+                            </Grid>
+                            
                         </WrapPanel>
-                        <WrapPanel>
-                            <TextBox Name="orderSerialTextBox" Style="{StaticResource miniTextBoxStyle}" Text="OrderSerial" Visibility="Collapsed"/>
-                            <TextBox Name="orderIDTextBox" Style="{StaticResource miniTextBoxStyle}" Text="Order ID" Visibility="Collapsed"/>
-                            <DatePicker Name="issueDatePicker" Style="{StaticResource datePickerStyle}" Visibility="Collapsed"/>
-                        </WrapPanel>
-                        
                     </WrapPanel>
                 </Grid>
             </ScrollViewer>

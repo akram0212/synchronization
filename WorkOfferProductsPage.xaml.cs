@@ -419,6 +419,7 @@ namespace _01electronics_crm
                 {
                     Label currentCategoryLabelValue = new Label();
                     currentCategoryLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentCategoryLabelValue.Width = 150;
                     currentCategoryLabelValue.Content = quotation.GetOfferProductCategory(i + 1);
                     productCategoryWrapPanel.Children.Add(currentCategoryLabelValue);
                 }
@@ -457,6 +458,7 @@ namespace _01electronics_crm
                 {
                     Label currentTypeLabelValue = new Label();
                     currentTypeLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentTypeLabelValue.Width = 150;
                     currentTypeLabelValue.Content = quotation.GetOfferProductType(i + 1);
                     productTypeWrapPanel.Children.Add(currentTypeLabelValue);
                 }
@@ -487,6 +489,7 @@ namespace _01electronics_crm
                 {
                     Label currentBrandLabelValue = new Label();
                     currentBrandLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentBrandLabelValue.Width = 150;
                     currentBrandLabelValue.Content = quotation.GetOfferProductBrand(i + 1);
                     productBrandWrapPanel.Children.Add(currentBrandLabelValue);
                 }
@@ -518,6 +521,7 @@ namespace _01electronics_crm
                 {
                     Label currentModelLabelValue = new Label();
                     currentModelLabelValue.Style = (Style)FindResource("labelStyle");
+                    currentModelLabelValue.Width = 150;
                     currentModelLabelValue.Content = quotation.GetOfferProductModel(i + 1);
                     productModelWrapPanel.Children.Add(currentModelLabelValue);
                 }

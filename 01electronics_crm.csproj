@@ -82,14 +82,11 @@
       <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Spire.Doc, Version=10.3.5.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.10.3.5\lib\net40\Spire.Doc.dll</HintPath>
+    <Reference Include="Spire.Doc, Version=10.4.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\Spire.Doc.10.4.6\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.10.3.5\lib\net40\Spire.License.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.Pdf, Version=8.3.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spire.Doc.10.3.5\lib\net40\Spire.Pdf.dll</HintPath>
+    <Reference Include="Spire.Pdf, Version=8.4.15.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\Spire.Doc.10.4.6\lib\net40\Spire.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -642,9 +639,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="login_cover.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="MAIN_LOGO.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -661,18 +655,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\addfiles_icon.jpg" />
-    <Resource Include="photos\drop_files_icon.jpg" />
-    <Resource Include="photos\excel_icon.jpg" />
-    <Resource Include="photos\image_icon.jpg" />
-    <Resource Include="photos\pdf_icon.jpg" />
-    <Resource Include="photos\powerpoint_icon.jpg" />
-    <Resource Include="photos\text_icon.jpg" />
-    <Resource Include="photos\unknown_icon.jpg" />
-    <Resource Include="photos\winrar_icon.jpg" />
-    <Resource Include="photos\word_icon.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\products\1.jpg" />
@@ -751,11 +733,7 @@
     <Resource Include="photos\brands\8.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\no_internet_icon.jpg" />
     <Resource Include="photos\models\00.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\plus_icon.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\office_meeting_icon.png" />
@@ -786,10 +764,29 @@
     <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
+    <ProjectReference Include="..\..\Library\01electronics_library\01electronics_library.csproj">
       <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
       <Name>01electronics_library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\excel_icon.jpg" />
+    <Resource Include="Icons\image_icon.jpg" />
+    <Resource Include="Icons\no_internet_icon.jpg" />
+    <Resource Include="Icons\pdf_icon.jpg" />
+    <Resource Include="Icons\plus_icon.jpg" />
+    <Resource Include="Icons\powerpoint_icon.jpg" />
+    <Resource Include="Icons\text_icon.jpg" />
+    <Resource Include="Icons\unknown_icon.jpg" />
+    <Resource Include="Icons\winrar_icon.jpg" />
+    <Resource Include="Icons\word_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\addfiles_icon.jpg" />
+    <Resource Include="Icons\drop_files_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="login_cover.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

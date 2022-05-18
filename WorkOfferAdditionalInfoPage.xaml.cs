@@ -113,6 +113,7 @@ namespace _01electronics_crm
                 nextButton.IsEnabled = true;
                 finishButton.IsEnabled = false;
                 cancelButton.IsEnabled = false;
+                remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
@@ -330,7 +331,11 @@ namespace _01electronics_crm
         }
         private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            //additionalDescription = additionalDescriptionTextBox.Text;
+            if (additionalDescriptionTextBox.Text.Length <= COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE)
+                additionalDescription = additionalDescriptionTextBox.Text;
+            additionalDescriptionTextBox.Text = additionalDescription;
+            additionalDescriptionTextBox.Select(additionalDescriptionTextBox.Text.Length, 0);
+            counterLabel.Content = COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE - additionalDescriptionTextBox.Text.Length;
             quotation.SetOfferNotes(additionalDescriptionTextBox.Text);
         }
         private void DrawingDeadlineFromTextBoxTextChanged(object sender, TextChangedEventArgs e)

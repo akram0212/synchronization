@@ -164,7 +164,7 @@ namespace _01electronics_crm
 
             Image addFilesImage = new Image();
 
-            addFilesImage = new Image { Source = new BitmapImage(new Uri(@"photos\addfiles_icon.jpg", UriKind.Relative)) };
+            addFilesImage = new Image { Source = new BitmapImage(new Uri(@"Icons\addfiles_icon.jpg", UriKind.Relative)) };
             resizeImage(ref addFilesImage, 50, 50);
             addFilesGrid.Children.Add(addFilesImage);
             Grid.SetRow(addFilesImage, 0);
@@ -292,7 +292,7 @@ namespace _01electronics_crm
 
             Image icon = new Image();
 
-            icon = new Image { Source = new BitmapImage(new Uri(@"photos\drop_files_icon.jpg", UriKind.Relative)) };
+            icon = new Image { Source = new BitmapImage(new Uri(@"Icons\drop_files_icon.jpg", UriKind.Relative)) };
             icon.HorizontalAlignment = HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
             resizeImage(ref icon, 250, 150);
@@ -335,7 +335,7 @@ namespace _01electronics_crm
 
             Image icon = new Image();
 
-            icon = new Image { Source = new BitmapImage(new Uri(@"photos\no_internet_icon.jpg", UriKind.Relative)) };
+            icon = new Image { Source = new BitmapImage(new Uri(@"Icons\no_internet_icon.jpg", UriKind.Relative)) };
             icon.HorizontalAlignment = HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
             resizeImage(ref icon, 250, 250);
@@ -358,28 +358,28 @@ namespace _01electronics_crm
         private void LoadIcon(ref Image icon, string ftpFiles)
         {
             if (ftpFiles.Contains(".pdf"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\pdf_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\pdf_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".doc") || ftpFiles.Contains(".docs") || ftpFiles.Contains(".docx"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\word_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\word_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".txt") || ftpFiles.Contains(".rtf"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\text_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\text_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".xls") || ftpFiles.Contains(".xlsx") || ftpFiles.Contains(".csv"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\excel_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\excel_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".jpg") || ftpFiles.Contains(".png") || ftpFiles.Contains(".raw") || ftpFiles.Contains(".jpeg") || ftpFiles.Contains(".gif"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\image_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\image_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".rar") || ftpFiles.Contains(".zip") || ftpFiles.Contains(".gzip"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\winrar_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\winrar_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles.Contains(".ppt") || ftpFiles.Contains(".pptx") || ftpFiles.Contains(".pptm"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\powerpoint_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\powerpoint_icon.jpg", UriKind.Relative)) };
 
             else if (ftpFiles != ".." || ftpFiles != ".")
-                icon = new Image { Source = new BitmapImage(new Uri(@"photos\unknown_icon.jpg", UriKind.Relative)) };
+                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\unknown_icon.jpg", UriKind.Relative)) };
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////

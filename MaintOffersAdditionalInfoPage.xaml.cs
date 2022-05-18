@@ -48,6 +48,8 @@ namespace _01electronics_crm
         protected BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
 
+        protected String additionalDescription;
+
         public MaintOffersBasicInfoPage maintOffersBasicInfoPage;
         public MaintOffersProductsPage maintOffersProductsPage;
         public MaintOffersPaymentAndDeliveryPage maintOffersPaymentAndDeliveryPage;
@@ -92,6 +94,7 @@ namespace _01electronics_crm
                 nextButton.IsEnabled = true;
                 finishButton.IsEnabled = false;
                 cancelButton.IsEnabled = false;
+                remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
@@ -244,6 +247,11 @@ namespace _01electronics_crm
 
         private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (additionalDescriptionTextBox.Text.Length <= COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE)
+                additionalDescription = additionalDescriptionTextBox.Text;
+            additionalDescriptionTextBox.Text = additionalDescription;
+            additionalDescriptionTextBox.Select(additionalDescriptionTextBox.Text.Length, 0);
+            counterLabel.Content = COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE - additionalDescriptionTextBox.Text.Length;
             maintenanceOffer.SetMaintOfferNotes(additionalDescriptionTextBox.Text);
         }
 
