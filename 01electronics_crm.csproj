@@ -73,20 +73,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Spire.Doc, Version=10.4.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.10.4.6\lib\net40\Spire.Doc.dll</HintPath>
+      <HintPath>..\packages\Spire.Doc.10.4.6\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
     <Reference Include="Spire.Pdf, Version=8.4.15.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.Doc.10.4.6\lib\net40\Spire.Pdf.dll</HintPath>
+      <HintPath>..\packages\Spire.Doc.10.4.6\lib\net40\Spire.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -764,12 +764,6 @@
     <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ProductSupportApp\01electronics_product_support\01electronics_product_support.csproj">
-      <Project>{c11b0cb0-0daa-474a-8a9d-4d76f9dcc90b}</Project>
-      <Name>01electronics_product_support</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\excel_icon.jpg" />
     <Resource Include="Icons\image_icon.jpg" />
     <Resource Include="Icons\no_internet_icon.jpg" />
@@ -787,6 +781,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="login_cover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
+      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
+      <Name>01electronics_library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -40,6 +40,8 @@ namespace _01electronics_crm
         private DateTime startDate;
         private DateTime endDate;
 
+        CultureInfo cultureInfo;
+
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
         private bool initializationComplete;
@@ -53,6 +55,8 @@ namespace _01electronics_crm
             commonFunctions = new CommonFunctions();
 
             initializationComplete = false;
+
+            cultureInfo = new CultureInfo("en-US");
 
             InitializeDatePickers();
 
@@ -164,7 +168,7 @@ namespace _01electronics_crm
                 valueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
                 if (countAmountComboBox.SelectedIndex == 1)
                 {
-                    string temp = "EGP " + mRefreshList[i].value.ToString("C").Split('$')[1];
+                    string temp = "EGP " + mRefreshList[i].value.ToString("C", cultureInfo).Split('$')[1];
                     valueLabel.Content = temp;
                 }
                 else
@@ -196,7 +200,7 @@ namespace _01electronics_crm
             totalValueLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
             if (countAmountComboBox.SelectedIndex == 1)
             {
-                string temp = "EGP " + summationVariable.ToString("C").Split('$')[1];
+                string temp = "EGP " + summationVariable.ToString("C", cultureInfo).Split('$')[1];
                 totalValueLabel.Content = temp;
             }
             else
