@@ -121,9 +121,9 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
 
                 //SetDrawingSubmissionValues();
-                //SetContractTypeValue();
-                //SetWarrantyPeriodValues();
-                //SetAdditionalDescriptionValue();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetAdditionalDescriptionValue();
 
             }
         }
@@ -513,6 +513,8 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.orderSerial == 0)
                 System.Windows.Forms.MessageBox.Show("Work order serial must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderIssueDate().ToString().Contains("1/1/0001"))
+                System.Windows.Forms.MessageBox.Show("Work order issue date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             else
             {

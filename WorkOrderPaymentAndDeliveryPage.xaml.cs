@@ -106,8 +106,12 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryTimeFromWhenCombo();
+
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
+                SetTotalPriceCondition();
                 SetDownPaymentValues();
                 SetOnDeliveryValues();
                 SetOnInstallationValues();
