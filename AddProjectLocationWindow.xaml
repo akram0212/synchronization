@@ -56,13 +56,13 @@
                         <WrapPanel Name="CityWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="City *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="cityComboBox" SelectionChanged="OnSelChangedCity"/>
-                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickCityImage"/>
+                            <Image Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickCityImage"/>
                         </WrapPanel>
 
                         <WrapPanel Name="DistrictWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="District *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="districtComboBox" SelectionChanged="OnSelChangedDistrict"/>
-                            <Image Source="photos\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickDistrictImage"/>
+                            <Image Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickDistrictImage"/>
                         </WrapPanel>
                     </WrapPanel>
 

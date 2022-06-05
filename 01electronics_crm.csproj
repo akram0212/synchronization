@@ -764,12 +764,6 @@
     <Resource Include="Icons\client_visit_icon_blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
-      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
-      <Name>01electronics_library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\excel_icon.jpg" />
     <Resource Include="Icons\image_icon.jpg" />
     <Resource Include="Icons\no_internet_icon.jpg" />
@@ -789,6 +783,10 @@
     <Resource Include="login_cover.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
+      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
+      <Name>01electronics_library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
       <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
       <Name>01electronics_library</Name>
