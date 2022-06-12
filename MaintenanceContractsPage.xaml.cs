@@ -779,8 +779,8 @@ namespace _01electronics_crm
             else
                 selectedYear = 0;
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -793,8 +793,8 @@ namespace _01electronics_crm
             else
                 selectedQuarter = 0;
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
@@ -809,8 +809,8 @@ namespace _01electronics_crm
 
 
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -824,8 +824,8 @@ namespace _01electronics_crm
 
 
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
@@ -838,8 +838,8 @@ namespace _01electronics_crm
             else
                 selectedProduct = 0;
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
@@ -852,8 +852,8 @@ namespace _01electronics_crm
             else
                 selectedBrand = 0;
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
@@ -866,8 +866,8 @@ namespace _01electronics_crm
             else
                 selectedStatus = 0;
 
-            //SetMaintContractsStackPanel();
-            //SetMaintContractsGrid();
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
