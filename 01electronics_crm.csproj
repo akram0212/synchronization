@@ -30,11 +30,11 @@
     <ProductName>CRM</ProductName>
     <PublisherName>01 Electronics</PublisherName>
     <SuiteName>ERP System</SuiteName>
-    <MinimumRequiredVersion>6.0.0.9</MinimumRequiredVersion>
+    <MinimumRequiredVersion>6.1.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
-    <ApplicationVersion>6.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>6.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
