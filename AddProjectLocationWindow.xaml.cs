@@ -35,7 +35,7 @@ namespace _01electronics_crm
         protected List<BASIC_STRUCTS.CITY_STRUCT> cities;
         protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
-        protected List<BASIC_STRUCTS.PROJECT_STRUCT> projects;
+        protected List<PROJECT_MACROS.PROJECT_STRUCT> projects;
         protected int projectLocationId;
         public AddProjectLocationWindow(ref Employee mLoggedInUser)
         {
@@ -53,7 +53,7 @@ namespace _01electronics_crm
             cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
 
-            projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
+            projects = new List<PROJECT_MACROS.PROJECT_STRUCT>();
 
             InitializeProjects();
             InitializeCountries();

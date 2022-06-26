@@ -32,10 +32,10 @@ namespace _01electronics_crm
 
         private int viewAddCondition;
 
-        private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<BASIC_STRUCTS.ADDRESS_STRUCT> projectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
-        private List<BASIC_STRUCTS.ADDRESS_STRUCT> orderProjectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
-        private List<BASIC_STRUCTS.ADDRESS_STRUCT> addedLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+        private List<PROJECT_MACROS.PROJECT_STRUCT> projects = new List<PROJECT_MACROS.PROJECT_STRUCT>();
+        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> projectLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> orderProjectLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> addedLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
 
         public WorkOrderBasicInfoPage workOrderBasicInfoPage;
         public WorkOrderProductsPage workOrderProductsPage;
@@ -140,13 +140,14 @@ namespace _01electronics_crm
                     if (!commonQueriesObject.GetProjectLocations(workOrder.GetprojectSerial(), ref projectLocations))
                         return;
 
-                    List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+                    List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> temp = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+
                     workOrder.GetProjectLocations(ref temp);
 
                     for (int i = 0; i < projectLocations.Count; i++)
                     {
                         CheckBox checkBox = new CheckBox();
-                        checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.district;
+                        checkBox.Content = projectLocations[i].country.country_name + "," + projectLocations[i].state_governorate.state_name + "," + projectLocations[i].city.city_name + "," + projectLocations[i].district.district_name;
                         checkBox.Tag = i;
                         checkBox.Style = (Style)FindResource("checkBoxStyle");
                         checkBox.Checked += OnCheckProjectLocation;
@@ -175,7 +176,7 @@ namespace _01electronics_crm
                     for (int i = 0; i < orderProjectLocations.Count; i++)
                     {
                         CheckBox checkBox = new CheckBox();
-                        checkBox.Content = orderProjectLocations[i].branch_Info.country + "," + orderProjectLocations[i].branch_Info.state_governorate + "," + orderProjectLocations[i].branch_Info.city + "," + orderProjectLocations[i].branch_Info.district;
+                        checkBox.Content = orderProjectLocations[i].country.country_name + "," + orderProjectLocations[i].state_governorate.state_name + "," + orderProjectLocations[i].city.city_name + "," + orderProjectLocations[i].district.district_name;
                         checkBox.IsEnabled = false;
                         checkBox.IsChecked = true;
                         checkBox.Style = (Style)FindResource("checkBoxStyle");

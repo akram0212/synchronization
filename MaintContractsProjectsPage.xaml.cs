@@ -31,9 +31,9 @@ namespace _01electronics_crm
 
         private int viewAddCondition;
 
-        private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<BASIC_STRUCTS.ADDRESS_STRUCT> projectLocations;
-        private List<BASIC_STRUCTS.ADDRESS_STRUCT> addedLocations;
+        private List<PROJECT_MACROS.PROJECT_STRUCT> projects = new List<PROJECT_MACROS.PROJECT_STRUCT>();
+        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> projectLocations;
+        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> addedLocations;
 
         public MaintContractsBasicInfoPage maintContractsBasicInfoPage;
         public MaintContractsProductsPage maintContractsProductsPage;
@@ -41,8 +41,6 @@ namespace _01electronics_crm
         public MaintContractsAdditionalInfoPage maintContractsAdditionalInfoPage;
         public MaintContractsUploadFilesPage maintContractsUploadFilesPage;
 
-        private List<BASIC_STRUCTS.trialStruct> trialList = new List<BASIC_STRUCTS.trialStruct>();
-        private List<BASIC_STRUCTS.trialStruct> addedList = new List<BASIC_STRUCTS.trialStruct>();
         private List<int> skip = new List<int>();
 
         Grid trialGrid = new Grid();
@@ -60,8 +58,9 @@ namespace _01electronics_crm
 
             maintContract = mMaintContracts;
 
-            projectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
-            addedLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+            projectLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+            addedLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+
 
             InitializeComponent();
 
@@ -118,15 +117,15 @@ namespace _01electronics_crm
 
                 commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
 
+                List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> temp = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
 
-                List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
                 maintContract.GetProjectLocations(ref temp);
 
 
                 for (int i = 0; i < projectLocations.Count; i++)
                 {
                     CheckBox checkBox = new CheckBox();
-                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.Content = projectLocations[i].country.country_name + "," + projectLocations[i].city.city_name + "," + projectLocations[i].state_governorate.state_name + "," + projectLocations[i].district.district_name;
                     checkBox.Tag = i;
                     checkBox.Style = (Style)FindResource("checkBoxStyle");
                     checkBox.Checked += OnCheckProjectLocation;
@@ -155,7 +154,7 @@ namespace _01electronics_crm
                 for (int i = 0; i < projectLocations.Count; i++)
                 {
                     CheckBox checkBox = new CheckBox();
-                    checkBox.Content = projectLocations[i].branch_Info.country + "," + projectLocations[i].branch_Info.city + "," + projectLocations[i].branch_Info.state_governorate + "," + projectLocations[i].branch_Info.district;
+                    checkBox.Content = projectLocations[i].country.country_name + "," + projectLocations[i].city.city_name + "," + projectLocations[i].state_governorate.state_name + "," + projectLocations[i].district.district_name;
                     checkBox.IsEnabled = false;
                     checkBox.IsChecked = true;
                     checkBox.Style = (Style)FindResource("checkBoxStyle");

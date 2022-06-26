@@ -74,6 +74,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0">
@@ -114,6 +115,11 @@
                     <Label Style="{StaticResource tableItemValue}" Name="orderSerialLabel" Visibility="Collapsed"/>
                     <TextBox Style="{StaticResource miniTextBoxStyle}" Name="orderSerialTextBox" TextChanged="OnTextChangedOrderSerialTextBox"/>
                 </WrapPanel>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="3">
+                <Label Style="{StaticResource labelStyle}" Content="Issue &#x0a;Date*"/>
+                <DatePicker Style="{StaticResource datePickerStyle}" Name="issueDatePicker" SelectedDateChanged="OnSelChangedIssuedatePicker"/>
             </WrapPanel>
 
         </Grid>

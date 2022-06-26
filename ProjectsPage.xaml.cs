@@ -34,8 +34,9 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
         private List<KeyValuePair<int, TreeViewItem>> projectTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
-        private List<BASIC_STRUCTS.PROJECT_STRUCT> projectNames = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>>();
+
+        private List<PROJECT_MACROS.PROJECT_STRUCT> projectNames = new List<PROJECT_MACROS.PROJECT_STRUCT>();
+        private List<KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>>();
 
         //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
 
@@ -88,11 +89,10 @@ namespace _01electronics_crm
 
             for (int i = 0; i < projectNames.Count; i++)
             {
-                List<BASIC_STRUCTS.ADDRESS_STRUCT> tmpList = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+                List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> tmpList = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
                 commonQueries.GetProjectLocations(projectNames[i].project_serial, ref tmpList);
 
-                projectLocations.Add(new KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>(projectNames[i].project_serial, tmpList));
-
+                projectLocations.Add(new KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>(projectNames[i].project_serial, tmpList));
             }
 
             return true;
@@ -130,17 +130,17 @@ namespace _01electronics_crm
 
                 for (int j = 0; j < projectLocations[i].Value.Count; j++)
                 {
-                    if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != projectLocations[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                    if (countryCheckBox.IsChecked == true && countryComboBox.SelectedItem != null && countries[countryComboBox.SelectedIndex].country_id != projectLocations[i].Value[j].district.district_id / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_STATES_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
                         continue;
-                    if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != projectLocations[i].Value[j].address / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
+                    if (stateCheckBox.IsChecked == true && stateComboBox.SelectedItem != null && states[stateComboBox.SelectedIndex].state_id != projectLocations[i].Value[j].district.district_id / (BASIC_MACROS.MAXIMUM_DISTRICTS_NO * BASIC_MACROS.MAXIMUM_CITIES_NO))
                         continue;
-                    if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != projectLocations[i].Value[j].address / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
+                    if (cityCheckBox.IsChecked == true && cityComboBox.SelectedItem != null && cities[cityComboBox.SelectedIndex].city_id != projectLocations[i].Value[j].district.district_id / BASIC_MACROS.MAXIMUM_DISTRICTS_NO)
                         continue;
-                    if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != projectLocations[i].Value[j].address)
+                    if (districtCheckBox.IsChecked == true && districtComboBox.SelectedItem != null && districts[districtComboBox.SelectedIndex].district_id != projectLocations[i].Value[j].district.district_id)
                         continue;
 
                     TreeViewItem ChildItem = new TreeViewItem();
-                    ChildItem.Header = projectLocations[i].Value[j].branch_Info.district + ", " + projectLocations[i].Value[j].branch_Info.city + ", " + projectLocations[i].Value[j].branch_Info.state_governorate + ", " + projectLocations[i].Value[j].branch_Info.country;
+                    ChildItem.Header = projectLocations[i].Value[j].district.district_name + ", " + projectLocations[i].Value[j].city.city_name + ", " + projectLocations[i].Value[j].state_governorate.state_name + ", " + projectLocations[i].Value[j].country.country_name;
                     ChildItem.Tag = projectLocations[i].Value[j].location_id;
                     ChildItem.FontSize = 13;
                     ChildItem.FontWeight = FontWeights.SemiBold;

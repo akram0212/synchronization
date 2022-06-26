@@ -33,9 +33,9 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
         private List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT> deliveryPoints = new List<BASIC_STRUCTS.DELIVERY_POINT_STRUCT>();
 
-        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> vatConditions = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
-        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
-        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+        private List<BASIC_STRUCTS.VAT_CONDITION_STRUCT> vatConditions = new List<BASIC_STRUCTS.VAT_CONDITION_STRUCT>();
+        private List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT>();
+        private List<BASIC_STRUCTS.SHIPMENT_TYPE_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.SHIPMENT_TYPE_STRUCT>();
 
         private int viewAddCondition;
         private int downPaymentPercentage;
@@ -106,8 +106,12 @@ namespace _01electronics_crm
                 InitializeTotalPriceCurrencyComboBox();
                 InitializeDeliveryTimeComboBox();
                 InitializeDeliveryPointComboBox();
+                InitializeTotalPriceVATCombo();
+                InitializeDeliveryTimeFromWhenCombo();
+
                 SetTotalPriceCurrencyComboBox();
                 SetTotalPriceTextBox();
+                SetTotalPriceCondition();
                 SetDownPaymentValues();
                 SetOnDeliveryValues();
                 SetOnInstallationValues();
@@ -200,7 +204,7 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < vatConditions.Count; i++)
-                totalPriceVATCombo.Items.Add(vatConditions[i].value);
+                totalPriceVATCombo.Items.Add(vatConditions[i].condition_type);
             return true;
         } 
         private bool InitializeDeliveryTimeFromWhenCombo()
@@ -209,7 +213,7 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < conditionStartDates.Count; i++)
-                deliveryTimeFromWhenCombo.Items.Add(conditionStartDates[i].value);
+                deliveryTimeFromWhenCombo.Items.Add(conditionStartDates[i].condition_type);
             return true;
         }
 
@@ -477,7 +481,7 @@ namespace _01electronics_crm
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
             if (deliveryTimeFromWhenCombo.SelectedIndex != -1)
-                workOrder.SetOrderDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].key, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].value);
+                workOrder.SetOrderDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].condition_id, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].condition_type);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -485,12 +489,12 @@ namespace _01electronics_crm
             if (totalPriceVATCombo.SelectedIndex == 0)
             {
                 tmp = true;
-                workOrder.SetOrderVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+                workOrder.SetOrderVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].condition_type);
             }
             else
             {
                 tmp = false;
-                workOrder.SetOrderVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].value);
+                workOrder.SetOrderVATCondition(tmp, vatConditions[totalPriceVATCombo.SelectedIndex].condition_type);
             }
         }
 

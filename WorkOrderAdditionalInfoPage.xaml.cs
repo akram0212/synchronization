@@ -35,7 +35,7 @@ namespace _01electronics_crm
 
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
-        private List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.KEY_VALUE_PAIR_STRUCT>();
+        private List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT>();
 
         private int viewAddCondition;
         private int warrantyPeriod = 0;
@@ -121,9 +121,9 @@ namespace _01electronics_crm
                 InitializeWarrantyPeriodFromWhenCombo();
 
                 //SetDrawingSubmissionValues();
-                //SetContractTypeValue();
-                //SetWarrantyPeriodValues();
-                //SetAdditionalDescriptionValue();
+                SetContractTypeValue();
+                SetWarrantyPeriodValues();
+                SetAdditionalDescriptionValue();
 
             }
         }
@@ -199,7 +199,7 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < conditionStartDates.Count; i++)
-                drawingDeadlineDateFromWhenComboBox.Items.Add(conditionStartDates[i].value);
+                drawingDeadlineDateFromWhenComboBox.Items.Add(conditionStartDates[i].condition_type);
             return true;
         }
         private bool InitializeWarrantyPeriodFromWhenCombo()
@@ -208,7 +208,7 @@ namespace _01electronics_crm
                 return false;
 
             for (int i = 0; i < conditionStartDates.Count; i++)
-                warrantyPeriodFromWhenCombo.Items.Add(conditionStartDates[i].value);
+                warrantyPeriodFromWhenCombo.Items.Add(conditionStartDates[i].condition_type);
             return true;
         }
 
@@ -285,7 +285,7 @@ namespace _01electronics_crm
         {
             if (drawingDeadlineDateFromWhenComboBox.SelectedIndex != -1)
             {
-                workOrder.SetOrderDrawingSubmissionDeadlineCondition(conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].key, conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].value);
+                workOrder.SetOrderDrawingSubmissionDeadlineCondition(conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].condition_id, conditionStartDates[drawingDeadlineDateFromWhenComboBox.SelectedIndex].condition_type);
             }
         }
 
@@ -293,7 +293,7 @@ namespace _01electronics_crm
         {
             if (warrantyPeriodFromWhenCombo.SelectedIndex != -1)
             {
-                workOrder.SetOrderWarrantyPeriodCondition(conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].key, conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].value);
+                workOrder.SetOrderWarrantyPeriodCondition(conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].condition_id, conditionStartDates[warrantyPeriodFromWhenCombo.SelectedIndex].condition_type);
             }
         }
 
@@ -513,6 +513,8 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.orderSerial == 0)
                 System.Windows.Forms.MessageBox.Show("Work order serial must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (workOrder.GetOrderIssueDate().ToString().Contains("1/1/0001"))
+                System.Windows.Forms.MessageBox.Show("Work order issue date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             else
             {

@@ -99,6 +99,8 @@ namespace _01electronics_crm
 
                 orderSerialTextBox.IsEnabled = false;
                 orderSerialTextBox.Text = workOrder.orderSerial.ToString();
+                issueDatePicker.IsEnabled = false;
+                issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
@@ -121,6 +123,7 @@ namespace _01electronics_crm
                 contactPersonNameCombo.IsEnabled = true;
 
                 orderSerialTextBox.Text = workOrder.orderSerial.ToString();
+                issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
 
                 //DisableSalesPersonAndOfferCombo();
             }
@@ -612,6 +615,11 @@ namespace _01electronics_crm
         //    }
         //}
 
+        private void OnSelChangedIssuedatePicker(object sender, SelectionChangedEventArgs e)
+        {
+            workOrder.SetOrderIssueDate(DateTime.Parse(issueDatePicker.Text.ToString()));
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -765,5 +773,7 @@ namespace _01electronics_crm
                 workOrder.orderSerial = int.Parse(orderSerialTextBox.Text.ToString());
             }
         }
+
+       
     }
 }
