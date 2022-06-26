@@ -61,6 +61,7 @@ namespace _01electronics_crm
             projectLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
             addedLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
 
+
             InitializeComponent();
 
             InitializeProjectsCombo();
@@ -116,8 +117,8 @@ namespace _01electronics_crm
 
                 commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
 
-
                 List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> temp = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+
                 maintContract.GetProjectLocations(ref temp);
 
 

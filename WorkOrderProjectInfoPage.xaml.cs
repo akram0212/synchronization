@@ -141,6 +141,7 @@ namespace _01electronics_crm
                         return;
 
                     List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> temp = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+
                     workOrder.GetProjectLocations(ref temp);
 
                     for (int i = 0; i < projectLocations.Count; i++)

@@ -34,6 +34,7 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
         private List<KeyValuePair<int, TreeViewItem>> projectTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
+
         private List<PROJECT_MACROS.PROJECT_STRUCT> projectNames = new List<PROJECT_MACROS.PROJECT_STRUCT>();
         private List<KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>>();
 
@@ -92,7 +93,6 @@ namespace _01electronics_crm
                 commonQueries.GetProjectLocations(projectNames[i].project_serial, ref tmpList);
 
                 projectLocations.Add(new KeyValuePair<int, List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>>(projectNames[i].project_serial, tmpList));
-
             }
 
             return true;
