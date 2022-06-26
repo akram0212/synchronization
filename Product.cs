@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using _01electronics_library;
+using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {
@@ -49,6 +51,8 @@ namespace _01electronics_crm
         private int numberOfSavedModelBenefits;
         private int numberOfSavedModelSummaryPoints;
         private int numberOfSavedModelStandardFeatures;
+
+        protected String errorMessage;
 
         public Product()
         {
@@ -449,16 +453,20 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public bool DownloadPhotoFromServer()
         {
-            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath, BASIC_MACROS.SEVERITY_LOW))
+            if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             return true;
         }
         public bool UploadPhotoToServer()
         {
-            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW))
+            if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             return true;
         }
 

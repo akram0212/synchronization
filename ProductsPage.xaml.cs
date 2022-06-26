@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using _01electronics_library;
+using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {

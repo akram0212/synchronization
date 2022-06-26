@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,6 +30,8 @@ namespace _01electronics_crm
 
         protected int phonesCount;
         protected int emailsCount;
+
+        protected String errorMessage;
         public AddContactDetailsWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             InitializeComponent();
@@ -76,9 +79,11 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false))
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             //contact.AddCompanyPhone(outputString);
             // contact.GetNumberOfSavedCompanyPhones();
             telephoneTextBox.Text = outputString;
@@ -91,9 +96,11 @@ namespace _01electronics_crm
             String inputString = emailTextBox.Text;
             String outputString = emailTextBox.Text;
 
-            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref outputString, false))
+            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref outputString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             //contact.AddNewContactEmail(outputString);
             emailTextBox.Text = outputString;
 

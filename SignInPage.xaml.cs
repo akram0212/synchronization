@@ -29,6 +29,7 @@ namespace _01electronics_crm
         String employeePassword;
 
         Employee loggedInUser;
+        protected String errorMessage;
 
         public SignInPage()
         {
@@ -47,9 +48,11 @@ namespace _01electronics_crm
                 return;
             }
 
-            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, false))
-               return;
-
+            if (!integrityChecker.CheckEmployeeLoginEmailEditBox(employeeEmail, ref employeeEmail, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             loggedInUser.InitializeEmployeeInfo(employeeEmail);
 
             employeePassword = employeePasswordTextBox.Password;

@@ -8,12 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _01electronics_library;
+using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {
@@ -26,6 +28,8 @@ namespace _01electronics_crm
         private Employee loggedInUser;
 
         private FTPServer ftpServer;
+
+        protected String errorMessage;
 
         public UserPortalPage(ref Employee mLoggedInUser)
         {
@@ -71,7 +75,7 @@ namespace _01electronics_crm
             }
             catch
             {
-                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath, BASIC_MACROS.SEVERITY_LOW))
+                if (ftpServer.DownloadFile(BASIC_MACROS.EMPLOYEES_PHOTOS_PATH + loggedInUser.GetEmployeeId() + ".jpg", imagePath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
                 {
                     Image employeePhoto = new Image();
 
@@ -86,6 +90,10 @@ namespace _01electronics_crm
                     employeePhoto.Source = src;
 
                     PhotoGrid.Children.Add(employeePhoto);
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
            
             }
