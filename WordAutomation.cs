@@ -16,6 +16,8 @@ using System.Drawing;
 
 using Size = System.Drawing.Size;
 using System.Windows.Media.Imaging;
+using _01electronics_windows_library;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -43,6 +45,8 @@ namespace _01electronics_crm
         int counter;
         decimal totalPrice;
 
+        protected String errorMessage;
+
         public WordAutomation()
         {
             sqlServer = new SQLServer();
@@ -60,7 +64,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OUTGOING_QUOTATION_PATH + quotation.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_OUTGOING_QUOTATION_PATH + quotation.GetNoOfOfferSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
             {
                 doc.LoadFromFile(wordFilePath);
 
@@ -131,7 +135,7 @@ namespace _01electronics_crm
 
                     string imagePath = Directory.GetCurrentDirectory() + "/" + quotation.GetOfferProductModel(i + 1) + ".jpg";
                     imagePaths.Add(imagePath);
-                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + quotation.GetOfferProductTypeId(i + 1) + "/" + quotation.GetOfferProductBrandId(i + 1) + "/" + quotation.GetOfferProductModelId(i + 1) + ".jpg", imagePath, BASIC_MACROS.SEVERITY_HIGH))
+                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + quotation.GetOfferProductTypeId(i + 1) + "/" + quotation.GetOfferProductBrandId(i + 1) + "/" + quotation.GetOfferProductModelId(i + 1) + ".jpg", imagePath, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
                     {
                         //BitmapImage src = new BitmapImage();
                         //src.BeginInit();
@@ -148,6 +152,10 @@ namespace _01electronics_crm
                         imageParagraph.AppendPicture(productImage);
 
                         //File.Delete(imagePath);
+                    }
+                    else
+                    {
+                        System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
@@ -343,6 +351,10 @@ namespace _01electronics_crm
 
                 System.Diagnostics.Process.Start(wordFilePath);
             }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         public void AutomateWorkOrder(WorkOrder mWorkOrder)
         {
@@ -352,7 +364,7 @@ namespace _01electronics_crm
 
             counter = 0;
 
-            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_ORDERS_PATH + workOrder.GetNoOfOrderSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW))
+            if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_ORDERS_PATH + workOrder.GetNoOfOrderSavedProducts() + ".doc", wordFilePath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
             {
                 doc.LoadFromFile(wordFilePath);
 
@@ -423,7 +435,7 @@ namespace _01electronics_crm
 
                     string imagePath = Directory.GetCurrentDirectory() + "/" + workOrder.GetOrderProductModel(i + 1) + ".jpg";
                     imagePaths.Add(imagePath);
-                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOrder.GetOrderProductTypeId(i + 1) + "/" + workOrder.GetOrderProductBrandId(i + 1) + "/" + workOrder.GetOrderProductModelId(i + 1) + ".jpg", imagePath, BASIC_MACROS.SEVERITY_HIGH))
+                    if (ftpServer.DownloadFile(BASIC_MACROS.MODELS_PHOTOS_PATH + workOrder.GetOrderProductTypeId(i + 1) + "/" + workOrder.GetOrderProductBrandId(i + 1) + "/" + workOrder.GetOrderProductModelId(i + 1) + ".jpg", imagePath, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
                     {
                         //BitmapImage src = new BitmapImage();
                         //src.BeginInit();
@@ -440,6 +452,10 @@ namespace _01electronics_crm
                         imageParagraph.AppendPicture(productImage);
 
                         //File.Delete(imagePath);
+                    }
+                    else
+                    {
+                        System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
@@ -630,6 +646,10 @@ namespace _01electronics_crm
                 doc.SaveToFile(wordFilePath);
 
                 System.Diagnostics.Process.Start(wordFilePath);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

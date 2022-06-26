@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
 using _01electronics_library;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -32,6 +33,8 @@ namespace _01electronics_crm
         String employeePassword;
         String confirmPassword;
         String employeeHashedPassword;
+
+        protected String errorMessage;
         public SignUpPage()
         {
             InitializeComponent();
@@ -42,9 +45,11 @@ namespace _01electronics_crm
             String inputString = businessEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString,false))
+            if (!integrityChecker.CheckEmployeeSignUpEmailEditBox(inputString, ref modifiedString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             if (!signupEmployee.InitializeEmployeeInfo(modifiedString))
                 return false;
 
@@ -58,9 +63,11 @@ namespace _01electronics_crm
             String inputString = personalEmailTextBox.Text;
             String modifiedString = null;
 
-            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString, false))
+            if (!integrityChecker.CheckEmployeePersonalEmailEditBox(inputString, ref modifiedString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             signupEmployee.SetEmployeePersonalEmail(modifiedString);
             personalEmailTextBox.Text = signupEmployee.GetEmployeePersonalEmail();
 

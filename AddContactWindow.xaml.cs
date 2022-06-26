@@ -42,6 +42,8 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> companyAddresses;
         List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT> departments;
         List<COMPANY_ORGANISATION_MACROS.TEAM_STRUCT> teams;
+
+        protected String errorMessage;
         public AddContactWindow()
         {
             InitializeComponent();
@@ -149,9 +151,11 @@ namespace _01electronics_crm
             String outputString = employeeFirstNameTextBox.Text;
 
 
-            if (!integrityChecker.CheckContactNameEditBox(inputString, ref outputString, true))
+            if (!integrityChecker.CheckContactNameEditBox(inputString, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             firstName = outputString;
             contact.SetContactName(firstName + " " + lastName);
             employeeFirstNameTextBox.Text = firstName;
@@ -164,9 +168,11 @@ namespace _01electronics_crm
             String inputString = employeeLastNameTextBox.Text;
             String outputString = employeeLastNameTextBox.Text;
 
-            if (!integrityChecker.CheckContactNameEditBox(inputString, ref outputString, true))
+            if (!integrityChecker.CheckContactNameEditBox(inputString, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             lastName = outputString;
             contact.SetContactName(firstName + " " + lastName);
             employeeLastNameTextBox.Text = lastName;
@@ -179,9 +185,11 @@ namespace _01electronics_crm
             String inputString = employeeBusinessPhoneTextBox.Text;
             String outputString = employeeBusinessPhoneTextBox.Text;
 
-            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, true))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             contact.AddNewContactPhone(outputString);
             employeeBusinessPhoneTextBox.Text = outputString;
 
@@ -193,9 +201,11 @@ namespace _01electronics_crm
             String inputString = employeePersonalPhoneTextBox.Text;
             String outputString = employeePersonalPhoneTextBox.Text;
 
-            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, false))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             if(outputString!= string.Empty)
             {
                contact.AddNewContactPhone(outputString);
@@ -210,9 +220,11 @@ namespace _01electronics_crm
             String inputString = employeeBusinessEmailTextBox.Text;
             String outputString = employeeBusinessEmailTextBox.Text;
 
-            if (!integrityChecker.CheckContactBusinessEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, true))
+            if (!integrityChecker.CheckContactBusinessEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             //YOU SHALL USE THIS FUNCTION TO HANDLE IDS AND EMAILS AUTOMATICALLY
             contact.SetContactBusinessEmail(outputString);
             employeeBusinessEmailTextBox.Text = contact.GetContactBusinessEmail();
@@ -225,9 +237,11 @@ namespace _01electronics_crm
             String inputString = employeePersonalEmailTextBox.Text;
             String outputString = employeePersonalEmailTextBox.Text;
 
-            if (!integrityChecker.CheckContactPersonalEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, false))
+            if (!integrityChecker.CheckContactPersonalEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             //YOU SHALL USE THIS FUNCTION TO HANDLE IDS AND EMAILS AUTOMATICALLY
 
             if (outputString != string.Empty)

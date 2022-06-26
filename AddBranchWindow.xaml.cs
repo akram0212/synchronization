@@ -34,6 +34,8 @@ namespace _01electronics_crm
         protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
         protected String sqlQuery;
+
+        protected String errorMessage;
         public AddBranchWindow(ref Employee mloggedInUser, ref Company mCompany)
         {
             InitializeComponent();
@@ -232,9 +234,11 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, true))
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             company.AddCompanyPhone(outputString);
             telephoneTextBox.Text = outputString;
 
@@ -245,9 +249,11 @@ namespace _01electronics_crm
             String inputString = faxTextBox.Text;
             String outputString = faxTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false))
+            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             company.AddCompanyFax(outputString);
             faxTextBox.Text = outputString;
 

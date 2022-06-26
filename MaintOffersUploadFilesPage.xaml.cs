@@ -16,6 +16,15 @@ using Microsoft.Win32;
 using System.ComponentModel;
 using _01electronics_library;
 using System.IO;
+using _01electronics_windows_library;
+using System.Windows.Forms;
+using ProgressBar = System.Windows.Controls.ProgressBar;
+using Button = System.Windows.Controls.Button;
+using Label = System.Windows.Controls.Label;
+using DragEventArgs = System.Windows.DragEventArgs;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using DataFormats = System.Windows.DataFormats;
+using DragDropEffects = System.Windows.DragDropEffects;
 
 namespace _01electronics_crm
 {
@@ -70,6 +79,8 @@ namespace _01electronics_crm
         public MaintOffersPaymentAndDeliveryPage maintOffersPaymentAndDeliveryPage;
         public MaintOffersAdditionalInfoPage maintOffersAdditionalInfoPage;
 
+        protected String errorMessage;
+
         public MaintOffersUploadFilesPage(ref Employee mLoggedInUser, ref MaintenanceOffer mMaintOffer, int mViewAddCondition)
         {
             sqlDatabase = new SQLServer();
@@ -90,7 +101,7 @@ namespace _01electronics_crm
             InitializeComponent();
 
             progressBar.Style = (Style)FindResource("ProgressBarStyle");
-            progressBar.HorizontalAlignment = HorizontalAlignment.Center;
+            progressBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             progressBar.Width = 200;
 
             uploadBackground = new BackgroundWorker();
@@ -121,8 +132,9 @@ namespace _01electronics_crm
             else
             {
                 ftpFiles.Clear();
-                if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles))
+                if (!ftpObject.ListFilesInFolder(serverFolderPath, ref ftpFiles, ref errorMessage))
                 {
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     InsertErrorRetryButton();
                     return;
                 }
@@ -170,7 +182,7 @@ namespace _01electronics_crm
             Grid.SetRow(addFilesImage, 0);
 
             Label addFilesLabel = new Label();
-            addFilesLabel.HorizontalAlignment = HorizontalAlignment.Center;
+            addFilesLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             addFilesLabel.Content = "Double-Click to ADD FILES";
             addFilesGrid.Children.Add(addFilesLabel);
             Grid.SetRow(addFilesLabel, 1);
@@ -205,13 +217,13 @@ namespace _01electronics_crm
 
             Label name = new Label();
             name.Content = ftpFiles[i];
-            name.HorizontalAlignment = HorizontalAlignment.Center;
+            name.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             UploadIconGrid.Children.Add(name);
             Grid.SetRow(name, 1);
 
             Label status = new Label();
             status.Content = "SUBMITTED";
-            status.HorizontalAlignment = HorizontalAlignment.Center;
+            status.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             BrushConverter brush = new BrushConverter();
             status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
             UploadIconGrid.Children.Add(status);
@@ -247,7 +259,7 @@ namespace _01electronics_crm
 
             Label name = new Label();
             name.Content = localFileName;
-            name.HorizontalAlignment = HorizontalAlignment.Center;
+            name.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             UploadIconGrid.Children.Add(name);
             Grid.SetRow(name, 1);
 
@@ -268,7 +280,7 @@ namespace _01electronics_crm
                 status.Content = "FAILED";
                 status.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FF0000");
             }
-            status.HorizontalAlignment = HorizontalAlignment.Center;
+            status.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             UploadIconGrid.Children.Add(status);
             Grid.SetRow(status, 2);
 
@@ -279,7 +291,7 @@ namespace _01electronics_crm
         {
             Grid grid = new Grid();
 
-            grid.HorizontalAlignment = HorizontalAlignment.Center;
+            grid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             grid.VerticalAlignment = VerticalAlignment.Center;
 
             RowDefinition row1 = new RowDefinition();
@@ -293,14 +305,14 @@ namespace _01electronics_crm
             Image icon = new Image();
 
             icon = new Image { Source = new BitmapImage(new Uri(@"Icons\drop_files_icon.jpg", UriKind.Relative)) };
-            icon.HorizontalAlignment = HorizontalAlignment.Center;
+            icon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
             resizeImage(ref icon, 250, 150);
             grid.Children.Add(icon);
             Grid.SetRow(icon, 0);
 
             Label orLabel = new Label();
-            orLabel.HorizontalAlignment = HorizontalAlignment.Center;
+            orLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             orLabel.Content = "OR";
             orLabel.FontWeight = FontWeights.Bold;
             orLabel.FontSize = 20;
@@ -325,7 +337,7 @@ namespace _01electronics_crm
         {
             Grid grid = new Grid();
             grid.VerticalAlignment = VerticalAlignment.Center;
-            grid.HorizontalAlignment = HorizontalAlignment.Center;
+            grid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
             RowDefinition row1 = new RowDefinition();
             RowDefinition row2 = new RowDefinition();
@@ -336,7 +348,7 @@ namespace _01electronics_crm
             Image icon = new Image();
 
             icon = new Image { Source = new BitmapImage(new Uri(@"Icons\no_internet_icon.jpg", UriKind.Relative)) };
-            icon.HorizontalAlignment = HorizontalAlignment.Center;
+            icon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
             resizeImage(ref icon, 250, 250);
             grid.Children.Add(icon);
@@ -504,9 +516,11 @@ namespace _01electronics_crm
                 if (downloadFile.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
                     return;
 
-                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath))
+                if (!integrityChecks.CheckFileEditBox(downloadFile.SelectedPath, ref errorMessage))
+                {
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-
+                }
                 serverFileName = currentLabel.Content.ToString();
                 integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
@@ -551,9 +565,11 @@ namespace _01electronics_crm
                 if (uploadFile.ShowDialog() == false)
                     return;
 
-                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+                if (!integrityChecks.CheckFileEditBox(uploadFile.FileName, ref errorMessage))
+                {
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-
+                }
                 localFolderPath = uploadFile.FileName;
                 localFileName = System.IO.Path.GetFileName(localFolderPath);
 
@@ -597,9 +613,11 @@ namespace _01electronics_crm
             if (uploadFile.ShowDialog() == false)
                 return;
 
-            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName))
+            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-
+            }
             if (ftpFiles.Count == 0)
             {
                 uploadFilesStackPanel.Children.Clear();
@@ -638,8 +656,9 @@ namespace _01electronics_crm
             else
             {
                 ftpFiles.Clear();
-                if (!fTPServer.ListFilesInFolder(serverFolderPath, ref ftpFiles))
+                if (!fTPServer.ListFilesInFolder(serverFolderPath, ref ftpFiles, ref errorMessage))
                 {
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     uploadFilesStackPanel.Children.Clear();
                     InsertErrorRetryButton();
                     return;
@@ -808,11 +827,13 @@ namespace _01electronics_crm
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
 
             uploadBackground.ReportProgress(50);
-            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH))
+            if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
                 fileUploaded = true;
             else
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fileUploaded = false;
-
+            }
 
             uploadBackground.ReportProgress(75);
 
@@ -824,8 +845,9 @@ namespace _01electronics_crm
             BackgroundWorker downloadBackground = sender as BackgroundWorker;
 
             downloadBackground.ReportProgress(50);
-            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName, BASIC_MACROS.SEVERITY_HIGH))
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
             {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fileDownloaded = false;
                 return;
             }
@@ -856,7 +878,7 @@ namespace _01electronics_crm
                 {
                     if (ftpFiles[i] == fileName)
                     {
-                        var result = MessageBox.Show("This file has already been uploaded, are you sure you want to overwrite?", "FTP Server", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        var result = System.Windows.MessageBox.Show("This file has already been uploaded, are you sure you want to overwrite?", "FTP Server", MessageBoxButton.YesNo, MessageBoxImage.Information);
                         if (result == MessageBoxResult.Yes)
                         {
                             uploadThisFile = true;

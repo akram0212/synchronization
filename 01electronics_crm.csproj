@@ -791,6 +791,10 @@
       <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
       <Name>01electronics_library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\01electronics_windows_library\01electronics_windows_library.csproj">
+      <Project>{91b26f19-70c9-40e4-ad53-f13dd881c7cb}</Project>
+      <Name>01electronics_windows_library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

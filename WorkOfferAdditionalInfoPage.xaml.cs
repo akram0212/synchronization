@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using _01electronics_library;
 using System.ComponentModel;
 using System.IO;
+using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -38,6 +39,7 @@ namespace _01electronics_crm
         List<int> branches;
         int newSalesPersonId;
 
+        protected String errorMessage;
 
         public MergeCompaniesWindow(ref Employee mLoggedInUser, ref Company mCompany)
         {
@@ -258,9 +260,11 @@ namespace _01electronics_crm
             String inputString = CompanyNameTextBox.Text;
             String outputString = CompanyNameTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyNameEditBox(inputString, ref outputString, true))
+            if (!integrityChecker.CheckCompanyNameEditBox(inputString, ref outputString, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
-
+            }
             company.SetCompanyName(outputString);
             CompanyNameTextBox.Text = company.GetCompanyName();
 
