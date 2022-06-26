@@ -34,7 +34,7 @@ namespace _01electronics_crm
         protected List<BASIC_STRUCTS.CITY_STRUCT> cities;
         protected List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
-        protected BASIC_STRUCTS.PROJECT_STRUCT project = new BASIC_STRUCTS.PROJECT_STRUCT();
+        protected PROJECT_MACROS.PROJECT_STRUCT project = new PROJECT_MACROS.PROJECT_STRUCT();
         public AddProjectWindow(ref Employee mLoggedInUser)
         {
             InitializeComponent();

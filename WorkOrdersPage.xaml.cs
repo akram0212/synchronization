@@ -396,7 +396,7 @@ namespace _01electronics_crm
                     continue;
 
                 if (statusCheckBox.IsChecked == true && workOrders[i].order_status_id != selectedStatus)
-                    continue;
+                    continue; 
 
                 workOrdersAfterFiltering.Add(workOrders[i]);
 
@@ -927,7 +927,7 @@ namespace _01electronics_crm
                             Grid.SetColumn(numberLabel, 0);
 
                             Label locationLabel = new Label();
-                            locationLabel.Content = workOrders[i].project_locations[k].branch_Info.district + ", " + workOrders[i].project_locations[k].branch_Info.state_governorate + ", " + workOrders[i].project_locations[k].branch_Info.city + ", " + workOrders[i].project_locations[k].branch_Info.country;
+                            locationLabel.Content = workOrders[i].project_locations[k].district.district_name + ", " + workOrders[i].project_locations[k].state_governorate.state_name + ", " + workOrders[i].project_locations[k].city.city_name + ", " + workOrders[i].project_locations[k].country.country_name;
                             locationLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                             projectLocationsGrid.Children.Add(locationLabel);
@@ -947,7 +947,7 @@ namespace _01electronics_crm
                             Grid.SetColumn(numberLabel, 0);
 
                             Label locationLabel = new Label();
-                            locationLabel.Content = workOrders[i].project_locations[k].branch_Info.district + ", " + workOrders[i].project_locations[k].branch_Info.state_governorate + ", " + workOrders[i].project_locations[k].branch_Info.city + ", " + workOrders[i].project_locations[k].branch_Info.country;
+                            locationLabel.Content = workOrders[i].project_locations[k].district.district_name + ", " + workOrders[i].project_locations[k].state_governorate.state_name + ", " + workOrders[i].project_locations[k].city.city_name + ", " + workOrders[i].project_locations[k].country.country_name;
                             locationLabel.Style = (Style)FindResource("tableSubItemLabel");
 
                             projectLocationsGrid.Children.Add(locationLabel);
