@@ -33,9 +33,9 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         private List<BASIC_STRUCTS.PROJECT_STRUCT> projects = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> projectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
-        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> orderProjectLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
-        private List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> addedLocations = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+        private List<BASIC_STRUCTS.ADDRESS_STRUCT> projectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+        private List<BASIC_STRUCTS.ADDRESS_STRUCT> orderProjectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+        private List<BASIC_STRUCTS.ADDRESS_STRUCT> addedLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
 
         public WorkOrderBasicInfoPage workOrderBasicInfoPage;
         public WorkOrderProductsPage workOrderProductsPage;
@@ -140,7 +140,7 @@ namespace _01electronics_crm
                     if (!commonQueriesObject.GetProjectLocations(workOrder.GetprojectSerial(), ref projectLocations))
                         return;
 
-                    List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> temp = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                    List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
                     workOrder.GetProjectLocations(ref temp);
 
                     for (int i = 0; i < projectLocations.Count; i++)

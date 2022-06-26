@@ -35,7 +35,7 @@ namespace _01electronics_crm
 
         private List<KeyValuePair<int, TreeViewItem>> projectTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
         private List<BASIC_STRUCTS.PROJECT_STRUCT> projectNames = new List<BASIC_STRUCTS.PROJECT_STRUCT>();
-        private List<KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>>();
+        private List<KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>> projectLocations = new List<KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>>();
 
         //private TreeViewItem[] companiesTreeArray = new TreeViewItem[COMPANY_ORGANISATION_MACROS.MAX_NUMBER_OF_COMPANIES];
 
@@ -88,10 +88,10 @@ namespace _01electronics_crm
 
             for (int i = 0; i < projectNames.Count; i++)
             {
-                List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT> tmpList = new List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>();
+                List<BASIC_STRUCTS.ADDRESS_STRUCT> tmpList = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
                 commonQueries.GetProjectLocations(projectNames[i].project_serial, ref tmpList);
 
-                projectLocations.Add(new KeyValuePair<int, List<BASIC_STRUCTS.PROJECT_LOCATIONS_STRUCT>>(projectNames[i].project_serial, tmpList));
+                projectLocations.Add(new KeyValuePair<int, List<BASIC_STRUCTS.ADDRESS_STRUCT>>(projectNames[i].project_serial, tmpList));
 
             }
 
