@@ -32,8 +32,8 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         private List<PROJECT_MACROS.PROJECT_STRUCT> projects = new List<PROJECT_MACROS.PROJECT_STRUCT>();
-        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> projectLocations;
-        private List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> addedLocations;
+        private List<BASIC_STRUCTS.ADDRESS_STRUCT> projectLocations;
+        private List<BASIC_STRUCTS.ADDRESS_STRUCT> addedLocations;
 
         public MaintContractsBasicInfoPage maintContractsBasicInfoPage;
         public MaintContractsProductsPage maintContractsProductsPage;
@@ -58,8 +58,8 @@ namespace _01electronics_crm
 
             maintContract = mMaintContracts;
 
-            projectLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
-            addedLocations = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+            projectLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+            addedLocations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
 
 
             InitializeComponent();
@@ -117,7 +117,7 @@ namespace _01electronics_crm
 
                 commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
 
-                List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT> temp = new List<PROJECT_MACROS.PROJECT_LOCATIONS_STRUCT>();
+                List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
 
                 maintContract.GetProjectLocations(ref temp);
 
