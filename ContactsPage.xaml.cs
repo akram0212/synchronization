@@ -217,7 +217,7 @@ namespace _01electronics_crm
 
 
                 salesPersonItem.Header = employeesContacts[i].Key.employee_name;
-                if(listOfEmployees[i].currently_employed == true)
+                if(listOfEmployees[i].employement_status_id == 1 || listOfEmployees[i].employement_status_id == 2 || listOfEmployees[i].employement_status_id == 3)
                     salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                 else
                     salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));

@@ -158,7 +158,7 @@ namespace _01electronics_crm
 
             List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> tempEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
 
-            if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref tempEmployeesList))
+            if (!commonQueries.GetAllTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref tempEmployeesList))
                 return;
 
             for (int i = 0; i < tempEmployeesList.Count; i++)
@@ -167,7 +167,7 @@ namespace _01electronics_crm
             }
 
 
-            if (!commonQueries.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref tempEmployeesList))
+            if (!commonQueries.GetAllTeamEmployees(COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID, ref tempEmployeesList))
                 return;
 
             for (int i = 0; i < tempEmployeesList.Count; i++)
@@ -186,10 +186,20 @@ namespace _01electronics_crm
 
             for(int i = 0; i < employees.Count; i++)
             {
-                assigneeComboBox.Items.Add(employees[i].employee_name);
+
+                if (employees[i].employement_status_id >= 4)
+                {
+                    ComboBoxItem comboBoxItem = new ComboBoxItem();
+                    comboBoxItem.Content = employees[i].employee_name;
+                    comboBoxItem.Foreground = Brushes.Red;
+                    assigneeComboBox.Items.Add(comboBoxItem);
+                }
+                else
+                    assigneeComboBox.Items.Add(employees[i].employee_name);
+
             }
 
-            assigneeComboBox.SelectedItem = contact.GetSalesPerson().GetEmployeeName();
+            assigneeComboBox.Text = contact.GetSalesPerson().GetEmployeeName();
         }
 
         private void InitializeContactInfo()
@@ -409,27 +419,18 @@ namespace _01electronics_crm
 
         private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
         {
-
             if (initializationComplete == true)
             {
                 ComboBox currentComboBox = (ComboBox)sender;
 
                 Employee selectedEmployee = new Employee();
 
-                selectedEmployee.InitializeEmployeeInfo(employees[currentComboBox.SelectedIndex].employee_id);
+                if (currentComboBox.SelectedIndex != -1)
+                {
+                    selectedEmployee.InitializeEmployeeInfo(employees[currentComboBox.SelectedIndex].employee_id);
 
-                assigneeId = selectedEmployee.GetEmployeeId();
-
-                InitializeCompanyNameCombo();
-
-                companyNameCombo.Visibility = Visibility.Visible;
-                companyNameLabel.Visibility = Visibility.Collapsed;
-
-                companyBranchCombo.Visibility = Visibility.Visible;
-                companyBranchLabel.Visibility = Visibility.Collapsed;
-
-                companyBranchCombo.Items.Clear();
-                companyBranchCombo.SelectedIndex = -1;
+                    assigneeId = selectedEmployee.GetEmployeeId();
+                }
             }
         }
 
@@ -577,9 +578,9 @@ namespace _01electronics_crm
             }
             else if (currentLabel.Name == "assigneeLabel")
             {
-                if (employees[currentComboBox.SelectedIndex].employee_id != contactEmployeeId)
+                if (currentComboBox.SelectedIndex != -1 && employees[currentComboBox.SelectedIndex].employee_id != contactEmployeeId)
                     currentLabel.Foreground = Brushes.Red;
-                else
+                else if (currentComboBox.SelectedIndex != -1)
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
         }
