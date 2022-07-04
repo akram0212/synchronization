@@ -84,7 +84,8 @@
                     <WrapPanel Grid.Row="4">
                         <WrapPanel Name="telephoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Telephone*"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
+                            <ComboBox Name="countryCodeCombo" Style="{StaticResource miniComboBoxStyle}" SelectionChanged="OnSelChangedCountryCodeCombo" IsEnabled="False"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
                         </WrapPanel>
 
                         <WrapPanel Name="faxWrapPanel">

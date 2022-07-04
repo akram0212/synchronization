@@ -43,6 +43,8 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT> departments;
         List<COMPANY_ORGANISATION_MACROS.TEAM_STRUCT> teams;
 
+        private List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
+
         protected String errorMessage;
         public AddContactWindow()
         {
@@ -70,6 +72,8 @@ namespace _01electronics_crm
             departments = new List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT>();
             teams = new List<COMPANY_ORGANISATION_MACROS.TEAM_STRUCT>();
 
+            countryCodes = new List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT>();
+
             if (!commonQueries.GetEmployeeCompanies(loggedInUser.GetEmployeeId(), ref companies))
                 return;
             for (int i = 0; i < companies.Count; i++)
@@ -89,6 +93,26 @@ namespace _01electronics_crm
 
             companyBranchComboBox.IsEnabled = false;
 
+            InitializeCountryCodeCombo();
+
+        }
+
+        private bool InitializeCountryCodeCombo()
+        {
+            if (!commonQueries.GetCountryCodes(ref countryCodes))
+                return false;
+
+            countryCodeComboBusinessPhone.Items.Clear();
+            countryCodeComboPersonalPhone.Items.Clear();
+
+            for(int i = 0; i < countryCodes.Count; i++)
+            {
+                String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
+                countryCodeComboBusinessPhone.Items.Add(temp);
+                countryCodeComboPersonalPhone.Items.Add(temp);
+            }
+
+            return true;
         }
 
         private void OnTextChangedFirstName(object sender, TextChangedEventArgs e)
@@ -110,6 +134,8 @@ namespace _01electronics_crm
                     companyBranchComboBox.Items.Add(companyAddresses[i].country + ", " + companyAddresses[i].state_governorate + ", " + companyAddresses[i].city + ", " + companyAddresses[i].district);
                 }
                 companyBranchComboBox.SelectedIndex = 0;
+
+                
             }
             else
             {
@@ -120,7 +146,11 @@ namespace _01electronics_crm
 
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
-
+            if (companyAddresses.Count > 0 && companyBranchComboBox.SelectedIndex != -1)
+            {
+                countryCodeComboBusinessPhone.SelectedIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchComboBox.SelectedIndex].address / 1000000);
+                countryCodeComboPersonalPhone.SelectedIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchComboBox.SelectedIndex].address / 1000000);
+            }
         }
 
         private void OnSelChangedDepartment(object sender, SelectionChangedEventArgs e)

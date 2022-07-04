@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
         Background="#EDEDED"
-        Height="730" Width="700"
+        Height="10730" Width="700"
         Title="Add Contact Window" >
 
     <Grid>
@@ -82,12 +82,14 @@
                     <WrapPanel Grid.Row="3">
                         <WrapPanel Name="ContactBusinessPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Business Phone *"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
+                            <ComboBox Name="countryCodeComboBusinessPhone" Style="{StaticResource miniComboBoxStyle}" IsEnabled="False"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactPersonalPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Phone"/>
-                            <TextBox Style="{StaticResource textBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
+                            <ComboBox Name="countryCodeComboPersonalPhone" Style="{StaticResource miniComboBoxStyle}" IsEnabled="False"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
                         </WrapPanel>
                     </WrapPanel>
 

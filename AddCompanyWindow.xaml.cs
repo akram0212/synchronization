@@ -39,6 +39,8 @@ namespace _01electronics_crm
         List<BASIC_STRUCTS.CITY_STRUCT> cities;
         List<BASIC_STRUCTS.DISTRICT_STRUCT> districts;
 
+        List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
+
         protected String errorMessage;
 
         public AddCompanyWindow(ref Employee mLoggedInUser)
@@ -62,7 +64,10 @@ namespace _01electronics_crm
             cities = new List<BASIC_STRUCTS.CITY_STRUCT>();
             districts = new List<BASIC_STRUCTS.DISTRICT_STRUCT>();
 
-            commonQueries.GetPrimaryWorkFields(ref primaryWorkFields);
+            countryCodes = new List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT>();
+
+            if (!commonQueries.GetPrimaryWorkFields(ref primaryWorkFields))
+                return;
 
             for (int i = 0; i < primaryWorkFields.Count; i++)
             {
@@ -79,6 +84,8 @@ namespace _01electronics_crm
             stateComboBox.IsEnabled = false;
             cityComboBox.IsEnabled = false;
             districtComboBox.IsEnabled = false;
+
+            InitializeCountryCodesCombo();
 
 
         }
@@ -112,6 +119,21 @@ namespace _01electronics_crm
 
             return true;
         }
+
+        private bool InitializeCountryCodesCombo()
+        {
+            if (!commonQueries.GetCountryCodes(ref countryCodes))
+                return false;
+
+            for (int i = 0; i < countryCodes.Count; i++)
+            {
+                String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
+                countryCodeCombo.Items.Add(temp);
+            }
+
+            return true;
+        }
+
         private void OnTextChangedCompanyName(object sender, TextChangedEventArgs e)
         {
 
@@ -151,6 +173,8 @@ namespace _01electronics_crm
                     if (countryComboBox.SelectedItem != null && states[i].state_id / 100 == countries[countryComboBox.SelectedIndex].country_id)
                         stateComboBox.Items.Add(states[i].state_name);
                 }
+
+                countryCodeCombo.SelectedIndex = countryCodes.FindIndex(x1 => x1.country_id == countries[countryComboBox.SelectedIndex].country_id);
             }
             else
             {
@@ -196,7 +220,10 @@ namespace _01electronics_crm
         {
 
         }
+        private void OnSelChangedCountryCodeCombo(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
         private void OnTextChangedTelephone(object sender, TextChangedEventArgs e)
         {
 
@@ -226,7 +253,7 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, BASIC_MACROS.EGYPT_ID, true, ref errorMessage))
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, countries[countryComboBox.SelectedIndex].country_id, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -242,7 +269,7 @@ namespace _01electronics_crm
             String inputString = faxTextBox.Text;
             String outputString = faxTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, BASIC_MACROS.EGYPT_ID, false, ref errorMessage))
+            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, countries[countryComboBox.SelectedIndex].country_id, false, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -421,5 +448,6 @@ namespace _01electronics_crm
             }
         }
 
+        
     }
 }

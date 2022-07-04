@@ -19,6 +19,7 @@ namespace _01electronics_crm
     /// <summary>
     /// Interaction logic for AddContactDetailsWindow.xaml
     /// </summary>
+  
     public partial class AddContactDetailsWindow : Window
     {
         protected Employee loggedInUser;
@@ -32,14 +33,40 @@ namespace _01electronics_crm
         protected int emailsCount;
 
         protected String errorMessage;
+
+        private List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
         public AddContactDetailsWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             InitializeComponent();
+
+            commonQueries = new CommonQueries();
 
             loggedInUser = mLoggedInUser;
             contact = mContact;
 
             integrityChecker = new IntegrityChecks();
+
+            countryCodes = new List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT>();
+
+            InitializeCountryCodeCombo();
+        }
+
+        private bool InitializeCountryCodeCombo()
+        {
+            if (!commonQueries.GetCountryCodes(ref countryCodes))
+                return false;
+
+            countryCodeCombo.Items.Clear();
+
+            for(int i = 0; i < countryCodes.Count; i++)
+            {
+                String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
+                countryCodeCombo.Items.Add(temp);
+            }
+
+            countryCodeCombo.SelectedIndex = countryCodes.FindIndex(x1=> x1.country_id == contact.GetAddress() / 1000000);
+
+            return true;
         }
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
@@ -79,7 +106,7 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, BASIC_MACROS.EGYPT_ID, false, ref errorMessage))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
