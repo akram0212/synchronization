@@ -234,7 +234,7 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
+            if (!integrityChecker.CheckCompanyPhoneEditBox(inputString, ref outputString, BASIC_MACROS.EGYPT_ID, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -249,7 +249,7 @@ namespace _01electronics_crm
             String inputString = faxTextBox.Text;
             String outputString = faxTextBox.Text;
 
-            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, false, ref errorMessage))
+            if (!integrityChecker.CheckCompanyFaxEditBox(inputString, ref outputString, BASIC_MACROS.EGYPT_ID, false, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
