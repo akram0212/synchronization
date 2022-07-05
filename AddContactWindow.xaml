@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
         Background="#EDEDED"
-        Height="10730" Width="700"
+        Height="730" Width="700"
         Title="Add Contact Window" >
 
     <Grid>
