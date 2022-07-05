@@ -215,7 +215,7 @@ namespace _01electronics_crm
             String inputString = employeeBusinessPhoneTextBox.Text;
             String outputString = employeeBusinessPhoneTextBox.Text;
 
-            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchComboBox.SelectedIndex].address / 1000000, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -231,7 +231,7 @@ namespace _01electronics_crm
             String inputString = employeePersonalPhoneTextBox.Text;
             String outputString = employeePersonalPhoneTextBox.Text;
 
-            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, false, ref errorMessage))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchComboBox.SelectedIndex].address / 1000000, false, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

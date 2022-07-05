@@ -7,11 +7,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using _01electronics_library;
+using ComboBox = System.Windows.Controls.ComboBox;
+using Label = System.Windows.Controls.Label;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace _01electronics_crm
 {
@@ -23,6 +27,7 @@ namespace _01electronics_crm
         protected Employee loggedInUser;
 
         protected CommonQueries commonQueries;
+        protected IntegrityChecks integrityChecks;
 
         protected Company company;
 
@@ -43,6 +48,8 @@ namespace _01electronics_crm
         int FAX_INDEX = 2;
 
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchesList;
+        String errorMessage;
+
         public ViewCompanyWindow(ref Employee mLoggedInUser, ref Company mCompany)
         {
             InitializeComponent();
@@ -51,6 +58,7 @@ namespace _01electronics_crm
             company = mCompany;
 
             commonQueries = new CommonQueries();
+            integrityChecks = new IntegrityChecks();
 
             secondaryWorkFields = new List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT>();
             primaryWorkFields = new List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT>();
@@ -360,21 +368,43 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    if(updatedObjects[i].Value == TELEPHONE_INDEX)
+                    if (updatedObjects[i].Value == TELEPHONE_INDEX)
                     {
                         WrapPanel currentTelephone = (WrapPanel)ContactGrid.Children[updatedObjects[i].Key];
-                        Label currentTelephoneLabel = (Label) currentTelephone.Children[1];
+                        Label currentTelephoneLabel = (Label)currentTelephone.Children[1];
 
-                        if (!company.UpdateCompanyTelephone(branchesList[branchComboBox.SelectedIndex].address_serial, company.GetCompanyPhones()[int.Parse(currentTelephoneLabel.Tag.ToString())] , currentTelephoneLabel.Content.ToString()))
+                        String inputString = currentTelephoneLabel.Content.ToString();
+                        String outputString = currentTelephoneLabel.Content.ToString();
+
+                        if (!integrityChecks.CheckCompanyPhoneEditBox(inputString, ref outputString, branchesList[branchComboBox.SelectedIndex].address / 1000000, true, ref errorMessage))
+                        {
+                            System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
+                        }
+                        else
+                        {
+                            if (!company.UpdateCompanyTelephone(branchesList[branchComboBox.SelectedIndex].address_serial, company.GetCompanyPhones()[int.Parse(currentTelephoneLabel.Tag.ToString())], outputString))
+                                return;
+                        }
                     }
                     else
                     {
                         WrapPanel currentFax = (WrapPanel)ContactGrid.Children[updatedObjects[i].Key];
                         Label currentFaxLabel = (Label)currentFax.Children[1];
 
-                        if (!company.UpdateCompanyFax(branchesList[branchComboBox.SelectedIndex].address_serial, company.GetCompanyFaxes()[int.Parse(currentFaxLabel.Tag.ToString())], currentFaxLabel.Content.ToString()))
+                        String inputString = currentFaxLabel.Content.ToString();
+                        String outputString = currentFaxLabel.Content.ToString();
+
+                        if (!integrityChecks.CheckCompanyPhoneEditBox(inputString, ref outputString, branchesList[branchComboBox.SelectedIndex].address / 1000000, true, ref errorMessage))
+                        {
+                            System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
+                        }
+                        else
+                        {
+                            if (!company.UpdateCompanyFax(branchesList[branchComboBox.SelectedIndex].address_serial, company.GetCompanyFaxes()[int.Parse(currentFaxLabel.Tag.ToString())], outputString))
+                                return;
+                        }
                     }
                 }
             }

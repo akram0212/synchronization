@@ -106,7 +106,7 @@ namespace _01electronics_crm
             String inputString = telephoneTextBox.Text;
             String outputString = telephoneTextBox.Text;
 
-            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, true, ref errorMessage))
+            if (!integrityChecker.CheckContactPhoneEditBox(inputString, ref outputString, contact.GetAddress() / 1000000, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

@@ -7,11 +7,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using _01electronics_library;
+using ComboBox = System.Windows.Controls.ComboBox;
+using Label = System.Windows.Controls.Label;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace _01electronics_crm
 {
@@ -23,6 +28,7 @@ namespace _01electronics_crm
         protected Employee loggedInUser;
 
         protected CommonQueries commonQueries;
+        protected IntegrityChecks integrityChecks;
 
         List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> companies;
         List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> companyAddresses;
@@ -36,6 +42,9 @@ namespace _01electronics_crm
         int assigneeId = 0;
 
         bool initializationComplete;
+
+        private String errorMessage;
+
         public ViewContactWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             initializationComplete = false;
@@ -45,6 +54,7 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             loggedInUser = mLoggedInUser;
             contact = mContact;
+            integrityChecks = new IntegrityChecks();
 
             companies = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
             companyAddresses = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
@@ -606,15 +616,40 @@ namespace _01electronics_crm
 
             WrapPanel businessPhoneWrap = (WrapPanel)contactPhoneWrapPanel.Children[0];
             Label businessPhone = (Label)businessPhoneWrap.Children[1];
-            newContact.AddNewContactPhone(businessPhone.Content.ToString());
+
+            String inputString = businessPhone.Content.ToString();
+            String outputString = businessPhone.Content.ToString();
+
+            if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                newContact.AddNewContactPhone(outputString);
+            }
 
             if (contactPersonalPhoneWrapPanel.Children.Count > 0)
             {
                 for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
                 {
+
                     WrapPanel personalPhoneWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
                     Label personalPhone = (Label)personalPhoneWrapPanel.Children[1];
-                    newContact.AddNewContactPhone(personalPhone.Content.ToString());
+
+                    inputString = personalPhone.Content.ToString();
+                    outputString = personalPhone.Content.ToString();
+
+                    if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
+                    {
+                        System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else
+                    {
+                        newContact.AddNewContactPhone(outputString);
+                    }
                 }
             }
 
