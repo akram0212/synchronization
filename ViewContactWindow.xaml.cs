@@ -35,6 +35,8 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT> departments;
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employees;
 
+        private List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
+
         Contact contact;
 
         int contactEmployeeId;
@@ -60,7 +62,9 @@ namespace _01electronics_crm
             companyAddresses = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
             departments = new List<COMPANY_ORGANISATION_MACROS.DEPARTMENT_STRUCT>();
             employees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+            countryCodes = new List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT>();
 
+            InitializeCountryCodes();
             InitializeCompanyNameCombo();
             InitializeCompanyAddressCombo();
             InitializeGenderCombo();
@@ -68,6 +72,7 @@ namespace _01electronics_crm
             InitializeAssigneeCombo();
             
             InitializeContactInfo();
+
 
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
@@ -104,6 +109,13 @@ namespace _01electronics_crm
 
         }
 
+        private bool InitializeCountryCodes()
+        {
+            if (!commonQueries.GetCountryCodes(ref countryCodes))
+                return false;
+
+            return true;
+        }
         private void InitializeCompanyNameCombo()
         {
             ///////If Assignee is changed we get selected assignee companies
@@ -252,12 +264,17 @@ namespace _01electronics_crm
 
             Label PersonalPhoneLabel = new Label();
             PersonalPhoneLabel.Style = (Style)FindResource("tableItemLabel");
-            PersonalPhoneLabel.Content = "Personal Phone";
+            PersonalPhoneLabel.Width = 200;
+            int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
+            String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
+            PersonalPhoneLabel.Content = "Personal Phone" + "   " + countryCode;
 
             Label PersonalPhoneLabelValue = new Label();
             PersonalPhoneLabelValue.Style = (Style)FindResource("tableItemValue");
             PersonalPhoneLabelValue.Content = Phone;
             PersonalPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
+
+            
 
             TextBox employeePersonalPhoneTextBox = new TextBox();
             employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
@@ -278,7 +295,10 @@ namespace _01electronics_crm
 
             Label BusinessPhoneLabel = new Label();
             BusinessPhoneLabel.Style = (Style)FindResource("tableItemLabel");
-            BusinessPhoneLabel.Content = "Business Phone";
+            BusinessPhoneLabel.Width = 200;
+            int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
+            String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
+            BusinessPhoneLabel.Content = "Business Phone" + "   " + countryCode;
 
             Label BusinessPhoneLabelValue = new Label();
             BusinessPhoneLabelValue.Content = contact.GetContactPhones()[0];
@@ -286,7 +306,7 @@ namespace _01electronics_crm
             BusinessPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
 
             TextBox employeeBusinessPhoneTextBox = new TextBox();
-            employeeBusinessPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
+            employeeBusinessPhoneTextBox.Style = (Style)FindResource("miniTextBoxStyle");
             employeeBusinessPhoneTextBox.Text = contact.GetContactPhones()[0];
             employeeBusinessPhoneTextBox.Visibility = Visibility.Collapsed;
             employeeBusinessPhoneTextBox.MouseLeave += TextBoxesMouseLeave;

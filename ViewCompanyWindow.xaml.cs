@@ -40,6 +40,8 @@ namespace _01electronics_crm
         List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT> primaryWorkFields;
         List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT> secondaryWorkFields;
 
+        List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
+
         List<KeyValuePair<int, int>> updatedObjects;
         int gridRowsCounter;
         bool isManager;
@@ -64,6 +66,7 @@ namespace _01electronics_crm
             primaryWorkFields = new List<BASIC_STRUCTS.PRIMARY_FIELD_STRUCT>();
             branchesList = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
             updatedObjects = new List<KeyValuePair<int, int>>();
+            countryCodes = new List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT>();
             gridRowsCounter = 4;
             isManager = false;
 
@@ -79,6 +82,8 @@ namespace _01electronics_crm
             primaryWorkFieldLabel.Content = company.GetCompanyPrimaryField();
 
             secondaryWorkFieldLabel.Content = company.GetCompanySecondaryField();
+
+            InitializeCountryCodes();
 
             if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
@@ -100,6 +105,14 @@ namespace _01electronics_crm
             if (!InitializeBranchesComboBox())
             return;
 
+        }
+
+        private bool InitializeCountryCodes()
+        {
+            if (!commonQueries.GetCountryCodes(ref countryCodes))
+                return false;
+
+            return true;
         }
         private void InitializeCompanyInfo()
         {
@@ -198,17 +211,20 @@ namespace _01electronics_crm
 
                     Label PhoneLabel = new Label();
                     PhoneLabel.Style = (Style)FindResource("tableItemLabel");
-                    PhoneLabel.Content = "Telephone";
+                    int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == branchesList[branchComboBox.SelectedIndex].address / 1000000);
+                    String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
+                    PhoneLabel.Content = "Telephone" + "   " + countryCode;
 
                     Label telephoneLabel = new Label();
                     telephoneLabel.Style = (Style)FindResource("tableItemValue");
+                    telephoneLabel.Width = 150;
                     telephoneLabel.Content = company.GetCompanyPhones()[i];
                     telephoneLabel.MouseDoubleClick += OnDoubleClickLabel;
                     telephoneLabel.Tag = i;
 
                     TextBox telephoneTextBox = new TextBox();
                     telephoneTextBox.IsEnabled = false;
-                    telephoneTextBox.Style = (Style)FindResource("textBoxStyle");
+                    telephoneTextBox.Style = (Style)FindResource("miniTextBoxStyle");
                     telephoneTextBox.Text = company.GetCompanyPhones()[i];
                     telephoneTextBox.Visibility = Visibility.Collapsed;
                     telephoneTextBox.Tag = TELEPHONE_INDEX;

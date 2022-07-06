@@ -470,8 +470,17 @@ namespace _01electronics_crm
             if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 InitializeCompanyNameCombo();
-                if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || workOrder.GetOfferID() != null)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || workOrder.GetOfferID() != null)
+                {
                     OfferCheckBox.IsChecked = true;
+                    companyNameCombo.IsEnabled = false;
+                }
+                else
+                {
+
+                    OfferCheckBox.IsChecked = false;
+                    companyNameCombo.IsEnabled = true;
+                }
             }
             else
             {
