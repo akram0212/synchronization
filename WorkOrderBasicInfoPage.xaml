@@ -69,60 +69,62 @@
             </Border>
 
         </Grid>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <WrapPanel Grid.Row="0">
-                <WrapPanel Name="salesPersonWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
+                <WrapPanel Grid.Row="0">
+                    <WrapPanel Name="salesPersonWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Sales &#x0a;Person"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="salesPersonLabel" Visibility="Collapsed"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="salesPersonCombo" SelectionChanged="OnSelChangedSalesPersonCombo"/>
+                    </WrapPanel>
+                    <WrapPanel Name="offerWrapPanel">
+                        <CheckBox Name="OfferCheckBox" Margin="20,30,0,0" Checked="OnCheckOfferCheckBox" Unchecked="OnUnCheckOfferCheckBox"/>
+                        <Label Style="{StaticResource labelStyle}" Content="Quotation &#x0a;Serial"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="OfferSerialLabel" Visibility="Collapsed"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="OfferSerialCombo" SelectionChanged="OnSelChangedQuotationSerialCombo"/>
+                    </WrapPanel>
                 </WrapPanel>
-                <WrapPanel Name="offerWrapPanel">
-                    <CheckBox Name="OfferCheckBox" Margin="20,30,0,0" Checked="OnCheckOfferCheckBox" Unchecked="OnUnCheckOfferCheckBox"/>
-                    <Label Style="{StaticResource labelStyle}" Content="Quotation &#x0a;Serial"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="OfferSerialLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="OfferSerialCombo" SelectionChanged="OnSelChangedQuotationSerialCombo"/>
-                </WrapPanel>
-            </WrapPanel>
-            <WrapPanel Grid.Row="1">
-                <WrapPanel Name="companyNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
+                <WrapPanel Grid.Row="1">
+                    <WrapPanel Name="companyNameWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Name"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="companyNameLabel" Visibility="Collapsed"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyNameCombo" SelectionChanged="OnSelChangedCompanyNameCombo"/>
+                    </WrapPanel>
+
+                    <WrapPanel Name="companyAddressWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Address"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
+                    </WrapPanel>
                 </WrapPanel>
 
-                <WrapPanel Name="companyAddressWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Company &#x0a;Address"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="companyAddressLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="companyAddressCombo" SelectionChanged="OnSelChangedCompanyAddressCombo"/>
+                <WrapPanel Grid.Row="2">
+                    <WrapPanel Name="contactPersonNameWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
+                        <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
+                    </WrapPanel>
+                    <WrapPanel Name="workOrderSerialWrapPanel">
+                        <Label Style="{StaticResource labelStyle}" Content="Order &#x0a;Serial*"/>
+                        <Label Style="{StaticResource tableItemValue}" Name="orderSerialLabel" Visibility="Collapsed"/>
+                        <TextBox Style="{StaticResource miniTextBoxStyle}" Name="orderSerialTextBox" TextChanged="OnTextChangedOrderSerialTextBox"/>
+                    </WrapPanel>
                 </WrapPanel>
-            </WrapPanel>
 
-            <WrapPanel Grid.Row="2">
-                <WrapPanel Name="contactPersonNameWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Contact &#x0a;Person"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
-                    <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
+                <WrapPanel Grid.Row="3">
+                    <Label Style="{StaticResource labelStyle}" Content="Issue &#x0a;Date*"/>
+                    <DatePicker Style="{StaticResource datePickerStyle}" Name="issueDatePicker" SelectedDateChanged="OnSelChangedIssuedatePicker"/>
                 </WrapPanel>
-                <WrapPanel Name="workOrderSerialWrapPanel">
-                    <Label Style="{StaticResource labelStyle}" Content="Order &#x0a;Serial*"/>
-                    <Label Style="{StaticResource tableItemValue}" Name="orderSerialLabel" Visibility="Collapsed"/>
-                    <TextBox Style="{StaticResource miniTextBoxStyle}" Name="orderSerialTextBox" TextChanged="OnTextChangedOrderSerialTextBox"/>
-                </WrapPanel>
-            </WrapPanel>
 
-            <WrapPanel Grid.Row="3">
-                <Label Style="{StaticResource labelStyle}" Content="Issue &#x0a;Date*"/>
-                <DatePicker Style="{StaticResource datePickerStyle}" Name="issueDatePicker" SelectedDateChanged="OnSelChangedIssuedatePicker"/>
-            </WrapPanel>
-
-        </Grid>
+            </Grid>
+        </ScrollViewer>
 
         <WrapPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
 
