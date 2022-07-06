@@ -80,8 +80,10 @@ namespace _01electronics_crm
             companyNameTextBox.Tag = company.GetCompanySerial();
 
             primaryWorkFieldLabel.Content = company.GetCompanyPrimaryField();
+            primaryWorkFieldLabel.Tag = company.GetCompanyPrimaryFieldId();
 
             secondaryWorkFieldLabel.Content = company.GetCompanySecondaryField();
+            secondaryWorkFieldLabel.Tag = company.GetCompanySecondaryFieldId();
 
             InitializeCountryCodes();
 
@@ -208,19 +210,27 @@ namespace _01electronics_crm
                     ContactGrid.RowDefinitions.Add(phoneRow);
 
                     WrapPanel PhoneWrapPanel = new WrapPanel();
+                    PhoneWrapPanel.Name = "PhoneWrapPanel";
 
                     Label PhoneLabel = new Label();
                     PhoneLabel.Style = (Style)FindResource("tableItemLabel");
-                    int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == branchesList[branchComboBox.SelectedIndex].address / 1000000);
-                    String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
-                    PhoneLabel.Content = "Telephone" + "   " + countryCode;
+                    PhoneLabel.Content = "Telephone";
 
                     Label telephoneLabel = new Label();
                     telephoneLabel.Style = (Style)FindResource("tableItemValue");
                     telephoneLabel.Width = 150;
-                    telephoneLabel.Content = company.GetCompanyPhones()[i];
+                    int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == branchesList[branchComboBox.SelectedIndex].address / 1000000);
+                    String countryCode = countryCodes[countryCodeIndex].phone_code;
+                    telephoneLabel.Content = countryCode + company.GetCompanyPhones()[i];
                     telephoneLabel.MouseDoubleClick += OnDoubleClickLabel;
                     telephoneLabel.Tag = i;
+
+                    ComboBox countryCodeCombo = new ComboBox();
+                    countryCodeCombo.Style = (Style)FindResource("miniComboBoxStyle");
+                    countryCodeCombo.Items.Add(countryCodes[countryCodeIndex].iso3 + "   " + countryCodes[countryCodeIndex].phone_code);
+                    countryCodeCombo.SelectedIndex = 0;
+                    countryCodeCombo.IsEnabled = false;
+                    countryCodeCombo.Visibility = Visibility.Collapsed;
 
                     TextBox telephoneTextBox = new TextBox();
                     telephoneTextBox.IsEnabled = false;
@@ -231,6 +241,7 @@ namespace _01electronics_crm
 
                     PhoneWrapPanel.Children.Add(PhoneLabel);
                     PhoneWrapPanel.Children.Add(telephoneLabel);
+                    PhoneWrapPanel.Children.Add(countryCodeCombo);
                     PhoneWrapPanel.Children.Add(telephoneTextBox);
                     Grid.SetRow(PhoneWrapPanel, gridRowsCounter-1);
                     ContactGrid.Children.Add(PhoneWrapPanel);
@@ -288,24 +299,37 @@ namespace _01electronics_crm
                 if(previousSelectedItem != null)
                 {
                     WrapPanel previousWrapPanel = (WrapPanel)previousSelectedItem.Parent;
-
-                    if (previousWrapPanel.Children[2].GetType() == typeof(TextBox))
+                    if (previousWrapPanel.Name != "PhoneWrapPanel")
                     {
-                        setCollapsedTextBoxes(previousWrapPanel);
+                        if (previousWrapPanel.Children[2].GetType() == typeof(TextBox))
+                        {
+                            setCollapsedTextBoxes(previousWrapPanel);
+                        }
+                        else
+                        {
+                            setCollapsedComboBoxes(previousWrapPanel);
+                        }
                     }
                     else
                     {
-                        setCollapsedComboBoxes(previousWrapPanel);
+                        setCollapsedTextBoxes(previousWrapPanel);
                     }
                     
                 }
-                if (currentWrapPanel.Children[2].GetType() == typeof(TextBox))
+                if (currentWrapPanel.Name != "PhoneWrapPanel")
                 {
-                    setTextBoxes(currentWrapPanel);
+                    if (currentWrapPanel.Children[2].GetType() == typeof(TextBox))
+                    {
+                        setTextBoxes(currentWrapPanel);
+                    }
+                    else
+                    {
+                        setComboBoxes(currentWrapPanel);
+                    }
                 }
                 else
                 {
-                    setComboBoxes(currentWrapPanel);
+                    setTextBoxes(currentWrapPanel);
                 }
             }
         }
@@ -388,9 +412,10 @@ namespace _01electronics_crm
                     {
                         WrapPanel currentTelephone = (WrapPanel)ContactGrid.Children[updatedObjects[i].Key];
                         Label currentTelephoneLabel = (Label)currentTelephone.Children[1];
+                        TextBox currentTelephoneTextBox = (TextBox)currentTelephone.Children[3];
 
-                        String inputString = currentTelephoneLabel.Content.ToString();
-                        String outputString = currentTelephoneLabel.Content.ToString();
+                        String inputString = currentTelephoneTextBox.Text.ToString();
+                        String outputString = currentTelephoneTextBox.Text.ToString();
 
                         if (!integrityChecks.CheckCompanyPhoneEditBox(inputString, ref outputString, branchesList[branchComboBox.SelectedIndex].address / 1000000, true, ref errorMessage))
                         {
@@ -470,33 +495,90 @@ namespace _01electronics_crm
         }
         private void setCollapsedTextBoxes(WrapPanel mWrapPanel)
         {
-            TextBox currentTextBox = (TextBox)mWrapPanel.Children[2];
-            Label currentLabel = (Label)mWrapPanel.Children[1];
 
-            currentTextBox.Visibility = Visibility.Collapsed;
-            currentLabel.Visibility = Visibility.Visible;
-
-            if (currentLabel.Content.ToString() != currentTextBox.Text.ToString())
+            if (mWrapPanel.Name != "PhoneWrapPanel")
             {
-                currentLabel.Foreground = Brushes.Red;
-                currentLabel.Content = currentTextBox.Text;
-                if (!updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(mWrapPanel)) && currentTextBox.Tag != null)
-                {
-                    updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(mWrapPanel), int.Parse(currentTextBox.Tag.ToString())));
-                }
+                TextBox currentTextBox = (TextBox)mWrapPanel.Children[2];
+                Label currentLabel = (Label)mWrapPanel.Children[1];
 
+                currentTextBox.Visibility = Visibility.Collapsed;
+                currentLabel.Visibility = Visibility.Visible;
+
+                if (currentLabel.Content.ToString() != currentTextBox.Text.ToString())
+                {
+                    currentLabel.Foreground = Brushes.Red;
+                    currentLabel.Content = currentTextBox.Text;
+                    if (!updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(mWrapPanel)) && currentTextBox.Tag != null)
+                    {
+                        updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(mWrapPanel), int.Parse(currentTextBox.Tag.ToString())));
+                    }
+
+                }
+            }
+            else
+            {
+                TextBox currentTextBox = (TextBox)mWrapPanel.Children[3];
+                ComboBox currentComboBox = (ComboBox)mWrapPanel.Children[2];
+                Label currentLabel = (Label)mWrapPanel.Children[1];
+
+                currentTextBox.Visibility = Visibility.Collapsed;
+                currentComboBox.Visibility = Visibility.Collapsed;
+                currentLabel.Visibility = Visibility.Visible;
+
+                if (currentTextBox.Text.ToString() != company.GetCompanyPhones()[0])
+                {
+                    String countryPhoneCode = countryCodes.Find(x1 => x1.country_id == branchesList[branchComboBox.SelectedIndex].address / 1000000).phone_code.ToString();
+                    currentLabel.Foreground = Brushes.Red;
+                    currentLabel.Content = countryPhoneCode + currentTextBox.Text;
+                    if (!updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(mWrapPanel)) && currentTextBox.Tag != null)
+                    {
+                        updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(mWrapPanel), int.Parse(currentTextBox.Tag.ToString())));
+                    }
+                }
+                else
+                {
+                    String countryPhoneCode = countryCodes.Find(x1 => x1.country_id == branchesList[branchComboBox.SelectedIndex].address / 1000000).phone_code.ToString();
+                    BrushConverter brushConverter = new BrushConverter();
+                    currentLabel.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                    currentLabel.Content = countryPhoneCode + currentTextBox.Text;
+                    if (updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(mWrapPanel)) && currentTextBox.Tag != null)
+                    {
+                        KeyValuePair<int, int> temp = new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(mWrapPanel), int.Parse(currentTextBox.Tag.ToString()));
+                        updatedObjects.Remove(temp);
+                    }
+                }
             }
 
         }
         private void setTextBoxes(WrapPanel mWrapPanel)
         {
-            TextBox currentTextBox = (TextBox)mWrapPanel.Children[2];
-            currentTextBox.IsEnabled = true;
-            Label currentLabel = (Label)mWrapPanel.Children[1];
-            currentTextBox.Text = currentLabel.Content.ToString();
+            if (mWrapPanel.Name != "PhoneWrapPanel")
+            {
+                TextBox currentTextBox = (TextBox)mWrapPanel.Children[2];
+                currentTextBox.IsEnabled = true;
+                Label currentLabel = (Label)mWrapPanel.Children[1];
+                currentTextBox.Text = currentLabel.Content.ToString();
 
-            currentTextBox.Visibility = Visibility.Visible;
-            currentLabel.Visibility = Visibility.Collapsed;
+                currentTextBox.Visibility = Visibility.Visible;
+                currentLabel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TextBox currentTextBox = (TextBox)mWrapPanel.Children[3];
+                ComboBox currentComboBox = (ComboBox)mWrapPanel.Children[2];
+                currentTextBox.IsEnabled = true;
+                Label currentLabel = (Label)mWrapPanel.Children[1];
+                String temp = String.Empty;
+                for (int i = 2; i < currentLabel.Content.ToString().Length; i++)
+                {
+                    temp += currentLabel.Content.ToString()[i];
+                }
+
+                currentTextBox.Text = temp;
+                currentTextBox.Visibility = Visibility.Visible;
+                currentComboBox.Visibility = Visibility.Visible;
+                currentLabel.Visibility = Visibility.Collapsed;
+            }
 
         }
         private void setComboBoxes(WrapPanel mWrapPanel)
@@ -544,16 +626,27 @@ namespace _01electronics_crm
             WrapPanel parent = (WrapPanel)currentComboBox.Parent;
             Label currentLabel = (Label)parent.Children[1];
 
-            try
+            if (secondaryWorkFields[secondaryWorkFieldComboBox.SelectedIndex].field_id != company.GetCompanySecondaryFieldId())
             {
-                if (!updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(parent)))
+                try
                 {
-                    updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(parent), int.Parse(currentLabel.Tag.ToString())));
+                    if (!updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(parent)))
+                    {
+                        updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(parent), int.Parse(currentLabel.Tag.ToString())));
+                    }
+                }
+                catch
+                {
+
                 }
             }
-            catch
+            else
             {
-
+                if (updatedObjects.Exists(wrapPanelIndex => wrapPanelIndex.Key == ContactGrid.Children.IndexOf(parent)))
+                {
+                    KeyValuePair<int, int> temp = new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(parent), secondaryWorkFields[secondaryWorkFieldComboBox.SelectedIndex].field_id);
+                    updatedObjects.Remove(temp);
+                }
             }
         }
 

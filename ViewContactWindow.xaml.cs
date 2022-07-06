@@ -47,6 +47,9 @@ namespace _01electronics_crm
 
         private String errorMessage;
 
+        private int countryCodeIndex;
+        private String countryCode;
+
         public ViewContactWindow(ref Employee mLoggedInUser, ref Contact mContact)
         {
             initializationComplete = false;
@@ -70,7 +73,11 @@ namespace _01electronics_crm
             InitializeGenderCombo();
             InitializeDepartmentsCombo();
             InitializeAssigneeCombo();
-            
+
+            countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
+            countryCode = countryCodes[countryCodeIndex].phone_code;
+
+
             InitializeContactInfo();
 
 
@@ -261,29 +268,34 @@ namespace _01electronics_crm
         private void AddPersonalPhone(String Phone)
         {
             WrapPanel ContactPersonalPhoneWrapPanel = new WrapPanel();
+            contactPersonalPhoneWrapPanel.Tag = 1;
 
             Label PersonalPhoneLabel = new Label();
             PersonalPhoneLabel.Style = (Style)FindResource("tableItemLabel");
-            PersonalPhoneLabel.Width = 200;
-            int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
-            String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
-            PersonalPhoneLabel.Content = "Personal Phone" + "   " + countryCode;
+            PersonalPhoneLabel.Content = "Personal Phone";
 
             Label PersonalPhoneLabelValue = new Label();
             PersonalPhoneLabelValue.Style = (Style)FindResource("tableItemValue");
-            PersonalPhoneLabelValue.Content = Phone;
+            PersonalPhoneLabelValue.Width = 150;
+            PersonalPhoneLabelValue.Content = countryCode + Phone;
             PersonalPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
 
-            
+            ComboBox countryCodeCombo = new ComboBox();
+            countryCodeCombo.Style = (Style)FindResource("miniComboBoxStyle");
+            countryCodeCombo.Items.Add(countryCodes[countryCodeIndex].iso3 + "   " + countryCodes[countryCodeIndex].phone_code);
+            countryCodeCombo.SelectedIndex = 0;
+            countryCodeCombo.IsEnabled = false;
+            countryCodeCombo.Visibility = Visibility.Collapsed;
 
             TextBox employeePersonalPhoneTextBox = new TextBox();
-            employeePersonalPhoneTextBox.Style = (Style)FindResource("textBoxStyle");
+            employeePersonalPhoneTextBox.Style = (Style)FindResource("miniTextBoxStyle");
             employeePersonalPhoneTextBox.Text = Phone;
             employeePersonalPhoneTextBox.Visibility = Visibility.Collapsed;
             employeePersonalPhoneTextBox.MouseLeave += TextBoxesMouseLeave;
 
             ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabel);
             ContactPersonalPhoneWrapPanel.Children.Add(PersonalPhoneLabelValue);
+            ContactPersonalPhoneWrapPanel.Children.Add(countryCodeCombo);
             ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
             contactPersonalPhoneWrapPanel.Children.Add(ContactPersonalPhoneWrapPanel);
 
@@ -292,18 +304,24 @@ namespace _01electronics_crm
         private void AddBusinessPhone()
         {
             WrapPanel ContactBusinessPhoneWrapPanel = new WrapPanel();
+            ContactBusinessPhoneWrapPanel.Tag = 1;
 
             Label BusinessPhoneLabel = new Label();
             BusinessPhoneLabel.Style = (Style)FindResource("tableItemLabel");
-            BusinessPhoneLabel.Width = 200;
-            int countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
-            String countryCode = countryCodes[countryCodeIndex].iso3 + "  " + countryCodes[countryCodeIndex].phone_code;
-            BusinessPhoneLabel.Content = "Business Phone" + "   " + countryCode;
+            BusinessPhoneLabel.Content = "Business Phone";
 
             Label BusinessPhoneLabelValue = new Label();
-            BusinessPhoneLabelValue.Content = contact.GetContactPhones()[0];
+            BusinessPhoneLabelValue.Width = 150;
+            BusinessPhoneLabelValue.Content = countryCode + contact.GetContactPhones()[0];
             BusinessPhoneLabelValue.Style = (Style)FindResource("tableItemValue");
             BusinessPhoneLabelValue.MouseDoubleClick += OnClickTextBoxLabels;
+
+            ComboBox countryCodeCombo = new ComboBox();
+            countryCodeCombo.Style = (Style)FindResource("miniComboBoxStyle");
+            countryCodeCombo.Items.Add(countryCodes[countryCodeIndex].iso3 + "   " + countryCodes[countryCodeIndex].phone_code);
+            countryCodeCombo.SelectedIndex = 0;
+            countryCodeCombo.IsEnabled = false;
+            countryCodeCombo.Visibility = Visibility.Collapsed;
 
             TextBox employeeBusinessPhoneTextBox = new TextBox();
             employeeBusinessPhoneTextBox.Style = (Style)FindResource("miniTextBoxStyle");
@@ -313,6 +331,7 @@ namespace _01electronics_crm
 
             ContactBusinessPhoneWrapPanel.Children.Add(BusinessPhoneLabel);
             ContactBusinessPhoneWrapPanel.Children.Add(BusinessPhoneLabelValue);
+            ContactBusinessPhoneWrapPanel.Children.Add(countryCodeCombo);
             ContactBusinessPhoneWrapPanel.Children.Add(employeeBusinessPhoneTextBox);
             contactPhoneWrapPanel.Children.Add(ContactBusinessPhoneWrapPanel);
 
@@ -386,14 +405,39 @@ namespace _01electronics_crm
         {
             Label currentLabel = (Label)sender;
             WrapPanel currentWrapPanel = (WrapPanel)currentLabel.Parent;
-            TextBox currentTextBox = (TextBox)currentWrapPanel.Children[2];
 
-            if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentTextBox.Visibility == Visibility.Collapsed)
+            if (currentWrapPanel.Tag == null)
             {
-                currentTextBox.Visibility = Visibility.Visible;
-                currentLabel.Visibility = Visibility.Collapsed;
+                TextBox currentTextBox = (TextBox)currentWrapPanel.Children[2];
 
-                currentTextBox.Text = currentLabel.Content.ToString();
+                if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentTextBox.Visibility == Visibility.Collapsed)
+                {
+                    currentTextBox.Visibility = Visibility.Visible;
+                    currentLabel.Visibility = Visibility.Collapsed;
+
+                    currentTextBox.Text = currentLabel.Content.ToString();
+                }
+            }
+            else
+            {
+                ComboBox currentComboBox = (ComboBox)currentWrapPanel.Children[2];
+                TextBox currentTextBox = (TextBox)currentWrapPanel.Children[3];
+
+                if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentTextBox.Visibility == Visibility.Collapsed)
+                {
+                    currentComboBox.Visibility = Visibility.Visible;
+                    currentTextBox.Visibility = Visibility.Visible;
+                    currentLabel.Visibility = Visibility.Collapsed;
+
+                    String tempPhone = string.Empty;
+
+                    for(int i = 2; i < currentLabel.Content.ToString().Length; i++)
+                    {
+                        tempPhone += currentLabel.Content.ToString()[i];
+                    }
+
+                    currentTextBox.Text = tempPhone;
+                }
             }
         }
 
@@ -500,6 +544,7 @@ namespace _01electronics_crm
 
             TextBox currentTextBox = (TextBox)sender;
             WrapPanel currentWrapPanel = (WrapPanel)currentTextBox.Parent;
+
             Label currentLabel = (Label)currentWrapPanel.Children[1];
 
             WrapPanel parentWrapPanel = (WrapPanel)currentWrapPanel.Parent;
@@ -520,7 +565,12 @@ namespace _01electronics_crm
             }
             else if(parentWrapPanel.Name == "contactPhoneWrapPanel")
             {
-                if (currentLabel.Content.ToString() != contact.GetContactPhones()[0])
+                ComboBox currentComboBox = (ComboBox)currentWrapPanel.Children[2];
+                currentComboBox.Visibility = Visibility.Collapsed;
+
+                currentLabel.Content = countryCode + currentTextBox.Text;
+
+                if (currentTextBox.Text.ToString() != contact.GetContactPhones()[0])
                     currentLabel.Foreground = Brushes.Red;
                 else
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
@@ -534,6 +584,11 @@ namespace _01electronics_crm
             }
             else if (parentWrapPanel.Name == "contactPersonalPhoneWrapPanel")
             {
+                ComboBox currentComboBox = (ComboBox)currentWrapPanel.Children[2];
+                currentComboBox.Visibility = Visibility.Collapsed;
+
+                currentLabel.Content = countryCode + currentTextBox.Text;
+
                 int index = 0;
                 for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
                 {
@@ -541,7 +596,7 @@ namespace _01electronics_crm
                     if (selectedWrapPanel == currentWrapPanel)
                         index = i + 1;
                 }
-                if (currentLabel.Content.ToString() != contact.GetContactPhones()[index].ToString())
+                if (currentTextBox.Text.ToString() != contact.GetContactPhones()[index].ToString())
                     currentLabel.Foreground = Brushes.Red;
                 else
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
@@ -555,7 +610,7 @@ namespace _01electronics_crm
                     if (selectedWrapPanel == currentWrapPanel)
                         index = i;
                 }
-                if (currentLabel.Content.ToString() != contact.GetContactPersonalEmails()[index].ToString())
+                if (currentTextBox.Text.ToString() != contact.GetContactPersonalEmails()[index].ToString())
                     currentLabel.Foreground = Brushes.Red;
                 else
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
@@ -595,7 +650,11 @@ namespace _01electronics_crm
             else if (currentLabel.Name == "companyBranchLabel")
             {
                 if (currentLabel.Content.ToString() != contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict())
+                {
                     currentLabel.Foreground = Brushes.Red;
+                    countryCodeIndex = countryCodes.FindIndex(x1=> x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
+                    countryCode = countryCodes[countryCodeIndex].phone_code;
+                }
                 else
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
@@ -635,10 +694,10 @@ namespace _01electronics_crm
             newContact.SetContactDepartment(departments[departmentComboBox.SelectedIndex].department_id, departments[departmentComboBox.SelectedIndex].department_name);
 
             WrapPanel businessPhoneWrap = (WrapPanel)contactPhoneWrapPanel.Children[0];
-            Label businessPhone = (Label)businessPhoneWrap.Children[1];
+            TextBox businessPhone = (TextBox)businessPhoneWrap.Children[3];
 
-            String inputString = businessPhone.Content.ToString();
-            String outputString = businessPhone.Content.ToString();
+            String inputString = businessPhone.Text.ToString();
+            String outputString = businessPhone.Text.ToString();
 
             if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
             {
@@ -656,10 +715,10 @@ namespace _01electronics_crm
                 {
 
                     WrapPanel personalPhoneWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
-                    Label personalPhone = (Label)personalPhoneWrapPanel.Children[1];
+                    TextBox personalPhone = (TextBox)personalPhoneWrapPanel.Children[3];
 
-                    inputString = personalPhone.Content.ToString();
-                    outputString = personalPhone.Content.ToString();
+                    inputString = personalPhone.Text.ToString();
+                    outputString = personalPhone.Text.ToString();
 
                     if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
                     {
