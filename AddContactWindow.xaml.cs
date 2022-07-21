@@ -81,7 +81,7 @@ namespace _01electronics_crm
                 companyNameComboBox.Items.Add(companies[i].company_name);
             }
 
-            if (!commonQueries.GetDepartmentsType(ref departments))
+            if (!commonQueries.GetContactTitles(ref departments))
                 return;
             for (int i = 0; i < departments.Count; i++)
             {

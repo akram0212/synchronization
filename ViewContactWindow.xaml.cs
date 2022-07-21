@@ -172,7 +172,7 @@ namespace _01electronics_crm
 
         private void InitializeDepartmentsCombo()
         {
-            if (!commonQueries.GetDepartmentsType(ref departments))
+            if (!commonQueries.GetContactTitles(ref departments))
                 return;
             for (int i = 0; i < departments.Count; i++)
             {
@@ -751,6 +751,5 @@ namespace _01electronics_crm
             this.Close();
         }
 
-        
     }
 }
