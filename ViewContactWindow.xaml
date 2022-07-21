@@ -72,7 +72,7 @@
 
                     <WrapPanel Grid.Row="2">
                         <WrapPanel Name="ContactDepartmentWrapPanel" >
-                            <Label Style="{StaticResource tableItemLabel}" Content="Department" />
+                            <Label Style="{StaticResource tableItemLabel}" Content="Title" />
                             <Label Style="{StaticResource tableItemValue}" Name="departmentLabel" PreviewMouseDoubleClick="OnClickComboBoxLabels"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="departmentComboBox" Visibility="Collapsed" MouseLeave="ComboBoxesMouseLeave"/>
                         </WrapPanel>

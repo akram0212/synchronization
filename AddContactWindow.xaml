@@ -69,13 +69,12 @@
 
                     <WrapPanel Grid.Row="2">
                         <WrapPanel Name="ContactDepartmentWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Department *"/>
+                            <Label Style="{StaticResource tableItemLabel}" Content="Title *"/>
                             <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeDepartmentComboBox" SelectionChanged="OnSelChangedDepartment"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactTeamWrapPanel">
-                            <Label Style="{StaticResource tableItemLabel}" Content="Team"/>
-                            <ComboBox Style="{StaticResource comboBoxStyle}" Name="employeeTeamComboBox" SelectionChanged="OnSelChangedTeam"/>
+                            
                         </WrapPanel>
                     </WrapPanel>
 
