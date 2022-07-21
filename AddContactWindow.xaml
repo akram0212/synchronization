@@ -83,13 +83,13 @@
                         <WrapPanel Name="ContactBusinessPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Business Phone *"/>
                             <ComboBox Name="countryCodeComboBusinessPhone" Style="{StaticResource miniComboBoxStyle}" IsEnabled="False"/>
-                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}"  Width="190" Name="employeeBusinessPhoneTextBox" TextChanged="OnTextChangedBusinessPhone"/>
                         </WrapPanel>
 
                         <WrapPanel Name="ContactPersonalPhoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Personal Phone"/>
                             <ComboBox Name="countryCodeComboPersonalPhone" Style="{StaticResource miniComboBoxStyle}" IsEnabled="False"/>
-                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}" Width="190" Name="employeePersonalPhoneTextBox" TextChanged="OnTextChangedPersonalPhone"/>
                         </WrapPanel>
                     </WrapPanel>
 

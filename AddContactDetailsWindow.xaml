@@ -39,7 +39,7 @@
                         <WrapPanel Name="TelephoneWrapPanel">
                             <Label Style="{StaticResource tableItemLabel}" Content="Telephone"/>
                             <ComboBox Name="countryCodeCombo" Style="{StaticResource miniComboBoxStyle}" IsEnabled="False"/>
-                            <TextBox Style="{StaticResource miniTextBoxStyle}" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
+                            <TextBox Style="{StaticResource miniTextBoxStyle}"  Width="190" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
                         </WrapPanel>
                     </WrapPanel>
 
