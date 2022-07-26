@@ -28,10 +28,16 @@ namespace _01electronics_crm
 
         public AddOfficeMeetingWindow(ref Employee mloggedInUser)
         {
+            commonQueries = new CommonQueries();
             InitializeComponent();
             loggedInUser = mloggedInUser;
 
-            DayOfWeek today = DateTime.Today.DayOfWeek;
+            DateTime now = DateTime.Now;
+
+            if (!commonQueries.GetTodaysDate(ref now))
+                return;
+
+            DayOfWeek today = now.DayOfWeek;
 
             DayOfWeek firstDay = DayOfWeek.Sunday;
             DayOfWeek lastDay = DayOfWeek.Saturday;

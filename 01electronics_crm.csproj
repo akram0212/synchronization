@@ -216,6 +216,9 @@
     <Compile Include="ProjectsPage.xaml.cs">
       <DependentUpon>ProjectsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReassignContactsWindow.xaml.cs">
+      <DependentUpon>ReassignContactsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RFQAdditionalInfoPage.xaml.cs">
       <DependentUpon>RFQAdditionalInfoPage.xaml</DependentUpon>
     </Compile>
@@ -477,6 +480,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProjectsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReassignContactsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

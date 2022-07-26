@@ -38,6 +38,9 @@ namespace _01electronics_crm
         private int selectedYear;
         private int selectedQuarter;
         private int selectedEmployee;
+
+        private String errorMessage;
+
         public ClientVisitsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -101,6 +104,13 @@ namespace _01electronics_crm
                 employeeCheckBox.IsEnabled = false;
                 employeeComboBox.IsEnabled = false;
             }
+
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+            {
+                addButton.IsEnabled = true;
+            }
+            else
+                addButton.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,17 +202,65 @@ namespace _01electronics_crm
                 lineLabel.Content = "";
                 lineLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                Border statusBorder = new Border();
+                statusBorder.Style = (Style)FindResource("BorderIcon");
+
+                BrushConverter brushConverter = new BrushConverter();
+
+                Label statusLabel = new Label();
+                if (visitsInfo[i].visit_status_id == 1)
+                {
+                    statusLabel.Content = "Pending";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else if (visitsInfo[i].visit_status_id < 5)
+                {
+                    statusLabel.Content = "Approved";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
+                }
+                else
+                {
+                    statusLabel.Content = "Rejected";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                }
+                statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
+                statusBorder.Child = statusLabel;
+
                 currentStackPanel.Children.Add(salesPersonNameLabel);
                 currentStackPanel.Children.Add(dateOfVisitLabel);
                 
                 currentStackPanel.Children.Add(companyAndContactLabel);
                 currentStackPanel.Children.Add(purposeAndResultLabel);
 
+                for (int j = 0; j < visitsInfo[i].visit_approvals_rejections.Count; j++)
+                {
+                    Label approvalRejectorLabel = new Label();
+                    if (visitsInfo[i].visit_approvals_rejections.Count > 1 && visitsInfo[i].visit_status_id > 4)
+                    {
+                        if (j != visitsInfo[i].visit_approvals_rejections.Count - 1)
+                            approvalRejectorLabel.Content = "Approved by " + visitsInfo[i].visit_approvals_rejections[j].approver.employee_name;
+                        else
+                            approvalRejectorLabel.Content = "Rejected by " + visitsInfo[i].visit_approvals_rejections[j].approver.employee_name;
+                    }
+                    else
+                    {
+                        if (visitsInfo[i].visit_status_id < 5)
+                            approvalRejectorLabel.Content = "Approved by " + visitsInfo[i].visit_approvals_rejections[j].approver.employee_name;
+                        else
+                            approvalRejectorLabel.Content = "Rejected by " + visitsInfo[i].visit_approvals_rejections[j].approver.employee_name;
+                    }
+                    approvalRejectorLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                    currentStackPanel.Children.Add(approvalRejectorLabel);
+                }
+
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
                 newGrid.MouseLeftButtonDown += OnBtnClickVisitItem;
 
                 Image clientVisitIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_visit_icon.png", UriKind.Relative)) };
@@ -210,10 +268,12 @@ namespace _01electronics_crm
                 newGrid.Children.Add(clientVisitIcon);
                 Grid.SetColumn(clientVisitIcon, 0);
 
-                
                 newGrid.Children.Add(currentStackPanel);
                 Grid.SetColumn(currentStackPanel, 1);
-                
+
+                newGrid.Children.Add(statusBorder);
+                Grid.SetColumn(statusBorder, 2);
+
                 ClientVisitsStackPanel.Children.Add(newGrid);
 
             }
@@ -409,6 +469,19 @@ namespace _01electronics_crm
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
+            if (currentSelectedVisitItem != null)
+            {
+                viewButton.IsEnabled = true;
+
+                if ((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID && (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.SENIOR_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)) || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+                {
+                    if (filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_status_id < 5)
+                    {
+                        rejectButton.IsEnabled = true;
+                        approveButton.IsEnabled = true;
+                    }
+                }
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -486,6 +559,7 @@ namespace _01electronics_crm
             selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);
 
             ViewClientVisitWindow viewClientVisitWindow = new ViewClientVisitWindow(ref selectedVisit);
+            viewClientVisitWindow.Closed += OnClosedAddVisitWindow;
             viewClientVisitWindow.Show();
         }
 
@@ -589,6 +663,13 @@ namespace _01electronics_crm
             GetVisits();
             InitializeStackPanel();
             InitializeGrid();
+
+            currentSelectedVisitItem = null;
+            previousSelectedVisitItem = null;
+
+            approveButton.IsEnabled = false;
+            rejectButton.IsEnabled = false;
+            viewButton.IsEnabled = false;
         }
 
         private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
@@ -615,5 +696,64 @@ namespace _01electronics_crm
             NavigationService.Navigate(statisticsPage);
         }
 
+        private void OnBtnClickApprove(object sender, RoutedEventArgs e)
+        {
+            ClientVisit selectedVisit = new ClientVisit();
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);
+
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT approval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            approval.approver.employee_id = loggedInUser.GetEmployeeId();
+            approval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            approval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            approval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            if(!selectedVisit.AddVisitApproval(approval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            else
+            {
+                GetVisits();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedVisitItem = null;
+                previousSelectedVisitItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
+        }
+
+        private void OnBtnClickReject(object sender, RoutedEventArgs e)
+        {
+            ClientVisit selectedVisit = new ClientVisit();
+            selectedVisit.InitializeClientVisitInfo(filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].visit_serial, filteredVisits[ClientVisitsStackPanel.Children.IndexOf(currentSelectedVisitItem)].sales_person_id);
+
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT approval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            approval.approver.employee_id = loggedInUser.GetEmployeeId();
+            approval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            approval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            approval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            if (!selectedVisit.AddVisitRejection(approval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            else
+            {
+                GetVisits();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedVisitItem = null;
+                previousSelectedVisitItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
+        }
     }
 }

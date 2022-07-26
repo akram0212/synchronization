@@ -39,6 +39,8 @@ namespace _01electronics_crm
 
             if(officeMeeting.GetMeetingNotes().ToString() != "NULL")
                 additionalDescriptionTextBox.Text = officeMeeting.GetMeetingNotes().ToString();
+
+            approvalRejectionLabel.Content = selectedMeeting.GetMeetingStatus();
         }
     }
 }

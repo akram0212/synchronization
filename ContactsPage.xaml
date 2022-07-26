@@ -139,11 +139,13 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Content="Add Company" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddCompany" Name="AddCompanyBtn"/>
                 <Button Grid.Column="1" Content="Add Contact" Style="{StaticResource buttonStyle}" Click="OnBtnClickAddContact" Name="AddContactBtn"/>
                 <Button Grid.Column="2" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="ViewBtn"/>
+                <Button Grid.Column="3" Content="Re-Assign All" Style="{StaticResource buttonStyle}" Click="OnClickReassignAll" Name="reassignBtn" IsEnabled="False"/>
             </Grid>
             
         </Grid>

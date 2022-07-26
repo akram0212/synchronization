@@ -38,6 +38,9 @@ namespace _01electronics_crm
         private int selectedYear;
         private int selectedQuarter;
         private int selectedEmployee;
+
+        private String errorMessage;
+
         public OfficeMeetingsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -77,7 +80,8 @@ namespace _01electronics_crm
 
         private void GetMeetings()
         {
-            commonQueries.GetOfficeMeetings(ref officeMeetings);
+            if (!commonQueries.GetOfficeMeetings(ref officeMeetings))
+                return;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +106,12 @@ namespace _01electronics_crm
                 employeeCheckBox.IsEnabled = false;
                 employeeComboBox.IsEnabled = false;
             }
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+            {
+                addButton.IsEnabled = true;
+            }
+            else
+                addButton.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,14 +197,55 @@ namespace _01electronics_crm
                 lineLabel.Content = "";
                 lineLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                Border statusBorder = new Border();
+                statusBorder.Style = (Style)FindResource("BorderIcon");
+
+                BrushConverter brushConverter = new BrushConverter();
+
+                Label statusLabel = new Label();
+                if (officeMeetings[i].meeting_status_id == 1)
+                {
+                    statusLabel.Content = "Pending";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else if (officeMeetings[i].meeting_status_id < 5)
+                {
+                    statusLabel.Content = "Approved";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
+                }
+                else
+                {
+                    statusLabel.Content = "Rejected";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                }
+                statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
+                statusBorder.Child = statusLabel;
+
                 currentStackPanel.Children.Add(salesPersonNameLabel);
                 currentStackPanel.Children.Add(dateOfMeetingLabel);
                 currentStackPanel.Children.Add(purposeLabel);
+
+                for (int j = 0; j < officeMeetings[i].meeting_approvals_rejections.Count; j++)
+                {
+                    Label approvalRejectorLabel = new Label();
+
+                    if (officeMeetings[i].meeting_status_id < 5)
+                        approvalRejectorLabel.Content = "Approved by " + officeMeetings[i].meeting_approvals_rejections[j].approver.employee_name;
+                    else
+                        approvalRejectorLabel.Content = "Rejected by " + officeMeetings[i].meeting_approvals_rejections[j].approver.employee_name;
+                    
+                    approvalRejectorLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                    currentStackPanel.Children.Add(approvalRejectorLabel);
+                }
+
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
                 newGrid.MouseLeftButtonDown += OnBtnClickMeetingItem;
 
                 Image officeMeetingIcon = new Image { Source = new BitmapImage(new Uri(@"icons\office_meeting_icon.png", UriKind.Relative)) };
@@ -202,12 +253,14 @@ namespace _01electronics_crm
                 newGrid.Children.Add(officeMeetingIcon);
                 Grid.SetColumn(officeMeetingIcon, 0);
 
-
                 newGrid.Children.Add(currentStackPanel);
                 Grid.SetColumn(currentStackPanel, 1);
 
+                newGrid.Children.Add(statusBorder);
+                Grid.SetColumn(statusBorder, 2);
+
                 OfficeMeetingsStackPanel.Children.Add(newGrid);
-                
+
             }
         }
 
@@ -301,11 +354,11 @@ namespace _01electronics_crm
 
         }
 
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //VIEWING TABS
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //VIEWING TABS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            private void OnClickListView(object sender, MouseButtonEventArgs e)
+        private void OnClickListView(object sender, MouseButtonEventArgs e)
         {
             listViewLabel.Style = (Style)FindResource("selectedMainTabLabelItem");
             tableViewLabel.Style = (Style)FindResource("unselectedMainTabLabelItem");
@@ -408,6 +461,7 @@ namespace _01electronics_crm
             selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_serial);
 
             ViewOfficeMeetingWindow viewOfficeMeetingWindow = new ViewOfficeMeetingWindow(ref selectedMeeting);
+            viewOfficeMeetingWindow.Closed += OnClosedAddCallWindow;
             viewOfficeMeetingWindow.Show();
         }
 
@@ -421,6 +475,13 @@ namespace _01electronics_crm
             GetMeetings();
             InitializeStackPanel();
             InitializeGrid();
+
+            currentSelectedCallItem = null;
+            previousSelectedCallItem = null;
+
+            approveButton.IsEnabled = false;
+            rejectButton.IsEnabled = false;
+            viewButton.IsEnabled = false;
         }
 
         private void OnBtnClickMeetingItem(object sender, RoutedEventArgs e)
@@ -455,6 +516,20 @@ namespace _01electronics_crm
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
+            if (currentSelectedCallItem != null)
+            {
+                viewButton.IsEnabled = true;
+
+                if ((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID && (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.SENIOR_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)) || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+                {
+                    if (filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_status_id < 5)
+                    {
+                        rejectButton.IsEnabled = true;
+                        approveButton.IsEnabled = true;
+                    }
+                }
+            }
+
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,6 +544,7 @@ namespace _01electronics_crm
 
             InitializeStackPanel();
             InitializeGrid();
+
             viewButton.IsEnabled = false;
         }
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
@@ -546,15 +622,73 @@ namespace _01electronics_crm
             previousSelectedCallItem = null;
         }
 
-
-
-
-
-
         public void ResizeImage(ref Image imgToResize, int width, int height)
         {
             imgToResize.Width = width;
             imgToResize.Height = height;
+        }
+
+        private void OnBtnClickApprove(object sender, RoutedEventArgs e)
+        {
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT meetingApproval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            meetingApproval.approver.employee_id = loggedInUser.GetEmployeeId();
+            meetingApproval.approver.employee_name = loggedInUser.GetEmployeeName();
+            meetingApproval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            meetingApproval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            meetingApproval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            OfficeMeeting selectedMeeting = new OfficeMeeting();
+            selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_serial);
+
+            if (!selectedMeeting.AddMeetingApproval(meetingApproval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+
+            else
+            {
+                GetMeetings();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedCallItem = null;
+                previousSelectedCallItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
+        }
+
+        private void OnBtnClickReject(object sender, RoutedEventArgs e)
+        {
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT meetingApproval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            meetingApproval.approver.employee_id = loggedInUser.GetEmployeeId();
+            meetingApproval.approver.employee_name = loggedInUser.GetEmployeeName();
+            meetingApproval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            meetingApproval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            meetingApproval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            OfficeMeeting selectedMeeting = new OfficeMeeting();
+            selectedMeeting.InitializeOfficeMeetingInfo(filteredMeetings[OfficeMeetingsStackPanel.Children.IndexOf(currentSelectedCallItem)].meeting_serial);
+
+            if (!selectedMeeting.AddMeetingRejection(meetingApproval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            else
+            {
+                GetMeetings();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedCallItem = null;
+                previousSelectedCallItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
         }
     }
 }

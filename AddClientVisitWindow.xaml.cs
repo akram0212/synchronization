@@ -32,6 +32,8 @@ namespace _01electronics_crm
 
         public AddClientVisitWindow(ref Employee mloggedInUser)
         {
+            commonQueries = new CommonQueries();
+
             InitializeComponent();
 
             loggedInUser = mloggedInUser;
@@ -40,7 +42,12 @@ namespace _01electronics_crm
             int minDate;
             int maxDate;
 
-            DayOfWeek today = DateTime.Today.DayOfWeek;
+            DateTime now = DateTime.Now;
+
+            if (!commonQueries.GetTodaysDate(ref now))
+                return;
+
+            DayOfWeek today = now.DayOfWeek;
 
             DayOfWeek firstDay = DayOfWeek.Sunday;
             DayOfWeek lastDay = DayOfWeek.Saturday;

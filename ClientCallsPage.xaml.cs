@@ -37,6 +37,9 @@ namespace _01electronics_crm
         private int selectedYear;
         private int selectedQuarter;
         private int selectedEmployee;
+
+        private String errorMessage;
+
         public ClientCallsPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
@@ -75,7 +78,8 @@ namespace _01electronics_crm
         }
         private void GetCalls()
         {
-            commonQueries.GetClientCalls(ref clientCalls);
+            if (!commonQueries.GetClientCalls(ref clientCalls))
+                return;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +104,13 @@ namespace _01electronics_crm
                 employeeCheckBox.IsEnabled = false;
                 employeeComboBox.IsEnabled = false;
             }
+
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+            {
+                addButton.IsEnabled = true;
+            }
+            else
+                addButton.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,15 +200,64 @@ namespace _01electronics_crm
                 lineLabel.Content = "";
                 lineLabel.Style = (Style)FindResource("stackPanelItemBody");
 
+                Border statusBorder = new Border();
+                statusBorder.Style = (Style)FindResource("BorderIcon");
+
+                BrushConverter brushConverter = new BrushConverter();
+
+                Label statusLabel = new Label();
+                if (clientCalls[i].call_status_id == 1)
+                {
+                    statusLabel.Content = "Pending";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
+                }
+                else if (clientCalls[i].call_status_id < 5)
+                {
+                    statusLabel.Content = "Approved";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
+                }
+                else
+                {
+                    statusLabel.Content = "Rejected";
+                    statusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF0000"));
+                }
+                statusLabel.Style = (Style)FindResource("BorderIconTextLabel");
+
+                statusBorder.Child = statusLabel;
+
                 currentStackPanel.Children.Add(salesPersonNameLabel);
                 currentStackPanel.Children.Add(dateOfCallLabel);
                 currentStackPanel.Children.Add(companyAndContactLabel);
                 currentStackPanel.Children.Add(purposeAndResultLabel);
+
+                for (int j = 0; j < clientCalls[i].call_approvals_rejections.Count; j++)
+                {
+                    Label approvalRejectorLabel = new Label();
+                    if (clientCalls[i].call_approvals_rejections.Count > 1 && clientCalls[i].call_status_id > 4)
+                    {
+                        if (j != clientCalls[i].call_approvals_rejections.Count - 1)
+                            approvalRejectorLabel.Content = "Approved by " + clientCalls[i].call_approvals_rejections[j].approver.employee_name;
+                        else
+                            approvalRejectorLabel.Content = "Rejected by " + clientCalls[i].call_approvals_rejections[j].approver.employee_name;
+                    }
+                    else
+                    {
+                        if (clientCalls[i].call_status_id < 5)
+                            approvalRejectorLabel.Content = "Approved by " + clientCalls[i].call_approvals_rejections[j].approver.employee_name;
+                        else
+                            approvalRejectorLabel.Content = "Rejected by " + clientCalls[i].call_approvals_rejections[j].approver.employee_name;
+                    }
+                    approvalRejectorLabel.Style = (Style)FindResource("stackPanelItemBody");
+
+                    currentStackPanel.Children.Add(approvalRejectorLabel);
+                }
+
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
                 newGrid.MouseLeftButtonDown += OnBtnClickCallItem;
 
                 Image clientCallIcon = new Image { Source = new BitmapImage(new Uri(@"icons\client_call_icon.png", UriKind.Relative)) };
@@ -207,6 +267,9 @@ namespace _01electronics_crm
 
                 newGrid.Children.Add(currentStackPanel);
                 Grid.SetColumn(currentStackPanel, 1);
+
+                newGrid.Children.Add(statusBorder);
+                Grid.SetColumn(statusBorder, 2);
 
                 ClientCallsStackPanel.Children.Add(newGrid);
             }
@@ -328,7 +391,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnBtnClickCallItem(object sender, RoutedEventArgs e)
         {
-            viewButton.IsEnabled = true;
+            
             previousSelectedCallItem = currentSelectedCallItem;
             currentSelectedCallItem = (Grid)sender;
             BrushConverter brush = new BrushConverter();
@@ -359,12 +422,33 @@ namespace _01electronics_crm
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
+            if(currentSelectedCallItem != null)
+            {
+                viewButton.IsEnabled = true;
+
+                if ((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID && (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.SENIOR_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)) || (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID))
+                {
+                    if (filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_status_id < 5)
+                    {
+                        rejectButton.IsEnabled = true;
+                        approveButton.IsEnabled = true;
+                    }
+                }
+            }
+
         }
         private void OnClosedAddCallWindow(object sender, EventArgs e)
         {
             GetCalls();
             InitializeStackPanel();
             InitializeGrid();
+
+            currentSelectedCallItem = null;
+            previousSelectedCallItem = null;
+
+            approveButton.IsEnabled = false;
+            rejectButton.IsEnabled = false;
+            viewButton.IsEnabled = false;
         }
 
         private void OnBtnClickExport(object sender, RoutedEventArgs e)
@@ -468,6 +552,7 @@ namespace _01electronics_crm
             selectedCall.InitializeClientCallInfo(filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial, filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].sales_person_id);
 
             ViewClientCallWindow viewClientCallWindow = new ViewClientCallWindow(ref selectedCall);
+            viewClientCallWindow.Closed += OnClosedAddCallWindow;
             viewClientCallWindow.Show();
         }
 
@@ -566,18 +651,6 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(maintenanceContractsPage);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         public void ResizeImage(ref Image imgToResize, int width, int height)
         {
             imgToResize.Width = width;
@@ -589,6 +662,66 @@ namespace _01electronics_crm
 
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
+        }
+
+        private void OnClickApprove(object sender, RoutedEventArgs e)
+        {
+            ClientCall selectedCall = new ClientCall();
+            selectedCall.InitializeClientCallInfo(filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial, filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].sales_person_id);
+
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT approval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            approval.approver.employee_id = loggedInUser.GetEmployeeId();
+            approval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            approval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            approval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            if (!selectedCall.AddCallApproval(approval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            else
+            {
+                GetCalls();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedCallItem = null;
+                previousSelectedCallItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
+        }
+
+        private void OnClickReject(object sender, RoutedEventArgs e)
+        {
+            ClientCall selectedCall = new ClientCall();
+            selectedCall.InitializeClientCallInfo(filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].call_serial, filteredCalls[ClientCallsStackPanel.Children.IndexOf(currentSelectedCallItem)].sales_person_id);
+
+            HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT approval = new HUMAN_RESOURCE_MACROS.APPROVAL_REJECTION_CLASS_STRUCT();
+            approval.approver.employee_id = loggedInUser.GetEmployeeId();
+            approval.approver.department_id = loggedInUser.GetEmployeeDepartmentId();
+            approval.approver.team_id = loggedInUser.GetEmployeeTeamId();
+            approval.approver.position_id = loggedInUser.GetEmployeePositionId();
+
+            if (!selectedCall.AddCallRejection(approval, ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            else
+            {
+                GetCalls();
+                InitializeStackPanel();
+                InitializeGrid();
+
+                currentSelectedCallItem = null;
+                previousSelectedCallItem = null;
+
+                approveButton.IsEnabled = false;
+                rejectButton.IsEnabled = false;
+                viewButton.IsEnabled = false;
+            }
         }
     }
 }

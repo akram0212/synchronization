@@ -51,6 +51,9 @@
                             <Label Style="{StaticResource tableItemLabel}" Content="Additional Description"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox" Height="100"/>
                         </WrapPanel>
+                        <WrapPanel Name="statusWrapPanel">
+                            <Label Name="approvalRejectionLabel" Style="{StaticResource tableItemLabel}" Width="300" HorizontalContentAlignment="Left"/>
+                        </WrapPanel>
                     </WrapPanel>
 
                 </Grid>

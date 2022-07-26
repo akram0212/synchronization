@@ -31,10 +31,17 @@ namespace _01electronics_crm
         List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branches;
         public AddClientCallWindow(ref Employee mloggedInUser)
         {
+            commonQueries = new CommonQueries();
+
             InitializeComponent();
             loggedInUser = mloggedInUser;
 
-            DayOfWeek today = DateTime.Today.DayOfWeek;
+            DateTime now = DateTime.Now;
+
+            if (!commonQueries.GetTodaysDate(ref now))
+                return;
+
+            DayOfWeek today = now.DayOfWeek;
 
             DayOfWeek firstDay = DayOfWeek.Sunday;
             DayOfWeek lastDay = DayOfWeek.Saturday;
