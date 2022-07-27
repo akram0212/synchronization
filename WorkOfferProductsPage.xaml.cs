@@ -159,7 +159,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetCategoryComboBoxesResolve()
+        public void SetCategoryComboBoxesResolve()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
@@ -189,7 +189,7 @@ namespace _01electronics_crm
         }
 
         
-        private void SetTypeComboBoxesResolve()
+        public void SetTypeComboBoxesResolve()
         {
             for (int i = 0; i < numberOfProductsAdded ; i++)
             {
@@ -216,7 +216,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetBrandComboBoxesResolve()
+        public void SetBrandComboBoxesResolve()
         {
             for (int i = 0; i < quotation.GetNoOfOfferSavedProducts(); i++)
             {
@@ -241,7 +241,7 @@ namespace _01electronics_crm
             }
         }
 
-        private void SetModelComboBoxesResolve()
+        public void SetModelComboBoxesResolve()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
             {

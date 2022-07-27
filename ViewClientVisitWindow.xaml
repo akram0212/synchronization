@@ -69,6 +69,8 @@
                             <Label Style="{StaticResource tableItemLabel}" Content="Additional Description"/>
                             <TextBox Style="{StaticResource textBoxStyle}" Name="additionalDescriptionTextBox"/>
                         </WrapPanel>
+
+                        <Label Name="visitStatusLabel" Style="{StaticResource tableItemLabel}" Width="300" HorizontalContentAlignment="Left"/>
                     </WrapPanel>
             
                 </Grid>

@@ -102,6 +102,9 @@ namespace _01electronics_crm
             InitializeContactsStackPanel();
 
             InitializationComplete = true;
+
+            if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+                reassignBtn.IsEnabled = true;
         }
         private void SetDefaultSettings()
         {
@@ -1143,6 +1146,7 @@ namespace _01electronics_crm
                     selectedContact.InitializeContactInfo(currentCompanyAndContactStruct.sales_person_id, currentCompanyAndContactStruct.company.address_serial, int.Parse(selectedItem.Tag.ToString()));
             
                     ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
+                    viewContactWindow.Closed += OnClosedAddCompanyWindow;
                     viewContactWindow.Show();
             
                 }
@@ -1155,6 +1159,7 @@ namespace _01electronics_crm
                     selectedCompany.InitializeCompanyInfo(selectedCompanySerial);
             
                     ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref selectedCompany);
+                    viewCompanyWindow.Closed += OnClosedAddCompanyWindow;
                     viewCompanyWindow.Show();
                 }
             }
@@ -1173,6 +1178,7 @@ namespace _01electronics_crm
                     selectedContact.InitializeContactInfo(currentCompanyAndContactStruct.sales_person_id, currentCompanyAndContactStruct.company.address_serial, int.Parse(currentSelectedContactItem.Tag.ToString()));
 
                     ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
+                    viewContactWindow.Closed += OnClosedAddCompanyWindow;
                     viewContactWindow.Show();
                 }
                 else if(currentSelectedCompanyItem != null)
@@ -1188,6 +1194,7 @@ namespace _01electronics_crm
                     selectedCompany.InitializeCompanyInfo(currentCompanySerial);
 
                     ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref selectedCompany);
+                    viewCompanyWindow.Closed += OnClosedAddCompanyWindow;
                     viewCompanyWindow.Show();
                 }
             }
@@ -1351,6 +1358,12 @@ namespace _01electronics_crm
         {
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
+        }
+
+        private void OnClickReassignAll(object sender, RoutedEventArgs e)
+        {
+            ReassignContactsWindow reassignContactsWindow = new ReassignContactsWindow(ref loggedInUser);
+            reassignContactsWindow.Show();
         }
     }
 

@@ -48,6 +48,8 @@ namespace _01electronics_crm
             CallResultTextBox.Text = clientCall.GetCallResult();
 
             additionalDescriptionTextBox.Text = clientCall.GetCallNotes();
+
+            callStatusLabel.Content = clientCall.GetCallStatus();
         }
     }
 }

@@ -50,6 +50,8 @@ namespace _01electronics_crm
 
             additionalDescriptionTextBox.Text = visitInfo.GetVisitNotes();
 
+            visitStatusLabel.Content = visitInfo.GetVisitStatus();
+
         }
       
     }

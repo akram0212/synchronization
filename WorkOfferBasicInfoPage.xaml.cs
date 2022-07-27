@@ -474,10 +474,10 @@ namespace _01electronics_crm
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                 {
-                    workOfferProductsPage.SetCategoryComboBoxes();
-                    workOfferProductsPage.SetTypeComboBoxes();
-                    workOfferProductsPage.SetBrandComboBoxes();
-                    workOfferProductsPage.SetModelComboBoxes();
+                    workOfferProductsPage.SetCategoryComboBoxesResolve();
+                    workOfferProductsPage.SetTypeComboBoxesResolve();
+                    workOfferProductsPage.SetBrandComboBoxesResolve();
+                    workOfferProductsPage.SetModelComboBoxesResolve();
                     workOfferProductsPage.SetQuantityTextBoxes();
                 }
                 else

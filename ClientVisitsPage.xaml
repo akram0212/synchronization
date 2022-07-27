@@ -123,11 +123,15 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Content="Add" Style="{StaticResource buttonStyle}" Click="OnBtnClickAdd" Name="addButton"/>
                 <Button Grid.Column="1" Content="View" Style="{StaticResource buttonStyle}" Click="OnBtnClickView" Name="viewButton"/>
                 <Button Grid.Column="2" Content="Export" Style="{StaticResource buttonStyle}" Name="exportButton" Click="OnBtnClickExport"/>
+                <Button Grid.Column="3" Content="Approve" Style="{StaticResource buttonStyle}" Name="approveButton" Click="OnBtnClickApprove" IsEnabled="False"/>
+                <Button Grid.Column="4" Content="Reject" Style="{StaticResource buttonStyle}" Name="rejectButton" Click="OnBtnClickReject" IsEnabled="False"/>
             </Grid>
         </Grid>
 
