@@ -36,6 +36,7 @@ namespace _01electronics_crm
             InitializeComponent();
 
             loggedInUser = new Employee();
+            employeeEmailTextBox.Text = "mahmoud.hammad@01electronics.net";
         }
 
         private void OnButtonClickedSignIn(object sender, RoutedEventArgs e)

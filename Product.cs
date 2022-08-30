@@ -33,11 +33,13 @@ namespace _01electronics_crm
         public const int MAX_STANDARD_FEATURES_PER_MODEL = 7;
 
         //PRODUCT BASIC INFO
+        private int categoryID;
         private int productID;
         private int brandID;
         private int modelID;
 
         private String productName;
+        private String categoryName;
         private String brandName;
         private String modelName;
 
@@ -455,7 +457,7 @@ namespace _01electronics_crm
         {
             if (!ftpServer.DownloadFile(photoServerPath, photoLocalPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
             {
-                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -464,7 +466,7 @@ namespace _01electronics_crm
         {
             if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
             {
-                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -473,7 +475,10 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //SETTERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public void SetProductID(int mProductID)
+        public void SetCategoryID(int mCategoryID)
+        {
+            categoryID = mCategoryID;
+        } public void SetProductID(int mProductID)
         {
             productID = mProductID;
         }
@@ -488,6 +493,10 @@ namespace _01electronics_crm
             GetNewPhotoLocalPath();
             GetNewPhotoServerPath();
         } 
+        public void SetCategoryName(String mCategoryName)
+        {
+            categoryName = mCategoryName;
+        }
         public void SetProductName(String mProductName)
         {
             productName = mProductName;
@@ -511,7 +520,10 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GETTERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public int GetProductID()
+        public int GetCategoryID()
+        {
+            return categoryID;
+        } public int GetProductID()
         {
             return productID;
         }
@@ -523,6 +535,10 @@ namespace _01electronics_crm
         {
             return modelID;
         } 
+        public String GetCategoryName()
+        {
+            return categoryName;
+        }
         public String GetProductName()
         {
             return productName;
@@ -572,10 +588,29 @@ namespace _01electronics_crm
             
             //photoServerPath = photoServerPath;
         }
+        public String GetModelFolderServerPath()
+        {
+            String folderServerPath = String.Empty;
+            folderServerPath = String.Empty;
+            folderServerPath += BASIC_MACROS.MODELS_PHOTOS_PATH;
+            folderServerPath += GetProductID();
+            folderServerPath += "/";
+            folderServerPath += GetBrandID();
+            folderServerPath += "/";
+
+            return folderServerPath;
+            //folderServerPath = folderServerPath;
+        }
         public void GetNewPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
-            photoLocalPath = "..\\..\\Photos\\models\\" + GetProductID() + "-" + GetBrandID() + "-" + GetModelID() + ".jpg";
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID() + "\\" + GetModelID() + ".jpg";
+        }
+        public string GetFolderLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID();
+            return photoLocalPath;
         }
         public bool GetNewProductID()
         {

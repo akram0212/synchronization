@@ -1,4 +1,5 @@
 ﻿using _01electronics_library;
+using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,17 +33,23 @@ namespace _01electronics_crm
         protected BackgroundWorker downloadBackground; 
 
         Frame frame;
+        protected FTPServer ftpServer;
+        protected List<String> modelsNames;
+        protected String returnMessage;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
             selectedProduct = mSelectedProduct;
+            ftpServer = new FTPServer();
+            modelsNames = new List<String>();
 
             commonQueries = new CommonQueries();
             brandModels = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
 
             downloadBackground = new BackgroundWorker();
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/" + selectedProduct.GetProductID() + "/" + selectedProduct.GetBrandID());
             downloadBackground.DoWork += BackgroundDownload;
             downloadBackground.ProgressChanged += OnDownloadProgressChanged;
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
@@ -54,11 +61,10 @@ namespace _01electronics_crm
 
             downloadProgressBar.Visibility = Visibility.Visible;
             downloadBackground.RunWorkerAsync();
-
         }
         ~ModelsPage()
         {
-            DeletePhotosDestructor();
+            //DeletePhotosDestructor();
         }
         private void QueryGetModels()
         {
@@ -85,9 +91,15 @@ namespace _01electronics_crm
                 productTitleLabel.Style = (Style)FindResource("primaryHeaderTextStyle");
                 ModelsGrid.Children.Add(productTitleLabel);
                 Grid.SetRow(productTitleLabel, 0);
-
+                ftpServer.ListFilesInFolder(selectedProduct.GetModelFolderServerPath(), ref modelsNames, ref returnMessage);
+                if(modelsNames.Count() == 0)
+                {
+                    modelsNames = (List<String>) Directory.EnumerateFiles(selectedProduct.GetFolderLocalPath());
+                    //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
+                }
                 for (int i = 0; i < brandModels.Count(); i++)
                 {
+
                     if (brandModels[i].modelId != 0)
                     {
                         Grid currentModelGrid = new Grid();
@@ -111,24 +123,10 @@ namespace _01electronics_crm
 
                         selectedProduct.SetModelID(brandModels[i].modelId);
 
-                        try
+
+                        if (modelsNames.Exists(modelName => modelName == (selectedProduct.GetModelID() +".jpg")))
                         {
-                            Image brandImage = new Image();
-                            BitmapImage src = new BitmapImage();
-                            src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
-                            src.CacheOption = BitmapCacheOption.OnLoad;
-                            src.EndInit();
-                            brandImage.Source = src;
-                            brandImage.Height = 220;
-                            brandImage.Width = 190;
-                            //brandImage.MouseDown += ImageMouseDown;
-                            brandImage.Tag = brandModels[i].modelId.ToString();
-                            column1Grid.Children.Add(brandImage);
-                        }
-                        catch
-                        {
-                            if (selectedProduct.DownloadPhotoFromServer())
+                            try
                             {
                                 Image brandImage = new Image();
                                 BitmapImage src = new BitmapImage();
@@ -143,9 +141,26 @@ namespace _01electronics_crm
                                 brandImage.Tag = brandModels[i].modelId.ToString();
                                 column1Grid.Children.Add(brandImage);
                             }
+                            catch
+                            {
+                                if (selectedProduct.DownloadPhotoFromServer())
+                                {
+                                    Image brandImage = new Image();
+                                    BitmapImage src = new BitmapImage();
+                                    src.BeginInit();
+                                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                                    src.CacheOption = BitmapCacheOption.OnLoad;
+                                    src.EndInit();
+                                    brandImage.Source = src;
+                                    brandImage.Height = 220;
+                                    brandImage.Width = 190;
+                                    //brandImage.MouseDown += ImageMouseDown;
+                                    brandImage.Tag = brandModels[i].modelId.ToString();
+                                    column1Grid.Children.Add(brandImage);
+                                }
 
+                            }
                         }
-
 
                         Grid.SetColumn(column1Grid, 0);
 
@@ -275,112 +290,122 @@ namespace _01electronics_crm
             });
            
         }
-        private void DeletePhotos()
-        {
-            ModelsGrid.Children.Clear();
-            for (int i = 0; i < brandModels.Count(); i++)
-            {
-                selectedProduct.SetModelID(brandModels[i].modelId);
-                selectedProduct.GetNewPhotoLocalPath();
-                selectedProduct.GetNewPhotoServerPath();
+        //private void //DeletePhotos()
+        //{
+        //    ModelsGrid.Children.Clear();
+        //    for (int i = 0; i < brandModels.Count(); i++)
+        //    {
+        //        selectedProduct.SetModelID(brandModels[i].modelId);
+        //        selectedProduct.GetNewPhotoLocalPath();
+        //        selectedProduct.GetNewPhotoServerPath();
 
-                try
-                {
-                    System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
-                    image2.Dispose();
-                    File.Delete(selectedProduct.GetPhotoLocalPath());
+        //        try
+        //        {
+        //            System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
+        //            image2.Dispose();
+        //            File.Delete(selectedProduct.GetPhotoLocalPath());
 
-                }
-                catch
-                {
+        //        }
+        //        catch
+        //        {
 
-                }
+        //        }
 
-            }
-        }
-        private void DeletePhotosDestructor()
-        {
-            for (int i = 0; i < brandModels.Count(); i++)
-            {
-                selectedProduct.SetModelID(brandModels[i].modelId);
-                selectedProduct.GetNewPhotoLocalPath();
-                selectedProduct.GetNewPhotoServerPath();
+        //    }
+        //}
+        //private void //DeletePhotosDestructor()
+        //{
+        //    for (int i = 0; i < brandModels.Count(); i++)
+        //    {
+        //        selectedProduct.SetModelID(brandModels[i].modelId);
+        //        selectedProduct.GetNewPhotoLocalPath();
+        //        selectedProduct.GetNewPhotoServerPath();
 
-                try
-                {
-                    System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
-                    image2.Dispose();
-                    File.Delete(selectedProduct.GetPhotoLocalPath());
+        //        try
+        //        {
+        //            System.Drawing.Image image2 = System.Drawing.Image.FromFile(selectedProduct.GetPhotoLocalPath());
+        //            image2.Dispose();
+        //            File.Delete(selectedProduct.GetPhotoLocalPath());
 
-                }
-                catch
-                {
+        //        }
+        //        catch
+        //        {
 
-                }
+        //        }
 
-            }
-        }
+        //    }
+        //}
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
             this.NavigationService.Navigate(contacts);
         }
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            DeletePhotos();
-            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            //DeletePhotos();
+            CategoriesPage productsPage = new CategoriesPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
         private void OnButtonClickedWorkOrders(object sender, MouseButtonEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             WorkOrdersPage workOrdersPage = new WorkOrdersPage(ref loggedInUser);
             this.NavigationService.Navigate(workOrdersPage);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            ////DeletePhotos();
             QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             RFQsPage rFQsPage = new RFQsPage(ref loggedInUser);
             this.NavigationService.Navigate(rFQsPage);
         }
         private void OnButtonClickedVisits(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             ClientVisitsPage clientVisitsPage = new ClientVisitsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientVisitsPage);
         }
         private void OnButtonClickedCalls(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             ClientCallsPage clientCallsPage = new ClientCallsPage(ref loggedInUser);
             this.NavigationService.Navigate(clientCallsPage);
         }
         private void OnButtonClickedMeetings(object sender, RoutedEventArgs e)
         {
-            DeletePhotos();
+            //DeletePhotos();
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
         private void OnButtonClickedStatistics(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
+        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -442,9 +467,5 @@ namespace _01electronics_crm
 
         }
 
-        private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }
