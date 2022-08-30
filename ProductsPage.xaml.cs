@@ -32,8 +32,9 @@ namespace _01electronics_crm
         protected String sqlQuery;
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
+        protected Product selectedProduct;
 
-        public ProductsPage(ref Employee mLoggedInUser)
+        public ProductsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
 
@@ -43,6 +44,7 @@ namespace _01electronics_crm
             ftpServer = new FTPServer();
             products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             productSummaryPoints = new List<string>();
+            selectedProduct = mSelectedProduct;
 
             InitializeProducts();
             InitializeProductSummaryPoints();
@@ -50,7 +52,7 @@ namespace _01electronics_crm
         }
         private void InitializeProducts()
         {
-            if (!commonQueries.GetCompanyProducts(ref products))
+            if (!commonQueries.GetCompanyProducts(ref products, selectedProduct.GetCategoryID()))
                 return;
         }
         public void InitializeProductSummaryPoints()
@@ -146,7 +148,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            CategoriesPage productsPage = new CategoriesPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)

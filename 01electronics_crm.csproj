@@ -147,6 +147,9 @@
     <Compile Include="AddProjectWindow.xaml.cs">
       <DependentUpon>AddProjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CategoriesPage.xaml.cs">
+      <DependentUpon>CategoriesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ChangeAssigneeWindow.xaml.cs">
       <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
     </Compile>
@@ -357,6 +360,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CategoriesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -805,6 +812,48 @@
       <Project>{91b26f19-70c9-40e4-ad53-f13dd881c7cb}</Project>
       <Name>01electronics_windows_library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\30.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\11.jpg" />
+    <Resource Include="photos\brands\12.jpg" />
+    <Resource Include="photos\brands\13.jpg" />
+    <Resource Include="photos\brands\14.jpg" />
+    <Resource Include="photos\brands\15.jpg" />
+    <Resource Include="photos\brands\16.jpg" />
+    <Resource Include="photos\brands\17.jpg" />
+    <Resource Include="photos\brands\18.jpg" />
+    <Resource Include="photos\brands\19.jpg" />
+    <Resource Include="photos\brands\20.jpg" />
+    <Resource Include="photos\brands\21.jpg" />
+    <Resource Include="photos\brands\22.jpg" />
+    <Resource Include="photos\brands\23.jpg" />
+    <Resource Include="photos\brands\24.jpg" />
+    <Resource Include="photos\brands\25.jpg" />
+    <Resource Include="photos\brands\26.jpg" />
+    <Resource Include="photos\brands\27.jpg" />
+    <Resource Include="photos\brands\28.jpg" />
+    <Resource Include="photos\brands\29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\products\55.jpg" />
+    <Resource Include="photos\products\56.jpg" />
+    <Resource Include="photos\products\57.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\categories\0.jpg" />
+    <Resource Include="photos\categories\1.jpg" />
+    <Resource Include="photos\categories\2.jpg" />
+    <Resource Include="photos\categories\3.jpg" />
+    <Resource Include="photos\categories\4.jpg" />
+    <Resource Include="photos\categories\5.jpg" />
+    <Resource Include="photos\categories\6.jpg" />
+    <Resource Include="photos\categories\7.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -96,6 +96,15 @@ namespace _01electronics_crm
                     brandLogo.Triggers.Add(e2);
 
                     gridI.Children.Add(brandLogo);
+                    
+                    //if(brandsList[i].brandId == 0)
+                    //{
+                    //    Label othersLabel = new Label();
+                    //    othersLabel.Content = brandsList[i].brandName;
+                    //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
+                    //    gridI.Children.Add(othersLabel);
+                    //}    
+
 
                     brandsWrapPanel.Children.Add(gridI);
                     
@@ -222,15 +231,20 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedProducts(object sender, MouseButtonEventArgs e)
         {
-            ProductsPage productsPage = new ProductsPage(ref loggedInUser);
+            CategoriesPage productsPage = new CategoriesPage(ref loggedInUser);
             this.NavigationService.Navigate(productsPage);
         }
 
+        private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
+        {
+            MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceOffersPage);
+        }
         private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
         {
-
+            MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            this.NavigationService.Navigate(maintenanceContractsPage);
         }
-
         private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
         {
 
