@@ -94,7 +94,11 @@ namespace _01electronics_crm
                 ftpServer.ListFilesInFolder(selectedProduct.GetModelFolderServerPath(), ref modelsNames, ref returnMessage);
                 if(modelsNames.Count() == 0)
                 {
-                    modelsNames = (List<String>) Directory.EnumerateFiles(selectedProduct.GetFolderLocalPath());
+                    string[] filesNames = Directory.GetFiles(selectedProduct.GetFolderLocalPath());
+                    foreach (string file in filesNames)
+                    {
+                        modelsNames .Add(file);
+                    }
                     //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
                 }
                 for (int i = 0; i < brandModels.Count(); i++)

@@ -560,6 +560,8 @@ namespace _01electronics_crm
 
             int counter = 0;
 
+            Decimal ordersTotalPrice = 0;
+
             Label orderIdHeader = new Label();
             orderIdHeader.Content = "Order ID";
             orderIdHeader.Style = (Style)FindResource("tableSubHeaderItem");
@@ -596,6 +598,11 @@ namespace _01electronics_crm
             orderProjectLocationsHeader.Content = "Project Locations";
             orderProjectLocationsHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
+            Label orderTotalPriceHeader = new Label();
+            orderTotalPriceHeader.Content = "Total Price";
+            orderTotalPriceHeader.Style = (Style)FindResource("tableSubHeaderItem");
+
+            workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
             workOrdersGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -643,6 +650,12 @@ namespace _01electronics_crm
             Grid.SetRow(orderProjectLocationsHeader, 0);
             Grid.SetColumn(orderProjectLocationsHeader, 8);
             workOrdersGrid.Children.Add(orderProjectLocationsHeader);
+
+            Grid.SetRow(orderTotalPriceHeader, 0);
+            Grid.SetColumn(orderTotalPriceHeader, 9);
+            workOrdersGrid.Children.Add(orderTotalPriceHeader);
+
+
 
             int currentRowNumber = 1;
 
@@ -959,7 +972,18 @@ namespace _01electronics_crm
                     workOrdersGrid.Children.Add(projectLocationsGrid);
                     Grid.SetRow(projectLocationsGrid, currentRowNumber);
                     Grid.SetColumn(projectLocationsGrid, 8);
+
                 }
+
+                Label totalPriceLabel = new Label();
+                totalPriceLabel.Content = workOrders[i].total_price;
+                totalPriceLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+                workOrdersGrid.Children.Add(totalPriceLabel);
+                Grid.SetRow(totalPriceLabel, currentRowNumber);
+                Grid.SetColumn(totalPriceLabel, 9);
+
+                ordersTotalPrice += workOrders[i].total_price;
 
                 
 
@@ -969,6 +993,18 @@ namespace _01electronics_crm
 
 
             }
+
+            currentRowNumber++;
+
+            workOrdersGrid.RowDefinitions.Add(new RowDefinition());
+
+            Label ordersTotalPriceLabel = new Label();
+            ordersTotalPriceLabel.Content = ordersTotalPrice;
+            ordersTotalPriceLabel.Style = (Style)FindResource("tableSubItemLabel");
+
+            workOrdersGrid.Children.Add(ordersTotalPriceLabel);
+            Grid.SetRow(ordersTotalPriceLabel, currentRowNumber);
+            Grid.SetColumn(ordersTotalPriceLabel, 9);
 
             return true;
         }
