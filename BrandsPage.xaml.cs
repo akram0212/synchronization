@@ -60,7 +60,7 @@ namespace _01electronics_crm
         public void SetUpPageUIElements()
         {
             ftpServer.ListFilesInFolder(selectedProduct.GetBrandFolderServerPath(), ref brandsNames, ref returnMessage);
-
+            selectedProduct.GetBrandFolderLocalPath();
             if (brandsNames.Count() == 0)
             {
                 string[] filesNames = Directory.GetFiles(selectedProduct.GetBrandFolderLocalPath());
@@ -88,8 +88,10 @@ namespace _01electronics_crm
                 Grid gridI = new Grid();
 
                 selectedProduct.SetBrandID(brandsList[i].brandId);
+                //String brandLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + brandsList[i].brandId + ".jpg";
 
-                if (brandsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || brandsNames.Exists(modelName2 => modelName2 == (brandsList[i].brandId + ".jpg"))))
+                if (brandsNames.Exists(modelName => modelName == selectedProduct.GetBrandPhotoLocalPath()
+                || brandsNames.Exists(modelName2 => modelName2 == (brandsList[i].brandId + ".jpg"))))
                 {
                     try
                     {

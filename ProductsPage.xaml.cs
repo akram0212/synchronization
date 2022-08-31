@@ -61,13 +61,14 @@ namespace _01electronics_crm
         }
         public void InitializeProductSummaryPoints()
         {
-            if (!commonQueries.GetProductsSummaryPoints(ref productSummaryPoints))
+            if (!commonQueries.GetProductsSummaryPoints(ref productSummaryPoints, selectedProduct.GetCategoryID()))
                 return;
         }
 
         public void SetUpPageUIElements()
         {
             ftpServer.ListFilesInFolder(selectedProduct.GetProductFolderServerPath(), ref productsNames, ref returnMessage);
+            selectedProduct.GetProductFolderLocalPath();
 
             if (productsNames.Count() == 0)
             {
@@ -90,8 +91,10 @@ namespace _01electronics_crm
                 gridI.RowDefinitions.Add(imageRow);
 
                 selectedProduct.SetProductID(products[i].typeId);
+                //String productLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + products[i].typeId + ".jpg";
 
-                if (productsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
+                if (productsNames.Exists(modelName => modelName == selectedProduct.GetProductPhotoLocalPath()
+                || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
                 {
                     try
                     {

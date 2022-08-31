@@ -26,7 +26,7 @@ namespace _01electronics_crm
         private Employee loggedInUser;
         private CommonQueries commonQueries;
         private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> categories;
-        //protected List<String> productSummaryPoints;
+        protected List<String> categoriesSummaryPoints;
         protected String sqlQuery;
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
@@ -40,9 +40,11 @@ namespace _01electronics_crm
             sqlDatabase = new SQLServer();
             ftpServer = new FTPServer();
             categories = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
-            //productSummaryPoints = new List<string>();
+            categoriesSummaryPoints = new List<string>();
+            //categoriesSummaryPoints = new List<string>();
 
             InitializeCategories();
+            InitializeProductSummaryPoints();
             SetUpPageUIElements();
         }
         private void InitializeCategories()
@@ -51,48 +53,32 @@ namespace _01electronics_crm
                 return;
         }
 
+        public void InitializeProductSummaryPoints()
+        {
+            categoriesSummaryPoints.Add("A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.");
+            categoriesSummaryPoints.Add("The generating set of our PRO range covers your emergency needs within the world-wide standards of electrical of supplies.");
+            categoriesSummaryPoints.Add("Rechargeable battery first invented in 1859 by French physicist Gaston Planté");
+            categoriesSummaryPoints.Add("The main component of an electrical distribution system that divides electrical power to the branch circuits while providing protection devices for each circuit in a common enclosure.");
+            categoriesSummaryPoints.Add("Protection devices are installed with the aims of protection of assets and ensuring continued supply of energy.");
+            categoriesSummaryPoints.Add("An electrical safety device that quickly breaks an electrical circuit with leakage current to ground.");
+            categoriesSummaryPoints.Add("Enterprise resource planning (ERP) consists of technologies and systems companies use to manage and integrate their core business processes.");
+        }
         public void SetUpPageUIElements()
         {
             for (int i = 0; i < categories.Count(); i++)
             {
+
                 RowDefinition rowI = new RowDefinition();
                 ProductsGrid.RowDefinitions.Add(rowI);
+                RowDefinition rowI1 = new RowDefinition();
+                ProductsGrid.RowDefinitions.Add(rowI1);
 
                 Grid gridI = new Grid();
-
-                RowDefinition headerRow = new RowDefinition();
-                headerRow.Height = new GridLength(50);
-                gridI.RowDefinitions.Add(headerRow);
 
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
                 Image productImage = new Image();
-
-                Grid headerGrid = new Grid();
-                headerGrid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                //headerGrid.Background = Brushes.White;
-                headerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                headerGrid.VerticalAlignment = VerticalAlignment.Stretch;
-                RowDefinition headerGridRow = new RowDefinition();
-                headerGrid.RowDefinitions.Add(headerGridRow);
-                Grid.SetRow(headerGrid, 0);
-
-                Label headerLabel = new Label();
-               //headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                headerLabel.Foreground = Brushes.White;
-                headerLabel.FontFamily = new FontFamily("Sans Serif");
-                headerLabel.FontSize = 20;
-                headerLabel.HorizontalAlignment = HorizontalAlignment.Center;
-                headerLabel.VerticalAlignment = VerticalAlignment.Center;
-                headerLabel.FontWeight = FontWeights.Bold;
-                headerLabel.Padding = new Thickness(10);
-                headerLabel.Content = categories[i].category;
-
-                Grid.SetRow(headerLabel, 0);
-                headerGrid.Children.Add(headerLabel);
-                gridI.Children.Add(headerGrid);
-
 
                 string src = String.Format(@"/01electronics_crm;component/Photos/categories/" + categories[i].categoryId + ".jpg");
                 productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
@@ -103,6 +89,54 @@ namespace _01electronics_crm
                 gridI.Children.Add(productImage);
                 Grid.SetRow(productImage, 1);
 
+                Grid imageGrid = new Grid();
+                imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
+                imageGrid.Width = 350;
+                imageGrid.Height = 150;
+                imageGrid.Margin = new Thickness(100, -20, 0, 0);
+                imageGrid.HorizontalAlignment = HorizontalAlignment.Left;
+
+                RowDefinition headerRow = new RowDefinition();
+                imageGrid.RowDefinitions.Add(headerRow);
+                headerRow.Height = new GridLength(40);
+
+
+                RowDefinition pointsRow = new RowDefinition();
+                imageGrid.RowDefinitions.Add(pointsRow);
+
+                Grid headerGrid = new Grid();
+                RowDefinition headerGridRow = new RowDefinition();
+                headerGrid.RowDefinitions.Add(headerGridRow);
+                Grid.SetRow(headerGrid, 0);
+
+                Label headerLabel = new Label();
+                headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                headerLabel.FontFamily = new FontFamily("Sans Serif");
+                headerLabel.FontSize = 17;
+                headerLabel.FontWeight = FontWeights.Bold;
+                headerLabel.Padding = new Thickness(10);
+                headerLabel.Content = categories[i].category;
+
+                Grid.SetRow(headerLabel, 0);
+                headerGrid.Children.Add(headerLabel);
+                imageGrid.Children.Add(headerGrid);
+
+                TextBlock pointsTextBlock = new TextBlock();
+                pointsTextBlock.Foreground = Brushes.Black;
+                pointsTextBlock.TextWrapping = TextWrapping.Wrap;
+                pointsTextBlock.FontSize = 15;
+                pointsTextBlock.FontStyle = FontStyles.Italic;
+                if (i < categoriesSummaryPoints.Count)
+                {
+                    pointsTextBlock.Text = categoriesSummaryPoints[i];
+                }
+                pointsTextBlock.Padding = new Thickness(20);
+
+                Grid.SetRow(pointsTextBlock, 1);
+                imageGrid.Children.Add(pointsTextBlock);
+
+                gridI.Children.Add(imageGrid);
+                Grid.SetRow(imageGrid, 0);
                 ProductsGrid.Children.Add(gridI);
                 Grid.SetRow(gridI, i);
             }

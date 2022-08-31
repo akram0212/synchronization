@@ -36,6 +36,7 @@ namespace _01electronics_crm
             InitializeComponent();
 
             loggedInUser = new Employee();
+            employeeEmailTextBox.Text = "mahmoud.hammad@01electronics.net";
         }
 
         private void OnButtonClickedSignIn(object sender, RoutedEventArgs e)
@@ -57,11 +58,11 @@ namespace _01electronics_crm
 
             employeePassword = employeePasswordTextBox.Password;
 
-           if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
-           {
-               System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-               return;
-           }
+           //if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
+           //{
+           //    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           //    return;
+           //}
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
 
