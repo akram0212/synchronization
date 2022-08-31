@@ -33,6 +33,8 @@ namespace _01electronics_crm
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
         protected Product selectedProduct;
+        protected List<String> productsNames;
+        protected String returnMessage;
 
         public ProductsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
@@ -45,6 +47,8 @@ namespace _01electronics_crm
             products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             productSummaryPoints = new List<string>();
             selectedProduct = mSelectedProduct;
+            productsNames = new List<String>();
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/products");
 
             InitializeProducts();
             InitializeProductSummaryPoints();
@@ -63,7 +67,19 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
-            for(int i = 0; i < products.Count(); i++)
+            ftpServer.ListFilesInFolder(selectedProduct.GetProductFolderServerPath(), ref productsNames, ref returnMessage);
+
+            if (productsNames.Count() == 0)
+            {
+                string[] filesNames = Directory.GetFiles(selectedProduct.GetProductFolderLocalPath());
+                foreach (string file in filesNames)
+                {
+                    productsNames.Add(file);
+                }
+                //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
+            }
+
+            for (int i = 0; i < products.Count(); i++)
             {
                 RowDefinition rowI = new RowDefinition();
                 ProductsGrid.RowDefinitions.Add(rowI);
@@ -73,17 +89,50 @@ namespace _01electronics_crm
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
-                Image productImage = new Image();
+                selectedProduct.SetProductID(products[i].typeId);
 
-                string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
-                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                productImage.MouseDown += ImageMouseDown;
-                productImage.Tag = products[i].typeId.ToString();
-                gridI.Children.Add(productImage);
-                Grid.SetRow(productImage, 0);
+                if (productsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
+                {
+                    try
+                    {
+                        Image productImage = new Image();
 
+                        //string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
+
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
+                        src.EndInit();
+                        productImage.Source = src;
+                        productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                        productImage.MouseDown += ImageMouseDown;
+                        productImage.Tag = products[i].typeId.ToString();
+                        gridI.Children.Add(productImage);
+                        Grid.SetRow(productImage, 0);
+                    }
+                    catch
+                    {
+                        selectedProduct.SetPhotoServerPath(selectedProduct.GetProductFolderServerPath() + "/" + products[i].typeId + ".jpg");
+                        if (selectedProduct.DownloadPhotoFromServer())
+                        {
+                            Image productImage = new Image();
+                            BitmapImage src = new BitmapImage();
+                            src.BeginInit();
+                            src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
+                            src.CacheOption = BitmapCacheOption.OnLoad;
+                            src.EndInit();
+                            productImage.Source = src;
+                            productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                            productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                            productImage.MouseDown += ImageMouseDown;
+                            productImage.Tag = products[i].typeId.ToString();
+                            gridI.Children.Add(productImage);
+                            Grid.SetRow(productImage, 0);
+                        }
+                    }
+                }
                 Grid imageGrid = new Grid();
                 imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
                 imageGrid.Width = 350;

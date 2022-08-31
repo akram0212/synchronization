@@ -36,6 +36,7 @@ namespace _01electronics_crm
         protected FTPServer ftpServer;
         protected List<String> modelsNames;
         protected String returnMessage;
+        protected bool fromServer;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
@@ -91,10 +92,16 @@ namespace _01electronics_crm
                 productTitleLabel.Style = (Style)FindResource("primaryHeaderTextStyle");
                 ModelsGrid.Children.Add(productTitleLabel);
                 Grid.SetRow(productTitleLabel, 0);
+
                 ftpServer.ListFilesInFolder(selectedProduct.GetModelFolderServerPath(), ref modelsNames, ref returnMessage);
-                if(modelsNames.Count() == 0)
+                
+                if (modelsNames.Count() == 0)
                 {
-                    modelsNames = (List<String>) Directory.EnumerateFiles(selectedProduct.GetFolderLocalPath());
+                    string[] filesNames = Directory.GetFiles(selectedProduct.GetModelFolderLocalPath());
+                    foreach(string file in filesNames)
+                    {
+                        modelsNames.Add(file);
+                    }
                     //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
                 }
                 for (int i = 0; i < brandModels.Count(); i++)
@@ -124,7 +131,7 @@ namespace _01electronics_crm
                         selectedProduct.SetModelID(brandModels[i].modelId);
 
 
-                        if (modelsNames.Exists(modelName => modelName == (selectedProduct.GetModelID() +".jpg")))
+                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID()+".jpg"))))
                         {
                             try
                             {
@@ -296,7 +303,7 @@ namespace _01electronics_crm
         //    for (int i = 0; i < brandModels.Count(); i++)
         //    {
         //        selectedProduct.SetModelID(brandModels[i].modelId);
-        //        selectedProduct.GetNewPhotoLocalPath();
+        //        selectedProduct.GetNewModelPhotoLocalPath();
         //        selectedProduct.GetNewPhotoServerPath();
 
         //        try
@@ -318,7 +325,7 @@ namespace _01electronics_crm
         //    for (int i = 0; i < brandModels.Count(); i++)
         //    {
         //        selectedProduct.SetModelID(brandModels[i].modelId);
-        //        selectedProduct.GetNewPhotoLocalPath();
+        //        selectedProduct.GetNewModelPhotoLocalPath();
         //        selectedProduct.GetNewPhotoServerPath();
 
         //        try

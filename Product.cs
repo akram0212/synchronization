@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using _01electronics_library;
 using _01electronics_windows_library;
 
-namespace _01electronics_crm
+namespace _01electronics_library
 {
     public class Product
     {
@@ -84,7 +80,7 @@ namespace _01electronics_crm
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
 
-            GetNewPhotoLocalPath();
+            GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
 
             return true;
@@ -165,7 +161,7 @@ namespace _01electronics_crm
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
                 return false;
 
-            GetNewPhotoLocalPath();
+            GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
 
             return true;
@@ -490,7 +486,7 @@ namespace _01electronics_crm
         {
             modelID = mModelID;
 
-            GetNewPhotoLocalPath();
+            GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
         } 
         public void SetCategoryName(String mCategoryName)
@@ -601,15 +597,57 @@ namespace _01electronics_crm
             return folderServerPath;
             //folderServerPath = folderServerPath;
         }
-        public void GetNewPhotoLocalPath()
+        public String GetProductFolderServerPath()
+        {
+            photoServerPath = String.Empty;
+            photoServerPath += BASIC_MACROS.MODELS_PHOTOS_PATH;
+            photoServerPath += "products/";
+
+            return photoServerPath;
+            //folderServerPath = folderServerPath;
+        }
+        public String GetBrandFolderServerPath()
+        {
+            photoServerPath = String.Empty;
+            photoServerPath += BASIC_MACROS.MODELS_PHOTOS_PATH;
+            photoServerPath += "brands/";
+
+            return photoServerPath;
+            //folderServerPath = folderServerPath;
+        }
+        public void GetNewModelPhotoLocalPath()
         {
             photoLocalPath = String.Empty;
             photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID() + "\\" + GetModelID() + ".jpg";
         }
-        public string GetFolderLocalPath()
+        public String GetProductPhotoLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\products\\" + GetProductID() + ".jpg";
+            return photoLocalPath;
+        }
+        public String GetBrandPhotoLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\brands\\" + GetBrandID() + ".jpg";
+            return photoLocalPath;
+        }
+        public string GetModelFolderLocalPath()
         {
             photoLocalPath = String.Empty;
             photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID();
+            return photoLocalPath;
+        }
+        public string GetProductFolderLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\products";
+            return photoLocalPath;
+        }
+        public string GetBrandFolderLocalPath()
+        {
+            photoLocalPath = String.Empty;
+            photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\brands";
             return photoLocalPath;
         }
         public bool GetNewProductID()

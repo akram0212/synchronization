@@ -45,26 +45,21 @@
             <TextBlock Grid.Row="11" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource sideNavigationItemStyle}" Name="OfficeMeetingsLabel" Text="Office Meetings" MouseLeftButtonDown="OnButtonClickedMeetings"/>
 
         </Grid>
-        
-        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
+        <Grid  Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="PRODUCTS" Style="{StaticResource primaryHeaderTextStyle}"/>
-                <Grid Grid.Row="1" Name="ProductsGrid">
+
+            <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid Grid.Row="0" Name="ProductsGrid" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
                 </Grid>
-                
+            </ScrollViewer>
         </Grid>
-        </ScrollViewer>
+        
     </Grid>
     
 </Page>

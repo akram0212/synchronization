@@ -60,49 +60,29 @@ namespace _01electronics_crm
 
                 Grid gridI = new Grid();
 
+                RowDefinition headerRow = new RowDefinition();
+                headerRow.Height = new GridLength(50);
+                gridI.RowDefinitions.Add(headerRow);
+
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
                 Image productImage = new Image();
 
-                string src = String.Format(@"/01electronics_crm;component/Photos/categories/" + categories[i].categoryId + ".jpg");
-                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                productImage.MouseDown += ImageMouseDown;
-                productImage.Tag = categories[i].categoryId.ToString();
-                gridI.Children.Add(productImage);
-                Grid.SetRow(productImage, 0);
-
-                Grid imageGrid = new Grid();
-                imageGrid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-                //imageGrid.Background = Brushes.White;
-               // imageGrid.Width = 150;
-                imageGrid.Height = 100;
-                //imageGrid.Margin = new Thickness(100, -20, 0, 0);
-                imageGrid.HorizontalAlignment = HorizontalAlignment.Center;
-                imageGrid.VerticalAlignment = VerticalAlignment.Center;
-
-                RowDefinition headerRow = new RowDefinition();
-                imageGrid.RowDefinitions.Add(headerRow);
-                headerRow.Height = new GridLength(100);
-
-
-                //RowDefinition pointsRow = new RowDefinition();
-                //imageGrid.RowDefinitions.Add(pointsRow);
-
                 Grid headerGrid = new Grid();
-                headerGrid.HorizontalAlignment = HorizontalAlignment.Center;
-                headerGrid.VerticalAlignment = VerticalAlignment.Center;
+                headerGrid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                //headerGrid.Background = Brushes.White;
+                headerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                headerGrid.VerticalAlignment = VerticalAlignment.Stretch;
                 RowDefinition headerGridRow = new RowDefinition();
                 headerGrid.RowDefinitions.Add(headerGridRow);
                 Grid.SetRow(headerGrid, 0);
 
                 Label headerLabel = new Label();
-                headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+               //headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                 headerLabel.Foreground = Brushes.White;
                 headerLabel.FontFamily = new FontFamily("Sans Serif");
-                headerLabel.FontSize = 25;
+                headerLabel.FontSize = 20;
                 headerLabel.HorizontalAlignment = HorizontalAlignment.Center;
                 headerLabel.VerticalAlignment = VerticalAlignment.Center;
                 headerLabel.FontWeight = FontWeights.Bold;
@@ -111,26 +91,18 @@ namespace _01electronics_crm
 
                 Grid.SetRow(headerLabel, 0);
                 headerGrid.Children.Add(headerLabel);
-                imageGrid.Children.Add(headerGrid);
+                gridI.Children.Add(headerGrid);
 
-                //TextBox pointsTextBlock = new TextBox();
-                //pointsTextBlock.Foreground = Brushes.Black;
-                //pointsTextBlock.TextWrapping = TextWrapping.Wrap;
-                //pointsTextBlock.FontSize = 15;
-                //pointsTextBlock.Height = 50;
-                //pointsTextBlock.Width = 50;
-                //pointsTextBlock.FontStyle = FontStyles.Italic;
-                //if (i < productSummaryPoints.Count)
-                //{
-                //    pointsTextBlock.Text = productSummaryPoints[i];
-                //}
-               // pointsTextBlock.Padding = new Thickness(20);
-               //
-               // Grid.SetRow(pointsTextBlock, 1);
-               // imageGrid.Children.Add(pointsTextBlock);
 
-                gridI.Children.Add(imageGrid);
-                Grid.SetRow(imageGrid, 0);
+                string src = String.Format(@"/01electronics_crm;component/Photos/categories/" + categories[i].categoryId + ".jpg");
+                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
+                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                productImage.MouseDown += ImageMouseDown;
+                productImage.Tag = categories[i].categoryId.ToString();
+                gridI.Children.Add(productImage);
+                Grid.SetRow(productImage, 1);
+
                 ProductsGrid.Children.Add(gridI);
                 Grid.SetRow(gridI, i);
             }
