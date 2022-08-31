@@ -998,6 +998,80 @@ namespace _01electronics_crm
 
             workOrdersGrid.RowDefinitions.Add(new RowDefinition());
 
+            Label tempLabel0 = new Label();
+            Label tempLabel1 = new Label();
+            Label tempLabel2 = new Label();
+            Label tempLabel3 = new Label();
+
+            Grid tempGrid4 = new Grid();
+
+            tempGrid4.RowDefinitions.Add(new RowDefinition());
+            tempGrid4.RowDefinitions.Add(new RowDefinition());
+
+            tempGrid4.ColumnDefinitions.Add(new ColumnDefinition());
+            tempGrid4.ColumnDefinitions.Add(new ColumnDefinition());
+            tempGrid4.ColumnDefinitions.Add(new ColumnDefinition());
+            tempGrid4.ColumnDefinitions.Add(new ColumnDefinition());
+            Label header0 = new Label();
+            Label header1 = new Label();
+            Label header2 = new Label();
+            Label header3 = new Label();
+            Label value0 = new Label();
+            Label value1 = new Label();
+            Label value2 = new Label();
+            Label value3 = new Label();
+
+            tempGrid4.Children.Add(header0);
+            tempGrid4.Children.Add(header1);
+            tempGrid4.Children.Add(header2);
+            tempGrid4.Children.Add(header3);
+            tempGrid4.Children.Add(value0);
+            tempGrid4.Children.Add(value1);
+            tempGrid4.Children.Add(value2);
+            tempGrid4.Children.Add(value3);
+
+
+            Label tempLabel5 = new Label();
+            Label tempLabel6 = new Label();
+            Label tempLabel7 = new Label();
+            Label tempLabel8 = new Label();
+
+            workOrdersGrid.Children.Add(tempLabel0);
+            Grid.SetRow(tempLabel0, currentRowNumber);
+            Grid.SetColumn(tempLabel0, 0);
+
+            workOrdersGrid.Children.Add(tempLabel1);
+            Grid.SetRow(tempLabel1, currentRowNumber);
+            Grid.SetColumn(tempLabel1, 1);
+
+            workOrdersGrid.Children.Add(tempLabel2);
+            Grid.SetRow(tempLabel2, currentRowNumber);
+            Grid.SetColumn(tempLabel2, 2);
+
+            workOrdersGrid.Children.Add(tempLabel3);
+            Grid.SetRow(tempLabel3, currentRowNumber);
+            Grid.SetColumn(tempLabel3, 3);
+
+            workOrdersGrid.Children.Add(tempGrid4);
+            Grid.SetRow(tempGrid4, currentRowNumber);
+            Grid.SetColumn(tempGrid4, 4);
+
+            workOrdersGrid.Children.Add(tempLabel5);
+            Grid.SetRow(tempLabel5, currentRowNumber);
+            Grid.SetColumn(tempLabel5, 5);
+
+            workOrdersGrid.Children.Add(tempLabel6);
+            Grid.SetRow(tempLabel6, currentRowNumber);
+            Grid.SetColumn(tempLabel6, 6);
+
+            workOrdersGrid.Children.Add(tempLabel7);
+            Grid.SetRow(tempLabel7, currentRowNumber);
+            Grid.SetColumn(tempLabel7, 7);
+
+            workOrdersGrid.Children.Add(tempLabel8);
+            Grid.SetRow(tempLabel8, currentRowNumber);
+            Grid.SetColumn(tempLabel8, 8);
+
             Label ordersTotalPriceLabel = new Label();
             ordersTotalPriceLabel.Content = ordersTotalPrice;
             ordersTotalPriceLabel.Style = (Style)FindResource("tableSubItemLabel");
