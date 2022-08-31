@@ -36,6 +36,8 @@ namespace _01electronics_crm
         protected SQLServer sqlDatabase;
 
         protected FTPServer ftpServer;
+        protected List<String> brandsNames;
+        protected String returnMessage;
 
         public BrandsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
@@ -47,6 +49,8 @@ namespace _01electronics_crm
             ftpServer = new FTPServer();
             commonQueries = new CommonQueries();
             brandsList = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+            brandsNames = new List<String>();
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/brands");
 
             QueryGetProductName();
             InitializeProductBrands();
@@ -55,13 +59,24 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
+            ftpServer.ListFilesInFolder(selectedProduct.GetBrandFolderServerPath(), ref brandsNames, ref returnMessage);
+            selectedProduct.GetBrandFolderLocalPath();
+            if (brandsNames.Count() == 0)
+            {
+                string[] filesNames = Directory.GetFiles(selectedProduct.GetBrandFolderLocalPath());
+                foreach (string file in filesNames)
+                {
+                    brandsNames.Add(file);
+                }
+                //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
+            }
             Label productTitleLabel = new Label();
             productTitleLabel.Content = selectedProduct.GetProductName();
             productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
             productTitleLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
             productTitleLabel.Margin = new Thickness(48, 24, 48, 24);
             productTitleLabel.Style = (Style)FindResource("primaryHeaderTextStyle");
-            BrandsGrid.Children.Add(productTitleLabel);
+            mainGrid.Children.Add(productTitleLabel);
             Grid.SetRow(productTitleLabel, 0);
 
             WrapPanel brandsWrapPanel = new WrapPanel();
@@ -72,46 +87,105 @@ namespace _01electronics_crm
             {
                 Grid gridI = new Grid();
 
-                try
+                selectedProduct.SetBrandID(brandsList[i].brandId);
+                //String brandLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + brandsList[i].brandId + ".jpg";
+
+                if (brandsNames.Exists(modelName => modelName == selectedProduct.GetBrandPhotoLocalPath()
+                || brandsNames.Exists(modelName2 => modelName2 == (brandsList[i].brandId + ".jpg"))))
                 {
-                    Image brandLogo = new Image();
-                    string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg");
-                    brandLogo.Source = new BitmapImage(new Uri(src, UriKind.Relative));
-                    brandLogo.Width = 300;
-                    brandLogo.MouseDown += ImageMouseDown;
-                    brandLogo.Margin = new Thickness(80, 100, 12, 12);
-                    brandLogo.Tag = brandsList[i].brandId.ToString();
-                    brandLogo.Name = brandsList[i].brandName;
+                    try
+                    {
+                        Image brandLogo = new Image();
+                        //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(selectedProduct.GetBrandPhotoLocalPath(), UriKind.Relative);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
+                        src.EndInit();
+                        brandLogo.Source = src;
+                        brandLogo.Width = 300;
+                        brandLogo.MouseDown += ImageMouseDown;
+                        brandLogo.Margin = new Thickness(80, 100, 12, 12);
+                        brandLogo.Tag = brandsList[i].brandId.ToString();
+                        brandLogo.Name = brandsList[i].brandName;
 
-                    var e1 = new EventTrigger(UIElement.MouseEnterEvent);
-                    e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
-                    var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
-                    e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
-                    ScaleTransform myScaleTransform = new ScaleTransform();
-                    myScaleTransform.ScaleY = 1;
-                    myScaleTransform.ScaleX = 1;
-                    brandLogo.RenderTransform = myScaleTransform;
+                        var e1 = new EventTrigger(UIElement.MouseEnterEvent);
+                        e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
+                        var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
+                        e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+                        ScaleTransform myScaleTransform = new ScaleTransform();
+                        myScaleTransform.ScaleY = 1;
+                        myScaleTransform.ScaleX = 1;
+                        brandLogo.RenderTransform = myScaleTransform;
 
-                    brandLogo.Triggers.Add(e1);
-                    brandLogo.Triggers.Add(e2);
+                        brandLogo.Triggers.Add(e1);
+                        brandLogo.Triggers.Add(e2);
 
-                    gridI.Children.Add(brandLogo);
-                    
-                    //if(brandsList[i].brandId == 0)
-                    //{
-                    //    Label othersLabel = new Label();
-                    //    othersLabel.Content = brandsList[i].brandName;
-                    //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
-                    //    gridI.Children.Add(othersLabel);
-                    //}    
+                        gridI.Children.Add(brandLogo);
+
+                        //if(brandsList[i].brandId == 0)
+                        //{
+                        //    Label othersLabel = new Label();
+                        //    othersLabel.Content = brandsList[i].brandName;
+                        //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
+                        //    gridI.Children.Add(othersLabel);
+                        //}    
 
 
-                    brandsWrapPanel.Children.Add(gridI);
-                    
-                }
-                catch
-                {
+                        brandsWrapPanel.Children.Add(gridI);
 
+                    }
+                    catch
+                    {
+
+                        selectedProduct.SetPhotoServerPath(selectedProduct.GetBrandFolderServerPath() + "/" + brandsList[i].brandId + ".jpg");
+                        if (selectedProduct.DownloadPhotoFromServer())
+                        {
+
+                            Image brandLogo = new Image();
+                            //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                            BitmapImage src = new BitmapImage();
+                            src.BeginInit();
+                            src.UriSource = new Uri(selectedProduct.GetBrandPhotoLocalPath(), UriKind.Relative);
+                            src.CacheOption = BitmapCacheOption.OnLoad;
+                            src.EndInit();
+                            brandLogo.Source = src;
+                            brandLogo.Width = 300;
+                            brandLogo.MouseDown += ImageMouseDown;
+                            brandLogo.Margin = new Thickness(80, 100, 12, 12);
+                            brandLogo.Tag = brandsList[i].brandId.ToString();
+                            if (brandsList[i].brandName == "01 ELECTRONICS")
+                                brandLogo.Name = "OIELECTRONICS";
+                            else
+                                brandLogo.Name = brandsList[i].brandName;
+
+                            var e1 = new EventTrigger(UIElement.MouseEnterEvent);
+                            e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
+                            var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
+                            e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+                            ScaleTransform myScaleTransform = new ScaleTransform();
+                            myScaleTransform.ScaleY = 1;
+                            myScaleTransform.ScaleX = 1;
+                            brandLogo.RenderTransform = myScaleTransform;
+
+                            brandLogo.Triggers.Add(e1);
+                            brandLogo.Triggers.Add(e2);
+
+                            gridI.Children.Add(brandLogo);
+
+                            //if(brandsList[i].brandId == 0)
+                            //{
+                            //    Label othersLabel = new Label();
+                            //    othersLabel.Content = brandsList[i].brandName;
+                            //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
+                            //    gridI.Children.Add(othersLabel);
+                            //}    
+
+
+                            brandsWrapPanel.Children.Add(gridI);
+
+                        }
+                    }
                 }
             }
             if (brandsList.Count() == 0 || brandsList[0].brandId == 0)
