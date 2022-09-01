@@ -154,10 +154,14 @@ namespace _01electronics_crm
                             brandLogo.MouseDown += ImageMouseDown;
                             brandLogo.Margin = new Thickness(80, 100, 12, 12);
                             brandLogo.Tag = brandsList[i].brandId.ToString();
-                            if (brandsList[i].brandName == "01 ELECTRONICS")
-                                brandLogo.Name = "OIELECTRONICS";
-                            else
+                            try
+                            {
                                 brandLogo.Name = brandsList[i].brandName;
+                            }
+                            catch
+                            {
+                                brandLogo.Name = "";
+                            }
 
                             var e1 = new EventTrigger(UIElement.MouseEnterEvent);
                             e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
