@@ -147,6 +147,9 @@
     <Compile Include="AddProjectWindow.xaml.cs">
       <DependentUpon>AddProjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CategoriesPage.xaml.cs">
+      <DependentUpon>CategoriesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ChangeAssigneeWindow.xaml.cs">
       <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
     </Compile>
@@ -357,6 +360,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CategoriesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -667,82 +674,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\products\1.jpg" />
-    <Resource Include="photos\products\11.jpg" />
-    <Resource Include="photos\products\15.jpg" />
-    <Resource Include="photos\products\16.jpg" />
-    <Resource Include="photos\products\17.jpg" />
-    <Resource Include="photos\products\18.jpg" />
-    <Resource Include="photos\products\2.jpg" />
-    <Resource Include="photos\products\20.jpg" />
-    <Resource Include="photos\products\21.jpg" />
-    <Resource Include="photos\products\23.jpg" />
-    <Resource Include="photos\products\24.jpg" />
-    <Resource Include="photos\products\25.jpg" />
-    <Resource Include="photos\products\26.jpg" />
-    <Resource Include="photos\products\28.jpg" />
-    <Resource Include="photos\products\29.jpg" />
-    <Resource Include="photos\products\3.jpg" />
-    <Resource Include="photos\products\30.jpg" />
-    <Resource Include="photos\products\31.jpg" />
-    <Resource Include="photos\products\32.jpg" />
-    <Resource Include="photos\products\35.jpg" />
-    <Resource Include="photos\products\39.jpg" />
-    <Resource Include="photos\products\4.jpg" />
-    <Resource Include="photos\products\5.jpg" />
-    <Resource Include="photos\products\50.jpg" />
-    <Resource Include="photos\products\51.jpg" />
-    <Resource Include="photos\products\52.jpg" />
-    <Resource Include="photos\products\6.jpg" />
-    <Resource Include="photos\products\7.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\products\10.jpg" />
-    <Resource Include="photos\products\12.jpg" />
-    <Resource Include="photos\products\13.jpg" />
-    <Resource Include="photos\products\14.jpg" />
-    <Resource Include="photos\products\19.jpg" />
-    <Resource Include="photos\products\27.jpg" />
-    <Resource Include="photos\products\33.jpg" />
-    <Resource Include="photos\products\34.jpg" />
-    <Resource Include="photos\products\36.jpg" />
-    <Resource Include="photos\products\37.jpg" />
-    <Resource Include="photos\products\38.jpg" />
-    <Resource Include="photos\products\40.jpg" />
-    <Resource Include="photos\products\43.jpg" />
-    <Resource Include="photos\products\44.jpg" />
-    <Resource Include="photos\products\45.jpg" />
-    <Resource Include="photos\products\46.jpg" />
-    <Resource Include="photos\products\47.jpg" />
-    <Resource Include="photos\products\48.jpg" />
-    <Resource Include="photos\products\49.jpg" />
-    <Resource Include="photos\products\53.jpg" />
-    <Resource Include="photos\products\54.jpg" />
-    <Resource Include="photos\products\8.jpg" />
-    <Resource Include="photos\products\9.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\products\22.jpg" />
-    <Resource Include="photos\products\42.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\products\41.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\products\0.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="photos\brands\1.jpg" />
-    <Resource Include="photos\brands\10.jpg" />
-    <Resource Include="photos\brands\2.jpg" />
-    <Resource Include="photos\brands\3.jpg" />
-    <Resource Include="photos\brands\4.jpg" />
-    <Resource Include="photos\brands\5.jpg" />
-    <Resource Include="photos\brands\6.jpg" />
-    <Resource Include="photos\brands\7.jpg" />
-    <Resource Include="photos\brands\8.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="photos\models\00.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -805,6 +736,23 @@
       <Project>{91b26f19-70c9-40e4-ad53-f13dd881c7cb}</Project>
       <Name>01electronics_windows_library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\categories\0.jpg" />
+    <Resource Include="photos\categories\3.jpg" />
+    <Resource Include="photos\categories\4.jpg" />
+    <Resource Include="photos\categories\5.jpg" />
+    <Resource Include="photos\categories\6.jpg" />
+    <Resource Include="photos\categories\7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\brands\00.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\categories\2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\categories\1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

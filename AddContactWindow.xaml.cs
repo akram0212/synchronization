@@ -250,7 +250,7 @@ namespace _01electronics_crm
             String inputString = employeeBusinessEmailTextBox.Text;
             String outputString = employeeBusinessEmailTextBox.Text;
 
-            if (!integrityChecker.CheckContactBusinessEmailEditBox(inputString, companyAddresses[0].address / 1000000, ref outputString, true, ref errorMessage))
+            if (!integrityChecker.CheckContactBusinessEmailEditBox(inputString, companyAddresses[companyBranchComboBox.SelectedIndex].address / 1000000, ref outputString, true, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -356,21 +356,21 @@ namespace _01electronics_crm
             //YOU DON'T NEED TO WRITE A FUNCTION TO GET NEW CONTACT ID, THE CONTACT CLASS HANDLES IT ALREADY
 
             contact.SetAddressSerial(companyAddresses[companyBranchComboBox.SelectedIndex].address_serial);
-
+            
             contact.SetSalesPerson(loggedInUser);
-
+            
             contact.IssueNewContact();
-
-            //YOU DON'T NEED TO GET A NEW EMAIL/PHONE ID, THIS IS A NEW CONTACT, SO THE EMAIL ID SHALL BE 1,
-            //ALSO, YOU SHALL ONLY USE CONTACT.ADDNEWPERSONALEMAIL() / CONTACT.ADDNEWCONTACTPHONE(), 
-            //THIS FUNCTION SHALL HANDLE THE IDs BY ITSELF
-
+            
+            ////YOU DON'T NEED TO GET A NEW EMAIL/PHONE ID, THIS IS A NEW CONTACT, SO THE EMAIL ID SHALL BE 1,
+            ////ALSO, YOU SHALL ONLY USE CONTACT.ADDNEWPERSONALEMAIL() / CONTACT.ADDNEWCONTACTPHONE(), 
+            ////THIS FUNCTION SHALL HANDLE THE IDs BY ITSELF
+            
             for (int i = 0; i < contact.GetNumberOfSavedContactPhones(); i++)
                 contact.InsertIntoContactMobile(i + 1, contact.GetContactPhones()[i]);
-
+            
             for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
                 contact.InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
-
+            
             this.Close();
         }
 

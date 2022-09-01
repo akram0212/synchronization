@@ -1,7 +1,5 @@
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,29 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using _01electronics_library;
 using _01electronics_windows_library;
+
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for ProductsPage.xaml
+    /// Interaction logic for CategoriesPage.xaml
     /// </summary>
-    public partial class ProductsPage : Page
+    public partial class CategoriesPage : Page
     {
         private Employee loggedInUser;
         private CommonQueries commonQueries;
-        private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
-        protected List<String> productSummaryPoints;
+        private List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT> categories;
+        protected List<String> categoriesSummaryPoints;
         protected String sqlQuery;
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
-        protected Product selectedProduct;
-        protected List<String> productsNames;
-        protected String returnMessage;
 
-        public ProductsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
+        public CategoriesPage(ref Employee mLoggedInUser)
         {
             InitializeComponent();
 
@@ -44,98 +39,56 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             sqlDatabase = new SQLServer();
             ftpServer = new FTPServer();
-            products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
-            productSummaryPoints = new List<string>();
-            selectedProduct = mSelectedProduct;
-            productsNames = new List<String>();
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/products");
+            categories = new List<COMPANY_WORK_MACROS.PRODUCT_CATEGORY_STRUCT>();
+            categoriesSummaryPoints = new List<string>();
+            //categoriesSummaryPoints = new List<string>();
 
-            InitializeProducts();
+            InitializeCategories();
             InitializeProductSummaryPoints();
             SetUpPageUIElements();
         }
-        private void InitializeProducts()
+        private void InitializeCategories()
         {
-            if (!commonQueries.GetCompanyProducts(ref products, selectedProduct.GetCategoryID()))
+            if (!commonQueries.GetProductCategories(ref categories))
                 return;
         }
+
         public void InitializeProductSummaryPoints()
         {
-            if (!commonQueries.GetProductsSummaryPoints(ref productSummaryPoints, selectedProduct.GetCategoryID()))
-                return;
+            categoriesSummaryPoints.Add("A non-interruptible clean and stabilized form of power to protect your industry machines data centers and all your electrical devices.");
+            categoriesSummaryPoints.Add("The generating set of our PRO range covers your emergency needs within the world-wide standards of electrical of supplies.");
+            categoriesSummaryPoints.Add("Rechargeable battery first invented in 1859 by French physicist Gaston Planté");
+            categoriesSummaryPoints.Add("The main component of an electrical distribution system that divides electrical power to the branch circuits while providing protection devices for each circuit in a common enclosure.");
+            categoriesSummaryPoints.Add("Protection devices are installed with the aims of protection of assets and ensuring continued supply of energy.");
+            categoriesSummaryPoints.Add("An electrical safety device that quickly breaks an electrical circuit with leakage current to ground.");
+            categoriesSummaryPoints.Add("Enterprise resource planning (ERP) consists of technologies and systems companies use to manage and integrate their core business processes.");
         }
-
         public void SetUpPageUIElements()
         {
-            ftpServer.ListFilesInFolder(selectedProduct.GetProductFolderServerPath(), ref productsNames, ref returnMessage);
-            selectedProduct.GetProductFolderLocalPath();
-
-            if (productsNames.Count() == 0)
+            for (int i = 0; i < categories.Count(); i++)
             {
-                string[] filesNames = Directory.GetFiles(selectedProduct.GetProductFolderLocalPath());
-                foreach (string file in filesNames)
-                {
-                    productsNames.Add(file);
-                }
-                //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
-            }
 
-            for (int i = 0; i < products.Count(); i++)
-            {
                 RowDefinition rowI = new RowDefinition();
                 ProductsGrid.RowDefinitions.Add(rowI);
+                RowDefinition rowI1 = new RowDefinition();
+                ProductsGrid.RowDefinitions.Add(rowI1);
 
                 Grid gridI = new Grid();
 
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
-                selectedProduct.SetProductID(products[i].typeId);
-                //String productLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + products[i].typeId + ".jpg";
+                Image productImage = new Image();
 
-                if (productsNames.Exists(modelName => modelName == selectedProduct.GetProductPhotoLocalPath()
-                || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
-                {
-                    try
-                    {
-                        Image productImage = new Image();
+                string src = String.Format(@"/01electronics_crm;component/Photos/categories/" + categories[i].categoryId + ".jpg");
+                productImage.Source = new BitmapImage(new Uri(src, UriKind.Relative));
+                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                productImage.MouseDown += ImageMouseDown;
+                productImage.Tag = categories[i].categoryId.ToString();
+                gridI.Children.Add(productImage);
+                Grid.SetRow(productImage, 1);
 
-                        //string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
-
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
-                        src.EndInit();
-                        productImage.Source = src;
-                        productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                        productImage.MouseDown += ImageMouseDown;
-                        productImage.Tag = products[i].typeId.ToString();
-                        gridI.Children.Add(productImage);
-                        Grid.SetRow(productImage, 0);
-                    }
-                    catch
-                    {
-                        selectedProduct.SetPhotoServerPath(selectedProduct.GetProductFolderServerPath() + "/" + products[i].typeId + ".jpg");
-                        if (selectedProduct.DownloadPhotoFromServer())
-                        {
-                            Image productImage = new Image();
-                            BitmapImage src = new BitmapImage();
-                            src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
-                            src.CacheOption = BitmapCacheOption.OnLoad;
-                            src.EndInit();
-                            productImage.Source = src;
-                            productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                            productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                            productImage.MouseDown += ImageMouseDown;
-                            productImage.Tag = products[i].typeId.ToString();
-                            gridI.Children.Add(productImage);
-                            Grid.SetRow(productImage, 0);
-                        }
-                    }
-                }
                 Grid imageGrid = new Grid();
                 imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
                 imageGrid.Width = 350;
@@ -162,7 +115,7 @@ namespace _01electronics_crm
                 headerLabel.FontSize = 17;
                 headerLabel.FontWeight = FontWeights.Bold;
                 headerLabel.Padding = new Thickness(10);
-                headerLabel.Content = products[i].typeName;
+                headerLabel.Content = categories[i].category;
 
                 Grid.SetRow(headerLabel, 0);
                 headerGrid.Children.Add(headerLabel);
@@ -173,9 +126,9 @@ namespace _01electronics_crm
                 pointsTextBlock.TextWrapping = TextWrapping.Wrap;
                 pointsTextBlock.FontSize = 15;
                 pointsTextBlock.FontStyle = FontStyles.Italic;
-                if (i < productSummaryPoints.Count)
+                if (i < categoriesSummaryPoints.Count)
                 {
-                    pointsTextBlock.Text = productSummaryPoints[i];
+                    pointsTextBlock.Text = categoriesSummaryPoints[i];
                 }
                 pointsTextBlock.Padding = new Thickness(20);
 
@@ -188,7 +141,7 @@ namespace _01electronics_crm
                 Grid.SetRow(gridI, i);
             }
         }
-      
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,10 +216,10 @@ namespace _01electronics_crm
             String tmp = currentImage.Tag.ToString();
 
             Product selectedProduct = new Product();
-            selectedProduct.SetProductID(int.Parse(tmp));
+            selectedProduct.SetCategoryID(int.Parse(tmp));
 
-            BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(brandsPage);
+           ProductsPage productsPage = new ProductsPage(ref loggedInUser, ref selectedProduct);
+            this.NavigationService.Navigate(productsPage);
         }
 
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
