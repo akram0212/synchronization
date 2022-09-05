@@ -153,10 +153,16 @@
     <Compile Include="ChangeAssigneeWindow.xaml.cs">
       <DependentUpon>ChangeAssigneeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChangePasswordPage.xaml.cs">
+      <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExcelExport.cs" />
+    <Compile Include="ForgetPasswordPage.xaml.cs">
+      <DependentUpon>ForgetPasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MaintContractsAdditionalInfoPage.xaml.cs">
       <DependentUpon>MaintContractsAdditionalInfoPage.xaml</DependentUpon>
     </Compile>
@@ -371,9 +377,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ChangePasswordPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ContactsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ForgetPasswordPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MaintContractsAdditionalInfoPage.xaml">
       <SubType>Designer</SubType>
