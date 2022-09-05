@@ -136,16 +136,17 @@ namespace _01electronics_crm
 
         private bool InsertIntoEmployeePersonalEmails()
         {
-            String sqlQueryPart1 = "insert into erp_system.dbo.employees_personal_emails values(";
-            String sqlQueryPart2 = ",'";
-            String sqlQueryPart3 = "', getdate());";
+            String sqlQueryPart1 = @"update erp_system.dbo.employees_personal_emails 
+                                     set employees_personal_emails.email = '";
+            String sqlQueryPart2 = "' where employees_personal_emails.id = ";
+            String sqlQueryPart3 = ";";
 
             String sqlQuery;
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += signupEmployee.GetEmployeeId();
-            sqlQuery += sqlQueryPart2;
             sqlQuery += signupEmployee.GetEmployeePersonalEmail();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += signupEmployee.GetEmployeeId();
             sqlQuery += sqlQueryPart3;
 
             if (!sqlServer.InsertRows(sqlQuery))
