@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Security.Cryptography;
 using _01electronics_library;
 using System.Windows.Forms;
+using _01electronics_procurement;
 
 namespace _01electronics_crm
 {
@@ -37,9 +38,20 @@ namespace _01electronics_crm
 
             loggedInUser = new Employee();
 
-            if (_01electronics_crm.Properties.Settings.Default.email != null)
+            
+            if (_01electronics_crm.Properties.Settings.Default.Email != null)
             {
-                employeeEmailTextBox.Text = _01electronics_crm.Properties.Settings.Default.email;
+                employeeEmailTextBox.Text = _01electronics_crm.Properties.Settings.Default.Email;
+            }
+
+            if (_01electronics_crm.Properties.Settings.Default.PassWordCheck != false)
+            {
+                RememberMeCheckBox.IsChecked = true;
+
+            }
+            if (_01electronics_crm.Properties.Settings.Default.PassWord != null)
+            {
+                employeePasswordTextBox.Password = _01electronics_crm.Properties.Settings.Default.PassWord;
             }
         }
 
@@ -62,14 +74,22 @@ namespace _01electronics_crm
 
             employeePassword = employeePasswordTextBox.Password;
 
-            if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
+            //if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
+            //{
+            //    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return;
+            //}
+            if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
-                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
+                _01electronics_crm.Properties.Settings.Default.PassWord = employeePasswordTextBox.Password;
+                _01electronics_crm.Properties.Settings.Default.Save();
             }
-
-            _01electronics_crm.Properties.Settings.Default.email = employeeEmailTextBox.Text;
-            _01electronics_crm.Properties.Settings.Default.Save();
+            else
+            {
+                _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
+                _01electronics_crm.Properties.Settings.Default.Save();
+            }
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
 
@@ -85,6 +105,30 @@ namespace _01electronics_crm
         {
             SignUpPage signUp = new SignUpPage();
             this.NavigationService.Navigate(signUp);
+        }
+
+        private void RememberMeISChecked(object sender, RoutedEventArgs e)
+        {
+
+            employeePasswordTextBox.Password = _01electronics_crm.Properties.Settings.Default.PassWord;
+
+            _01electronics_crm.Properties.Settings.Default.PassWordCheck = true;
+            _01electronics_crm.Properties.Settings.Default.Save();
+        }
+
+        private void RememberMeisUnchecked(object sender, RoutedEventArgs e)
+        {
+            _01electronics_crm.Properties.Settings.Default.PassWord = "";
+            employeePasswordTextBox.Password = "";
+            _01electronics_crm.Properties.Settings.Default.PassWordCheck = false;
+            _01electronics_crm.Properties.Settings.Default.Save();
+        }
+
+        private void OnBtnClicklForgetPassword(object sender, MouseButtonEventArgs e)
+        {
+            employeeEmail = employeeEmailTextBox.Text;
+            ForgetPasswordPage forgetPasswordMail = new ForgetPasswordPage(ref employeeEmail);
+            this.NavigationService.Navigate(forgetPasswordMail);
         }
     }
 }

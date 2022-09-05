@@ -49,17 +49,29 @@
         <Grid  Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
+
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="48,24,48,24" Content="PRODUCTS" Style="{StaticResource primaryHeaderTextStyle}"/>
 
             <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid Grid.Row="0" Name="ProductsGrid" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                <Grid Name="ProductsGrid" Grid.Column="1" >
+
 
                 </Grid>
+
+
             </ScrollViewer>
+
+            <Canvas Name="addBtn" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Panel.ZIndex="9999" Margin="0,0,100,80"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.5"  MouseEnter="addBtnMouseEnter" MouseLeave="addBtnMouseLeave" >
+                        <Path   Fill="#105A97" Data="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" Stretch="Fill"  Width="65" Height="65" />
+
+
+                    </Canvas>
+
         </Grid>
-        
+
     </Grid>
-    
+
 </Page>

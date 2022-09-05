@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -35,6 +36,8 @@ namespace _01electronics_crm
         protected Product selectedProduct;
         protected List<String> productsNames;
         protected String returnMessage;
+        private Expander currentExpander;
+        private Expander previousExpander;
 
         public ProductsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
@@ -87,14 +90,15 @@ namespace _01electronics_crm
 
                 Grid gridI = new Grid();
 
+
+                gridI.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
                 selectedProduct.SetProductID(products[i].typeId);
                 //String productLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + products[i].typeId + ".jpg";
 
-                if (productsNames.Exists(modelName => modelName == selectedProduct.GetProductPhotoLocalPath()
-                || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
+                if (productsNames.Exists(modelName => modelName == selectedProduct.GetProductPhotoLocalPath() || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
                 {
                     try
                     {
@@ -112,8 +116,46 @@ namespace _01electronics_crm
                         productImage.VerticalAlignment = VerticalAlignment.Stretch;
                         productImage.MouseDown += ImageMouseDown;
                         productImage.Tag = products[i].typeId.ToString();
+
                         gridI.Children.Add(productImage);
                         Grid.SetRow(productImage, 0);
+
+                        Expander expander = new Expander();
+                        expander.Tag = i;
+                        expander.ExpandDirection = ExpandDirection.Down;
+                        expander.VerticalAlignment = VerticalAlignment.Top;
+                        expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+                        expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                        expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                        expander.Margin = new Thickness(12);
+
+                        StackPanel expanderStackPanel = new StackPanel();
+                        expanderStackPanel.Orientation = Orientation.Vertical;
+
+                        BrushConverter brushConverter = new BrushConverter();
+
+                       
+
+                        Button EditButton = new Button();
+                        EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                       // EditButton.Click += OnBtnClickEditProduct;
+                        EditButton.Content = "Edit";
+
+                        
+
+
+
+                        
+                        expanderStackPanel.Children.Add(EditButton);
+
+                        expander.Content = expanderStackPanel;
+
+                        gridI.Children.Add(expander);
+                        Grid.SetColumn(expander, 2);
+
+
                     }
                     catch
                     {
@@ -181,7 +223,7 @@ namespace _01electronics_crm
 
                 Grid.SetRow(pointsTextBlock, 1);
                 imageGrid.Children.Add(pointsTextBlock);
-
+                
                 gridI.Children.Add(imageGrid);
                 Grid.SetRow(imageGrid, 0);
                 ProductsGrid.Children.Add(gridI);
@@ -274,5 +316,89 @@ namespace _01electronics_crm
             StatisticsPage statisticsPage = new StatisticsPage(ref loggedInUser);
             NavigationService.Navigate(statisticsPage);
         }
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //Expander HANDLERS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnExpandExpander(object sender, RoutedEventArgs e)
+        {
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            
+            
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[0];
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            expanderColumn.Width = new GridLength(120);
+        }
+
+        private void OnCollapseExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[0];
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            currentExpander.Margin = new Thickness(12);
+            expanderColumn.Width = new GridLength(50);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
+
+        private void addBtnMouseEnter(object sender, MouseEventArgs e)
+        {
+            
+           // addBtn.Opacity = 1;
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 1.0;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+        }
+
+        private void addBtnMouseLeave(object sender, MouseEventArgs e)
+        {
+            // addBtn.Opacity = 0.5;
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 0.5;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+
+        }
     }
+
+
 }

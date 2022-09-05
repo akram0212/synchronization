@@ -35,7 +35,6 @@
 
         <Label Name="Column3Row0Label" Grid.Column="3" Grid.Row="0" Background="#FFFFFF"/>
         <Label Name="Column3Row2Label" Grid.Column="3" Grid.Row="2" Background="#FFFFFF"/>
-
         <Label Name="BackgroundImageLabel" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Label.Background>
                 <ImageBrush ImageSource="login_cover.png"/>
@@ -49,8 +48,9 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Name="SignInHeaderRow" Height="1*"/>
+                <RowDefinition Name="SignInHeaderRow" Height="0.75*"/>
                 <RowDefinition Name="EmailAndPasswordRow" Height="1.5*"/>
+                <RowDefinition Name="EmailAndPasswordRememberMeRow" Height="0.25*"/>
                 <RowDefinition Name="SignInButtonRow" Height="1*"/>
                 <RowDefinition Name="ForgotPasswordRow" Height="0.25*"/>
             </Grid.RowDefinitions>
@@ -59,16 +59,18 @@
             </Label>
 
             <Label Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="15,30,0,90" Padding="10" Content="Email" FontFamily="Copperplate Gothic Light" Foreground="#105A97" FontSize="14" />
-            <TextBox Name="employeeEmailTextBox" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,30,30,90" Width="200" Padding="0,5" />
+            <TextBox Name="employeeEmailTextBox" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,30,30,90" Width="200" Padding="0,5"  />
 
             <Label Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="15,90,0,30" Padding="10" Content="Password" FontFamily="Copperplate Gothic Light" Foreground="#105A97" FontSize="14" />
             <PasswordBox Name="employeePasswordTextBox" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,90,30,30" Width="200" Padding="0,5"/>
 
+            <CheckBox ToolTip="Click to remember password" Name="RememberMeCheckBox" Grid.Column="3" Grid.Row="2" Content="Remember Me!" Background="#FFF"  HorizontalAlignment="Center" VerticalAlignment="Center"  FontFamily="Copperplate Gothic Light" Foreground="#105A97" FontSize="16" Checked="RememberMeISChecked" Unchecked="RememberMeisUnchecked"></CheckBox>
 
-            <Button Name="SignInButton" Grid.Row="2" Content="Sign In" Margin="60,15,60,0" Width="150" Padding="0,5" VerticalAlignment="Top" FontFamily="Copperplate Gothic Bold" FontSize="20" Background="#FF105A97" Foreground="White" Click="OnButtonClickedSignIn"/>
-            <Button Name="SignUpButton" Grid.Row="2" Content="Sign Up" Margin="60,0,60,15" Width="150" Padding="0,5" VerticalAlignment="Bottom" FontFamily="Copperplate Gothic Bold" FontSize="20" Background="#FF105A97" Foreground="White" Click="OnButtonClickedSignUp"/>
 
-            <Label Name="ForgotPasswordLabel" Grid.Row="3" Content="Forgot Password?" HorizontalAlignment="Center" Foreground="#FF105A97"/>
+            <Button Name="SignInButton" Grid.Row="3" Content="Sign In" Margin="60,15,60,0" Width="150" Padding="0,5" VerticalAlignment="Top" FontFamily="Copperplate Gothic Bold" FontSize="20" Background="#FF105A97" Foreground="White" Click="OnButtonClickedSignIn"/>
+            <Button Name="SignUpButton" Grid.Row="3" Content="Sign Up" Margin="60,0,60,15" Width="150" Padding="0,5" VerticalAlignment="Bottom" FontFamily="Copperplate Gothic Bold" FontSize="20" Background="#FF105A97" Foreground="White" Click="OnButtonClickedSignUp"/>
+
+            <Label Name="ForgotPasswordLabel" Grid.Row="4" Content="Forgot Password?" HorizontalAlignment="Center" Foreground="#FF105A97" MouseLeftButtonDown="OnBtnClicklForgetPassword"/>
         </Grid>
 
         <!--
