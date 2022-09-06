@@ -63,29 +63,37 @@ namespace _01electronics_crm
 
             selectedMaintContract = new MaintenanceContract(sqlDatabase);
 
-            if (!GetMaintenanceContracts())
-                return;
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+            }
 
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            {
+                if (!GetMaintenanceContracts())
+                    return;
 
-            if (!InitializeSalesComboBox())
-                return;
+                InitializeYearsComboBox();
+                InitializeQuartersComboBox();
+                InitializeStatusComboBox();
 
-            if (!InitializePreSalesComboBox())
-                return;
+                if (!InitializeSalesComboBox())
+                    return;
 
-            if (!InitializeProductsComboBox())
-                return;
+                if (!InitializePreSalesComboBox())
+                    return;
 
-            if (!InitializeBrandsComboBox())
-                return;
+                if (!InitializeProductsComboBox())
+                    return;
 
-            SetDefaultSettings();
+                if (!InitializeBrandsComboBox())
+                    return;
 
-            SetMaintContractsStackPanel();
-            SetMaintContractsGrid();
+                SetDefaultSettings();
+
+                SetMaintContractsStackPanel();
+                SetMaintContractsGrid();
+            }
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //INTIALIZATION FUNCTIONS
@@ -452,7 +460,10 @@ namespace _01electronics_crm
                 if((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) )
                     listBox.Items.Add(editContractButton);
 
-                listBox.Items.Add(viewRFQButton);
+                if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+                {
+                    listBox.Items.Add(viewRFQButton);
+                }
 
                 listBox.Items.Add(viewOfferButton);
 

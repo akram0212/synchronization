@@ -71,33 +71,38 @@ namespace _01electronics_crm
 
             selectedRFQ = new RFQ();
 
-            if (!GetRFQs())
-                return;
+            if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID 
+                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                if (!GetRFQs())
+                    return;
 
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
+                InitializeYearsComboBox();
+                InitializeQuartersComboBox();
+                InitializeStatusComboBox();
 
-            if (!InitializeSalesComboBox())
-                return;
+                if (!InitializeSalesComboBox())
+                    return;
 
-            if (!InitializePreSalesComboBox())
-                return;
+                if (!InitializePreSalesComboBox())
+                    return;
 
-            if (!InitializeProductsComboBox())
-                return;
+                if (!InitializeProductsComboBox())
+                    return;
 
-            if (!InitializeBrandsComboBox())
-                return;
+                if (!InitializeBrandsComboBox())
+                    return;
 
-            if (!InitializeContractTypeComboBox())
-                return;
+                if (!InitializeContractTypeComboBox())
+                    return;
 
 
-            SetDefaultSettings();
+                SetDefaultSettings();
 
-            SetRFQsStackPanel();
-            SetRFQsGrid();
+                SetRFQsStackPanel();
+                SetRFQsGrid();
+
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

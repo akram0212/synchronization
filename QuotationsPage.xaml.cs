@@ -70,29 +70,38 @@ namespace _01electronics_crm
 
             selectedWorkOffer = new WorkOrder(sqlDatabase);
 
-            if (!GetOutgoingQuotations())
-                return;
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+            }
 
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            {
 
-            if (!InitializeSalesComboBox())
-                return;
-            
-            if (!InitializePreSalesComboBox())
-                return;
+                if (!GetOutgoingQuotations())
+                    return;
 
-            if (!InitializeProductsComboBox())
-                return;
+                InitializeYearsComboBox();
+                InitializeQuartersComboBox();
+                InitializeStatusComboBox();
 
-            if (!InitializeBrandsComboBox())
-                return;
+                if (!InitializeSalesComboBox())
+                    return;
 
-            SetDefaultSettings();
+                if (!InitializePreSalesComboBox())
+                    return;
 
-            SetWorkOffersStackPanel();
-            SetWorkOffersGrid();
+                if (!InitializeProductsComboBox())
+                    return;
+
+                if (!InitializeBrandsComboBox())
+                    return;
+
+                SetDefaultSettings();
+
+                SetWorkOffersStackPanel();
+                SetWorkOffersGrid();
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

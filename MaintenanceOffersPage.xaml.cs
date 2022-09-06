@@ -65,29 +65,37 @@ namespace _01electronics_crm
 
             selectedMaintOffer = new MaintenanceOffer(sqlDatabase);
 
-            if (!GetMaintenanceOffers())
-                return;
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+            }
 
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            {
+                if (!GetMaintenanceOffers())
+                    return;
 
-            if (!InitializeSalesComboBox())
-                return;
+                InitializeYearsComboBox();
+                InitializeQuartersComboBox();
+                InitializeStatusComboBox();
 
-            if (!InitializePreSalesComboBox())
-                return;
+                if (!InitializeSalesComboBox())
+                    return;
 
-            if (!InitializeProductsComboBox())
-                return;
+                if (!InitializePreSalesComboBox())
+                    return;
 
-            if (!InitializeBrandsComboBox())
-                return;
+                if (!InitializeProductsComboBox())
+                    return;
 
-            SetDefaultSettings();
+                if (!InitializeBrandsComboBox())
+                    return;
 
-            SetMaintOffersStackPanel();
-            SetMaintOffersGrid();
+                SetDefaultSettings();
+
+                SetMaintOffersStackPanel();
+                SetMaintOffersGrid();
+            }
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GET DATA FUNCTIONS
