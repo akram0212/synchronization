@@ -65,8 +65,7 @@ namespace _01electronics_crm
 
             // commonQueries.GetReapetedMobilePhones();
 
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID 
-                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
             {
                 InitializeCountriesComboBox();
 

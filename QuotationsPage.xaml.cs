@@ -33,6 +33,7 @@ namespace _01electronics_crm
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> businessDevelopmentEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffers = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> workOffersAfterFiltering = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
@@ -75,7 +76,7 @@ namespace _01electronics_crm
                 addButton.IsEnabled = false;
             }
 
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
             {
 
                 if (!GetOutgoingQuotations())
@@ -144,6 +145,14 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID, ref businessDevelopmentEmployeesList))
+                return false;
+
+            for (int i = 0; i < businessDevelopmentEmployeesList.Count(); i++)
+            {
+                salesEmployeesList.Add(businessDevelopmentEmployeesList[i]);
+            }
 
             if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
@@ -292,7 +301,7 @@ namespace _01electronics_crm
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
             }
-            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
             {
                 salesCheckBox.IsChecked = true;
                 salesCheckBox.IsEnabled = false;

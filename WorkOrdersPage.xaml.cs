@@ -35,6 +35,7 @@ namespace _01electronics_crm
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> businessDevelopmentEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> workOrders = new List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT> workOrdersAfterFiltering = new List<COMPANY_WORK_MACROS.WORK_ORDER_MAX_STRUCT>();
@@ -74,8 +75,8 @@ namespace _01electronics_crm
                 addButton.IsEnabled = false;
             }
 
-            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
-            {
+            //if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            //{
                 if (!GetWorkOrders())
                     return;
 
@@ -99,7 +100,7 @@ namespace _01electronics_crm
 
                 SetWorkOrdersStackPanel();
                 SetWorkOrdersGrid();
-            }
+            //}
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +134,14 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID, ref businessDevelopmentEmployeesList))
+                return false;
+
+            for (int i = 0; i < businessDevelopmentEmployeesList.Count(); i++)
+            {
+                salesEmployeesList.Add(businessDevelopmentEmployeesList[i]);
+            }
 
             if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
@@ -301,7 +310,7 @@ namespace _01electronics_crm
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
             }
-            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
             {
                 salesCheckBox.IsChecked = true;
                 salesCheckBox.IsEnabled = false;
@@ -486,6 +495,7 @@ namespace _01electronics_crm
                 ListBoxItem viewButton = new ListBoxItem();
                 viewButton.Content = "View";
                 viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                listBox.Items.Add(viewButton);
 
                 ListBoxItem editButton = new ListBoxItem();
                 editButton.Content = "Edit Order";
@@ -497,22 +507,22 @@ namespace _01electronics_crm
                     viewRFQButton.Content = "View RFQ";
                     viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                     listBox.Items.Add(viewRFQButton);
+
+                    ListBoxItem viewOfferButton = new ListBoxItem();
+                    viewOfferButton.Content = "View Offer";
+                    viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
+                    listBox.Items.Add(viewOfferButton);
                 }
-                ListBoxItem viewOfferButton = new ListBoxItem();
-                viewOfferButton.Content = "View Offer";
-                viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 ListBoxItem addCollectionButton = new ListBoxItem();
                 addCollectionButton.Content = "Add Collection";
                 addCollectionButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
-                listBox.Items.Add(viewButton);
 
                 if(loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     listBox.Items.Add(editButton);
                 
-
-                listBox.Items.Add(viewOfferButton);
 
                 //listBox.Items.Add(addCollectionButton);
 
