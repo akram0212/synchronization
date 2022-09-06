@@ -1,18 +1,10 @@
+using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 using ComboBox = System.Windows.Controls.ComboBox;
 using Label = System.Windows.Controls.Label;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -213,7 +205,7 @@ namespace _01electronics_crm
                 employees.Add(temp);
             }
 
-            for(int i = 0; i < employees.Count; i++)
+            for (int i = 0; i < employees.Count; i++)
             {
 
                 if (employees[i].employement_status_id >= 4)
@@ -249,10 +241,10 @@ namespace _01electronics_crm
 
             AddBusinessEmail();
 
-            for(int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
+            for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
             {
-                 if (contact.GetContactPersonalEmails()[i] != null)
-                     AddPersonalEmail(contact.GetContactPersonalEmails()[i]);
+                if (contact.GetContactPersonalEmails()[i] != null)
+                    AddPersonalEmail(contact.GetContactPersonalEmails()[i]);
             }
 
             if (contact.GetContactPhones()[0] != null)
@@ -263,7 +255,7 @@ namespace _01electronics_crm
                 if (contact.GetContactPhones()[i] != null)
                     AddPersonalPhone(contact.GetContactPhones()[i]);
             }
-            
+
         }
         private void AddPersonalPhone(String Phone)
         {
@@ -299,8 +291,8 @@ namespace _01electronics_crm
             ContactPersonalPhoneWrapPanel.Children.Add(employeePersonalPhoneTextBox);
             contactPersonalPhoneWrapPanel.Children.Add(ContactPersonalPhoneWrapPanel);
 
-        } 
-        
+        }
+
         private void AddBusinessPhone()
         {
             WrapPanel ContactBusinessPhoneWrapPanel = new WrapPanel();
@@ -360,7 +352,7 @@ namespace _01electronics_crm
             ContactBusinessEmailWrapPanel.Children.Add(employeeBusinessEmailTextBox);
 
             businessEmailWrapPanel.Children.Add(ContactBusinessEmailWrapPanel);
-        } 
+        }
         private void AddPersonalEmail(String Email)
         {
             WrapPanel ContactPersonalEmailWrapPanel = new WrapPanel();
@@ -431,7 +423,7 @@ namespace _01electronics_crm
 
                     String tempPhone = string.Empty;
 
-                    for(int i = 2; i < currentLabel.Content.ToString().Length; i++)
+                    for (int i = 2; i < currentLabel.Content.ToString().Length; i++)
                     {
                         tempPhone += currentLabel.Content.ToString()[i];
                     }
@@ -449,7 +441,7 @@ namespace _01electronics_crm
 
             if ((loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION || loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) && currentComboBox.Visibility == Visibility.Collapsed)
             {
-                
+
                 currentComboBox.Visibility = Visibility.Visible;
                 currentLabel.Visibility = Visibility.Collapsed;
 
@@ -536,7 +528,7 @@ namespace _01electronics_crm
         }
 
 
-        
+
 
         private void TextBoxesMouseLeave(object sender, MouseEventArgs e)
         {
@@ -563,7 +555,7 @@ namespace _01electronics_crm
                 else
                     currentLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
             }
-            else if(parentWrapPanel.Name == "contactPhoneWrapPanel")
+            else if (parentWrapPanel.Name == "contactPhoneWrapPanel")
             {
                 ComboBox currentComboBox = (ComboBox)currentWrapPanel.Children[2];
                 currentComboBox.Visibility = Visibility.Collapsed;
@@ -652,7 +644,7 @@ namespace _01electronics_crm
                 if (currentLabel.Content.ToString() != contact.GetCompanyCountry() + ", " + contact.GetCompanyState() + ", " + contact.GetCompanyCity() + ", " + contact.GetCompanyDistrict())
                 {
                     currentLabel.Foreground = Brushes.Red;
-                    countryCodeIndex = countryCodes.FindIndex(x1=> x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
+                    countryCodeIndex = countryCodes.FindIndex(x1 => x1.country_id == companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000);
                     countryCode = countryCodes[countryCodeIndex].phone_code;
                 }
                 else

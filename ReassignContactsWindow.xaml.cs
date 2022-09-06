@@ -1,17 +1,9 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -25,7 +17,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employees;
         private SQLServer sql;
         private String sqlQuery;
-        
+
 
         private struct contact_database_table_struct
         {
@@ -57,13 +49,13 @@ namespace _01electronics_crm
                 if (!commonQueries.GetAllTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref employees))
                     return;
             }
-            else if(loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
+            else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
                 if (!commonQueries.GetAllDepartmentEmployees(loggedInUser.GetEmployeeDepartmentId(), ref employees))
                     return;
             }
 
-            for(int i = 0; i < employees.Count; i++)
+            for (int i = 0; i < employees.Count; i++)
             {
                 ComboBoxItem oldEmployeeName = new ComboBoxItem();
 
@@ -227,7 +219,7 @@ namespace _01electronics_crm
         {
             String sqlQueryPart1 = @"update erp_system.dbo.contact_person_mobile
                                      set sales_person_id = ";
-	        String sqlQueryPart2 = " where sales_person_id = ";
+            String sqlQueryPart2 = " where sales_person_id = ";
             String sqlQueryPart3 = " and branch_serial = ";
             String sqlQueryPart4 = " and contact_id = ";
 

@@ -4,17 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -78,11 +71,11 @@ namespace _01electronics_crm
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
-               
+
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                
+
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
 
@@ -109,7 +102,7 @@ namespace _01electronics_crm
             }
             else
             {
-                
+
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
             }
@@ -356,7 +349,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickAutomateMaintOffer(object sender, RoutedEventArgs e)
         {
-           // wordAutomation.AutomateWorkOffer(maintenanceOffer);
+            // wordAutomation.AutomateWorkOffer(maintenanceOffer);
         }
 
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
@@ -390,7 +383,7 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
-                   if (!maintenanceOffer.IssueNewMaintOffer())
+                    if (!maintenanceOffer.IssueNewMaintOffer())
                         return;
 
                     if (maintenanceOffer.GetRFQID() != null)

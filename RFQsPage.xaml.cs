@@ -2,17 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -203,7 +197,7 @@ namespace _01electronics_crm
         }
         private bool InitializeBrandsComboBox()
         {
-            
+
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
 
@@ -230,11 +224,11 @@ namespace _01electronics_crm
 
             commonQueriesObject.GetRFQStatus(ref rfqStatuses);
 
-            for(int i = 0; i < rfqStatuses.Count; i++)
+            for (int i = 0; i < rfqStatuses.Count; i++)
             {
                 statusComboBox.Items.Add(rfqStatuses[i].status_name);
             }
-            
+
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +268,7 @@ namespace _01electronics_crm
             addButton.IsEnabled = false;
         }
 
-       
+
         private void SetDefaultSettings()
         {
             DisableComboBoxes();
@@ -374,7 +368,7 @@ namespace _01electronics_crm
 
         private bool SetRFQsStackPanel()
         {
-              
+
             RFQsStackPanel.Children.Clear();
 
             if (stackPanelItems.Count() != 0)
@@ -425,7 +419,7 @@ namespace _01electronics_crm
 
                 if (preSalesCheckBox.IsChecked == true && assigneeCondition)
                     continue;
-            
+
                 if (quarterCheckBox.IsChecked == true && commonFunctionsObject.GetQuarter(currentRFQDate) != selectedQuarter)
                     continue;
 
@@ -471,7 +465,7 @@ namespace _01electronics_crm
                 Label productTypeAndBrandLabel = new Label();
                 for (int j = 0; j < rfqsList[i].products.Count; j++)
                 {
-                    
+
                     List<COMPANY_WORK_MACROS.RFQ_PRODUCT_STRUCT> temp = rfqsList[i].products;
                     COMPANY_WORK_MACROS.PRODUCT_STRUCT tempType1 = temp[j].productType;
                     COMPANY_WORK_MACROS.BRAND_STRUCT tempBrand1 = temp[j].productBrand;
@@ -521,12 +515,12 @@ namespace _01electronics_crm
 
                 ListBoxItem viewButton = new ListBoxItem();
                 viewButton.Content = "View";
-                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16,90,151));
-                
+                viewButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+
                 ListBoxItem reviseButton = new ListBoxItem();
                 reviseButton.Content = "Revise RFQ";
                 reviseButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-               
+
                 ListBoxItem resolveButton = new ListBoxItem();
                 resolveButton.Content = "Resolve RFQ";
                 resolveButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -544,15 +538,15 @@ namespace _01electronics_crm
                 rejectButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
                 listBox.Items.Add(viewButton);
-                
-                if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
+
+                if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.CONFIRMED_RFQ)
                     listBox.Items.Add(viewOfferButton);
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
                     listBox.Items.Add(reviseButton);
 
                 bool alreadyAdded = false;
-                
+
                 if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
                 {
                     listBox.Items.Add(changeAssigneeButton);
@@ -561,12 +555,12 @@ namespace _01electronics_crm
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
-                    if(rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
+                    if (rfqsList[i].rfq_status_id == COMPANY_WORK_MACROS.PENDING_RFQ)
                         listBox.Items.Add(resolveButton);
 
                     if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     {
-                        if(alreadyAdded == false)
+                        if (alreadyAdded == false)
                             listBox.Items.Add(changeAssigneeButton);
                     }
                 }
@@ -662,42 +656,42 @@ namespace _01electronics_crm
             rfqsGrid.Children.Add(offerIdHeader);
             Grid.SetRow(offerIdHeader, 0);
             Grid.SetColumn(offerIdHeader, 0);
-            
+
 
             rfqsGrid.Children.Add(offerSalesHeader);
             Grid.SetRow(offerSalesHeader, 0);
             Grid.SetColumn(offerSalesHeader, 1);
-            
+
 
             rfqsGrid.Children.Add(offerPreSalesHeader);
             Grid.SetRow(offerPreSalesHeader, 0);
             Grid.SetColumn(offerPreSalesHeader, 2);
-            
+
 
             rfqsGrid.Children.Add(offerCompanyContactHeader);
             Grid.SetRow(offerCompanyContactHeader, 0);
             Grid.SetColumn(offerCompanyContactHeader, 3);
-            
+
 
             rfqsGrid.Children.Add(offerProductsHeader);
             Grid.SetRow(offerProductsHeader, 0);
             Grid.SetColumn(offerProductsHeader, 4);
-            
+
 
             rfqsGrid.Children.Add(offerContractTypeHeader);
             Grid.SetRow(offerContractTypeHeader, 0);
             Grid.SetColumn(offerContractTypeHeader, 5);
-            
+
 
             rfqsGrid.Children.Add(offerStatusHeader);
             Grid.SetRow(offerStatusHeader, 0);
             Grid.SetColumn(offerStatusHeader, 6);
-            
+
 
             rfqsGrid.Children.Add(offerProjectHeader);
             Grid.SetRow(offerProjectHeader, 0);
             Grid.SetColumn(offerProjectHeader, 7);
-            
+
 
             int currentRowNumber = 1;
 
@@ -1079,8 +1073,8 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //UNCHECKED HANDLERS FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
+
+
         private void OnUnCheckSearchCheckBox(object sender, RoutedEventArgs e)
         {
             searchTextBox.IsEnabled = false;
@@ -1221,7 +1215,7 @@ namespace _01electronics_crm
             selectedRFQ = new RFQ(sqlDatabase);
 
             RFQWindow addRFQWindow = new RFQWindow(ref loggedInUser, ref selectedRFQ, viewAddCondition, false);
-            
+
             addRFQWindow.Closed += OnClosedRFQWindow;
             addRFQWindow.Show();
         }
@@ -1254,9 +1248,9 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION;
 
-           selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
-                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
-                                           stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
+            selectedRFQ.InitializeRFQInfo(stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_serial,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].rfq_version,
+                                            stackPanelItems[RFQsStackPanel.Children.IndexOf(currentGrid)].sales_person);
 
             if (selectedRFQ.GetRFQContractType() == "Maintenance On Request")
             {
@@ -1308,7 +1302,7 @@ namespace _01electronics_crm
             ChangeAssigneeWindow failureReasonWindow = new ChangeAssigneeWindow(ref selectedRFQ, failureReasons);
             failureReasonWindow.Closed += OnClosedFailureReasonWindow;
             failureReasonWindow.Show();
-            
+
         }
 
         private void OnExpandExpander(object sender, RoutedEventArgs e)
@@ -1320,7 +1314,7 @@ namespace _01electronics_crm
 
             if (previousExpander != currentExpander && previousExpander != null)
                 previousExpander.IsExpanded = false;
-            
+
             Grid currentGrid = (Grid)currentExpander.Parent;
             ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[2];
             //expanderColumn.Width = new GridLength(Width = 120);
@@ -1378,16 +1372,16 @@ namespace _01electronics_crm
                 tempListBox.SelectedIndex = -1;
             }
         }
-            
+
         private void OnBtnClickExport(object sender, RoutedEventArgs e)
         {
             ExcelExport excelExport = new ExcelExport(rfqsGrid);
         }
 
-      
+
         private void OnClosedRFQWindow(object sender, EventArgs e)
         {
-            
+
             if (!GetRFQs())
                 return;
 
@@ -1433,7 +1427,7 @@ namespace _01electronics_crm
             NavigationService.Navigate(statisticsPage);
         }
 
-        
+
     }
 
 }

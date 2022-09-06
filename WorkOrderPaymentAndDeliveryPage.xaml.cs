@@ -2,17 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -206,7 +199,7 @@ namespace _01electronics_crm
             for (int i = 0; i < vatConditions.Count; i++)
                 totalPriceVATCombo.Items.Add(vatConditions[i].condition_type);
             return true;
-        } 
+        }
         private bool InitializeDeliveryTimeFromWhenCombo()
         {
             if (!commonQueriesObject.GetConditionStartDates(ref conditionStartDates))
@@ -233,7 +226,7 @@ namespace _01electronics_crm
 
             for (int i = 1; i <= COMPANY_WORK_MACROS.MAX_ORDER_PRODUCTS; i++)
             {
-                if(workOrder.GetOfferID() != null)
+                if (workOrder.GetOfferID() != null)
                     totalPrice += workOrder.GetProductPriceValue(i) * workOrder.GetOfferProductQuantity(i);
                 else
                     totalPrice += workOrder.GetOrderProductPriceValue(i) * workOrder.GetOrderProductQuantity(i);
@@ -325,7 +318,7 @@ namespace _01electronics_crm
 
         public void SetDeliveryTimeValues()
         {
-            
+
             deliveryTimeTextBoxFrom.Text = workOrder.GetOrderDeliveryTimeMinimum().ToString();
             deliveryTimeTextBoxTo.Text = workOrder.GetOrderDeliveryTimeMaximum().ToString();
 
@@ -470,7 +463,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(deliveryPointCombo.SelectedIndex != -1)
+            if (deliveryPointCombo.SelectedIndex != -1)
                 workOrder.SetOrderDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
@@ -587,7 +580,7 @@ namespace _01electronics_crm
             {
                 SetPercentAndValuesInWorkOrder();
             }
-            
+
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderAdditionalInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = workOrderProductsPage;
@@ -640,6 +633,6 @@ namespace _01electronics_crm
             onInstallationActualTextBox.Text = GetPercentage(onInstallationPercentage, totalPrice).ToString();
         }
 
-        
+
     }
 }

@@ -1,18 +1,9 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -49,7 +40,7 @@ namespace _01electronics_crm
             maxDate = lastDay - today + 1;
             CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
             MeetingDatePicker.BlackoutDates.Add(cdr);
-            
+
             CalendarDateRange cdr2 = new CalendarDateRange(DateTime.Today.AddDays(maxDate), DateTime.MaxValue);
             MeetingDatePicker.BlackoutDates.Add(cdr2);
 
@@ -66,7 +57,7 @@ namespace _01electronics_crm
             MeetingPurposeComboBox.Items.Clear();
 
             if (!commonQueries.GetMeetingPurposes(ref meetingPurposes))
-               return false;
+                return false;
 
             for (int i = 0; i < meetingPurposes.Count; i++)
                 MeetingPurposeComboBox.Items.Add(meetingPurposes[i].purpose_name);
@@ -96,7 +87,7 @@ namespace _01electronics_crm
             }
 
             officeMeeting.SetMeetingPurpose(meetingPurposes[MeetingPurposeComboBox.SelectedIndex].purpose_id, meetingPurposes[MeetingPurposeComboBox.SelectedIndex].purpose_name);
-            
+
             return true;
         }
         private void OnSelChangedMeetingDate(object sender, SelectionChangedEventArgs e)

@@ -4,17 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -186,10 +179,10 @@ namespace _01electronics_crm
 
             if (maintenanceContract.GetWarrantyPeriodTimeUnit() != "")
                 warrantyPeriodCombo.SelectedItem = maintenanceContract.GetWarrantyPeriodTimeUnit();
-            
+
             if (maintenanceContract.GetMaintOfferWarrantyPeriodCondition() != "")
                 warrantyPeriodFromWhenCombo.SelectedItem = maintenanceContract.GetMaintOfferWarrantyPeriodCondition();
-            
+
         }
         private void SetAdditionalDescriptionValue()
         {
@@ -439,8 +432,8 @@ namespace _01electronics_crm
                         return;
 
                     if (maintenanceContract.GetMaintOfferID() != null)
-                      if (!maintenanceContract.ConfirmMaintOffer())
-                        return;
+                        if (!maintenanceContract.ConfirmMaintOffer())
+                            return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {

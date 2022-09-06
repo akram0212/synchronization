@@ -1,19 +1,12 @@
-﻿using _01electronics_crm;
-using _01electronics_library;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -148,7 +141,7 @@ namespace _01electronics_crm
                 quarterComboBox.Items.Add(commonFunctionsObject.GetQuarterName(i + 1));
 
         }
-                private bool InitializeEmployeeComboBox()
+        private bool InitializeEmployeeComboBox()
         {
             if (!commonQueriesObject.GetTeamEmployees(loggedInUser.GetEmployeeTeamId(), ref listOfEmployees))
                 return false;
@@ -229,7 +222,7 @@ namespace _01electronics_crm
 
                 currentStackPanel.Children.Add(salesPersonNameLabel);
                 currentStackPanel.Children.Add(dateOfVisitLabel);
-                
+
                 currentStackPanel.Children.Add(companyAndContactLabel);
                 currentStackPanel.Children.Add(purposeAndResultLabel);
 
@@ -281,7 +274,7 @@ namespace _01electronics_crm
 
         private bool InitializeGrid()
         {
-             
+
             clientVisitsGrid.Children.Clear();
             clientVisitsGrid.RowDefinitions.Clear();
             clientVisitsGrid.ColumnDefinitions.Clear();
@@ -313,10 +306,10 @@ namespace _01electronics_crm
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             clientVisitsGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            
+
             clientVisitsGrid.RowDefinitions.Add(new RowDefinition());
 
-            
+
 
             Grid.SetRow(salesPersonHeader, 0);
             Grid.SetColumn(salesPersonHeader, 0);
@@ -455,7 +448,7 @@ namespace _01electronics_crm
 
                 foreach (Label childLabel in previousSelectedStackPanel.Children)
                     childLabel.Foreground = (Brush)brush.ConvertFrom("#105A97");
-                
+
             }
 
             currentSelectedVisitItem.Background = (Brush)brush.ConvertFrom("#105A97");
@@ -643,7 +636,7 @@ namespace _01electronics_crm
         }
         private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
-            quarterComboBox.IsEnabled = false; 
+            quarterComboBox.IsEnabled = false;
             quarterComboBox.SelectedItem = null;
 
             currentSelectedVisitItem = null;
@@ -707,7 +700,7 @@ namespace _01electronics_crm
             approval.approver.team_id = loggedInUser.GetEmployeeTeamId();
             approval.approver.position_id = loggedInUser.GetEmployeePositionId();
 
-            if(!selectedVisit.AddVisitApproval(approval, ref errorMessage))
+            if (!selectedVisit.AddVisitApproval(approval, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }

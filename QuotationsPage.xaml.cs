@@ -1,18 +1,12 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -29,7 +23,7 @@ namespace _01electronics_crm
 
         private Quotation selectedWorkOffer;
 
-       
+
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
@@ -169,7 +163,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < salesEmployeesList.Count; i++)
                 salesComboBox.Items.Add(salesEmployeesList[i].employee_name);
-             
+
             return true;
         }
         private bool InitializePreSalesComboBox()
@@ -209,7 +203,7 @@ namespace _01electronics_crm
 
         private bool InitializeBrandsComboBox()
         {
-            
+
             if (!commonQueriesObject.GetCompanyBrands(ref brandTypes))
                 return false;
 
@@ -224,7 +218,7 @@ namespace _01electronics_crm
         {
             commonQueriesObject.GetWorkOfferStatus(ref offerStatuses);
 
-            for(int i = 0; i < offerStatuses.Count; i++)
+            for (int i = 0; i < offerStatuses.Count; i++)
             {
                 statusComboBox.Items.Add(offerStatuses[i].status_name);
             }
@@ -261,7 +255,7 @@ namespace _01electronics_crm
         }
 
         private void SetDefaultSettings()
-        {  
+        {
             DisableComboBoxes();
             ResetComboBoxes();
 
@@ -284,7 +278,7 @@ namespace _01electronics_crm
                 salesCheckBox.IsChecked = false;
                 salesCheckBox.IsEnabled = true;
                 salesComboBox.IsEnabled = false;
-                
+
                 preSalesCheckBox.IsChecked = false;
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
@@ -345,7 +339,7 @@ namespace _01electronics_crm
         private bool SetWorkOffersStackPanel()
         {
             workOffersStackPanel.Children.Clear();
-            
+
             workOffersAfterFiltering.Clear();
 
             for (int i = 0; i < workOffers.Count; i++)
@@ -548,7 +542,7 @@ namespace _01electronics_crm
             workOffersGrid.RowDefinitions.Clear();
             workOffersGrid.ColumnDefinitions.Clear();
 
-            
+
 
             int counter = 0;
 
@@ -646,7 +640,7 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < workOffers[i].products.Count(); productNo++)
                     if (workOffers[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
-                
+
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
                     String tempId = workOffers[i].offer_id;
@@ -696,7 +690,7 @@ namespace _01electronics_crm
                 Grid.SetRow(offerIdLabel, currentRowNumber);
                 Grid.SetColumn(offerIdLabel, 0);
                 workOffersGrid.Children.Add(offerIdLabel);
-                
+
 
                 Label salesLabel = new Label();
                 salesLabel.Content = workOffers[i].sales_person_name;
@@ -706,7 +700,7 @@ namespace _01electronics_crm
                 Grid.SetColumn(salesLabel, 1);
                 workOffersGrid.Children.Add(salesLabel);
 
-                
+
                 Label preSalesLabel = new Label();
                 preSalesLabel.Content = workOffers[i].offer_proposer_name;
                 preSalesLabel.Style = (Style)FindResource("tableSubItemLabel");
@@ -733,7 +727,7 @@ namespace _01electronics_crm
                 productGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 productGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 productGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                
+
                 productGrid.RowDefinitions.Add(new RowDefinition());
 
 
@@ -787,7 +781,7 @@ namespace _01electronics_crm
                     productNumberHeader.Style = (Style)FindResource("tableSubHeaderItem");
 
                     productGrid.Children.Add(productNumberHeader);
-                    Grid.SetRow(productNumberHeader, j+1);
+                    Grid.SetRow(productNumberHeader, j + 1);
                     Grid.SetColumn(productNumberHeader, 0);
 
                     Label type = new Label();
@@ -864,56 +858,56 @@ namespace _01electronics_crm
 
         private void OnSelChangedYearCombo(object sender, SelectionChangedEventArgs e)
         {
-            
+
             if (yearComboBox.SelectedItem != null)
                 selectedYear = BASIC_MACROS.CRM_START_YEAR + yearComboBox.SelectedIndex;
             else
                 selectedYear = 0;
-            
+
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
 
         private void OnSelChangedQuarterCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
+
+
 
             if (quarterComboBox.SelectedItem != null)
                 selectedQuarter = quarterComboBox.SelectedIndex + 1;
             else
                 selectedQuarter = 0;
-            
+
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
 
         private void OnSelChangedSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
+
+
 
             if (salesComboBox.SelectedItem != null)
                 selectedSales = salesEmployeesList[salesComboBox.SelectedIndex].employee_id;
             else
                 selectedSales = 0;
 
-            
+
 
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
         private void OnSelChangedPreSalesCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
+
+
 
             if (preSalesComboBox.SelectedItem != null)
                 selectedPreSales = preSalesEmployeesList[preSalesComboBox.SelectedIndex].employee_id;
             else
                 selectedPreSales = 0;
 
-            
+
 
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
@@ -921,40 +915,40 @@ namespace _01electronics_crm
 
         private void OnSelChangedProductCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
+
+
 
             if (productComboBox.SelectedItem != null)
                 selectedProduct = productTypes[productComboBox.SelectedIndex].typeId;
             else
                 selectedProduct = 0;
-            
+
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
 
         private void OnSelChangedBrandCombo(object sender, SelectionChangedEventArgs e)
         {
-            
-            
+
+
 
             if (brandComboBox.SelectedItem != null)
                 selectedBrand = brandTypes[brandComboBox.SelectedIndex].brandId;
             else
                 selectedBrand = 0;
-            
+
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
 
         private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
         {
-        
+
             if (statusComboBox.SelectedItem != null)
                 selectedStatus = offerStatuses[statusComboBox.SelectedIndex].status_id;
             else
                 selectedStatus = 0;
-            
+
             SetWorkOffersStackPanel();
             SetWorkOffersGrid();
         }
@@ -971,21 +965,21 @@ namespace _01electronics_crm
         private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = true;
-            
+
             SetYearComboBox();
         }
 
         private void OnCheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterComboBox.IsEnabled = true;
-            
+
             SetQuarterComboBox();
         }
 
         private void OnCheckSalesCheckBox(object sender, RoutedEventArgs e)
         {
             salesComboBox.IsEnabled = true;
-            
+
 
             salesComboBox.SelectedIndex = 0;
 
@@ -996,7 +990,7 @@ namespace _01electronics_crm
         private void OnCheckPreSalesCheckBox(object sender, RoutedEventArgs e)
         {
             preSalesComboBox.IsEnabled = true;
-            
+
 
             preSalesComboBox.SelectedIndex = 0;
 
@@ -1008,7 +1002,7 @@ namespace _01electronics_crm
         private void OnCheckProductCheckBox(object sender, RoutedEventArgs e)
         {
             productComboBox.IsEnabled = true;
-            
+
 
             productComboBox.SelectedIndex = 0;
         }
@@ -1016,7 +1010,7 @@ namespace _01electronics_crm
         private void OnCheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
             brandComboBox.IsEnabled = true;
-            
+
 
             brandComboBox.SelectedIndex = 0;
         }
@@ -1024,7 +1018,7 @@ namespace _01electronics_crm
         private void OnCheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
             statusComboBox.IsEnabled = true;
-            
+
 
             statusComboBox.SelectedIndex = 0;
         }
@@ -1042,15 +1036,15 @@ namespace _01electronics_crm
         {
             yearComboBox.SelectedItem = null;
             yearComboBox.IsEnabled = false;
-            
+
         }
 
-        
+
         private void OnUncheckQuarterCheckBox(object sender, RoutedEventArgs e)
         {
             quarterComboBox.SelectedItem = null;
             quarterComboBox.IsEnabled = false;
-            
+
         }
 
 
@@ -1058,34 +1052,34 @@ namespace _01electronics_crm
         {
             salesComboBox.SelectedItem = null;
             salesComboBox.IsEnabled = false;
-            
+
         }
         private void OnUncheckPreSalesCheckBox(object sender, RoutedEventArgs e)
         {
             preSalesComboBox.SelectedItem = null;
             preSalesComboBox.IsEnabled = false;
-            
+
         }
 
         private void OnUncheckProductCheckBox(object sender, RoutedEventArgs e)
         {
             productComboBox.SelectedItem = null;
             productComboBox.IsEnabled = false;
-            
+
         }
 
         private void OnUncheckBrandCheckBox(object sender, RoutedEventArgs e)
         {
             brandComboBox.SelectedItem = null;
             brandComboBox.IsEnabled = false;
-            
+
         }
 
         private void OnUncheckStatusCheckBox(object sender, RoutedEventArgs e)
         {
             statusComboBox.SelectedItem = null;
             statusComboBox.IsEnabled = false;
-            
+
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1180,13 +1174,13 @@ namespace _01electronics_crm
 
             selectedWorkOffer = new Quotation(sqlDatabase);
 
-            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser,ref selectedWorkOffer, viewAddCondition, false);
-            
+            WorkOfferWindow workOfferWindow = new WorkOfferWindow(ref loggedInUser, ref selectedWorkOffer, viewAddCondition, false);
+
             workOfferWindow.Closed += OnClosedWorkOfferWindow;
             workOfferWindow.Show();
         }
 
-        
+
         private void OnBtnClickView()
         {
             viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;

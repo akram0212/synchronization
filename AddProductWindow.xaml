@@ -1,0 +1,67 @@
+﻿<Window x:Class="_01electronics_crm.AddProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_01electronics_crm"
+        mc:Ignorable="d"
+        Title="AddProductWindow" Height="730" Width="750">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD PRODUCT DETAILS" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+            <WrapPanel>
+
+                <Grid Name="ContactGrid" Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Grid.Row="1">
+                        <WrapPanel Name="NameWrapPanel">
+                            <Label Style="{StaticResource labelStyle}" Content="Name"/>
+                            <TextBox Style="{StaticResource textBoxStyle}" Margin="50,0,0,0" Name="telephoneTextBox" TextChanged="OnTextChangedTelephone"/>
+                        </WrapPanel>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2">
+                        <WrapPanel Name="summryNotesWrapPanel">
+                            <Label Style="{StaticResource labelStyle}" Content="summryNotes"  Width="120" />
+                            <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox" TextChanged="AdditionalDescriptionTextBoxTextChanged"/>
+                            <WrapPanel Margin="300,0,0,0" HorizontalAlignment="Right" Name="remainingCharactersWrapPanel">
+                                <Label Width="180" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Right"/>
+                                <Label Width="50" Margin="0,0,10,0" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Center"/>
+                            </WrapPanel>
+                        </WrapPanel>
+                    </WrapPanel>
+
+                    <Border  BorderBrush="#105A97"  BorderThickness="3" Grid.Row="0" MinWidth="100px" MinHeight="100px" Name="scrollViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+
+
+                </Grid>
+
+            </WrapPanel>
+
+        </ScrollViewer>
+
+        <Button Grid.Row="3" Content="Save Changes" Name="saveChangesButton" Style="{StaticResource buttonStyle}" Click="OnBtnClkSaveChanges"/>
+
+    </Grid>
+</Window>

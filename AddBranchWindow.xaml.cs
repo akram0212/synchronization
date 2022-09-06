@@ -1,18 +1,11 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -114,7 +107,7 @@ namespace _01electronics_crm
 
             countryCodeCombo.Items.Clear();
 
-            for(int i = 0; i < countryCodes.Count; i++)
+            for (int i = 0; i < countryCodes.Count; i++)
             {
                 String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
                 countryCodeCombo.Items.Add(temp);
@@ -229,7 +222,7 @@ namespace _01electronics_crm
                 if (!company.InsertIntoCompanyAddress())
                     return;
 
-                if(telephoneTextBox.Text != "")
+                if (telephoneTextBox.Text != "")
                 {
                     if (!company.InsertIntoCompanyTelephone(telephoneTextBox.Text))
                         return;

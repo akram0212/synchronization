@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Web;
-using System.IO;
-using Spire.Doc;
-using Spire.Doc.Documents;
-using Spire.Doc.Fields;
-using Spire.Doc.Interface;
-using Spire.Doc.Collections;
-using _01electronics_library;
-using System.Drawing;
-
-using Size = System.Drawing.Size;
-using System.Windows.Media.Imaging;
+﻿using _01electronics_library;
 using _01electronics_windows_library;
+using Spire.Doc;
+using Spire.Doc.Interface;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Size = System.Drawing.Size;
 
 namespace _01electronics_crm
 {
@@ -35,7 +26,7 @@ namespace _01electronics_crm
 
         CommonQueries commonQueriesObject;
         CommonFunctions commonFunctionsObject;
-        
+
 
         List<string> standardFeatures = new List<string>();
         List<string> applications = new List<string>();
@@ -142,11 +133,11 @@ namespace _01electronics_crm
                         //src.UriSource = new Uri(imagePath, UriKind.Absolute);
                         //src.CacheOption = BitmapCacheOption.OnLoad;
                         //src.EndInit();
-                        
+
                         Image productImage = Image.FromFile(imagePath);
-                        
+
                         //productImage = resizeImage(productImage, new Size(200, 200));
-                        
+
                         //byte[] byteImage = (byte[])(new ImageConverter()).ConvertTo(productImage, typeof(byte[]));
 
                         imageParagraph.AppendPicture(productImage);

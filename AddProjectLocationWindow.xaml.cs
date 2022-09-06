@@ -2,17 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -191,7 +184,7 @@ namespace _01electronics_crm
                 return;
             if (!InsertIntoProjectLocations())
                 return;
-            
+
             this.Close();
         }
 
@@ -288,12 +281,12 @@ namespace _01electronics_crm
                 return false;
 
             System.Windows.Forms.MessageBox.Show("Added");
-            
+
             return true;
         }
         private void OnClickCityImage(object sender, MouseButtonEventArgs e)
         {
-            if (cityComboBox.Text.ToString() != "" )
+            if (cityComboBox.Text.ToString() != "")
             {
                 if (!cities.Exists(cityItem => cityItem.city_name == cityComboBox.Text.ToString()))
                 {

@@ -2,17 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -268,7 +262,7 @@ namespace _01electronics_crm
                 preSalesCheckBox.IsEnabled = true;
                 preSalesComboBox.IsEnabled = false;
 
-                if(loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID)
+                if (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID)
                     addButton.IsEnabled = true;
             }
             else if (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
@@ -1074,14 +1068,14 @@ namespace _01electronics_crm
         private void OnClosedMaintOfferWindow(object sender, EventArgs e)
         {
             if (!GetMaintenanceOffers())
-              return;
+                return;
 
-           SetMaintOffersStackPanel();
-           SetMaintOffersGrid();
+            SetMaintOffersStackPanel();
+            SetMaintOffersGrid();
         }
         private void OnClickExportButton(object sender, RoutedEventArgs e)
         {
-           // ExcelExport excelExport = new ExcelExport(maintOffersGrid);
+            // ExcelExport excelExport = new ExcelExport(maintOffersGrid);
         }
 
         private void OnExpandExpander(object sender, RoutedEventArgs e)

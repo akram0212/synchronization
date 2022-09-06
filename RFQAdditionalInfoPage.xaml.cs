@@ -1,19 +1,12 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -51,7 +44,7 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
             integrityChecks = new IntegrityChecks();
-            
+
             //YOU DONT NEED TO INITIALIZE RFQ IF YOU ARE GOING TO LINK IT TO ANOTHER ONE
             //rfq = new RFQ(sqlDatabase);
             rfq = mRFQ;
@@ -59,7 +52,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
             {
                 ConfigureUIElementsForAdd();
                 InitializeContractTypeCombo();
@@ -91,7 +84,7 @@ namespace _01electronics_crm
             }
 
             if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-                nextButton.IsEnabled = false; 
+                nextButton.IsEnabled = false;
 
         }
 
@@ -224,7 +217,7 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an RFQ! Contact your system administrator!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
                 {
                     if (!rfq.IssueNewRFQ())
                         return;
@@ -234,12 +227,12 @@ namespace _01electronics_crm
                         viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
 
                         RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, true);
-                        
+
                         viewRFQ.Show();
                     }
 
                 }
-                else if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
+                else if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_REVISE_CONDITION)
                 {
                     if (!rfq.ReviseRFQ())
                         return;
@@ -249,7 +242,7 @@ namespace _01electronics_crm
                         viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
 
                         RFQWindow viewRFQ = new RFQWindow(ref loggedInUser, ref rfq, viewAddCondition, true);
-                        
+
                         viewRFQ.Show();
                     }
 

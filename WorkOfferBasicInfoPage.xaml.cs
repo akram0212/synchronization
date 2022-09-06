@@ -1,18 +1,10 @@
-﻿using System;
+﻿using _01electronics_library;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 
 namespace _01electronics_crm
@@ -24,7 +16,7 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         Quotation quotation;
-        
+
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -40,25 +32,25 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsAddedToComboList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
 
         private List<PROJECT_MACROS.PROJECT_STRUCT> projects = new List<PROJECT_MACROS.PROJECT_STRUCT>();
-        
+
 
         private int viewAddCondition;
         private int salesPersonID;
         private int salesPersonTeamID;
-        
+
 
         public WorkOfferProductsPage workOfferProductsPage;
         public WorkOfferPaymentAndDeliveryPage workOfferPaymentAndDeliveryPage;
         public WorkOfferAdditionalInfoPage workOfferAdditionalInfoPage;
         public WorkOfferUploadFilesPage workOfferUploadFilesPage;
 
-        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref Quotation mWorkOffer,int mViewAddCondition, ref WorkOfferProductsPage mWorkOfferProductsPage)
+        public WorkOfferBasicInfoPage(ref Employee mLoggedInUser, ref Quotation mWorkOffer, int mViewAddCondition, ref WorkOfferProductsPage mWorkOfferProductsPage)
         {
             workOfferProductsPage = mWorkOfferProductsPage;
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            
+
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
@@ -86,11 +78,11 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetProjectLabel();
-                
+
 
                 workOfferUploadFilesPage = new WorkOfferUploadFilesPage(ref loggedInUser, ref quotation, viewAddCondition);
             }
-            else if(viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
                 FillrfqsList();
                 ConfigureUIElemenetsForAdd();
@@ -124,7 +116,7 @@ namespace _01electronics_crm
                 InitializeRFQSerialCombo();
                 SetRFQSerialComboValue();
                 SetProjectCombo();
-                
+
                 DisableSalesPersonAndRFQCombo();
                 projectSerialCombo.IsEnabled = false;
             }
@@ -180,9 +172,9 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < rfqsList.Count; i++)
             {
-             ////////////////////////////
-             //// THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
-             ////////////////////////////
+                ////////////////////////////
+                //// THE NUMBER 5 IS FOR CONTRACT TYPE MAINTENANCE ON REQUEST (SAMEH)
+                ////////////////////////////
                 if (rfqsList[i].sales_person_id == salesPersonID && rfqsList[i].assignee_id == loggedInUser.GetEmployeeId() && rfqsList[i].contract_type_id != 5 && rfqsList[i].rfq_status_id == 1)
                 {
                     RFQSerialCombo.Items.Add(rfqsList[i].rfq_id);
@@ -208,7 +200,7 @@ namespace _01electronics_crm
 
         private void InitializeCompanyAddressCombo()
         {
-           
+
             if (!commonQueriesObject.GetCompanyAddresses(companiesList[companyNameCombo.SelectedIndex].company_serial, ref branchInfo))
                 return;
 
@@ -220,9 +212,9 @@ namespace _01electronics_crm
             }
 
             quotation.InitializeBranchInfo(branchInfo[0].address_serial);
-           
+
             companyAddressCombo.SelectedIndex = 0;
-           
+
             companyAddressCombo.IsEnabled = true;
         }
 
@@ -232,11 +224,11 @@ namespace _01electronics_crm
 
             if (!commonQueriesObject.GetCompanyContacts(salesPersonID, addressSerial, ref contactInfo))
                 return;
-        
+
             for (int i = 0; i < contactInfo.Count(); i++)
                 contactPersonNameCombo.Items.Add(contactInfo[i].contact_name);
-        
-            if(contactInfo.Count > 0)
+
+            if (contactInfo.Count > 0)
                 contactPersonNameCombo.SelectedIndex = 0;
 
             contactPersonNameCombo.IsEnabled = true;
@@ -244,13 +236,13 @@ namespace _01electronics_crm
 
         private bool InitializeProjectCombo()
         {
-            
+
             if (!commonQueriesObject.GetClientProjects(ref projects))
                 return false;
 
             projectSerialCombo.Items.Clear();
 
-            for(int i = 0; i < projects.Count; i++)
+            for (int i = 0; i < projects.Count; i++)
             {
                 projectSerialCombo.Items.Add(projects[i].project_name);
             }
@@ -258,7 +250,7 @@ namespace _01electronics_crm
             return true;
         }
 
-        
+
 
         ///////////CONFIGURE UI ELEMENTS////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +290,7 @@ namespace _01electronics_crm
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
             projectSerialCombo.Visibility = Visibility.Collapsed;
-            
+
 
         }
         private void DisableSalesPersonAndRFQCombo()
@@ -379,12 +371,12 @@ namespace _01electronics_crm
 
         private void SetContactPersonComboValue()
         {
-            contactPersonNameCombo.Text= quotation.GetContactName();
+            contactPersonNameCombo.Text = quotation.GetContactName();
         }
 
         private void SetCompanyNameAddressContactFromRFQ()
         {
-            
+
             InitializeCompanyNameCombo();
 
 
@@ -442,7 +434,7 @@ namespace _01electronics_crm
 
             //if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             //    quotation.ResetWorkOfferInfo();
-            
+
             quotation.InitializeOfferProposerInfo(loggedInUser.GetEmployeeId());
             quotation.InitializeSalesPersonInfo(salesPersonID);
 
@@ -469,7 +461,7 @@ namespace _01electronics_crm
                     quotation.LinkRFQInfo();
 
                 SetCompanyNameAddressContactFromRFQ();
-                if(viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
+                if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                     SetContractTypeValueFromRFQ();
 
                 if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
@@ -493,7 +485,7 @@ namespace _01electronics_crm
                 projectSerialCombo.IsEnabled = false;
             }
 
-            
+
         }
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -510,8 +502,8 @@ namespace _01electronics_crm
                 companyAddressCombo.SelectedItem = null;
                 companyAddressCombo.IsEnabled = false;
             }
-            
-            
+
+
         }
 
         private void OnSelChangedCompanyAddressCombo(object sender, SelectionChangedEventArgs e)
@@ -525,7 +517,7 @@ namespace _01electronics_crm
             }
             else
                 InitializeCompanyContactCombo();
-           
+
         }
 
         private void OnSelChangedContactPersonCombo(object sender, SelectionChangedEventArgs e)
@@ -557,7 +549,7 @@ namespace _01electronics_crm
             workOfferProductsPage.workOfferAdditionalInfoPage = workOfferAdditionalInfoPage;
             workOfferProductsPage.workOfferUploadFilesPage = workOfferUploadFilesPage;
 
-            
+
             NavigationService.Navigate(workOfferProductsPage);
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
@@ -607,7 +599,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnButtonClickAutomateWorkOffer(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
@@ -617,6 +609,6 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
-       
+
     }
 }

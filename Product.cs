@@ -1,8 +1,7 @@
-﻿using System;
+﻿using _01electronics_windows_library;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using _01electronics_windows_library;
 
 namespace _01electronics_library
 {
@@ -76,7 +75,7 @@ namespace _01electronics_library
             if (!commonQueries.GetModelApplications(productID, brandID, modelID, ref modelApplications))
                 return false;
             if (!commonQueries.GetModelBenefits(productID, brandID, modelID, ref modelBenefits))
-                return false; 
+                return false;
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
 
@@ -124,7 +123,7 @@ namespace _01electronics_library
 
             return true;
         }
-       
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //ISSUE FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,9 +152,9 @@ namespace _01electronics_library
             if (!GetNewModelID())
                 return false;
             if (!InsertIntoBrandModels(mModelName))
-                return false; 
+                return false;
             if (!InsertIntoModelApplications(ref mModelApplications))
-                return false; 
+                return false;
             if (!InsertIntoModelBenefits(ref mModelBenefits))
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
@@ -176,8 +175,7 @@ namespace _01electronics_library
                                       values(";
 
             String comma = ",";
-            String sqlQueryPart3 = "GETDATE()";
-            String sqlQueryPart4 = ");";
+            String sqlQueryPart3 = "GETDATE());";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
@@ -185,8 +183,7 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += "'" + mProductName + "'";
             sqlQuery += comma;
-            sqlQuery += "'" + sqlQueryPart3 + "'";
-            sqlQuery += sqlQueryPart4;
+            sqlQuery += sqlQueryPart3;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
                 return false;
@@ -200,8 +197,7 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += 0;
             sqlQuery += comma;
-            sqlQuery += "'" + sqlQueryPart3 + "'";
-            sqlQuery += sqlQueryPart4;
+            sqlQuery += sqlQueryPart3;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
                 return false;
@@ -248,7 +244,7 @@ namespace _01electronics_library
         }
         public bool InsertIntoProductBrands(ref List<int> brandProducts)
         {
-            for(int i = 0; i < brandProducts.Count(); i++)
+            for (int i = 0; i < brandProducts.Count(); i++)
             {
                 String sqlQueryPart1 = @" insert into erp_system.dbo.products_brands
                                           values(";
@@ -289,7 +285,7 @@ namespace _01electronics_library
             }
 
             return true;
-        } 
+        }
         public bool InsertIntoBrandModels(String mModelName)
         {
             String sqlQueryPart1 = @" insert into erp_system.dbo.brands_models
@@ -297,25 +293,25 @@ namespace _01electronics_library
             String comma = ",";
             String sqlQueryPart3 = "GETDATE()";
             String sqlQueryPart4 = ");";
-           
+
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += GetProductID();
             sqlQuery += comma;
             sqlQuery += GetBrandID();
-            sqlQuery += comma; 
+            sqlQuery += comma;
             sqlQuery += GetModelID();
-            sqlQuery += comma; 
+            sqlQuery += comma;
             sqlQuery += "'" + mModelName + "'";
             sqlQuery += comma;
             sqlQuery += "'" + sqlQueryPart3 + "'";
             sqlQuery += sqlQueryPart4;
-           
+
             if (!sqlDatabase.InsertRows(sqlQuery))
                 return false;
 
             return true;
-        } 
+        }
         public bool InsertIntoModelApplications(ref List<String> mModelApplications)
         {
             for (int i = 0; i < mModelApplications.Count(); i++)
@@ -334,7 +330,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += GetModelID();
                 sqlQuery += comma;
-                sqlQuery += i+1;
+                sqlQuery += i + 1;
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelApplications[i] + "'";
                 sqlQuery += comma;
@@ -364,7 +360,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += GetModelID();
                 sqlQuery += comma;
-                sqlQuery += i+1;
+                sqlQuery += i + 1;
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelBenefits[i] + "'";
                 sqlQuery += comma;
@@ -375,7 +371,7 @@ namespace _01electronics_library
                     return false;
             }
             return true;
-        } 
+        }
         public bool InsertIntoModelStandardFeatures(ref List<String> mModelStandardFeatures)
         {
             for (int i = 0; i < mModelStandardFeatures.Count(); i++)
@@ -394,7 +390,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += GetModelID();
                 sqlQuery += comma;
-                sqlQuery += i+1;
+                sqlQuery += i + 1;
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelStandardFeatures[i] + "'";
                 sqlQuery += comma;
@@ -424,7 +420,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += GetModelID();
                 sqlQuery += comma;
-                sqlQuery += i+1;
+                sqlQuery += i + 1;
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelSummaryPoints[i] + "'";
                 sqlQuery += comma;
@@ -474,21 +470,22 @@ namespace _01electronics_library
         public void SetCategoryID(int mCategoryID)
         {
             categoryID = mCategoryID;
-        } public void SetProductID(int mProductID)
+        }
+        public void SetProductID(int mProductID)
         {
             productID = mProductID;
         }
         public void SetBrandID(int mBrandID)
         {
             brandID = mBrandID;
-        } 
+        }
         public void SetModelID(int mModelID)
         {
             modelID = mModelID;
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
-        } 
+        }
         public void SetCategoryName(String mCategoryName)
         {
             categoryName = mCategoryName;
@@ -500,7 +497,7 @@ namespace _01electronics_library
         public void SetBrandName(String mBrandName)
         {
             brandName = mBrandName;
-        } 
+        }
         public void SetModelName(String mModelName)
         {
             modelName = mModelName;
@@ -519,7 +516,8 @@ namespace _01electronics_library
         public int GetCategoryID()
         {
             return categoryID;
-        } public int GetProductID()
+        }
+        public int GetProductID()
         {
             return productID;
         }
@@ -530,7 +528,7 @@ namespace _01electronics_library
         public int GetModelID()
         {
             return modelID;
-        } 
+        }
         public String GetCategoryName()
         {
             return categoryName;
@@ -550,7 +548,7 @@ namespace _01electronics_library
         public int GetNumberOfSavedModelApplications()
         {
             return numberOfSavedModelApplications;
-        } 
+        }
         public int GetNumberOfSavedModelBenefits()
         {
             return numberOfSavedModelBenefits;
@@ -581,7 +579,7 @@ namespace _01electronics_library
             photoServerPath += "/";
             photoServerPath += GetModelID();
             photoServerPath += ".jpg";
-            
+
             //photoServerPath = photoServerPath;
         }
         public String GetModelFolderServerPath()

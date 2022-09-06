@@ -64,12 +64,10 @@
 
             </ScrollViewer>
 
-            <Canvas Name="addBtn" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Panel.ZIndex="9999" Margin="0,0,100,80"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.5"  MouseEnter="addBtnMouseEnter" MouseLeave="addBtnMouseLeave" >
-                        <Path   Fill="#105A97" Data="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" Stretch="Fill"  Width="65" Height="65" />
-
-
-                    </Canvas>
-
+            <Canvas Name="addBtn" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Panel.ZIndex="999" Margin="0,0,100,80"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.5"  MouseEnter="addBtnMouseEnter" MouseLeave="addBtnMouseLeave" MouseLeftButtonUp="onBtnAddClick">
+                <Path   Fill="#105A97" Data="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" Stretch="Fill"  Width="65" Height="65" />
+            </Canvas>
+            
         </Grid>
 
     </Grid>

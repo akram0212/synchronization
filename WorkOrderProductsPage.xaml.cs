@@ -2,17 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -397,7 +391,7 @@ namespace _01electronics_crm
         ///SET FUNCTIONS
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        
+
         public void SetCategoryComboBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
@@ -405,7 +399,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentCategoryWrapPanel = (WrapPanel)currentProductGrid.Children[1];
                 ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
-                
+
                 CurrentCategoryComboBox.SelectedItem = workOrder.GetOrderProductCategory(i + 1);
             }
         }
@@ -417,7 +411,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
                 ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
-                
+
                 CurrentTypeComboBox.SelectedItem = workOrder.GetOrderProductType(i + 1);
             }
         }
@@ -428,7 +422,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentBrandWrapPanel = (WrapPanel)currentProductGrid.Children[3];
                 ComboBox currentBrandComboBox = (ComboBox)currentBrandWrapPanel.Children[1];
-                
+
                 currentBrandComboBox.SelectedItem = workOrder.GetOrderProductBrand(i + 1);
             }
         }
@@ -440,7 +434,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
-                
+
                 currentModelComboBox.SelectedItem = workOrder.GetOrderProductModel(i + 1);
             }
         }
@@ -496,7 +490,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                 TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-                
+
                 currentQuantityTextBoxValue.Text = workOrder.GetOrderProductQuantity(i + 1).ToString();
 
             }
@@ -510,7 +504,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
                 TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
-               
+
                 price = (int)workOrder.GetOrderProductPriceValue(i + 1);
                 currentPriceTextBoxValue.Text = price.ToString();
             }
@@ -776,7 +770,7 @@ namespace _01electronics_crm
                     }
                 }
 
-                
+
 
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
@@ -1216,6 +1210,6 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
-        
+
     }
 }
