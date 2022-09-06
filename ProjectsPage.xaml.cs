@@ -59,14 +59,18 @@ namespace _01electronics_crm
 
             // commonQueries.GetReapetedMobilePhones();
 
-            InitializeCountriesComboBox();
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID 
+                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            {
+                InitializeCountriesComboBox();
 
             if (!InitializeProjectsList())
                 return;
             if (!GetProjectLocations())
                 return;
 
-            InitializeProjectNamesTree();
+                InitializeProjectNamesTree();
+            }
         }
         private bool InitializeProjectsList()
         {

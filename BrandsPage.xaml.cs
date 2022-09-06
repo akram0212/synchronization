@@ -260,7 +260,7 @@ namespace _01electronics_crm
         ///
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
-            UserPortalPage userPortal = new UserPortalPage(ref loggedInUser);
+            StatisticsPage userPortal = new StatisticsPage(ref loggedInUser);
             this.NavigationService.Navigate(userPortal);
         }
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)

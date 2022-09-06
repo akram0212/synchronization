@@ -62,29 +62,38 @@ namespace _01electronics_crm
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
-            if (!GetWorkOrders())
-                return;
 
-            InitializeYearsComboBox();
-            InitializeQuartersComboBox();
-            InitializeStatusComboBox();
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+            }
 
-            if (!InitializeSalesComboBox())
-                return;
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
+            {
+                if (!GetWorkOrders())
+                    return;
 
-            if (!InitializePreSalesComboBox())
-                return;
+                InitializeYearsComboBox();
+                InitializeQuartersComboBox();
+                InitializeStatusComboBox();
 
-            if (!InitializeProductsComboBox())
-                return;
+                if (!InitializeSalesComboBox())
+                    return;
 
-            if (!InitializeBrandsComboBox())
-                return;
+                if (!InitializePreSalesComboBox())
+                    return;
 
-            SetDefaultSettings();
+                if (!InitializeProductsComboBox())
+                    return;
 
-            SetWorkOrdersStackPanel();
-            SetWorkOrdersGrid();
+                if (!InitializeBrandsComboBox())
+                    return;
+
+                SetDefaultSettings();
+
+                SetWorkOrdersStackPanel();
+                SetWorkOrdersGrid();
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,10 +485,13 @@ namespace _01electronics_crm
                 editButton.Content = "Edit Order";
                 editButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
 
-                ListBoxItem viewRFQButton = new ListBoxItem();
-                viewRFQButton.Content = "View RFQ";
-                viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
-
+                if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+                {
+                    ListBoxItem viewRFQButton = new ListBoxItem();
+                    viewRFQButton.Content = "View RFQ";
+                    viewRFQButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    listBox.Items.Add(viewRFQButton);
+                }
                 ListBoxItem viewOfferButton = new ListBoxItem();
                 viewOfferButton.Content = "View Offer";
                 viewOfferButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
@@ -493,7 +505,6 @@ namespace _01electronics_crm
                 if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     listBox.Items.Add(editButton);
 
-                listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
 
