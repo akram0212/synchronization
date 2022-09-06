@@ -1,18 +1,10 @@
 ﻿using _01electronics_library;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -82,7 +74,7 @@ namespace _01electronics_crm
 
                 maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref loggedInUser, ref maintContract, viewAddCondition);
             }
-            else if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
@@ -106,7 +98,7 @@ namespace _01electronics_crm
 
                 DisableSalesPersonAndOfferCombo();
 
-               
+
             }
 
             else
@@ -526,7 +518,7 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {
-                    if(maintContract.GetMaintOfferSerial() == 0)
+                    if (maintContract.GetMaintOfferSerial() == 0)
                         maintContract.InitializeMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_proposer_id);
 
                     if (maintContract.GetprojectSerial() != 0)

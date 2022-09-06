@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using _01electronics_library;
-using System.ComponentModel;
-using System.IO;
+﻿using _01electronics_library;
 using _01electronics_windows_library;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace _01electronics_crm
 {
@@ -36,7 +27,7 @@ namespace _01electronics_crm
         private IntegrityChecks integrityChecks;
         protected FTPServer fTPObject;
 
-        
+
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
         private List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT>();
 
@@ -86,15 +77,15 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION)
             {
-                
+
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();
-               
+
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
             {
-                
+
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -102,7 +93,7 @@ namespace _01electronics_crm
 
                 if (quotation.GetDrawingSubmissionDeadlineTimeUnitId() != 0)
                     drawingSubmissionCheckBox.IsChecked = true;
-                
+
                 drawingSubmissionCheckBox.IsEnabled = false;
 
                 ConfigureUIElementsView();
@@ -118,7 +109,7 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
             {
-                
+
                 InitializeTimeUnitComboBoxes();
                 InitializeDrawingDeadlineDateFromWhenComboBox();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -182,7 +173,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////
         ///INITIALIZATION FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////
-        
+
 
         private bool InitializeTimeUnitComboBoxes()
         {
@@ -194,9 +185,9 @@ namespace _01electronics_crm
                 offerValidityCombo.Items.Add(timeUnits[i].timeUnit);
                 drawingDeadlineDateComboBox.Items.Add(timeUnits[i].timeUnit);
             }
-           
+
             drawingDeadlineDateComboBox.SelectedIndex = drawingDeadlineDateComboBox.Items.Count - 1;
-            
+
 
             return true;
         }
@@ -234,22 +225,22 @@ namespace _01electronics_crm
             drawingDeadlineDateFromWhenComboBox.SelectedItem = quotation.GetOfferDrawingSubmissionDeadlineCondition();
         }
 
-        
+
 
         private void SetWarrantyPeriodValues()
         {
-           warrantyPeriodTextBox.Text = quotation.GetWarrantyPeriod().ToString();
+            warrantyPeriodTextBox.Text = quotation.GetWarrantyPeriod().ToString();
 
-                if (quotation.GetWarrantyPeriodTimeUnit() != "")
-                    warrantyPeriodCombo.SelectedItem = quotation.GetWarrantyPeriodTimeUnit();
-                else
-                    warrantyPeriodCombo.SelectedIndex = warrantyPeriodCombo.Items.Count - 1;
+            if (quotation.GetWarrantyPeriodTimeUnit() != "")
+                warrantyPeriodCombo.SelectedItem = quotation.GetWarrantyPeriodTimeUnit();
+            else
+                warrantyPeriodCombo.SelectedIndex = warrantyPeriodCombo.Items.Count - 1;
 
-                if (quotation.GetOfferWarrantyPeriodCondition() != "")
-                    warrantyPeriodFromWhenCombo.SelectedItem = quotation.GetOfferWarrantyPeriodCondition();
-                else
-                    warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
-           
+            if (quotation.GetOfferWarrantyPeriodCondition() != "")
+                warrantyPeriodFromWhenCombo.SelectedItem = quotation.GetOfferWarrantyPeriodCondition();
+            else
+                warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
+
         }
 
         private void SetValidityPeriodValues()
@@ -270,7 +261,7 @@ namespace _01electronics_crm
         //SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        
+
 
         private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -570,8 +561,8 @@ namespace _01electronics_crm
             }
         }
 
-        
 
-        
+
+
     }
 }

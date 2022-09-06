@@ -1,18 +1,10 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -113,7 +105,7 @@ namespace _01electronics_crm
 
             for (int i = 0; i < branches.Count; i++)
                 companyBranchComboBox.Items.Add(branches[i].district + ", " + branches[i].city + ", " + branches[i].state_governorate + ", " + branches[i].country);
-        
+
             companyBranchComboBox.SelectedIndex = 0;
 
             //contactComboBox.IsEnabled = false;

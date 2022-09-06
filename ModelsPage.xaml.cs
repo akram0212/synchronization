@@ -5,17 +5,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -30,7 +25,7 @@ namespace _01electronics_crm
         protected List<COMPANY_WORK_MACROS.MODEL_STRUCT> brandModels;
         private Product selectedProduct;
 
-        protected BackgroundWorker downloadBackground; 
+        protected BackgroundWorker downloadBackground;
 
         Frame frame;
         protected FTPServer ftpServer;
@@ -83,7 +78,8 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate {
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
                 Label productTitleLabel = new Label();
                 productTitleLabel.Content = selectedProduct.GetBrandName() + " " + selectedProduct.GetProductName();
                 productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
@@ -94,11 +90,11 @@ namespace _01electronics_crm
                 Grid.SetRow(productTitleLabel, 0);
 
                 ftpServer.ListFilesInFolder(selectedProduct.GetModelFolderServerPath(), ref modelsNames, ref returnMessage);
-                
+
                 if (modelsNames.Count() == 0)
                 {
                     string[] filesNames = Directory.GetFiles(selectedProduct.GetModelFolderLocalPath());
-                    foreach(string file in filesNames)
+                    foreach (string file in filesNames)
                     {
                         modelsNames.Add(file);
                     }
@@ -131,7 +127,7 @@ namespace _01electronics_crm
                         selectedProduct.SetModelID(brandModels[i].modelId);
 
 
-                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID()+".jpg"))))
+                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID() + ".jpg"))))
                         {
                             try
                             {
@@ -295,7 +291,7 @@ namespace _01electronics_crm
                 }
                 Grid.SetRow(modelsWrapPanel, 1);
             });
-           
+
         }
         //private void //DeletePhotos()
         //{

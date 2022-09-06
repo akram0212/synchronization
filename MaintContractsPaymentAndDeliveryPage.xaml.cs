@@ -1,18 +1,10 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -326,7 +318,7 @@ namespace _01electronics_crm
         }
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
-           
+
             maintContractsProjectsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsProjectsPage.maintContractsProductsPage = maintContractsProductsPage;
             maintContractsProjectsPage.maintContractsPaymentAndDeliveryPage = this;
@@ -393,4 +385,3 @@ namespace _01electronics_crm
 
     }
 }
-    

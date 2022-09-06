@@ -1,18 +1,9 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -37,7 +28,7 @@ namespace _01electronics_crm
         protected List<BASIC_STRUCTS.COUNTRY_CODES_STRUCT> countryCodes;
         protected List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> companyBranches;
 
-        public AddCompanyDetailsWindow(ref Employee mLoggedInUser, ref Company mCompany,String mSelectedBranch)
+        public AddCompanyDetailsWindow(ref Employee mLoggedInUser, ref Company mCompany, String mSelectedBranch)
         {
             InitializeComponent();
 
@@ -62,10 +53,10 @@ namespace _01electronics_crm
             if (!commonQueries.GetCountryCodes(ref countryCodes))
                 return false;
 
-            for(int i = 0; i < countryCodes.Count; i++)
+            for (int i = 0; i < countryCodes.Count; i++)
             {
                 String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
-                
+
                 countryCodeCombo.Items.Add(temp);
             }
 
@@ -87,7 +78,7 @@ namespace _01electronics_crm
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
-            
+
             if (!CheckCompanyPhoneEditBox())
                 return;
             if (!CheckCompanyFaxEditBox())
@@ -128,7 +119,7 @@ namespace _01electronics_crm
                 return false;
             }
             company.AddCompanyPhone(outputString);
-           // company.GetNumberOfSavedCompanyPhones();
+            // company.GetNumberOfSavedCompanyPhones();
             telephoneTextBox.Text = company.GetCompanyPhones()[company.GetNumberOfSavedCompanyPhones() - 1];
 
             return true;
@@ -149,6 +140,6 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
     }
 }

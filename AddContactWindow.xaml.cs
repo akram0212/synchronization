@@ -1,18 +1,9 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -105,7 +96,7 @@ namespace _01electronics_crm
             countryCodeComboBusinessPhone.Items.Clear();
             countryCodeComboPersonalPhone.Items.Clear();
 
-            for(int i = 0; i < countryCodes.Count; i++)
+            for (int i = 0; i < countryCodes.Count; i++)
             {
                 String temp = countryCodes[i].iso3 + "   " + countryCodes[i].phone_code;
                 countryCodeComboBusinessPhone.Items.Add(temp);
@@ -135,7 +126,7 @@ namespace _01electronics_crm
                 }
                 companyBranchComboBox.SelectedIndex = 0;
 
-                
+
             }
             else
             {
@@ -209,7 +200,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         private bool CheckContactBusinessPhoneEditBox()
         {
             String inputString = employeeBusinessPhoneTextBox.Text;
@@ -224,8 +215,8 @@ namespace _01electronics_crm
             employeeBusinessPhoneTextBox.Text = outputString;
 
             return true;
-        } 
-        
+        }
+
         private bool CheckContactPersonalPhoneEditBox()
         {
             String inputString = employeePersonalPhoneTextBox.Text;
@@ -236,15 +227,15 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            if(outputString!= string.Empty)
+            if (outputString != string.Empty)
             {
-               contact.AddNewContactPhone(outputString);
-               employeePersonalPhoneTextBox.Text = outputString;
+                contact.AddNewContactPhone(outputString);
+                employeePersonalPhoneTextBox.Text = outputString;
             }
 
             return true;
         }
-        
+
         private bool CheckContactBusinessEmailEditBox()
         {
             String inputString = employeeBusinessEmailTextBox.Text;
@@ -261,7 +252,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         private bool CheckContactPersonalEmailEditBox()
         {
             String inputString = employeePersonalEmailTextBox.Text;
@@ -304,9 +295,9 @@ namespace _01electronics_crm
 
             contact.SetCompanyName(companyNameComboBox.SelectedItem.ToString());
 
-            return true; 
-        } 
-        
+            return true;
+        }
+
         private bool CheckCompanyBranchComboBox()
         {
             if (companyBranchComboBox.SelectedItem == null)
@@ -314,9 +305,9 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Company branch must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            return true; 
+            return true;
         }
-        
+
         private bool CheckDepartmentComboBox()
         {
             if (employeeDepartmentComboBox.SelectedItem == null)
@@ -327,7 +318,7 @@ namespace _01electronics_crm
 
             contact.SetContactDepartment(departments[employeeDepartmentComboBox.SelectedIndex].department_id, employeeDepartmentComboBox.SelectedItem.ToString());
 
-            return true; 
+            return true;
         }
 
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
@@ -339,38 +330,38 @@ namespace _01electronics_crm
             if (!CheckContactGenderComboBox())
                 return;
             if (!CheckCompanyComboBox())
-                return; 
+                return;
             if (!CheckCompanyBranchComboBox())
-                return; 
+                return;
             if (!CheckDepartmentComboBox())
-                return; 
+                return;
             if (!CheckContactBusinessPhoneEditBox())
-                return; 
+                return;
             if (!CheckContactPersonalPhoneEditBox())
-                return; 
+                return;
             if (!CheckContactBusinessEmailEditBox())
-                return;   
+                return;
             if (!CheckContactPersonalEmailEditBox())
                 return;
 
             //YOU DON'T NEED TO WRITE A FUNCTION TO GET NEW CONTACT ID, THE CONTACT CLASS HANDLES IT ALREADY
 
             contact.SetAddressSerial(companyAddresses[companyBranchComboBox.SelectedIndex].address_serial);
-            
+
             contact.SetSalesPerson(loggedInUser);
-            
+
             contact.IssueNewContact();
-            
+
             ////YOU DON'T NEED TO GET A NEW EMAIL/PHONE ID, THIS IS A NEW CONTACT, SO THE EMAIL ID SHALL BE 1,
             ////ALSO, YOU SHALL ONLY USE CONTACT.ADDNEWPERSONALEMAIL() / CONTACT.ADDNEWCONTACTPHONE(), 
             ////THIS FUNCTION SHALL HANDLE THE IDs BY ITSELF
-            
+
             for (int i = 0; i < contact.GetNumberOfSavedContactPhones(); i++)
                 contact.InsertIntoContactMobile(i + 1, contact.GetContactPhones()[i]);
-            
+
             for (int i = 0; i < contact.GetNumberOfSavedContactEmails(); i++)
                 contact.InsertIntoContactPersonalEmail(i + 1, contact.GetContactPersonalEmails()[i]);
-            
+
             this.Close();
         }
 

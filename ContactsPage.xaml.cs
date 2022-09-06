@@ -1,20 +1,13 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -43,7 +36,7 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT> secondaryFieldsList;
 
         private List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.COMPANY_AND_CONTACT_LIST_STRUCT>>> employeesContacts;
-        
+
         private List<KeyValuePair<int, TreeViewItem>> companiesTreeArray;
         private List<KeyValuePair<int, StackPanel>> companiesStackArray;
 
@@ -64,7 +57,7 @@ namespace _01electronics_crm
             secondaryFieldsList = new List<BASIC_STRUCTS.SECONDARY_FIELD_STRUCT>();
 
             employeesContacts = new List<KeyValuePair<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT, List<COMPANY_ORGANISATION_MACROS.COMPANY_AND_CONTACT_LIST_STRUCT>>>();
-            
+
             companiesTreeArray = new List<KeyValuePair<int, TreeViewItem>>();
             companiesStackArray = new List<KeyValuePair<int, StackPanel>>();
 
@@ -130,7 +123,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         private bool CheckEmployeePosition()
         {
             listOfEmployees.Clear();
@@ -150,7 +143,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
         public bool GetAllContacts()
         {
             employeesContacts.Clear();
@@ -176,7 +169,7 @@ namespace _01electronics_crm
                     salesPersonComboBox.SelectedIndex = i;
         }
 
-    
+
         public bool InitializePrimaryFieldComboBox()
         {
             primaryFieldComboBox.Items.Clear();
@@ -204,7 +197,7 @@ namespace _01electronics_crm
             return true;
         }
 
-   
+
         public bool InitializeContactsTree()
         {
             companiesTreeArray.Clear();
@@ -221,7 +214,7 @@ namespace _01electronics_crm
 
 
                 salesPersonItem.Header = employeesContacts[i].Key.employee_name;
-                if(listOfEmployees[i].employement_status_id < 4)
+                if (listOfEmployees[i].employement_status_id < 4)
                     salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                 else
                     salesPersonItem.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
@@ -313,12 +306,12 @@ namespace _01electronics_crm
 
                 StackPanel employeeStackPanel = new StackPanel();
                 employeeStackPanel.Orientation = Orientation.Vertical;
-                
+
                 Grid employeeGrid = new Grid();
-                employeeGrid.Background = (Brush)brush.ConvertFrom("#D3D3D3"); 
+                employeeGrid.Background = (Brush)brush.ConvertFrom("#D3D3D3");
                 employeeGrid.RowDefinitions.Add(new RowDefinition());
                 employeeGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
+                employeeGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
 
                 Label employeeNameLabel = new Label();
 
@@ -750,7 +743,7 @@ namespace _01electronics_crm
                 previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF"); ;
 
                 StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
-                COMPANY_ORGANISATION_MACROS.CONTACT_INFO_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key.contacts.Find(x1=> x1.contact_id == int.Parse(currentSelectedContactItem.Tag.ToString()));
+                COMPANY_ORGANISATION_MACROS.CONTACT_INFO_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key.contacts.Find(x1 => x1.contact_id == int.Parse(currentSelectedContactItem.Tag.ToString()));
 
                 Image previousSontactIcon = (Image)previousParentGrid.Children[0];
                 previousSontactIcon.Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative));
@@ -832,7 +825,7 @@ namespace _01electronics_crm
                 }
             }
 
-            
+
             Grid currentParentGrid = (Grid)currentSelectedCompanyItem.Parent;
             currentParentGrid.Background = (Brush)brush.ConvertFrom("#105A97");
 
@@ -931,7 +924,7 @@ namespace _01electronics_crm
                 previousParentGrid.Background = (Brush)brush.ConvertFrom("#FFFFFF"); ;
 
                 StackPanel prevoiusParentStackPanel = (StackPanel)previousParentGrid.Parent;
-                COMPANY_ORGANISATION_MACROS.CONTACT_INFO_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key.contacts.Find(x1=> x1.contact_id == int.Parse(previousSelectedContactItem.Tag.ToString()));
+                COMPANY_ORGANISATION_MACROS.CONTACT_INFO_STRUCT previousContactItem = contactsStackArray.Find(contact_item => contact_item.Value == prevoiusParentStackPanel).Key.contacts.Find(x1 => x1.contact_id == int.Parse(previousSelectedContactItem.Tag.ToString()));
 
                 Image previousSontactIcon = (Image)previousParentGrid.Children[0];
                 previousSontactIcon.Source = new BitmapImage(new Uri(@"icons\contact_icon.png", UriKind.Relative));
@@ -1006,11 +999,11 @@ namespace _01electronics_crm
             {
                 Image currentIcon = (Image)contactDetailsGrid.Children[i];
 
-                if (contactDetailsCount++ < currentContactItem.contact_phones.Count) 
+                if (contactDetailsCount++ < currentContactItem.contact_phones.Count)
                     currentIcon.Source = new BitmapImage(new Uri(@"icons\phone_icon_blue.png", UriKind.Relative));
                 else
                     currentIcon.Source = new BitmapImage(new Uri(@"icons\email_icon_blue.png", UriKind.Relative));
-                    
+
             }
 
             ViewBtn.IsEnabled = true;
@@ -1136,28 +1129,28 @@ namespace _01electronics_crm
             if (contactTreeScrollViewer.Visibility == Visibility.Visible)
             {
                 TreeViewItem selectedItem = (TreeViewItem)contactTreeView.SelectedItem;
-            
-                if (contactsTreeArray.Exists(x1=> x1.Value == selectedItem))
+
+                if (contactsTreeArray.Exists(x1 => x1.Value == selectedItem))
                 {
                     COMPANY_ORGANISATION_MACROS.COMPANY_AND_CONTACT_LIST_STRUCT currentCompanyAndContactStruct = new COMPANY_ORGANISATION_MACROS.COMPANY_AND_CONTACT_LIST_STRUCT();
                     currentCompanyAndContactStruct = contactsTreeArray.Find(current_item => current_item.Value == selectedItem).Key;
-            
+
                     Contact selectedContact = new Contact();
                     selectedContact.InitializeContactInfo(currentCompanyAndContactStruct.sales_person_id, currentCompanyAndContactStruct.company.address_serial, int.Parse(selectedItem.Tag.ToString()));
-            
+
                     ViewContactWindow viewContactWindow = new ViewContactWindow(ref loggedInUser, ref selectedContact);
                     viewContactWindow.Closed += OnClosedAddCompanyWindow;
                     viewContactWindow.Show();
-            
+
                 }
-                else if(companiesTreeArray.Exists(x1=> x1.Value == selectedItem))
+                else if (companiesTreeArray.Exists(x1 => x1.Value == selectedItem))
                 {
                     //int selectedCompanySerial = companiesTreeArray.Find(current_item => current_item.Value == selectedItem).Key; 
-                    int selectedCompanySerial = int.Parse(selectedItem.Tag.ToString()); 
-            
+                    int selectedCompanySerial = int.Parse(selectedItem.Tag.ToString());
+
                     Company selectedCompany = new Company();
                     selectedCompany.InitializeCompanyInfo(selectedCompanySerial);
-            
+
                     ViewCompanyWindow viewCompanyWindow = new ViewCompanyWindow(ref loggedInUser, ref selectedCompany);
                     viewCompanyWindow.Closed += OnClosedAddCompanyWindow;
                     viewCompanyWindow.Show();
@@ -1173,7 +1166,7 @@ namespace _01electronics_crm
                     StackPanel currentContactStackPanel = (StackPanel)currentGrid.Parent;
 
                     currentCompanyAndContactStruct = contactsStackArray.Find(current_item => current_item.Value == currentContactStackPanel).Key;
-                    
+
                     Contact selectedContact = new Contact();
                     selectedContact.InitializeContactInfo(currentCompanyAndContactStruct.sales_person_id, currentCompanyAndContactStruct.company.address_serial, int.Parse(currentSelectedContactItem.Tag.ToString()));
 
@@ -1181,7 +1174,7 @@ namespace _01electronics_crm
                     viewContactWindow.Closed += OnClosedAddCompanyWindow;
                     viewContactWindow.Show();
                 }
-                else if(currentSelectedCompanyItem != null)
+                else if (currentSelectedCompanyItem != null)
                 {
                     int currentCompanySerial = 0;
 
@@ -1199,7 +1192,7 @@ namespace _01electronics_crm
                 }
             }
 
-           
+
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1230,7 +1223,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        
+
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -1301,7 +1294,7 @@ namespace _01electronics_crm
             Grid currentGrid = (Grid)currentExpander.Parent;
             StackPanel employeeStackPanel = (StackPanel)currentGrid.Parent;
 
-            for(int i = 1; i < employeeStackPanel.Children.Count; i++)
+            for (int i = 1; i < employeeStackPanel.Children.Count; i++)
             {
                 StackPanel companyStackPanel = (StackPanel)employeeStackPanel.Children[i];
                 companyStackPanel.Visibility = Visibility.Visible;

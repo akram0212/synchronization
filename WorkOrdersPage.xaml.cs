@@ -1,19 +1,13 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 using Label = System.Windows.Controls.Label;
 using ListBox = System.Windows.Controls.ListBox;
 using Orientation = System.Windows.Controls.Orientation;
@@ -30,7 +24,7 @@ namespace _01electronics_crm
         private SQLServer sqlDatabase;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
-        
+
         private WorkOrder selectedWorkOrder;
         private int finalYear = Int32.Parse(DateTime.Now.Year.ToString());
 
@@ -360,13 +354,13 @@ namespace _01electronics_crm
                 for (int productNo = 0; productNo < workOrders[i].products.Count(); productNo++)
                     if (workOrders[i].products[productNo].productBrand.brandId == selectedBrand)
                         brandCondition |= true;
-                
+
                 if (searchCheckBox.IsChecked == true && searchTextBox.Text != null)
                 {
                     String tempId = workOrders[i].order_id;
                     String tempCompanyName = workOrders[i].company_name;
                     String tempContactName = workOrders[i].contact_name;
-                    
+
 
                     if (tempId.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0 || tempCompanyName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0 || tempContactName.IndexOf(searchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
@@ -396,7 +390,7 @@ namespace _01electronics_crm
                     continue;
 
                 if (statusCheckBox.IsChecked == true && workOrders[i].order_status_id != selectedStatus)
-                    continue; 
+                    continue;
 
                 workOrdersAfterFiltering.Add(workOrders[i]);
 
@@ -496,9 +490,9 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if(loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     listBox.Items.Add(editButton);
-                
+
                 listBox.Items.Add(viewRFQButton);
 
                 listBox.Items.Add(viewOfferButton);
@@ -899,7 +893,7 @@ namespace _01electronics_crm
                     projectLocationsGrid.ShowGridLines = true;
                     projectLocationsGrid.RowDefinitions.Add(new RowDefinition());
                     projectLocationsGrid.RowDefinitions.Add(new RowDefinition());
-                    projectLocationsGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
+                    projectLocationsGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                     projectLocationsGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
 
@@ -985,7 +979,7 @@ namespace _01electronics_crm
 
                 ordersTotalPrice += workOrders[i].total_price;
 
-                
+
 
                 //currentRow.MouseLeftButtonDown += OnBtnClickWorkorderItem;
 
@@ -1202,7 +1196,7 @@ namespace _01electronics_crm
             searchTextBox.IsEnabled = true;
         }
 
-        
+
         private void OnCheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.IsEnabled = true;
@@ -1273,7 +1267,7 @@ namespace _01electronics_crm
             searchTextBox.Text = null;
         }
 
-        
+
         private void OnUncheckYearCheckBox(object sender, RoutedEventArgs e)
         {
             yearComboBox.SelectedItem = null;
@@ -1547,7 +1541,7 @@ namespace _01electronics_crm
                 {
                     OnBtnClickConfirmOrder();
                 }
-                else if(currentItem.Content.ToString() == "Add Collection")
+                else if (currentItem.Content.ToString() == "Add Collection")
                 {
                     OnBtnClickAddCollection();
                 }

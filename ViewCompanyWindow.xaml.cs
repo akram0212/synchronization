@@ -1,18 +1,12 @@
+using _01electronics_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 using ComboBox = System.Windows.Controls.ComboBox;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
@@ -105,7 +99,7 @@ namespace _01electronics_crm
             }
 
             if (!InitializeBranchesComboBox())
-            return;
+                return;
 
         }
 
@@ -175,13 +169,13 @@ namespace _01electronics_crm
             if (!commonQueries.GetPrimaryWorkFields(ref primaryWorkFields))
                 return false;
 
-            for(int i = 0; i < primaryWorkFields.Count; i++)
+            for (int i = 0; i < primaryWorkFields.Count; i++)
             {
                 primaryWorkFieldComboBox.Items.Add(primaryWorkFields[i].field_name);
             }
 
             return true;
-        } 
+        }
         private bool initializeSecondaryWorkFieldCombo(int primaryFieldID)
         {
             secondaryWorkFields.Clear();
@@ -243,7 +237,7 @@ namespace _01electronics_crm
                     PhoneWrapPanel.Children.Add(telephoneLabel);
                     PhoneWrapPanel.Children.Add(countryCodeCombo);
                     PhoneWrapPanel.Children.Add(telephoneTextBox);
-                    Grid.SetRow(PhoneWrapPanel, gridRowsCounter-1);
+                    Grid.SetRow(PhoneWrapPanel, gridRowsCounter - 1);
                     ContactGrid.Children.Add(PhoneWrapPanel);
                 }
             }
@@ -270,7 +264,7 @@ namespace _01electronics_crm
                     faxLabel.Style = (Style)FindResource("tableItemValue");
                     faxLabel.Content = company.GetCompanyFaxes()[i];
                     faxLabel.Tag = i;
-                    faxLabel.MouseDoubleClick +=  OnDoubleClickLabel;
+                    faxLabel.MouseDoubleClick += OnDoubleClickLabel;
 
                     TextBox FaxTextBox = new TextBox();
                     FaxTextBox.IsEnabled = false;
@@ -281,7 +275,7 @@ namespace _01electronics_crm
 
                     FaxWrapPanel.Children.Add(FaxHeader);
                     FaxWrapPanel.Children.Add(faxLabel);
-                    FaxWrapPanel.Children.Add(FaxTextBox); 
+                    FaxWrapPanel.Children.Add(FaxTextBox);
                     Grid.SetRow(FaxWrapPanel, gridRowsCounter - 1);
                     ContactGrid.Children.Add(FaxWrapPanel);
                 }
@@ -296,7 +290,7 @@ namespace _01electronics_crm
             {
                 saveChangesButton.IsEnabled = true;
 
-                if(previousSelectedItem != null)
+                if (previousSelectedItem != null)
                 {
                     WrapPanel previousWrapPanel = (WrapPanel)previousSelectedItem.Parent;
                     if (previousWrapPanel.Name != "PhoneWrapPanel")
@@ -314,7 +308,7 @@ namespace _01electronics_crm
                     {
                         setCollapsedTextBoxes(previousWrapPanel);
                     }
-                    
+
                 }
                 if (currentWrapPanel.Name != "PhoneWrapPanel")
                 {
@@ -363,7 +357,7 @@ namespace _01electronics_crm
         private void OnDoubleClickLabel(object sender, MouseButtonEventArgs e)
         {
             previousSelectedItem = currentSelectedItem;
-            currentSelectedItem = (Label) sender;
+            currentSelectedItem = (Label)sender;
             setUIEelements();
         }
 
@@ -396,7 +390,7 @@ namespace _01electronics_crm
                 {
                     company.SetCompanyName(companyNameLabel.Content.ToString());
 
-                   if (!company.UpdateCompanyName())
+                    if (!company.UpdateCompanyName())
                         return;
                 }
                 else if (updatedObjects[i].Key == 1 || updatedObjects[i].Key == 2)
@@ -490,7 +484,7 @@ namespace _01electronics_crm
                 {
                     updatedObjects.Add(new KeyValuePair<int, int>(ContactGrid.Children.IndexOf(mWrapPanel), int.Parse(currentComboBox.Tag.ToString())));
                 }
-            }    
+            }
 
         }
         private void setCollapsedTextBoxes(WrapPanel mWrapPanel)
@@ -599,7 +593,7 @@ namespace _01electronics_crm
         }
         private void OnSelChangedBranch(object sender, SelectionChangedEventArgs e)
         {
-            for (int i = ContactGrid.Children.Count -1; i >= 4; i--)
+            for (int i = ContactGrid.Children.Count - 1; i >= 4; i--)
             {
                 ContactGrid.Children.RemoveAt(i);
                 ContactGrid.RowDefinitions.RemoveAt(i);

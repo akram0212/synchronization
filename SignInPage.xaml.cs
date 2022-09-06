@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _01electronics_library;
+using _01electronics_procurement;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Security.Cryptography;
-using _01electronics_library;
 using System.Windows.Forms;
-using _01electronics_procurement;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace _01electronics_crm
 {
@@ -38,7 +28,7 @@ namespace _01electronics_crm
 
             loggedInUser = new Employee();
 
-            
+
             if (_01electronics_crm.Properties.Settings.Default.Email != null)
             {
                 employeeEmailTextBox.Text = _01electronics_crm.Properties.Settings.Default.Email;

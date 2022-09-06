@@ -1,27 +1,18 @@
 
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using _01electronics_library;
 using LiveCharts;
 using LiveCharts.Wpf;
-using _01electronics_library;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace _01electronics_crm
 {
-    
-    
+
+
     public partial class StatisticsPage : Page
     {
 
@@ -63,12 +54,12 @@ namespace _01electronics_crm
             salesAnalytics = new SalesAnalytics(sqlServer, startDatePicker.SelectedDate.Value, endDatePicker.SelectedDate.Value);
             InitializeEmployeesList();
             InitializeComboBoxes();
-            
+
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //INITIALIZE FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         private void InitializeDatePickers()
         {
             endDate = commonFunctions.GetTodaysDate();
@@ -101,7 +92,7 @@ namespace _01electronics_crm
                 COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT tempEmployee = new COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT();
                 tempEmployee.employee_id = loggedInUser.GetEmployeeId();
                 tempEmployee.employee_name = loggedInUser.GetEmployeeName();
-                
+
                 employees.Add(tempEmployee);
             }
 
@@ -141,12 +132,12 @@ namespace _01electronics_crm
             return true;
         }
 
-        private void InitializePieChart(Grid currentGrid ,PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> mRefreshList, bool isModel)
+        private void InitializePieChart(Grid currentGrid, PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> mRefreshList, bool isModel)
         {
             EmptyGrid(currentGrid);
             mRefreshList.Sort((s1, s2) => s2.value.CompareTo(s1.value));
 
-            for(int i = 0; i < mRefreshList.Count; i++)
+            for (int i = 0; i < mRefreshList.Count; i++)
             {
                 currentGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -215,7 +206,7 @@ namespace _01electronics_crm
 
         private void EmptyGrid(Grid currentGrid)
         {
-            for (int i = currentGrid.Children.Count - 1; i >= 0 ; i--)
+            for (int i = currentGrid.Children.Count - 1; i >= 0; i--)
             {
                 Label currentLabel = (Label)currentGrid.Children[i];
                 currentGrid.Children.Remove(currentLabel);
@@ -226,7 +217,7 @@ namespace _01electronics_crm
         }
         internal void RefreshData(PieChart mPieChart, List<SalesAnalyticsStructs.REFRESH_PIECHART_STRUCT> valuesList)
         {
-            for(int i = 0; i < valuesList.Count; i++)
+            for (int i = 0; i < valuesList.Count; i++)
             {
                 mPieChart.Series[i].Values[0] = valuesList[i].value;
             }
@@ -424,7 +415,7 @@ namespace _01electronics_crm
 
         private void OnSelChangedCountAmountFilterCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(countAmountComboBox.SelectedItem != null)
+            if (countAmountComboBox.SelectedItem != null)
                 countAmountComboSelectedIndex = countAmountComboBox.SelectedIndex;
 
             if (initializationComplete == true)
@@ -522,7 +513,7 @@ namespace _01electronics_crm
                     //        SetPieChartsAmount(1);
                     //    }
                     //}
-                    
+
                     countAmountComboBox.SelectedIndex = -1;
                     countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
                 }
@@ -547,7 +538,7 @@ namespace _01electronics_crm
                 else
                     salesAnalytics.SetEmployeesList(employees);
 
-                
+
                 countAmountComboBox.SelectedIndex = -1;
                 countAmountComboBox.SelectedIndex = countAmountComboSelectedIndex;
             }
@@ -576,7 +567,7 @@ namespace _01electronics_crm
             }
         }
 
-        
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //CLICK HANDLERS
@@ -591,7 +582,7 @@ namespace _01electronics_crm
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-       
+
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);

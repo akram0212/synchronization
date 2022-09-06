@@ -1,18 +1,11 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -56,11 +49,11 @@ namespace _01electronics_crm
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            
+
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
-            
+
             quotation = mWorkOffer;
 
             totalPrice = 0;
@@ -185,7 +178,7 @@ namespace _01electronics_crm
             commonQueriesObject.GetCurrencyTypes(ref currencies);
             for (int i = 0; i < currencies.Count; i++)
                 totalPriceCombo.Items.Add(currencies[i].currencyName);
-            
+
         }
         private bool InitializeDeliveryTimeComboBox()
         {
@@ -242,7 +235,7 @@ namespace _01electronics_crm
         {
             totalPrice = 0;
 
-            for(int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
+            for (int i = 1; i <= COMPANY_WORK_MACROS.MAX_OUTGOING_QUOTATION_PRODUCTS; i++)
                 totalPrice += quotation.GetProductPriceValue(i) * quotation.GetOfferProductQuantity(i);
 
             totalPriceTextBox.Text = totalPrice.ToString();
@@ -319,7 +312,7 @@ namespace _01electronics_crm
                 deliveryTimeTextBoxTo.Text = quotation.GetDeliveryTimeMaximum().ToString();
             }
 
-            if(quotation.GetDeliveryTimeUnit() != null)
+            if (quotation.GetDeliveryTimeUnit() != null)
                 deliveryTimeCombo.Text = quotation.GetDeliveryTimeUnit().ToString();
 
             if (quotation.GetOfferDeliveryTimeCondition() != "")
@@ -351,7 +344,7 @@ namespace _01electronics_crm
             }
             else
                 return 0;
-            
+
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -441,7 +434,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(contractTypeComboBox.SelectedIndex != -1)
+            if (contractTypeComboBox.SelectedIndex != -1)
                 quotation.SetOfferContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
 
             if (contractTypeComboBox.SelectedIndex > 1)
@@ -476,17 +469,17 @@ namespace _01electronics_crm
 
         private void OnSelChangedDeliveryPointCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(deliveryPointCombo.SelectedItem != null)
+            if (deliveryPointCombo.SelectedItem != null)
                 quotation.SetDeliveryPoint(deliveryPoints[deliveryPointCombo.SelectedIndex].pointId, deliveryPoints[deliveryPointCombo.SelectedIndex].pointName);
         }
         private void OnSelChangedDeliveryTimeCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(deliveryTimeCombo.SelectedItem != null)
+            if (deliveryTimeCombo.SelectedItem != null)
                 quotation.SetDeliveryTimeUnit(timeUnits[deliveryTimeCombo.SelectedIndex].timeUnitId, timeUnits[deliveryTimeCombo.SelectedIndex].timeUnit);
         }
         private void OnSelChangedDeliveryTimeFromWhenCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(deliveryTimeFromWhenCombo.SelectedItem != null)
+            if (deliveryTimeFromWhenCombo.SelectedItem != null)
                 quotation.SetOfferDeliveryTimeCondition(conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].condition_id, conditionStartDates[deliveryTimeFromWhenCombo.SelectedIndex].condition_type);
         }
         private void OnSelChangedTotalPriceVATCombo(object sender, SelectionChangedEventArgs e)
@@ -547,7 +540,7 @@ namespace _01electronics_crm
             {
                 SetPercentAndValuesInWorkOffer();
             }
-            
+
 
             workOfferAdditionalInfoPage.workOfferBasicInfoPage = workOfferBasicInfoPage;
             workOfferAdditionalInfoPage.workOfferProductsPage = workOfferProductsPage;
@@ -624,11 +617,11 @@ namespace _01electronics_crm
             deliveryTimeTextBoxTo.IsEnabled = true;
             deliveryTimeFromWhenCombo.IsEnabled = true;
 
-            deliveryTimeCombo.SelectedItem= null;
+            deliveryTimeCombo.SelectedItem = null;
             deliveryTimeTextBoxFrom.Text = null;
             deliveryTimeTextBoxTo.Text = null;
             deliveryTimeFromWhenCombo.SelectedItem = null;
-          
+
         }
 
         private void OnUnCheckDeliveryTime(object sender, RoutedEventArgs e)
@@ -641,7 +634,7 @@ namespace _01electronics_crm
             deliveryTimeCombo.SelectedIndex = deliveryTimeCombo.Items.Count - 1;
             deliveryTimeTextBoxFrom.Text = null;
             deliveryTimeTextBoxTo.Text = null;
-            deliveryTimeFromWhenCombo.SelectedIndex = deliveryTimeFromWhenCombo.Items.Count -1;
+            deliveryTimeFromWhenCombo.SelectedIndex = deliveryTimeFromWhenCombo.Items.Count - 1;
         }
 
         private void OnCheckDeliveryPoint(object sender, RoutedEventArgs e)

@@ -1,18 +1,9 @@
 ﻿using _01electronics_library;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -52,7 +43,7 @@ namespace _01electronics_crm
             workOrderProductsPage = mWorkOrderProductsPage;
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            
+
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
@@ -112,7 +103,7 @@ namespace _01electronics_crm
                 CheckBox currentCheckBox = (CheckBox)locationsGrid.Children[i];
                 int locationId = projectLocations[int.Parse(currentCheckBox.Tag.ToString())].location_id;
 
-                
+
                 if (orderProjectLocations.Exists(s1 => s1.location_id == locationId))
                     currentCheckBox.IsChecked = true;
             }
@@ -198,7 +189,7 @@ namespace _01electronics_crm
 
         private void OnCheckCheckAllCheckBox(object sender, RoutedEventArgs e)
         {
-            for(int i = 0; i < locationsGrid.Children.Count; i++)
+            for (int i = 0; i < locationsGrid.Children.Count; i++)
             {
                 CheckBox currentcheckBox = (CheckBox)locationsGrid.Children[i];
                 currentcheckBox.IsChecked = true;
@@ -317,7 +308,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
-            if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
 
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;

@@ -1,18 +1,11 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -163,7 +156,7 @@ namespace _01electronics_crm
         {
             if (countryComboBox.SelectedItem != null)
             {
-                if(!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
+                if (!commonQueries.GetAllCountryStates(countries[countryComboBox.SelectedIndex].country_id, ref states))
                     return;
 
                 stateComboBox.IsEnabled = true;
@@ -205,7 +198,7 @@ namespace _01electronics_crm
                 InitializeDistricts();
                 districtComboBox.IsEnabled = true;
 
-                if(cityComboBox.SelectedItem != "Cairo")
+                if (cityComboBox.SelectedItem != "Cairo")
                     districtComboBox.IsEditable = true;
             }
             else
@@ -274,7 +267,7 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            if(outputString != String.Empty)
+            if (outputString != String.Empty)
             {
                 company.AddCompanyFax(outputString);
                 faxTextBox.Text = company.GetCompanyFaxes()[0];
@@ -448,6 +441,6 @@ namespace _01electronics_crm
             }
         }
 
-        
+
     }
 }

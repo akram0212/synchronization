@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _01electronics_library;
+using System;
+using System.Net.Mail;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Security.Cryptography;
-
 using System.Windows.Forms;
-using System.Net.Mail;
-using _01electronics_library;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace _01electronics_procurement
 {
@@ -33,7 +19,7 @@ namespace _01electronics_procurement
         int SecretCode;
         int SecretCodeConfirmation;
 
-        public ForgetPasswordPage(ref string Email )
+        public ForgetPasswordPage(ref string Email)
         {
             InitializeComponent();
             employeeEmailTextBox.Text = Email;
@@ -52,7 +38,7 @@ namespace _01electronics_procurement
             {
                 SendSecretCode(employeeEmailTextBox.Text);
             }
-            
+
         }
 
         private string SendSecretCode(string emailId)
@@ -71,7 +57,7 @@ namespace _01electronics_procurement
                 userMessage = userMessage + "<br/><b>Login Id:</b> " + emailId;
                 userMessage = userMessage + "<br/><b>Secret Code: </b>" + Code;
 
-                string Body = "Dear " + emailId + ", <br/><br/>Need to reset your password?<br/></br> " + " <br/> Use your secret code! <br/> " + userMessage  + " <br/><br/>If you did not forget your password, you can ignore this email.<br/></br> " + "<br/><br/><b>Thanks<b>" + "<br/><b>01 Electronics Team<b> ";
+                string Body = "Dear " + emailId + ", <br/><br/>Need to reset your password?<br/></br> " + " <br/> Use your secret code! <br/> " + userMessage + " <br/><br/>If you did not forget your password, you can ignore this email.<br/></br> " + "<br/><br/><b>Thanks<b>" + "<br/><b>01 Electronics Team<b> ";
                 mail.Body = Body;
                 mail.IsBodyHtml = true;
 
@@ -101,7 +87,7 @@ namespace _01electronics_procurement
         private void OnButtonClickedConfirm(object sender, RoutedEventArgs e)
         {
             SecretCode = int.Parse(SecretCodeTextBox.Text);
-            if(SecretCode == SecretCodeConfirmation)
+            if (SecretCode == SecretCodeConfirmation)
             {
                 ChangePasswordPage forgetPasswordMail = new ChangePasswordPage(ref employeeEmail);
                 this.NavigationService.Navigate(forgetPasswordMail);
@@ -109,6 +95,6 @@ namespace _01electronics_procurement
             }
         }
 
-      
+
     }
 }

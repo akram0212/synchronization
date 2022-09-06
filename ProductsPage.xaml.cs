@@ -1,23 +1,18 @@
 
+using _01electronics_library;
+using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using _01electronics_library;
-using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {
@@ -91,7 +86,6 @@ namespace _01electronics_crm
                 Grid gridI = new Grid();
 
 
-                gridI.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
@@ -126,6 +120,7 @@ namespace _01electronics_crm
                         expander.VerticalAlignment = VerticalAlignment.Top;
                         expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                         expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+
                         expander.Expanded += new RoutedEventHandler(OnExpandExpander);
                         expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
                         expander.Margin = new Thickness(12);
@@ -133,27 +128,28 @@ namespace _01electronics_crm
                         StackPanel expanderStackPanel = new StackPanel();
                         expanderStackPanel.Orientation = Orientation.Vertical;
 
+
                         BrushConverter brushConverter = new BrushConverter();
 
-                       
+
 
                         Button EditButton = new Button();
                         EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
                         EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                       // EditButton.Click += OnBtnClickEditProduct;
+                        // EditButton.Click += OnBtnClickEditProduct;
                         EditButton.Content = "Edit";
 
-                        
 
 
 
-                        
+
+
                         expanderStackPanel.Children.Add(EditButton);
 
                         expander.Content = expanderStackPanel;
 
                         gridI.Children.Add(expander);
-                        Grid.SetColumn(expander, 2);
+                        //Grid.SetColumn(expander, 1);
 
 
                     }
@@ -223,14 +219,14 @@ namespace _01electronics_crm
 
                 Grid.SetRow(pointsTextBlock, 1);
                 imageGrid.Children.Add(pointsTextBlock);
-                
+
                 gridI.Children.Add(imageGrid);
                 Grid.SetRow(imageGrid, 0);
                 ProductsGrid.Children.Add(gridI);
                 Grid.SetRow(gridI, i);
             }
         }
-      
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,34 +329,26 @@ namespace _01electronics_crm
                 previousExpander.IsExpanded = false;
 
             Grid currentGrid = (Grid)currentExpander.Parent;
-            
-            
-            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[0];
+
             currentExpander.VerticalAlignment = VerticalAlignment.Top;
-            expanderColumn.Width = new GridLength(120);
         }
 
         private void OnCollapseExpander(object sender, RoutedEventArgs e)
         {
             Expander currentExpander = (Expander)sender;
             Grid currentGrid = (Grid)currentExpander.Parent;
-            ColumnDefinition expanderColumn = currentGrid.ColumnDefinitions[0];
             currentExpander.VerticalAlignment = VerticalAlignment.Top;
             currentExpander.Margin = new Thickness(12);
-            expanderColumn.Width = new GridLength(50);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+    
 
-        }
 
-       
 
         private void addBtnMouseEnter(object sender, MouseEventArgs e)
         {
-            
-           // addBtn.Opacity = 1;
+
+         
 
             Storyboard storyboard = new Storyboard();
             TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
@@ -380,7 +368,7 @@ namespace _01electronics_crm
 
         private void addBtnMouseLeave(object sender, MouseEventArgs e)
         {
-            // addBtn.Opacity = 0.5;
+           
 
             Storyboard storyboard = new Storyboard();
             TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
@@ -397,6 +385,17 @@ namespace _01electronics_crm
 
             storyboard.Begin(this);
 
+        }
+
+        private void onBtnAddClick(object sender, MouseButtonEventArgs e)
+        {
+            AddProductWindow addProductWindow = new AddProductWindow();
+            addProductWindow.Show();
+        }
+
+        private void OnClosedAddProductWindow(object sender, EventArgs e)
+        {
+            
         }
     }
 

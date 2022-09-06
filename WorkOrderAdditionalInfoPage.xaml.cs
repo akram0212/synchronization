@@ -4,18 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -179,7 +172,7 @@ namespace _01electronics_crm
             contractTypes.Remove(contractTypes.Find(s1 => s1.contractId == 5));
             for (int i = 0; i < contractTypes.Count; i++)
                 contractTypeComboBox.Items.Add(contractTypes[i].contractName);
-            
+
             return true;
         }
 
@@ -275,11 +268,11 @@ namespace _01electronics_crm
 
         private void ContractTypeComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(contractTypeComboBox.SelectedIndex != -1)
+            if (contractTypeComboBox.SelectedIndex != -1)
             {
                 workOrder.SetOrderContractType(contractTypes[contractTypeComboBox.SelectedIndex].contractId, contractTypes[contractTypeComboBox.SelectedIndex].contractName);
             }
-          
+
         }
 
         private void DrawingDeadlineDateFromWhenComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -527,19 +520,19 @@ namespace _01electronics_crm
                         if (!workOrder.ConfirmOffer())
                             return;
                 }
-                else if(viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {
                     if (!workOrder.EditWorkOrder(workOrderBasicInfoPage.oldWorkOrder))
                         return;
                 }
 
-              viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
+                viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
 
-              WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
-              viewOffer.Show();
+                WorkOrderWindow viewOffer = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, true);
+                viewOffer.Show();
 
-              NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-              currentWindow.Close();
+                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                currentWindow.Close();
 
 
             }
@@ -569,6 +562,6 @@ namespace _01electronics_crm
             ConfigureDrawingSubmissionUIElements();
         }
 
-        
+
     }
 }

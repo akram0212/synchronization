@@ -1,18 +1,10 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -31,13 +23,13 @@ namespace _01electronics_crm
 
         private List<BASIC_STRUCTS.CURRENCY_STRUCT> currencies = new List<BASIC_STRUCTS.CURRENCY_STRUCT>();
         private List<BASIC_STRUCTS.TIMEUNIT_STRUCT> timeUnits = new List<BASIC_STRUCTS.TIMEUNIT_STRUCT>();
-       
+
         private List<BASIC_STRUCTS.VAT_CONDITION_STRUCT> vatConditions = new List<BASIC_STRUCTS.VAT_CONDITION_STRUCT>();
         private List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT> conditionStartDates = new List<BASIC_STRUCTS.CONDITION_START_DATES_STRUCT>();
         private List<BASIC_STRUCTS.SHIPMENT_TYPE_STRUCT> shipmentTypes = new List<BASIC_STRUCTS.SHIPMENT_TYPE_STRUCT>();
         private List<BASIC_STRUCTS.CONTRACT_STRUCT> contractTypes = new List<BASIC_STRUCTS.CONTRACT_STRUCT>();
 
-        private int viewAddCondition; 
+        private int viewAddCondition;
 
         private Decimal totalPrice;
 
@@ -211,7 +203,7 @@ namespace _01electronics_crm
         ///TEXT CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-       
+
         private void OnTextChangedPaymentsFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (IntegrityChecks.CheckInvalidCharacters(paymentsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && paymentsFrequencyTextBox.Text != "")
@@ -310,11 +302,11 @@ namespace _01electronics_crm
         private void OnCheckSparePartsCheckBox(object sender, RoutedEventArgs e)
         {
             maintOffers.SetMaintOfferSparePartsCondition(true);
-        } 
+        }
         private void OnCheckVatCheckBox(object sender, RoutedEventArgs e)
         {
             maintOffers.SetMaintOfferVATCondition(true);
-        } 
+        }
         private void OnCheckBatteriesCheckBox(object sender, RoutedEventArgs e)
         {
             maintOffers.SetMaintOfferBatteriesCondition(true);

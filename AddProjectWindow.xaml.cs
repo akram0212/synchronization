@@ -2,17 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -168,7 +161,7 @@ namespace _01electronics_crm
         {
             if (!CheckProjectNameEditBox())
                 return;
-            
+
             if (!CheckCountryComboBox())
                 return;
             if (!CheckStateComboBox())
@@ -184,19 +177,19 @@ namespace _01electronics_crm
             if (!InsertIntoProjectLocations())
                 return;
 
-            
+
             this.Close();
 
         }
 
-        
+
         private bool CheckProjectNameEditBox()
         {
             //String inputString = ProjecNameTextBox.Text;
             String outputString = ProjecNameTextBox.Text;
 
             //if (!integrityChecker.CheckProjectNameEditBox(inputString, ref outputString, false))
-              //  return false;
+            //  return false;
 
             ProjecNameTextBox.Text = outputString;
             project.project_name = outputString;
@@ -307,7 +300,7 @@ namespace _01electronics_crm
         }
         private void OnClickCityImage(object sender, MouseButtonEventArgs e)
         {
-            if(cityComboBox.Text.ToString() != "")
+            if (cityComboBox.Text.ToString() != "")
             {
                 if (!cities.Exists(cityItem => cityItem.city_name == cityComboBox.Text.ToString()))
                 {
@@ -315,7 +308,7 @@ namespace _01electronics_crm
 
                     if (stateComboBox.SelectedItem == null || !commonQueries.GetMaxCityId(states[stateComboBox.SelectedIndex].state_id, ref cityID))
                         return;
-                    
+
                     if (!commonQueries.InsertNewCity(states[stateComboBox.SelectedIndex].state_id, cityID, cityComboBox.Text.ToString()))
                         return;
 

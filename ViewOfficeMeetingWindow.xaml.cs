@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _01electronics_library;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -37,7 +26,7 @@ namespace _01electronics_crm
 
             MeetingPurposeTextBox.Text = officeMeeting.GetMeetingPurpose().ToString();
 
-            if(officeMeeting.GetMeetingNotes().ToString() != "NULL")
+            if (officeMeeting.GetMeetingNotes().ToString() != "NULL")
                 additionalDescriptionTextBox.Text = officeMeeting.GetMeetingNotes().ToString();
 
             approvalRejectionLabel.Content = selectedMeeting.GetMeetingStatus();

@@ -1,19 +1,14 @@
-﻿using System;
+﻿using _01electronics_library;
+using _01electronics_windows_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
-using _01electronics_windows_library;
 
 
 namespace _01electronics_crm
@@ -218,7 +213,7 @@ namespace _01electronics_crm
             Product selectedProduct = new Product();
             selectedProduct.SetCategoryID(int.Parse(tmp));
 
-           ProductsPage productsPage = new ProductsPage(ref loggedInUser, ref selectedProduct);
+            ProductsPage productsPage = new ProductsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(productsPage);
         }
 

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using _01electronics_library;
+using _01electronics_windows_library;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
-using _01electronics_windows_library;
 
 namespace _01electronics_crm
 {
@@ -40,7 +30,7 @@ namespace _01electronics_crm
 
             InitializeEmployeeDashboard();
         }
-        
+
         private void InitializeEmployeeDashboard()
         {
             InitializeEmployeePhoto();
@@ -93,9 +83,9 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                   // System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-           
+
             }
 
         }
@@ -149,7 +139,7 @@ namespace _01electronics_crm
             OfficeMeetingsPage officeMeetingsPage = new OfficeMeetingsPage(ref loggedInUser);
             this.NavigationService.Navigate(officeMeetingsPage);
         }
-        
+
         private void OnButtonClickedMyProfile(object sender, MouseButtonEventArgs e)
         {
 

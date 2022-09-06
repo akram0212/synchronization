@@ -2,17 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace _01electronics_crm
 {
@@ -52,7 +44,7 @@ namespace _01electronics_crm
             DayOfWeek firstDay = DayOfWeek.Sunday;
             DayOfWeek lastDay = DayOfWeek.Saturday;
 
-            minDate = today - firstDay + 1 ;
+            minDate = today - firstDay + 1;
             maxDate = lastDay - today + 1;
 
             CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-minDate));
@@ -67,7 +59,7 @@ namespace _01electronics_crm
 
             branches = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
             contacts = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
-            
+
             visitPurposes = new List<COMPANY_WORK_MACROS.VISIT_PURPOSE_STRUCT>();
             visitResults = new List<COMPANY_WORK_MACROS.VISIT_RESULT_STRUCT>();
 
@@ -100,14 +92,14 @@ namespace _01electronics_crm
 
         private void InitializeCompanyNameComboBox()
         {
-            for(int i = 0; i < companies.Count(); i++)
+            for (int i = 0; i < companies.Count(); i++)
                 companyNameComboBox.Items.Add(companies[i].company_name);
 
         }
         private void InitializeCompanyBranchesComboBox()
         {
             companyBranchComboBox.Items.Clear();
-            
+
             for (int i = 0; i < branches.Count; i++)
                 companyBranchComboBox.Items.Add(branches[i].district + ", " + branches[i].city + ", " + branches[i].state_governorate + ", " + branches[i].country);
 
@@ -119,10 +111,10 @@ namespace _01electronics_crm
         private void InitializeCompanyContactsComboBox()
         {
             contactComboBox.Items.Clear();
-            
-            if(companyBranchComboBox.SelectedItem != null)
+
+            if (companyBranchComboBox.SelectedItem != null)
                 commonQueries.GetCompanyContacts(loggedInUser.GetEmployeeId(), branches[companyBranchComboBox.SelectedIndex].address_serial, ref contacts);
-            
+
             for (int i = 0; i < contacts.Count; i++)
                 contactComboBox.Items.Add(contacts[i].contact_name);
 
@@ -149,7 +141,7 @@ namespace _01electronics_crm
 
             return false;
 
-        } 
+        }
         private bool InitializeVisitResults()
         {
             visitResultComboBox.Items.Clear();
@@ -163,8 +155,8 @@ namespace _01electronics_crm
 
             return true;
         }
-        
-        
+
+
         private bool CheckCompanyNameComboBox()
         {
             if (companyNameComboBox.SelectedItem == null)
@@ -174,7 +166,7 @@ namespace _01electronics_crm
             }
 
             return true;
-        } 
+        }
         private bool CheckCompanyBranchComboBox()
         {
             if (companyBranchComboBox.SelectedItem == null)
@@ -183,8 +175,8 @@ namespace _01electronics_crm
                 return false;
             }
 
-           return true;
-        } 
+            return true;
+        }
         private bool CheckContactNameComboBox()
         {
             if (contactComboBox.SelectedItem == null)
@@ -194,7 +186,7 @@ namespace _01electronics_crm
             }
 
             return true;
-        } 
+        }
         private bool CheckVisitDatePicker()
         {
             if (visitDatePicker.SelectedDate == null)
@@ -206,7 +198,7 @@ namespace _01electronics_crm
             clientVisit.SetVisitDate(DateTime.Parse(visitDatePicker.SelectedDate.ToString()));
 
             return true;
-        } 
+        }
         private bool CheckVisitPurposeComboBox()
         {
             if (visitPurposeComboBox.SelectedItem == null)
@@ -216,7 +208,7 @@ namespace _01electronics_crm
             }
 
             return true;
-        }  
+        }
         private bool CheckVisitResultComboBox()
         {
             if (visitResultComboBox.SelectedItem == null)
@@ -270,7 +262,7 @@ namespace _01electronics_crm
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
             if (!CheckCompanyNameComboBox())
-                return; 
+                return;
             if (!CheckCompanyBranchComboBox())
                 return;
             if (!CheckContactNameComboBox())
@@ -278,7 +270,7 @@ namespace _01electronics_crm
             if (!CheckVisitDatePicker())
                 return;
             if (!CheckVisitPurposeComboBox())
-                return; 
+                return;
             if (!CheckVisitResultComboBox())
                 return;
 
@@ -286,21 +278,21 @@ namespace _01electronics_crm
             clientVisit.InitializeSalesPersonInfo(loggedInUser.GetEmployeeId());
             clientVisit.InitializeBranchInfo(branches[companyBranchComboBox.SelectedIndex].address_serial);
             clientVisit.InitializeContactInfo(contacts[contactComboBox.SelectedIndex].contact_id);
-            
+
             //THEN SET OTHER PARAMETERS
             clientVisit.SetVisitDate(Convert.ToDateTime(visitDatePicker.Text));
 
             clientVisit.SetVisitPurpose(visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_id, visitPurposes[visitPurposeComboBox.SelectedIndex].purpose_name);
             clientVisit.SetVisitResult(visitResults[visitResultComboBox.SelectedIndex].result_id, visitResults[visitResultComboBox.SelectedIndex].result_name);
-            
+
 
             clientVisit.SetVisitNotes(additionalDescriptionTextBox.Text.ToString());
-            
+
             //LASTLY, YOU SHALL CALL THIS FUNCTION, IT GENERATES A NEW SERIAL, ID AND ANY OTHER PARAMETERS
             //AND INSERTS DATA INTO DATABASE
             clientVisit.IssueNewVisit();
 
-            
+
             this.Close();
         }
     }

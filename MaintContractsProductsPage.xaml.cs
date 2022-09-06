@@ -2,17 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -464,7 +458,7 @@ namespace _01electronics_crm
                 ComboBox CurrentCategoryComboBox = (ComboBox)currentCategoryWrapPanel.Children[1];
                 CurrentCategoryComboBox.SelectedItem = maintContracts.GetMaintContractProductCategory(i + 1);
 
-                
+
             }
         }
         private void SetTypeComboBoxes()
@@ -841,7 +835,7 @@ namespace _01electronics_crm
             if (currentModelComboBox.SelectedItem != null)
             {
                 if (!commonQueriesObject.GetCompanyProducts(ref products, categories[currentCategoryComboBox.SelectedIndex].categoryId))
-                   return;
+                    return;
                 InitializeBrandCombo(products[currentTypeComboBox.SelectedIndex].typeId);
 
                 if (!commonQueriesObject.GetCompanyModels(products[currentTypeComboBox.SelectedIndex], brands[currentBrandComboBox.SelectedIndex], ref models))
@@ -876,7 +870,7 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
-                    
+
                     maintContractsPaymentAndDeliveryPage.SetTotalPriceTextBox();
                     maintContracts.SetMaintContractTotalValues();
                 }
@@ -888,7 +882,7 @@ namespace _01electronics_crm
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
-                    
+
                 }
                 currentQuantityTextBox.Text = null;
 

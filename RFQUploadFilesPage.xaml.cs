@@ -1,30 +1,23 @@
-﻿using System;
+﻿using _01electronics_library;
+using _01electronics_windows_library;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.ComponentModel;
-using _01electronics_library;
-using System.IO;
-using _01electronics_windows_library;
-using System.Windows.Forms;
-using ProgressBar = System.Windows.Controls.ProgressBar;
-using DragEventArgs = System.Windows.DragEventArgs;
-using Label = System.Windows.Controls.Label;
 using Button = System.Windows.Controls.Button;
 using DataFormats = System.Windows.DataFormats;
 using DragDropEffects = System.Windows.DragDropEffects;
+using DragEventArgs = System.Windows.DragEventArgs;
+using Label = System.Windows.Controls.Label;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using ProgressBar = System.Windows.Controls.ProgressBar;
 
 namespace _01electronics_crm
 {
@@ -40,7 +33,7 @@ namespace _01electronics_crm
 
         protected IntegrityChecks integrityChecks;
         protected FTPServer ftpObject;
-        
+
         protected int counter;
         protected int viewAddCondition;
 
@@ -89,7 +82,7 @@ namespace _01electronics_crm
             ftpFiles = new List<string>();
 
             InitializeComponent();
-            
+
             counter = 0;
 
             progressBar.Style = (Style)FindResource("ProgressBarStyle");
@@ -130,7 +123,7 @@ namespace _01electronics_crm
                     InsertErrorRetryButton();
                     return;
                 }
-                    
+
             }
 
             if (ftpFiles.Count != 0)
@@ -338,7 +331,7 @@ namespace _01electronics_crm
 
             RowDefinition row1 = new RowDefinition();
             RowDefinition row2 = new RowDefinition();
-            
+
             grid.RowDefinitions.Add(row1);
             grid.RowDefinitions.Add(row2);
 
@@ -464,27 +457,27 @@ namespace _01electronics_crm
 
         //private void OnClickCancelButton(object sender, RoutedEventArgs e)
         //{
-            //    if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
-            //    {
-            //        if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
-            //            ftpObject.DeleteFtpDirectory(serverFolderPath);
-            //
-            //        else
-            //        {
-            //            for (int i = 0; i < ftpFiles.Count(); i++)
-            //            {
-            //                ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i]);
-            //            }
-            //
-            //            ftpObject.DeleteFtpDirectory(serverFolderPath);
-            //        }
-            //    }
-            //
-            //    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-            //    currentWindow.Close();
-            //
-            //
-            
+        //    if (viewAddCondition != COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+        //    {
+        //        if (ftpFiles.Count() == 0 && wrapPanel.Children.Count == 0)
+        //            ftpObject.DeleteFtpDirectory(serverFolderPath);
+        //
+        //        else
+        //        {
+        //            for (int i = 0; i < ftpFiles.Count(); i++)
+        //            {
+        //                ftpObject.DeleteFtpFile(serverFolderPath + ftpFiles[i]);
+        //            }
+        //
+        //            ftpObject.DeleteFtpDirectory(serverFolderPath);
+        //        }
+        //    }
+        //
+        //    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+        //    currentWindow.Close();
+        //
+        //
+
         //}
 
         private void OnButtonClickOk(object sender, RoutedEventArgs e)
@@ -656,7 +649,7 @@ namespace _01electronics_crm
 
         private void OnClickRetryButton(object sender, RoutedEventArgs e)
         {
-            
+
             FTPServer fTPServer = new FTPServer();
 
             if (!fTPServer.CheckExistingFolder(serverFolderPath))
@@ -881,7 +874,7 @@ namespace _01electronics_crm
         {
             rfqAdditionalInfoPage.rfqBasicInfoPage = rfqBasicInfoPage;
             rfqAdditionalInfoPage.rfqProductsPage = rfqProductsPage;
-            rfqAdditionalInfoPage.rfqUploadFilesPage= this;
+            rfqAdditionalInfoPage.rfqUploadFilesPage = this;
 
             NavigationService.Navigate(rfqAdditionalInfoPage);
         }

@@ -1,18 +1,11 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -24,12 +17,12 @@ namespace _01electronics_crm
         Employee loggedInUser;
         RFQ rfq;
 
-        
+
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
 
-        
+
         private List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT> companiesList = new List<COMPANY_ORGANISATION_MACROS.COMPANY_MIN_LIST_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT> branchInfo = new List<COMPANY_ORGANISATION_MACROS.BRANCH_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT> contactInfo = new List<COMPANY_ORGANISATION_MACROS.CONTACT_BASIC_STRUCT>();
@@ -88,10 +81,10 @@ namespace _01electronics_crm
                 SetProjectLabel();
 
                 cancelButton.IsEnabled = false;
-            }  
+            }
             else
             {
-              
+
                 ConfigureAddRFQUIElements();
                 InitializeSalesPersonCombo();
                 InitializeProjectCombo();
@@ -161,11 +154,11 @@ namespace _01electronics_crm
 
         ///////////////INITIALIZE FUNCTIONS///////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         private void InitializeCompanyInfo()
         {
             int companySerial = rfq.GetCompanySerial();
-            
+
 
             if (!commonQueriesObject.GetCompanyAddresses(companySerial, ref branchInfo))
                 return;
@@ -178,7 +171,7 @@ namespace _01electronics_crm
 
             return true;
         }
-        
+
 
         private bool InitializeSalesPersonCombo()
         {
@@ -202,7 +195,7 @@ namespace _01electronics_crm
             for (int i = 0; i < salesEmployees.Count(); i++)
                 salesPersonCombo.Items.Add(salesEmployees[i].employee_name);
 
-            
+
             return true;
         }
 
@@ -210,7 +203,7 @@ namespace _01electronics_crm
         private bool InitializeCompanyNameCombo()
         {
             if (!commonQueriesObject.GetEmployeeCompanies(rfq.GetSalesPersonId(), ref companiesList))
-                    return false;
+                return false;
 
             for (int i = 0; i < companiesList.Count(); i++)
                 companyNameCombo.Items.Add(companiesList[i].company_name);
@@ -281,7 +274,7 @@ namespace _01electronics_crm
         }
         private void SetContactPhoneCombo()
         {
-            if(rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
+            if (rfq.GetRFQContact().GetNumberOfSavedContactPhones() != 0)
                 contactPersonPhoneCombo.SelectedItem = rfq.GetRFQContact().GetContactPhones()[0].ToString();
         }
 
@@ -307,12 +300,12 @@ namespace _01electronics_crm
 
         private void SetCompanyAddressLabel()
         {
-            
+
             string address;
-            
+
             address = rfq.GetRFQCompany().GetCompanyDistrict() + ", " + rfq.GetRFQCompany().GetCompanyCity() + ", " + rfq.GetRFQCompany().GetCompanyState() + ", " + rfq.GetRFQCompany().GetCompanyCountry();
             companyAddressLabel.Content += address;
-            
+
         }
 
         private void SetContactPersonLabel()
@@ -321,14 +314,14 @@ namespace _01electronics_crm
 
 
             //for (int i = 0; i < contactInfo.Count(); i++)
-              //  contactPersonNameLabel.Content += contactInfo[i].contact_name + "\n";
+            //  contactPersonNameLabel.Content += contactInfo[i].contact_name + "\n";
         }
 
         private void SetContactNumberLabel()
         {
             //for (int i = 0; i < contactPhones.Count(); i++)
-              //contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
-              if(rfq.GetRFQContact().GetContactPhones()[0] != null)
+            //contactPersonPhoneLabel.Content += contactPhones[i] + "\n";
+            if (rfq.GetRFQContact().GetContactPhones()[0] != null)
                 contactPersonPhoneLabel.Content = rfq.GetRFQContact().GetContactPhones()[0].ToString();
         }
 
@@ -349,10 +342,10 @@ namespace _01electronics_crm
         }
         private void OnSelChangedAssigneeCombo(object sender, SelectionChangedEventArgs e)
         {
-            if(assigneeCombo.SelectedItem != null)
+            if (assigneeCombo.SelectedItem != null)
                 rfq.InitializeAssignedEngineerInfo(preSalesEmployees[assigneeCombo.SelectedIndex].employee_id);
         }
-                     
+
         private void OnSelChangedCompanyNameCombo(object sender, SelectionChangedEventArgs e)
         {
             companyAddressCombo.Items.Clear();
@@ -375,10 +368,10 @@ namespace _01electronics_crm
                 }
 
                 companyAddressCombo.SelectedIndex = 0;
-                
+
                 rfq.InitializeCompanyInfo(companySerial);
             }
-            
+
         }
         private void OnSelChangedCompanyAddressCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -387,7 +380,7 @@ namespace _01electronics_crm
             if (companyAddressCombo.SelectedItem != null)
             {
                 contactPersonCombo.IsEnabled = true;
-                
+
                 addressSerial = branchInfo[companyAddressCombo.SelectedIndex].address_serial;
 
                 if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_ADD_CONDITION)
@@ -403,10 +396,10 @@ namespace _01electronics_crm
 
                 for (int i = 0; i < contactInfo.Count(); i++)
                     contactPersonCombo.Items.Add(contactInfo[i].contact_name);
-                
+
                 rfq.InitializeBranchInfo(addressSerial);
 
-                
+
                 contactPersonCombo.SelectedIndex = 0;
             }
         }
@@ -426,9 +419,9 @@ namespace _01electronics_crm
                 contactPhones[i] = rfq.GetRFQContact().GetContactPhones()[i];
             }
 
-            
+
             contactPersonPhoneCombo.SelectedIndex = 0;
-            
+
         }
         private void OnSelChangedContactPersonPhoneCombo(object sender, SelectionChangedEventArgs e)
         {
@@ -447,8 +440,8 @@ namespace _01electronics_crm
         {
             rfqProductsPage.rfqBasicInfoPage = this;
             rfqProductsPage.rfqAdditionalInfoPage = rfqAdditionalInfoPage;
-            
-            if(viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
                 rfqProductsPage.rfqUploadFilesPage = rfqUploadFilesPage;
 
             NavigationService.Navigate(rfqProductsPage);
@@ -494,6 +487,6 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
-        
+
     }
 }

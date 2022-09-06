@@ -1,18 +1,12 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -255,7 +249,7 @@ namespace _01electronics_crm
                 currentStackPanel.Children.Add(lineLabel);
 
                 Grid newGrid = new Grid();
-                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50)});
+                newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 newGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
                 newGrid.MouseLeftButtonDown += OnBtnClickCallItem;
@@ -391,7 +385,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnBtnClickCallItem(object sender, RoutedEventArgs e)
         {
-            
+
             previousSelectedCallItem = currentSelectedCallItem;
             currentSelectedCallItem = (Grid)sender;
             BrushConverter brush = new BrushConverter();
@@ -412,7 +406,7 @@ namespace _01electronics_crm
 
             currentSelectedCallItem.Background = (Brush)brush.ConvertFrom("#105A97");
 
-            
+
             Image clientCallIcon = (Image)currentSelectedCallItem.Children[0];
             clientCallIcon.Source = new BitmapImage(new Uri(@"icons\client_call_icon_blue.png", UriKind.Relative));
             ResizeImage(ref clientCallIcon, 40, 40);
@@ -422,7 +416,7 @@ namespace _01electronics_crm
             foreach (Label childLabel in currentSelectedStackPanel.Children)
                 childLabel.Foreground = (Brush)brush.ConvertFrom("#FFFFFF");
 
-            if(currentSelectedCallItem != null)
+            if (currentSelectedCallItem != null)
             {
                 viewButton.IsEnabled = true;
 

@@ -1,17 +1,9 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
@@ -25,7 +17,7 @@ namespace _01electronics_crm
 
         List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployees = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> failureReasons = new List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT>();
-        
+
 
         int condition;
 
@@ -57,7 +49,7 @@ namespace _01electronics_crm
             oldAssignee = rfq.GetAssigneeName();
             PreSalesEngineersComboBox.SelectedItem = oldAssignee;
 
-            
+
         }
 
         public ChangeAssigneeWindow(ref Quotation mWorkOffer, List<COMPANY_WORK_MACROS.FAILURE_REASON_STRUCT> mFailureReasons)
@@ -67,7 +59,7 @@ namespace _01electronics_crm
             condition = 1;
             quotation = mWorkOffer;
             failureReasons = mFailureReasons;
-            
+
             commonQueries = new CommonQueries();
             sqlServer = new SQLServer();
 
@@ -117,16 +109,16 @@ namespace _01electronics_crm
         }
         private void OnSelChangedChangeAssignee(object sender, SelectionChangedEventArgs e)
         {
-           
+
         }
 
         private void OnBtnClickSaveChanges(object sender, RoutedEventArgs e)
         {
-            if(PreSalesEngineersComboBox.Text != oldAssignee && condition == 0)
+            if (PreSalesEngineersComboBox.Text != oldAssignee && condition == 0)
             {
                 GetNewUpdateSerial();
-                    
-                
+
+
                 if (!InsertIntoUpdatedRFQs())
                     return;
 
@@ -134,15 +126,15 @@ namespace _01electronics_crm
                     return;
             }
 
-            else if(condition == 1)
+            else if (condition == 1)
             {
                 quotation.RejectOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
-            else if(condition == 2)
+            else if (condition == 2)
             {
                 rfq.RejectRFQ(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }
-            else if(condition == 3)
+            else if (condition == 3)
             {
                 maintOffer.RejectMaintOffer(failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_id, failureReasons[PreSalesEngineersComboBox.SelectedIndex].reason_name);
             }

@@ -1,19 +1,12 @@
-﻿using _01electronics_crm;
-using _01electronics_library;
+﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -22,7 +15,7 @@ namespace _01electronics_crm
     /// </summary>
     public partial class OfficeMeetingsPage : Page
     {
-       private Employee loggedInUser;
+        private Employee loggedInUser;
 
         protected CommonQueries commonQueries;
         protected CommonFunctions commonFunctions;
@@ -234,7 +227,7 @@ namespace _01electronics_crm
                         approvalRejectorLabel.Content = "Approved by " + officeMeetings[i].meeting_approvals_rejections[j].approver.employee_name;
                     else
                         approvalRejectorLabel.Content = "Rejected by " + officeMeetings[i].meeting_approvals_rejections[j].approver.employee_name;
-                    
+
                     approvalRejectorLabel.Style = (Style)FindResource("stackPanelItemBody");
 
                     currentStackPanel.Children.Add(approvalRejectorLabel);

@@ -1,30 +1,23 @@
-﻿using System;
+﻿using _01electronics_library;
+using _01electronics_windows_library;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.ComponentModel;
-using _01electronics_library;
-using System.IO;
-using _01electronics_windows_library;
-using System.Windows.Forms;
-using ProgressBar = System.Windows.Controls.ProgressBar;
 using Button = System.Windows.Controls.Button;
-using Label = System.Windows.Controls.Label;
-using DragEventArgs = System.Windows.DragEventArgs;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using DataFormats = System.Windows.DataFormats;
 using DragDropEffects = System.Windows.DragDropEffects;
+using DragEventArgs = System.Windows.DragEventArgs;
+using Label = System.Windows.Controls.Label;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using ProgressBar = System.Windows.Controls.ProgressBar;
 
 namespace _01electronics_crm
 {
@@ -486,7 +479,7 @@ namespace _01electronics_crm
 
         private void OnButtonClickAutomateMaintOffer(object sender, RoutedEventArgs e)
         {
-          //  wordAutomation.AutomatemaintOffers(maintOffers);
+            //  wordAutomation.AutomatemaintOffers(maintOffers);
         }
 
 

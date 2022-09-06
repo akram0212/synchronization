@@ -2,17 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _01electronics_crm
 {
@@ -197,10 +191,10 @@ namespace _01electronics_crm
                 WrapPanel currentTypeWrapPanel = (WrapPanel)currentProductGrid.Children[2];
                 ComboBox CurrentTypeComboBox = (ComboBox)currentTypeWrapPanel.Children[1];
 
-               // if (maintOffer.GetRFQProductTypeId(i + 1) == 0)
-               //     continue;
-               // else
-               //     CurrentTypeComboBox.SelectedItem = maintOffer.GetRFQProductType(i + 1);
+                // if (maintOffer.GetRFQProductTypeId(i + 1) == 0)
+                //     continue;
+                // else
+                //     CurrentTypeComboBox.SelectedItem = maintOffer.GetRFQProductType(i + 1);
             }
         }
         public void SetBrandComboBoxes()
@@ -249,9 +243,9 @@ namespace _01electronics_crm
                 WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[4];
                 ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
                 //if (maintOffer.GetRFQProductModelId(i + 1) == 0)
-                  //  continue;
+                //  continue;
                 //else
-                  //  currentModelComboBox.SelectedItem = maintOffer.GetRFQProductModel(i + 1);
+                //  currentModelComboBox.SelectedItem = maintOffer.GetRFQProductModel(i + 1);
             }
         }
         public void SetCategoryLabels()
@@ -317,7 +311,7 @@ namespace _01electronics_crm
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                 WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                 TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-              //  if (maintOffer.GetRFQProductQuantity(i + 1) != 0)
+                //  if (maintOffer.GetRFQProductQuantity(i + 1) != 0)
                 //    currentQuantityTextBoxValue.Text = maintOffer.GetRFQProductQuantity(i + 1).ToString();
             }
         }
