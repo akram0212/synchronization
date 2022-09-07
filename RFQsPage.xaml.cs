@@ -25,6 +25,7 @@ namespace _01electronics_crm
         Quotation resolveWorkOffer;
 
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> salesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
+        private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> businessDevelopmentEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> preSalesEmployeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT> rfqsList = new List<COMPANY_WORK_MACROS.RFQ_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT> stackPanelItems = new List<COMPANY_WORK_MACROS.RFQ_BASIC_STRUCT>();
@@ -65,8 +66,14 @@ namespace _01electronics_crm
 
             selectedRFQ = new RFQ();
 
-            if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID 
-                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            {
+                addButton.IsEnabled = false;
+            }
+
+            //if(loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID 
+            //    && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
+            if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
             {
                 if (!GetRFQs())
                     return;
@@ -127,6 +134,14 @@ namespace _01electronics_crm
         {
             if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID, ref salesEmployeesList))
                 return false;
+
+            if (!commonQueriesObject.GetTeamEmployees(COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID, ref businessDevelopmentEmployeesList))
+                return false;
+
+            for(int i = 0; i < businessDevelopmentEmployeesList.Count(); i++)
+            {
+                salesEmployeesList.Add(businessDevelopmentEmployeesList[i]);
+            }
 
             if (loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)
             {
@@ -294,7 +309,7 @@ namespace _01electronics_crm
 
                 DisableAddButton();
             }
-            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID)
+            else if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.SALES_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID)
             {
                 salesCheckBox.IsChecked = true;
                 salesCheckBox.IsEnabled = false;
