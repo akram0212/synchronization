@@ -16,6 +16,7 @@ using DataFormats = System.Windows.DataFormats;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
 using Label = System.Windows.Controls.Label;
+using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using ProgressBar = System.Windows.Controls.ProgressBar;
 
@@ -199,7 +200,7 @@ namespace _01electronics_crm
         {
             Grid UploadIconGrid = new Grid();
             UploadIconGrid.Margin = new Thickness(24);
-            UploadIconGrid.Width = 250;
+            //UploadIconGrid.Width = 250;
             UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
 
             RowDefinition row1 = new RowDefinition();
@@ -215,9 +216,9 @@ namespace _01electronics_crm
 
             Image icon = new Image();
 
-            LoadIcon(ref icon, localFolderPath);
+            LoadIcon(ref icon, serverFolderPath);
 
-            resizeImage(ref icon, 50, 50);
+            resizeImage(ref icon, 1800  , 600);
             UploadIconGrid.Children.Add(icon);
             Grid.SetRow(icon, 0);
 
@@ -252,29 +253,67 @@ namespace _01electronics_crm
         }
         private void LoadIcon(ref Image icon, string ftpFiles)
         {
-            if (ftpFiles.Contains(".pdf"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\pdf_icon.jpg", UriKind.Relative)) };
 
-            else if (ftpFiles.Contains(".doc") || ftpFiles.Contains(".docs") || ftpFiles.Contains(".docx"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\word_icon.jpg", UriKind.Relative)) };
+            Image productImage = new Image();
 
-            else if (ftpFiles.Contains(".txt") || ftpFiles.Contains(".rtf"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\text_icon.jpg", UriKind.Relative)) };
+            try
+            {
 
-            else if (ftpFiles.Contains(".xls") || ftpFiles.Contains(".xlsx") || ftpFiles.Contains(".csv"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\excel_icon.jpg", UriKind.Relative)) };
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
+                productImage.Source = src;
+                productImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
 
-            else if (ftpFiles.Contains(".jpg") || ftpFiles.Contains(".png") || ftpFiles.Contains(".raw") || ftpFiles.Contains(".jpeg") || ftpFiles.Contains(".gif"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\image_icon.jpg", UriKind.Relative)) };
+                Grid.SetRow(productImage, 0);
 
-            else if (ftpFiles.Contains(".rar") || ftpFiles.Contains(".zip") || ftpFiles.Contains(".gzip"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\winrar_icon.jpg", UriKind.Relative)) };
 
-            else if (ftpFiles.Contains(".ppt") || ftpFiles.Contains(".pptx") || ftpFiles.Contains(".pptm"))
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\powerpoint_icon.jpg", UriKind.Relative)) };
 
-            else if (ftpFiles != ".." || ftpFiles != ".")
-                icon = new Image { Source = new BitmapImage(new Uri(@"Icons\unknown_icon.jpg", UriKind.Relative)) };
+                BrushConverter brushConverter = new BrushConverter();
+
+
+
+                Button EditButton = new Button();
+                EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                // EditButton.Click += OnBtnClickEditProduct;
+                EditButton.Content = "Edit";
+
+            }
+            catch
+            {
+                product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+                if (product.DownloadPhotoFromServer())
+                {
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    productImage.Source = src;
+                    productImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                    productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                    
+                    Grid.SetRow(productImage, 0);
+                }
+            }
+
+            icon = productImage;
+
+            //if (productImage.Width!=1800 || productImage.Height!= 600)
+            //{
+            //    MessageBox.Show("Picture Should be 1800px X 600px ", "Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error);
+                
+            //}
+            //else
+            //{
+            //    icon = productImage;
+
+            //}
+
         }
         private void CheckIfFileAlreadyUploaded(string fileName)
         {
@@ -464,7 +503,7 @@ namespace _01electronics_crm
                     InsertIconGrid("failed", localFolderPath);
                 }
 
-                InsertAddFilesIcon();
+                
             }
 
             else
@@ -499,39 +538,12 @@ namespace _01electronics_crm
         ///INSERT FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void InsertAddFilesIcon()
-        {
-            Grid addFilesGrid = new Grid();
-            addFilesGrid.Margin = new Thickness(24);
-            addFilesGrid.Width = 250;
-
-            RowDefinition addFilesRow1 = new RowDefinition();
-            RowDefinition addFilesRow2 = new RowDefinition();
-            addFilesGrid.RowDefinitions.Add(addFilesRow1);
-            addFilesGrid.RowDefinitions.Add(addFilesRow2);
-
-            addFilesGrid.MouseLeftButtonDown += OnClickAddFilesGrid;
-
-            Image addFilesImage = new Image();
-
-            addFilesImage = new Image { Source = new BitmapImage(new Uri(@"Icons\addfiles_icon.jpg", UriKind.Relative)) };
-            resizeImage(ref addFilesImage, 50, 50);
-            addFilesGrid.Children.Add(addFilesImage);
-            Grid.SetRow(addFilesImage, 0);
-
-            Label addFilesLabel = new Label();
-            addFilesLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            addFilesLabel.Content = "Double-Click to ADD FILES";
-            addFilesGrid.Children.Add(addFilesLabel);
-            Grid.SetRow(addFilesLabel, 1);
-
-            wrapPanel.Children.Add(addFilesGrid);
-        }
+       
         private void InsertIconGridFromServer(int i)
         {
             Grid UploadIconGrid = new Grid();
             UploadIconGrid.Margin = new Thickness(24);
-            UploadIconGrid.Width = 250;
+            //UploadIconGrid.Width = 250;
 
             RowDefinition row1 = new RowDefinition();
             RowDefinition row2 = new RowDefinition();
@@ -549,7 +561,7 @@ namespace _01electronics_crm
 
             LoadIcon(ref icon, ftpFiles[i]);
 
-            resizeImage(ref icon, 50, 50);
+            resizeImage(ref icon, 1800, 600);
             UploadIconGrid.Children.Add(icon);
             Grid.SetRow(icon, 0);
 
@@ -721,7 +733,7 @@ namespace _01electronics_crm
                     if (ftpFiles[i] != "." || ftpFiles[i] != "..")
                         InsertIconGridFromServer(i);
                 }
-                InsertAddFilesIcon();
+                
             }
             else if (ftpFiles.Count == 0)
             {
