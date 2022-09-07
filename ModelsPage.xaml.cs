@@ -34,6 +34,7 @@ namespace _01electronics_crm
         protected bool fromServer;
         private Expander currentExpander;
         private Expander previousExpander;
+        private Grid currentGrid;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
@@ -242,18 +243,18 @@ namespace _01electronics_crm
                         Button ViewButton = new Button();
                         ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
                         ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                        // EditButton.Click += OnBtnClickEditProduct;
+                        ViewButton.Click += OnBtnClickView;
                         ViewButton.Content = "View";
 
-                        Button EditButton = new Button();
-                        EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                        EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                        // EditButton.Click += OnBtnClickEditProduct;
-                        EditButton.Content = "Download Catalog";
+                        Button DownloadCatalog = new Button();
+                        DownloadCatalog.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        DownloadCatalog.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        DownloadCatalog.Click += OnBtnClickDownloadCatalog;
+                        DownloadCatalog.Content = "Download Catalog";
 
 
                         expanderStackPanel.Children.Add(ViewButton);
-                        expanderStackPanel.Children.Add(EditButton);
+                        expanderStackPanel.Children.Add(DownloadCatalog);
 
                         expander.Content = expanderStackPanel;
 
@@ -554,17 +555,43 @@ namespace _01electronics_crm
 
             Grid currentGrid = (Grid)currentExpander.Parent;
 
-            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            currentExpander.VerticalAlignment = VerticalAlignment.Stretch;
+            //currentExpander.VerticalAlignment = VerticalAlignment.Top;
         }
 
         private void OnCollapseExpander(object sender, RoutedEventArgs e)
         {
             Expander currentExpander = (Expander)sender;
             Grid currentGrid = (Grid)currentExpander.Parent;
-            currentExpander.VerticalAlignment = VerticalAlignment.Top;
-            currentExpander.Margin = new Thickness(12);
+            currentExpander.VerticalAlignment = VerticalAlignment.Stretch;
+            //currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            //currentExpander.Margin = new Thickness(12);
         }
 
+        private void OnBtnClickDownloadCatalog(object sender, RoutedEventArgs e)
+        {
+            Button tempListBox = (Button)sender;
+
+            StackPanel currentStackPanel = (StackPanel)tempListBox.Parent;
+            Expander currentExpander = (Expander)currentStackPanel.Parent;
+
+            currentGrid = (Grid)currentExpander.Parent;
+
+            //DownloadCatalog();
+
+        }
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
+        {
+            Button tempListBox = (Button)sender;
+
+            StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
+            Expander currentExpander = (Expander)currentStackPanel.Parent;
+            
+            currentGrid = (Grid)currentExpander.Parent;
+
+            //ViewModel();
+
+        }
 
 
     }
