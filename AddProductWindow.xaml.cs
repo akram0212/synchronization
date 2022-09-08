@@ -271,7 +271,6 @@ namespace _01electronics_crm
                 Grid.SetRow(productImage, 0);
 
 
-
                 BrushConverter brushConverter = new BrushConverter();
 
 
