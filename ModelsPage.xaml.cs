@@ -590,7 +590,8 @@ namespace _01electronics_crm
             currentGrid = (Grid)currentExpander.Parent;
 
             //ViewModel();
-
+            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, 1, false);
+            modelsWindow.Show();
         }
 
 

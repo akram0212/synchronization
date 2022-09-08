@@ -71,7 +71,7 @@ namespace _01electronics_crm
         /// <summary>
         /// MOVE TO XML
         /// </summary>
-        StackPanel uploadFilesStackPanel;
+        StackPanel uploadFilesStackPanel = new StackPanel();
 
         public ModelUploadFilesPage(ref Employee mLoggedInUser, ref Product mProduct, int mViewAddCondition)
         {

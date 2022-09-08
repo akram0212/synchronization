@@ -92,5 +92,9 @@ namespace _01electronics_crm
             currentWindow.Close();
         }
 
+        private void OnDropUploadFilesStackPanel(object sender, DragEventArgs e)
+        {
+
+        }
     }
 }
