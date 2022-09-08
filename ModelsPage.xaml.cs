@@ -32,6 +32,9 @@ namespace _01electronics_crm
         protected List<String> modelsNames;
         protected String returnMessage;
         protected bool fromServer;
+        private Expander currentExpander;
+        private Expander previousExpander;
+        private Grid currentGrid;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
@@ -180,7 +183,20 @@ namespace _01electronics_crm
                         column2Grid.RowDefinitions.Add(row1);
                         column2Grid.RowDefinitions.Add(row2);
 
+                        ColumnDefinition headerColumn = new ColumnDefinition();
+                        ColumnDefinition expanderColumn = new ColumnDefinition();
+                        expanderColumn.Width = new GridLength(150);
+                        column2Grid.ColumnDefinitions.Add(headerColumn);
+                        column2Grid.ColumnDefinitions.Add(expanderColumn);
+
                         Grid row1Grid = new Grid();
+
+                        //ColumnDefinition headerColumn = new ColumnDefinition();
+                        //ColumnDefinition expanderColumn = new ColumnDefinition();
+                        //expanderColumn.Width = new GridLength(50);
+                        //
+                        //row1Grid.ColumnDefinitions.Add(headerColumn);
+                        //row1Grid.ColumnDefinitions.Add(expanderColumn);
 
                         row1Grid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                         TextBox modelTextBox = new TextBox();
@@ -199,19 +215,70 @@ namespace _01electronics_crm
                         modelTextBox.TextWrapping = TextWrapping.Wrap;
                         Grid.SetRow(modelTextBox, 0);
                         Grid.SetColumn(modelTextBox, 0);
+                        //Grid.SetColumnSpan(row1Grid, 2);
+
+
+
+                        Expander expander = new Expander();
+                        expander.Tag = i;
+                        expander.ExpandDirection = ExpandDirection.Down;
+                        //expander.VerticalAlignment = VerticalAlignment.Top;
+                        //expander.HorizontalAlignment = HorizontalAlignment.Right;
+                        expander.VerticalAlignment = VerticalAlignment.Stretch;
+                        expander.HorizontalAlignment = HorizontalAlignment.Left;
+                        expander.HorizontalContentAlignment = HorizontalAlignment.Center;
+
+                        expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                        expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                        expander.Margin = new Thickness(10,0,0,0);
+
+                        StackPanel expanderStackPanel = new StackPanel();
+                        expanderStackPanel.Orientation = Orientation.Vertical;
+                        //expanderStackPanel.MinHeight = 50;
+                        //expanderStackPanel.MinWidth= 50;
+
+
+                        BrushConverter brushConverter = new BrushConverter();
+
+                        Button ViewButton = new Button();
+                        ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        ViewButton.Click += OnBtnClickView;
+                        ViewButton.Content = "View";
+
+                        Button DownloadCatalog = new Button();
+                        DownloadCatalog.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        DownloadCatalog.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        DownloadCatalog.Click += OnBtnClickDownloadCatalog;
+                        DownloadCatalog.Content = "Download Catalog";
+
+
+                        expanderStackPanel.Children.Add(ViewButton);
+                        expanderStackPanel.Children.Add(DownloadCatalog);
+
+                        expander.Content = expanderStackPanel;
+
+                        Grid.SetRow(expander, 0);
+                        Grid.SetRowSpan(expander, 2);
+                        Grid.SetColumn(expander, 1);
+                        Grid.SetColumnSpan(expander, 2);
 
                         row1Grid.Children.Add(modelTextBox);
+                        column2Grid.Children.Add(expander);
+
 
                         column2Grid.Children.Add(row1Grid);
 
                         Grid row2Grid = new Grid();
                         row2Grid.Background = Brushes.White;
+                        Grid.SetColumnSpan(row2Grid, 2);
 
                         ScrollViewer scrollViewer2 = new ScrollViewer();
                         scrollViewer2.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                         scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
                         scrollViewer2.Content = row2Grid;
                         Grid.SetRow(scrollViewer2, 1);
+                        //Grid.SetColumnSpan(scrollViewer2, 2);
 
                         if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID()))
                             return;
@@ -471,6 +538,62 @@ namespace _01electronics_crm
         {
 
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //Expander HANDLERS
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnExpandExpander(object sender, RoutedEventArgs e)
+        {
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+
+            Grid currentGrid = (Grid)currentExpander.Parent;
+
+            currentExpander.VerticalAlignment = VerticalAlignment.Stretch;
+            //currentExpander.VerticalAlignment = VerticalAlignment.Top;
+        }
+
+        private void OnCollapseExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            currentExpander.VerticalAlignment = VerticalAlignment.Stretch;
+            //currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            //currentExpander.Margin = new Thickness(12);
+        }
+
+        private void OnBtnClickDownloadCatalog(object sender, RoutedEventArgs e)
+        {
+            Button tempListBox = (Button)sender;
+
+            StackPanel currentStackPanel = (StackPanel)tempListBox.Parent;
+            Expander currentExpander = (Expander)currentStackPanel.Parent;
+
+            currentGrid = (Grid)currentExpander.Parent;
+
+            //DownloadCatalog();
+
+        }
+        private void OnBtnClickView(object sender, RoutedEventArgs e)
+        {
+            Button tempListBox = (Button)sender;
+
+            StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
+            Expander currentExpander = (Expander)currentStackPanel.Parent;
+            
+            currentGrid = (Grid)currentExpander.Parent;
+
+            //ViewModel();
+            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, 1, false);
+            modelsWindow.Show();
+        }
+
 
     }
 }

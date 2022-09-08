@@ -215,11 +215,23 @@
     <Compile Include="MergeCompaniesWindow.xaml.cs">
       <DependentUpon>MergeCompaniesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ModelAdditionalInfoPage.xaml.cs">
+      <DependentUpon>ModelAdditionalInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModelBasicInfoPage.xaml.cs">
+      <DependentUpon>ModelBasicInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModelsPage.xaml.cs">
       <DependentUpon>ModelsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BrandsPage.xaml.cs">
       <DependentUpon>BrandsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModelsWindow.xaml.cs">
+      <DependentUpon>ModelsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModelUploadFilesPage.xaml.cs">
+      <DependentUpon>ModelUploadFilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
@@ -464,6 +476,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ModelAdditionalInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModelBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ModelsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -499,6 +519,14 @@
     <Compile Include="ClientVisitsPage.xaml.cs">
       <DependentUpon>ClientVisitsPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="ModelsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModelUploadFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OfficeMeetingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
