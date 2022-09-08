@@ -34,11 +34,14 @@ namespace _01electronics_crm
         private Expander currentExpander;
         private Expander previousExpander;
 
+        protected int mViewAddCondition;
+
         public ProductsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
+            mViewAddCondition = 0;
             commonQueries = new CommonQueries();
             sqlDatabase = new SQLServer();
             ftpServer = new FTPServer();
@@ -47,7 +50,7 @@ namespace _01electronics_crm
             selectedProduct = mSelectedProduct;
             productsNames = new List<String>();
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/products");
-
+            
             InitializeProducts();
             InitializeProductSummaryPoints();
             SetUpPageUIElements();
@@ -115,7 +118,7 @@ namespace _01electronics_crm
                         Grid.SetRow(productImage, 0);
 
                         Expander expander = new Expander();
-                        expander.Tag = i;
+                        expander.Tag = products[i].typeId.ToString();
                         expander.ExpandDirection = ExpandDirection.Down;
                         expander.VerticalAlignment = VerticalAlignment.Top;
                         expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
@@ -133,18 +136,18 @@ namespace _01electronics_crm
 
 
 
-                        Button EditButton = new Button();
-                        EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                        EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                        // EditButton.Click += OnBtnClickEditProduct;
-                        EditButton.Content = "Edit";
+                        Button ViewButton = new Button();
+                        ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        ViewButton.Click += OnBtnClickViewProduct;
+                        ViewButton.Content = "View";
 
 
 
 
 
 
-                        expanderStackPanel.Children.Add(EditButton);
+                        expanderStackPanel.Children.Add(ViewButton);
 
                         expander.Content = expanderStackPanel;
 
@@ -225,7 +228,15 @@ namespace _01electronics_crm
                 ProductsGrid.Children.Add(gridI);
                 Grid.SetRow(gridI, i);
             }
+            if( loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+                loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
+                ( loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
+            {
+                addBtn.Visibility = Visibility.Visible;
+            }
         }
+
+       
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
@@ -386,10 +397,22 @@ namespace _01electronics_crm
             storyboard.Begin(this);
 
         }
-
+        private void OnBtnClickViewProduct(object sender, RoutedEventArgs e)
+        {
+            Button viewButton = (Button)sender;
+            StackPanel expanderStackPanel = (StackPanel)viewButton.Parent;
+            Expander expander = (Expander)expanderStackPanel.Parent;
+            selectedProduct.SetProductID(int.Parse(expander.Tag.ToString()));
+            selectedProduct.InitializeProductInfo();
+            mViewAddCondition = 0;
+            AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            addProductWindow.Show();
+        }
+       
         private void onBtnAddClick(object sender, MouseButtonEventArgs e)
         {
-            AddProductWindow addProductWindow = new AddProductWindow();
+            mViewAddCondition = 1;
+            AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct , ref loggedInUser , ref mViewAddCondition);
             addProductWindow.Show();
         }
 
