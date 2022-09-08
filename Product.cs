@@ -32,11 +32,14 @@ namespace _01electronics_library
         private int productID;
         private int brandID;
         private int modelID;
+        private int summaryPointsID;
 
         private String productName;
         private String categoryName;
         private String brandName;
         private String modelName;
+        private String summaryPoints;
+
 
         //PRODUCT ADDITIONAL INFO
         private List<String> modelApplications;
@@ -66,7 +69,7 @@ namespace _01electronics_library
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //INITIALIZATION FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public bool InitializeProductInfo(int mProductID, int mBrandID, int mModelID)
+        public bool InitializeModelInfo(int mProductID, int mBrandID, int mModelID)
         {
             SetProductID(mProductID);
             SetBrandID(mBrandID);
@@ -81,6 +84,37 @@ namespace _01electronics_library
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
+
+            return true;
+        }
+        public bool InitializeProductInfo()
+        {
+
+            String sqlQueryPart1 = @"SELECT product_name
+		                                   ,summary_points
+	
+	                                FROM erp_system.dbo.products_type
+
+	                                left join erp_system.dbo.products_summary_points
+	                                on products_type.id = products_summary_points.id
+
+	                                where products_type.id  = ";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetProductID();
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+            
+            
+            queryColumns.sql_string = 2;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
+                return false;
+
+            SetProductName(sqlDatabase.rows[0].sql_string[0]);
+            SetsummaryPointsID(GetProductID());
+            SetsummaryPoints(sqlDatabase.rows[0].sql_string[1]);
 
             return true;
         }
@@ -123,15 +157,18 @@ namespace _01electronics_library
 
             return true;
         }
+        
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //ISSUE FUNCTIONS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public bool IssueNewProduct(String mProductName)
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //ISSUE FUNCTIONS
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            public bool IssueNewProduct()
         {
             if (!GetNewProductID())
                 return false;
-            if (!InsertIntoProductTypes(mProductName))
+            if (!InsertIntoProductTypes())
+                return false;
+            if (!InsertIntoProductSummaryPoints())
                 return false;
 
             return true;
@@ -169,21 +206,25 @@ namespace _01electronics_library
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //INSERT FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public bool InsertIntoProductTypes(String mProductName)
+        public bool InsertIntoProductTypes()
         {
             String sqlQueryPart1 = @" insert into erp_system.dbo.products_type
                                       values(";
 
             String comma = ",";
-            String sqlQueryPart3 = "GETDATE());";
+            String sqlQueryPart3 = "GETDATE()";
+            String sqlQueryPart4 = ");";
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
             sqlQuery += GetProductID();
             sqlQuery += comma;
-            sqlQuery += "'" + mProductName + "'";
+            sqlQuery += "'" + GetProductName() + "'";
             sqlQuery += comma;
             sqlQuery += sqlQueryPart3;
+            sqlQuery += comma;
+            sqlQuery += GetCategoryID();
+            sqlQuery += sqlQueryPart4;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
                 return false;
@@ -198,6 +239,7 @@ namespace _01electronics_library
             sqlQuery += 0;
             sqlQuery += comma;
             sqlQuery += sqlQueryPart3;
+            sqlQuery += sqlQueryPart4;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
                 return false;
@@ -432,6 +474,65 @@ namespace _01electronics_library
             }
             return true;
         }
+        public bool UpdateIntoProductSummaryPoints()
+        {
+            String sqlQueryPart1 = @" UPDATE erp_system.dbo.products_summary_points    
+                                      SET summary_points ='  ";
+            String sqlQueryPart2 = @"' WHERE id =";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetsummaryPoints();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += GetProductID();
+           
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+
+            return true;
+        }
+        public bool UpdateIntoProductName()
+        {
+            String sqlQueryPart1 = @" UPDATE erp_system.dbo.products_type    
+                                      SET product_name ='  ";
+            String sqlQueryPart2 = @"' WHERE id =";
+
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += GetProductName();
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += GetProductID();
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+
+            return true;
+        }
+        public bool InsertIntoProductSummaryPoints()
+        {
+            
+                String sqlQueryPart1 = @" insert into erp_system.dbo.products_summary_points
+                                      values(";
+                String comma = ",";
+                String sqlQueryPart2 = "GETDATE()";
+                String sqlQueryPart3 = ");";
+
+                sqlQuery = String.Empty;
+                sqlQuery += sqlQueryPart1;
+                sqlQuery += GetProductID();
+                sqlQuery += comma;
+                sqlQuery += "'" + GetsummaryPoints() + "'";
+                sqlQuery += comma;
+                sqlQuery += sqlQueryPart2;
+                sqlQuery += sqlQueryPart3;
+
+                if (!sqlDatabase.InsertRows(sqlQuery))
+                    return false;
+            
+            return true;
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //PRODUCT ADDITIONAL INFO STRUCT
@@ -486,6 +587,11 @@ namespace _01electronics_library
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
         }
+        public void SetsummaryPointsID(int msummaryPointsID)
+        {
+            summaryPointsID = msummaryPointsID;
+
+        }
         public void SetCategoryName(String mCategoryName)
         {
             categoryName = mCategoryName;
@@ -501,6 +607,11 @@ namespace _01electronics_library
         public void SetModelName(String mModelName)
         {
             modelName = mModelName;
+        }
+        public void SetsummaryPoints(string msummaryPoints)
+        {
+            summaryPoints = msummaryPoints;
+
         }
         public void SetPhotoLocalPath(String mPath)
         {
@@ -529,6 +640,10 @@ namespace _01electronics_library
         {
             return modelID;
         }
+        public int GetsummaryPointsID()
+        {
+            return summaryPointsID;
+        }
         public String GetCategoryName()
         {
             return categoryName;
@@ -544,6 +659,10 @@ namespace _01electronics_library
         public String GetModelName()
         {
             return modelName;
+        }
+        public String GetsummaryPoints()
+        {
+            return summaryPoints;
         }
         public int GetNumberOfSavedModelApplications()
         {
@@ -709,5 +828,6 @@ namespace _01electronics_library
 
             return true;
         }
+
     }
 }
