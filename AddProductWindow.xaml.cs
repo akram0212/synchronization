@@ -103,7 +103,7 @@ namespace _01electronics_crm
 
                serverFolderPath = product.GetProductFolderServerPath();
 
-            if(viewAddCondition == 1)
+            if(viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
                 InsertDragAndDropOrBrowseGrid();
                 product.GetNewProductID();
@@ -390,7 +390,7 @@ namespace _01electronics_crm
   
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
-            if (viewAddCondition == 1)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
                 product.SetProductName(ProductNameTextBox.Text);
                 product.SetsummaryPoints(summerypointsTextBox.Text);
@@ -405,6 +405,7 @@ namespace _01electronics_crm
                 product.UpdateIntoProductName();
                 product.UpdateIntoProductSummaryPoints();
                 this.Close();
+
 
             }
         }
@@ -851,6 +852,7 @@ namespace _01electronics_crm
         {
             if (canEdit)
             {
+                ProductNameTextBox.Clear();
                 ProductNameTextBox.Text = ProductNameLabel.Content.ToString();
                 ProductNameLabel.Visibility = Visibility.Collapsed;
                 ProductNameTextBox.Visibility = Visibility.Visible;
@@ -860,7 +862,7 @@ namespace _01electronics_crm
 
         private void productName_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (viewAddCondition == 0)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 ProductNameLabel.Content = ProductNameTextBox.Text.ToString();
                 ProductNameLabel.Visibility = Visibility.Visible;
@@ -886,7 +888,7 @@ namespace _01electronics_crm
 
         private void ProductSummeryPointstextblockMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (viewAddCondition == 0)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 ProductSummeryPointstextblock.Text = summerypointsTextBox.Text;
                 
@@ -916,6 +918,7 @@ namespace _01electronics_crm
         {
             if (canEdit)
             {
+                summerypointsTextBox.Clear();
                 summerypointsTextBox.Text = ProductSummeryPointstextblock.Text;
                 summerypointsTextBox.Visibility = Visibility.Visible;
                 ProductSummeryPointstextblock.Visibility = Visibility.Collapsed;
@@ -929,7 +932,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void checkEmployee()
         {
-            if (viewAddCondition == 0)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 ProductNameLabel.Content = product.GetProductName();
                 ProductNameTextBox.Visibility = Visibility.Collapsed;

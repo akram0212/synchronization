@@ -57,7 +57,7 @@
                     </WrapPanel>
 
                     <WrapPanel Name="summryNotesWrapPanel" Grid.Row="3">
-                        <Label Style="{StaticResource labelStyle}" Content="Summry Points*" Margin="0,0,0,0"  Width="155" />
+                        <Label Style="{StaticResource labelStyle}" Content="Summry Points*" Margin="20,0,0,0"  Width="135" />
                         <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="summerypointsTextBox" TextChanged="summerypointsTextBoxTextChanged"  MouseLeave="ProductSummeryPointstextblockMouseLeave"/>
                         <TextBlock Visibility="Collapsed"  Style="{StaticResource textBlockStyle}"  Height="100"  Width="350" TextWrapping="Wrap"     Margin="50,10,0,0" Name="ProductSummeryPointstextblock" MouseLeftButtonDown="summerypointsTextBoxMouseDoubleClick"/>
 

@@ -477,7 +477,7 @@ namespace _01electronics_library
         public bool UpdateIntoProductSummaryPoints()
         {
             String sqlQueryPart1 = @" UPDATE erp_system.dbo.products_summary_points    
-                                      SET summary_points ='  ";
+                                      SET summary_points ='";
             String sqlQueryPart2 = @"' WHERE id =";
 
             sqlQuery = String.Empty;
@@ -495,7 +495,7 @@ namespace _01electronics_library
         public bool UpdateIntoProductName()
         {
             String sqlQueryPart1 = @" UPDATE erp_system.dbo.products_type    
-                                      SET product_name ='  ";
+                                      SET product_name ='";
             String sqlQueryPart2 = @"' WHERE id =";
 
             sqlQuery = String.Empty;

@@ -41,7 +41,7 @@ namespace _01electronics_crm
             InitializeComponent();
 
             loggedInUser = mLoggedInUser;
-            mViewAddCondition = 0;
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
             commonQueries = new CommonQueries();
             sqlDatabase = new SQLServer();
             ftpServer = new FTPServer();
@@ -404,21 +404,23 @@ namespace _01electronics_crm
             Expander expander = (Expander)expanderStackPanel.Parent;
             selectedProduct.SetProductID(int.Parse(expander.Tag.ToString()));
             selectedProduct.InitializeProductInfo();
-            mViewAddCondition = 0;
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
             AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
             addProductWindow.Show();
         }
        
         private void onBtnAddClick(object sender, MouseButtonEventArgs e)
         {
-            mViewAddCondition = 1;
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
             AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct , ref loggedInUser , ref mViewAddCondition);
             addProductWindow.Show();
         }
 
         private void OnClosedAddProductWindow(object sender, EventArgs e)
         {
-            
+            InitializeProducts();
+            InitializeProductSummaryPoints();
+            SetUpPageUIElements();
         }
     }
 
