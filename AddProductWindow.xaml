@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddProductWindow" Height="850" Width="1000">
+        Title="AddProductWindow" WindowState="Normal">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -34,14 +34,19 @@
 
 
                     </Grid.RowDefinitions>
-
-                    <Canvas Visibility="Collapsed" Name="EditPicture" Grid.Row="0"   Panel.ZIndex="999" Margin="0,0,30,275"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.5"  MouseEnter="EditBtnMouseEnter" MouseLeave="EditBtnMouseLeave" MouseLeftButtonUp="onBtnEditClick">
+                    
+                    <!--<Canvas Visibility="Visible" Name="EditPicture" Grid.Row="0"   Panel.ZIndex="999" Margin="0,0,30,275"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.5"  MouseEnter="EditBtnMouseEnter" MouseLeave="EditBtnMouseLeave" MouseLeftButtonUp="onBtnEditClick">
                         <Path   Fill="#105A97" Data="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" Stretch="Fill"  Width="45" Height="45" HorizontalAlignment="Left" Canvas.Top="-15" VerticalAlignment="Center" Canvas.Left="15" />
                         <Path   Fill="#105A97" Data="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" Stretch="Fill"  Width="45" Height="45" />
-                    </Canvas>
-                    <Border  BorderBrush="#105A97" Margin="65,0,0,0" BorderThickness="3" Grid.Row="0" Width="800px" Height="250px"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Canvas>-->
+                    <Border   BorderBrush="#105A97" Margin="25,0,0,0" BorderThickness="2" Grid.Row="0"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                        <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="WhiteSmoke" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                        </StackPanel>
+                        
                     </Border>
+                    <Button  Visibility="Collapsed" Margin="0,0,25,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
+
                     <Label  Name="picHint" Margin="650,0,0,0" Grid.Row="1" Width="200" Style="{StaticResource labelStyle}" Foreground="Red" Content="Pic Should be 1800 X 600" HorizontalContentAlignment="Right"/>
 
 
@@ -51,17 +56,13 @@
                             <Label Style="{StaticResource labelStyle}" Content="Product Name*"  Width="125"></Label>
                             <TextBox  Style="{StaticResource textBoxStyle}" Margin="25,0,0,0" Name="ProductNameTextBox" MouseLeave="productName_MouseLeave"/>
                             <Label Visibility="Collapsed" Grid.Row="2" Style="{StaticResource labelStyle}"  Height="40" Width="384" Margin="35,0,0,0" Name="ProductNameLabel" MouseDoubleClick="ProductNameMouseDoubleClick"/>
-
-
                         </WrapPanel>
                     </WrapPanel>
 
                     <WrapPanel Name="summryNotesWrapPanel" Grid.Row="3">
                         <Label Style="{StaticResource labelStyle}" Content="Summry Points*" Margin="20,0,0,0"  Width="135" />
-                        <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="summerypointsTextBox" TextChanged="summerypointsTextBoxTextChanged"  MouseLeave="ProductSummeryPointstextblockMouseLeave"/>
+                        <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" Height="100" Margin="30,10,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="summerypointsTextBox" TextChanged="summerypointsTextBoxTextChanged" MouseLeave="ProductSummeryPointstextblockMouseLeave" />
                         <TextBlock Visibility="Collapsed"  Style="{StaticResource textBlockStyle}"  Height="100"  Width="350" TextWrapping="Wrap"     Margin="50,10,0,0" Name="ProductSummeryPointstextblock" MouseLeftButtonDown="summerypointsTextBoxMouseDoubleClick"/>
-
-
 
                     </WrapPanel>
 
@@ -69,10 +70,6 @@
                         <Label Width="180" Margin="0,0,0,0" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Left"/>
                         <Label Width="50" Margin="0,0,300,0" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Center"/>
                     </WrapPanel>
-
-
-
-
 
                 </Grid>
 

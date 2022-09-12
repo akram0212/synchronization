@@ -54,6 +54,7 @@ namespace _01electronics_crm
             InitializeProducts();
             InitializeProductSummaryPoints();
             SetUpPageUIElements();
+
         }
         private void InitializeProducts()
         {
@@ -174,6 +175,42 @@ namespace _01electronics_crm
                             productImage.Tag = products[i].typeId.ToString();
                             gridI.Children.Add(productImage);
                             Grid.SetRow(productImage, 0);
+                            Expander expander = new Expander();
+                            expander.Tag = products[i].typeId.ToString();
+                            expander.ExpandDirection = ExpandDirection.Down;
+                            expander.VerticalAlignment = VerticalAlignment.Top;
+                            expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                            expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+
+                            expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                            expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                            expander.Margin = new Thickness(12);
+
+                            StackPanel expanderStackPanel = new StackPanel();
+                            expanderStackPanel.Orientation = Orientation.Vertical;
+
+
+                            BrushConverter brushConverter = new BrushConverter();
+
+
+
+                            Button ViewButton = new Button();
+                            ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                            ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                            ViewButton.Click += OnBtnClickViewProduct;
+                            ViewButton.Content = "View";
+
+
+
+
+
+
+                            expanderStackPanel.Children.Add(ViewButton);
+
+                            expander.Content = expanderStackPanel;
+
+                            gridI.Children.Add(expander);
+                            //Grid.SetColumn(expander, 1);
                         }
                     }
                 }
@@ -413,15 +450,20 @@ namespace _01electronics_crm
         {
             mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
             AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct , ref loggedInUser , ref mViewAddCondition);
+            addProductWindow.Closed += OnCloseAddPRoductsWindow;
             addProductWindow.Show();
         }
 
-        private void OnClosedAddProductWindow(object sender, EventArgs e)
+        private void OnCloseAddPRoductsWindow(object sender, EventArgs e)
         {
+            products.Clear();
+            
             InitializeProducts();
             InitializeProductSummaryPoints();
             SetUpPageUIElements();
         }
+
+    
     }
 
 

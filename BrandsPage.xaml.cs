@@ -32,12 +32,15 @@ namespace _01electronics_crm
         protected FTPServer ftpServer;
         protected List<String> brandsNames;
         protected String returnMessage;
-
+        protected int mViewAddCondition;
+        private Expander currentExpander;
+        private Expander previousExpander;
         public BrandsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;
             selectedProduct = mSelectedProduct;
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
 
             sqlDatabase = new SQLServer();
             ftpServer = new FTPServer();
@@ -126,6 +129,45 @@ namespace _01electronics_crm
                         //}    
 
 
+
+                        Expander expander = new Expander();
+                        expander.Tag = brandsList[i].brandId.ToString();
+                        expander.ExpandDirection = ExpandDirection.Down;
+                        expander.VerticalAlignment = VerticalAlignment.Top;
+                        expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        expander.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                        expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right;
+                        expander.VerticalContentAlignment = System.Windows.VerticalAlignment.Top;
+
+
+                        expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                        expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                        expander.Margin = new Thickness(12);
+
+                        StackPanel expanderStackPanel = new StackPanel();
+                        expanderStackPanel.Orientation = Orientation.Vertical;
+
+
+                        BrushConverter brushConverter = new BrushConverter();
+
+
+
+                        Button ViewButton = new Button();
+                        ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        ViewButton.Click += OnBtnClickViewBrand;
+                        ViewButton.Content = "View";
+
+
+
+
+
+
+                        expanderStackPanel.Children.Add(ViewButton);
+
+                        expander.Content = expanderStackPanel;
+
+                        gridI.Children.Add(expander);
                         brandsWrapPanel.Children.Add(gridI);
 
                     }
@@ -180,6 +222,46 @@ namespace _01electronics_crm
                             //}    
 
 
+                            
+
+                            Expander expander = new Expander();
+                            expander.Tag = brandsList[i].brandId.ToString();
+                            expander.ExpandDirection = ExpandDirection.Down;
+                            expander.VerticalAlignment = VerticalAlignment.Top;
+                            expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                            expander.VerticalAlignment= System.Windows.VerticalAlignment.Top;
+                            expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right;
+                            expander.VerticalContentAlignment = System.Windows.VerticalAlignment.Top;
+                        
+
+                            expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                            expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                            expander.Margin = new Thickness(12);
+
+                            StackPanel expanderStackPanel = new StackPanel();
+                            expanderStackPanel.Orientation = Orientation.Vertical;
+
+
+                            BrushConverter brushConverter = new BrushConverter();
+
+
+
+                            Button ViewButton = new Button();
+                            ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                            ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                            ViewButton.Click += OnBtnClickViewBrand;
+                            ViewButton.Content = "View";
+
+
+
+
+
+
+                            expanderStackPanel.Children.Add(ViewButton);
+
+                            expander.Content = expanderStackPanel;
+
+                            gridI.Children.Add(expander);
                             brandsWrapPanel.Children.Add(gridI);
 
                         }
@@ -204,13 +286,18 @@ namespace _01electronics_crm
 
             BrandsGrid.Children.Add(brandsWrapPanel);
             Grid.SetRow(brandsWrapPanel, 1);
-
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+                loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
+                (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
+            {
+                addBtn.Visibility = Visibility.Visible;
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //QUERIES
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        
         public bool QueryGetProductName()
         {
             String sqlQueryPart1 = @"select product_name
@@ -240,7 +327,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //MOUSE DOWN HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+       
         private void ImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             Image currentImage = (Image)sender;
@@ -257,7 +344,7 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+       
         private void OnButtonClickedMyProfile(object sender, RoutedEventArgs e)
         {
             StatisticsPage userPortal = new StatisticsPage(ref loggedInUser);
@@ -320,6 +407,100 @@ namespace _01electronics_crm
         private void OnButtonClickedProjects(object sender, MouseButtonEventArgs e)
         {
 
+        }
+        private void addBtnMouseEnter(object sender, MouseEventArgs e)
+        {
+
+
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 1.0;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+        }
+
+        private void addBtnMouseLeave(object sender, MouseEventArgs e)
+        {
+
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 0.5;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+
+        }
+        private void onBtnAddClick(object sender, MouseButtonEventArgs e)
+        {
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
+            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            addBrandWindow.Closed += OnCloseBrandsWindow;
+            addBrandWindow.Show();
+        }
+
+        private void OnCloseBrandsWindow(object sender, EventArgs e)
+        {
+            brandsList.Clear();
+
+            QueryGetProductName();
+            InitializeProductBrands();
+            SetUpPageUIElements();
+        }
+        private void OnBtnClickViewBrand(object sender, RoutedEventArgs e)
+        {
+            Button viewButton = (Button)sender;
+            StackPanel expanderStackPanel = (StackPanel)viewButton.Parent;
+            Expander expander = (Expander)expanderStackPanel.Parent;
+            selectedProduct.SetBrandID(int.Parse(expander.Tag.ToString())-1);
+            
+            
+            mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            addBrandWindow.Show();
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //Expander Handelers
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void OnExpandExpander(object sender, RoutedEventArgs e)
+        {
+            if (currentExpander != null)
+                previousExpander = currentExpander;
+
+            currentExpander = (Expander)sender;
+
+            if (previousExpander != currentExpander && previousExpander != null)
+                previousExpander.IsExpanded = false;
+
+            Grid currentGrid = (Grid)currentExpander.Parent;
+
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+        }
+
+        private void OnCollapseExpander(object sender, RoutedEventArgs e)
+        {
+            Expander currentExpander = (Expander)sender;
+            Grid currentGrid = (Grid)currentExpander.Parent;
+            currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            currentExpander.Margin = new Thickness(12);
         }
     }
 }

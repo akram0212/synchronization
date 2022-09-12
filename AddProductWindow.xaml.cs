@@ -108,9 +108,55 @@ namespace _01electronics_crm
                 InsertDragAndDropOrBrowseGrid();
                 product.GetNewProductID();
             }
+            else
+            {
+                ContactProfileHeader.Content = "VIEW PRODUCT";
+                serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+                localFolderPath = product.GetProductPhotoLocalPath();
+                uploadBackground.RunWorkerAsync();
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+            }
             checkEmployee();
         }
 
+  
+        private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
+        {
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            {
+                product.SetProductName(ProductNameTextBox.Text);
+                product.SetsummaryPoints(summerypointsTextBox.Text);
+
+                product.IssueNewProduct();
+            }
+            else
+            {
+                product.SetProductName(ProductNameTextBox.Text);
+                product.SetsummaryPoints(summerypointsTextBox.Text);
+
+                product.UpdateIntoProductName();
+                product.UpdateIntoProductSummaryPoints();
+                this.Close();
+
+
+            }
+        }
+
+        private void summerypointsTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (summerypointsTextBox.Text.Length <= 150)
+            {
+               // quotation.SetQuotationAdditionalDescription(summerypointsTextBox.Text.ToString());
+                counterLabel.Content = 150 - summerypointsTextBox.Text.Length;
+            }
+            else
+            {
+                summerypointsTextBox.Text = summerypointsTextBox.Text.Substring(0, summerypointsTextBox.Text.Length - 1);
+                summerypointsTextBox.Select(summerypointsTextBox.Text.Length, 0);
+            }
+        }
+        
         private void OnDropUploadFilesStackPanel(object sender, DragEventArgs e)
         {
             if (ftpFiles.Count == 0)
@@ -193,12 +239,13 @@ namespace _01electronics_crm
 
             Image icon = new Image();
 
-            LoadIcon(ref icon, serverFolderPath);
+            LoadIcon(ref icon);
 
-            resizeImage(ref icon, 1800  , 600);
+            //resizeImage(ref icon, 350, 150);
             UploadIconGrid.Children.Add(icon);
             Grid.SetRow(icon, 0);
-
+            icon.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            icon.VerticalAlignment = VerticalAlignment.Stretch;
             Label name = new Label();
             name.Content = localFileName;
             name.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -228,7 +275,7 @@ namespace _01electronics_crm
 
             wrapPanel.Children.Add(UploadIconGrid);
         }
-        private void LoadIcon(ref Image icon, string ftpFiles)
+        private void LoadIcon(ref Image icon)
         {
 
             Image productImage = new Image();
@@ -386,42 +433,6 @@ namespace _01electronics_crm
             imgToResize.Height = height;
         }
 
-  
-        private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
-        {
-            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
-            {
-                product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
-
-                product.IssueNewProduct();
-            }
-            else
-            {
-                product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
-
-                product.UpdateIntoProductName();
-                product.UpdateIntoProductSummaryPoints();
-                this.Close();
-
-
-            }
-        }
-
-        private void summerypointsTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (summerypointsTextBox.Text.Length <= 150)
-            {
-               // quotation.SetQuotationAdditionalDescription(summerypointsTextBox.Text.ToString());
-                counterLabel.Content = 150 - summerypointsTextBox.Text.Length;
-            }
-            else
-            {
-                summerypointsTextBox.Text = summerypointsTextBox.Text.Substring(0, summerypointsTextBox.Text.Length - 1);
-                summerypointsTextBox.Select(summerypointsTextBox.Text.Length, 0);
-            }
-        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BACKGROUND FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,7 +492,7 @@ namespace _01electronics_crm
                 if (wrapPanel.Children.Count != 0)
                     wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
 
-                currentSelectedFile.Children.Remove(progressBar);
+                //currentSelectedFile.Children.Remove(progressBar);
 
                 if (fileUploaded == true)
                 {
@@ -548,11 +559,14 @@ namespace _01electronics_crm
 
             Image icon = new Image();
 
-            LoadIcon(ref icon, ftpFiles[i]);
+            LoadIcon(ref icon);
 
-            resizeImage(ref icon, 1800, 600);
+            //resizeImage(ref icon, 350, 150);
             UploadIconGrid.Children.Add(icon);
             Grid.SetRow(icon, 0);
+
+            icon.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            icon.VerticalAlignment = VerticalAlignment.Stretch;
 
             Label name = new Label();
             name.Content = ftpFiles[i];
@@ -802,48 +816,45 @@ namespace _01electronics_crm
             }
         }
 
-        private void EditBtnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Storyboard storyboard = new Storyboard();
-            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
-            DoubleAnimation animation = new DoubleAnimation();
+        //private void EditBtnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        //{
+        //    Storyboard storyboard = new Storyboard();
+        //    TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+        //    DoubleAnimation animation = new DoubleAnimation();
 
-            animation.From = EditPicture.Opacity;
-            animation.To = 1.0;
-            animation.Duration = new Duration(duration);
+        //    animation.From = editPictureButton.Opacity;
+        //    animation.To = 1.0;
+        //    animation.Duration = new Duration(duration);
 
-            Storyboard.SetTargetName(animation, EditPicture.Name);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+        //    Storyboard.SetTargetName(animation, editPictureButton.Name);
+        //    Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
 
-            storyboard.Children.Add(animation);
+        //    storyboard.Children.Add(animation);
 
-            storyboard.Begin(this);
+        //    storyboard.Begin(this);
 
-        }
+        //}
 
-        private void EditBtnMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
+        //private void EditBtnMouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        //{
 
-            Storyboard storyboard = new Storyboard();
-            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
-            DoubleAnimation animation = new DoubleAnimation();
+        //    Storyboard storyboard = new Storyboard();
+        //    TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+        //    DoubleAnimation animation = new DoubleAnimation();
 
-            animation.From = EditPicture.Opacity;
-            animation.To = 0.5;
-            animation.Duration = new Duration(duration);
+        //    animation.From = editPictureButton.Opacity;
+        //    animation.To = 0.5;
+        //    animation.Duration = new Duration(duration);
 
-            Storyboard.SetTargetName(animation, EditPicture.Name);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+        //    Storyboard.SetTargetName(animation, editPictureButton.Name);
+        //    Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
 
-            storyboard.Children.Add(animation);
+        //    storyboard.Children.Add(animation);
 
-            storyboard.Begin(this);
-        }
+        //    storyboard.Begin(this);
+        //}
 
-        private void onBtnEditClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
+     
 
 
 
@@ -942,21 +953,72 @@ namespace _01electronics_crm
                 ProductSummeryPointstextblock.Visibility = Visibility.Visible;
                 picHint.Visibility = Visibility.Hidden;
 
-                EditPicture.Visibility = Visibility.Collapsed;
+                
                 saveChangesButton.IsEnabled = false;
                 remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
-            }
-            {
-
-            }
-            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
                loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
                (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
+                {
+                    canEdit = true;
+                    editPictureButton.Visibility = Visibility.Visible;
+                }
+            }
+          
+            
+
+        }
+
+        private void onBtnEditClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog uploadFile = new OpenFileDialog();
+
+            if (uploadFile.ShowDialog() == false)
+                return;
+
+            if (!integrityChecks.CheckFileEditBox(uploadFile.FileName, ref errorMessage))
             {
-                canEdit = true;
-                EditPicture.Visibility = Visibility.Visible;
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
+            localFolderPath = uploadFile.FileName;
+            localFileName = System.IO.Path.GetFileName(localFolderPath);
+
+            product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+            product.SetPhotoLocalPath(localFolderPath + "/" + localFileName);
+
+
+                 wrapPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Clear();
+                product.UploadPhotoToServer();
+
+            serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+            localFolderPath = product.GetProductPhotoLocalPath();
+            uploadBackground.RunWorkerAsync();
+            uploadFilesStackPanel.Children.Clear();
+            uploadFilesStackPanel.Children.Add(wrapPanel);
+            //uploadFilesStackPanel.Children.Add(wrapPanel);
+
+
+
+
+            /*
+                        ftpFiles.Remove(localFileName);
+                        product.DeletePhotoFromServer();
+
+                        //serverFileName = localFileName;
+
+                        serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+                        ftpFiles.Add(localFileName);
+
+
+                        InsertIconGrid("pending", localFolderPath);
+                        currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
+                        currentSelectedFile.Children.Add(progressBar);
+                        Grid.SetRow(progressBar, 3);
+
+                        uploadBackground.RunWorkerAsync();*/
         }
 
     }

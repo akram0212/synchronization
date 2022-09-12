@@ -184,6 +184,17 @@ namespace _01electronics_library
 
             return true;
         }
+        public bool IssueNewBrandToProduct(String mBrandName, ref List<int> brandProducts)
+        {
+            if (!GetNewBrandID())
+                return false;
+            if (!InsertIntoBrandTypes(mBrandName))
+                return false;
+            if (!InsertIntoProductBrands(ref brandProducts))
+                return false;
+
+            return true;
+        }
         public bool IssueNewModel(String mModelName, ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
         {
             if (!GetNewModelID())
@@ -328,6 +339,29 @@ namespace _01electronics_library
 
             return true;
         }
+        public bool AddBrandToProduct()
+        {
+            
+                String sqlQueryPart1 = @" insert into erp_system.dbo.products_brands
+                                          values(";
+                String comma = ",";
+                String sqlQueryPart3 = "GETDATE()";
+                String sqlQueryPart4 = ");";
+
+                sqlQuery = String.Empty;
+                sqlQuery += sqlQueryPart1;
+                sqlQuery += GetProductID();
+                sqlQuery += comma;
+                sqlQuery += GetBrandID();
+                sqlQuery += comma;
+                sqlQuery +=  sqlQueryPart3 ;
+                sqlQuery += sqlQueryPart4;
+
+                if (!sqlDatabase.InsertRows(sqlQuery))
+                    return false;
+            return true;
+        }
+
         public bool InsertIntoBrandModels(String mModelName)
         {
             String sqlQueryPart1 = @" insert into erp_system.dbo.brands_models
@@ -558,6 +592,16 @@ namespace _01electronics_library
         public bool UploadPhotoToServer()
         {
             if (!ftpServer.UploadFile(photoLocalPath, photoServerPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
+            {
+                //System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+        //↓↓↓↓↓↓↓↓↓↓↓↓ Added By Raouf ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+        public bool DeletePhotoFromServer()
+        {
+            if (!ftpServer.DeleteFtpFile( photoServerPath, BASIC_MACROS.SEVERITY_LOW, ref errorMessage))
             {
                 //System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
