@@ -56,6 +56,10 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
+            BrandsGrid.Children.Clear();
+            BrandsGrid.RowDefinitions.Clear();
+            BrandsGrid.ColumnDefinitions.Clear();
+
             ftpServer.ListFilesInFolder(selectedProduct.GetBrandFolderServerPath(), ref brandsNames, ref returnMessage);
             selectedProduct.GetBrandFolderLocalPath();
             if (brandsNames.Count() == 0)

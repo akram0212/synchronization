@@ -69,6 +69,10 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
+            ProductsGrid.Children.Clear();
+            ProductsGrid.RowDefinitions.Clear();
+            ProductsGrid.ColumnDefinitions.Clear();
+
             ftpServer.ListFilesInFolder(selectedProduct.GetProductFolderServerPath(), ref productsNames, ref returnMessage);
             selectedProduct.GetProductFolderLocalPath();
 
@@ -443,6 +447,7 @@ namespace _01electronics_crm
             selectedProduct.InitializeProductInfo();
             mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
             AddProductWindow addProductWindow = new AddProductWindow(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            addProductWindow.Closed += OnCloseAddPRoductsWindow;
             addProductWindow.Show();
         }
        

@@ -18,7 +18,7 @@
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD NEW PRODUCT" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
+        <Label Grid.Column="0" Name="ContactProfileHeader" Content="ADD BRAND" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
@@ -52,7 +52,7 @@
 
                             <Label Style="{StaticResource labelStyle}" Content="Brand Name*"  Width="125"></Label>
                             <ComboBox SelectionChanged="BrandNameComboBoxSelectionChanged" Style="{StaticResource comboBoxStyle}" Margin="25,0,0,0" Name="BrandNameComboBox" MouseLeave="productName_MouseLeave"/>
-                            <Label Visibility="Collapsed" Grid.Row="2" Style="{StaticResource labelStyle}"  Height="40" Width="384" Margin="35,0,0,0" Name="BrandNameLabel" MouseDoubleClick="ProductNameMouseDoubleClick"/>
+                            <Label Visibility="Collapsed" Grid.Row="2" Style="{StaticResource labelStyle}"  Height="40" Width="384" Margin="35,0,0,0" Name="BrandNameLabel" MouseDoubleClick="BrandNameMouseDoubleClick"/>
                         </WrapPanel>
                     </WrapPanel>
 

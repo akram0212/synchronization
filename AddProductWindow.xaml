@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddProductWindow" WindowState="Normal">
+        Title="AddProductWindow" WindowState="Normal" Width="750" Height="800">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -39,7 +39,7 @@
                         <Path   Fill="#105A97" Data="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" Stretch="Fill"  Width="45" Height="45" HorizontalAlignment="Left" Canvas.Top="-15" VerticalAlignment="Center" Canvas.Left="15" />
                         <Path   Fill="#105A97" Data="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" Stretch="Fill"  Width="45" Height="45" />
                     </Canvas>-->
-                    <Border   BorderBrush="#105A97" Margin="25,0,0,0" BorderThickness="2" Grid.Row="0"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Border   BorderBrush="#105A97" BorderThickness="2" Grid.Row="0" MinWidth="500" MinHeight="200"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
                         <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="WhiteSmoke" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
                         </StackPanel>
@@ -47,7 +47,7 @@
                     </Border>
                     <Button  Visibility="Collapsed" Margin="0,0,25,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
 
-                    <Label  Name="picHint" Margin="650,0,0,0" Grid.Row="1" Width="200" Style="{StaticResource labelStyle}" Foreground="Red" Content="Pic Should be 1800 X 600" HorizontalContentAlignment="Right"/>
+                    <Label  Name="picHint" HorizontalAlignment="Right" Grid.Row="1" Width="300" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be 1800 X 600" HorizontalContentAlignment="Right"/>
 
 
                     <WrapPanel Grid.Row="2">
@@ -67,8 +67,8 @@
                     </WrapPanel>
 
                     <WrapPanel Grid.Row="4"  HorizontalAlignment="Right" Name="remainingCharactersWrapPanel">
-                        <Label Width="180" Margin="0,0,0,0" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Left"/>
-                        <Label Width="50" Margin="0,0,300,0" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Center"/>
+                        <Label Width="180" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Left"/>
+                        <Label Width="50" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Left"/>
                     </WrapPanel>
 
                 </Grid>

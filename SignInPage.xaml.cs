@@ -65,7 +65,8 @@ namespace _01electronics_crm
             if (loggedInUser.GetEmployeeDepartmentId() != COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID 
                 && (loggedInUser.GetEmployeePositionId() != COMPANY_ORGANISATION_MACROS.MANAGER_POSTION || loggedInUser.GetEmployeeDepartmentId() != COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID)
                 && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID
-                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID)
+                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID
+                && loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.RECTRUITMENT_TEAM_ID)
             {
                 System.Windows.Forms.MessageBox.Show("Unauthorized Access, Please contact your system adminstrator for authorisation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

@@ -3,6 +3,7 @@ using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,8 +56,12 @@ namespace _01electronics_crm
         protected bool uploadThisFile = false;
         protected bool checkFileInServer = false;
         protected bool canEdit = false;
+        protected bool productNameEdited = false;
+        protected bool productSummaryPointsEdited = false;
+        protected bool productPhotoEdited = false;
 
         WrapPanel wrapPanel = new WrapPanel();
+        Grid UploadIconGrid = new Grid();
 
         private Grid previousSelectedFile;
         private Grid currentSelectedFile;
@@ -107,13 +112,60 @@ namespace _01electronics_crm
             {
                 InsertDragAndDropOrBrowseGrid();
                 product.GetNewProductID();
+                File.Delete(product.GetProductPhotoLocalPath());
             }
             else
             {
                 ContactProfileHeader.Content = "VIEW PRODUCT";
                 serverFileName = (String)product.GetProductID().ToString() + ".jpg";
                 localFolderPath = product.GetProductPhotoLocalPath();
-                uploadBackground.RunWorkerAsync();
+                //uploadBackground.RunWorkerAsync();
+
+                try
+                {
+                    Image brandLogo = new Image();
+                    //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                      src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    brandLogo.Source = src;
+                    brandLogo.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                    brandLogo.VerticalAlignment = VerticalAlignment.Stretch;
+
+                    wrapPanel.Children.Add(brandLogo);
+
+                    uploadFilesStackPanel.Children.Add(wrapPanel);
+
+                }
+
+
+                catch
+                {
+
+
+                    product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+                    if (product.DownloadPhotoFromServer())
+                    {
+
+                        Image brandLogo = new Image();
+                        //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(product.GetBrandPhotoLocalPath(), UriKind.Relative);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
+                        src.EndInit();
+                        brandLogo.Source = src;
+                        brandLogo.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                        brandLogo.VerticalAlignment = VerticalAlignment.Stretch;
+                        wrapPanel.Children.Add(brandLogo);
+
+                        uploadFilesStackPanel.Children.Add(wrapPanel);
+
+
+                    }
+                }
                 uploadFilesStackPanel.Children.Clear();
                 uploadFilesStackPanel.Children.Add(wrapPanel);
             }
@@ -123,8 +175,25 @@ namespace _01electronics_crm
   
         private void OnBtnClkSaveChanges(object sender, RoutedEventArgs e)
         {
+
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
+                if (ProductNameTextBox.Text == String.Empty)
+                {
+                    MessageBox.Show("Product name can't be empty!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (summerypointsTextBox.Text == String.Empty)
+                {
+                    MessageBox.Show("Product summary points can't be empty!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (localFolderPath == null)
+                {
+                    MessageBox.Show("Product photo can't be empty!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 product.SetProductName(ProductNameTextBox.Text);
                 product.SetsummaryPoints(summerypointsTextBox.Text);
 
@@ -134,13 +203,14 @@ namespace _01electronics_crm
             {
                 product.SetProductName(ProductNameTextBox.Text);
                 product.SetsummaryPoints(summerypointsTextBox.Text);
-
-                product.UpdateIntoProductName();
-                product.UpdateIntoProductSummaryPoints();
-                this.Close();
-
+                if (productNameEdited)
+                    product.UpdateIntoProductName();
+                if(productSummaryPointsEdited)
+                    product.UpdateIntoProductSummaryPoints();
 
             }
+
+            uploadBackground.RunWorkerAsync();
         }
 
         private void summerypointsTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -192,8 +262,8 @@ namespace _01electronics_crm
                         InsertIconGrid("pending", localFolderPath);
 
                         currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
-                        currentSelectedFile.Children.Add(progressBar);
-                        Grid.SetRow(progressBar, 3);
+                        //currentSelectedFile.Children.Add(progressBar);
+                        //Grid.SetRow(progressBar, 3);
 
                         uploadBackground.RunWorkerAsync();
 
@@ -221,7 +291,7 @@ namespace _01electronics_crm
 
         private void InsertIconGrid(string mStatus, string localFolderPath)
         {
-            Grid UploadIconGrid = new Grid();
+            UploadIconGrid = new Grid();
             UploadIconGrid.Margin = new Thickness(24);
             //UploadIconGrid.Width = 250;
             UploadIconGrid.MouseLeftButtonDown += OnClickIconGrid;
@@ -240,7 +310,7 @@ namespace _01electronics_crm
             Image icon = new Image();
 
             LoadIcon(ref icon);
-
+            
             //resizeImage(ref icon, 350, 150);
             UploadIconGrid.Children.Add(icon);
             Grid.SetRow(icon, 0);
@@ -251,7 +321,7 @@ namespace _01electronics_crm
             name.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             UploadIconGrid.Children.Add(name);
             Grid.SetRow(name, 1);
-
+            
             Label status = new Label();
             BrushConverter brush = new BrushConverter();
             if (mStatus == "pending")
@@ -279,13 +349,12 @@ namespace _01electronics_crm
         {
 
             Image productImage = new Image();
-
-            try
-            {
-
+            
+            //if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            //{
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
-                src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+                src.UriSource = new Uri(localFolderPath, UriKind.Relative);
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
                 productImage.Source = src;
@@ -294,42 +363,51 @@ namespace _01electronics_crm
 
                 Grid.SetRow(productImage, 0);
 
-
-                BrushConverter brushConverter = new BrushConverter();
-
-
-
-                Button EditButton = new Button();
-                EditButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                EditButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                // EditButton.Click += OnBtnClickEditProduct;
-                EditButton.Content = "Edit";
-
-            }
-            catch
-            {
-                product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
-                if (product.DownloadPhotoFromServer())
-                {
-                    BitmapImage src = new BitmapImage();
-                    src.BeginInit();
-                    src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
-                    src.CacheOption = BitmapCacheOption.OnLoad;
-                    src.EndInit();
-                    productImage.Source = src;
-                    productImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-                    productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                    
-                    Grid.SetRow(productImage, 0);
-                }
-            }
-
+            //}
+            //else 
+            //{ 
+            //    try
+            //    {
+            //
+            //        BitmapImage src = new BitmapImage();
+            //        src.BeginInit();
+            //        src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+            //        src.CacheOption = BitmapCacheOption.OnLoad;
+            //        src.EndInit();
+            //        productImage.Source = src;
+            //        productImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            //        productImage.VerticalAlignment = VerticalAlignment.Stretch;
+            //
+            //        Grid.SetRow(productImage, 0);
+            //
+            //    }
+            //    catch
+            //    {
+            //        product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+            //        if (product.DownloadPhotoFromServer())
+            //        {
+            //            BitmapImage src = new BitmapImage();
+            //            src.BeginInit();
+            //            src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
+            //            src.CacheOption = BitmapCacheOption.OnLoad;
+            //            src.EndInit();
+            //            productImage.Source = src;
+            //            productImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            //            productImage.VerticalAlignment = VerticalAlignment.Stretch;
+            //            
+            //            Grid.SetRow(productImage, 0);
+            //        }
+            //    }
+            //}
             icon = productImage;
+
+            canEdit = true;
+            editPictureButton.Visibility = Visibility.Visible;
 
             //if (productImage.Width!=1800 || productImage.Height!= 600)
             //{
             //    MessageBox.Show("Picture Should be 1800px X 600px ", "Error", (MessageBoxButtons)MessageBoxButton.OK, (MessageBoxIcon)MessageBoxImage.Error);
-                
+
             //}
             //else
             //{
@@ -360,7 +438,7 @@ namespace _01electronics_crm
                             Label overwriteFileLabel = (Label)overwriteFileGrid.Children[2];
                             overwriteFileLabel.Content = "Overwriting";
                             overwriteFileLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#FFFF00");
-                            overwriteFileGrid.Children.Add(progressBar);
+                            //overwriteFileGrid.Children.Add(progressBar);
                             Grid.SetRow(progressBar, 3);
                         }
                         else
@@ -417,7 +495,7 @@ namespace _01electronics_crm
                 localFileName = serverFileName;
 
                 progressBar.Visibility = Visibility.Visible;
-                currentSelectedFile.Children.Add(progressBar);
+                //currentSelectedFile.Children.Add(progressBar);
                 Grid.SetRow(progressBar, 3);
 
                 Label currentStatusLabel = (Label)currentSelectedFile.Children[2];
@@ -440,9 +518,20 @@ namespace _01electronics_crm
         {
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
 
+           // File.Delete(product.GetProductPhotoLocalPath());
+
             uploadBackground.ReportProgress(50);
             if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
+            {
                 fileUploaded = true;
+                //this.Dispatcher.Invoke(() =>
+                //{
+                //    this.Close();
+                //});
+
+                //image1.Source = null;
+                //File.Delete(product.GetProductPhotoLocalPath());
+            }
             else
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -459,7 +548,7 @@ namespace _01electronics_crm
             BackgroundWorker downloadBackground = sender as BackgroundWorker;
 
             downloadBackground.ReportProgress(50);
-            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath + "/" + localFileName, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
+            if (!ftpObject.DownloadFile(serverFolderPath + "/" + serverFileName, localFolderPath, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fileDownloaded = false;
@@ -487,6 +576,10 @@ namespace _01electronics_crm
         protected void OnUploadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
 
+            localFolderPath = product.GetProductPhotoLocalPath();
+
+            File.Delete(product.GetProductPhotoLocalPath());
+            downloadBackground.RunWorkerAsync();
             if (checkFileInServer == false)
             {
                 if (wrapPanel.Children.Count != 0)
@@ -509,14 +602,15 @@ namespace _01electronics_crm
             else
             {
                 overwriteFileGrid.Children.Remove(progressBar);
-
+            
                 BrushConverter brush = new BrushConverter();
                 Label overwriteFileLabel = (Label)overwriteFileGrid.Children[2];
-
+                
                 if (fileUploaded == true)
                 {
                     overwriteFileLabel.Content = "SUBMITTED";
                     overwriteFileLabel.Foreground = (System.Windows.Media.Brush)brush.ConvertFrom("#00FF00");
+                    //this.Close();
                 }
                 else
                 {
@@ -527,12 +621,18 @@ namespace _01electronics_crm
         }
         protected void OnDownloadBackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            currentSelectedFile.Children.Remove(progressBar);
-            Label currentStatusLabel = (Label)currentSelectedFile.Children[2];
+            UploadIconGrid.Children.Remove(progressBar);
+            Label currentStatusLabel = (Label)UploadIconGrid.Children[2];
             if (fileDownloaded == true)
                 currentStatusLabel.Content = "Downloaded";
             else
                 currentStatusLabel.Content = "Failed";
+
+
+            this.Dispatcher.Invoke(() =>
+            {
+                this.Close();
+            });
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INSERT FUNCTIONS
@@ -541,7 +641,6 @@ namespace _01electronics_crm
        
         private void InsertIconGridFromServer(int i)
         {
-            Grid UploadIconGrid = new Grid();
             UploadIconGrid.Margin = new Thickness(24);
             //UploadIconGrid.Width = 250;
 
@@ -697,10 +796,10 @@ namespace _01electronics_crm
 
             InsertIconGrid("pending", localFolderPath);
             currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
-            currentSelectedFile.Children.Add(progressBar);
+            //currentSelectedFile.Children.Add(progressBar);
             Grid.SetRow(progressBar, 3);
 
-            uploadBackground.RunWorkerAsync();
+            //uploadBackground.RunWorkerAsync();
         }
 
         private void OnClickRetryButton(object sender, RoutedEventArgs e)
@@ -791,8 +890,8 @@ namespace _01electronics_crm
                 {
                     ftpFiles.Add(localFileName);
 
-                    //uploadFilesStackPanel.Children.Clear();
-                    //uploadFilesStackPanel.Children.Add(wrapPanel);
+                    uploadFilesStackPanel.Children.Clear();
+                    uploadFilesStackPanel.Children.Add(wrapPanel);
 
                     if (wrapPanel.Children.Count != 0)
                         wrapPanel.Children.RemoveAt(wrapPanel.Children.Count - 1);
@@ -800,7 +899,7 @@ namespace _01electronics_crm
                     InsertIconGrid("pending", localFolderPath);
 
                     currentSelectedFile = (Grid)wrapPanel.Children[wrapPanel.Children.Count - 1];
-                    currentSelectedFile.Children.Add(progressBar);
+                    //currentSelectedFile.Children.Add(progressBar);
                     Grid.SetRow(progressBar, 3);
 
                     uploadBackground.RunWorkerAsync();
@@ -809,7 +908,7 @@ namespace _01electronics_crm
                 }
                 else if (checkFileInServer == true)
                 {
-                    uploadBackground.RunWorkerAsync();
+                    //uploadBackground.RunWorkerAsync();
 
                     uploadThisFile = false;
                 }
@@ -874,6 +973,11 @@ namespace _01electronics_crm
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+                if(ProductNameTextBox.Text == String.Empty)
+                {
+                    MessageBox.Show("Product name can't be empty!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 ProductNameLabel.Content = ProductNameTextBox.Text.ToString();
                 ProductNameLabel.Visibility = Visibility.Visible;
                 ProductNameTextBox.Visibility = Visibility.Collapsed;
@@ -885,6 +989,7 @@ namespace _01electronics_crm
                 BrushConverter brushConverter = new BrushConverter();
                 ProductNameLabel.Foreground = (Brush)brushConverter.ConvertFrom("#FF0000");
                 saveChangesButton.IsEnabled = true;
+                productNameEdited = true;
             }
             else
             {
@@ -900,6 +1005,12 @@ namespace _01electronics_crm
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+                if (summerypointsTextBox.Text == String.Empty)
+                {
+                    MessageBox.Show("Product summary points can't be empty!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 ProductSummeryPointstextblock.Text = summerypointsTextBox.Text;
                 
                 summerypointsTextBox.Visibility = Visibility.Collapsed;
@@ -912,6 +1023,7 @@ namespace _01electronics_crm
                 BrushConverter brushConverter = new BrushConverter();
                 ProductSummeryPointstextblock.Foreground = (Brush)brushConverter.ConvertFrom("#FF0000");
                 saveChangesButton.IsEnabled = true;
+                productSummaryPointsEdited = true;
 
             }
             else
@@ -994,14 +1106,23 @@ namespace _01electronics_crm
                 product.UploadPhotoToServer();
 
             serverFileName = (String)product.GetProductID().ToString() + ".jpg";
-            localFolderPath = product.GetProductPhotoLocalPath();
-            uploadBackground.RunWorkerAsync();
+            //localFolderPath = product.GetProductPhotoLocalPath();
+            //uploadBackground.RunWorkerAsync();
             uploadFilesStackPanel.Children.Clear();
             uploadFilesStackPanel.Children.Add(wrapPanel);
             //uploadFilesStackPanel.Children.Add(wrapPanel);
+            productPhotoEdited = true;
 
+            UploadIconGrid.Children.Clear();
+            UploadIconGrid.RowDefinitions.Clear();
+            InsertIconGrid("pending", localFolderPath);
+            
+            progressBar.Visibility = Visibility.Visible;
+            //currentSelectedFile.Children.Add(progressBar);
+            Grid.SetRow(progressBar, 3);
+            UploadIconGrid.Children.Add(progressBar);
 
-
+            saveChangesButton.IsEnabled = true;
 
             /*
                         ftpFiles.Remove(localFileName);
