@@ -170,6 +170,7 @@ namespace _01electronics_crm
                         expanderStackPanel.Children.Add(ViewButton);
 
                         expander.Content = expanderStackPanel;
+                        expander.Margin = new Thickness(0,75,0,0);
 
                         gridI.Children.Add(expander);
                         brandsWrapPanel.Children.Add(gridI);
@@ -497,6 +498,7 @@ namespace _01electronics_crm
             Grid currentGrid = (Grid)currentExpander.Parent;
 
             currentExpander.VerticalAlignment = VerticalAlignment.Top;
+            currentExpander.Margin = new Thickness(0, 75, 0, 0);
         }
 
         private void OnCollapseExpander(object sender, RoutedEventArgs e)
@@ -504,7 +506,8 @@ namespace _01electronics_crm
             Expander currentExpander = (Expander)sender;
             Grid currentGrid = (Grid)currentExpander.Parent;
             currentExpander.VerticalAlignment = VerticalAlignment.Top;
-            currentExpander.Margin = new Thickness(12);
+            currentExpander.Margin = new Thickness(0, 75, 0, 0);
+            //currentExpander.Margin = new Thickness(12);
         }
     }
 }

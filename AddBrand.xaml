@@ -36,13 +36,13 @@
                     </Grid.RowDefinitions>
 
                   
-                    <Border   BorderBrush="#105A97" Margin="25,0,0,0" BorderThickness="2" Grid.Row="0" MinHeight="150" MinWidth="450"   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Border   BorderBrush="#105A97" Margin="25,0,0,0" BorderThickness="2" Grid.Row="0" MinHeight="150" MinWidth="450"  Width="800" Height="400">
 
                         <StackPanel Name="uploadFilesStackPanel"  Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center" >
                         </StackPanel>
 
                     </Border>
-                    <Button  Visibility="Collapsed" Margin="0,0,25,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
+                    <Button  Visibility="Collapsed" Margin="0,0,85,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
 
                     <Label  Name="picHint" Margin="650,0,0,0" Grid.Row="1" Width="320" HorizontalContentAlignment="Left" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be at least Width 300 Px" />
 
