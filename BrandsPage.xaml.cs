@@ -415,9 +415,6 @@ namespace _01electronics_crm
         }
         private void addBtnMouseEnter(object sender, MouseEventArgs e)
         {
-
-
-
             Storyboard storyboard = new Storyboard();
             TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
             DoubleAnimation animation = new DoubleAnimation();
@@ -457,7 +454,7 @@ namespace _01electronics_crm
         private void onBtnAddClick(object sender, MouseButtonEventArgs e)
         {
             mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
-            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition ,ref brandsList);
             addBrandWindow.Closed += OnCloseBrandsWindow;
             addBrandWindow.Show();
         }
@@ -475,11 +472,12 @@ namespace _01electronics_crm
             Button viewButton = (Button)sender;
             StackPanel expanderStackPanel = (StackPanel)viewButton.Parent;
             Expander expander = (Expander)expanderStackPanel.Parent;
-            selectedProduct.SetBrandID(int.Parse(expander.Tag.ToString())-1);
+            selectedProduct.SetBrandID(int.Parse(expander.Tag.ToString()));
+
             
             
             mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
-            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition);
+            AddBrand addBrandWindow = new AddBrand(ref selectedProduct, ref loggedInUser, ref mViewAddCondition, ref brandsList);
             addBrandWindow.Show();
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddBrand" >
+        Title="AddBrand" Width="920" Height="850">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -42,9 +42,9 @@
                         </StackPanel>
 
                     </Border>
-                    <Button  Visibility="Collapsed" Margin="0,0,85,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
+                    <Button  Visibility="Collapsed" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="75" Height="35" Click="onBtnEditClick"  />
 
-                    <Label  Name="picHint" Margin="650,0,0,0" Grid.Row="1" Width="320" HorizontalContentAlignment="Left" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be at least Width 300 Px" />
+                    <Label  Name="picHint" Margin="500,0,0,0" Grid.Row="1" Width="320" HorizontalContentAlignment="Left" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be at least Width 300 Px" />
 
 
                     <WrapPanel Grid.Row="2">

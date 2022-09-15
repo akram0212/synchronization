@@ -1,5 +1,6 @@
 ﻿using _01electronics_library;
 using _01electronics_windows_library;
+//using Spire.Pdf.Exporting.XPS.Schema;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,6 +39,8 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
 
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brands = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+        private List<COMPANY_WORK_MACROS.BRAND_STRUCT> mbrandsList = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
+
         private Employee loggedInUser;
 
         protected String errorMessage;
@@ -76,10 +79,11 @@ namespace _01electronics_crm
         protected Product product;
 
         List<string> ftpFiles;
+
         Grid UploadIconGrid = new Grid();
 
         ProgressBar progressBar = new ProgressBar();
-        public AddBrand(ref Product pBrand, ref Employee mLoggedInUser, ref int mViewAddCondition)
+        public AddBrand(ref Product pBrand, ref Employee mLoggedInUser, ref int mViewAddCondition, ref List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandsList )
         {
 
             InitializeComponent();
@@ -93,7 +97,7 @@ namespace _01electronics_crm
             integrityChecks = new IntegrityChecks();
             product = pBrand;
             viewAddCondition = mViewAddCondition;
-
+            mbrandsList = brandsList;
 
             ftpFiles = new List<string>(); progressBar.Style = (Style)FindResource("ProgressBarStyle");
             progressBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -117,28 +121,41 @@ namespace _01electronics_crm
             commonQueriesObject.GetCompanyBrands(ref brands);
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
+                deleteSomeBrands();
+
             }
             else
             {
+                product.SetBrandName(brands[brands.FindIndex(brandItem => brandItem.brandId == product.GetBrandID())].brandName);
+
                 ContactProfileHeader.Content = "VIEW BRAND";
                 serverFileName = (String)product.GetBrandID().ToString() + ".jpg";
                 localFolderPath = product.GetBrandPhotoLocalPath();
                 //uploadBackground.RunWorkerAsync();
                 uploadFilesStackPanel.Children.Clear();
                 uploadFilesStackPanel.Children.Add(wrapPanel);
-            }
-            checkEmployee();
 
+            }
             
             InitializeBrandsComboBox();
-
-
+            checkEmployee();
+            
             }
         
         /// /////////////////////////////////////////////////////////////////
         /// ////////cHECKERS
         /// /////////////////////////////////////////////////////////////////
        
+        private void deleteSomeBrands()
+        {
+            int index;
+            for (int i =0 ; i < mbrandsList.Count; i++)
+            {
+                index= brands.FindIndex(x => x.brandId == mbrandsList[i].brandId );
+                brands.Remove(brands[index]);
+
+            }
+        }
         private void checkEmployee()
         {
 
@@ -152,8 +169,10 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                product.SetBrandName(brands[product.GetBrandID()].brandName);
-                BrandNameComboBox.SelectedIndex= product.GetBrandID();  
+                int index = brands.FindIndex(brandItem => brandItem.brandId == product.GetBrandID());
+
+
+                BrandNameComboBox.SelectedIndex = brands.FindIndex(brandItem => brandItem.brandId == product.GetBrandID());  
                 BrandNameLabel.Content = product.GetBrandName();
                 BrandNameComboBox.Visibility = Visibility.Collapsed;
                 BrandNameLabel.Visibility = Visibility.Visible;
@@ -163,6 +182,11 @@ namespace _01electronics_crm
                 editPictureButton.Visibility = Visibility.Visible;
 
                 saveChangesButton.IsEnabled = false;
+            }
+            else
+            {
+                BrandNameComboBox.SelectedIndex = 0;
+
             }
 
 
@@ -177,7 +201,7 @@ namespace _01electronics_crm
                 product.SetBrandName(BrandNameComboBox.SelectedItem.ToString());
                 product.SetBrandID(brands[BrandNameComboBox.SelectedIndex].brandId);
                 product.AddBrandToProduct();
-                //this.Close();
+                this.Close();
             }
 
             uploadBackground.RunWorkerAsync();
@@ -250,6 +274,7 @@ namespace _01electronics_crm
         {
             for (int i = 0; i < brands.Count; i++)
                 BrandNameComboBox.Items.Add(brands[i].brandName);
+
             return true; 
         }
 
@@ -883,7 +908,7 @@ namespace _01electronics_crm
 
         private void BrandNameComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            product.SetBrandID(BrandNameComboBox.SelectedIndex+1);
+            product.SetBrandID(brands[BrandNameComboBox.SelectedIndex].brandId);
             wrapPanel.Children.Clear();
             uploadFilesStackPanel.Children.Clear();
 
