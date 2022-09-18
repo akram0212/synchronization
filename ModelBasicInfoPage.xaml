@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_01electronics_crm"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       Title="Model Basic Info">
 
     <Grid>
@@ -58,16 +58,16 @@
 
         <Grid Grid.Row="2" Margin="24">
             <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="0.5*"/>
 
 
             </Grid.RowDefinitions>
 
-            <Border  BorderBrush="#105A97" Margin="65,0,0,0" BorderThickness="3" Grid.Row="0" Width="800px" Height="250px" Name="scrollViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Border  BorderBrush="#105A97" Margin="0,-15,0,0" BorderThickness="3" Grid.Row="0" Width="201px" Height="251px" Name="scrollViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
             <Label  Name="picHint" Margin="645,0,0,0" Grid.Row="1" Width="220" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be 1800 X 600" HorizontalContentAlignment="Right"/>
@@ -75,13 +75,16 @@
             <WrapPanel Grid.Row="2">
                 <WrapPanel Name="NameWrapPanel" Margin="0,10,0,0">
                     <Label Style="{StaticResource labelStyle}" Content="Product Name" Width="130"/>
-                    <Label Style="{StaticResource tableItemValue}" Margin="30,20,12,12" Name="telephoneTextBox"/>
+                    <Label Style="{StaticResource labelStyle}" Margin="30,20,12,12"  Name="NameLabel" Width="384" Visibility="Collapsed"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Margin="30,20,12,12" Name="NameTextBox" Width="384" Visibility="Collapsed"/>
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Grid.Row="3">
                 <WrapPanel Name="summryNotesWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Summry Points*"  Width="130" />
-                    <TextBox Grid.Row="0" Style="{StaticResource commentsTextBoxStyle}" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="additionalDescriptionTextBox"/>
+                    <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" Width="384"  TextWrapping="Wrap"   Name="summeryPointsTextBlock" Visibility="Collapsed"/>
+
+                    <TextBox Grid.Row="0"  Style="{StaticResource commentsTextBoxStyle}" Height="100"  TextWrapping="Wrap"  Name="summeryPointsTextBox" Visibility="Collapsed"/>
 
                 </WrapPanel>
             </WrapPanel>

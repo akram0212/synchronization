@@ -662,7 +662,9 @@ namespace _01electronics_crm
         private void OnCloseAddModelsWindow(object sender, EventArgs e)
         {
             brandModels.Clear();
+
             modelsWrapPanel.Children.Clear();
+
 
             if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
               loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
