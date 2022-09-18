@@ -70,17 +70,17 @@
 
             <WrapPanel Grid.Row="2">
                 <WrapPanel Name="NameWrapPanel" Margin="0,10,0,0">
-                    <Label Style="{StaticResource labelStyle}" Content="Product Name" Width="130"/>
-                    <Label Style="{StaticResource labelStyle}" Margin="30,20,12,12"  Name="NameLabel" Width="384" Visibility="Collapsed"/>
-                    <TextBox Style="{StaticResource textBoxStyle}" Margin="30,20,12,12" Name="NameTextBox" Width="384" Visibility="Collapsed"/>
+                    <Label Style="{StaticResource labelStyle}" Content="Product Name*" Width="130"/>
+                    <Label Style="{StaticResource labelStyle}" Margin="30,20,12,12" Content=""  Name="NameLabel" Width="384" Visibility="Collapsed"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Margin="30,20,12,12" Text="" Name="NameTextBox" Width="384" Visibility="Collapsed"/>
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Grid.Row="3">
                 <WrapPanel Name="summryNotesWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Summry Points*"  Width="130" />
-                    <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" Width="384"  TextWrapping="Wrap"   Name="summeryPointsTextBlock" Visibility="Collapsed"/>
+                    <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" Width="384" Text=""  TextWrapping="Wrap"   Name="summeryPointsTextBlock" Visibility="Collapsed"/>
 
-                    <TextBox Grid.Row="0"  Style="{StaticResource commentsTextBoxStyle}" Height="100"  TextWrapping="Wrap"  Name="summeryPointsTextBox" Visibility="Collapsed"/>
+                    <TextBox Grid.Row="0"  Style="{StaticResource commentsTextBoxStyle}" Text="" Height="100"  TextWrapping="Wrap"  Name="summeryPointsTextBox" Visibility="Collapsed"/>
 
                 </WrapPanel>
             </WrapPanel>

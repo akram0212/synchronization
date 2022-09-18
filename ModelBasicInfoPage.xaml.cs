@@ -47,10 +47,17 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
                
+                NameTextBox.Visibility = Visibility.Visible;
+                summeryPointsTextBox.Visibility = Visibility.Visible;
+
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                
+
+                NameLabel.Visibility = Visibility.Visible;
+                summeryPointsTextBlock.Visibility = Visibility.Visible;
+                InitializeInfo();
+
             }
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,5 +103,11 @@ namespace _01electronics_crm
         {
 
         }
+        private void InitializeInfo()
+        {
+            
+        }
+
+
     }
 }
