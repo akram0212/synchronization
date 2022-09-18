@@ -55,10 +55,10 @@
         <Grid Grid.Row="2" Margin="24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="0.5*"/>
 
 
             </Grid.RowDefinitions>
@@ -78,9 +78,9 @@
             <WrapPanel Grid.Row="3">
                 <WrapPanel Name="summryNotesWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Summry Points*"  Width="130" />
-                    <Label Style="{StaticResource labelStyle}" Content="" Margin="30,20,12,12" Name="summeyPointsLabel" Width="384" Visibility="Collapsed"/>
+                    <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" Width="384"  TextWrapping="Wrap"   Name="summeryPointsTextBlock" Visibility="Collapsed"/>
 
-                    <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" TextWrapping="Wrap"  Name="summeryPointsTextBlock" Visibility="Visible"/>
+                    <TextBox Grid.Row="0"  Style="{StaticResource commentsTextBoxStyle}" Height="100"  TextWrapping="Wrap"  Name="summeryPointsTextBox" Visibility="Collapsed"/>
 
                 </WrapPanel>
             </WrapPanel>
