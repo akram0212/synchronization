@@ -662,7 +662,7 @@ namespace _01electronics_crm
         private void OnCloseAddModelsWindow(object sender, EventArgs e)
         {
             brandModels.Clear();
-            ModelsGrid.Children.Clear();
+            //ModelsGrid.Children.Clear();
 
             downloadBackground.RunWorkerAsync();
 
