@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using _01electronics_library;
 
 namespace _01electronics_crm
 {
     /// <summary>
-    /// Interaction logic for ModelBasicInfoPage.xaml
+    /// Interaction logic for ModelUpsSpecsPage.xaml
     /// </summary>
-    public partial class ModelBasicInfoPage : Page
+    public partial class ModelUpsSpecsPage : Page
     {
         Employee loggedInUser;
         Product product;
@@ -29,10 +29,9 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
-        public ModelUpsSpecsPage modelUpsSpecsPage;
+        public ModelBasicInfoPage modelBasicInfoPage;
         public ModelUploadFilesPage modelUploadFilesPage;
-
-        public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
+        public ModelUpsSpecsPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -47,61 +46,65 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
-               
+
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                
+
             }
         }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //////////BUTTON CLICKED///////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
-            modelUpsSpecsPage.modelBasicInfoPage = this;
-            modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
+            modelBasicInfoPage.modelUpsSpecsPage = this;
+            modelBasicInfoPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
+                modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
 
-            NavigationService.Navigate(modelUpsSpecsPage);
-            
-            //modelAdditionalInfoPage.modelBasicInfoPage = this;
-            //
-            //if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-            //    modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
-            //
-            //NavigationService.Navigate(modelAdditionalInfoPage);
+            NavigationService.Navigate(modelBasicInfoPage);
+        }
+
+        private void OnBtnClickNext(object sender, RoutedEventArgs e)
+        {
+            modelAdditionalInfoPage.modelBasicInfoPage = modelBasicInfoPage;
+            modelAdditionalInfoPage.modelUpsSpecsPage = this;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+
+            NavigationService.Navigate(modelAdditionalInfoPage);
+
+        }
+        private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
+        {
+            modelBasicInfoPage.modelUpsSpecsPage = this;
+            modelBasicInfoPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+
+            NavigationService.Navigate(modelBasicInfoPage);
         }
         private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            modelAdditionalInfoPage.modelBasicInfoPage = this;
-            modelAdditionalInfoPage.modelUpsSpecsPage = modelUpsSpecsPage;
+            modelAdditionalInfoPage.modelBasicInfoPage = modelBasicInfoPage;
+            modelAdditionalInfoPage.modelUpsSpecsPage = this;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
 
             NavigationService.Navigate(modelAdditionalInfoPage);
         }
-        private void OnBtnClickUpsSpecs(object sender, MouseButtonEventArgs e)
-        {
-            modelUpsSpecsPage.modelBasicInfoPage = this;
-            modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
-
-            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
-
-            NavigationService.Navigate(modelUpsSpecsPage);
-        }
-
         private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                modelUploadFilesPage.modelBasicInfoPage = this;
-                modelUploadFilesPage.modelUpsSpecsPage = modelUpsSpecsPage;
+                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
+                modelUploadFilesPage.modelUpsSpecsPage = this;
                 modelUploadFilesPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 
                 NavigationService.Navigate(modelUploadFilesPage);
