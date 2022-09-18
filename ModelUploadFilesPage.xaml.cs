@@ -64,6 +64,7 @@ namespace _01electronics_crm
         ProgressBar progressBar = new ProgressBar();
 
         public ModelBasicInfoPage modelBasicInfoPage;
+        public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
 
         protected String errorMessage;

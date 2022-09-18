@@ -39,15 +39,19 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource selectedSecondaryTabBorder}" >
                 <Label Content="Basic Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickAdditionalInfo">
+            <Border Grid.Column="1" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUpsSpecs">
+                <Label Content="Ups Specs" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
-            <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUploadFiles">
+            <Border Grid.Column="3" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUploadFiles">
                 <Label Content="Data Sheet" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>

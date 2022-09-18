@@ -30,6 +30,7 @@ namespace _01electronics_crm
         private int viewAddCondition;
 
         public ModelBasicInfoPage modelBasicInfoPage;
+        public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelUploadFilesPage modelUploadFilesPage;
 
         public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
@@ -114,6 +115,7 @@ namespace _01electronics_crm
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
             modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
+            modelUploadFilesPage.modelUpsSpecsPage = modelUpsSpecsPage;
             modelUploadFilesPage.modelAdditionalInfoPage = this;
 
             NavigationService.Navigate(modelUploadFilesPage);
@@ -121,12 +123,21 @@ namespace _01electronics_crm
 
         private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
-            modelBasicInfoPage.modelAdditionalInfoPage = this;
+
+            modelUpsSpecsPage.modelAdditionalInfoPage = this;
+            modelUpsSpecsPage.modelBasicInfoPage = modelBasicInfoPage;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+                modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
 
-            NavigationService.Navigate(modelBasicInfoPage);
+            NavigationService.Navigate(modelUpsSpecsPage);
+
+            //modelBasicInfoPage.modelAdditionalInfoPage = this;
+            //
+            //if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            //    modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+            //
+            //NavigationService.Navigate(modelBasicInfoPage);
         }
 
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
@@ -136,6 +147,7 @@ namespace _01electronics_crm
         }
         private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            modelBasicInfoPage.modelUpsSpecsPage = modelUpsSpecsPage;
             modelBasicInfoPage.modelAdditionalInfoPage = this;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
@@ -143,12 +155,23 @@ namespace _01electronics_crm
 
             NavigationService.Navigate(modelBasicInfoPage);
         }
+        private void OnBtnClickUpsSpecs(object sender, MouseButtonEventArgs e)
+        {
+            modelUpsSpecsPage.modelAdditionalInfoPage = this;
+            modelUpsSpecsPage.modelBasicInfoPage = modelBasicInfoPage;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
+
+            NavigationService.Navigate(modelUpsSpecsPage);
+        }
 
         private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
+                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage; 
+                modelUploadFilesPage.modelUpsSpecsPage = modelUpsSpecsPage;
                 modelUploadFilesPage.modelAdditionalInfoPage = this;
 
                 NavigationService.Navigate(modelUploadFilesPage);
