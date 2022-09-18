@@ -738,9 +738,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="photos\models\00.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\office_meeting_icon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -817,6 +814,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="photos\categories\1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="photos\models\00.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" />

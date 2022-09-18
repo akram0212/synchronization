@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
@@ -60,6 +61,14 @@ namespace _01electronics_crm
 
             downloadProgressBar.Visibility = Visibility.Visible;
             downloadBackground.RunWorkerAsync();
+           
+            
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+              loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
+              (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
+            {
+                addBtn.Visibility = Visibility.Visible;
+            }
         }
         ~ModelsPage()
         {
@@ -81,6 +90,8 @@ namespace _01electronics_crm
 
         public void SetUpPageUIElements()
         {
+           
+
             Application.Current.Dispatcher.Invoke((Action)delegate
             {
                 Label productTitleLabel = new Label();
@@ -594,6 +605,67 @@ namespace _01electronics_crm
             modelsWindow.Show();
         }
 
+        private void addBtnMouseEnter(object sender, MouseEventArgs e)
+        {
 
+
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 1.0;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+        }
+
+        private void addBtnMouseLeave(object sender, MouseEventArgs e)
+        {
+
+
+            Storyboard storyboard = new Storyboard();
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = addBtn.Opacity;
+            animation.To = 0.5;
+            animation.Duration = new Duration(duration);
+
+            Storyboard.SetTargetName(animation, addBtn.Name);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Control.OpacityProperty));
+
+            storyboard.Children.Add(animation);
+
+            storyboard.Begin(this);
+
+        }
+
+        private void onBtnAddClick(object sender, MouseButtonEventArgs e)
+        {
+            
+
+            
+            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, 1, false);
+            modelsWindow.Closed += OnCloseAddModelsWindow; 
+            modelsWindow.Show();
+
+           
+        }
+
+        private void OnCloseAddModelsWindow(object sender, EventArgs e)
+        {
+            brandModels.Clear();
+            ModelsGrid.Children.Clear();
+
+            downloadBackground.RunWorkerAsync();
+
+        }
     }
 }
