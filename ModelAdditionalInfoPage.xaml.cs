@@ -51,8 +51,13 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-
+                cancelButton.IsEnabled = false;
+                finishButton.IsEnabled = false;
+                nextButton.IsEnabled = true;
             }
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                nextButton.IsEnabled = false;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,6 +153,11 @@ namespace _01electronics_crm
 
                 NavigationService.Navigate(modelUploadFilesPage);
             }
+        }
+
+        private void OnClickStandardFeaturesImage(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

@@ -36,6 +36,7 @@ namespace _01electronics_crm
         private Expander currentExpander;
         private Expander previousExpander;
         private Grid currentGrid;
+        protected int viewAddCondition;
         public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
         {
             InitializeComponent();
@@ -261,7 +262,7 @@ namespace _01electronics_crm
                         DownloadCatalog.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
                         DownloadCatalog.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
                         DownloadCatalog.Click += OnBtnClickDownloadCatalog;
-                        DownloadCatalog.Content = "Download Catalog";
+                        DownloadCatalog.Content = "Download Data Sheet";
 
 
                         expanderStackPanel.Children.Add(ViewButton);
@@ -600,8 +601,9 @@ namespace _01electronics_crm
             
             currentGrid = (Grid)currentExpander.Parent;
 
+            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
             //ViewModel();
-            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, 1, false);
+            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
             modelsWindow.Show();
         }
 
@@ -649,10 +651,8 @@ namespace _01electronics_crm
 
         private void onBtnAddClick(object sender, MouseButtonEventArgs e)
         {
-            
-
-            
-            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, 1, false);
+            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
+            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
             modelsWindow.Closed += OnCloseAddModelsWindow; 
             modelsWindow.Show();
 
@@ -662,9 +662,25 @@ namespace _01electronics_crm
         private void OnCloseAddModelsWindow(object sender, EventArgs e)
         {
             brandModels.Clear();
-            ModelsGrid.Children.Clear();
+            modelsWrapPanel.Children.Clear();
 
+            if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+              loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
+              (loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
+            {
+                addBtn.Visibility = Visibility.Visible;
+            }
+
+            downloadBackground = new BackgroundWorker();
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/" + selectedProduct.GetProductID() + "/" + selectedProduct.GetBrandID());
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
+
+            downloadProgressBar.Visibility = Visibility.Visible;
             downloadBackground.RunWorkerAsync();
+
 
         }
     }

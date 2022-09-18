@@ -49,10 +49,33 @@
                 <Label Content="Additional Info" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
             <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUploadFiles">
-                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                <Label Content="Data Sheet" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
 
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <WrapPanel Grid.Row="0" >
+                    <Label Content="Standard&#x0a;Features*" Style="{StaticResource labelStyle}"/>
+                    <TextBox Style="{StaticResource textBoxStyle}" Name="standardFeaturesTextBox1" TextWrapping="Wrap"/>
+                    <Image Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickStandardFeaturesImage"/>
+                </WrapPanel>
+            </Grid>
+        
+        </Grid>
+        
+        
         <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -61,8 +84,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButto" Content="BACK" Click="OnBtnClickBack" Margin="24"/>
-            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="NEXT" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButto" Content="Back" Click="OnBtnClickBack" Margin="24"/>
+            <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
             <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" Click="OnBtnClickFinish" Margin="24"/>
             <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel" Margin="24"/>
 
