@@ -48,7 +48,7 @@
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
             <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickUploadFiles">
-                <Label Content="Upload Files" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
+                <Label Content="Data Sheet" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
 
@@ -101,7 +101,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="BACK" IsEnabled="False" Margin="24"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButton" Content="Back" IsEnabled="False" Margin="24"/>
             <Button Grid.Column="1" Style="{StaticResource buttonStyle}" Name="nextButton"  Content="Next" Click="OnClickNextButton" Margin="24"/>
             <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
             <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel"  Margin="24"/>
