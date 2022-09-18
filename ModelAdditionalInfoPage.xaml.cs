@@ -55,11 +55,85 @@ namespace _01electronics_crm
             }
         }
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        //////////BUTTON CLICKED/////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+        private void OnBtnClickFinish(object sender, RoutedEventArgs e)
+        {
+            //YOUR MESSAGE MUST BE SPECIFIC
+            //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
+           // if (product.GetSalesPersonId() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Sales person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetAssigneeId() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Assignee is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetAddressSerial() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Company Address is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetContactId() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Contact is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductProduct1TypeId() != 0 && product.GetproductProduct1Quantity() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductProduct2TypeId() != 0 && product.GetproductProduct2Quantity() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 2!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductProduct3TypeId() != 0 && product.GetproductProduct3Quantity() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 3!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductProduct4TypeId() != 0 && product.GetproductProduct4Quantity() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 4!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductContractTypeId() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Contract type is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else if (product.GetproductStatusId() == 0)
+           //     System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an product! Contact your system administrator!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           // else
+           // {
+           //     if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+           //     {
+           //         //if (!product.IssueNewproduct())
+           //         //    return;
+           //
+           //         if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+           //         {
+           //             viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+           //
+           //             ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+           //
+           //             viewproduct.Show();
+           //         }
+           //
+           //     }
+           //
+           //     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+           //     currentWindow.Close();
+           // }
+        }
+
+        private void OnBtnClickNext(object sender, RoutedEventArgs e)
+        {
+            modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
+            modelUploadFilesPage.modelAdditionalInfoPage = this;
+
+            NavigationService.Navigate(modelUploadFilesPage);
+        }
+
+        private void OnBtnClickBack(object sender, RoutedEventArgs e)
+        {
+            modelBasicInfoPage.modelAdditionalInfoPage = this;
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+
+            NavigationService.Navigate(modelBasicInfoPage);
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+            currentWindow.Close();
+        }
         private void OnBtnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             modelBasicInfoPage.modelAdditionalInfoPage = this;
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 modelBasicInfoPage.modelUploadFilesPage = modelUploadFilesPage;
 
             NavigationService.Navigate(modelBasicInfoPage);
@@ -67,7 +141,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
                 modelUploadFilesPage.modelAdditionalInfoPage = this;
