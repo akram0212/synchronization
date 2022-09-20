@@ -73,6 +73,7 @@ namespace _01electronics_crm
             }
             Label productTitleLabel = new Label();
             productTitleLabel.Content = selectedProduct.GetProductName();
+            productTitleLabel.Content = productTitleLabel.Content.ToString().ToUpper();
             productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
             productTitleLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
             productTitleLabel.Margin = new Thickness(48, 24, 48, 24);

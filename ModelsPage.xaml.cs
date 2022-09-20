@@ -96,7 +96,8 @@ namespace _01electronics_crm
             Application.Current.Dispatcher.Invoke((Action)delegate
             {
                 Label productTitleLabel = new Label();
-                productTitleLabel.Content = selectedProduct.GetBrandName() + " " + selectedProduct.GetProductName();
+                productTitleLabel.Content = selectedProduct.GetBrandName() + " - " + selectedProduct.GetProductName();
+                productTitleLabel.Content = productTitleLabel.Content.ToString().ToUpper();
                 productTitleLabel.VerticalAlignment = VerticalAlignment.Stretch;
                 productTitleLabel.HorizontalAlignment = HorizontalAlignment.Stretch;
                 productTitleLabel.Margin = new Thickness(48, 24, 48, 24);
