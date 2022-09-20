@@ -265,8 +265,15 @@ namespace _01electronics_crm
                         DownloadCatalog.Click += OnBtnClickDownloadCatalog;
                         DownloadCatalog.Content = "Download Data Sheet";
 
+                        Button AddSpec = new Button();
+                        AddSpec.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        AddSpec.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        AddSpec.Click += OnBtnClickDownloadCatalog;
+                        AddSpec.Content = "Add Spec";
+
 
                         expanderStackPanel.Children.Add(ViewButton);
+                        expanderStackPanel.Children.Add(AddSpec);
                         expanderStackPanel.Children.Add(DownloadCatalog);
 
                         expander.Content = expanderStackPanel;
