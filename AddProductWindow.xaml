@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddProductWindow" WindowState="Normal" Width="750" Height="800">
+        Title="AddProductWindow" Background="#f3f3f3" WindowState="Normal" Width="750" Height="800">
     <Grid>
 
         <Grid.ColumnDefinitions>
