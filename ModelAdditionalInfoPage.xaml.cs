@@ -32,6 +32,10 @@ namespace _01electronics_crm
         public ModelBasicInfoPage modelBasicInfoPage;
         public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelUploadFilesPage modelUploadFilesPage;
+
+        int standardFeatureId = 0;
+        int benefitId = 1;
+        int applicationId = 2;
         
         public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
@@ -178,34 +182,46 @@ namespace _01electronics_crm
             }
         }
 
-        private void OnClickStandardFeaturesImage(object sender, MouseButtonEventArgs e)
+        private void onClickHandler(object sender, MouseButtonEventArgs e)
         {
             Image addImage = sender as Image;
             Grid parentGrid = addImage.Parent as Grid;
+            parentGrid.Tag = standardFeatureId;
             int index = standardFeaturesGrid.Children.IndexOf(parentGrid);
 
-            AddNewStandardFeature(index, parentGrid);
-
-
+            AddNewStandardFeature(index, "Feature #", standardFeaturesGrid, parentGrid, standardFeatureId, onClickHandler);
 
         }
 
         private void OnClickBenefitsImage(object sender, MouseButtonEventArgs e)
         {
+            Image addImage = sender as Image;
+            Grid parentGrid = addImage.Parent as Grid;
+            parentGrid.Tag = benefitId;
+            int index = benefitsGrid.Children.IndexOf(parentGrid);
+
+            AddNewStandardFeature(index, "Benefit #", benefitsGrid, parentGrid, benefitId, OnClickBenefitsImage);
 
         }
 
         private void OnClickApplicationsImage(object sender, MouseButtonEventArgs e)
         {
+            Image addImage = sender as Image;
+            Grid parentGrid = addImage.Parent as Grid;
+            parentGrid.Tag = applicationId;
+            int index = applicationsGrid.Children.IndexOf(parentGrid);
+
+            AddNewStandardFeature(index, "Application #", applicationsGrid, parentGrid, applicationId, OnClickApplicationsImage);
 
         }
-        private void AddNewStandardFeature(int index, Grid parentGrid)
+        private void AddNewStandardFeature(int index, String labelContent, Grid mainGrid, Grid parentGrid, int selectedGridiD, MouseButtonEventHandler onClickHandler)
         {
-            if(index != 0)
+            if(index != 0 && index != -1)
                  parentGrid.Children.RemoveAt(3);
-            else
+            else if(index != -1)
                 parentGrid.Children.RemoveAt(2);
 
+            parentGrid.Tag = selectedGridiD;
             //Image removeIcon = new Image();
             //removeIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
             //removeIcon.Width = 20;
@@ -220,11 +236,12 @@ namespace _01electronics_crm
 
             RowDefinition row = new RowDefinition();
             row.Height = new GridLength(75);
-            standardFeaturesGrid.RowDefinitions.Add(row);
+            mainGrid.RowDefinitions.Add(row);
 
             /////NEW FEATURE GRID
             Grid gridI = new Grid();
             Grid.SetRow(gridI, index + 1);
+            gridI.Tag = selectedGridiD;
 
             ColumnDefinition labelColumn = new ColumnDefinition();
             labelColumn.Width = new GridLength(250);
@@ -240,9 +257,11 @@ namespace _01electronics_crm
 
             Label featureIdLabel = new Label();
             featureIdLabel.Margin = new Thickness(30, 0, 0, 0);
+            featureIdLabel.Width = 200;
             featureIdLabel.HorizontalAlignment = HorizontalAlignment.Left;
             featureIdLabel.Style = (Style)FindResource("labelStyle");
-            featureIdLabel.Content = "Feature #" + (index + 2).ToString();
+            featureIdLabel.Content = labelContent + (index + 2).ToString();
+            //featureIdLabel.Content = "Feature #" + (index + 2).ToString();
             Grid.SetColumn(featureIdLabel, 0);
 
             TextBox featureTextBox = new TextBox();
@@ -263,7 +282,9 @@ namespace _01electronics_crm
             addIcon.Width = 20;
             addIcon.Height = 20;
             addIcon.Margin = new Thickness(55, 0, 10, 0);
-            addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
+            addIcon.MouseLeftButtonDown += onClickHandler;
+            //addIcon.Tag = selectedGridiD;
+            //addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
             Grid.SetColumn(addIcon, 2);
 
             gridI.Children.Add(featureIdLabel);
@@ -277,7 +298,8 @@ namespace _01electronics_crm
 
             /////////////////////////////////////////////
 
-            standardFeaturesGrid.Children.Add(gridI);
+            //standardFeaturesGrid.Children.Add(gridI);
+            mainGrid.Children.Add(gridI);
         }
 
         private void OnClickRemoveFeature(object sender, MouseButtonEventArgs e)
@@ -285,6 +307,7 @@ namespace _01electronics_crm
             Image currentImage = (Image)sender;
             Grid innerGrid = (Grid)currentImage.Parent;
             Grid outerGrid = (Grid)innerGrid.Parent;
+            int tagID = int.Parse(innerGrid.Tag.ToString());
 
             int index = outerGrid.Children.IndexOf(innerGrid);
 
@@ -295,7 +318,14 @@ namespace _01electronics_crm
                 addVendorImage.Source = new BitmapImage(new Uri(@"Icons\plus_icon.jpg", UriKind.Relative));
                 addVendorImage.Height = 20;
                 addVendorImage.Width = 20;
-                addVendorImage.MouseLeftButtonDown += OnClickStandardFeaturesImage;
+
+                if(tagID == standardFeatureId)
+                    addVendorImage.MouseLeftButtonDown += onClickHandler;
+                else if (tagID == benefitId)
+                    addVendorImage.MouseLeftButtonDown += OnClickBenefitsImage;
+                else
+                    addVendorImage.MouseLeftButtonDown += OnClickApplicationsImage;
+
                 Grid previousGrid = outerGrid.Children[0] as Grid;
 
                 previousGrid.Children.Add(addVendorImage);
@@ -329,6 +359,30 @@ namespace _01electronics_crm
                 outerGrid.Children.Remove(innerGrid);
 
                 outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
+            }
+
+            String Content;
+            if (tagID == standardFeatureId)
+            {
+                Content = "Feature #";
+            }
+            else if (tagID == benefitId)
+            {
+                Content = "Benefit #";
+            }
+            else
+            {
+                Content = "Application #";
+            }
+            updateLabelIds(Content, outerGrid);
+        }
+        void updateLabelIds(String content, Grid currentGrid)
+        {
+            for(int i = 0; i < currentGrid.Children.Count; i++)
+            {
+                Grid innerGrid = currentGrid.Children[i] as Grid;
+                Label header = innerGrid.Children[0] as Label;
+                header.Content = content + (i + 1).ToString();
             }
         }
     }
