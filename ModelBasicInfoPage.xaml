@@ -55,7 +55,7 @@
                 <Label Content="Data Sheet" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
         </Grid>
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,24,0,24">
 
             <Grid  Margin="24">
             <Grid.RowDefinitions>

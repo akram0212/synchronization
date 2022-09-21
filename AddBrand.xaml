@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
-        Title="AddBrand" Width="920" Height="850">
+        Title="AddBrand" Background="#f3f3f3" Width="920" Height="850">
     <Grid>
 
         <Grid.ColumnDefinitions>

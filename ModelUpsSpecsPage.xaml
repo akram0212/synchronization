@@ -58,7 +58,7 @@
             </Border>
         </Grid>
 
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="24,24,0,24">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -103,9 +103,9 @@
                             <ColumnDefinition Width="1*"/>
 
                             </Grid.ColumnDefinitions>
-                            <Label Style="{StaticResource labelStyle}" Grid.Row="0" Grid.Column="0"  Content="Backup time (in min)*" Width="210" Margin="24,0,0,0"/>
+                            <Label Style="{StaticResource tableItemValue}" Grid.Row="0" Grid.Column="0"  Content="Backup time (in min)*" Width="210"/>
                             <WrapPanel  Grid.Row="0" Grid.Column="1" Name="backupTimeWrapPanel" Margin="12,0,0,0">
-                                <Label Style="{StaticResource labelStyle}" Content="50%" Width="40" Margin="30,0,0,0"/>
+                                <Label Style="{StaticResource labelStyle}" Content="50%" Width="40" Margin="10,0,0,0"/>
                                 <TextBox Style="{StaticResource textBoxStyle}" Margin="12" Text="" Name="backupTime50TextBox" Width="30"  />
                                 <Label Style="{StaticResource labelStyle}" Content="min" Width="50" Margin="-15,0,0,0"/>
                             </WrapPanel>
@@ -240,8 +240,8 @@
                     <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="markingTextBox"/>
                 </WrapPanel>
             </WrapPanel>
-            <WrapPanel Grid.Row="13"  Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="35,0,0,0">
-                <WrapPanel Name="validUntilWrapPanel" Margin="-35,15,0,0" >
+            <WrapPanel Grid.Row="13"  Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                <WrapPanel Name="validUntilWrapPanel">
                     <Label Style="{StaticResource tableItemValue}" Content="Valid Until*" Width="210" />
                     <DatePicker Style="{StaticResource datePickerStyle}"  Width="384"   Name="validUntilDatePicker" SelectedDateChanged="OnSelChangedvalidUntilDate"/>
 
