@@ -40,6 +40,7 @@ namespace _01electronics_crm
         private List<String> modelStandardFeatures;
         private List<String> modelBenefits;
         private List<String> modelApplications;
+        private List<String> modelSummeryPoints;
         public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
@@ -114,7 +115,7 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
-                    if (!product.IssueNewModel("", ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                    if (!product.IssueNewModel(ref modelSummeryPoints, ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
                         return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)

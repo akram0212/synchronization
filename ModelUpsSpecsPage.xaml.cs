@@ -101,7 +101,7 @@ namespace _01electronics_crm
                     return;
 
                 }
-                if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
+                if ( ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
                 {   
                     tempUPSSpecs.rated_power = decimal.Parse( ratedPowerTextBox.Text.ToString());
                 }

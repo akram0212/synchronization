@@ -205,7 +205,7 @@ namespace _01electronics_library
                 return false;
             if (!InsertIntoBrandModels())
                 return false;
-            if (!InsertIntoModelSummaryPoints(ref mModelSummeryPoints))
+            if (!InsertIntoModelSummaryPoints())
                 return false;
             if (!InsertIntoUPSSpecs())
                 return false;
@@ -216,6 +216,7 @@ namespace _01electronics_library
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
                 return false;
+            
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
@@ -487,11 +488,11 @@ namespace _01electronics_library
             }
             return true;
         }
-        public bool InsertIntoModelSummaryPoints(ref List<String> mModelSummaryPoints)
+        public bool InsertIntoModelSummaryPoints()
         {
-            for (int i = 0; i < mModelSummaryPoints.Count(); i++)
+            for (int i = 0; i < modelSummaryPoints.Count(); i++)
             {
-                String sqlQueryPart1 = @" insert into erp_system.dbo.products_summary
+                String sqlQueryPart1 = @" insert into erp_system.dbo.models_summary_points
                                       values(";
                 String comma = ",";
                 String sqlQueryPart3 = "GETDATE()";
@@ -507,9 +508,9 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += i + 1;
                 sqlQuery += comma;
-                sqlQuery += "'" + mModelSummaryPoints[i] + "'";
+                sqlQuery += "'" + modelSummaryPoints[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += "'" + sqlQueryPart3 + "'";
+                sqlQuery += sqlQueryPart3 ;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
@@ -774,6 +775,10 @@ namespace _01electronics_library
             summaryPoints = msummaryPoints;
 
         }
+        public void SetModelsummaryPoints(List<String> mModlSummeryPoints)
+        {
+             modelSummaryPoints = mModlSummeryPoints;
+        }
         public void SetPhotoLocalPath(String mPath)
         {
             photoLocalPath = mPath;
@@ -824,6 +829,10 @@ namespace _01electronics_library
         public String GetsummaryPoints()
         {
             return summaryPoints;
+        }
+        public List<String> GetmodelSummaryPoints()
+        {
+            return modelSummaryPoints;
         }
         public int GetNumberOfSavedModelApplications()
         {

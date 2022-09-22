@@ -195,14 +195,14 @@ namespace _01electronics_crm
                 }
 
                 product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
+               // product.SetsummaryPoints(summerypointsTextBox.Text);
 
                 product.IssueNewProduct();
             }
             else
             {
                 product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
+               // product.SetsummaryPoints(summerypointsTextBox.Text);
                 if (productNameEdited)
                     product.UpdateIntoProductName();
                 if(productSummaryPointsEdited)
