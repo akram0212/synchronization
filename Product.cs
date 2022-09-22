@@ -27,6 +27,7 @@ namespace _01electronics_library
         public const int MAX_SUMMARY_POINTS_PER_MODEL = 8;
         public const int MAX_STANDARD_FEATURES_PER_MODEL = 7;
 
+        
         //PRODUCT BASIC INFO
         private int categoryID;
         private int productID;
@@ -54,6 +55,8 @@ namespace _01electronics_library
 
         protected String errorMessage;
 
+        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+
         public Product()
         {
             sqlDatabase = new SQLServer();
@@ -64,6 +67,7 @@ namespace _01electronics_library
             modelBenefits = new List<String>();
             modelSummaryPoints = new List<String>();
             modelStandardFeatures = new List<String>();
+            UPSSpecs = new List<BASIC_STRUCTS.UPS_SPECS_STRUCT>();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,7 +203,9 @@ namespace _01electronics_library
         {
             if (!GetNewModelID())
                 return false;
-            if (!InsertIntoBrandModels(mModelName))
+            if (!InsertIntoBrandModels())
+                return false;
+            if (!InsertIntoUPSSpecs())
                 return false;
             if (!InsertIntoModelApplications(ref mModelApplications))
                 return false;
@@ -362,7 +368,7 @@ namespace _01electronics_library
             return true;
         }
 
-        public bool InsertIntoBrandModels(String mModelName)
+        public bool InsertIntoBrandModels()
         {
             String sqlQueryPart1 = @" insert into erp_system.dbo.brands_models
                                       values(";
@@ -378,9 +384,9 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += GetModelID();
             sqlQuery += comma;
-            sqlQuery += "'" + mModelName + "'";
+            sqlQuery += "'" + GetModelName() + "'";
             sqlQuery += comma;
-            sqlQuery += "'" + sqlQueryPart3 + "'";
+            sqlQuery +=  sqlQueryPart3 ;
             sqlQuery += sqlQueryPart4;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
@@ -567,6 +573,114 @@ namespace _01electronics_library
             
             return true;
         }
+        public bool InsertIntoUPSSpecs()
+        {
+            int max = UPSSpecs.Count()-1;
+            if (max<0)
+            {
+                max = 0;
+            }
+           
+            String sqlQueryPart1 = @"insert into erp_system.dbo.ups_specs
+                                    values(";
+            String comma = ",";
+            String sqlQueryPart2 = "GETDATE()";
+            String sqlQueryPart3 = ");";
+
+                
+            sqlQuery = String.Empty;
+            sqlQuery += sqlQueryPart1;
+            sqlQuery += categoryID;
+            sqlQuery += comma;
+            sqlQuery += productID;
+            sqlQuery += comma;
+            sqlQuery += brandID;
+            sqlQuery += comma;
+            sqlQuery += max+1;
+            sqlQuery += comma;
+            sqlQuery += UPSSpecs[max].spec_id;
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].io_phase+"'" ;
+            sqlQuery += comma;
+            sqlQuery += UPSSpecs[max].rated_power;
+            sqlQuery += comma;
+            sqlQuery += UPSSpecs[max].rating_id ;
+            sqlQuery += comma;
+            sqlQuery += UPSSpecs[max].backup_time_50 ;
+            sqlQuery += comma;
+            sqlQuery +=  UPSSpecs[max].backup_time_70 ;
+            sqlQuery += comma;
+            sqlQuery +=  UPSSpecs[max].backup_time_100;
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].input_power_factor + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].thdi + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].input_nominal_voltage + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].input_voltage + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].voltage_tolerance + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].output_power_factor + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].thdv + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].output_nominal_voltage + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].output_dc_voltage_range + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].overload_capability + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].efficiency + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].input_connection_type + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].front_panel + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].max_power + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].certificates + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].safety + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].emc + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].environmental_aspects + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].test_performance + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].protection_degree + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].transfer_voltage_limit + "'";
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].marking + "'";
+            sqlQuery += comma;
+            if (UPSSpecs[max].is_valid == false)
+            {
+                sqlQuery += 0;
+            }
+            else
+            {
+                sqlQuery += 1;
+            }
+            sqlQuery += comma;
+            sqlQuery += "'" + UPSSpecs[max].valid_until.ToString("yyyy-MM-dd") + "'"; ;
+            sqlQuery += comma;
+            sqlQuery += sqlQueryPart2;
+            sqlQuery += sqlQueryPart3;
+
+               
+
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+                
+            
+            return true;
+        }
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //PRODUCT ADDITIONAL INFO STRUCT
@@ -872,6 +986,7 @@ namespace _01electronics_library
 
             return true;
         }
+
 
     }
 }
