@@ -216,7 +216,6 @@ namespace _01electronics_library
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
                 return false;
-            
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();

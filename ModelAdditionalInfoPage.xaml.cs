@@ -33,10 +33,13 @@ namespace _01electronics_crm
         public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelUploadFilesPage modelUploadFilesPage;
 
-        int standardFeatureId = 0;
-        int benefitId = 1;
-        int applicationId = 2;
-        
+        private int standardFeatureId = 0;
+        private int benefitId = 1;
+        private int applicationId = 2;
+
+        private List<String> modelStandardFeatures;
+        private List<String> modelBenefits;
+        private List<String> modelApplications;
         public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
@@ -46,6 +49,10 @@ namespace _01electronics_crm
 
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+            modelStandardFeatures = new List<String>();
+            modelBenefits = new List<String>();
+            modelApplications = new List<String>();
+
 
             product = mPrduct;
             InitializeComponent();
@@ -71,54 +78,60 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
-            //YOUR MESSAGE MUST BE SPECIFIC
-            //YOU SHALL CHECK UI ELEMENTS IN ORDER AND THEN WRITE A MESSAGE IF ERROR IS TO BE FOUND
-            // if (product.GetSalesPersonId() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Sales person is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetAssigneeId() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Assignee is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetAddressSerial() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Company Address is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetContactId() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Contact is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductProduct1TypeId() != 0 && product.GetproductProduct1Quantity() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductProduct2TypeId() != 0 && product.GetproductProduct2Quantity() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 2!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductProduct3TypeId() != 0 && product.GetproductProduct3Quantity() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 3!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductProduct4TypeId() != 0 && product.GetproductProduct4Quantity() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Quantity is not specified for product 4!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductContractTypeId() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Contract type is not specified!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else if (product.GetproductStatusId() == 0)
-            //     System.Windows.Forms.MessageBox.Show("Status ID can't be 0 for an product! Contact your system administrator!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // else
-            // {
-            //     if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
-            //     {
-            //         //if (!product.IssueNewproduct())
-            //         //    return;
-            //
-            //         if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-            //         {
-            //             viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
-            //
-            //             ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
-            //
-            //             viewproduct.Show();
-            //         }
-            //
-            //     }
-            //
-            //     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-            //     currentWindow.Close();
-            // }
+            modelStandardFeatures.Clear();
+            modelBenefits.Clear();
+            modelApplications.Clear();
 
-            product.GetNewModelID();
-            product.InsertIntoBrandModels();
-            product.InsertIntoUPSSpecs();
-            
+            for (int i = 0; i < standardFeaturesGrid.Children.Count; i ++)
+            {
+                Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
+                TextBox feature = innerGrid.Children[1] as TextBox;
+                if(feature.Text.ToString() != String.Empty)
+                    modelStandardFeatures.Add(feature.Text.ToString());
+            }
+            for (int i = 0; i < benefitsGrid.Children.Count; i++)
+            {
+                Grid innerGrid = benefitsGrid.Children[i] as Grid;
+                TextBox feature = innerGrid.Children[1] as TextBox;
+                if (feature.Text.ToString() != String.Empty)
+                    modelBenefits.Add(feature.Text.ToString());
+            }
+            for (int i = 0; i < applicationsGrid.Children.Count; i++)
+            {
+                Grid innerGrid = applicationsGrid.Children[i] as Grid;
+                TextBox feature = innerGrid.Children[1] as TextBox;
+                if (feature.Text.ToString() != String.Empty)
+                    modelApplications.Add(feature.Text.ToString());
+            }
+
+             if (modelStandardFeatures.Count() == 0)
+                 System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (modelBenefits.Count() == 0)
+                System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (modelApplications.Count() == 0)
+                System.Windows.Forms.MessageBox.Show("Model Applications must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+                {
+                    if (!product.IssueNewModel("", ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                        return;
+
+                    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                    {
+                        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                        viewproduct.Show();
+                    }
+
+                }
+
+                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                currentWindow.Close();
+
+            }
         }
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
@@ -223,10 +236,11 @@ namespace _01electronics_crm
         {
             if(index != 0 && index != -1)
                  parentGrid.Children.RemoveAt(3);
-            else if(index != -1)
+            else if(index == 0)
                 parentGrid.Children.RemoveAt(2);
 
             parentGrid.Tag = selectedGridiD;
+            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count-1);
             //Image removeIcon = new Image();
             //removeIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
             //removeIcon.Width = 20;
@@ -379,11 +393,11 @@ namespace _01electronics_crm
             {
                 Content = "Application #";
             }
-            updateLabelIds(Content, outerGrid);
+            updateLabelIds(Content, outerGrid, index);
         }
-        void updateLabelIds(String content, Grid currentGrid)
+        void updateLabelIds(String content, Grid currentGrid, int index)
         {
-            for(int i = 0; i < currentGrid.Children.Count; i++)
+            for(int i = index; i < currentGrid.Children.Count; i++)
             {
                 Grid innerGrid = currentGrid.Children[i] as Grid;
                 Label header = innerGrid.Children[0] as Label;
