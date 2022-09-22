@@ -45,7 +45,7 @@ namespace _01electronics_library
         //PRODUCT ADDITIONAL INFO
         private List<String> modelApplications;
         private List<String> modelBenefits;
-        public List<String> modelSummaryPoints;
+        private List<String> modelSummaryPoints;
         private List<String> modelStandardFeatures;
 
         private int numberOfSavedModelApplications;
@@ -55,7 +55,7 @@ namespace _01electronics_library
 
         protected String errorMessage;
 
-        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+        private List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
 
         public Product()
         {
@@ -199,7 +199,7 @@ namespace _01electronics_library
 
             return true;
         }
-        public bool IssueNewModel(ref List<String> mModelSummeryPoints, ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
+        public bool IssueNewModel( ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
         {
             if (!GetNewModelID())
                 return false;
@@ -510,7 +510,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += "'" + modelSummaryPoints[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += sqlQueryPart3 ;
+                sqlQuery += sqlQueryPart3;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
@@ -526,7 +526,7 @@ namespace _01electronics_library
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += GetsummaryPoints();
+            sqlQuery += GetSummaryPoints();
             sqlQuery += sqlQueryPart2;
             sqlQuery += GetProductID();
            
@@ -567,7 +567,7 @@ namespace _01electronics_library
                 sqlQuery += sqlQueryPart1;
                 sqlQuery += GetProductID();
                 sqlQuery += comma;
-                sqlQuery += "'" + GetsummaryPoints() + "'";
+                sqlQuery += "'" + GetSummaryPoints() + "'";
                 sqlQuery += comma;
                 sqlQuery += sqlQueryPart2;
                 sqlQuery += sqlQueryPart3;
@@ -787,6 +787,10 @@ namespace _01electronics_library
         {
             photoServerPath = mPath;
         }
+        public void SetUPSSpecs(BASIC_STRUCTS.UPS_SPECS_STRUCT mUPSSpecs)
+        {
+            UPSSpecs.Add( mUPSSpecs); 
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GETTERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -826,11 +830,11 @@ namespace _01electronics_library
         {
             return modelName;
         }
-        public String GetsummaryPoints()
+        public String GetSummaryPoints()
         {
             return summaryPoints;
         }
-        public List<String> GetmodelSummaryPoints()
+        public List<String> GetModelSummaryPoints()
         {
             return modelSummaryPoints;
         }
@@ -998,6 +1002,11 @@ namespace _01electronics_library
 
             return true;
         }
+        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> GetUPSSpecs()
+        {
+            return UPSSpecs ;
+        }
+        
 
 
     }

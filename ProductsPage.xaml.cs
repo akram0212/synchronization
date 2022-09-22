@@ -399,9 +399,6 @@ namespace _01electronics_crm
 
         private void addBtnMouseEnter(object sender, MouseEventArgs e)
         {
-
-         
-
             Storyboard storyboard = new Storyboard();
             TimeSpan duration = new TimeSpan(0, 0, 0, 0, 200);
             DoubleAnimation animation = new DoubleAnimation();

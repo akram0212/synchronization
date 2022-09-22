@@ -77,11 +77,7 @@ namespace _01electronics_crm
             NavigationService.Navigate(modelBasicInfoPage);
         }
 
-        private List<BASIC_STRUCTS.UPS_SPECS_STRUCT> GetUPSSpecs()
-        {
-            return UPSSpecs;
-            
-        }
+        
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
@@ -91,68 +87,40 @@ namespace _01electronics_crm
             {
                 BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
                 tempUPSSpecs.spec_id = 1;
-                if (iOPhaseTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].io_phase != null))
+                if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
                 {
                     tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
                 }
-                else
-                {
-                    //MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
 
-                }
-                if ( ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
+                if ( ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rated_power != null))
                 {   
                     tempUPSSpecs.rated_power = decimal.Parse( ratedPowerTextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
 
-                }
-                if (ratingComboBox.SelectedIndex != -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
+                if (ratingComboBox.SelectedIndex != -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
                 {
                     tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
                     tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
                 }
-                else
-                {
-                    //MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
 
-                }
 
-                if (backupTime50TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_50 != null))
+                if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_50 != null))
                 {
                     tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
 
-                }
 
-                if (backupTime70TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_70 != null))
+                if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_70 != null))
                 {
                     tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-                }
 
-                if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
+
+                if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_100 != null))
                 {
                     tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-                }
+
 
                 tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
                 tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
@@ -177,7 +145,7 @@ namespace _01electronics_crm
                 tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                 tempUPSSpecs.marking = markingTextBox.Text.ToString();
                 tempUPSSpecs.is_valid = true;
-                if (validUntilDatePicker.SelectedDate != null || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].valid_until != null))
+                if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
                 {
                     tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
                 }
@@ -187,9 +155,8 @@ namespace _01electronics_crm
                     //return;
 
                 }
-                UPSSpecs.Clear();
-                UPSSpecs.Add(tempUPSSpecs);
-                product.UPSSpecs = UPSSpecs;
+                product.GetUPSSpecs().Clear();
+                product.SetUPSSpecs(tempUPSSpecs);
 
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
@@ -230,68 +197,40 @@ namespace _01electronics_crm
             {
                 BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
                 tempUPSSpecs.spec_id = 1;
-                if (iOPhaseTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].io_phase != null))
+                if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
                 {
                     tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
                 }
-                else
-                {
-                    //MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-
-                }
-                if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
+         
+                if (ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rated_power != null))
                 {
                     tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-
-                }
-                if (ratingComboBox.SelectedIndex!= -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
+              
+                if (ratingComboBox.SelectedIndex!= -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
                 {
                     tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
                     tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex+1;
                 }
-                else
-                {
-                    //MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-
-                }
+             
                 
-                if (backupTime50TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_50 != null))
+                if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_50 != null))
                 {
                     tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
+            
 
-                }
-
-                if (backupTime70TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_70 != null))
+                if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_70 != null))
                 {
                     tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-                }
+           
 
-                if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
+                if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_100 != null))
                 {
                     tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
                 }
-                else
-                {
-                    //MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-                }
+               
 
                 tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
                 tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
@@ -316,19 +255,14 @@ namespace _01electronics_crm
                 tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                 tempUPSSpecs.marking = markingTextBox.Text.ToString();
                 tempUPSSpecs.is_valid = true;
-                if (validUntilDatePicker.SelectedDate != null || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].valid_until != null))
+                if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
                 {
                     tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
                 }
-                else
-                {
-                    //MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //return;
-
-                }
-                UPSSpecs.Clear();
-                UPSSpecs.Add(tempUPSSpecs);
-                product.UPSSpecs = UPSSpecs;
+          
+                product.GetUPSSpecs().Clear();
+                product.SetUPSSpecs( tempUPSSpecs);
+                
 
 
             }

@@ -305,7 +305,7 @@ namespace _01electronics_crm
 
                         for (int j = 0; j < 4; j++)
                         {
-                            if (j < selectedProduct.modelSummaryPoints.Count())
+                            if (j < selectedProduct.GetModelSummaryPoints().Count())
                             {
                                 RowDefinition summaryRow = new RowDefinition();
                                 row2Grid.RowDefinitions.Add(summaryRow);
@@ -317,7 +317,7 @@ namespace _01electronics_crm
                                 pointsBox.IsEnabled = false;
                                 pointsBox.FontWeight = FontWeights.Bold;
                                 pointsBox.Background = Brushes.White;
-                                pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
+                                pointsBox.Text = "-" + selectedProduct.GetModelSummaryPoints()[j];
                                 pointsBox.TextWrapping = TextWrapping.Wrap;
                                 pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
                                 Grid.SetRow(pointsBox, j);
@@ -328,7 +328,7 @@ namespace _01electronics_crm
                                 row2Grid.Children.Add(textBoxGrid);
                             }
                         }
-                        if (selectedProduct.modelSummaryPoints.Count() == 0)
+                        if (selectedProduct.GetModelSummaryPoints().Count() == 0)
                         {
                             RowDefinition summaryRow = new RowDefinition();
                             row2Grid.RowDefinitions.Add(summaryRow);

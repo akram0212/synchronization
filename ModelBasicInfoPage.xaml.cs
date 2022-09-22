@@ -68,40 +68,75 @@ namespace _01electronics_crm
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
             product.SetModelName(modelNameTextBox.Text.ToString());
-            product.SetsummaryPoints(summeryPointsTextBox.Text.ToString());
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
                 modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
 
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            {
+                product.GetModelSummaryPoints().Clear();
+
+
+                for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
+                {
+                    Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
+                    TextBox feature = innerGrid.Children[1] as TextBox;
+                    if (feature.Text.ToString() != String.Empty)
+                        product.GetModelSummaryPoints().Add(feature.Text.ToString());
+                }
+            }
+
             NavigationService.Navigate(modelUpsSpecsPage);
-            
-            //modelAdditionalInfoPage.modelBasicInfoPage = this;
-            //
-            //if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-            //    modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
-            //
-            //NavigationService.Navigate(modelAdditionalInfoPage);
         }
         private void OnBtnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
             modelAdditionalInfoPage.modelBasicInfoPage = this;
             modelAdditionalInfoPage.modelUpsSpecsPage = modelUpsSpecsPage;
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            {
+                product.GetModelSummaryPoints().Clear();
 
+
+                for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
+                {
+                    Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
+                    TextBox feature = innerGrid.Children[1] as TextBox;
+                    if (feature.Text.ToString() != String.Empty)
+                        product.GetModelSummaryPoints().Add(feature.Text.ToString());
+                }
+            }
             NavigationService.Navigate(modelAdditionalInfoPage);
+
         }
         private void OnBtnClickUpsSpecs(object sender, MouseButtonEventArgs e)
         {
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
+        }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            {
+                product.GetModelSummaryPoints().Clear();
 
+
+                for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
+                {
+                    Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
+                    TextBox feature = innerGrid.Children[1] as TextBox;
+                    if (feature.Text.ToString() != String.Empty)
+                        product.GetModelSummaryPoints().Add(feature.Text.ToString());
+                }
+            }
             NavigationService.Navigate(modelUpsSpecsPage);
         }
 
@@ -114,6 +149,19 @@ namespace _01electronics_crm
                 modelUploadFilesPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 
                 NavigationService.Navigate(modelUploadFilesPage);
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+            {
+                product.GetModelSummaryPoints().Clear();
+
+
+                for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
+                {
+                    Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
+                    TextBox feature = innerGrid.Children[1] as TextBox;
+                    if (feature.Text.ToString() != String.Empty)
+                        product.GetModelSummaryPoints().Add(feature.Text.ToString());
+                }
             }
         }
         private void OnBtnClickCancel(object sender, RoutedEventArgs e)
@@ -137,11 +185,11 @@ namespace _01electronics_crm
             Grid parentGrid = addImage.Parent as Grid;
             int index = standardFeaturesGrid.Children.IndexOf(parentGrid);
 
-            AddNewStandardFeature(index, "Point #", standardFeaturesGrid, parentGrid, onClickHandler);
+            AddNewSymmeryPoint(index, "Point #", standardFeaturesGrid, parentGrid, onClickHandler);
 
         }
 
-        private void AddNewStandardFeature(int index, String labelContent, Grid mainGrid, Grid parentGrid, MouseButtonEventHandler onClickHandler)
+        private void AddNewSymmeryPoint(int index, String labelContent, Grid mainGrid, Grid parentGrid, MouseButtonEventHandler onClickHandler)
         {
             if (index != 0 && index != -1)
                 parentGrid.Children.RemoveAt(3);
@@ -233,7 +281,7 @@ namespace _01electronics_crm
             Image currentImage = (Image)sender;
             Grid innerGrid = (Grid)currentImage.Parent;
             Grid outerGrid = (Grid)innerGrid.Parent;
-            int tagID = int.Parse(innerGrid.Tag.ToString());
+            //int tagID = int.Parse(innerGrid.Tag.ToString());
 
             int index = outerGrid.Children.IndexOf(innerGrid);
 
