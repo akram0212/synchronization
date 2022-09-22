@@ -122,7 +122,7 @@ namespace _01electronics_library
 
             return true;
         }
-        public bool InitializeModelSummaryPoints(int mProductID, int mBrandID, int mModelID)
+        public bool InitializeModelSummaryPoints()
         {
             modelSummaryPoints.Clear();
 
@@ -140,7 +140,7 @@ namespace _01electronics_library
             sqlQuery += sqlQueryPart2;
             sqlQuery += GetBrandID();
             sqlQuery += sqlQueryPart3;
-            sqlQuery += mModelID;
+            sqlQuery += GetModelID();
             sqlQuery += sqlQueryPart4;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
@@ -176,7 +176,7 @@ namespace _01electronics_library
                 return false;
 
             return true;
-        }
+            }
         public bool IssueNewBrand(String mBrandName, ref List<int> brandProducts)
         {
             if (!GetNewBrandID())
@@ -199,14 +199,17 @@ namespace _01electronics_library
 
             return true;
         }
-        public bool IssueNewModel(String mModelName, ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
+        public bool IssueNewModel(ref List<String> mModelSummeryPoints, ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
         {
             if (!GetNewModelID())
                 return false;
             if (!InsertIntoBrandModels())
                 return false;
+            if (!InsertIntoModelSummaryPoints(ref mModelSummeryPoints))
+                return false;
             if (!InsertIntoUPSSpecs())
                 return false;
+            
             if (!InsertIntoModelApplications(ref mModelApplications))
                 return false;
             if (!InsertIntoModelBenefits(ref mModelBenefits))
