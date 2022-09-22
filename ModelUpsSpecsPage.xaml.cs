@@ -97,8 +97,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
@@ -107,8 +107,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 if (ratingComboBox.SelectedIndex != -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
@@ -118,8 +118,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
 
@@ -129,8 +129,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
 
@@ -140,8 +140,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
                 }
 
                 if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
@@ -150,8 +150,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
                 }
 
                 tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
@@ -183,8 +183,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 UPSSpecs.Clear();
@@ -236,8 +236,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
@@ -246,8 +246,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 if (ratingComboBox.SelectedIndex!= -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
@@ -257,8 +257,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 
@@ -268,8 +268,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
 
@@ -279,8 +279,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
                 }
 
                 if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
@@ -289,8 +289,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
                 }
 
                 tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
@@ -322,8 +322,8 @@ namespace _01electronics_crm
                 }
                 else
                 {
-                    MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    //MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //return;
 
                 }
                 UPSSpecs.Clear();

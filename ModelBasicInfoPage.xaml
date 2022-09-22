@@ -59,16 +59,13 @@
 
             <Grid  Margin="24">
             <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="400"/>
+                    <RowDefinition Height="0.5*"/>
 
 
-            </Grid.RowDefinitions>
+                </Grid.RowDefinitions>
 
-            <Border  BorderBrush="#105A97" Margin="0,-15,0,0" BorderThickness="3" Grid.Row="0" Width="201px" Height="251px" Name="scrollViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <!--<Border  BorderBrush="#105A97" Margin="0,-15,0,0" BorderThickness="3" Grid.Row="0" Width="201px" Height="251px" Name="scrollViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
             <Label  Name="picHint" Margin="600,0,0,0" Grid.Row="1" Width="220" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be 250 X 200" HorizontalContentAlignment="Right"/>
@@ -79,8 +76,81 @@
                     <Label Style="{StaticResource labelStyle}" Margin="30,20,12,12" Content=""  Name="NameLabel" Width="384" Visibility="Collapsed"/>
                     <TextBox Style="{StaticResource textBoxStyle}" Margin="30,20,12,12" Text="" Name="NameTextBox" Width="384" Visibility="Collapsed"/>
                 </WrapPanel>
-            </WrapPanel>
-            <WrapPanel Grid.Row="3">
+            </WrapPanel>-->
+
+                <Grid Grid.Row="0" MinWidth="300" MinHeight="250">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Background="White" Margin="20" Grid.Row="0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="#105A97">
+                            <Label Content="MODEL NAME" Margin="20,0,0,0" HorizontalAlignment="Left" Style="{StaticResource tableHeaderItem}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Name="modelNameGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Tag="0" Height="350">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Border  BorderBrush="#105A97" Margin="0,20,0,0"  BorderThickness="3" Grid.Row="0" Width="201px" Height="251px" Name="scrollViewer" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                    <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                                <Label  Name="picHint" Margin="0,230,0,0" Grid.Row="1" Width="220" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be 250 X 200" HorizontalContentAlignment="Right"/>
+
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Model Name" Width="200"  Margin="0,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="modelNameTextBox" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" MinWidth="300" MinHeight="250">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Background="White" Margin="20" Grid.Row="0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="#105A97">
+
+                            <Label Content="SUMMARY POINTS" Margin="20,0,0,0" HorizontalAlignment="Left" Style="{StaticResource tableHeaderItem}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Name="standardFeaturesGrid" Tag="0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="75"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Point #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="summeryPointsTextBox" TextWrapping="Wrap"/>
+                                <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="onClickHandler"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <!--<WrapPanel Grid.Row="3">
                 <WrapPanel Name="summryNotesWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Summry Points*"  Width="130" />
                     <TextBlock Grid.Row="0" Style="{StaticResource textBlockStyle}" Height="100" Width="384" Text=""  TextWrapping="Wrap"   Name="summeryPointsTextBlock" Visibility="Collapsed"/>
@@ -92,7 +162,7 @@
             <WrapPanel Grid.Row="4"  HorizontalAlignment="Right" Name="remainingCharactersWrapPanel">
                 <Label Width="180" Margin="0,0,0,0" Style="{StaticResource labelStyle}" Content="Remaining Characters:" HorizontalContentAlignment="Left"/>
                 <Label Width="50" Margin="0,0,300,0" Name="counterLabel" Style="{StaticResource labelStyle}"  Content="150" HorizontalContentAlignment="Center"/>
-            </WrapPanel>
+            </WrapPanel>-->
 
 
 

@@ -122,7 +122,7 @@ namespace _01electronics_library
 
             return true;
         }
-        public bool InitializeModelSummaryPoints(int mProductID, int mBrandID, int mModelID)
+        public bool InitializeModelSummaryPoints()
         {
             modelSummaryPoints.Clear();
 
@@ -140,7 +140,7 @@ namespace _01electronics_library
             sqlQuery += sqlQueryPart2;
             sqlQuery += GetBrandID();
             sqlQuery += sqlQueryPart3;
-            sqlQuery += mModelID;
+            sqlQuery += GetModelID();
             sqlQuery += sqlQueryPart4;
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();

@@ -48,15 +48,15 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
                
-                NameTextBox.Visibility = Visibility.Visible;
+                modelNameTextBox.Visibility = Visibility.Visible;
                 summeryPointsTextBox.Visibility = Visibility.Visible;
 
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
 
-                NameLabel.Visibility = Visibility.Visible;
-                summeryPointsTextBlock.Visibility = Visibility.Visible;
+                //NameLabel.Visibility = Visibility.Visible;
+                //summeryPointsTextBlock.Visibility = Visibility.Visible;
                 InitializeInfo();
 
             }
@@ -67,7 +67,7 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
-            product.SetModelName(NameTextBox.Text.ToString());
+            product.SetModelName(modelNameTextBox.Text.ToString());
             product.SetsummaryPoints(summeryPointsTextBox.Text.ToString());
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
@@ -131,6 +131,166 @@ namespace _01electronics_crm
             
         }
 
+        private void onClickHandler(object sender, MouseButtonEventArgs e)
+        {
+            Image addImage = sender as Image;
+            Grid parentGrid = addImage.Parent as Grid;
+            int index = standardFeaturesGrid.Children.IndexOf(parentGrid);
 
+            AddNewStandardFeature(index, "Point #", standardFeaturesGrid, parentGrid, onClickHandler);
+
+        }
+
+        private void AddNewStandardFeature(int index, String labelContent, Grid mainGrid, Grid parentGrid, MouseButtonEventHandler onClickHandler)
+        {
+            if (index != 0 && index != -1)
+                parentGrid.Children.RemoveAt(3);
+            else if (index == 0)
+                parentGrid.Children.RemoveAt(2);
+
+            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count - 1);
+            //Image removeIcon = new Image();
+            //removeIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
+            //removeIcon.Width = 20;
+            //removeIcon.Height = 20;
+            //removeIcon.Margin = new Thickness(10, 0, 10, 0);
+            //removeIcon.MouseLeftButtonDown += OnClickRemoveFeature;
+            //Grid.SetColumn(removeIcon, 2);
+            //Grid.SetRow(removeIcon, index);
+            //
+            //parentGrid.Children.Add(removeIcon);
+            //}
+
+            RowDefinition row = new RowDefinition();
+            row.Height = new GridLength(75);
+            mainGrid.RowDefinitions.Add(row);
+
+            /////NEW FEATURE GRID
+            Grid gridI = new Grid();
+            Grid.SetRow(gridI, index + 1);
+
+            ColumnDefinition labelColumn = new ColumnDefinition();
+            labelColumn.Width = new GridLength(250);
+
+            ColumnDefinition featureColumn = new ColumnDefinition();
+
+            ColumnDefinition imageColumn = new ColumnDefinition();
+            imageColumn.Width = new GridLength(90);
+
+            gridI.ColumnDefinitions.Add(labelColumn);
+            gridI.ColumnDefinitions.Add(featureColumn);
+            gridI.ColumnDefinitions.Add(imageColumn);
+
+            Label featureIdLabel = new Label();
+            featureIdLabel.Margin = new Thickness(30, 0, 0, 0);
+            featureIdLabel.Width = 200;
+            featureIdLabel.HorizontalAlignment = HorizontalAlignment.Left;
+            featureIdLabel.Style = (Style)FindResource("labelStyle");
+            featureIdLabel.Content = labelContent + (index + 2).ToString();
+            //featureIdLabel.Content = "Feature #" + (index + 2).ToString();
+            Grid.SetColumn(featureIdLabel, 0);
+
+            TextBox featureTextBox = new TextBox();
+            featureTextBox.Style = (Style)FindResource("textBoxStyle");
+            featureTextBox.TextWrapping = TextWrapping.Wrap;
+            Grid.SetColumn(featureTextBox, 1);
+
+            Image deleteIcon = new Image();
+            deleteIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
+            deleteIcon.Width = 20;
+            deleteIcon.Height = 20;
+            //deleteIcon.Margin = new Thickness(0, 0, 10, 0);
+            deleteIcon.MouseLeftButtonDown += OnClickRemoveFeature;
+            Grid.SetColumn(deleteIcon, 2);
+
+            Image addIcon = new Image();
+            addIcon.Source = new BitmapImage(new Uri(@"Icons\plus_icon.jpg", UriKind.Relative));
+            addIcon.Width = 20;
+            addIcon.Height = 20;
+            addIcon.Margin = new Thickness(55, 0, 10, 0);
+            addIcon.MouseLeftButtonDown += onClickHandler;
+            //addIcon.Tag = selectedGridiD;
+            //addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
+            Grid.SetColumn(addIcon, 2);
+
+            gridI.Children.Add(featureIdLabel);
+            gridI.Children.Add(featureTextBox);
+            gridI.Children.Add(deleteIcon);
+            gridI.Children.Add(addIcon);
+
+            //if (index != 0)
+            //{ 
+            //}
+
+            /////////////////////////////////////////////
+
+            //standardFeaturesGrid.Children.Add(gridI);
+            mainGrid.Children.Add(gridI);
+        }
+
+        private void OnClickRemoveFeature(object sender, MouseButtonEventArgs e)
+        {
+            Image currentImage = (Image)sender;
+            Grid innerGrid = (Grid)currentImage.Parent;
+            Grid outerGrid = (Grid)innerGrid.Parent;
+            int tagID = int.Parse(innerGrid.Tag.ToString());
+
+            int index = outerGrid.Children.IndexOf(innerGrid);
+
+            if (outerGrid.Children.Count == 2)
+            {
+                innerGrid.Children.Clear();
+                Image addVendorImage = new Image();
+                addVendorImage.Source = new BitmapImage(new Uri(@"Icons\plus_icon.jpg", UriKind.Relative));
+                addVendorImage.Height = 20;
+                addVendorImage.Width = 20;
+                addVendorImage.MouseLeftButtonDown += onClickHandler;
+                Grid previousGrid = outerGrid.Children[0] as Grid;
+
+                previousGrid.Children.Add(addVendorImage);
+                Grid.SetColumn(addVendorImage, 2);
+                outerGrid.Children.Remove(innerGrid);
+                outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
+            }
+            else if (index == outerGrid.Children.Count - 1 && outerGrid.Children.Count != 0)
+            {
+                outerGrid.Children.Remove(innerGrid);
+                outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
+
+                Grid previousInnerGrid = (Grid)outerGrid.Children[index - 1];
+                Image plusIcon = (Image)innerGrid.Children[3];
+                innerGrid.Children.Remove(plusIcon);
+                Grid.SetColumn(plusIcon, 2);
+                previousInnerGrid.Children.Add(plusIcon);
+
+            }
+            else
+            {
+                for (int i = index; i < outerGrid.Children.Count - 1; i++)
+                {
+                    if (i == index)
+                        Grid.SetRow(innerGrid, outerGrid.RowDefinitions.Count - 1);
+                    else
+                        Grid.SetRow(outerGrid.Children[i], i - 1);
+
+                }
+
+                outerGrid.Children.Remove(innerGrid);
+
+                outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
+            }
+
+            String Content = "Point #";
+            updateLabelIds(Content, outerGrid, index);
+        }
+        void updateLabelIds(String content, Grid currentGrid, int index)
+        {
+            for (int i = index; i < currentGrid.Children.Count; i++)
+            {
+                Grid innerGrid = currentGrid.Children[i] as Grid;
+                Label header = innerGrid.Children[0] as Label;
+                header.Content = content + (i + 1).ToString();
+            }
+        }
     }
 }
