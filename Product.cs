@@ -203,7 +203,9 @@ namespace _01electronics_library
         {
             if (!GetNewModelID())
                 return false;
-            if (!InsertIntoBrandModels(mModelName))
+            if (!InsertIntoBrandModels())
+                return false;
+            if (!InsertIntoUPSSpecs())
                 return false;
             if (!InsertIntoModelApplications(ref mModelApplications))
                 return false;
@@ -211,8 +213,7 @@ namespace _01electronics_library
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
                 return false;
-            if (!InsertIntoUPSSpecs())
-                return false;
+            
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
@@ -368,7 +369,7 @@ namespace _01electronics_library
             return true;
         }
 
-        public bool InsertIntoBrandModels(String mModelName)
+        public bool InsertIntoBrandModels()
         {
             String sqlQueryPart1 = @" insert into erp_system.dbo.brands_models
                                       values(";
@@ -384,9 +385,9 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += GetModelID();
             sqlQuery += comma;
-            sqlQuery += "'" + mModelName + "'";
+            sqlQuery += "'" + GetModelName() + "'";
             sqlQuery += comma;
-            sqlQuery += "'" + sqlQueryPart3 + "'";
+            sqlQuery +=  sqlQueryPart3 ;
             sqlQuery += sqlQueryPart4;
 
             if (!sqlDatabase.InsertRows(sqlQuery))
@@ -581,7 +582,7 @@ namespace _01electronics_library
                 max = 0;
             }
            
-            String sqlQueryPart1 = @"insert into p_system.dbo.ups_specs
+            String sqlQueryPart1 = @"insert into erp_system.dbo.ups_specs
                                     values(";
             String comma = ",";
             String sqlQueryPart2 = "GETDATE()";
@@ -598,17 +599,19 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += max+1;
             sqlQuery += comma;
+            sqlQuery += UPSSpecs[max].spec_id;
+            sqlQuery += comma;
             sqlQuery += "'" + UPSSpecs[max].io_phase+"'" ;
             sqlQuery += comma;
-            sqlQuery += "'" + UPSSpecs[max].rated_power + "'";
+            sqlQuery += UPSSpecs[max].rated_power;
             sqlQuery += comma;
             sqlQuery += UPSSpecs[max].rating_id ;
             sqlQuery += comma;
-            sqlQuery += "'" + UPSSpecs[max].backup_time_50 + "'";
+            sqlQuery += UPSSpecs[max].backup_time_50 ;
             sqlQuery += comma;
-            sqlQuery += "'" + UPSSpecs[max].backup_time_70 + "'";
+            sqlQuery +=  UPSSpecs[max].backup_time_70 ;
             sqlQuery += comma;
-            sqlQuery += "'" + UPSSpecs[max].backup_time_100 + "'";
+            sqlQuery +=  UPSSpecs[max].backup_time_100;
             sqlQuery += comma;
             sqlQuery += "'" + UPSSpecs[max].input_power_factor + "'";
             sqlQuery += comma;
@@ -654,9 +657,16 @@ namespace _01electronics_library
             sqlQuery += comma;
             sqlQuery += "'" + UPSSpecs[max].marking + "'";
             sqlQuery += comma;
-            sqlQuery += UPSSpecs[max].is_valid ;
+            if (UPSSpecs[max].is_valid == false)
+            {
+                sqlQuery += 0;
+            }
+            else
+            {
+                sqlQuery += 1;
+            }
             sqlQuery += comma;
-            sqlQuery += UPSSpecs[max].valid_until ;
+            sqlQuery += "'" + UPSSpecs[max].valid_until.ToString("yyyy-MM-dd") + "'"; ;
             sqlQuery += comma;
             sqlQuery += sqlQueryPart2;
             sqlQuery += sqlQueryPart3;

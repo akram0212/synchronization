@@ -67,6 +67,8 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
+            product.SetModelName(NameTextBox.Text.ToString());
+            product.SetsummaryPoints(summeryPointsTextBox.Text.ToString());
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
 

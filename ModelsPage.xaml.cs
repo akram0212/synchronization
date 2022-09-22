@@ -300,7 +300,7 @@ namespace _01electronics_crm
                         Grid.SetRow(scrollViewer2, 1);
                         //Grid.SetColumnSpan(scrollViewer2, 2);
 
-                        if (!selectedProduct.InitializeModelSummaryPoints(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID()))
+                        if (!selectedProduct.InitializeModelSummaryPoints())
                             return;
 
                         for (int j = 0; j < 4; j++)

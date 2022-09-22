@@ -110,7 +110,11 @@ namespace _01electronics_crm
             //     NavigationWindow currentWindow = (NavigationWindow)this.Parent;
             //     currentWindow.Close();
             // }
+
+            product.GetNewModelID();
+            product.InsertIntoBrandModels();
             product.InsertIntoUPSSpecs();
+            
         }
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)

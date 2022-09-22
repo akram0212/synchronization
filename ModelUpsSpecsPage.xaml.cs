@@ -1,4 +1,5 @@
 ﻿using _01electronics_library;
+using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +35,17 @@ namespace _01electronics_crm
         public ModelUploadFilesPage modelUploadFilesPage;
 
         protected List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+        List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT> rating;
 
         public ModelUpsSpecsPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
+            
             viewAddCondition = mViewAddCondition;
 
             sqlDatabase = new SQLServer();
             UPSSpecs = new List<BASIC_STRUCTS.UPS_SPECS_STRUCT>();
-
+            rating = new List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT>();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
 
@@ -57,6 +60,7 @@ namespace _01electronics_crm
             {
 
             }
+            initializeRatingCombobox();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,13 +91,70 @@ namespace _01electronics_crm
             {
                 BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
                 tempUPSSpecs.spec_id = 1;
-                tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
-                tempUPSSpecs.rated_power = ratedPowerTextBox.Text.ToString();
-                // tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
-                tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
-                tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
-                tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
-                tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.ToString();
+                if (iOPhaseTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].io_phase != null))
+                {
+                    tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+                if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
+                {   
+                    tempUPSSpecs.rated_power = decimal.Parse( ratedPowerTextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+                if (ratingComboBox.SelectedIndex != -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
+                {
+                    tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
+                    tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
+                }
+                else
+                {
+                    MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+
+                if (backupTime50TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_50 != null))
+                {
+                    tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+
+                if (backupTime70TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_70 != null))
+                {
+                    tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
+                {
+                    tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
                 tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
                 tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text.ToString();
                 tempUPSSpecs.input_voltage = inputVoltageTextBox.Text.ToString();
@@ -116,7 +177,16 @@ namespace _01electronics_crm
                 tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                 tempUPSSpecs.marking = markingTextBox.Text.ToString();
                 tempUPSSpecs.is_valid = true;
-                tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+                if (validUntilDatePicker.SelectedDate != null || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].valid_until != null))
+                {
+                    tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+                }
+                else
+                {
+                    MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
                 UPSSpecs.Clear();
                 UPSSpecs.Add(tempUPSSpecs);
                 product.UPSSpecs = UPSSpecs;
@@ -160,13 +230,70 @@ namespace _01electronics_crm
             {
                 BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
                 tempUPSSpecs.spec_id = 1;
-                tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
-                tempUPSSpecs.rated_power = ratedPowerTextBox.Text.ToString();
-                // tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
-                //tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.ToString());
-                //tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.ToString());
-                //tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.ToString());
-                tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.ToString();
+                if (iOPhaseTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].io_phase != null))
+                {
+                    tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("IO Phase is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+                if (ratedPowerTextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rated_power != null))
+                {
+                    tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Rated Power is empty, please enter it.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+                if (ratingComboBox.SelectedIndex!= -1 || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].rating != null))
+                {
+                    tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
+                    tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex+1;
+                }
+                else
+                {
+                    MessageBox.Show("Rating is empty, please Chose One .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+                
+                if (backupTime50TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_50 != null))
+                {
+                    tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 50% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
+
+                if (backupTime70TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_70 != null))
+                {
+                    tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 70% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (backupTime100TextBox.Text != "" || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].backup_time_100 != null))
+                {
+                    tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("Backup time 100% is empty, please enter time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
                 tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
                 tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text.ToString();
                 tempUPSSpecs.input_voltage = inputVoltageTextBox.Text.ToString();
@@ -189,7 +316,16 @@ namespace _01electronics_crm
                 tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                 tempUPSSpecs.marking = markingTextBox.Text.ToString();
                 tempUPSSpecs.is_valid = true;
-                tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+                if (validUntilDatePicker.SelectedDate != null || (product.UPSSpecs.Count > 0 && product.UPSSpecs[0].valid_until != null))
+                {
+                    tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+                }
+                else
+                {
+                    MessageBox.Show("Date picker is not selected, please Select Date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+
+                }
                 UPSSpecs.Clear();
                 UPSSpecs.Add(tempUPSSpecs);
                 product.UPSSpecs = UPSSpecs;
@@ -238,7 +374,22 @@ namespace _01electronics_crm
         {
 
         }
+        //////////////////////////////////////////////////////////////////////
+        ///INITILIZATIONS
+        /////////////////////////////////////////////////////////////////////
+        void initializeRatingCombobox()
+        {
+            rating.Clear();
 
-        
+            if (!commonQueriesObject.GetMeasureUnits(ref rating))
+                return;
+
+            ratingComboBox.Items.Clear();
+
+            for (int i = 0; i < rating.Count; i++)
+            {
+                ratingComboBox.Items.Add(rating[i].measure_unit);
+            }
+        }
     }
 }
