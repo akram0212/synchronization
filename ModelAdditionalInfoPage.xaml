@@ -81,7 +81,7 @@
                             <Label Content="STANDARD FEATURES" Margin="20,0,0,0" HorizontalAlignment="Left" Style="{StaticResource tableHeaderItem}"/>
                         </Grid>
 
-                        <Grid Grid.Row="1" Name="standardFeaturesGrid">
+                        <Grid Grid.Row="1" Name="standardFeaturesGrid" Tag="0" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Feature #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
                                 <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="standardFeaturesTextBox1" TextWrapping="Wrap"/>
-                                <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickStandardFeaturesImage"/>
+                                <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="onClickHandler"/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -113,7 +113,7 @@
                             <Label Content="BENEFITS" Margin="20,0,0,0" HorizontalAlignment="Left" Style="{StaticResource tableHeaderItem}"/>
                         </Grid>
 
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" Name="benefitsGrid" Tag="1" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
@@ -121,7 +121,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="250"/>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Benefit #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
                                 <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="benefitsTextBox1" TextWrapping="Wrap"/>
@@ -145,7 +145,7 @@
                             <Label Content="APPLICATIONS" Margin="20,0,0,0" HorizontalAlignment="Left" Style="{StaticResource tableHeaderItem}"/>
                         </Grid>
 
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" Name="applicationsGrid" Tag="2" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
@@ -157,7 +157,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Application #1" Width="200"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
                                 <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="applicationsTextBox1" TextWrapping="Wrap"/>
-                                <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickApplicationsImage"/>
+                                <Image Grid.Column="2"  Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="OnClickApplicationsImage"/>
                             </Grid>
                         </Grid>
                     </Grid>
