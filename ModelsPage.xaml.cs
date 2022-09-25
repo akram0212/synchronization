@@ -602,17 +602,17 @@ namespace _01electronics_crm
         }
         private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
-            Button tempListBox = (Button)sender;
+            //Button tempListBox = (Button)sender;
 
-            StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
-            Expander currentExpander = (Expander)currentStackPanel.Parent;
+            //StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
+            //Expander currentExpander = (Expander)currentStackPanel.Parent;
             
-            currentGrid = (Grid)currentExpander.Parent;
+            //currentGrid = (Grid)currentExpander.Parent;
 
-            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
-            //ViewModel();
-            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
-            modelsWindow.Show();
+            //viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+            ////ViewModel();
+            //ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
+            //modelsWindow.Show();
         }
 
         private void addBtnMouseEnter(object sender, MouseEventArgs e)
