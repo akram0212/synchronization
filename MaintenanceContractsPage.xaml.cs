@@ -30,7 +30,7 @@ namespace _01electronics_crm
         private List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT> maintContractsAfterFiltering = new List<COMPANY_WORK_MACROS.MAINTENANCE_CONTRACT_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> productTypes = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
         private List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandTypes = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
-        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> orderStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
+        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> contractStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
 
         private int selectedYear;
         private int selectedQuarter;
@@ -192,12 +192,12 @@ namespace _01electronics_crm
 
         private void InitializeStatusComboBox()
         {
-            if (!commonQueriesObject.GetWorkOrderStatus(ref orderStatuses))
+            if (!commonQueriesObject.GetMaintenanceContractsStatus(ref contractStatuses))
                 return;
 
-            for (int i = 0; i < orderStatuses.Count; i++)
+            for (int i = 0; i < contractStatuses.Count; i++)
             {
-                statusComboBox.Items.Add(orderStatuses[i].status_name);
+                statusComboBox.Items.Add(contractStatuses[i].status_name);
             }
 
             statusComboBox.IsEnabled = false;
@@ -414,11 +414,11 @@ namespace _01electronics_crm
                 contractStatusLabel.Style = (Style)FindResource("BorderIconTextLabel");
 
 
-                if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION)
+                if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.NEW_MAINTENANCE_CONTRACT || maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.PENDING_RENEWAL_MAINTENANCE_CONTRACT)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
+                else if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT || maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.RENEWED_MAINTENANCE_CONTRACT)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }
@@ -460,7 +460,7 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if ((loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
                     listBox.Items.Add(editContractButton);
 
                 if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
@@ -469,14 +469,35 @@ namespace _01electronics_crm
                     listBox.Items.Add(viewOfferButton);
                 }
 
-                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
+                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID))
                 {
                     ListBoxItem confirmOrderButton = new ListBoxItem();
-                    confirmOrderButton.Content = "Confirm Contract";
+                    confirmOrderButton.Content = "Close Contract";
                     confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                     listBox.Items.Add(confirmOrderButton);
 
                 }
+                
+                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CANCELLED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID))
+                {
+                    ListBoxItem confirmOrderButton = new ListBoxItem();
+                    confirmOrderButton.Content = "Cancel Contract";
+                    confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                    listBox.Items.Add(confirmOrderButton);
+
+                }
+
+                ListBoxItem renewContractButton = new ListBoxItem();
+                renewContractButton.Content = "Renew Contract";
+                renewContractButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                listBox.Items.Add(renewContractButton);
+
+
+                ListBoxItem showHistoryButton = new ListBoxItem();
+                showHistoryButton.Content = "Show History";
+                showHistoryButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
+                listBox.Items.Add(showHistoryButton);
+
 
                 expander.Content = listBox;
 
@@ -874,7 +895,7 @@ namespace _01electronics_crm
             //DisableReviseButton();
 
             if (statusComboBox.SelectedItem != null)
-                selectedStatus = orderStatuses[statusComboBox.SelectedIndex].status_id;
+                selectedStatus = contractStatuses[statusComboBox.SelectedIndex].status_id;
             else
                 selectedStatus = 0;
 
@@ -1124,13 +1145,18 @@ namespace _01electronics_crm
                 {
                     OnBtnClickViewOffer();
                 }
-                else if (currentItem.Content.ToString() == "Confirm Contract")
+                else if (currentItem.Content.ToString() == "Close Contract")
                 {
                     OnBtnClickConfirmOrder();
                 }
                 else if (currentItem.Content.ToString() == "Edit Contract")
                 {
                     OnBtnClickEdit();
+                }
+                
+                else if (currentItem.Content.ToString() == "Cancel Contract")
+                {
+                    OnBtnClickCancel();
                 }
 
                 tempListBox.SelectedIndex = -1;
@@ -1168,7 +1194,7 @@ namespace _01electronics_crm
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            //MaintContract.InitializeMaintContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].order_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
 
             if (MaintContract.GetRFQID() != null)
             {
@@ -1191,7 +1217,7 @@ namespace _01electronics_crm
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            //MaintContract.InitializeMaintContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].order_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
 
             if (MaintContract.GetMaintOfferID() != null)
             {
@@ -1212,11 +1238,25 @@ namespace _01electronics_crm
         {
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            //MaintContract.InitializeMaintContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].order_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
 
             MaintContract.ConfirmMaintContract();
 
-            if (GetMaintenanceContracts())
+            if (!GetMaintenanceContracts())
+                return;
+
+            SetMaintContractsStackPanel();
+            SetMaintContractsGrid();
+        }
+        private void OnBtnClickCancel()
+        {
+            MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
+
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+
+            MaintContract.CancelMaintContract();
+
+            if (!GetMaintenanceContracts())
                 return;
 
             SetMaintContractsStackPanel();

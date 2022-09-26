@@ -549,8 +549,10 @@ namespace _01electronics_crm
                     Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
                     WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
                     TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
-                    currentQuantityTextBoxValue.Text = maintContracts.GetMaintOfferProductQuantity(i + 1).ToString();
-
+                    if(maintContracts.GetMaintOfferProductQuantity(i + 1) != 0)
+                        currentQuantityTextBoxValue.Text = maintContracts.GetMaintOfferProductQuantity(i + 1).ToString();
+                    else
+                        currentQuantityTextBoxValue.Text = maintContracts.GetMaintContractProductQuantity(i + 1).ToString();
 
                 }
                 else
@@ -573,6 +575,10 @@ namespace _01electronics_crm
                     WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
                     TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
                     int price = (int)maintContracts.GetProductPriceValue(i + 1);
+
+                    if (maintContracts.GetProductPriceValue(i + 1) == 0)
+                        price = (int)maintContracts.GetMaintContractProductPriceValue(i + 1);
+
                     currentPriceTextBoxValue.Text = price.ToString();
 
                 }
@@ -595,7 +601,12 @@ namespace _01electronics_crm
                 Grid currentPriceGrid = (Grid)mainWrapPanel.Children[0];
                 WrapPanel currentProductWrapPanel = (WrapPanel)currentPriceGrid.Children[6];
                 ComboBox currentPriceComboBox = (ComboBox)currentProductWrapPanel.Children[2];
-                currentPriceComboBox.SelectedItem = maintContracts.GetCurrency();
+
+                if(maintContracts.GetCurrencyId() != 0)
+                    currentPriceComboBox.SelectedItem = maintContracts.GetCurrency();
+                else
+                    currentPriceComboBox.SelectedItem = maintContracts.GetMaintContractCurrency();
+
 
             }
             else if (mainWrapPanel.Children.Count != 0)
