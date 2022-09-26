@@ -305,7 +305,7 @@ namespace _01electronics_crm
 
                         for (int j = 0; j < 4; j++)
                         {
-                            if (j < selectedProduct.modelSummaryPoints.Count())
+                            if (j < selectedProduct.GetModelSummaryPoints().Count())
                             {
                                 RowDefinition summaryRow = new RowDefinition();
                                 row2Grid.RowDefinitions.Add(summaryRow);
@@ -317,7 +317,7 @@ namespace _01electronics_crm
                                 pointsBox.IsEnabled = false;
                                 pointsBox.FontWeight = FontWeights.Bold;
                                 pointsBox.Background = Brushes.White;
-                                pointsBox.Text = "-" + selectedProduct.modelSummaryPoints[j];
+                                pointsBox.Text = "-" + selectedProduct.GetModelSummaryPoints()[j];
                                 pointsBox.TextWrapping = TextWrapping.Wrap;
                                 pointsBox.Style = (Style)FindResource("miniTextBoxStyle");
                                 Grid.SetRow(pointsBox, j);
@@ -328,7 +328,7 @@ namespace _01electronics_crm
                                 row2Grid.Children.Add(textBoxGrid);
                             }
                         }
-                        if (selectedProduct.modelSummaryPoints.Count() == 0)
+                        if (selectedProduct.GetModelSummaryPoints().Count() == 0)
                         {
                             RowDefinition summaryRow = new RowDefinition();
                             row2Grid.RowDefinitions.Add(summaryRow);
@@ -602,17 +602,17 @@ namespace _01electronics_crm
         }
         private void OnBtnClickView(object sender, RoutedEventArgs e)
         {
-            Button tempListBox = (Button)sender;
+            //Button tempListBox = (Button)sender;
 
-            StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
-            Expander currentExpander = (Expander)currentStackPanel.Parent;
+            //StackPanel currentStackPanel= (StackPanel)tempListBox.Parent;
+            //Expander currentExpander = (Expander)currentStackPanel.Parent;
             
-            currentGrid = (Grid)currentExpander.Parent;
+            //currentGrid = (Grid)currentExpander.Parent;
 
-            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
-            //ViewModel();
-            ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
-            modelsWindow.Show();
+            //viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+            ////ViewModel();
+            //ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
+            //modelsWindow.Show();
         }
 
         private void addBtnMouseEnter(object sender, MouseEventArgs e)

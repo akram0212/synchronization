@@ -866,5 +866,25 @@ namespace _01electronics_crm
 
             NavigationService.Navigate(modelAdditionalInfoPage);
         }
+
+        private void OnBtnClickUploadFiles(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnBtnClickUpsSpecs(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnClickNextButton(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnBtnClickCancel(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

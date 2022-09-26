@@ -195,14 +195,14 @@ namespace _01electronics_crm
                 }
 
                 product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
+               // product.SetsummaryPoints(summerypointsTextBox.Text);
 
                 product.IssueNewProduct();
             }
             else
             {
                 product.SetProductName(ProductNameTextBox.Text);
-                product.SetsummaryPoints(summerypointsTextBox.Text);
+               // product.SetsummaryPoints(summerypointsTextBox.Text);
                 if (productNameEdited)
                     product.UpdateIntoProductName();
                 if(productSummaryPointsEdited)
@@ -1018,7 +1018,7 @@ namespace _01electronics_crm
                 remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
             }
             
-            if (summerypointsTextBox.Text.ToString() != product.GetsummaryPoints()) 
+            if (summerypointsTextBox.Text.ToString() != product.GetSummaryPoints()) 
             {
                 BrushConverter brushConverter = new BrushConverter();
                 ProductSummeryPointstextblock.Foreground = (Brush)brushConverter.ConvertFrom("#FF0000");
@@ -1060,7 +1060,7 @@ namespace _01electronics_crm
                 ProductNameTextBox.Visibility = Visibility.Collapsed;
                 ProductNameLabel.Visibility = Visibility.Visible;
 
-                ProductSummeryPointstextblock.Text = product.GetsummaryPoints();
+                ProductSummeryPointstextblock.Text = product.GetSummaryPoints();
                 summerypointsTextBox.Visibility = Visibility.Collapsed;
                 ProductSummeryPointstextblock.Visibility = Visibility.Visible;
                 picHint.Visibility = Visibility.Hidden;

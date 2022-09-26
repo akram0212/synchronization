@@ -45,7 +45,7 @@ namespace _01electronics_library
         //PRODUCT ADDITIONAL INFO
         private List<String> modelApplications;
         private List<String> modelBenefits;
-        public List<String> modelSummaryPoints;
+        private List<String> modelSummaryPoints;
         private List<String> modelStandardFeatures;
 
         private int numberOfSavedModelApplications;
@@ -55,7 +55,7 @@ namespace _01electronics_library
 
         protected String errorMessage;
 
-        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+        private List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
 
         public Product()
         {
@@ -176,7 +176,7 @@ namespace _01electronics_library
                 return false;
 
             return true;
-        }
+            }
         public bool IssueNewBrand(String mBrandName, ref List<int> brandProducts)
         {
             if (!GetNewBrandID())
@@ -199,20 +199,24 @@ namespace _01electronics_library
 
             return true;
         }
-        public bool IssueNewModel(String mModelName, ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
+        public bool IssueNewModel( ref List<String> mModelApplications, ref List<String> mModelBenefits, ref List<String> mModelStandardFeatures)
         {
             if (!GetNewModelID())
                 return false;
             if (!InsertIntoBrandModels())
                 return false;
+            if (!InsertIntoModelSummaryPoints())
+                return false;
             if (!InsertIntoUPSSpecs())
                 return false;
+            
             if (!InsertIntoModelApplications(ref mModelApplications))
                 return false;
             if (!InsertIntoModelBenefits(ref mModelBenefits))
                 return false;
             if (!InsertIntoModelStandardFeatures(ref mModelStandardFeatures))
                 return false;
+            
 
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
@@ -484,11 +488,11 @@ namespace _01electronics_library
             }
             return true;
         }
-        public bool InsertIntoModelSummaryPoints(ref List<String> mModelSummaryPoints)
+        public bool InsertIntoModelSummaryPoints()
         {
-            for (int i = 0; i < mModelSummaryPoints.Count(); i++)
+            for (int i = 0; i < modelSummaryPoints.Count(); i++)
             {
-                String sqlQueryPart1 = @" insert into erp_system.dbo.products_summary
+                String sqlQueryPart1 = @" insert into erp_system.dbo.models_summary_points
                                       values(";
                 String comma = ",";
                 String sqlQueryPart3 = "GETDATE()";
@@ -504,9 +508,9 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += i + 1;
                 sqlQuery += comma;
-                sqlQuery += "'" + mModelSummaryPoints[i] + "'";
+                sqlQuery += "'" + modelSummaryPoints[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += "'" + sqlQueryPart3 + "'";
+                sqlQuery += sqlQueryPart3;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
@@ -522,7 +526,7 @@ namespace _01electronics_library
 
             sqlQuery = String.Empty;
             sqlQuery += sqlQueryPart1;
-            sqlQuery += GetsummaryPoints();
+            sqlQuery += GetSummaryPoints();
             sqlQuery += sqlQueryPart2;
             sqlQuery += GetProductID();
            
@@ -563,7 +567,7 @@ namespace _01electronics_library
                 sqlQuery += sqlQueryPart1;
                 sqlQuery += GetProductID();
                 sqlQuery += comma;
-                sqlQuery += "'" + GetsummaryPoints() + "'";
+                sqlQuery += "'" + GetSummaryPoints() + "'";
                 sqlQuery += comma;
                 sqlQuery += sqlQueryPart2;
                 sqlQuery += sqlQueryPart3;
@@ -771,6 +775,10 @@ namespace _01electronics_library
             summaryPoints = msummaryPoints;
 
         }
+        public void SetModelsummaryPoints(List<String> mModlSummeryPoints)
+        {
+             modelSummaryPoints = mModlSummeryPoints;
+        }
         public void SetPhotoLocalPath(String mPath)
         {
             photoLocalPath = mPath;
@@ -778,6 +786,10 @@ namespace _01electronics_library
         public void SetPhotoServerPath(String mPath)
         {
             photoServerPath = mPath;
+        }
+        public void SetUPSSpecs(BASIC_STRUCTS.UPS_SPECS_STRUCT mUPSSpecs)
+        {
+            UPSSpecs.Add( mUPSSpecs); 
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GETTERS
@@ -818,9 +830,13 @@ namespace _01electronics_library
         {
             return modelName;
         }
-        public String GetsummaryPoints()
+        public String GetSummaryPoints()
         {
             return summaryPoints;
+        }
+        public List<String> GetModelSummaryPoints()
+        {
+            return modelSummaryPoints;
         }
         public int GetNumberOfSavedModelApplications()
         {
@@ -986,6 +1002,11 @@ namespace _01electronics_library
 
             return true;
         }
+        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> GetUPSSpecs()
+        {
+            return UPSSpecs ;
+        }
+        
 
 
     }

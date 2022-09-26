@@ -98,7 +98,7 @@
                             </WrapPanel>
                             <WrapPanel Name="ratedPowerWrapPanel" >
                                 <Label Style="{StaticResource tableItemValue}" Content="Rated Power*" Width="210"/>
-                                <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="ratedPowerTextBox"/>
+                                <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="0.0"  Name="ratedPowerTextBox"/>
                             </WrapPanel>
                         </WrapPanel>
 
@@ -121,17 +121,17 @@
                                     <Label Style="{StaticResource tableItemValue}" Grid.Row="0" Grid.Column="0"  Content="Backup time (in min)*" Width="210"/>
                                     <WrapPanel  Grid.Row="0" Grid.Column="1" Name="backupTimeWrapPanel" Margin="12,0,0,0">
                                         <Label Style="{StaticResource labelStyle}" Content="50%" Width="40" Margin="10,0,0,0"/>
-                                        <TextBox Style="{StaticResource textBoxStyle}" Margin="12" Text="" Name="backupTime50TextBox" Width="30"  />
+                                        <TextBox Style="{StaticResource textBoxStyle}" Margin="12" Text="0" Name="backupTime50TextBox"  Width="30"  />
                                         <Label Style="{StaticResource labelStyle}" Content="min" Width="50" Margin="-15,0,0,0"/>
                                     </WrapPanel>
                                     <WrapPanel Grid.Row="0" Grid.Column="2" Name="backupTime70WrapPanel" >
                                         <Label Style="{StaticResource labelStyle}" Content="70%" Width="40" Margin="12,0,0,0"/>
-                                        <TextBox Style="{StaticResource textBoxStyle}" Margin="12"  Text="" Name="backupTime70TextBox" Width="30"  />
+                                        <TextBox Style="{StaticResource textBoxStyle}" Margin="12"  Text="0" Name="backupTime70TextBox" Width="30"  />
                                         <Label Style="{StaticResource labelStyle}" Content="min" Width="50" Margin="-15,0,0,0"/>
                                     </WrapPanel>
                                     <WrapPanel Grid.Row="0" Grid.Column="3" Name="backupTime100WrapPanel" >
                                         <Label Style="{StaticResource labelStyle}" Content="100%" Width="50" Margin="12,0,0,0"/>
-                                        <TextBox Style="{StaticResource textBoxStyle}"  Margin="12" Text="" Name="backupTime100TextBox" Width="30"  />
+                                        <TextBox Style="{StaticResource textBoxStyle}"  Margin="12" Text="0                                                                                                                                                                                                                                      " Name="backupTime100TextBox" Width="30"  />
                                         <Label Style="{StaticResource labelStyle}" Content="min" Width="50" Margin="-15,0,0,0"/>
                                     </WrapPanel>
                                 </Grid>
@@ -282,8 +282,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button  Style="{StaticResource buttonStyle}" Name="backButto" Content="Back" Click="OnBtnClickBack" Margin="24"/>
-            <Button  Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
+            <Button Grid.Column="0" Style="{StaticResource buttonStyle}" Name="backButto" Content="Back" Click="OnBtnClickBack" Margin="24"/>
+            <Button Grid.Column="1"  Style="{StaticResource buttonStyle}" Name="nextButton" Content="Next" Click="OnBtnClickNext" Margin="24"/>
             <Button Grid.Column="2" Style="{StaticResource buttonStyle}" Name="finishButton" Content="Finish" IsEnabled="False" Margin="24"/>
             <Button Grid.Column="3" Style="{StaticResource buttonStyle}" Name="cancelButton" Content="Cancel" Click="OnBtnClickCancel" Margin="24"/>
 
