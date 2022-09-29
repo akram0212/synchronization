@@ -82,7 +82,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
             {
                 InitializeCategories();
                 InitializePriceCurrencyComboBoxes();

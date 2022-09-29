@@ -82,7 +82,7 @@
                     </Grid.RowDefinitions>
 
                     <WrapPanel  Grid.Row="0">
-                        <Label Content="Warranty &#x0a;Period" Style="{StaticResource labelStyle}"/>
+                        <Label Content="Contract &#x0a;Period" Style="{StaticResource labelStyle}"/>
                         <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12" Name="warrantyPeriodTextBox" TextChanged="WarrantyPeriodTextBoxTextChanged"/>
                         <ComboBox Style="{StaticResource miniComboBoxStyle}"  Margin="42,12,12,12" Name="warrantyPeriodCombo"  SelectionChanged="WarrantyPeriodComboSelectionChanged"/>
                         <ComboBox Style="{StaticResource miniComboBoxStyle}"   Name="warrantyPeriodFromWhenCombo"  SelectionChanged="WarrantyPeriodFromWhenComboSelectionChanged"/>

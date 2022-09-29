@@ -460,8 +460,6 @@ namespace _01electronics_crm
 
                 listBox.Items.Add(viewButton);
 
-                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
-                    listBox.Items.Add(editContractButton);
 
                 if (loggedInUser.GetEmployeeTeamId() != COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID)
                 {
@@ -486,6 +484,9 @@ namespace _01electronics_crm
                     listBox.Items.Add(confirmOrderButton);
 
                 }
+
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID || (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
+                    listBox.Items.Add(editContractButton);
 
                 ListBoxItem renewContractButton = new ListBoxItem();
                 renewContractButton.Content = "Renew Contract";
@@ -678,9 +679,9 @@ namespace _01electronics_crm
                 companyAndContactLabel.Content = maintContracts[i].company_name + " - " + maintContracts[i].contact_name;
                 companyAndContactLabel.Style = (Style)FindResource("tableSubItemLabel");
 
-                maintContractsGrid.Children.Add(companyAndContactLabel);
                 Grid.SetRow(companyAndContactLabel, currentRowNumber);
                 Grid.SetColumn(companyAndContactLabel, 3);
+                maintContractsGrid.Children.Add(companyAndContactLabel);
 
 
                 Grid productGrid = new Grid();
@@ -778,7 +779,7 @@ namespace _01electronics_crm
 
                 maintContractsGrid.Children.Add(productGrid);
                 Grid.SetRow(productGrid, currentRowNumber);
-                Grid.SetColumn(productGrid, 3);
+                Grid.SetColumn(productGrid, 4);
 
                 Label contractStatusLabel = new Label();
                 contractStatusLabel.Content = maintContracts[i].maintenance_contract_status;
@@ -1153,10 +1154,17 @@ namespace _01electronics_crm
                 {
                     OnBtnClickEdit();
                 }
-                
+                else if (currentItem.Content.ToString() == "Renew Contract")
+                {
+                    OnBtnClickRenew();
+                }
                 else if (currentItem.Content.ToString() == "Cancel Contract")
                 {
                     OnBtnClickCancel();
+                }
+                else if (currentItem.Content.ToString() == "Show History")
+                {
+                    OnBtnClickShowHistory();
                 }
 
                 tempListBox.SelectedIndex = -1;
@@ -1164,11 +1172,11 @@ namespace _01electronics_crm
         }
         private void OnBtnClickView()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION;
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
             MaintenanceContractsWindow workOrderWindow = new MaintenanceContractsWindow(ref loggedInUser, ref MaintContract, viewAddCondition, false);
 
             workOrderWindow.Show();
@@ -1176,13 +1184,34 @@ namespace _01electronics_crm
 
         private void OnBtnClickEdit()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION;
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
 
             MaintenanceContractsWindow workOrderWindow = new MaintenanceContractsWindow(ref loggedInUser, ref MaintContract, viewAddCondition, false);
+
+            workOrderWindow.Closed += OnClosedMaintContractWindow;
+            workOrderWindow.Show();
+        }
+        private void OnBtnClickRenew()
+        {
+            int viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION;
+
+            MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
+
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
+
+            MaintenanceContractsWindow workOrderWindow = new MaintenanceContractsWindow(ref loggedInUser, ref MaintContract, viewAddCondition, false);
+
+            workOrderWindow.Closed += OnClosedMaintContractWindow;
+            workOrderWindow.Show();
+        }
+        private void OnBtnClickShowHistory()
+        {
+            int contractSerial = maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial;
+            MaintContractHistoryWindow workOrderWindow = new MaintContractHistoryWindow(ref loggedInUser, contractSerial);
 
             workOrderWindow.Closed += OnClosedMaintContractWindow;
             workOrderWindow.Show();
@@ -1190,11 +1219,11 @@ namespace _01electronics_crm
 
         private void OnBtnClickViewRFQ()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.RFQ_VIEW_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION;
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
 
             if (MaintContract.GetRFQID() != null)
             {
@@ -1213,11 +1242,11 @@ namespace _01electronics_crm
 
         private void OnBtnClickViewOffer()
         {
-            int viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
+            int viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION;
 
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
 
             if (MaintContract.GetMaintOfferID() != null)
             {
@@ -1238,7 +1267,7 @@ namespace _01electronics_crm
         {
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
 
             MaintContract.ConfirmMaintContract();
 
@@ -1252,7 +1281,7 @@ namespace _01electronics_crm
         {
             MaintenanceContract MaintContract = new MaintenanceContract(sqlDatabase);
 
-            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial);
+            MaintContract.InitializeMaintenanceContractInfo(maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_serial, maintContractsAfterFiltering[maintContractsStackPanel.Children.IndexOf(currentGrid)].maintenance_contract_version);
 
             MaintContract.CancelMaintContract();
 
@@ -1282,7 +1311,7 @@ namespace _01electronics_crm
 
         private void OnBtnClickAdd(object sender, RoutedEventArgs e)
         {
-            viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION;
+            viewAddCondition = COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION;
 
             selectedMaintContract = new MaintenanceContract(sqlDatabase);
 

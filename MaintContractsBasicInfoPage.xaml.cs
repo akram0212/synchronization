@@ -57,14 +57,14 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 //InitializeAssignedSalesPersonCombo();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElementsForView();
@@ -77,7 +77,7 @@ namespace _01electronics_crm
 
                 maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref loggedInUser, ref maintContract, viewAddCondition);
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
@@ -103,9 +103,37 @@ namespace _01electronics_crm
 
                 DisableSalesPersonAndOfferCombo();
 
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+            {
+                FillOffersList();
+                ConfigureUIElemenetsForAdd();
+                InitializeSalesPersonCombo();
+                SetSalesPersonComboValue();
+                InitializeStatusComboBox();
+                //contractStatusWrapPanel.Visibility = Visibility.Visible;
+
+                if (maintContract.GetMaintOfferID() != null)
+                {
+                    SetOfferSerialComboValue();
+                    OfferSerialCombo.IsEnabled = true;
+                }
+                else
+                {
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+
+                    companyNameCombo.IsEnabled = true;
+                    companyAddressCombo.IsEnabled = true;
+                    contactPersonNameCombo.IsEnabled = true;
+                }
+
+                DisableSalesPersonAndOfferCombo();
+                DisableCompanyNameaddressContactCombos();
+                OfferCheckBox.IsEnabled = false;
+
 
             }
-
             else
             {
                 FillOffersList();
@@ -284,11 +312,11 @@ namespace _01electronics_crm
         private void InitializeOfferSerialCombo()
         {
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
             {
                 FillOfferSerialCombo();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
             {
                 COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT tmp = outgoingQuotationsList.Find(x => x.offer_serial == maintContract.GetMaintOfferSerial());
 
@@ -460,7 +488,7 @@ namespace _01electronics_crm
             if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 InitializeCompanyNameCombo();
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || maintContract.GetMaintOfferID() != null)
+                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION || maintContract.GetMaintOfferID() != null)
                     OfferCheckBox.IsChecked = true;
             }
             else
@@ -468,7 +496,7 @@ namespace _01electronics_crm
                 InitializeCompanyNameCombo();
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
                 maintContract.InitializeMaintContractProposerInfo(loggedInUser.GetEmployeeId());
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 maintContract.InitializeMaintContractProposerInfo(maintContract.GetMaintOfferProposerId());
@@ -546,7 +574,7 @@ namespace _01electronics_crm
         {
             if (OfferSerialCombo.SelectedItem != null)
             {
-                if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                if (viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
                 {
                     if (maintContract.GetMaintOfferSerial() == 0)
                         maintContract.InitializeMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_proposer_id);
@@ -594,7 +622,7 @@ namespace _01electronics_crm
 
         //private void OnSelChangedAssignedSalesCombo(object sender, SelectionChangedEventArgs e)
         //{
-        //    if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && assignedSalesCombo.SelectedItem != null)
+        //    if (viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION && assignedSalesCombo.SelectedItem != null)
         //    {
         //        if (assignedSalesCombo.SelectedIndex != employeesList.Count())
         //        {
@@ -661,7 +689,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
             {
                 maintContractsUploadFilesPage.maintContractsBasicInfoPage = this;
                 maintContractsUploadFilesPage.maintContractsProjectsPage = maintContractsProjectInfoPage;

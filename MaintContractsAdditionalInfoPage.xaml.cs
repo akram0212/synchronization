@@ -95,7 +95,7 @@ namespace _01electronics_crm
                 cancelButton.IsEnabled = false;
                 remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -498,6 +498,23 @@ namespace _01electronics_crm
                 else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 {
                     if (!maintenanceContract.ReviseMaintContract())
+                        return;
+
+                    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+                    {
+                        viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
+
+                        MaintenanceContractsWindow viewOffer = new MaintenanceContractsWindow(ref loggedInUser, ref maintenanceContract, viewAddCondition, true);
+
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
+
+                        viewOffer.Show();
+                    }
+                }
+                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                {
+                    if (!maintenanceContract.RenewMaintContract())
                         return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
