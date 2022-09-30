@@ -418,7 +418,7 @@ namespace _01electronics_crm
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT || maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.RENEWED_MAINTENANCE_CONTRACT)
+                else if (maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT || maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.RENEWED_MAINTENANCE_CONTRACT || maintContracts[i].maintenance_contract_status_id == COMPANY_WORK_MACROS.NEWLY_RENEWED_MAINTENANCE_CONTRACT)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }

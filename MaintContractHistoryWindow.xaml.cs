@@ -48,7 +48,7 @@ namespace _01electronics_crm
 
             maintContractsGrid.Children.Clear();
             maintContractsGrid.RowDefinitions.Clear();
-            maintContractsGrid.ColumnDefinitions.Clear();
+            //maintContractsGrid.ColumnDefinitions.Clear();
 
             int currentRowNumber = 0;
 

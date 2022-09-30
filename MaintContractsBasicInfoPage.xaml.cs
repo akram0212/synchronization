@@ -74,6 +74,8 @@ namespace _01electronics_crm
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
                 SetStatusLabel();
+                SetIssueDate();
+                issueDatePicker.IsEnabled = false;
 
                 maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref loggedInUser, ref maintContract, viewAddCondition);
             }
@@ -84,6 +86,8 @@ namespace _01electronics_crm
                 InitializeSalesPersonCombo();
                 SetSalesPersonComboValue();
                 InitializeStatusComboBox();
+                SetIssueDate();
+
                 contractStatusWrapPanel.Visibility = Visibility.Visible;
 
                 if (maintContract.GetMaintOfferID() != null)
@@ -111,6 +115,8 @@ namespace _01electronics_crm
                 InitializeSalesPersonCombo();
                 SetSalesPersonComboValue();
                 InitializeStatusComboBox();
+                maintContract.SetMaintContractIssueDateToToday();
+                SetIssueDate();
                 //contractStatusWrapPanel.Visibility = Visibility.Visible;
 
                 if (maintContract.GetMaintOfferID() != null)
@@ -395,6 +401,10 @@ namespace _01electronics_crm
         private void SetOfferSerialLabel()
         {
             OfferSerialLabel.Content = maintContract.GetMaintOfferID();
+        }
+        private void SetIssueDate()
+        {
+            issueDatePicker.SelectedDate = maintContract.GetMaintContractIssueDate();
         }
         private void SetOfferSerialComboValue()
         {
