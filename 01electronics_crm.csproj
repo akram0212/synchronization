@@ -177,6 +177,9 @@
     <Compile Include="ForgetPasswordPage.xaml.cs">
       <DependentUpon>ForgetPasswordPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MaintContractHistoryWindow.xaml.cs">
+      <DependentUpon>MaintContractHistoryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MaintContractsAdditionalInfoPage.xaml.cs">
       <DependentUpon>MaintContractsAdditionalInfoPage.xaml</DependentUpon>
     </Compile>
@@ -425,6 +428,10 @@
     <Page Include="ForgetPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MaintContractHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MaintContractsAdditionalInfoPage.xaml">
       <SubType>Designer</SubType>

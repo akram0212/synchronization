@@ -1,4 +1,5 @@
 ﻿using _01electronics_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,6 +30,7 @@ namespace _01electronics_crm
         private List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT> employeesList = new List<COMPANY_ORGANISATION_MACROS.EMPLOYEE_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> outgoingQuotationsList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
         private List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT> offersAddedToComboList = new List<COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT>();
+        private List<COMPANY_WORK_MACROS.STATUS_STRUCT> contractStatuses = new List<COMPANY_WORK_MACROS.STATUS_STRUCT>();
 
         private int viewAddCondition;
         private int salesPersonID;
@@ -55,14 +57,14 @@ namespace _01electronics_crm
 
             InitializeComponent();
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 //InitializeAssignedSalesPersonCombo();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElementsForView();
@@ -71,15 +73,22 @@ namespace _01electronics_crm
                 SetCompanyNameLabel();
                 SetCompanyAddressLabel();
                 SetContactPersonLabel();
+                SetStatusLabel();
+                SetIssueDate();
+                issueDatePicker.IsEnabled = false;
 
                 maintContractsUploadFilesPage = new MaintContractsUploadFilesPage(ref loggedInUser, ref maintContract, viewAddCondition);
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
             {
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
                 SetSalesPersonComboValue();
+                InitializeStatusComboBox();
+                SetIssueDate();
+
+                contractStatusWrapPanel.Visibility = Visibility.Visible;
 
                 if (maintContract.GetMaintOfferID() != null)
                 {
@@ -98,9 +107,39 @@ namespace _01electronics_crm
 
                 DisableSalesPersonAndOfferCombo();
 
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+            {
+                FillOffersList();
+                ConfigureUIElemenetsForAdd();
+                InitializeSalesPersonCombo();
+                SetSalesPersonComboValue();
+                InitializeStatusComboBox();
+                maintContract.SetMaintContractIssueDateToToday();
+                SetIssueDate();
+                //contractStatusWrapPanel.Visibility = Visibility.Visible;
+
+                if (maintContract.GetMaintOfferID() != null)
+                {
+                    SetOfferSerialComboValue();
+                    OfferSerialCombo.IsEnabled = true;
+                }
+                else
+                {
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+
+                    companyNameCombo.IsEnabled = true;
+                    companyAddressCombo.IsEnabled = true;
+                    contactPersonNameCombo.IsEnabled = true;
+                }
+
+                DisableSalesPersonAndOfferCombo();
+                DisableCompanyNameaddressContactCombos();
+                OfferCheckBox.IsEnabled = false;
+
 
             }
-
             else
             {
                 FillOffersList();
@@ -130,14 +169,18 @@ namespace _01electronics_crm
             companyNameLabel.Visibility = Visibility.Visible;
             companyAddressLabel.Visibility = Visibility.Visible;
             contactPersonNameLabel.Visibility = Visibility.Visible;
+            statusLabel.Visibility = Visibility.Visible;
 
             salesPersonCombo.Visibility = Visibility.Collapsed;
             OfferSerialCombo.Visibility = Visibility.Collapsed;
             companyNameCombo.Visibility = Visibility.Collapsed;
             companyAddressCombo.Visibility = Visibility.Collapsed;
             contactPersonNameCombo.Visibility = Visibility.Collapsed;
+            statusComboBox.Visibility = Visibility.Collapsed;
 
             OfferCheckBox.IsEnabled = false;
+
+            contractStatusWrapPanel.Visibility = Visibility.Visible;
 
         }
         private void ConfigureUIElemenetsForAdd()
@@ -147,18 +190,21 @@ namespace _01electronics_crm
             companyAddressLabel.Visibility = Visibility.Collapsed;
             contactPersonNameLabel.Visibility = Visibility.Collapsed;
             OfferSerialLabel.Visibility = Visibility.Collapsed;
+            statusLabel.Visibility = Visibility.Collapsed;
 
             salesPersonCombo.Visibility = Visibility.Visible;
             companyNameCombo.Visibility = Visibility.Visible;
             companyAddressCombo.Visibility = Visibility.Visible;
             contactPersonNameCombo.Visibility = Visibility.Visible;
             OfferSerialCombo.Visibility = Visibility.Visible;
+            statusComboBox.Visibility = Visibility.Visible;
 
             OfferCheckBox.IsEnabled = true;
             OfferSerialCombo.IsEnabled = false;
             companyNameCombo.IsEnabled = false;
             companyAddressCombo.IsEnabled = false;
             contactPersonNameCombo.IsEnabled = false;
+
             // assignedSalesCombo.IsEnabled = false;
         }
 
@@ -272,11 +318,11 @@ namespace _01electronics_crm
         private void InitializeOfferSerialCombo()
         {
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
             {
                 FillOfferSerialCombo();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
             {
                 COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT tmp = outgoingQuotationsList.Find(x => x.offer_serial == maintContract.GetMaintOfferSerial());
 
@@ -326,6 +372,19 @@ namespace _01electronics_crm
             }
         }
 
+        private void InitializeStatusComboBox()
+        {
+            if (!commonQueriesObject.GetMaintenanceContractsStatus(ref contractStatuses))
+                return;
+
+            for (int i = 0; i < contractStatuses.Count; i++)
+            {
+                statusComboBox.Items.Add(contractStatuses[i].status_name);
+            }
+
+            statusComboBox.SelectedIndex = contractStatuses.FindIndex(contractID => contractID.status_id == maintContract.GetMaintContractStatusId());
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///SET FUNCTIONS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,6 +401,10 @@ namespace _01electronics_crm
         private void SetOfferSerialLabel()
         {
             OfferSerialLabel.Content = maintContract.GetMaintOfferID();
+        }
+        private void SetIssueDate()
+        {
+            issueDatePicker.SelectedDate = maintContract.GetMaintContractIssueDate();
         }
         private void SetOfferSerialComboValue()
         {
@@ -377,6 +440,11 @@ namespace _01electronics_crm
         private void SetContactPersonLabel()
         {
             contactPersonNameLabel.Content = maintContract.GetContactName();
+        }
+        
+        private void SetStatusLabel()
+        {
+            statusLabel.Content = maintContract.GetMaintContractStatus();
         }
 
         private void SetContactPersonComboValue()
@@ -430,7 +498,7 @@ namespace _01electronics_crm
             if (salesPersonTeamID != COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
             {
                 InitializeCompanyNameCombo();
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || maintContract.GetMaintOfferID() != null)
+                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION || maintContract.GetMaintOfferID() != null)
                     OfferCheckBox.IsChecked = true;
             }
             else
@@ -438,7 +506,7 @@ namespace _01electronics_crm
                 InitializeCompanyNameCombo();
             }
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
                 maintContract.InitializeMaintContractProposerInfo(loggedInUser.GetEmployeeId());
             else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 maintContract.InitializeMaintContractProposerInfo(maintContract.GetMaintOfferProposerId());
@@ -516,7 +584,7 @@ namespace _01electronics_crm
         {
             if (OfferSerialCombo.SelectedItem != null)
             {
-                if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                if (viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
                 {
                     if (maintContract.GetMaintOfferSerial() == 0)
                         maintContract.InitializeMaintOfferInfo(offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_serial, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_version, offersAddedToComboList[OfferSerialCombo.SelectedIndex].offer_proposer_id);
@@ -550,10 +618,21 @@ namespace _01electronics_crm
                 SetCompanyNameAddressContactFromOffer();
             }
         }
+        private void OnSelChangedIssuedatePicker(object sender, SelectionChangedEventArgs e)
+        {
+            maintContract.SetMaintContractIssueDate(DateTime.Parse(issueDatePicker.Text.ToString()));
+        }
+        private void OnSelChangedStatusCombo(object sender, SelectionChangedEventArgs e)
+        {
+            if(statusComboBox.SelectedIndex != -1)
+            {
+                maintContract.SetMaintContractStatus(contractStatuses[statusComboBox.SelectedIndex].status_id, contractStatuses[statusComboBox.SelectedIndex].status_name);
+            }
+        }
 
         //private void OnSelChangedAssignedSalesCombo(object sender, SelectionChangedEventArgs e)
         //{
-        //    if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION && assignedSalesCombo.SelectedItem != null)
+        //    if (viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION && assignedSalesCombo.SelectedItem != null)
         //    {
         //        if (assignedSalesCombo.SelectedIndex != employeesList.Count())
         //        {
@@ -620,7 +699,7 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
             {
                 maintContractsUploadFilesPage.maintContractsBasicInfoPage = this;
                 maintContractsUploadFilesPage.maintContractsProjectsPage = maintContractsProjectInfoPage;
@@ -697,9 +776,6 @@ namespace _01electronics_crm
             InitializeCompanyNameCombo();
             //}
         }
-
-
-
 
     }
 }

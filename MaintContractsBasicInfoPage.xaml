@@ -74,6 +74,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0">
@@ -109,11 +110,22 @@
                     <Label Style="{StaticResource tableItemValue}" Name="contactPersonNameLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="contactPersonNameCombo" SelectionChanged="OnSelChangedContactPersonCombo"/>
                 </WrapPanel>
-                <!--  <WrapPanel Name="assignedSalesWrapPanel">
+
+                <WrapPanel>
+                    <Label Style="{StaticResource labelStyle}" Content="Issue &#x0a;Date*"/>
+                    <DatePicker Style="{StaticResource datePickerStyle}" Name="issueDatePicker" SelectedDateChanged="OnSelChangedIssuedatePicker"/>
+                </WrapPanel>
+            </WrapPanel>
+                    <!--  <WrapPanel Name="assignedSalesWrapPanel">
                     <Label Style="{StaticResource labelStyle}" Content="Assigned &#x0a;Sales"/>
                     <Label Style="{StaticResource tableItemValue}" Name="assignedSalesLabel" Visibility="Collapsed"/>
                     <ComboBox Style="{StaticResource comboBoxStyle}" Name="assignedSalesCombo" SelectionChanged="OnSelChangedAssignedSalesCombo"/>
                 </WrapPanel>-->
+
+            <WrapPanel Grid.Row="3" Name="contractStatusWrapPanel" Visibility="Collapsed">
+                <Label Style="{StaticResource labelStyle}" Content="Status"/>
+                <Label Style="{StaticResource tableItemValue}" Name="statusLabel" Visibility="Collapsed"/>
+                <ComboBox Style="{StaticResource comboBoxStyle}" Name="statusComboBox" SelectionChanged="OnSelChangedStatusCombo"/>
             </WrapPanel>
 
         </Grid>

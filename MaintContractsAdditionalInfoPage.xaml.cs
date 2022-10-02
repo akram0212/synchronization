@@ -87,13 +87,15 @@ namespace _01electronics_crm
                 SetFrequenciesValue();
 
                 DisableFrequenciesTextBoxes();
+                SetContractAutomaticallyRenewedCheckBox();
+                increaseRateTextBox.IsEnabled = false;
 
                 nextButton.IsEnabled = true;
                 finishButton.IsEnabled = false;
                 cancelButton.IsEnabled = false;
                 remainingCharactersWrapPanel.Visibility = Visibility.Collapsed;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
@@ -101,6 +103,7 @@ namespace _01electronics_crm
                 SetWarrantyPeriodValues();
                 SetAdditionalDescriptionValue();
                 SetFrequenciesValue();
+                SetContractAutomaticallyRenewedCheckBox();
 
             }
             else
@@ -125,6 +128,7 @@ namespace _01electronics_crm
             warrantyPeriodCombo.IsEnabled = false;
             additionalDescriptionTextBox.IsEnabled = false;
             warrantyPeriodFromWhenCombo.IsEnabled = false;
+            AutomaticallyRenewedCheckBox.IsEnabled = false;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +202,16 @@ namespace _01electronics_crm
             visitsFrequencyTextBox.Text = maintenanceContract.GetMaintContractVisitsFrequency().ToString();
             emergenciesFrequencyTextBox.Text = maintenanceContract.GetMaintContractEmergenciesFrequency().ToString();
         }
-
+        private void SetContractAutomaticallyRenewedCheckBox()
+        {
+            if (maintenanceContract.GetContractAutomaticallyRenewed())
+            {
+                AutomaticallyRenewedCheckBox.IsChecked = true;
+                increaseRateTextBox.Text = maintenanceContract.GetContractIncreaseRate().ToString();
+            }
+            else
+                AutomaticallyRenewedCheckBox.IsChecked = false;
+        }
         public void SetFrequenciesValueFromOffer()
         {
             visitsFrequencyTextBox.Text = maintenanceContract.GetVisitsFrequency().ToString();
@@ -406,10 +419,19 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
+            if (AutomaticallyRenewedCheckBox.IsChecked == true && (increaseRateTextBox.Text == null || increaseRateTextBox.Text == String.Empty))
+            {
+                MessageBox.Show("Increase Rate must be specified!");
+                return;
+            }
             //PLEASE CHANGE THESE MESSAGE
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (maintenanceContract.GetMaintContractProposerId() == 0)
-                MessageBox.Show("You need to choose sales person before adding a work offer!");
+            {
+                MessageBox.Show("Contract Proposer must be specified!");
+                return;
+            }
+
             //else if (maintenanceContract.GetCompanyName() == null)
             //    MessageBox.Show("You need to choose a company before adding a work offer!");
             //else if (maintenanceContract.GetAddressSerial() == 0)
@@ -417,23 +439,49 @@ namespace _01electronics_crm
             //else if (maintenanceContract.GetContactId() == 0)
             //    MessageBox.Show("You need to choose a contact before adding a work offer!");
             else if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
+            {
                 MessageBox.Show("Product 1 price must be specified!");
+                return;
+            }
+
             else if (maintenanceContract.GetMaintContractProduct2TypeId() != 0 && maintenanceContract.GetMaintContractProduct2PriceValue() == 0)
+            {
                 MessageBox.Show("Product 2 price must be specified!");
+                return;
+            }
+
             else if (maintenanceContract.GetMaintContractProduct3TypeId() != 0 && maintenanceContract.GetMaintContractProduct3PriceValue() == 0)
+            {
                 MessageBox.Show("Product 3 price must be specified!");
+                return;
+            }
+
             else if (maintenanceContract.GetMaintContractProduct4TypeId() != 0 && maintenanceContract.GetMaintContractProduct4PriceValue() == 0)
+            {
                 MessageBox.Show("Product 4 price must be specified!");
+                return;
+            }
+
             else
             {
+                if(AutomaticallyRenewedCheckBox.IsChecked == true)
+                {
+                    maintenanceContract.SetContractAutomaticallyRenewed(true);
+                }
+                else
+                {
+                    maintenanceContract.SetContractAutomaticallyRenewed(false);
+                    maintenanceContract.SetContractIncreaseRate(0);
+                }
+
                 if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
                     if (!maintenanceContract.IssueNewMaintContract())
                         return;
 
-                    if (maintenanceContract.GetMaintOfferID() != null)
-                        if (!maintenanceContract.ConfirmMaintOffer())
-                            return;
+                    //if (maintenanceContract.GetMaintOfferID() != null)
+                    //    if (!maintenanceContract.ConfirmMaintOffer())
+                    //        return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
@@ -464,12 +512,55 @@ namespace _01electronics_crm
                         viewOffer.Show();
                     }
                 }
+                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                {
+                    if (!maintenanceContract.RenewMaintContract())
+                        return;
+
+                    if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
+                    {
+                        viewAddCondition = COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION;
+
+                        MaintenanceContractsWindow viewOffer = new MaintenanceContractsWindow(ref loggedInUser, ref maintenanceContract, viewAddCondition, true);
+
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
+
+                        viewOffer.Show();
+                    }
+                }
             }
         }
 
         private void OnButtonClickAutomateMaintOffer(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void OnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintenanceContract.SetContractAutomaticallyRenewed(true);
+            increaseRateTextBox.IsEnabled = true;
+        }
+
+        private void OnUnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintenanceContract.SetContractAutomaticallyRenewed(false);
+            increaseRateTextBox.IsEnabled = false;
+            increaseRateTextBox.Text = null;
+
+        }
+
+        private void OnTextChangedIncreaseRateTextBox(object sender, TextChangedEventArgs e)
+        {
+
+            if (integrityChecks.CheckInvalidCharacters(increaseRateTextBox.Text, BASIC_MACROS.PHONE_STRING) && increaseRateTextBox.Text != "")
+                maintenanceContract.SetContractIncreaseRate(Int32.Parse(increaseRateTextBox.Text));
+            else
+            {
+                maintenanceContract.SetContractIncreaseRate(0);
+                increaseRateTextBox.Text = null;
+            }
         }
     }
 }
