@@ -393,10 +393,6 @@ namespace _01electronics_crm
             currentExpander.Margin = new Thickness(12);
         }
 
-    
-
-
-
         private void addBtnMouseEnter(object sender, MouseEventArgs e)
         {
             Storyboard storyboard = new Storyboard();

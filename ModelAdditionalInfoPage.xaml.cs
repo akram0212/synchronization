@@ -104,38 +104,38 @@ namespace _01electronics_crm
                 if (feature.Text.ToString() != String.Empty)
                     modelApplications.Add(feature.Text.ToString());
             }
-            if(product.GetModelName()== null)
-                System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetModelSummaryPoints().Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            //else if (product.GetUPSSpecs().Count() == 0)
-            //    System.Windows.Forms.MessageBox.Show("Model Specs must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].io_phase == null)
-                System.Windows.Forms.MessageBox.Show("Model IO Phase must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].rated_power == null)
-                System.Windows.Forms.MessageBox.Show("Model rated power must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].rating_id == null)
-                System.Windows.Forms.MessageBox.Show("Model rating must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_50 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_50 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_70 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_70 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_100 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_100 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].valid_until == null)
-                System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelStandardFeatures.Count() == 0)
-                 System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelBenefits.Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelApplications.Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Applications must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else
+            //if(product.GetModelName()== null)
+            //    System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetModelSummaryPoints().Count() == 0)
+            //    System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            ////else if (product.GetUPSSpecs().Count() == 0)
+            ////    System.Windows.Forms.MessageBox.Show("Model Specs must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].io_phase == null)
+            //    System.Windows.Forms.MessageBox.Show("Model IO Phase must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].rated_power == null)
+            //    System.Windows.Forms.MessageBox.Show("Model rated power must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].rating_id == null)
+            //    System.Windows.Forms.MessageBox.Show("Model rating must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].backup_time_50 == null)
+            //    System.Windows.Forms.MessageBox.Show("Model backup_time_50 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].backup_time_70 == null)
+            //    System.Windows.Forms.MessageBox.Show("Model backup_time_70 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].backup_time_100 == null)
+            //    System.Windows.Forms.MessageBox.Show("Model backup_time_100 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (product.GetUPSSpecs()[0].valid_until == null)
+            //    System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (modelStandardFeatures.Count() == 0)
+            //     System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (modelBenefits.Count() == 0)
+            //    System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (modelApplications.Count() == 0)
+            //    System.Windows.Forms.MessageBox.Show("Model Applications must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
-                    if (!product.IssueNewModel( ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
-                        return;
+                  //  if (!product.IssueNewModel( ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                    //    return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                     {
