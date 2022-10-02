@@ -108,7 +108,7 @@ namespace _01electronics_crm
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
 
-            //serverFolderPath = BASIC_MACROS.RFQ_FILES_PATH + model.GetRFQID() + "/";
+            serverFolderPath = product.GetModelFolderServerPath() + "/" + product.GetModelID() + "/" ;
 
 
             if (!ftpObject.CheckExistingFolder(serverFolderPath))
