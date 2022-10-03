@@ -34,9 +34,10 @@ namespace _01electronics_crm
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelBasicInfoPage modelBasicInfoPage;
         public ModelUploadFilesPage modelUploadFilesPage;
-
         protected List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
         List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT> rating;
+        protected int index = 0;
+
 
         public ModelUpsSpecsPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
@@ -65,7 +66,7 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                
+             InitializeUIElements();
             }
             
         }
@@ -86,16 +87,19 @@ namespace _01electronics_crm
 
         private void InitializeUIElements()
         {
-            for(int i = 0; i < product.GetUPSSpecs().Count; i++)
+            mainGrid.Children.Clear();
+            mainGrid.RowDefinitions.Clear();
+            mainGrid.ColumnDefinitions.Clear();
+
+            for (int i = 0; i < product.GetUPSSpecs().Count; i++)
             {
-                if (i == 0)
-                {
-                    iOPhaseTextBox.Visibility= Visibility.Collapsed;
-                    
-                }
+                index = i;
+                InitializeNewCard();
+                
             }
         }
         
+      
         private void InitializeNewCard()
         {
             RowDefinition row = new RowDefinition();
@@ -930,39 +934,160 @@ namespace _01electronics_crm
             Card.Children.Add(Content);
             mainGrid.Children.Add(Card);
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 IOPhaseTextBox.Visibility = Visibility.Collapsed;
                 IOPhaseLabel.Visibility = Visibility.Visible;
+                IOPhaseLabel.Content = product.GetUPSSpecs()[index].io_phase;
 
                 ratedPowerTextBox.Visibility = Visibility.Collapsed;
-                ratedPowerLabel.Visibility =Visibility.Visible;
+                ratedPowerLabel.Visibility = Visibility.Visible;
+                ratedPowerLabel.Content = product.GetUPSSpecs()[index].rated_power;
+
+                ratingComboBox.Visibility = Visibility.Collapsed;
+                ratingLabel.Visibility = Visibility.Visible;
+                ratingLabel.Content = product.GetUPSSpecs()[index].rating;
+
 
                 backupTime50TextBox.Visibility = Visibility.Collapsed;
                 backupTime50Label.Visibility = Visibility.Visible;
+                backupTime50Label.Content = product.GetUPSSpecs()[index].backup_time_50;
+
 
                 backupTime70TextBox.Visibility = Visibility.Collapsed;
                 backupTime70Label.Visibility = Visibility.Visible;
+                backupTime70Label.Content = product.GetUPSSpecs()[index].backup_time_70;
+
 
                 backupTime100TextBox.Visibility = Visibility.Collapsed;
                 backupTime100Label.Visibility = Visibility.Visible;
+                backupTime100Label.Content = product.GetUPSSpecs()[index].backup_time_100;
+
 
                 inputPowerFactorPhaseTextBox.Visibility = Visibility.Collapsed;
                 inputPowerFactorPhaseLabel.Visibility = Visibility.Visible;
+                inputPowerFactorPhaseLabel.Content = product.GetUPSSpecs()[index].input_power_factor;
+
 
                 THDITextBox.Visibility = Visibility.Collapsed;
                 THDILabel.Visibility = Visibility.Visible;
+                THDILabel.Content = product.GetUPSSpecs()[index].thdi;
+
 
                 inputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
                 inputNominalVoltageLabel.Visibility = Visibility.Visible;
+                inputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].input_nominal_voltage;
 
 
+                inputVoltageTextBox.Visibility = Visibility.Collapsed;
+                inputVoltageLabel.Visibility = Visibility.Visible;
+                inputVoltageLabel.Content = product.GetUPSSpecs()[index].input_voltage;
+
+
+                voltageToleranceTextBox.Visibility = Visibility.Collapsed;
+                voltageToleranceLabel.Visibility = Visibility.Visible;
+                voltageToleranceLabel.Content = product.GetUPSSpecs()[index].voltage_tolerance;
+
+
+                outputPowerFactorTextBox.Visibility = Visibility.Collapsed;
+                outputPowerFactorLabel.Visibility = Visibility.Visible;
+                outputPowerFactorLabel.Content = product.GetUPSSpecs()[index].output_power_factor;
+
+
+                THDVTextBox.Visibility = Visibility.Collapsed;
+                THDVLabel.Visibility = Visibility.Visible;
+                THDVLabel.Content = product.GetUPSSpecs()[index].thdv;
+
+
+                outputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
+                outputNominalVoltageLabel.Visibility = Visibility.Visible;
+                outputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].output_nominal_voltage;
+
+
+                outputDCVoltageRangeTextBox.Visibility = Visibility.Collapsed;
+                outputDCVoltageRangeLabel.Visibility = Visibility.Visible;
+                outputDCVoltageRangeLabel.Content = product.GetUPSSpecs()[index].output_dc_voltage_range;
+
+
+                overloadCapabilityTextBox.Visibility = Visibility.Collapsed;
+                overloadCapabilityLabel.Visibility = Visibility.Visible;
+                overloadCapabilityLabel.Content = product.GetUPSSpecs()[index].overload_capability;
+
+
+                efficiencyTextBox.Visibility = Visibility.Collapsed;
+                efficiencyLabel.Visibility = Visibility.Visible;
+                efficiencyLabel.Content = product.GetUPSSpecs()[index].efficiency;
+
+
+                inputConnectionTypeTextBox.Visibility = Visibility.Collapsed;
+                inputConnectionTypeLabel.Visibility = Visibility.Visible;
+                inputConnectionTypeLabel.Content = product.GetUPSSpecs()[index].input_connection_type;
+
+
+                frontPanelTextBox.Visibility = Visibility.Collapsed;
+                frontPanelLabel.Visibility = Visibility.Visible;
+                frontPanelLabel.Content = product.GetUPSSpecs()[index].front_panel;
+
+
+                maxPowerTextBox.Visibility = Visibility.Collapsed;
+                maxPowerLabel.Visibility = Visibility.Visible;
+                maxPowerLabel.Content = product.GetUPSSpecs()[index].max_power;
+
+
+                certificatesTextBox.Visibility = Visibility.Collapsed;
+                certificatesLabel.Visibility = Visibility.Visible;
+                certificatesLabel.Content = product.GetUPSSpecs()[index].certificates;
+
+
+                safetyTextBox.Visibility = Visibility.Collapsed;
+                safetyLabel.Visibility = Visibility.Visible;
+                safetyLabel.Content = product.GetUPSSpecs()[index].safety;
+
+
+                EMCTextBox.Visibility = Visibility.Collapsed;
+                EMCLabel.Visibility = Visibility.Visible;
+                EMCLabel.Content = product.GetUPSSpecs()[index].emc;
+
+
+                environmentalAspectsTextBox.Visibility = Visibility.Collapsed;
+                environmentalAspectsLabel.Visibility = Visibility.Visible;
+                environmentalAspectsLabel.Content = product.GetUPSSpecs()[index].environmental_aspects;
+
+
+                testPerformanceTextBox.Visibility = Visibility.Collapsed;
+                testPerformanceLabel.Visibility = Visibility.Visible;
+                testPerformanceLabel.Content = product.GetUPSSpecs()[index].test_performance;
+
+
+
+                protectionDegreeTextBox.Visibility = Visibility.Collapsed;
+                protectionDegreeLabel.Visibility = Visibility.Visible;
+                protectionDegreeLabel.Content = product.GetUPSSpecs()[index].protection_degree;
+
+
+                transferVoltageLimitTextBox.Visibility = Visibility.Collapsed;
+                transferVoltageLimitLabel.Visibility = Visibility.Visible;
+                transferVoltageLimitLabel.Content = product.GetUPSSpecs()[index].transfer_voltage_limit;
+
+
+                markingTextBox.Visibility = Visibility.Collapsed;
+                markingLabel.Visibility = Visibility.Visible;
+                markingLabel.Content = product.GetUPSSpecs()[index].marking;
+
+
+                validUntilDatePicker.Visibility = Visibility.Collapsed;
+                validUntilLabel.Visibility = Visibility.Visible;
+                validUntilLabel.Content = product.GetUPSSpecs()[index].valid_until;
 
 
 
             }
 
-            
+
+
+
+
         }
 
        

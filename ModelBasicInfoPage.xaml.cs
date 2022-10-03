@@ -434,9 +434,12 @@ namespace _01electronics_crm
 
         private void SummaryPoint1MouseLeave(object sender, MouseEventArgs e)
         {
-            summeryPointsLabel.Text = summeryPointsTextBox.Text;
-            summeryPointsTextBox.Visibility = Visibility.Collapsed;
-            summeryPointsLabel.Visibility = Visibility.Visible;
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                summeryPointsLabel.Text = summeryPointsTextBox.Text;
+                summeryPointsTextBox.Visibility = Visibility.Collapsed;
+                summeryPointsLabel.Visibility = Visibility.Visible;
+            }
 
         }
         private void SummeryPointMouseLeave(object sender, MouseEventArgs e)

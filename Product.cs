@@ -75,6 +75,7 @@ namespace _01electronics_library
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public bool InitializeModelInfo(int mProductID, int mBrandID, int mModelID)
         {
+            modelSummaryPoints.Clear();
             SetProductID(mProductID);
             SetBrandID(mBrandID);
             SetModelID(mModelID);
@@ -86,6 +87,7 @@ namespace _01electronics_library
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
 
+            if()
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
 
@@ -126,7 +128,9 @@ namespace _01electronics_library
         {
             modelSummaryPoints.Clear();
 
-            String sqlQueryPart1 = @"select models_summary_points.points_id, models_summary_points.points
+            String sqlQueryPart1 = @"select 
+                                            models_summary_points.points_id
+                                        , models_summary_points.points
                                      from  erp_system.dbo.models_summary_points
                                      where product_id = ";
 
@@ -209,7 +213,7 @@ namespace _01electronics_library
                 return false;
             if (!InsertIntoUPSSpecs())
                 return false;
-            
+
             if (!InsertIntoModelApplications(ref mModelApplications))
                 return false;
             if (!InsertIntoModelBenefits(ref mModelBenefits))
@@ -420,7 +424,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelApplications[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += "'" + sqlQueryPart3 + "'";
+                sqlQuery += sqlQueryPart3 ;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
@@ -450,7 +454,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelBenefits[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += "'" + sqlQueryPart3 + "'";
+                sqlQuery +=  sqlQueryPart3 ;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
@@ -480,7 +484,7 @@ namespace _01electronics_library
                 sqlQuery += comma;
                 sqlQuery += "'" + mModelStandardFeatures[i] + "'";
                 sqlQuery += comma;
-                sqlQuery += "'" + sqlQueryPart3 + "'";
+                sqlQuery +=  sqlQueryPart3 ;
                 sqlQuery += sqlQueryPart4;
 
                 if (!sqlDatabase.InsertRows(sqlQuery))

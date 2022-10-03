@@ -177,6 +177,8 @@
                                     <WrapPanel Name="inputNominalVoltageWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Input Nominal Voltage" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="inputNominalVoltageTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="inputNominalVoltageLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="4" >
@@ -184,10 +186,14 @@
                                     <WrapPanel Name="inputVoltageWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Input Voltage" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="inputVoltageTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="inputVoltageLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="voltageToleranceWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Voltage Tolerance" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="voltageToleranceTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="voltageToleranceLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
 
@@ -196,10 +202,14 @@
                                     <WrapPanel Name="outputPowerFactorWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Output Power Factor" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="outputPowerFactorTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="outputPowerFactorLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="thdvWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="THDV" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="thdvTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="thdvLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="6" >
@@ -207,10 +217,14 @@
                                     <WrapPanel Name="outputNominalVoltageWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Output Nominal Voltage" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="outputNominalVoltageTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="outputNominalVoltageLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="outputDCVoltageRangeWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Output DC Voltage Range" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="outputDCVoltageRangeTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="outputDCVoltageRangeLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="7" >
@@ -218,10 +232,14 @@
                                     <WrapPanel Name="overloadCapabilityWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Overload Capability" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="overloadCapabilityTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="overloadCapabilityLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="efficiencyWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Efficiency" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="efficiencyTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="efficiencyLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="8" >
@@ -230,10 +248,14 @@
                                     <WrapPanel Name="inputConnectionTypeWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Input Connection Type" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="inputConnectionTypeTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="inputConnectionTypeLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="frontPanelWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Front Panel" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="frontPanelTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="frontPanelLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 
@@ -241,10 +263,14 @@
                                     <WrapPanel Name="maxPowerWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Max Power" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="maxPowerTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="maxPowerLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="certificatesWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Certificates" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="certificatesTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="certificatesLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="10" >
@@ -253,10 +279,14 @@
                                     <WrapPanel Name="safetyWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Safety" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="safetyTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="vsafetyLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="emcWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="EMC" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="emcTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="emcLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="11" >
@@ -265,10 +295,14 @@
                                     <WrapPanel Name="environmentalAspectsWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Environmental Aspects" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="environmentalAspectsTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="environmentalAspectsLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="testPerformanceWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Test Performance" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="testPerformanceTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="testPerformanceLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
 
@@ -278,10 +312,14 @@
                                     <WrapPanel Name="protectionDegreeWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Protection Degree" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="protectionDegreeTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="protectionDegreeLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="transferVoltageLimitWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Transfer Voltage Limit" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="transferVoltageLimitTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="transferVoltageLimitLabel"/>
+
                                     </WrapPanel>
                                 </WrapPanel>
                                 <WrapPanel Grid.Row="13" >
@@ -290,10 +328,13 @@
                                     <WrapPanel Name="markingWrapPanel" >
                                         <Label Style="{StaticResource tableItemValue}" Content="Marking" Width="210"/>
                                         <TextBox Style="{StaticResource textBoxStyle}" TextWrapping="Wrap"  Text="" Name="markingTextBox"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Name="markingLabel"/>
+
                                     </WrapPanel>
                                     <WrapPanel Name="validUntilWrapPanel">
                                         <Label Style="{StaticResource tableItemValue}" Content="Valid Until*" Width="210" />
                                         <DatePicker Style="{StaticResource datePickerStyle}"  Width="384"   Name="validUntilDatePicker" SelectedDate="1/1/2030" SelectedDateChanged="OnSelChangedvalidUntilDate"/>
+                                        <Label Style="{StaticResource labelStyle}" Visibility="Collapsed" Width="384" Name="validUntilLabel"/>
 
                                     </WrapPanel>
                                 </WrapPanel>
