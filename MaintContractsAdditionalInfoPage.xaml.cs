@@ -68,13 +68,13 @@ namespace _01electronics_crm
             InitializeComponent();
 
 
-            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
+            if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_ADD_CONDITION)
             {
                 InitializeTimeUnitComboBoxes();
                 InitializeWarrantyPeriodFromWhenCombo();
 
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
             {
 
                 InitializeTimeUnitComboBoxes();
@@ -419,26 +419,45 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
+            maintenanceContract.GetMaintContractModelsSerialsList().Clear();
+
             if (AutomaticallyRenewedCheckBox.IsChecked == true && (increaseRateTextBox.Text == null || increaseRateTextBox.Text == String.Empty))
             {
                 MessageBox.Show("Increase Rate must be specified!");
                 return;
             }
-            //PLEASE CHANGE THESE MESSAGE
-            //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (maintenanceContract.GetMaintContractProposerId() == 0)
             {
                 MessageBox.Show("Contract Proposer must be specified!");
                 return;
             }
-
+            if(maintenanceContract.GetMaintContractProduct1Quantity() != 0)
+            {
+                if (!FillModelSerialsList(1, maintenanceContract.GetMaintContractProduct1Quantity(), product1Grid))
+                    return;
+            }
+            if(maintenanceContract.GetMaintContractProduct2Quantity() != 0)
+            {
+                if(!FillModelSerialsList(2, maintenanceContract.GetMaintContractProduct2Quantity(), product2Grid))
+                    return;
+            }
+            if(maintenanceContract.GetMaintContractProduct3Quantity() != 0)
+            {
+                if(!FillModelSerialsList(3, maintenanceContract.GetMaintContractProduct3Quantity(), product3Grid))
+                    return;
+            }
+            if(maintenanceContract.GetMaintContractProduct4Quantity() != 0)
+            {
+                if(!FillModelSerialsList(4, maintenanceContract.GetMaintContractProduct4Quantity(), product4Grid))
+                    return;
+            }
             //else if (maintenanceContract.GetCompanyName() == null)
             //    MessageBox.Show("You need to choose a company before adding a work offer!");
             //else if (maintenanceContract.GetAddressSerial() == 0)
             //    MessageBox.Show("You need to choose company address before adding a work offer!");
             //else if (maintenanceContract.GetContactId() == 0)
             //    MessageBox.Show("You need to choose a contact before adding a work offer!");
-            else if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
+            if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
             {
                 MessageBox.Show("Product 1 price must be specified!");
                 return;
@@ -479,9 +498,9 @@ namespace _01electronics_crm
                     if (!maintenanceContract.IssueNewMaintContract())
                         return;
 
-                    //if (maintenanceContract.GetMaintOfferID() != null)
-                    //    if (!maintenanceContract.ConfirmMaintOffer())
-                    //        return;
+                    if (maintenanceContract.GetMaintOfferID() != null)
+                        if (!maintenanceContract.ConfirmMaintOffer())
+                            return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
                     {
@@ -561,6 +580,170 @@ namespace _01electronics_crm
                 maintenanceContract.SetContractIncreaseRate(0);
                 increaseRateTextBox.Text = null;
             }
+        }
+        
+        public void ShowModelsSerialsGrid(int index, int quantity)
+        {
+            Grid parentProductGrid =  ModelsSerialsWrapPanel.Children[index] as Grid;
+            Grid currentProductGrid = parentProductGrid.Children[0] as Grid;
+            parentProductGrid.Visibility = Visibility.Visible;
+            ScrollViewer bodyScrollViewer = currentProductGrid.Children[1] as ScrollViewer;
+            Grid modelSerialGrid = bodyScrollViewer.Content as Grid;
+                //Grid modelSerialGrid = mainGrid.Children[0] as Grid;
+                
+            for(int i = modelSerialGrid.RowDefinitions.Count-1 ; i >= 1 ; i--)
+            {
+                modelSerialGrid.Children.RemoveAt(i);
+                modelSerialGrid.RowDefinitions.RemoveAt(i);
+            }
+
+            if (quantity != 0)
+            {
+
+
+                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                {
+                    ////// INITIALIZE FIRST GRID VALUES ///////
+
+                    Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
+                    TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
+
+                    firstRowSerialTextBox.IsEnabled = false;
+                    BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                        (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
+
+                    firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+
+                }
+                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                {
+                    ////// INITIALIZE FIRST GRID VALUES ///////
+
+                    Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
+                    TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
+
+                    BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                        (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
+
+                    firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+                }
+
+                for (int i = 1; i < quantity; i++)
+                {
+                    RowDefinition serialRow = new RowDefinition();
+                    serialRow.Height = new GridLength(75);
+                    modelSerialGrid.RowDefinitions.Add(serialRow);
+
+                    Grid gridI = new Grid();
+                    Grid.SetRow(gridI, modelSerialGrid.RowDefinitions.Count - 1);
+
+                    ColumnDefinition labelColumn = new ColumnDefinition();
+                    labelColumn.Width = new GridLength(100);
+
+                    ColumnDefinition serialColumn = new ColumnDefinition();
+
+                    gridI.ColumnDefinitions.Add(labelColumn);
+                    gridI.ColumnDefinitions.Add(serialColumn);
+
+                    Label serialIdLabel = new Label();
+                    serialIdLabel.Margin = new Thickness(30, 0, 0, 0);
+                    serialIdLabel.Width = 200;
+                    serialIdLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                    serialIdLabel.Style = (Style)FindResource("labelStyle");
+                    serialIdLabel.Content = "Serial #" + (i + 1).ToString();
+                    Grid.SetColumn(serialIdLabel, 0);
+
+                    TextBox serialTextBox = new TextBox();
+                    serialTextBox.Style = (Style)FindResource("textBoxStyle");
+                    serialTextBox.TextWrapping = TextWrapping.Wrap;
+                    Grid.SetColumn(serialTextBox, 1);
+                    
+                    //Label serialLabel = new Label();
+                    //serialLabel.Style = (Style)FindResource("labelStyle");
+                    //serialLabel.Visibility = Visibility.Collapsed;
+                    //Grid.SetColumn(serialLabel, 1);
+
+                    gridI.Children.Add(serialIdLabel);
+                    gridI.Children.Add(serialTextBox);
+                    //gridI.Children.Add(serialLabel);
+                    modelSerialGrid.Children.Add(gridI);
+
+                    if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                    {
+                        //serialTextBox.Visibility = Visibility.Collapsed;
+                        //serialLabel.Visibility = Visibility.Visible;
+
+                        serialTextBox.IsEnabled = false;
+
+                        BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                            (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
+
+                        //serialLabel.Content = currentModelSerial.model_serial;
+                        serialTextBox.Text = currentModelSerial.model_serial;
+
+                        ////// INITIALIZE FIRST GRID VALUES ///////
+
+                        //Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
+                        //TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
+                        //Label firstRowSerialLabel = firstRowGrid.Children[2] as Label;
+
+                        //firstRowSerialTextBox.Visibility = Visibility.Collapsed;
+                        //firstRowSerialLabel.Visibility = Visibility.Visible;
+
+                        //firstRowSerialTextBox.IsEnabled = false;
+                        //BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                        //    (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
+                        //
+                        //firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+
+                    }
+                    else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                    {
+                        BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                            (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
+
+                        serialTextBox.Text = currentModelSerial.model_serial;
+
+                        ////// INITIALIZE FIRST GRID VALUES ///////
+
+                        //Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
+                        //TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
+                        //
+                        //BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
+                        //    (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
+                        //
+                        //firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+                    }
+
+                }
+            }
+            else
+                parentProductGrid.Visibility = Visibility.Collapsed;
+
+        }     
+
+        private bool FillModelSerialsList(int index, int quantity, Grid currentGrid)
+        {
+            for (int i = 0; i < currentGrid.RowDefinitions.Count; i++)
+            {
+                Grid CurrentSerialGrid = currentGrid.Children[i] as Grid;
+                TextBox currentTextBox = CurrentSerialGrid.Children[1] as TextBox;
+                BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentSerialItem = new BASIC_STRUCTS.MODEL_SERIAL_STRUCT();
+
+                if (currentTextBox.Text == String.Empty)
+                {
+                    MessageBox.Show("Product " + index +  " Model Serial Number #" + (i + 1).ToString() + " Must Be Specified!");
+                    return false;
+                }
+                else
+                {
+                    currentSerialItem.product_id = index;
+                    currentSerialItem.model_serial_id = i + 1;
+                    currentSerialItem.model_serial = currentTextBox.Text.ToString();
+                    maintenanceContract.GetMaintContractModelsSerialsList().Add(currentSerialItem);
+                }
+            }
+            return true;
         }
     }
 }

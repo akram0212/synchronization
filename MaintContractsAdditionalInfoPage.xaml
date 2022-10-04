@@ -97,13 +97,166 @@
                         <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="30,12,42,12"  TextChanged="OnTextChangedEmergenciesFrequencyTextBox"  Name="emergenciesFrequencyTextBox" />
                     </WrapPanel>
 
-                     <CheckBox Grid.Row="3" Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource checkBoxStyle}" Content="Automatically Renewed" Width="200" Name="AutomaticallyRenewedCheckBox" Checked="OnCheckAutomaticallyRenewedCheckBox" Unchecked="OnUnCheckAutomaticallyRenewedCheckBox"/>
-                    
-                    <WrapPanel Grid.Row="4">
+                    <WrapPanel Grid.Row="3" >
+                        <CheckBox Margin="30,12,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource checkBoxStyle}" VerticalContentAlignment="Center" Content="Automatically &#x0a;Renewed" Name="AutomaticallyRenewedCheckBox" Checked="OnCheckAutomaticallyRenewedCheckBox" Unchecked="OnUnCheckAutomaticallyRenewedCheckBox"/>
+                        <TextBox Margin="0,32,0,12" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Sans Serif" FontWeight="DemiBold" FontSize="16" Foreground="#105A97" TextChanged="OnTextChangedIncreaseRateTextBox" IsEnabled="False" Name="increaseRateTextBox" >
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                    <Style.Resources>
+                                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                            <VisualBrush.Visual>
+                                                <Label Content="INCREASE RATE" Foreground="Gray" />
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Style.Resources>
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="{x:Null}">
+                                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                            <Setter Property="Background" Value="White" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Label  Content="%" Margin="0,20,0,0" Style="{StaticResource labelStyle}" />
+                    </WrapPanel>
 
-                        <Label Style="{StaticResource labelStyle}" Width="110" Content="Increase&#x0a;Rate"/>
-                        <TextBox Style="{StaticResource miniTextBoxStyle}" Margin="20,12,0,12"  TextChanged="OnTextChangedIncreaseRateTextBox" IsEnabled="False" Name="increaseRateTextBox" />
-                        <Label  Content="%" Margin="0,0,0,0" Style="{StaticResource labelStyle}" />
+
+                    <WrapPanel Grid.Row="4"  Margin="24" Name="ModelsSerialsWrapPanel">
+                        <Grid Width="600" Visibility="Collapsed" Tag="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Background="White" Margin="20" Grid.Row="0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Background="#105A97">
+
+                                <Label Content="PRODUCT 1" Margin="20,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource tableHeaderItem}"/>
+                            </Grid>
+
+                                <ScrollViewer Height="300"  Grid.Row="1" >
+                            <Grid Name="product1Grid" Tag="0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="75"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Content="Serial #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="product1ModelSerial1TextBox" TextWrapping="Wrap"/>
+                                        </Grid>
+                            </Grid>
+                                </ScrollViewer>
+                        </Grid>
+                    </Grid>
+                        <Grid Width="600" Visibility="Collapsed" Tag="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Background="White" Margin="20" Grid.Row="0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Background="#105A97">
+
+                                    <Label Content="PRODUCT 2" Margin="20,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource tableHeaderItem}"/>
+                                </Grid>
+                                <ScrollViewer Grid.Row="1" >
+                                    <Grid Grid.Row="1" Name="product2Grid" Tag="0" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="75"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Serial #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="product2ModelSerial1TextBox" TextWrapping="Wrap"/>
+                                        </Grid>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                        <Grid Width="600" Visibility="Collapsed" Tag="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Background="White" Margin="20" Grid.Row="0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Background="#105A97">
+
+                                    <Label Content="PRODUCT 3" Margin="20,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource tableHeaderItem}"/>
+                                </Grid>
+                                <ScrollViewer Height="300" Grid.Row="1" >
+                                    <Grid Grid.Row="1" Name="product3Grid" Tag="0" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="75"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Serial #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="product3ModelSerial1TextBox" TextWrapping="Wrap"/>
+                                        </Grid>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                        <Grid Width="600" Visibility="Collapsed" Tag="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Background="White" Margin="20" Grid.Row="0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Background="#105A97">
+
+                                    <Label Content="PRODUCT 4" Margin="20,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource tableHeaderItem}"/>
+                                </Grid>
+                                <ScrollViewer Height="300" Grid.Row="1" >
+                                    <Grid Grid.Row="1" Name="product4Grid" Tag="0" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="75"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="Serial #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="product4ModelSerial1TextBox" TextWrapping="Wrap"/>
+                                        </Grid>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
                     </WrapPanel>
                     <WrapPanel Grid.Row="5">
                         <WrapPanel>

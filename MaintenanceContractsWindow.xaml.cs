@@ -21,7 +21,7 @@ namespace _01electronics_crm
 
             maintContractsAdditionalInfoPage = new MaintContractsAdditionalInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition);
             maintContractsPaymentAndDeliveryPage = new MaintContractsPaymentAndDeliveryPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsAdditionalInfoPage);
-            maintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsPaymentAndDeliveryPage);
+            maintContractsProductsPage = new MaintContractsProductsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsPaymentAndDeliveryPage, ref maintContractsAdditionalInfoPage);
             maintContractsProjectInfoPage = new MaintContractsProjectsPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProductsPage);
             maintContractsBasicInfoPage = new MaintContractsBasicInfoPage(ref mLoggedInUser, ref mMaintContracts, mViewAddCondition, ref maintContractsProjectInfoPage);
             if (mViewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
