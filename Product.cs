@@ -80,14 +80,116 @@ namespace _01electronics_library
             SetBrandID(mBrandID);
             SetModelID(mModelID);
 
+            if (!commonQueries.GetUPSSpecs(productID, brandID, modelID, ref UPSSpecs))
+                return false;
+
             if (!commonQueries.GetModelApplications(productID, brandID, modelID, ref modelApplications))
                 return false;
             if (!commonQueries.GetModelBenefits(productID, brandID, modelID, ref modelBenefits))
                 return false;
             if (!commonQueries.GetModelFeatures(productID, brandID, modelID, ref modelStandardFeatures))
                 return false;
+            
+ //           String sqlQueryPart1 = @"	SELECT  
+	//	category_id
+	//	,ups_specs.product_id
+	//	,ups_specs.brand_id
+	//	,ups_specs.model_id
+	//	,spec_id
+	//	,io_phase
+	//	,rated_power
+	//	,rating
+	//	,backup_time_50
+	//	,backup_time_70
+	//	,backup_time_100
+	//	,input_power_factor
+	//	,thdi
+	//	,input_nominal_voltage
+	//	,input_voltage
+	//	,voltage_tolerance
+	//	,output_power_factor
+	//	,thdv
+	//	,output_nominal_voltage
+	//	,output_dc_voltage_range
+	//	,overload_capability
+	//	,efficiency
+	//	,input_connection_type
+	//	,front_panel
+	//	,max_power
+	//	,certificates
+	//	,safety
+	//	,emc
+	//	,environmental_aspects
+	//	,test_performance
+	//	,protection_degree
+	//	,transfer_voltage_limit
+	//	,marking
+	//	,is_valid
+	//	,valid_until
+	//	,erp_system.dbo.ups_specs.date_added
+	  
+	//	,models_summary_points.points_id
+	//	,models_summary_points.points
 
-            if()
+	//	,model_applications.application_id
+	//	,model_applications.application
+
+	//	,model_benefits.benefit_id
+	//	,model_benefits.benefit
+
+	//	,model_standard_features.feature_id
+	//	,model_standard_features.feature
+		
+	//	FROM erp_system.dbo.ups_specs
+
+	//left join erp_system.dbo.models_summary_points
+	//	on models_summary_points.product_id =ups_specs.product_id and  models_summary_points.brand_id = ups_specs.brand_id and models_summary_points.model_id =ups_specs.model_id
+
+	//left join erp_system.dbo.model_applications 
+	//	on model_applications.product_id =ups_specs.product_id and  model_applications.brand_id = ups_specs.brand_id and model_applications.model_id =ups_specs.model_id
+ 
+ //	left join erp_system.dbo.model_benefits
+	//	on model_benefits.product_id =ups_specs.product_id and  model_benefits.brand_id = ups_specs.brand_id and model_benefits.model_id =ups_specs.model_id
+ 
+	//left join erp_system.dbo.model_standard_features
+	//	on model_standard_features.product_id =ups_specs.product_id and  model_standard_features.brand_id = ups_specs.brand_id and model_standard_features.model_id =ups_specs.model_id
+ //where  ups_specs.product_id = ";
+ //           String sqlQueryPart2 = "and ups_specs.brand_id =";
+ //           String sqlQueryPart3 = "and ups_specs.model_id=";
+
+
+ //           sqlQuery = String.Empty;
+ //           sqlQuery += sqlQueryPart1;
+ //           sqlQuery += GetProductID();
+ //           sqlQuery += sqlQueryPart2;
+ //           sqlQuery += GetBrandID();
+ //           sqlQuery += sqlQueryPart3;
+ //           sqlQuery += GetModelID();
+
+ //           BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+ //           queryColumns.sql_int=14;
+ //           queryColumns.sql_datetime=1;
+ //           queryColumns.sql_string = 27;
+            
+ //           if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
+ //               return false;
+ //           for (int i = 0; i < sqlDatabase.rows.Count; i++)
+ //           {
+ //               numberOfSavedModelSummaryPoints = sqlDatabase.rows[i].sql_int[5];
+
+ //               if (numberOfSavedModelSummaryPoints > 0)
+ //                   modelSummaryPoints.Add(sqlDatabase.rows[i].sql_string[23]);
+ //           }
+
+ //           for (int i = 0; i < sqlDatabase.rows.Count; i++)
+ //           {
+ //              // number = sqlDatabase.rows[i].sql_int[5];
+
+ //               if (numberOfSavedModelSummaryPoints > 0)
+ //                   modelSummaryPoints.Add(sqlDatabase.rows[i].sql_string[23]);
+ //           }
+
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
 

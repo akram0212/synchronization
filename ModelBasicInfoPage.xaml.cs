@@ -183,6 +183,7 @@ namespace _01electronics_crm
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
+            summeryPointsLabel.Visibility=Visibility.Visible;
             summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
 
 
