@@ -463,7 +463,7 @@ namespace _01electronics_crm
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFA500"));
                 }
-                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CONFIRMED_OUTGOING_QUOTATION)
+                else if (workOrders[i].order_status_id == COMPANY_WORK_MACROS.CLOSED_WORK_ORDER)
                 {
                     borderIcon.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
                 }

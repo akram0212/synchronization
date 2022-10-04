@@ -1,9 +1,10 @@
-﻿using _01electronics_windows_library;
+﻿using _01electronics_library;
+using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _01electronics_library
+namespace _01electronics_crm
 {
     public class Product
     {
