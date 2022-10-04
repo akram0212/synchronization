@@ -21,33 +21,33 @@
 
         <Label Grid.Column="0" Name="ContactProfileHeader" Content="MAINTENANCE CONTRACT HISTORY" Background="#105A97" Style="{StaticResource secondaryHeaderTextStyle}"/>
 
-        <Grid Grid.Row="1" Background="White" Margin="24,50,24,24">
+        <ScrollViewer Grid.Row="1"  Margin="24,50,24,24" VerticalScrollBarVisibility="Auto">
+            <Grid Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid Background="#105A97" Grid.Row="0">
                     <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="ISSUE DATE" Style="{StaticResource tableHeaderItem}"/>
                     <Label Grid.Column="1" Content="CONTRACT PERIOD" Style="{StaticResource tableHeaderItem}"/>
                     <Label Grid.Column="2" Content="PRODUCT SUMMARY" Style="{StaticResource tableHeaderItem}"/>
                     <Label Grid.Column="3" Content="TOTAL PRICE" Style="{StaticResource tableHeaderItem}"/>
             </Grid>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <Grid  Name="maintContractsGrid">
+                <Grid ShowGridLines="True" Grid.Row="1" Name="maintContractsGrid">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
-            </ScrollViewer>
         </Grid>
+            </ScrollViewer>
     </Grid>
 </Window>

@@ -43,9 +43,10 @@ namespace _01electronics_crm
         public MaintContractsUploadFilesPage maintContractsUploadFilesPage;
         public MaintContractsProjectsPage maintContractsProjectsPage;
 
-        public MaintContractsProductsPage(ref Employee mLoggedInUser, ref MaintenanceContract mMaintContracts, int mViewAddCondition, ref MaintContractsPaymentAndDeliveryPage mMaintContractsPaymentAndDeliveryPage)
+        public MaintContractsProductsPage(ref Employee mLoggedInUser, ref MaintenanceContract mMaintContracts, int mViewAddCondition, ref MaintContractsPaymentAndDeliveryPage mMaintContractsPaymentAndDeliveryPage, ref MaintContractsAdditionalInfoPage mMaintContractsAdditionalInfoPage)
         {
             maintContractsPaymentAndDeliveryPage = mMaintContractsPaymentAndDeliveryPage;
+            maintContractsAdditionalInfoPage = mMaintContractsAdditionalInfoPage;
 
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -880,7 +881,10 @@ namespace _01electronics_crm
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
+                    {
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
+                        maintContractsAdditionalInfoPage.ShowModelsSerialsGrid(k, quantity);
+                    }
 
                     maintContractsPaymentAndDeliveryPage.SetTotalPriceTextBox();
                     maintContracts.SetMaintContractTotalValues();
@@ -892,8 +896,10 @@ namespace _01electronics_crm
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
+                    {
                         maintContracts.SetMaintContractProductQuantity(k + 1, quantity);
-
+                        maintContractsAdditionalInfoPage.ShowModelsSerialsGrid(k, quantity);
+                    }
                 }
                 currentQuantityTextBox.Text = null;
 
