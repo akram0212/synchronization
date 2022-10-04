@@ -104,7 +104,7 @@ namespace _01electronics_crm
                 if (feature.Text.ToString() != String.Empty)
                     modelApplications.Add(feature.Text.ToString());
             }
-            if(product.GetModelName()== null)
+            if (product.GetModelName() == null)
                 System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (product.GetModelSummaryPoints().Count() == 0)
                 System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
@@ -125,7 +125,7 @@ namespace _01electronics_crm
             else if (product.GetUPSSpecs()[0].valid_until == null)
                 System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (modelStandardFeatures.Count() == 0)
-                 System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (modelBenefits.Count() == 0)
                 System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (modelApplications.Count() == 0)
@@ -134,7 +134,7 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
-                    if (!product.IssueNewModel( ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                    if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
                         return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)

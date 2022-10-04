@@ -108,10 +108,11 @@
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="600"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Model Name" Width="200"  Margin="0,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
                                 <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="modelNameTextBox" TextWrapping="Wrap"/>
+                                <Label Grid.Column ="1" Style="{StaticResource labelStyle}"  Name="modelNameLabel"  Visibility="Collapsed"/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -137,15 +138,16 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid x:Name="parentGrid" Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="250"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="500"/>
+                                    <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="Point #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
-                                <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="summeryPointsTextBox" TextWrapping="Wrap"/>
+                                <Label Grid.Column="0" Content="Point #1"   Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}" MouseLeave="SummaryPoint1MouseLeave"/>
+                                <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}"  Margin="30,0,0,0" Name="summeryPointsTextBox" TextWrapping="Wrap" Width="384" Visibility="Collapsed" MouseLeave="SummaryPoint1MouseLeave"/>
                                 <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="onClickHandler"/>
+                                <TextBlock Grid.Column ="1" Style="{StaticResource cardTextBlockStyle}" Name="summeryPointsLabel" Visibility="Collapsed" MouseDown="summeryPointsLabel1MouseDoubleClick"/>
                             </Grid>
                         </Grid>
                     </Grid>
