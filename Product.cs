@@ -55,6 +55,8 @@ namespace _01electronics_library
 
         protected String errorMessage;
 
+        private List<BASIC_STRUCTS.GENSET_SPEC> GENSETSpecs;
+
         private List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
 
         public Product()
@@ -791,6 +793,15 @@ namespace _01electronics_library
         {
             UPSSpecs.Add( mUPSSpecs); 
         }
+
+        public void SetGensetSpec( List<BASIC_STRUCTS.GENSET_SPEC>GensetSpecs)
+        {
+
+            GENSETSpecs = GensetSpecs;
+
+
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //GETTERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1006,6 +1017,16 @@ namespace _01electronics_library
         {
             return UPSSpecs ;
         }
+
+        public List<BASIC_STRUCTS.GENSET_SPEC> GetGensetSpecs() {
+
+
+            return GENSETSpecs;
+        
+        }
+
+
+      
         
 
 

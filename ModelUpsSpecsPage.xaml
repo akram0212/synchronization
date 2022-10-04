@@ -9,7 +9,7 @@
       Title="Model Ups Specs">
  
 
-    <Grid>
+    <Grid Margin="0,0,0,-1576">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -48,7 +48,7 @@
                 <Label Content="Basic Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>
             </Border>
             <Border  Grid.Column="1" Style="{StaticResource selectedSecondaryTabBorder}">
-                <Label Content="UPS Specs" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
+                <Label Name="SpecsLable" Content="UPS Specs" Style="{StaticResource selectedSecondaryTabLabelItem}"/>
             </Border>
             <Border Grid.Column="2" Style="{StaticResource unselectedSecondaryTabBorder}" MouseLeftButtonDown="OnBtnClickAdditionalInfo">
                 <Label Content="Additional Info" Style="{StaticResource unselectedSecondaryTabLabelItem}"/>

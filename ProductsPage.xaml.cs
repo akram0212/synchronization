@@ -352,8 +352,9 @@ namespace _01electronics_crm
             Image currentImage = (Image)sender;
             String tmp = currentImage.Tag.ToString();
 
-            Product selectedProduct = new Product();
+            //Product selectedProduct = new Product();
             selectedProduct.SetProductID(int.Parse(tmp));
+            //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
 
             BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(brandsPage);

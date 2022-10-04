@@ -509,9 +509,10 @@ namespace _01electronics_crm
             String tmp = currentImage.Tag.ToString();
             String Name = currentImage.Name.ToString();
 
-            Product selectedProduct = new Product();
+            //Product selectedProduct = new Product();
             selectedProduct.SetBrandID(int.Parse(tmp));
             selectedProduct.SetBrandName(Name);
+            //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
 
             BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
             this.NavigationService.Navigate(productsPage);
@@ -667,6 +668,7 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
             ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
+
             modelsWindow.Closed += OnCloseAddModelsWindow; 
             modelsWindow.Show();
 

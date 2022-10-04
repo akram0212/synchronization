@@ -235,6 +235,9 @@
     <Compile Include="ModelBasicInfoPage.xaml.cs">
       <DependentUpon>ModelBasicInfoPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ModelGensetSpec.xaml.cs">
+      <DependentUpon>ModelGensetSpec.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModelsPage.xaml.cs">
       <DependentUpon>ModelsPage.xaml</DependentUpon>
     </Compile>
@@ -506,6 +509,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModelBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModelGensetSpec.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

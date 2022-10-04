@@ -54,6 +54,7 @@ namespace _01electronics_crm
                 summeryPointsTextBox.Visibility = Visibility.Visible;
 
             }
+
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
 
@@ -62,6 +63,14 @@ namespace _01electronics_crm
                 InitializeInfo();
 
             }
+
+            //
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+
+                SpecsType.Content = "Genset Specs";
+            
+            }
+ 
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //////////BUTTON CLICKED///////////////////
@@ -139,6 +148,13 @@ namespace _01electronics_crm
                         product.GetModelSummaryPoints().Add(feature.Text.ToString());
                 }
             }
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+
+                modelUpsSpecsPage.ModelHeader.Content = "MODEL GENSET SPECS";
+                
+            }
+
             NavigationService.Navigate(modelUpsSpecsPage);
         }
 

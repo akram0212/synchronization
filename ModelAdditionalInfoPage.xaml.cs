@@ -71,6 +71,13 @@ namespace _01electronics_crm
 
             if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 nextButton.IsEnabled = false;
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            {
+
+                SpecsType.Content = "Genset Specs";
+
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
