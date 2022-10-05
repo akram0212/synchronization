@@ -115,7 +115,9 @@ namespace _01electronics_crm
             downloadBackground.WorkerReportsProgress = true;
 
             serverFolderPath = product.GetModelFolderServerPath();
-            Directory.CreateDirectory(serverFolderPath);
+            
+            
+            
 
           
 
@@ -125,6 +127,7 @@ namespace _01electronics_crm
                 modelNameTextBox.Visibility = Visibility.Visible;
                 summeryPointsTextBox.Visibility = Visibility.Visible;
                 InsertDragAndDropOrBrowseGrid();
+
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
                 File.Delete(product.GetPhotoLocalPath());
@@ -941,9 +944,32 @@ namespace _01electronics_crm
         {
             BackgroundWorker uploadBackground = sender as BackgroundWorker;
 
-           // File.Delete(product.GetProductPhotoLocalPath());
+            // File.Delete(product.GetProductPhotoLocalPath());
 
+            String productFolderServerPath = String.Empty;
+            productFolderServerPath += BASIC_MACROS.MODELS_PHOTOS_PATH;
+            productFolderServerPath += product.GetProductID();
+            productFolderServerPath += "/";
+
+            if (!ftpObject.CheckExistingFolder(productFolderServerPath))
+            {
+                if (!ftpObject.CreateNewFolder(productFolderServerPath))
+                {
+                    InsertErrorRetryButton();
+                    return;
+                }
+            }
+
+            if (!ftpObject.CheckExistingFolder(serverFolderPath))
+            {
+                if (!ftpObject.CreateNewFolder(serverFolderPath))
+                {
+                    InsertErrorRetryButton();
+                    return;
+                }
+            }
             uploadBackground.ReportProgress(50);
+            
             if (ftpObject.UploadFile(localFolderPath, serverFolderPath + serverFileName, BASIC_MACROS.SEVERITY_HIGH, ref errorMessage))
             {
                 fileUploaded = true;
@@ -1058,13 +1084,31 @@ namespace _01electronics_crm
             //{
             //    this.Close();
             //});
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///INSERT FUNCTIONS
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-       
-        private void InsertIconGridFromServer(int i)
+
+             //if (!product.IssueNewModel())
+             //    return;
+
+            if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                viewproduct.Show();
+            }
+
+
+        //NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+        //currentWindow.Close();
+
+        }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///INSERT FUNCTIONS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    private void InsertIconGridFromServer(int i)
         {
             UploadIconGrid.Margin = new Thickness(24);
             //UploadIconGrid.Width = 250;
