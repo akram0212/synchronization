@@ -102,7 +102,7 @@
                                 <Border  BorderBrush="#105A97" Margin="0,20,0,0"  BorderThickness="3" Grid.Row="0" Width="201px" Height="251px" Name="scrollViewer" VerticalAlignment="Top" HorizontalAlignment="Stretch">
                                     <StackPanel Name="uploadFilesStackPanel" Drop="OnDropUploadFilesStackPanel"  AllowDrop="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
-                                <Button  Visibility="Collapsed" Margin="0,0,55,85" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="45" Height="25" Click="onBtnEditClick"  />
+                                <Button  Visibility="Hidden" Margin="0,0,55,85" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Edit" Name="editPictureButton"  Style="{StaticResource buttonStyle}" Width="45" Height="25" Click="onBtnEditClick"  />
 
                                 <Label  Name="picHint" Margin="0,230,0,0" Grid.Row="1" Width="220" Style="{StaticResource labelStyle}" Foreground="Red" Content="Picture Should be 250 X 200" HorizontalContentAlignment="Right"/>
 

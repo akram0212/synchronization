@@ -134,8 +134,10 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
-                    if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
-                        return;
+                    modelBasicInfoPage.uploadBackground.RunWorkerAsync();
+
+                   // if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                   //     return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                     {

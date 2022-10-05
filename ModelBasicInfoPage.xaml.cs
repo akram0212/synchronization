@@ -49,11 +49,11 @@ namespace _01electronics_crm
          List<string> ftpFiles;
 
         ProgressBar progressBar = new ProgressBar();
-        protected IntegrityChecks integrityChecks;
+        protected IntegrityChecks integrityChecks ;
         protected FTPServer ftpObject;
 
 
-        protected BackgroundWorker uploadBackground;
+        public BackgroundWorker uploadBackground;
         protected BackgroundWorker downloadBackground;
 
         protected String serverFolderPath;
@@ -78,21 +78,46 @@ namespace _01electronics_crm
         private Grid currentSelectedFile;
         private Grid overwriteFileGrid;
         private Label currentLabel;
-        private String errorMessage;
+        private String errorMessage = "";
 
         public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-
+            ftpFiles = new List<String>();
             sqlDatabase = new SQLServer();
-
+            integrityChecks = new IntegrityChecks();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
+            ftpObject = new FTPServer();
 
             product = mPrduct;
 
         InitializeComponent();
+
+
+            ftpFiles = new List<string>(); progressBar.Style = (Style)FindResource("ProgressBarStyle");
+            progressBar.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            progressBar.Width = 200;
+
+            uploadBackground = new BackgroundWorker();
+            uploadBackground.DoWork += BackgroundUpload;
+            uploadBackground.ProgressChanged += OnUploadProgressChanged;
+            uploadBackground.RunWorkerCompleted += OnUploadBackgroundComplete;
+            uploadBackground.WorkerReportsProgress = true;
+
+            uploadFilesStackPanel.Children.Clear();
+
+            downloadBackground = new BackgroundWorker();
+            downloadBackground.DoWork += BackgroundDownload;
+            downloadBackground.ProgressChanged += OnDownloadProgressChanged;
+            downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
+            downloadBackground.WorkerReportsProgress = true;
+
+            serverFolderPath = product.GetModelFolderServerPath();
+            Directory.CreateDirectory(serverFolderPath);
+
+          
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
@@ -100,12 +125,67 @@ namespace _01electronics_crm
                 modelNameTextBox.Visibility = Visibility.Visible;
                 summeryPointsTextBox.Visibility = Visibility.Visible;
                 InsertDragAndDropOrBrowseGrid();
-                product.GetNewProductID();
-                File.Delete(product.GetProductPhotoLocalPath());
+                product.GetNewModelID();
+                product.GetNewModelPhotoLocalPath();
+                File.Delete(product.GetPhotoLocalPath());
 
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+
+                editPictureButton.Visibility = Visibility.Visible;
+                serverFileName = (String)product.GetModelID().ToString() + ".jpg";
+                product.GetNewModelPhotoLocalPath();
+                localFolderPath = product.GetModelFolderLocalPath();
+
+
+                try
+                {
+                    Image brandLogo = new Image();
+                    //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = new Uri(product.GetModelFolderLocalPath(), UriKind.Relative);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    brandLogo.Source = src;
+                    brandLogo.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                    brandLogo.VerticalAlignment = VerticalAlignment.Stretch;
+
+                    wrapPanel.Children.Add(brandLogo);
+
+                    uploadFilesStackPanel.Children.Add(wrapPanel);
+
+                }
+                catch
+                {
+
+
+                    product.SetPhotoServerPath(product.GetModelFolderServerPath() + "/" + product.GetModelID() + ".jpg");
+                    if (product.DownloadPhotoFromServer())
+                    {
+
+                        Image brandLogo = new Image();
+                        //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(product.GetModelFolderLocalPath(), UriKind.Relative);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
+                        src.EndInit();
+                        brandLogo.Source = src;
+                        brandLogo.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                        brandLogo.VerticalAlignment = VerticalAlignment.Stretch;
+                        wrapPanel.Children.Add(brandLogo);
+
+                        uploadFilesStackPanel.Children.Add(wrapPanel);
+
+
+                    }
+                }
+                uploadFilesStackPanel.Children.Clear();
+                uploadFilesStackPanel.Children.Add(wrapPanel);
+
+
 
                 //NameLabel.Visibility = Visibility.Visible;
                 //summeryPointsTextBlock.Visibility = Visibility.Visible;
@@ -230,6 +310,7 @@ namespace _01electronics_crm
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
             summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
+
 
 
             for (int i = 1; i < product.GetModelSummaryPoints().Count; i++)
@@ -587,7 +668,7 @@ namespace _01electronics_crm
                 {
                     localFolderPath = temp[i];
                     localFileName = System.IO.Path.GetFileName(localFolderPath);
-                    serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+                    serverFileName = (String)product.GetModelID().ToString() + ".jpg";
 
                     CheckIfFileAlreadyUploaded(localFileName);
 
@@ -830,7 +911,7 @@ namespace _01electronics_crm
                     return;
                 }
                 //serverFileName = currentLabel.Content.ToString();
-                serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+                serverFileName = (String)product.GetModelID().ToString() + ".jpg";
                 integrityChecks.RemoveExtraSpaces(serverFileName, ref serverFileName);
 
                 localFolderPath = downloadFile.SelectedPath;
@@ -1049,7 +1130,7 @@ namespace _01electronics_crm
             icon = new Image { Source = new BitmapImage(new Uri(@"Icons\drop_files_icon.jpg", UriKind.Relative)) };
             icon.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             icon.VerticalAlignment = VerticalAlignment.Center;
-            resizeImage(ref icon, 250, 150);
+            resizeImage(ref icon, 200, 100);
             grid.Children.Add(icon);
             Grid.SetRow(icon, 0);
 
@@ -1135,7 +1216,7 @@ namespace _01electronics_crm
 
             //serverFileName = localFileName;
 
-            serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+            serverFileName = (String)product.GetModelID().ToString() + ".jpg";
             ftpFiles.Add(localFileName);
 
             InsertIconGrid("pending", localFolderPath);
@@ -1283,7 +1364,7 @@ namespace _01electronics_crm
             uploadFilesStackPanel.Children.Clear();
             product.UploadPhotoToServer();
 
-            serverFileName = (String)product.GetProductID().ToString() + ".jpg";
+            serverFileName = (String)product.GetModelID().ToString() + ".jpg";
             //localFolderPath = product.GetProductPhotoLocalPath();
             //uploadBackground.RunWorkerAsync();
             uploadFilesStackPanel.Children.Clear();
