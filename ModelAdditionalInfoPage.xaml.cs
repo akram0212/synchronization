@@ -146,6 +146,8 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
+                    modelBasicInfoPage.uploadBackground.RunWorkerAsync();
+
                     if (!product.IssueNewModel(/*ref modelApplications, ref modelBenefits, ref modelStandardFeatures*/))
                         return;
 
@@ -337,6 +339,16 @@ namespace _01electronics_crm
             //addIcon.Tag = selectedGridiD;
             //addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
             Grid.SetColumn(addIcon, 2);
+
+            //Label featureNameLabel = new Label();
+            //featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
+            //featureNameLabel.Width = 200;
+            //featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
+            //featureNameLabel.Style = (Style)FindResource("labelStyle");
+            //featureNameLabel.Content = labelContent + (index + 2).ToString();
+            ////featureIdLabel.Content = "Feature #" + (index + 2).ToString();
+            //featureNameLabel.Visibility = Visibility.Collapsed;
+            //Grid.SetColumn(featureNameLabel, 1);
 
             gridI.Children.Add(featureIdLabel);
             gridI.Children.Add(featureTextBox);

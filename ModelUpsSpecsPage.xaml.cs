@@ -2000,7 +2000,6 @@ namespace _01electronics_crm
          
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
-
                 for (int i = 0; i < mainGrid.RowDefinitions.Count(); i++)
                 {
 

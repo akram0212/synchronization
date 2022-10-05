@@ -38,12 +38,15 @@ namespace _01electronics_crm
         protected IntegrityChecks integrityChecks;
         protected FTPServer ftpObject;
 
+
+        protected BackgroundWorker uploadBackground;
+        protected BackgroundWorker downloadBackground;
+        
         protected int counter;
         protected int viewAddCondition;
 
 
-        protected BackgroundWorker uploadBackground;
-        protected BackgroundWorker downloadBackground;
+   
 
         protected String serverFolderPath;
         protected String serverFileName;
