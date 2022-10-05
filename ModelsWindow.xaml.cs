@@ -12,7 +12,7 @@ namespace _01electronics_crm
         public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelUploadFilesPage modelUploadFilesPage;
-        public ModelsWindow(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition, bool openFilesPage)
+        public ModelsWindow(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition, bool openFilesPage)
         {
             InitializeComponent();
 

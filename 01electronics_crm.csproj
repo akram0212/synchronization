@@ -161,6 +161,7 @@
     <Compile Include="AddProjectWindow.xaml.cs">
       <DependentUpon>AddProjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Brand.cs" />
     <Compile Include="CategoriesPage.xaml.cs">
       <DependentUpon>CategoriesPage.xaml</DependentUpon>
     </Compile>
@@ -229,11 +230,15 @@
     <Compile Include="MergeCompaniesWindow.xaml.cs">
       <DependentUpon>MergeCompaniesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model.cs" />
     <Compile Include="ModelAdditionalInfoPage.xaml.cs">
       <DependentUpon>ModelAdditionalInfoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModelBasicInfoPage.xaml.cs">
       <DependentUpon>ModelBasicInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModelGensetSpec.xaml.cs">
+      <DependentUpon>ModelGensetSpec.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModelsPage.xaml.cs">
       <DependentUpon>ModelsPage.xaml</DependentUpon>
@@ -506,6 +511,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModelBasicInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModelGensetSpec.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -799,10 +808,6 @@
     <Resource Include="login_cover.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
-      <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
-      <Name>01electronics_library</Name>
-    </ProjectReference>
     <ProjectReference Include="..\01electronics_library\01electronics_library.csproj">
       <Project>{a0cb9e08-2813-48db-96c4-7f9ff208ce32}</Project>
       <Name>01electronics_library</Name>

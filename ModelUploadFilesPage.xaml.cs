@@ -27,7 +27,7 @@ namespace _01electronics_crm
     public partial class ModelUploadFilesPage : Page
     {
         protected Employee loggedInUser;
-        protected Product product;
+        protected Model product;
 
         protected SQLServer sqlDatabase;
 
@@ -74,7 +74,7 @@ namespace _01electronics_crm
         /// </summary>
         StackPanel uploadFilesStackPanel = new StackPanel();
 
-        public ModelUploadFilesPage(ref Employee mLoggedInUser, ref Product mProduct, int mViewAddCondition)
+        public ModelUploadFilesPage(ref Employee mLoggedInUser, ref Model mProduct, int mViewAddCondition)
         {
             sqlDatabase = new SQLServer();
             ftpObject = new FTPServer();
@@ -145,6 +145,13 @@ namespace _01electronics_crm
             else if (ftpFiles.Count == 0)
             {
                 InsertDragAndDropOrBrowseGrid();
+            }
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            {
+
+                SpecsType.Content = "Genset Specs";
+
             }
         }
 

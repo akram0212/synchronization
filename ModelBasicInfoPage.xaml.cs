@@ -37,7 +37,7 @@ namespace _01electronics_crm
     public partial class ModelBasicInfoPage : Page
     {
         Employee loggedInUser;
-        Product product;
+        Model product;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
@@ -80,7 +80,7 @@ namespace _01electronics_crm
         private Label currentLabel;
         private String errorMessage = "";
 
-        public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
+        public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -130,9 +130,10 @@ namespace _01electronics_crm
 
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
-                File.Delete(product.GetPhotoLocalPath());
+                File.Delete(product.GetModelPhotoLocalPath());
 
             }
+
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
 
@@ -164,8 +165,8 @@ namespace _01electronics_crm
                 {
 
 
-                    product.SetPhotoServerPath(product.GetModelFolderServerPath() + "/" + product.GetModelID() + ".jpg");
-                    if (product.DownloadPhotoFromServer())
+                    product.SetModelPhotoServerPath(product.GetModelFolderServerPath() + "/" + product.GetModelID() + ".jpg");
+                    if (product.DownloadPhotoFromServer(product.GetModelPhotoServerPath(),product.GetModelPhotoLocalPath()))
                     {
 
                         Image brandLogo = new Image();
@@ -195,6 +196,14 @@ namespace _01electronics_crm
                 InitializeInfo();
 
             }
+
+            //
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+
+                SpecsType.Content = "Genset Specs";
+            
+            }
+ 
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //////////BUTTON CLICKED///////////////////
@@ -272,6 +281,13 @@ namespace _01electronics_crm
                         product.GetModelSummaryPoints().Add(feature.Text.ToString());
                 }
             }
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+
+                modelUpsSpecsPage.ModelHeader.Content = "MODEL GENSET SPECS";
+                
+            }
+
             NavigationService.Navigate(modelUpsSpecsPage);
         }
 
@@ -1086,8 +1102,8 @@ namespace _01electronics_crm
             //});
 
 
-             //if (!product.IssueNewModel())
-             //    return;
+             if (!product.IssueNewModel())
+                 return;
 
             if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
@@ -1400,13 +1416,13 @@ namespace _01electronics_crm
             localFolderPath = uploadFile.FileName;
             localFileName = System.IO.Path.GetFileName(localFolderPath);
 
-            product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
-            product.SetPhotoLocalPath(localFolderPath + "/" + localFileName);
+            product.SetModelPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+            product.SetModelPhotoLocalPath(localFolderPath + "/" + localFileName);
 
 
             wrapPanel.Children.Clear();
             uploadFilesStackPanel.Children.Clear();
-            product.UploadPhotoToServer();
+            product.UploadPhotoToServer(product.GetModelPhotoServerPath(),product.GetModelPhotoLocalPath());
 
             serverFileName = (String)product.GetModelID().ToString() + ".jpg";
             //localFolderPath = product.GetProductPhotoLocalPath();

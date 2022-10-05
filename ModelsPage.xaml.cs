@@ -24,7 +24,7 @@ namespace _01electronics_crm
         protected CommonQueries commonQueries;
 
         protected List<COMPANY_WORK_MACROS.MODEL_STRUCT> brandModels;
-        private Product selectedProduct;
+        private Model selectedProduct;
 
         protected BackgroundWorker downloadBackground;
 
@@ -37,7 +37,7 @@ namespace _01electronics_crm
         private Expander previousExpander;
         private Grid currentGrid;
         protected int viewAddCondition;
-        public ModelsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
+        public ModelsPage(ref Employee mLoggedInUser, ref Model mSelectedProduct)
         {
             InitializeComponent();
 
@@ -143,14 +143,14 @@ namespace _01electronics_crm
                         selectedProduct.SetModelID(brandModels[i].modelId);
 
 
-                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID() + ".jpg"))))
+                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetModelPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID() + ".jpg"))))
                         {
                             try
                             {
                                 Image brandImage = new Image();
                                 BitmapImage src = new BitmapImage();
                                 src.BeginInit();
-                                src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                                src.UriSource = new Uri(selectedProduct.GetModelPhotoLocalPath(), UriKind.Relative);
                                 src.CacheOption = BitmapCacheOption.OnLoad;
                                 src.EndInit();
                                 brandImage.Source = src;
@@ -162,12 +162,12 @@ namespace _01electronics_crm
                             }
                             catch
                             {
-                                if (selectedProduct.DownloadPhotoFromServer())
+                                if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetModelPhotoServerPath(),selectedProduct.GetModelPhotoLocalPath()))
                                 {
                                     Image brandImage = new Image();
                                     BitmapImage src = new BitmapImage();
                                     src.BeginInit();
-                                    src.UriSource = new Uri(selectedProduct.GetPhotoLocalPath(), UriKind.Relative);
+                                    src.UriSource = new Uri(selectedProduct.GetModelPhotoLocalPath(), UriKind.Relative);
                                     src.CacheOption = BitmapCacheOption.OnLoad;
                                     src.EndInit();
                                     brandImage.Source = src;
@@ -503,30 +503,31 @@ namespace _01electronics_crm
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //MOUSE DOWN HANDLERS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Image currentImage = (Image)sender;
-            String tmp = currentImage.Tag.ToString();
-            String Name = currentImage.Name.ToString();
+        //private void UPSImageMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    Image currentImage = (Image)sender;
+        //    String tmp = currentImage.Tag.ToString();
+        //    String Name = currentImage.Name.ToString();
 
-            Product selectedProduct = new Product();
-            selectedProduct.SetBrandID(int.Parse(tmp));
-            selectedProduct.SetBrandName(Name);
+        //    //Product selectedProduct = new Product();
+        //    selectedProduct.SetBrandID(int.Parse(tmp));
+        //    selectedProduct.SetBrandName(Name);
+        //    //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
 
-            BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(productsPage);
-        }
-        private void ImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Image currentImage = (Image)sender;
-            String tmp = currentImage.Tag.ToString();
+        //    BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
+        //    this.NavigationService.Navigate(productsPage);
+        //}
+        //private void ImageMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    Image currentImage = (Image)sender;
+        //    String tmp = currentImage.Tag.ToString();
 
-            Product selectedProduct = new Product();
-            selectedProduct.SetProductID(int.Parse(tmp));
+        //    Product selectedProduct = new Product();
+        //    selectedProduct.SetProductID(int.Parse(tmp));
 
-            BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
-            this.NavigationService.Navigate(productsPage);
-        }
+        //    BrandsPage productsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
+        //    this.NavigationService.Navigate(productsPage);
+        //}
         private void OnNavigatingEventHandler(object sender, NavigationWindow e)
         {
         }
@@ -667,6 +668,7 @@ namespace _01electronics_crm
         {
             viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION;
             ModelsWindow modelsWindow = new ModelsWindow(ref loggedInUser, ref selectedProduct, viewAddCondition, false);
+
             modelsWindow.Closed += OnCloseAddModelsWindow; 
             modelsWindow.Show();
 
