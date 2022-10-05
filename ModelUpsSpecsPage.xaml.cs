@@ -25,7 +25,7 @@ namespace _01electronics_crm
     public partial class ModelUpsSpecsPage : Page
     {
         Employee loggedInUser;
-        Product product;
+        Model product;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
@@ -34,11 +34,13 @@ namespace _01electronics_crm
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelBasicInfoPage modelBasicInfoPage;
         public ModelUploadFilesPage modelUploadFilesPage;
-
         protected List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
         List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT> rating;
+        protected int index = 0;
+        int cardCountGenset = 0;
 
-        public ModelUpsSpecsPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
+
+        public ModelUpsSpecsPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition)
         {
             InitializeComponent();
 
@@ -68,7 +70,7 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                
+             InitializeUIElements();
             }
 
             //
@@ -100,20 +102,28 @@ namespace _01electronics_crm
 
         private void InitializeUIElements()
         {
-            for(int i = 0; i < product.GetUPSSpecs().Count; i++)
+            mainGrid.Children.Clear();
+            mainGrid.RowDefinitions.Clear();
+            mainGrid.ColumnDefinitions.Clear();
+
+            for (int i = 0; i < product.GetUPSSpecs().Count; i++)
             {
-                if (i == 0)
-                {
-                    iOPhaseTextBox.Visibility= Visibility.Collapsed;
-                    
-                }
+                index = i;
+                InitializeNewCard();
+                
             }
         }
 
         private void InitializeNewCardGenset() {
 
-            mainGrid.Children.Clear();
-            mainGrid.RowDefinitions.Clear();
+            if (cardCountGenset == 0) {
+
+                mainGrid.Children.Clear();
+                mainGrid.RowDefinitions.Clear();
+            }
+
+            cardCountGenset++;
+
             mainGrid.RowDefinitions.Add(new RowDefinition());
 
             Grid Card = new Grid() { VerticalAlignment = VerticalAlignment.Top };
@@ -121,7 +131,7 @@ namespace _01electronics_crm
             Card.Background = new SolidColorBrush(Colors.White);
             Card.Margin = new Thickness(20);
 
-            Grid.SetRow(Card, 0);
+            Grid.SetRow(Card, cardCountGenset-1);
 
             Grid Header = new Grid() { Height = 50 };
             Header.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF105A97");
@@ -129,8 +139,25 @@ namespace _01electronics_crm
             Label header = new Label() { Content = "SPEC " + (mainGrid.Children.Count + 1), Style = (Style)FindResource("tableHeaderItem") };
             header.HorizontalAlignment = HorizontalAlignment.Left;
 
-            Header.Children.Add(header);
+            if (cardCountGenset != 1)
+            {
+                Image delete = new Image() { Margin= new Thickness(10, 0, 10, 0) };
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri("Icons\\cross_icon.jpg", UriKind.Relative);
+                bi3.EndInit();
+                delete.Source = bi3;
+                delete.Width = 20;
+                delete.Height = 20;
+                delete.HorizontalAlignment = HorizontalAlignment.Right;
+                delete.Tag = cardCountGenset;
+                delete.MouseLeftButtonDown += MouseLeftButtonDownGenset;
 
+                Header.Children.Add(delete);
+
+            }
+
+            Header.Children.Add(header);
 
             Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(45, GridUnitType.Pixel) });
             Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
@@ -158,6 +185,7 @@ namespace _01electronics_crm
 
 
 
+
             Grid.SetRow(Header, 0);
 
             Label ratedPowerLable = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -165,7 +193,7 @@ namespace _01electronics_crm
             Label ratedPowerlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             ratedPowerlabelInvisible.Visibility = Visibility.Collapsed;
 
-            TextBox RatedPowerText = new TextBox() { Style = (Style)FindResource("textBoxStyle"), Width = 253 };
+            TextBox RatedPowerText = new TextBox() { Style = (Style)FindResource("textBoxStyle"), Width = 253,TextWrapping=TextWrapping.Wrap };
 
             ComboBox ratedPowercombo = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
 
@@ -196,7 +224,7 @@ namespace _01electronics_crm
             Label ModelLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             ModelLabel.Content = "Model";
 
-            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping=TextWrapping.Wrap };
 
             Label ModellabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             ModellabelInvisible.Visibility = Visibility.Collapsed;
@@ -212,7 +240,7 @@ namespace _01electronics_crm
             Label ltbKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
             ltbKva50Label.Content = "LTB Kva 50";
 
-            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
             Label Kva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             Kva50labelInvisible.Visibility = Visibility.Collapsed;
@@ -229,7 +257,7 @@ namespace _01electronics_crm
             Label ltbKva60Label = new Label() { Style = (Style)FindResource("labelStyle") };
             ltbKva60Label.Content = "LTB Kva 60";
 
-            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
             Label Kva60labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             Kva60labelInvisible.Visibility = Visibility.Collapsed;
@@ -247,7 +275,7 @@ namespace _01electronics_crm
             Label prpKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
             prpKva50Label.Content = "PRP Kva 50";
 
-            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
             Label prpKva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             prpKva50labelInvisible.Visibility = Visibility.Collapsed;
@@ -264,7 +292,7 @@ namespace _01electronics_crm
             Label prpKva60Label = new Label() { Style = (Style)FindResource("labelStyle") };
             prpKva60Label.Content = "PRP Kva 60";
 
-            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
 
             Label prpKva60labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -283,7 +311,7 @@ namespace _01electronics_crm
             Label MinLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             MinLabel.Content = "Min";
 
-            TextBox MinTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox MinTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
               Label minlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             minlabelInvisible.Visibility = Visibility.Collapsed;
@@ -301,7 +329,7 @@ namespace _01electronics_crm
             Label MidLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             MidLabel.Content = "AVG";
 
-            TextBox MidTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox MidTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
             Label midlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             midlabelInvisible.Visibility = Visibility.Collapsed;
@@ -318,7 +346,7 @@ namespace _01electronics_crm
             Label MaxLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             MaxLabel.Content = "Max";
 
-            TextBox MaxTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox MaxTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
 
             Label maxlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -336,7 +364,7 @@ namespace _01electronics_crm
             Label CoolingLabel = new Label() { Style = (Style)FindResource("labelStyle")};
             CoolingLabel.Content = "Cooling";
 
-            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle")};
+            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
             Label coolinglabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             coolinglabelInvisible.Visibility = Visibility.Collapsed;
@@ -354,7 +382,7 @@ namespace _01electronics_crm
             Label TankLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             TankLabel.Content = "TANK";
 
-            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle") };
+            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
 
             Label tanklabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -370,9 +398,9 @@ namespace _01electronics_crm
             WrapPanel LOADPanel = new WrapPanel();
 
             Label LoadLabel = new Label() { Style = (Style)FindResource("labelStyle")};
-            LoadLabel.Content = "LOAD";
+            LoadLabel.Content = "Load";
 
-            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle")};
+            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
 
 
             Label loadlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -499,6 +527,8 @@ namespace _01electronics_crm
             ContainterPanel.Children.Add(ContainterComboBox);
 
             Grid.SetRow(ContainterPanel, 22);
+
+
             Card.Children.Add(Header);
             Card.Children.Add(ratedPowerPanel);
             Card.Children.Add(EnginePanel);
@@ -525,6 +555,7 @@ namespace _01electronics_crm
             mainGrid.Children.Add(Card);
         }
         
+      
         private void InitializeNewCard()
         {
             RowDefinition row = new RowDefinition();
@@ -723,8 +754,9 @@ namespace _01electronics_crm
             IOPhaseTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label IOPhaseLabel = new Label();
-            IOPhaseLabel.Style = (Style)FindResource("labelStyle");
+            IOPhaseLabel.Style = (Style)FindResource("tableItemLabel");
             IOPhaseLabel.Visibility = Visibility.Collapsed;
+            IOPhaseLabel.Width = 384;
 
 
 
@@ -740,8 +772,10 @@ namespace _01electronics_crm
             ratedPowerTextBox.Width = 250;
 
             Label ratedPowerLabel = new Label();
-            ratedPowerLabel.Style = (Style)FindResource("labelStyle");
+            ratedPowerLabel.Style = (Style)FindResource("tableItemLabel");
             ratedPowerLabel.Visibility = Visibility.Collapsed;
+            ratedPowerLabel.Width = 250;
+
 
             ComboBox ratingComboBox = new ComboBox();
             ratingComboBox.Style = (Style)FindResource("comboBoxStyle");
@@ -756,8 +790,10 @@ namespace _01electronics_crm
             ratingComboBox.SelectedIndex = 0;
             
             Label ratingLabel = new Label();
-            ratingLabel.Style = (Style)FindResource("labelStyle");
+            ratingLabel.Style = (Style)FindResource("tableItemLabel");
             ratingLabel.Visibility = Visibility.Collapsed;
+            ratingLabel.Width = 90;
+
 
             Label BackupLabel = new Label();
             BackupLabel.Content = "Backup time (in min)*";
@@ -807,7 +843,7 @@ namespace _01electronics_crm
             backupTime50TextBox.Margin = new Thickness(12);
 
             Label backupTime50Label = new Label();
-            backupTime50Label.Style = (Style)FindResource("labelStyle");
+            backupTime50Label.Style = (Style)FindResource("tableItemLabel");
             backupTime50Label.Visibility = Visibility.Collapsed;
             backupTime50Label.Width = 30;
             backupTime50Label.Margin = new Thickness(12);
@@ -831,7 +867,7 @@ namespace _01electronics_crm
             backupTime70TextBox.Margin = new Thickness(12);
 
             Label backupTime70Label = new Label();
-            backupTime70Label.Style = (Style)FindResource("labelStyle");
+            backupTime70Label.Style = (Style)FindResource("tableItemLabel");
             backupTime70Label.Visibility = Visibility.Collapsed;
             backupTime70Label.Width = 30;
             backupTime70Label.Margin = new Thickness(12);
@@ -855,7 +891,7 @@ namespace _01electronics_crm
             backupTime100TextBox.Margin = new Thickness(12);
 
             Label backupTime100Label = new Label();
-            backupTime100Label.Style = (Style)FindResource("labelStyle");
+            backupTime100Label.Style = (Style)FindResource("tableItemLabel");
             backupTime100Label.Visibility = Visibility.Collapsed;
             backupTime100Label.Width = 30;
             backupTime100Label.Margin = new Thickness(12);
@@ -894,8 +930,10 @@ namespace _01electronics_crm
             inputPowerFactorPhaseTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label inputPowerFactorPhaseLabel = new Label();
-            inputPowerFactorPhaseLabel.Style = (Style)FindResource("labelStyle");
+            inputPowerFactorPhaseLabel.Style = (Style)FindResource("tableItemLabel");
             inputPowerFactorPhaseLabel.Visibility = Visibility.Collapsed;
+            inputPowerFactorPhaseLabel.Width = 384;
+
 
 
             Label THDI = new Label();
@@ -908,8 +946,10 @@ namespace _01electronics_crm
             THDITextBox.TextWrapping = TextWrapping.Wrap;
 
             Label THDILabel = new Label();
-            THDILabel.Style = (Style)FindResource("labelStyle");
+            THDILabel.Style = (Style)FindResource("tableItemLabel");
             THDILabel.Visibility = Visibility.Collapsed;
+            THDILabel.Width = 384;
+
 
 
             Label inputNominalVoltage = new Label();
@@ -922,8 +962,9 @@ namespace _01electronics_crm
             inputNominalVoltageTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label inputNominalVoltageLabel = new Label();
-            inputNominalVoltageLabel.Style = (Style)FindResource("labelStyle");
+            inputNominalVoltageLabel.Style = (Style)FindResource("tableItemLabel");
             inputNominalVoltageLabel.Visibility = Visibility.Collapsed;
+            inputNominalVoltageLabel.Width = 384;
 
 
             Label inputVoltage = new Label();
@@ -936,8 +977,10 @@ namespace _01electronics_crm
             inputVoltageTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label inputVoltageLabel = new Label();
-            inputVoltageLabel.Style = (Style)FindResource("labelStyle");
+            inputVoltageLabel.Style = (Style)FindResource("tableItemLabel");
             inputVoltageLabel.Visibility = Visibility.Collapsed;
+            inputVoltageLabel.Width = 384;
+
 
             Label voltageTolerance = new Label();
             voltageTolerance.Content = "Voltage Tolerance";
@@ -949,8 +992,10 @@ namespace _01electronics_crm
             voltageToleranceTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label voltageToleranceLabel = new Label();
-            voltageToleranceLabel.Style = (Style)FindResource("labelStyle");
+            voltageToleranceLabel.Style = (Style)FindResource("tableItemLabel");
             voltageToleranceLabel.Visibility = Visibility.Collapsed;
+            voltageToleranceLabel.Width = 384;
+
 
 
 
@@ -964,8 +1009,10 @@ namespace _01electronics_crm
             outputPowerFactorTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label outputPowerFactorLabel = new Label();
-            outputPowerFactorLabel.Style = (Style)FindResource("labelStyle");
+            outputPowerFactorLabel.Style = (Style)FindResource("tableItemLabel");
             outputPowerFactorLabel.Visibility = Visibility.Collapsed;
+            outputPowerFactorLabel.Width = 384;
+
 
             Label THDV = new Label();
             THDV.Content = "THDV";
@@ -977,8 +1024,11 @@ namespace _01electronics_crm
             THDVTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label THDVLabel = new Label();
-            THDVLabel.Style = (Style)FindResource("labelStyle");
+            THDVLabel.Style = (Style)FindResource("tableItemLabel");
             THDVLabel.Visibility = Visibility.Collapsed;
+            THDVLabel.Width = 384;
+
+
 
             Label outputNominalVoltage = new Label();
             outputNominalVoltage.Content = "Output Nominal Voltage";
@@ -990,8 +1040,10 @@ namespace _01electronics_crm
             outputNominalVoltageTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label outputNominalVoltageLabel = new Label();
-            outputNominalVoltageLabel.Style = (Style)FindResource("labelStyle");
+            outputNominalVoltageLabel.Style = (Style)FindResource("tableItemLabel");
             outputNominalVoltageLabel.Visibility = Visibility.Collapsed;
+            outputNominalVoltageLabel.Width = 384;
+
 
             Label outputDCVoltageRange = new Label();
             outputDCVoltageRange.Content = "Output DC Voltage Range";
@@ -1003,8 +1055,10 @@ namespace _01electronics_crm
             outputDCVoltageRangeTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label outputDCVoltageRangeLabel = new Label();
-            outputDCVoltageRangeLabel.Style = (Style)FindResource("labelStyle");
+            outputDCVoltageRangeLabel.Style = (Style)FindResource("tableItemLabel");
             outputDCVoltageRangeLabel.Visibility = Visibility.Collapsed;
+            outputDCVoltageRangeLabel.Width = 384;
+
 
             Label overloadCapability = new Label();
             overloadCapability.Content = "Overload Capability";
@@ -1016,8 +1070,10 @@ namespace _01electronics_crm
             overloadCapabilityTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label overloadCapabilityLabel = new Label();
-            overloadCapabilityLabel.Style = (Style)FindResource("labelStyle");
+            overloadCapabilityLabel.Style = (Style)FindResource("tableItemLabel");
             overloadCapabilityLabel.Visibility = Visibility.Collapsed;
+            overloadCapabilityLabel.Width = 384;
+
 
             Label efficiency = new Label();
             efficiency.Content = "Efficiency";
@@ -1029,8 +1085,10 @@ namespace _01electronics_crm
             efficiencyTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label efficiencyLabel = new Label();
-            efficiencyLabel.Style = (Style)FindResource("labelStyle");
+            efficiencyLabel.Style = (Style)FindResource("tableItemLabel");
             efficiencyLabel.Visibility = Visibility.Collapsed;
+            efficiencyLabel.Width = 384;
+
 
             Label inputConnectionType = new Label();
             inputConnectionType.Content = "Input Connection Type";
@@ -1042,8 +1100,10 @@ namespace _01electronics_crm
             inputConnectionTypeTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label inputConnectionTypeLabel = new Label();
-            inputConnectionTypeLabel.Style = (Style)FindResource("labelStyle");
+            inputConnectionTypeLabel.Style = (Style)FindResource("tableItemLabel");
             inputConnectionTypeLabel.Visibility = Visibility.Collapsed;
+            inputConnectionTypeLabel.Width = 384;
+
 
             Label frontPanel = new Label();
             frontPanel.Content = "Front Panel";
@@ -1055,8 +1115,10 @@ namespace _01electronics_crm
             frontPanelTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label frontPanelLabel = new Label();
-            frontPanelLabel.Style = (Style)FindResource("labelStyle");
+            frontPanelLabel.Style = (Style)FindResource("tableItemLabel");
             frontPanelLabel.Visibility = Visibility.Collapsed;
+            frontPanelLabel.Width = 384;
+
 
             Label maxPower = new Label();
             maxPower.Content = "Max Power";
@@ -1068,8 +1130,10 @@ namespace _01electronics_crm
             maxPowerTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label maxPowerLabel = new Label();
-            maxPowerLabel.Style = (Style)FindResource("labelStyle");
+            maxPowerLabel.Style = (Style)FindResource("tableItemLabel");
             maxPowerLabel.Visibility = Visibility.Collapsed;
+            maxPowerLabel.Width = 384;
+
 
             Label certificates = new Label();
             certificates.Content = "Certificates";
@@ -1081,8 +1145,10 @@ namespace _01electronics_crm
             certificatesTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label certificatesLabel = new Label();
-            certificatesLabel.Style = (Style)FindResource("labelStyle");
+            certificatesLabel.Style = (Style)FindResource("tableItemLabel");
             certificatesLabel.Visibility = Visibility.Collapsed;
+            certificatesLabel.Width = 384;
+
 
             Label safety = new Label();
             safety.Content = "Safety";
@@ -1094,8 +1160,10 @@ namespace _01electronics_crm
             safetyTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label safetyLabel = new Label();
-            safetyLabel.Style = (Style)FindResource("labelStyle");
+            safetyLabel.Style = (Style)FindResource("tableItemLabel");
             safetyLabel.Visibility = Visibility.Collapsed;
+            safetyLabel.Width = 384;
+
 
             Label EMC = new Label();
             EMC.Content = "EMC";
@@ -1107,8 +1175,10 @@ namespace _01electronics_crm
             EMCTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label EMCLabel = new Label();
-            EMCLabel.Style = (Style)FindResource("labelStyle");
+            EMCLabel.Style = (Style)FindResource("tableItemLabel");
             EMCLabel.Visibility = Visibility.Collapsed;
+            EMCLabel.Width = 384;
+
 
             Label environmentalAspects = new Label();
             environmentalAspects.Content = "Environmental Aspects";
@@ -1120,8 +1190,10 @@ namespace _01electronics_crm
             environmentalAspectsTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label environmentalAspectsLabel = new Label();
-            environmentalAspectsLabel.Style = (Style)FindResource("labelStyle");
+            environmentalAspectsLabel.Style = (Style)FindResource("tableItemLabel");
             environmentalAspectsLabel.Visibility = Visibility.Collapsed;
+            environmentalAspectsLabel.Width = 384;
+
 
             Label testPerformance = new Label();
             testPerformance.Content = "Test Performance";
@@ -1133,8 +1205,10 @@ namespace _01electronics_crm
             testPerformanceTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label testPerformanceLabel = new Label();
-            testPerformanceLabel.Style = (Style)FindResource("labelStyle");
+            testPerformanceLabel.Style = (Style)FindResource("tableItemLabel");
             testPerformanceLabel.Visibility = Visibility.Collapsed;
+            testPerformanceLabel.Width = 384;
+
 
             Label protectionDegree = new Label();
             protectionDegree.Content = "Protection Degree";
@@ -1146,8 +1220,10 @@ namespace _01electronics_crm
             protectionDegreeTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label protectionDegreeLabel = new Label();
-            protectionDegreeLabel.Style = (Style)FindResource("labelStyle");
+            protectionDegreeLabel.Style = (Style)FindResource("tableItemLabel");
             protectionDegreeLabel.Visibility = Visibility.Collapsed;
+            protectionDegreeLabel.Width = 384;
+
 
             Label transferVoltageLimit = new Label();
             transferVoltageLimit.Content = "Transfer Voltage Limit";
@@ -1159,8 +1235,10 @@ namespace _01electronics_crm
             transferVoltageLimitTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label transferVoltageLimitLabel = new Label();
-            transferVoltageLimitLabel.Style = (Style)FindResource("labelStyle");
+            transferVoltageLimitLabel.Style = (Style)FindResource("tableItemLabel");
             transferVoltageLimitLabel.Visibility = Visibility.Collapsed;
+            transferVoltageLimitLabel.Width = 384;
+
 
             Label marking = new Label();
             marking.Content = "Marking";
@@ -1172,8 +1250,10 @@ namespace _01electronics_crm
             markingTextBox.TextWrapping = TextWrapping.Wrap;
 
             Label markingLabel = new Label();
-            markingLabel.Style = (Style)FindResource("labelStyle");
+            markingLabel.Style = (Style)FindResource("tableItemLabel");
             markingLabel.Visibility = Visibility.Collapsed;
+            markingLabel.Width = 384;
+
 
             Label validUntil = new Label();
             validUntil.Content = "Valid Until*";
@@ -1187,13 +1267,15 @@ namespace _01electronics_crm
 
 
             Label validUntilLabel = new Label();
-            validUntilLabel.Style = (Style)FindResource("labelStyle");
+            validUntilLabel.Style = (Style)FindResource("tableItemLabel");
             validUntilLabel.Visibility = Visibility.Collapsed;
+            validUntilLabel.Width = 384;
+
 
 
             //wrapPanelRow1 .Children.Add(Spec);
-            
-            wrapPanelRow2 .Children.Add(IOPhase);
+
+            wrapPanelRow2.Children.Add(IOPhase);
             wrapPanelRow2 .Children.Add(IOPhaseTextBox);
             wrapPanelRow2 .Children.Add(IOPhaseLabel);
             
@@ -1359,39 +1441,160 @@ namespace _01electronics_crm
             Card.Children.Add(Content);
             mainGrid.Children.Add(Card);
 
+
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 IOPhaseTextBox.Visibility = Visibility.Collapsed;
                 IOPhaseLabel.Visibility = Visibility.Visible;
+                IOPhaseLabel.Content = product.GetUPSSpecs()[index].io_phase;
 
                 ratedPowerTextBox.Visibility = Visibility.Collapsed;
-                ratedPowerLabel.Visibility =Visibility.Visible;
+                ratedPowerLabel.Visibility = Visibility.Visible;
+                ratedPowerLabel.Content = product.GetUPSSpecs()[index].rated_power;
+
+                ratingComboBox.Visibility = Visibility.Collapsed;
+                ratingLabel.Visibility = Visibility.Visible;
+                ratingLabel.Content = product.GetUPSSpecs()[index].rating;
+
 
                 backupTime50TextBox.Visibility = Visibility.Collapsed;
                 backupTime50Label.Visibility = Visibility.Visible;
+                backupTime50Label.Content = product.GetUPSSpecs()[index].backup_time_50;
+
 
                 backupTime70TextBox.Visibility = Visibility.Collapsed;
                 backupTime70Label.Visibility = Visibility.Visible;
+                backupTime70Label.Content = product.GetUPSSpecs()[index].backup_time_70;
+
 
                 backupTime100TextBox.Visibility = Visibility.Collapsed;
                 backupTime100Label.Visibility = Visibility.Visible;
+                backupTime100Label.Content = product.GetUPSSpecs()[index].backup_time_100;
+
 
                 inputPowerFactorPhaseTextBox.Visibility = Visibility.Collapsed;
                 inputPowerFactorPhaseLabel.Visibility = Visibility.Visible;
+                inputPowerFactorPhaseLabel.Content = product.GetUPSSpecs()[index].input_power_factor;
+
 
                 THDITextBox.Visibility = Visibility.Collapsed;
                 THDILabel.Visibility = Visibility.Visible;
+                THDILabel.Content = product.GetUPSSpecs()[index].thdi;
+
 
                 inputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
                 inputNominalVoltageLabel.Visibility = Visibility.Visible;
+                inputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].input_nominal_voltage;
 
 
+                inputVoltageTextBox.Visibility = Visibility.Collapsed;
+                inputVoltageLabel.Visibility = Visibility.Visible;
+                inputVoltageLabel.Content = product.GetUPSSpecs()[index].input_voltage;
+
+
+                voltageToleranceTextBox.Visibility = Visibility.Collapsed;
+                voltageToleranceLabel.Visibility = Visibility.Visible;
+                voltageToleranceLabel.Content = product.GetUPSSpecs()[index].voltage_tolerance;
+
+
+                outputPowerFactorTextBox.Visibility = Visibility.Collapsed;
+                outputPowerFactorLabel.Visibility = Visibility.Visible;
+                outputPowerFactorLabel.Content = product.GetUPSSpecs()[index].output_power_factor;
+
+
+                THDVTextBox.Visibility = Visibility.Collapsed;
+                THDVLabel.Visibility = Visibility.Visible;
+                THDVLabel.Content = product.GetUPSSpecs()[index].thdv;
+
+
+                outputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
+                outputNominalVoltageLabel.Visibility = Visibility.Visible;
+                outputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].output_nominal_voltage;
+
+
+                outputDCVoltageRangeTextBox.Visibility = Visibility.Collapsed;
+                outputDCVoltageRangeLabel.Visibility = Visibility.Visible;
+                outputDCVoltageRangeLabel.Content = product.GetUPSSpecs()[index].output_dc_voltage_range;
+
+
+                overloadCapabilityTextBox.Visibility = Visibility.Collapsed;
+                overloadCapabilityLabel.Visibility = Visibility.Visible;
+                overloadCapabilityLabel.Content = product.GetUPSSpecs()[index].overload_capability;
+
+
+                efficiencyTextBox.Visibility = Visibility.Collapsed;
+                efficiencyLabel.Visibility = Visibility.Visible;
+                efficiencyLabel.Content = product.GetUPSSpecs()[index].efficiency;
+
+
+                inputConnectionTypeTextBox.Visibility = Visibility.Collapsed;
+                inputConnectionTypeLabel.Visibility = Visibility.Visible;
+                inputConnectionTypeLabel.Content = product.GetUPSSpecs()[index].input_connection_type;
+
+
+                frontPanelTextBox.Visibility = Visibility.Collapsed;
+                frontPanelLabel.Visibility = Visibility.Visible;
+                frontPanelLabel.Content = product.GetUPSSpecs()[index].front_panel;
+
+
+                maxPowerTextBox.Visibility = Visibility.Collapsed;
+                maxPowerLabel.Visibility = Visibility.Visible;
+                maxPowerLabel.Content = product.GetUPSSpecs()[index].max_power;
+
+
+                certificatesTextBox.Visibility = Visibility.Collapsed;
+                certificatesLabel.Visibility = Visibility.Visible;
+                certificatesLabel.Content = product.GetUPSSpecs()[index].certificates;
+
+
+                safetyTextBox.Visibility = Visibility.Collapsed;
+                safetyLabel.Visibility = Visibility.Visible;
+                safetyLabel.Content = product.GetUPSSpecs()[index].safety;
+
+
+                EMCTextBox.Visibility = Visibility.Collapsed;
+                EMCLabel.Visibility = Visibility.Visible;
+                EMCLabel.Content = product.GetUPSSpecs()[index].emc;
+
+
+                environmentalAspectsTextBox.Visibility = Visibility.Collapsed;
+                environmentalAspectsLabel.Visibility = Visibility.Visible;
+                environmentalAspectsLabel.Content = product.GetUPSSpecs()[index].environmental_aspects;
+
+
+                testPerformanceTextBox.Visibility = Visibility.Collapsed;
+                testPerformanceLabel.Visibility = Visibility.Visible;
+                testPerformanceLabel.Content = product.GetUPSSpecs()[index].test_performance;
+
+
+
+                protectionDegreeTextBox.Visibility = Visibility.Collapsed;
+                protectionDegreeLabel.Visibility = Visibility.Visible;
+                protectionDegreeLabel.Content = product.GetUPSSpecs()[index].protection_degree;
+
+
+                transferVoltageLimitTextBox.Visibility = Visibility.Collapsed;
+                transferVoltageLimitLabel.Visibility = Visibility.Visible;
+                transferVoltageLimitLabel.Content = product.GetUPSSpecs()[index].transfer_voltage_limit;
+
+
+                markingTextBox.Visibility = Visibility.Collapsed;
+                markingLabel.Visibility = Visibility.Visible;
+                markingLabel.Content = product.GetUPSSpecs()[index].marking;
+
+
+                validUntilDatePicker.Visibility = Visibility.Collapsed;
+                validUntilLabel.Visibility = Visibility.Visible;
+                validUntilLabel.Content = product.GetUPSSpecs()[index].valid_until;
 
 
 
             }
 
-            
+
+
+
+
         }
 
         private void ratingComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2258,18 +2461,45 @@ namespace _01electronics_crm
 
         }
 
+
+        private void MouseLeftButtonDownGenset(object sender, MouseEventArgs e)
+        {
+
+            Image b1 = sender as Image;
+            int tag = int.Parse(b1.Tag.ToString());
+
+            if (tag < mainGrid.Children.Count) {
+                for (int i = tag; i < mainGrid.Children.Count; i++) {
+
+                    Grid card = mainGrid.Children[i] as Grid;
+
+                    Grid header = card.Children[0] as Grid;
+                    Label head = header.Children[1] as Label;
+                    Image image = header.Children[0] as Image;
+                    image.Tag = i;
+                    head.Content = $"SPEC {i}";
+                }      
+            }
+            mainGrid.Children.Remove(mainGrid.Children[tag - 1]);
+            cardCountGenset--;
+        }
+
         private void onBtnAddClick(object sender, MouseButtonEventArgs e)
         {
+
             if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
             {
                 InitializeNewCardGenset();
 
             }
-            else
-            InitializeNewCard();
+             else
+                InitializeNewCard();
+
+
+
         }
 
-      
+
         private void Delete_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Image currentCard = new Image();

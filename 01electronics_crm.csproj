@@ -161,6 +161,7 @@
     <Compile Include="AddProjectWindow.xaml.cs">
       <DependentUpon>AddProjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Brand.cs" />
     <Compile Include="CategoriesPage.xaml.cs">
       <DependentUpon>CategoriesPage.xaml</DependentUpon>
     </Compile>
@@ -229,6 +230,7 @@
     <Compile Include="MergeCompaniesWindow.xaml.cs">
       <DependentUpon>MergeCompaniesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model.cs" />
     <Compile Include="ModelAdditionalInfoPage.xaml.cs">
       <DependentUpon>ModelAdditionalInfoPage.xaml</DependentUpon>
     </Compile>

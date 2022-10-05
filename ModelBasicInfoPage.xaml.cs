@@ -24,7 +24,7 @@ namespace _01electronics_crm
     public partial class ModelBasicInfoPage : Page
     {
         Employee loggedInUser;
-        Product product;
+        Model product;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
@@ -34,7 +34,7 @@ namespace _01electronics_crm
         public ModelUpsSpecsPage modelUpsSpecsPage;
         public ModelUploadFilesPage modelUploadFilesPage;
 
-        public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
+        public ModelBasicInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -198,6 +198,7 @@ namespace _01electronics_crm
             modelNameLabel.Visibility= Visibility.Visible;
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
+            summeryPointsLabel.Visibility=Visibility.Visible;
             summeryPointsLabel.Visibility=Visibility.Visible;
             summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
 
@@ -450,9 +451,12 @@ namespace _01electronics_crm
 
         private void SummaryPoint1MouseLeave(object sender, MouseEventArgs e)
         {
-            summeryPointsLabel.Text = summeryPointsTextBox.Text;
-            summeryPointsTextBox.Visibility = Visibility.Collapsed;
-            summeryPointsLabel.Visibility = Visibility.Visible;
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                summeryPointsLabel.Text = summeryPointsTextBox.Text;
+                summeryPointsTextBox.Visibility = Visibility.Collapsed;
+                summeryPointsLabel.Visibility = Visibility.Visible;
+            }
 
         }
         private void SummeryPointMouseLeave(object sender, MouseEventArgs e)

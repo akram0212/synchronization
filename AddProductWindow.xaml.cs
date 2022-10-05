@@ -145,15 +145,15 @@ namespace _01electronics_crm
                 {
 
 
-                    product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
-                    if (product.DownloadPhotoFromServer())
+                    product.SetProductPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+                    if (product.DownloadPhotoFromServer(product.GetProductPhotoServerPath(),product.GetProductPhotoLocalPath()))
                     {
 
                         Image brandLogo = new Image();
                         //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
                         BitmapImage src = new BitmapImage();
                         src.BeginInit();
-                        src.UriSource = new Uri(product.GetBrandPhotoLocalPath(), UriKind.Relative);
+                        src.UriSource = new Uri(product.GetProductPhotoLocalPath(), UriKind.Relative);
                         src.CacheOption = BitmapCacheOption.OnLoad;
                         src.EndInit();
                         brandLogo.Source = src;
@@ -349,9 +349,11 @@ namespace _01electronics_crm
         {
 
             Image productImage = new Image();
-            
+
             //if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             //{
+            try
+            {
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
                 src.UriSource = new Uri(localFolderPath, UriKind.Relative);
@@ -362,7 +364,15 @@ namespace _01electronics_crm
                 productImage.VerticalAlignment = VerticalAlignment.Stretch;
 
                 Grid.SetRow(productImage, 0);
+                icon = productImage;
 
+                canEdit = true;
+                editPictureButton.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+
+            }
             //}
             //else 
             //{ 
@@ -399,10 +409,6 @@ namespace _01electronics_crm
             //        }
             //    }
             //}
-            icon = productImage;
-
-            canEdit = true;
-            editPictureButton.Visibility = Visibility.Visible;
 
             //if (productImage.Width!=1800 || productImage.Height!= 600)
             //{
@@ -1097,13 +1103,13 @@ namespace _01electronics_crm
             localFolderPath = uploadFile.FileName;
             localFileName = System.IO.Path.GetFileName(localFolderPath);
 
-            product.SetPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
-            product.SetPhotoLocalPath(localFolderPath + "/" + localFileName);
+            product.SetProductPhotoServerPath(product.GetProductFolderServerPath() + "/" + product.GetProductID() + ".jpg");
+            product.SetProductPhotoLocalPath(localFolderPath + "/" + localFileName);
 
 
                  wrapPanel.Children.Clear();
                 uploadFilesStackPanel.Children.Clear();
-                product.UploadPhotoToServer();
+                product.UploadPhotoToServer(product.GetProductPhotoServerPath(),product.GetProductPhotoLocalPath());
 
             serverFileName = (String)product.GetProductID().ToString() + ".jpg";
             //localFolderPath = product.GetProductPhotoLocalPath();
