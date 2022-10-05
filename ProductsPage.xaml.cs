@@ -163,8 +163,8 @@ namespace _01electronics_crm
                     }
                     catch
                     {
-                        selectedProduct.SetPhotoServerPath(selectedProduct.GetProductFolderServerPath() + "/" + products[i].typeId + ".jpg");
-                        if (selectedProduct.DownloadPhotoFromServer())
+                        selectedProduct.SetProductPhotoServerPath(selectedProduct.GetProductFolderServerPath() + "/" + products[i].typeId + ".jpg");
+                        if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetProductPhotoServerPath(),selectedProduct.GetProductPhotoLocalPath()))
                         {
                             Image productImage = new Image();
                             BitmapImage src = new BitmapImage();
@@ -352,10 +352,17 @@ namespace _01electronics_crm
             Image currentImage = (Image)sender;
             String tmp = currentImage.Tag.ToString();
 
-            Product selectedProduct = new Product();
+            //Product selectedProduct = new Product();
             selectedProduct.SetProductID(int.Parse(tmp));
+            //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
 
-            BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedProduct);
+            Brand selectedBrand=new Brand();
+            selectedBrand.SetProductID(selectedProduct.GetProductID());
+            selectedBrand.SetCategoryID(selectedProduct.GetCategoryID());
+            selectedBrand.SetProductName(selectedProduct.GetProductName());
+            selectedBrand.SetCategoryName(selectedProduct.GetCategoryName());
+
+            BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedBrand/* ref selectedProduct*/);
             this.NavigationService.Navigate(brandsPage);
         }
 

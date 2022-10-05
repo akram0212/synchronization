@@ -76,14 +76,14 @@ namespace _01electronics_crm
         private Grid overwriteFileGrid;
         private Label currentLabel;
 
-        protected Product product;
+        protected Brand product;
 
         List<string> ftpFiles;
 
         Grid UploadIconGrid = new Grid();
 
         ProgressBar progressBar = new ProgressBar();
-        public AddBrand(ref Product pBrand, ref Employee mLoggedInUser, ref int mViewAddCondition, ref List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandsList )
+        public AddBrand(ref Brand pBrand, ref Employee mLoggedInUser, ref int mViewAddCondition, ref List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandsList )
         {
 
             InitializeComponent();
@@ -203,8 +203,8 @@ namespace _01electronics_crm
                 product.AddBrandToProduct();
                 this.Close();
             }
-
-            uploadBackground.RunWorkerAsync();
+            else
+                uploadBackground.RunWorkerAsync();
 
         }
 
@@ -224,13 +224,13 @@ namespace _01electronics_crm
             localFolderPath = uploadFile.FileName;
             localFileName = System.IO.Path.GetFileName(localFolderPath);
 
-            product.SetPhotoServerPath(product.GetBrandFolderServerPath() + "/" + product.GetBrandID() + ".jpg");
-            product.SetPhotoLocalPath(localFolderPath + "/" + localFileName);
+            product.SetBrandPhotoServerPath(product.GetBrandFolderServerPath() + "/" + product.GetBrandID() + ".jpg");
+            product.SetBrandPhotoLocalPath(localFolderPath + "/" + localFileName);
 
 
             wrapPanel.Children.Clear();
             uploadFilesStackPanel.Children.Clear();
-            product.UploadPhotoToServer();
+            product.UploadPhotoToServer(product.GetBrandPhotoServerPath(),product.GetBrandPhotoLocalPath());
 
             serverFileName = (String)product.GetBrandID().ToString() + ".jpg";
             //localFolderPath = product.GetBrandPhotoLocalPath();
@@ -956,8 +956,8 @@ namespace _01electronics_crm
             {
 
 
-                product.SetPhotoServerPath(product.GetBrandFolderServerPath() + "/" + product.GetBrandID()+ ".jpg");
-                if (product.DownloadPhotoFromServer())
+                product.SetBrandPhotoServerPath(product.GetBrandFolderServerPath() + "/" + product.GetBrandID()+ ".jpg");
+                if (product.DownloadPhotoFromServer(product.GetBrandPhotoServerPath(),product.GetBrandPhotoLocalPath()))
                 {
 
                     Image brandLogo = new Image();

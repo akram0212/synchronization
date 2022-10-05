@@ -23,7 +23,7 @@ namespace _01electronics_crm
     {
 
         Employee loggedInUser;
-        Product product;
+        Model product;
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
@@ -40,8 +40,7 @@ namespace _01electronics_crm
         private List<String> modelStandardFeatures;
         private List<String> modelBenefits;
         private List<String> modelApplications;
-        private List<String> modelSummeryPoints;
-        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Product mPrduct, int mViewAddCondition)
+        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
@@ -71,6 +70,13 @@ namespace _01electronics_crm
 
             if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 nextButton.IsEnabled = false;
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            {
+
+                SpecsType.Content = "Genset Specs";
+
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,6 +96,9 @@ namespace _01electronics_crm
                 if(feature.Text.ToString() != String.Empty)
                     modelStandardFeatures.Add(feature.Text.ToString());
             }
+
+            product.SetModelStandardFeatures(modelStandardFeatures);
+
             for (int i = 0; i < benefitsGrid.Children.Count; i++)
             {
                 Grid innerGrid = benefitsGrid.Children[i] as Grid;
@@ -97,6 +106,8 @@ namespace _01electronics_crm
                 if (feature.Text.ToString() != String.Empty)
                     modelBenefits.Add(feature.Text.ToString());
             }
+            product.SetModelBenefits(modelBenefits);
+
             for (int i = 0; i < applicationsGrid.Children.Count; i++)
             {
                 Grid innerGrid = applicationsGrid.Children[i] as Grid;
@@ -104,6 +115,7 @@ namespace _01electronics_crm
                 if (feature.Text.ToString() != String.Empty)
                     modelApplications.Add(feature.Text.ToString());
             }
+            product.SetModelApplications(modelApplications);
             if (product.GetModelName() == null)
                 System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (product.GetModelSummaryPoints().Count() == 0)
@@ -134,22 +146,32 @@ namespace _01electronics_crm
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
                 {
-                    if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
-                        return;
+                    modelBasicInfoPage.uploadBackground.RunWorkerAsync();
 
-                    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                    {
-                        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
 
-                        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+                //   // if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                //   //     return;
 
-                        viewproduct.Show();
-                    }
+
+
+
+                //    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                //    {
+                //        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                //        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                //        viewproduct.Show();
+                //    }
+
+                }
+                else
+                {
+                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                    currentWindow.Close();
 
                 }
 
-                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                currentWindow.Close();
 
             }
         }

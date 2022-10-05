@@ -19,7 +19,7 @@ namespace _01electronics_crm
     public partial class BrandsPage : Page
     {
         private Employee loggedInUser;
-        private Product selectedProduct;
+        private Brand selectedProduct;
         List<COMPANY_WORK_MACROS.BRAND_STRUCT> brandsList;
 
         //SQL QUERY
@@ -35,7 +35,7 @@ namespace _01electronics_crm
         protected int mViewAddCondition;
         private Expander currentExpander;
         private Expander previousExpander;
-        public BrandsPage(ref Employee mLoggedInUser, ref Product mSelectedProduct)
+        public BrandsPage(ref Employee mLoggedInUser, ref Brand mSelectedProduct)
         {
             InitializeComponent();
             loggedInUser = mLoggedInUser;
@@ -180,8 +180,8 @@ namespace _01electronics_crm
                     catch
                     {
 
-                        selectedProduct.SetPhotoServerPath(selectedProduct.GetBrandFolderServerPath() + "/" + brandsList[i].brandId + ".jpg");
-                        if (selectedProduct.DownloadPhotoFromServer())
+                        selectedProduct.SetBrandPhotoServerPath(selectedProduct.GetBrandFolderServerPath() + "/" + brandsList[i].brandId + ".jpg");
+                        if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetBrandPhotoServerPath(),selectedProduct.GetBrandPhotoLocalPath()))
                         {
 
                             Image brandLogo = new Image();
@@ -343,7 +343,17 @@ namespace _01electronics_crm
             selectedProduct.SetBrandID(int.Parse(tmp));
             selectedProduct.SetBrandName(Name);
 
-            ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref selectedProduct);
+            Model SelectedModel = new Model();
+
+            SelectedModel.SetProductID(selectedProduct.GetProductID());
+            SelectedModel.SetCategoryID(selectedProduct.GetCategoryID());
+            SelectedModel.SetBrandID(selectedProduct.GetBrandID());
+
+            SelectedModel.SetProductName(selectedProduct.GetProductName());
+            SelectedModel.SetBrandName(selectedProduct.GetBrandName());
+            SelectedModel.SetCategoryName(selectedProduct.GetCategoryName());
+
+            ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref SelectedModel /*ref selectedProduct*/);
             this.NavigationService.Navigate(productsPage);
         }
 
