@@ -5,5 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
+                          Background="#EDEDED"
         Title="WorkOfferWindow" Height="800" Width="1200" WindowStartupLocation="CenterOwner">
 </NavigationWindow>
