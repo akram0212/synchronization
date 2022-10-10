@@ -467,7 +467,7 @@ namespace _01electronics_crm
                     listBox.Items.Add(viewOfferButton);
                 }
 
-                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID))
+                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CLOSED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)))
                 {
                     ListBoxItem confirmOrderButton = new ListBoxItem();
                     confirmOrderButton.Content = "Close Contract";
@@ -476,7 +476,7 @@ namespace _01electronics_crm
 
                 }
                 
-                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CANCELLED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID))
+                if (maintContracts[i].maintenance_contract_status_id != COMPANY_WORK_MACROS.CANCELLED_MAINTENANCE_CONTRACT &&(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)))
                 {
                     ListBoxItem confirmOrderButton = new ListBoxItem();
                     confirmOrderButton.Content = "Cancel Contract";
@@ -485,7 +485,7 @@ namespace _01electronics_crm
 
                 }
 
-                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID || (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
+                if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID || (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.MARKETING_AND_SALES_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION) || loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.DOCUMENT_CONTROL_TEAM_ID || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
                     listBox.Items.Add(editContractButton);
 
                 ListBoxItem renewContractButton = new ListBoxItem();

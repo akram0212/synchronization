@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_01electronics_crm"
         mc:Ignorable="d"
+        Background="#EDEDED" 
         Title="Re-assign Contacts " Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>

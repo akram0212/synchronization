@@ -148,22 +148,30 @@ namespace _01electronics_crm
                 {
                     modelBasicInfoPage.uploadBackground.RunWorkerAsync();
 
-                    if (!product.IssueNewModel(/*ref modelApplications, ref modelBenefits, ref modelStandardFeatures*/))
-                        return;
 
-                    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                    {
-                        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+                //   // if (!product.IssueNewModel(ref modelApplications, ref modelBenefits, ref modelStandardFeatures))
+                //   //     return;
 
-                        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
 
-                        viewproduct.Show();
-                    }
+
+
+                //    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                //    {
+                //        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                //        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                //        viewproduct.Show();
+                //    }
+
+                }
+                else
+                {
+                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                    currentWindow.Close();
 
                 }
 
-                NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                currentWindow.Close();
 
             }
         }
