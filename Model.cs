@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,10 @@ namespace _01electronics_crm
     {
         private int modelID;
         private String modelName;
-        protected String sqlQuery;
-
-
 
         protected String modelPhotoLocalPath;
         protected String modelPhotoServerPath;
-
+        int maxSpecId=0;
 
         public const int MAX_APPLICATIONS_PER_MODEL = 5;
         public const int MAX_BENEFITS_PER_MODEL = 6;
@@ -121,7 +119,7 @@ namespace _01electronics_crm
             return modelSummaryPoints;
         }
 
-        public List<string> GetModelApplications(List<string> ModelApplications)
+        public List<string> GetModelApplications()
         {
 
 
@@ -311,7 +309,7 @@ namespace _01electronics_crm
 
 
 
-        public bool GetModelApplications()
+        public bool InitializeModelApplications()
         {
             modelApplications.Clear();
 
@@ -345,7 +343,7 @@ namespace _01electronics_crm
         }
 
 
-        public bool GetModelBenefitss()
+        public bool InitializeModelBenefits()
         {
             modelBenefits.Clear();
 
@@ -381,7 +379,7 @@ namespace _01electronics_crm
         }
 
 
-        public bool GetModelFeatures()
+        public bool InitializeModelFeatures()
         {
             modelStandardFeatures.Clear();
 
@@ -427,11 +425,11 @@ namespace _01electronics_crm
             if (!this.GetUPSSpecss())
                 return false;
 
-            if (!GetModelApplications())
+            if (!InitializeModelApplications())
                 return false;
-            if (!GetModelBenefitss())
+            if (!InitializeModelBenefits())
                 return false;
-            if (!GetModelFeatures())
+            if (!InitializeModelFeatures())
                 return false;
 
             //           String sqlQueryPart1 = @"	SELECT  
@@ -563,6 +561,28 @@ namespace _01electronics_crm
             return true;
         }
 
+
+        public bool GetNewSpecId() {
+
+
+            string sqlQuery = $@"select max(spec_id)
+                                   from erp_system.dbo.genset_specs
+                                   where category_id ={GetCategoryID()} and product_id={GetProductID()} and brand_id={GetBrandID()} and model_id={GetModelID()}";
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 1;
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_HIGH))
+                return false;
+
+            maxSpecId = sqlDatabase.rows[0].sql_int[0] + 1;
+
+            return true;
+
+
+        }
+
         public void GetNewModelPhotoLocalPath()
         {
             modelPhotoLocalPath = String.Empty;
@@ -676,7 +696,6 @@ namespace _01electronics_crm
 
             return true;
         }
-
 
         public bool InsertIntoModelApplications()
         {
@@ -936,6 +955,230 @@ namespace _01electronics_crm
                 return false;
 
 
+
+            return true;
+        }
+
+
+        public bool InsertIntoGensetSpecs() {
+
+            
+            for (int i = 0; i < GENSETSpecs.Count; i++) {
+
+                string sqlQuery = $@"insert into genset_specs values ({GetCategoryID()},{GetProductID()},{GetBrandID()},{GetModelID()},{GENSETSpecs[i].spec_id},{GENSETSpecs[i].spec_name},{GENSETSpecs[i].RatedPower},{GENSETSpecs[i].rating_unit_id},{GENSETSpecs[i].ltb_50},{GENSETSpecs[i].ltb_50_unit},{GENSETSpecs[i].ltb_60},{GENSETSpecs[i].ltb_60_unit},{GENSETSpecs[i].prp_50},{GENSETSpecs[i].prp_50_unit},{GENSETSpecs[i].prp_60},{GENSETSpecs[i].prp_60_unit},{GENSETSpecs[i].cooling},{GENSETSpecs[i].tank},{GENSETSpecs[i].load_percentage},{GENSETSpecs[i].alternator},{GENSETSpecs[i].is_valid},{GENSETSpecs[i].valid_Until},{DateTime.Now})";
+
+
+                if (!sqlDatabase.InsertRows(sqlQuery))
+                    return false;
+                    
+            }
+
+            return true;
+
+
+
+        }
+
+
+
+        ////////////////////
+        /// UPDATE FUNCTIONS
+        ////////////////////
+
+        public bool MoveModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            if (!GetNewModelID())
+                return false;
+
+            if (!InsertIntoBrandModels())
+                return false;
+
+            if (!UpdateModelSummaryPoints(ProductId, brandId, ModelId))
+                return false;
+
+            if (!UpdateModelUpsSpecs(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateMaintenanceContractModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateMaintenanceOfferModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateOutGoingQuotationsModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateWorkOrdersProductsLogModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+            
+
+            if (!UpdateWorkOrdersProductsInfoModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateRfqProductsModel(ProductId, brandId, ModelId, categoryId))
+                return false;
+
+            if (!UpdateModelApplications(ProductId, brandId, ModelId))
+                return false;
+            if (!UpdateModelBenefits(ProductId, brandId, ModelId))
+                return false;
+            if (!UpdateModelStandardFeatures(ProductId, brandId, ModelId))
+                return false;
+
+            GetNewModelPhotoLocalPath();
+            GetNewModelPhotoServerPath();
+
+            return true;
+        }
+
+
+        public bool UpdateModelSummaryPoints(int ProductId, int brandId, int ModelId)
+        {
+
+            string sqlQuery = $@"UPDATE erp_system.dbo.models_summary_points set product_id={GetProductID()} , brand_id={GetBrandID()} 
+                , model_id={GetModelID()} where product_id={ProductId} and brand_id={brandId} and model_id={ModelId}";
+
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+
+        }
+
+
+        public bool UpdateModelBenefits(int ProductId, int brandId, int ModelId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.model_benefits set product_id={GetProductID()} , brand_id={GetBrandID()} , model_id={GetModelID()} where product_id={ProductId} and brand_id={brandId} and model_id={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+
+        }
+
+
+        public bool UpdateModelStandardFeatures(int ProductId, int brandId, int ModelId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.model_standard_features set product_id={GetProductID()} , brand_id={GetBrandID()} , model_id={GetModelID()} where product_id={ProductId} and brand_id={brandId} and model_id={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateModelApplications(int ProductId, int brandId, int ModelId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.model_applications set product_id={GetProductID()} , brand_id={GetBrandID()} , model_id={GetModelID()} where product_id={ProductId} and brand_id={brandId} and model_id={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateModelUpsSpecs(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.ups_specs set category_id={GetCategoryID()} , product_id={GetProductID()} , brand_id={GetBrandID()} , model_id={GetModelID()} where category_id={categoryId} and product_id={ProductId} and brand_id={brandId} and model_id={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+        public bool UpdateMaintenanceContractModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.maintenance_contracts_products_info set product_category={GetCategoryID()} 
+                            , product_type={GetProductID()} , product_brand={GetBrandID()} , product_model={GetModelID()} 
+                    where product_category={categoryId} and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateMaintenanceOfferModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.maintenance_offers_products_info set product_category={GetCategoryID()}
+    , product_type={GetProductID()} , product_brand={GetBrandID()} , product_model={GetModelID()}
+    where product_category={categoryId} and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateOutGoingQuotationsModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.outgoing_quotations_items set product_category={GetCategoryID()}
+, product_type={GetProductID()} , product_brand={GetBrandID()} , product_model={GetModelID()} 
+where product_category={categoryId} and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateWorkOrdersProductsLogModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.work_orders_products_edit_log set product_category={GetCategoryID()}
+            , product_type={GetProductID()} , product_brand={GetBrandID()} 
+            , product_model={GetModelID()} where product_category={categoryId} 
+            and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateWorkOrdersProductsInfoModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.work_orders_products_info set product_category={GetCategoryID()}
+                , product_type={GetProductID()}
+                , product_brand={GetBrandID()} , product_model={GetModelID()}
+                where product_category={categoryId} and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+        public bool UpdateRfqProductsModel(int ProductId, int brandId, int ModelId, int categoryId)
+        {
+            string sqlQuery = $@"UPDATE erp_system.dbo.rfqs_products_info set product_category={GetCategoryID()}
+                    , product_type={GetProductID()} , product_brand={GetBrandID()} , product_model={GetModelID()}
+                    where product_category={categoryId} and product_type={ProductId} and product_brand={brandId} and product_model={ModelId}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
+
+            return true;
+        }
+
+
+
+        public bool DeleteModel()
+        {
+            string sqlQuery = $@"Delete from erp_system.dbo.brands_models where product_id={GetProductID()}
+                 and brand_id={GetBrandID()} and model_id={GetModelID()}";
+
+            if (!sqlDatabase.InsertRows(sqlQuery))
+                return false;
 
             return true;
         }
