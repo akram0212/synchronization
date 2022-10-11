@@ -271,9 +271,16 @@ namespace _01electronics_crm
                         AddSpec.Click += OnBtnClickDownloadCatalog;
                         AddSpec.Content = "Add Spec";
 
+                        Button MoveModel = new Button();
+                        MoveModel.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                        MoveModel.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                        MoveModel.Click += OnBtnClickMoveModel;
+                        MoveModel.Content = "Move Model";
+
 
                         expanderStackPanel.Children.Add(ViewButton);
                         expanderStackPanel.Children.Add(AddSpec);
+                        expanderStackPanel.Children.Add(MoveModel);
                         expanderStackPanel.Children.Add(DownloadCatalog);
 
                         expander.Content = expanderStackPanel;
@@ -597,6 +604,30 @@ namespace _01electronics_crm
             Expander currentExpander = (Expander)currentStackPanel.Parent;
 
             currentGrid = (Grid)currentExpander.Parent;
+
+            //DownloadCatalog();
+
+        }
+
+        private void OnBtnClickMoveModel(object sender, RoutedEventArgs e)
+        {
+            Button tempListBox = (Button)sender;
+
+            StackPanel currentStackPanel = (StackPanel)tempListBox.Parent;
+            Expander currentExpander = (Expander)currentStackPanel.Parent;
+
+            currentGrid = (Grid)currentExpander.Parent;
+
+            selectedProduct.SetModelID(int.Parse(currentExpander.Tag.ToString()));
+            int i = brandModels.FindIndex(brandModels => brandModels.modelId == selectedProduct.GetModelID());
+            selectedProduct.InitializeModelInfo(selectedProduct.GetProductID(), selectedProduct.GetBrandID(), selectedProduct.GetModelID());
+            selectedProduct.SetModelName(brandModels[i].modelName);
+            selectedProduct.InitializeModelSummaryPoints();
+            
+
+            MoveModelWindow MoveModelWindow = new MoveModelWindow(selectedProduct);
+            MoveModelWindow.Closed += OnCloseAddModelsWindow;
+            MoveModelWindow.Show();
 
             //DownloadCatalog();
 

@@ -255,6 +255,9 @@
     <Compile Include="ModelUpsSpecsPage.xaml.cs">
       <DependentUpon>ModelUpsSpecsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MoveModelWindow.xaml.cs">
+      <DependentUpon>MoveModelWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Product.cs" />
     <Compile Include="ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
@@ -562,6 +565,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ModelUpsSpecsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MoveModelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

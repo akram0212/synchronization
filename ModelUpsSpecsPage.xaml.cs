@@ -166,22 +166,22 @@ namespace _01electronics_crm
             Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
             Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
             Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(80, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(80, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
+
+
+
+            WrapPanel wrapPanel1 = new WrapPanel();
+            WrapPanel wrapPanel2 = new WrapPanel();
+            WrapPanel wrapPanel3 = new WrapPanel();
+            WrapPanel wrapPanel4 = new WrapPanel();
+            WrapPanel wrapPanel5 = new WrapPanel();
+            WrapPanel wrapPanel6 = new WrapPanel();
+
+            Grid.SetRow(wrapPanel1, 1);
+            Grid.SetRow(wrapPanel2, 2);
+            Grid.SetRow(wrapPanel3, 3);
+            Grid.SetRow(wrapPanel4, 4);
+            Grid.SetRow(wrapPanel5, 5);
+            Grid.SetRow(wrapPanel6, 6);
 
 
 
@@ -195,7 +195,9 @@ namespace _01electronics_crm
 
             TextBox RatedPowerText = new TextBox() { Style = (Style)FindResource("textBoxStyle"), Width = 253,TextWrapping=TextWrapping.Wrap };
 
-            ComboBox ratedPowercombo = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
+            ComboBox ratedPowercombo = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90};
+            rating.ForEach(a => ratedPowercombo.Items.Add(a.measure_unit));
+            ratedPowercombo.SelectedItem = "KVA";
 
             WrapPanel ratedPowerPanel = new WrapPanel();
 
@@ -204,27 +206,15 @@ namespace _01electronics_crm
             ratedPowerPanel.Children.Add(ratedPowercombo);
             ratedPowerPanel.Children.Add(ratedPowerlabelInvisible);
 
-            Grid.SetRow(ratedPowerPanel, 1);
+            //Grid.SetRow(ratedPowerPanel, 1);
 
-            WrapPanel EnginePanel = new WrapPanel();
-
-            Label engineLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            engineLabel.Content = "Engine";
-
-            ComboBox engineCombo = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            EnginePanel.Children.Add(engineLabel);
-            EnginePanel.Children.Add(engineCombo);
-
-            Grid.SetRow(EnginePanel, 2);
-
-
+      
             WrapPanel modelPanel = new WrapPanel();
 
             Label ModelLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            ModelLabel.Content = "Model";
+            ModelLabel.Content = "SpecName";
 
-            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping=TextWrapping.Wrap };
+            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping=TextWrapping.Wrap, Width = 253 };
 
             Label ModellabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             ModellabelInvisible.Visibility = Visibility.Collapsed;
@@ -232,32 +222,47 @@ namespace _01electronics_crm
             modelPanel.Children.Add(ModelLabel);
             modelPanel.Children.Add(ModelText);
             modelPanel.Children.Add(ModellabelInvisible);
-            Grid.SetRow(modelPanel, 3);
+
+            //Grid.SetRow(modelPanel, 2);
+
+            wrapPanel1.Children.Add(ratedPowerPanel);
+            wrapPanel1.Children.Add(modelPanel);
 
 
             WrapPanel LtbKva50Panel = new WrapPanel();
 
             Label ltbKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
-            ltbKva50Label.Content = "LTB Kva 50";
+            ltbKva50Label.Content = "LTB 50HZ";
 
-            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253};
+            ComboBox Ltb50HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
+            rating.ForEach(a => Ltb50HzComboBox.Items.Add(a.measure_unit));
+
+            Ltb50HzComboBox.SelectedItem = "KVA";
+
+
 
             Label Kva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             Kva50labelInvisible.Visibility = Visibility.Collapsed;
 
             LtbKva50Panel.Children.Add(ltbKva50Label);
             LtbKva50Panel.Children.Add(kva50TextBox);
+            LtbKva50Panel.Children.Add(Ltb50HzComboBox);
             LtbKva50Panel.Children.Add(Kva50labelInvisible);
 
-            Grid.SetRow(LtbKva50Panel, 4);
+            //Grid.SetRow(LtbKva50Panel, 3);
 
 
             WrapPanel LTPkVA60HZPanel = new WrapPanel();
 
             Label ltbKva60Label = new Label() { Style = (Style)FindResource("labelStyle") };
-            ltbKva60Label.Content = "LTB Kva 60";
+            ltbKva60Label.Content = "LTB 60HZ";
 
-            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            ComboBox Ltb60HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
+            rating.ForEach(a => Ltb60HzComboBox.Items.Add(a.measure_unit));
+            Ltb60HzComboBox.SelectedItem = "KVA";
+
 
             Label Kva60labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             Kva60labelInvisible.Visibility = Visibility.Collapsed;
@@ -265,98 +270,64 @@ namespace _01electronics_crm
 
             LTPkVA60HZPanel.Children.Add(ltbKva60Label);
             LTPkVA60HZPanel.Children.Add(kva60TextBox);
+            LTPkVA60HZPanel.Children.Add(Ltb60HzComboBox);
             LTPkVA60HZPanel.Children.Add(Kva60labelInvisible);
 
-            Grid.SetRow(LTPkVA60HZPanel, 5);
+            //Grid.SetRow(LTPkVA60HZPanel, 4);
+
+            wrapPanel2.Children.Add(LtbKva50Panel);
+            wrapPanel2.Children.Add(LTPkVA60HZPanel);
 
 
             WrapPanel PRPkVA50HZPanel = new WrapPanel();
 
             Label prpKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
-            prpKva50Label.Content = "PRP Kva 50";
+            prpKva50Label.Content = "PRP 50HZ";
 
-            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping = TextWrapping.Wrap, Width = 253 };
 
-            Label prpKva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
+            ComboBox Prp50HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
+            rating.ForEach(a =>Prp50HzComboBox.Items.Add(a.measure_unit));
+            Prp50HzComboBox.SelectedItem = "KVA";
+
+
+
+            Label prpKva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle")};
             prpKva50labelInvisible.Visibility = Visibility.Collapsed;
 
             PRPkVA50HZPanel.Children.Add(prpKva50Label);
             PRPkVA50HZPanel.Children.Add(prpkva50TextBox);
+            PRPkVA50HZPanel.Children.Add(Prp50HzComboBox);
             PRPkVA50HZPanel.Children.Add(prpKva50labelInvisible);
 
-            Grid.SetRow(PRPkVA50HZPanel, 6);
+           // Grid.SetRow(PRPkVA50HZPanel, 5);
 
 
             WrapPanel PRPkVA60HZPanel = new WrapPanel();
 
-            Label prpKva60Label = new Label() { Style = (Style)FindResource("labelStyle") };
-            prpKva60Label.Content = "PRP Kva 60";
+            Label prpKva60Label = new Label() { Style = (Style)FindResource("labelStyle")};
+            prpKva60Label.Content = "PRP 60HZ";
 
-            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            ComboBox Prp60HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
+            rating.ForEach(a => Prp60HzComboBox.Items.Add(a.measure_unit));
+            Prp60HzComboBox.SelectedItem = "KVA";
 
 
-            Label prpKva60labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
+
+            Label prpKva60labelInvisible = new Label() { Style = (Style)FindResource("labelStyle")};
             prpKva60labelInvisible.Visibility = Visibility.Collapsed;
 
             PRPkVA60HZPanel.Children.Add(prpKva60Label);
             PRPkVA60HZPanel.Children.Add(prpkva60TextBox);
+            PRPkVA60HZPanel.Children.Add(Prp60HzComboBox);
             PRPkVA60HZPanel.Children.Add(prpKva60labelInvisible);
 
-            Grid.SetRow(PRPkVA60HZPanel, 7);
+            //Grid.SetRow(PRPkVA60HZPanel, 6);
 
+            wrapPanel3.Children.Add(PRPkVA50HZPanel);
+            wrapPanel3.Children.Add(PRPkVA60HZPanel);
 
-
-            WrapPanel MinPanel = new WrapPanel();
-
-            Label MinLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            MinLabel.Content = "Min";
-
-            TextBox MinTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
-
-              Label minlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
-            minlabelInvisible.Visibility = Visibility.Collapsed;
-
-            MinPanel.Children.Add(MinLabel);
-            MinPanel.Children.Add(MinTextBox);
-            MinPanel.Children.Add(minlabelInvisible);
-
-            Grid.SetRow(MinPanel, 8);
-
-
-
-            WrapPanel MidPanel = new WrapPanel();
-
-            Label MidLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            MidLabel.Content = "AVG";
-
-            TextBox MidTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
-
-            Label midlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
-            midlabelInvisible.Visibility = Visibility.Collapsed;
-
-            MidPanel.Children.Add(MidLabel);
-            MidPanel.Children.Add(MidTextBox);
-            MidPanel.Children.Add(midlabelInvisible);
-
-            Grid.SetRow(MidPanel, 9);
-
-
-            WrapPanel MaxPanel = new WrapPanel();
-
-            Label MaxLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            MaxLabel.Content = "Max";
-
-            TextBox MaxTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
-
-
-            Label maxlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
-            maxlabelInvisible.Visibility = Visibility.Collapsed;
-
-            MaxPanel.Children.Add(MaxLabel);
-            MaxPanel.Children.Add(MaxTextBox);
-            MaxPanel.Children.Add(maxlabelInvisible);
-
-            Grid.SetRow(MaxPanel, 10);
 
 
             WrapPanel CoolingPanel = new WrapPanel();
@@ -364,7 +335,7 @@ namespace _01electronics_crm
             Label CoolingLabel = new Label() { Style = (Style)FindResource("labelStyle")};
             CoolingLabel.Content = "Cooling";
 
-            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
 
             Label coolinglabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             coolinglabelInvisible.Visibility = Visibility.Collapsed;
@@ -374,7 +345,7 @@ namespace _01electronics_crm
             CoolingPanel.Children.Add(coolingTextBox);
             CoolingPanel.Children.Add(coolinglabelInvisible);
 
-            Grid.SetRow(CoolingPanel, 11);
+            //Grid.SetRow(CoolingPanel, 7);
 
 
             WrapPanel TankPanel = new WrapPanel();
@@ -382,7 +353,7 @@ namespace _01electronics_crm
             Label TankLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             TankLabel.Content = "TANK";
 
-            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
 
 
             Label tanklabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -392,7 +363,10 @@ namespace _01electronics_crm
             TankPanel.Children.Add(TankTextBox);
             TankPanel.Children.Add(tanklabelInvisible);
 
-            Grid.SetRow(TankPanel, 12);
+            //Grid.SetRow(TankPanel, 8);
+
+            wrapPanel4.Children.Add(CoolingPanel);
+            wrapPanel4.Children.Add(TankPanel);
 
 
             WrapPanel LOADPanel = new WrapPanel();
@@ -400,7 +374,7 @@ namespace _01electronics_crm
             Label LoadLabel = new Label() { Style = (Style)FindResource("labelStyle")};
             LoadLabel.Content = "Load";
 
-            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap };
+            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
 
 
             Label loadlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -410,148 +384,64 @@ namespace _01electronics_crm
             LOADPanel.Children.Add(loadTextBox);
             LOADPanel.Children.Add(loadlabelInvisible);
 
-            Grid.SetRow(LOADPanel, 13);
+            //Grid.SetRow(LOADPanel, 9);
 
-            WrapPanel MainFeaturesPanel = new WrapPanel();
-
-            Label MainFeatureLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            MainFeatureLabel.Content = $"Main{'\n'}Feature";
-
-            ComboBox MainComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            MainFeaturesPanel.Children.Add(MainFeatureLabel);
-            MainFeaturesPanel.Children.Add(MainComboBox);
-
-            Grid.SetRow(MainFeaturesPanel, 14);
-
-
-            WrapPanel ApplicationsPanel = new WrapPanel();
-
-            Label applicationLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            applicationLabel.Content = "Applications";
-
-            ComboBox ApplicationComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            ApplicationsPanel.Children.Add(applicationLabel);
-            ApplicationsPanel.Children.Add(ApplicationComboBox);
-
-            Grid.SetRow(ApplicationsPanel, 15);
-
-
-            WrapPanel EnginePanell = new WrapPanel();
-
-            Label EngineLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            EngineLabel.Content = "Engine";
-
-            ComboBox engineComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            EnginePanell.Children.Add(EngineLabel);
-            EnginePanell.Children.Add(engineComboBox);
-
-            Grid.SetRow(EnginePanell, 16);
-
-
+  
             WrapPanel AlternatorPanel = new WrapPanel();
 
             Label AlternatorLable = new Label() { Style = (Style)FindResource("labelStyle") };
             AlternatorLable.Content = "Alternator";
 
-            ComboBox AlternatorComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
+            TextBox AlternatorTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
 
             AlternatorPanel.Children.Add(AlternatorLable);
-            AlternatorPanel.Children.Add(AlternatorComboBox);
+            AlternatorPanel.Children.Add(AlternatorTextBox);
 
-            Grid.SetRow(AlternatorPanel, 17);
-
-
-            WrapPanel AlternatorFeaturesPanel = new WrapPanel();
-
-            Label AlternatorFeaturesLable = new Label() { Style = (Style)FindResource("labelStyle") };
-            AlternatorFeaturesLable.Content = "Alternator" + '\n' + "Features";
-
-            ComboBox AlternatorFeatureComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            AlternatorFeaturesPanel.Children.Add(AlternatorFeaturesLable);
-            AlternatorFeaturesPanel.Children.Add(AlternatorFeatureComboBox);
-
-            Grid.SetRow(AlternatorFeaturesPanel, 18);
+            //Grid.SetRow(AlternatorPanel, 10);
 
 
+            wrapPanel5.Children.Add(LOADPanel);
+            wrapPanel5.Children.Add(AlternatorPanel);
 
-            WrapPanel BatteriesPanel = new WrapPanel();
+            WrapPanel datePanel = new WrapPanel();
 
-            Label BatteriesLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            BatteriesLabel.Content = "Batteries";
+            Label dateLabel = new Label() { Style = (Style)FindResource("labelStyle") };
+            dateLabel.Content = "Valid Until";
+            DatePicker dateField = new DatePicker() { Style = (Style)FindResource("datePickerStyle"),Width = 253,SelectedDate= new DateTime(2030,1,1)};
 
-            ComboBox BatteriesComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            BatteriesPanel.Children.Add(BatteriesLabel);
-            BatteriesPanel.Children.Add(BatteriesComboBox);
-
-            Grid.SetRow(BatteriesPanel, 19);
-
-
-            WrapPanel ExhaustPanel = new WrapPanel();
-
-            Label ExhaustLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            ExhaustLabel.Content = "Exhaust";
-
-            ComboBox ExhaustComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            ExhaustPanel.Children.Add(ExhaustLabel);
-            ExhaustPanel.Children.Add(ExhaustComboBox);
-
-            Grid.SetRow(ExhaustPanel, 20);
+            datePanel.Children.Add(dateLabel);
+            datePanel.Children.Add(dateField);
 
 
-            WrapPanel TanksPanel = new WrapPanel();
+            wrapPanel6.Children.Add(datePanel);
 
-            Label TanksLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            TanksLabel.Content = "Tanks";
-
-            ComboBox TanksComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            TanksPanel.Children.Add(TanksLabel);
-            TanksPanel.Children.Add(TanksComboBox);
-
-            Grid.SetRow(TanksPanel, 21);
-
-            WrapPanel ContainterPanel = new WrapPanel();
-
-            Label ContainterLabel = new Label() { Style = (Style)FindResource("labelStyle") };
-            ContainterLabel.Content = "Containter";
-
-            ComboBox ContainterComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle") };
-
-            ContainterPanel.Children.Add(ContainterLabel);
-            ContainterPanel.Children.Add(ContainterComboBox);
-
-            Grid.SetRow(ContainterPanel, 22);
-
+            //Grid.SetRow(datePanel, 6);
 
             Card.Children.Add(Header);
-            Card.Children.Add(ratedPowerPanel);
-            Card.Children.Add(EnginePanel);
-            Card.Children.Add(modelPanel);
-            Card.Children.Add(LtbKva50Panel);
-            Card.Children.Add(LTPkVA60HZPanel);
-            Card.Children.Add(PRPkVA50HZPanel);
-            Card.Children.Add(PRPkVA60HZPanel);
-            Card.Children.Add(MinPanel);
-            Card.Children.Add(MidPanel);
-            Card.Children.Add(MaxPanel);
-            Card.Children.Add(CoolingPanel);
-            Card.Children.Add(TankPanel);
-            Card.Children.Add(LOADPanel);
-            Card.Children.Add(MainFeaturesPanel);
-            Card.Children.Add(ApplicationsPanel);
-            Card.Children.Add(EnginePanell);
-            Card.Children.Add(AlternatorPanel);
-            Card.Children.Add(AlternatorFeaturesPanel);
-            Card.Children.Add(BatteriesPanel);
-            Card.Children.Add(ExhaustPanel);
-            Card.Children.Add(TanksPanel);
-            Card.Children.Add(ContainterPanel);
+
+            Card.Children.Add(wrapPanel1);
+            //Card.Children.Add(ratedPowerPanel);
+            //Card.Children.Add(modelPanel);
+            //Card.Children.Add(LtbKva50Panel);
+            //Card.Children.Add(LTPkVA60HZPanel);
+            Card.Children.Add(wrapPanel2);
+
+            //Card.Children.Add(PRPkVA50HZPanel);
+            //Card.Children.Add(PRPkVA60HZPanel);
+
+            Card.Children.Add(wrapPanel3);
+
+
+            //Card.Children.Add(CoolingPanel);
+            //Card.Children.Add(TankPanel);
+            Card.Children.Add(wrapPanel4);
+
+            //Card.Children.Add(LOADPanel);
+            //Card.Children.Add(AlternatorPanel);
+
+            Card.Children.Add(wrapPanel5);
+
+            Card.Children.Add(wrapPanel6);
             mainGrid.Children.Add(Card);
         }
         
@@ -2000,362 +1890,403 @@ namespace _01electronics_crm
          
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
-                for (int i = 0; i < mainGrid.RowDefinitions.Count(); i++)
+
+                if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+                {
+                    //List<BASIC_STRUCTS.GENSET_SPEC> GensetSpecs = new List<BASIC_STRUCTS.GENSET_SPEC>();
+
+                    //for (int i = 0; i < mainGrid.Children.Count; i++) {
+
+                    //    BASIC_STRUCTS.GENSET_SPEC gensetSpec;
+
+                    //    Grid card = mainGrid.Children[i] as Grid;
+
+
+                    //   WrapPanel ratedPower=card.Children[1] as WrapPanel;
+
+                    //    TextBox RatedPower = ratedPower.Children[1] as TextBox;
+                    //   gensetSpec.RatedPower=int.Parse(RatedPower.Text);
+
+                    //    ComboBox RatedPowerCombo = ratedPower.Children[2] as ComboBox;
+
+                    //    gensetSpec.kva_name = RatedPowerCombo.SelectedItem.ToString();
+                    //    gensetSpec.kva_id = i + 1;
+
+                    //  WrapPanel enginePanel=card.Children[2] as WrapPanel;
+
+                    //   ComboBox engineCombo=enginePanel.Children[1] as ComboBox;
+
+                    //   gensetSpec.engine=engineCombo.SelectedItem.ToString();
+                    //    // engine id to set here after creating the database
+
+
+                    //}
+
+
+
+                }
+
+                else
                 {
 
 
-                    if (i == 0)
+                    for (int i = 0; i < mainGrid.RowDefinitions.Count(); i++)
                     {
-                        BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
 
-                        tempUPSSpecs.spec_id = 1;
-                        if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
+
+                        if (i == 0)
                         {
-                            tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
+                            BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
+
+                            tempUPSSpecs.spec_id = 1;
+                            if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
+                            {
+                                tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
+                            }
+
+                            if (ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].rated_power != null*/))
+                            {
+                                tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
+                            }
+
+                            if (ratingComboBox.SelectedIndex != -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
+                            {
+                                tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
+                                tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
+                            }
+
+
+                            if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_50 != null*/))
+                            {
+                                tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
+                            }
+
+
+                            if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_70 != null*/))
+                            {
+                                tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
+                            }
+
+
+                            if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_100 != null*/))
+                            {
+                                tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
+                            }
+
+
+                            tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
+                            tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
+                            tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text.ToString();
+                            tempUPSSpecs.input_voltage = inputVoltageTextBox.Text.ToString();
+                            tempUPSSpecs.voltage_tolerance = voltageToleranceTextBox.Text.ToString();
+                            tempUPSSpecs.output_power_factor = outputPowerFactorTextBox.Text.ToString();
+                            tempUPSSpecs.thdv = thdvTextBox.Text.ToString();
+                            tempUPSSpecs.output_nominal_voltage = outputNominalVoltageTextBox.Text.ToString();
+                            tempUPSSpecs.output_dc_voltage_range = outputDCVoltageRangeTextBox.Text.ToString();
+                            tempUPSSpecs.overload_capability = overloadCapabilityTextBox.Text.ToString();
+                            tempUPSSpecs.efficiency = efficiencyTextBox.Text.ToString();
+                            tempUPSSpecs.input_connection_type = inputConnectionTypeTextBox.Text.ToString();
+                            tempUPSSpecs.front_panel = frontPanelTextBox.Text.ToString();
+                            tempUPSSpecs.max_power = maxPowerTextBox.Text.ToString();
+                            tempUPSSpecs.certificates = certificatesTextBox.Text.ToString();
+                            tempUPSSpecs.safety = safetyTextBox.Text.ToString();
+                            tempUPSSpecs.emc = emcTextBox.Text.ToString();
+                            tempUPSSpecs.environmental_aspects = environmentalAspectsTextBox.Text.ToString();
+                            tempUPSSpecs.test_performance = testPerformanceTextBox.Text.ToString();
+                            tempUPSSpecs.protection_degree = protectionDegreeTextBox.Text.ToString();
+                            tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
+                            tempUPSSpecs.marking = markingTextBox.Text.ToString();
+                            tempUPSSpecs.is_valid = true;
+                            if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
+                            {
+                                tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+                            }
+                            product.GetUPSSpecs().Clear();
+                            product.SetUPSSpecs(tempUPSSpecs);
                         }
-
-                        if (ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rated_power != null))
+                        else
                         {
+                            BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
+
+                            tempUPSSpecs.spec_id = i + 1;
+
+
+                            Grid cuurentGrid = new Grid();
+                            cuurentGrid = (Grid)mainGrid.Children[i];
+
+                            Grid specsGrid = new Grid();
+                            specsGrid = (Grid)cuurentGrid.Children[1];
+
+                            Grid Grid = new Grid();
+                            Grid = (Grid)specsGrid.Children[0];
+
+
+                            WrapPanel RowWrapPanel = new WrapPanel();
+                            RowWrapPanel = (WrapPanel)Grid.Children[1];
+
+                            WrapPanel IoPhaseWrapPanel = new WrapPanel();
+                            IoPhaseWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox IoPhasetextBox = new TextBox();
+                            IoPhasetextBox = (TextBox)IoPhaseWrapPanel.Children[1];
+
+                            tempUPSSpecs.io_phase = IoPhasetextBox.Text;
+
+                            WrapPanel ratedPowerWrapPanel = new WrapPanel();
+                            ratedPowerWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox ratedPowerTextBox = new TextBox();
+                            ratedPowerTextBox = (TextBox)ratedPowerWrapPanel.Children[1];
+
                             tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
-                        }
 
-                        if (ratingComboBox.SelectedIndex != -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
-                        {
-                            tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
-                            tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
-                        }
+                            ComboBox ratingeComboBox = new ComboBox();
+                            ratingeComboBox = (ComboBox)ratedPowerWrapPanel.Children[3];
 
-
-                        if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_50 != null))
-                        {
-                            tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
-                        }
+                            tempUPSSpecs.rating = ratingeComboBox.SelectedItem.ToString();
+                            tempUPSSpecs.rating_id = ratingeComboBox.SelectedIndex;
 
 
-                        if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_70 != null))
-                        {
-                            tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
-                        }
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[2];
+
+                            WrapPanel BackupTimeWrapPanel = new WrapPanel();
+                            BackupTimeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            Grid BackupTimeGrid = new Grid();
+                            BackupTimeGrid = (Grid)BackupTimeWrapPanel.Children[1];
+
+                            WrapPanel BackupTime50wrapPanel = new WrapPanel();
+                            BackupTime50wrapPanel = (WrapPanel)BackupTimeGrid.Children[0];
+
+                            TextBox BackUp50TextBox = new TextBox();
+                            BackUp50TextBox = (TextBox)BackupTime50wrapPanel.Children[1];
+                            tempUPSSpecs.backup_time_50 = int.Parse(BackUp50TextBox.Text.ToString());
+
+                            WrapPanel BackupTime70wrapPanel = new WrapPanel();
+                            BackupTime70wrapPanel = (WrapPanel)BackupTimeGrid.Children[1];
+
+                            TextBox BackUp70TextBox = new TextBox();
+                            BackUp70TextBox = (TextBox)BackupTime70wrapPanel.Children[1];
+                            tempUPSSpecs.backup_time_70 = int.Parse(BackUp70TextBox.Text.ToString());
+
+                            WrapPanel BackupTime100wrapPanel = new WrapPanel();
+                            BackupTime100wrapPanel = (WrapPanel)BackupTimeGrid.Children[2];
+
+                            TextBox BackUp100TextBox = new TextBox();
+                            BackUp100TextBox = (TextBox)BackupTime100wrapPanel.Children[1];
+                            tempUPSSpecs.backup_time_100 = int.Parse(BackUp100TextBox.Text.ToString());
+
+                            WrapPanel inputPowerFactorWrapPanel = new WrapPanel();
+                            inputPowerFactorWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox inputPowerFactorTextBox = new TextBox();
+                            inputPowerFactorTextBox = (TextBox)inputPowerFactorWrapPanel.Children[1];
+
+                            tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text;
 
 
-                        if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_100 != null))
-                        {
-                            tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
-                        }
+                            RowWrapPanel = (WrapPanel)Grid.Children[3];
+
+                            WrapPanel thdiWrapPanel = new WrapPanel();
+                            thdiWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox thdiTextBox = new TextBox();
+                            thdiTextBox = (TextBox)thdiWrapPanel.Children[1];
+
+                            tempUPSSpecs.thdi = thdiTextBox.Text;
+
+                            WrapPanel inputNominalVoltageWrapPanel = new WrapPanel();
+                            inputNominalVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox inputNominalVoltageTextBox = new TextBox();
+                            inputNominalVoltageTextBox = (TextBox)inputNominalVoltageWrapPanel.Children[1];
+
+                            tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text;
 
 
-                        tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text.ToString();
-                        tempUPSSpecs.thdi = thdiTextBox.Text.ToString();
-                        tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text.ToString();
-                        tempUPSSpecs.input_voltage = inputVoltageTextBox.Text.ToString();
-                        tempUPSSpecs.voltage_tolerance = voltageToleranceTextBox.Text.ToString();
-                        tempUPSSpecs.output_power_factor = outputPowerFactorTextBox.Text.ToString();
-                        tempUPSSpecs.thdv = thdvTextBox.Text.ToString();
-                        tempUPSSpecs.output_nominal_voltage = outputNominalVoltageTextBox.Text.ToString();
-                        tempUPSSpecs.output_dc_voltage_range = outputDCVoltageRangeTextBox.Text.ToString();
-                        tempUPSSpecs.overload_capability = overloadCapabilityTextBox.Text.ToString();
-                        tempUPSSpecs.efficiency = efficiencyTextBox.Text.ToString();
-                        tempUPSSpecs.input_connection_type = inputConnectionTypeTextBox.Text.ToString();
-                        tempUPSSpecs.front_panel = frontPanelTextBox.Text.ToString();
-                        tempUPSSpecs.max_power = maxPowerTextBox.Text.ToString();
-                        tempUPSSpecs.certificates = certificatesTextBox.Text.ToString();
-                        tempUPSSpecs.safety = safetyTextBox.Text.ToString();
-                        tempUPSSpecs.emc = emcTextBox.Text.ToString();
-                        tempUPSSpecs.environmental_aspects = environmentalAspectsTextBox.Text.ToString();
-                        tempUPSSpecs.test_performance = testPerformanceTextBox.Text.ToString();
-                        tempUPSSpecs.protection_degree = protectionDegreeTextBox.Text.ToString();
-                        tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
-                        tempUPSSpecs.marking = markingTextBox.Text.ToString();
-                        tempUPSSpecs.is_valid = true;
-                        if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
-                        {
+                            RowWrapPanel = (WrapPanel)Grid.Children[4];
+
+                            WrapPanel inputVoltageWrapPanel = new WrapPanel();
+                            inputVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox inputVoltageTextBox = new TextBox();
+                            inputVoltageTextBox = (TextBox)inputVoltageWrapPanel.Children[1];
+
+                            tempUPSSpecs.input_voltage = inputVoltageTextBox.Text;
+
+                            WrapPanel voltageToleranceWrapPanel = new WrapPanel();
+                            voltageToleranceWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox voltageToleranceTextBox = new TextBox();
+                            voltageToleranceTextBox = (TextBox)voltageToleranceWrapPanel.Children[1];
+
+                            tempUPSSpecs.voltage_tolerance = voltageToleranceTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[5];
+
+                            WrapPanel outputPowerFactorWrapPanel = new WrapPanel();
+                            outputPowerFactorWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox outputPowerFactorTextBox = new TextBox();
+                            outputPowerFactorTextBox = (TextBox)outputPowerFactorWrapPanel.Children[1];
+
+                            tempUPSSpecs.output_power_factor = outputPowerFactorTextBox.Text;
+
+                            WrapPanel thdvWrapPanel = new WrapPanel();
+                            thdvWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox thdvTextBox = new TextBox();
+                            thdvTextBox = (TextBox)thdvWrapPanel.Children[1];
+
+                            tempUPSSpecs.voltage_tolerance = thdvTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[6];
+
+                            WrapPanel outputNominalVoltageWrapPanel = new WrapPanel();
+                            outputNominalVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox outputNominalVoltageTextBox = new TextBox();
+                            outputNominalVoltageTextBox = (TextBox)outputNominalVoltageWrapPanel.Children[1];
+
+                            tempUPSSpecs.output_nominal_voltage = outputNominalVoltageTextBox.Text;
+
+                            WrapPanel outputDCVoltageRangeWrapPanel = new WrapPanel();
+                            outputDCVoltageRangeWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox outputDCVoltageRangeTextBox = new TextBox();
+                            outputDCVoltageRangeTextBox = (TextBox)outputDCVoltageRangeWrapPanel.Children[1];
+
+                            tempUPSSpecs.output_dc_voltage_range = outputDCVoltageRangeTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[7];
+
+                            WrapPanel overloadCapabilityWrapPanel = new WrapPanel();
+                            overloadCapabilityWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox overloadCapabilityTextBox = new TextBox();
+                            overloadCapabilityTextBox = (TextBox)overloadCapabilityWrapPanel.Children[1];
+
+                            tempUPSSpecs.overload_capability = overloadCapabilityTextBox.Text;
+
+                            WrapPanel efficiencyWrapPanel = new WrapPanel();
+                            efficiencyWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox efficiencyTextBox = new TextBox();
+                            efficiencyTextBox = (TextBox)efficiencyWrapPanel.Children[1];
+
+                            tempUPSSpecs.efficiency = efficiencyTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[8];
+
+                            WrapPanel inputConnectionTypeWrapPanel = new WrapPanel();
+                            inputConnectionTypeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox inputConnectionTypeTextBox = new TextBox();
+                            inputConnectionTypeTextBox = (TextBox)inputConnectionTypeWrapPanel.Children[1];
+
+                            tempUPSSpecs.input_connection_type = inputConnectionTypeTextBox.Text;
+
+                            WrapPanel frontPanelWrapPanel = new WrapPanel();
+                            frontPanelWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox frontPanelTextBox = new TextBox();
+                            frontPanelTextBox = (TextBox)frontPanelWrapPanel.Children[1];
+
+                            tempUPSSpecs.front_panel = frontPanelTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[9];
+
+                            WrapPanel maxPowerWrapPanel = new WrapPanel();
+                            maxPowerWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox maxPowerTextBox = new TextBox();
+                            maxPowerTextBox = (TextBox)maxPowerWrapPanel.Children[1];
+
+                            tempUPSSpecs.max_power = maxPowerTextBox.Text;
+
+                            WrapPanel certificatesWrapPanel = new WrapPanel();
+                            certificatesWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox certificatesTextBox = new TextBox();
+                            certificatesTextBox = (TextBox)certificatesWrapPanel.Children[1];
+
+                            tempUPSSpecs.certificates = certificatesTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[10];
+
+                            WrapPanel safetyWrapPanel = new WrapPanel();
+                            safetyWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox safetyTextBox = new TextBox();
+                            safetyTextBox = (TextBox)safetyWrapPanel.Children[1];
+
+                            tempUPSSpecs.safety = safetyTextBox.Text;
+
+                            WrapPanel emcWrapPanel = new WrapPanel();
+                            emcWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox emcTextBox = new TextBox();
+                            emcTextBox = (TextBox)emcWrapPanel.Children[1];
+
+                            tempUPSSpecs.emc = emcTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[11];
+
+                            WrapPanel environmentalAspectsWrapPanel = new WrapPanel();
+                            environmentalAspectsWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox environmentalAspectsTextBox = new TextBox();
+                            environmentalAspectsTextBox = (TextBox)environmentalAspectsWrapPanel.Children[1];
+
+                            tempUPSSpecs.environmental_aspects = environmentalAspectsTextBox.Text;
+
+                            WrapPanel testPerformanceWrapPanel = new WrapPanel();
+                            testPerformanceWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox testPerformanceTextBox = new TextBox();
+                            testPerformanceTextBox = (TextBox)testPerformanceWrapPanel.Children[1];
+
+                            tempUPSSpecs.test_performance = testPerformanceTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[12];
+
+                            WrapPanel protectionDegreeWrapPanel = new WrapPanel();
+                            protectionDegreeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox protectionDegreeTextBox = new TextBox();
+                            protectionDegreeTextBox = (TextBox)protectionDegreeWrapPanel.Children[1];
+
+                            tempUPSSpecs.protection_degree = protectionDegreeTextBox.Text;
+
+                            WrapPanel transferVoltageLimitWrapPanel = new WrapPanel();
+                            transferVoltageLimitWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            TextBox transferVoltageLimitTextBox = new TextBox();
+                            transferVoltageLimitTextBox = (TextBox)transferVoltageLimitWrapPanel.Children[1];
+
+                            tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text;
+
+                            RowWrapPanel = (WrapPanel)Grid.Children[13];
+
+                            WrapPanel markingWrapPanel = new WrapPanel();
+                            markingWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
+
+                            TextBox markingTextBox = new TextBox();
+                            markingTextBox = (TextBox)markingWrapPanel.Children[1];
+
+                            tempUPSSpecs.marking = markingTextBox.Text;
+
+                            WrapPanel validUntilWrapPanel = new WrapPanel();
+                            validUntilWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
+
+                            DatePicker validUntilDatePicker = new DatePicker();
+                            validUntilDatePicker = (DatePicker)validUntilWrapPanel.Children[1];
+
                             tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
+
+                            product.SetUPSSpecs(tempUPSSpecs);
                         }
-                        product.GetUPSSpecs().Clear();
-                        product.SetUPSSpecs(tempUPSSpecs);
-                    }
-                    else
-                    {
-                        BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
-
-                        tempUPSSpecs.spec_id = i+1;
-
-
-                        Grid cuurentGrid = new Grid();
-                        cuurentGrid = (Grid)mainGrid.Children[i];
-
-                        Grid specsGrid = new Grid();
-                        specsGrid = (Grid)cuurentGrid.Children[1];
-
-                        Grid Grid  = new Grid();
-                        Grid = (Grid)specsGrid.Children[0];
-                        
-
-                        WrapPanel RowWrapPanel = new WrapPanel();
-                        RowWrapPanel = (WrapPanel)Grid.Children[1];
-
-                        WrapPanel IoPhaseWrapPanel = new WrapPanel();
-                        IoPhaseWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox IoPhasetextBox = new TextBox();
-                        IoPhasetextBox = (TextBox)IoPhaseWrapPanel.Children[1];
-
-                        tempUPSSpecs.io_phase = IoPhasetextBox.Text;
-
-                        WrapPanel ratedPowerWrapPanel = new WrapPanel();
-                        ratedPowerWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox ratedPowerTextBox = new TextBox();
-                        ratedPowerTextBox = (TextBox)ratedPowerWrapPanel.Children[1];
-
-                        tempUPSSpecs.rated_power =decimal.Parse(ratedPowerTextBox.Text.ToString());
-
-                        ComboBox ratingeComboBox = new ComboBox();
-                        ratingeComboBox = (ComboBox)ratedPowerWrapPanel.Children[3];
-
-                        tempUPSSpecs.rating = ratingeComboBox.SelectedItem.ToString();
-                        tempUPSSpecs.rating_id = ratingeComboBox.SelectedIndex;
-
-                       
-                        
-                        RowWrapPanel = (WrapPanel)Grid.Children[2];
-                        
-                        WrapPanel BackupTimeWrapPanel = new WrapPanel();
-                        BackupTimeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        Grid BackupTimeGrid = new Grid();
-                        BackupTimeGrid = (Grid)BackupTimeWrapPanel.Children[1];
-
-                        WrapPanel BackupTime50wrapPanel = new WrapPanel();
-                        BackupTime50wrapPanel = (WrapPanel)BackupTimeGrid.Children[0];
-
-                        TextBox BackUp50TextBox = new TextBox();
-                        BackUp50TextBox = (TextBox)BackupTime50wrapPanel.Children[1];
-                        tempUPSSpecs.backup_time_50 = int.Parse(BackUp50TextBox.Text.ToString());
-
-                        WrapPanel BackupTime70wrapPanel = new WrapPanel();
-                        BackupTime70wrapPanel = (WrapPanel)BackupTimeGrid.Children[1];
-
-                        TextBox BackUp70TextBox = new TextBox();
-                        BackUp70TextBox = (TextBox)BackupTime70wrapPanel.Children[1];
-                        tempUPSSpecs.backup_time_70 = int.Parse(BackUp70TextBox.Text.ToString());
-
-                        WrapPanel BackupTime100wrapPanel = new WrapPanel();
-                        BackupTime100wrapPanel = (WrapPanel)BackupTimeGrid.Children[2];
-
-                        TextBox BackUp100TextBox = new TextBox();
-                        BackUp100TextBox = (TextBox)BackupTime100wrapPanel.Children[1];
-                        tempUPSSpecs.backup_time_100 = int.Parse(BackUp100TextBox.Text.ToString());
-
-                        WrapPanel inputPowerFactorWrapPanel = new WrapPanel();
-                        inputPowerFactorWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox inputPowerFactorTextBox = new TextBox();
-                        inputPowerFactorTextBox = (TextBox)inputPowerFactorWrapPanel.Children[1];
-
-                        tempUPSSpecs.input_power_factor = inputPowerFactorTextBox.Text;
-
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[3];
-
-                        WrapPanel thdiWrapPanel = new WrapPanel();
-                        thdiWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox thdiTextBox = new TextBox();
-                        thdiTextBox = (TextBox)thdiWrapPanel.Children[1];
-
-                        tempUPSSpecs.thdi = thdiTextBox.Text;
-
-                        WrapPanel inputNominalVoltageWrapPanel = new WrapPanel();
-                        inputNominalVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox inputNominalVoltageTextBox = new TextBox();
-                        inputNominalVoltageTextBox = (TextBox)inputNominalVoltageWrapPanel.Children[1];
-
-                        tempUPSSpecs.input_nominal_voltage = inputNominalVoltageTextBox.Text;
-
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[4];
-
-                        WrapPanel inputVoltageWrapPanel = new WrapPanel();
-                        inputVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox inputVoltageTextBox = new TextBox();
-                        inputVoltageTextBox = (TextBox)inputVoltageWrapPanel.Children[1];
-
-                        tempUPSSpecs.input_voltage = inputVoltageTextBox.Text;
-
-                        WrapPanel voltageToleranceWrapPanel = new WrapPanel();
-                        voltageToleranceWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox voltageToleranceTextBox = new TextBox();
-                        voltageToleranceTextBox = (TextBox)voltageToleranceWrapPanel.Children[1];
-
-                        tempUPSSpecs.voltage_tolerance = voltageToleranceTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[5];
-
-                        WrapPanel outputPowerFactorWrapPanel = new WrapPanel();
-                        outputPowerFactorWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox outputPowerFactorTextBox = new TextBox();
-                        outputPowerFactorTextBox = (TextBox)outputPowerFactorWrapPanel.Children[1];
-
-                        tempUPSSpecs.output_power_factor = outputPowerFactorTextBox.Text;
-
-                        WrapPanel thdvWrapPanel = new WrapPanel();
-                        thdvWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox thdvTextBox = new TextBox();
-                        thdvTextBox = (TextBox)thdvWrapPanel.Children[1];
-
-                        tempUPSSpecs.voltage_tolerance = thdvTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[6];
-
-                        WrapPanel outputNominalVoltageWrapPanel = new WrapPanel();
-                        outputNominalVoltageWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox outputNominalVoltageTextBox = new TextBox();
-                        outputNominalVoltageTextBox = (TextBox)outputNominalVoltageWrapPanel.Children[1];
-
-                        tempUPSSpecs.output_nominal_voltage = outputNominalVoltageTextBox.Text;
-
-                        WrapPanel outputDCVoltageRangeWrapPanel = new WrapPanel();
-                        outputDCVoltageRangeWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox outputDCVoltageRangeTextBox = new TextBox();
-                        outputDCVoltageRangeTextBox = (TextBox)outputDCVoltageRangeWrapPanel.Children[1];
-
-                        tempUPSSpecs.output_dc_voltage_range = outputDCVoltageRangeTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[7];
-
-                        WrapPanel overloadCapabilityWrapPanel = new WrapPanel();
-                        overloadCapabilityWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox overloadCapabilityTextBox = new TextBox();
-                        overloadCapabilityTextBox = (TextBox)overloadCapabilityWrapPanel.Children[1];
-
-                        tempUPSSpecs.overload_capability = overloadCapabilityTextBox.Text;
-
-                        WrapPanel efficiencyWrapPanel = new WrapPanel();
-                        efficiencyWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox efficiencyTextBox = new TextBox();
-                        efficiencyTextBox = (TextBox)efficiencyWrapPanel.Children[1];
-
-                        tempUPSSpecs.efficiency = efficiencyTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[8];
-
-                        WrapPanel inputConnectionTypeWrapPanel = new WrapPanel();
-                        inputConnectionTypeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox inputConnectionTypeTextBox = new TextBox();
-                        inputConnectionTypeTextBox = (TextBox)inputConnectionTypeWrapPanel.Children[1];
-
-                        tempUPSSpecs.input_connection_type = inputConnectionTypeTextBox.Text;
-
-                        WrapPanel frontPanelWrapPanel = new WrapPanel();
-                        frontPanelWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox frontPanelTextBox = new TextBox();
-                        frontPanelTextBox = (TextBox)frontPanelWrapPanel.Children[1];
-
-                        tempUPSSpecs.front_panel = frontPanelTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[9];
-
-                        WrapPanel maxPowerWrapPanel = new WrapPanel();
-                        maxPowerWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox maxPowerTextBox = new TextBox();
-                        maxPowerTextBox = (TextBox)maxPowerWrapPanel.Children[1];
-
-                        tempUPSSpecs.max_power = maxPowerTextBox.Text;
-
-                        WrapPanel certificatesWrapPanel = new WrapPanel();
-                        certificatesWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox certificatesTextBox = new TextBox();
-                        certificatesTextBox = (TextBox)certificatesWrapPanel.Children[1];
-
-                        tempUPSSpecs.certificates = certificatesTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[10];
-
-                        WrapPanel safetyWrapPanel = new WrapPanel();
-                        safetyWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox safetyTextBox = new TextBox();
-                        safetyTextBox = (TextBox)safetyWrapPanel.Children[1];
-
-                        tempUPSSpecs.safety = safetyTextBox.Text;
-
-                        WrapPanel emcWrapPanel = new WrapPanel();
-                        emcWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox emcTextBox = new TextBox();
-                        emcTextBox = (TextBox)emcWrapPanel.Children[1];
-
-                        tempUPSSpecs.emc = emcTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[11];
-
-                        WrapPanel environmentalAspectsWrapPanel = new WrapPanel();
-                        environmentalAspectsWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox environmentalAspectsTextBox = new TextBox();
-                        environmentalAspectsTextBox = (TextBox)environmentalAspectsWrapPanel.Children[1];
-
-                        tempUPSSpecs.environmental_aspects = environmentalAspectsTextBox.Text;
-
-                        WrapPanel testPerformanceWrapPanel = new WrapPanel();
-                        testPerformanceWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox testPerformanceTextBox = new TextBox();
-                        testPerformanceTextBox = (TextBox)testPerformanceWrapPanel.Children[1];
-
-                        tempUPSSpecs.test_performance = testPerformanceTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[12];
-
-                        WrapPanel protectionDegreeWrapPanel = new WrapPanel();
-                        protectionDegreeWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox protectionDegreeTextBox = new TextBox();
-                        protectionDegreeTextBox = (TextBox)protectionDegreeWrapPanel.Children[1];
-
-                        tempUPSSpecs.protection_degree = protectionDegreeTextBox.Text;
-
-                        WrapPanel transferVoltageLimitWrapPanel = new WrapPanel();
-                        transferVoltageLimitWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        TextBox transferVoltageLimitTextBox = new TextBox();
-                        transferVoltageLimitTextBox = (TextBox)transferVoltageLimitWrapPanel.Children[1];
-
-                        tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text;
-
-                        RowWrapPanel = (WrapPanel)Grid.Children[13];
-
-                        WrapPanel markingWrapPanel = new WrapPanel();
-                        markingWrapPanel = (WrapPanel)RowWrapPanel.Children[0];
-
-                        TextBox markingTextBox = new TextBox();
-                        markingTextBox = (TextBox)markingWrapPanel.Children[1];
-
-                        tempUPSSpecs.marking = markingTextBox.Text;
-
-                        WrapPanel validUntilWrapPanel = new WrapPanel();
-                        validUntilWrapPanel = (WrapPanel)RowWrapPanel.Children[1];
-
-                        DatePicker validUntilDatePicker = new DatePicker();
-                        validUntilDatePicker = (DatePicker)validUntilWrapPanel.Children[1];
-
-                        tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
-
-                        product.SetUPSSpecs(tempUPSSpecs);
                     }
                 }
 
@@ -2369,6 +2300,7 @@ namespace _01electronics_crm
             {
 
             }
+
             modelAdditionalInfoPage.modelBasicInfoPage = modelBasicInfoPage;
             modelAdditionalInfoPage.modelUpsSpecsPage = this;
 
