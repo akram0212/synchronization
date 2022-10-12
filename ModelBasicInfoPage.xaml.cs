@@ -1460,5 +1460,24 @@ namespace _01electronics_crm
 
                         uploadBackground.RunWorkerAsync();*/
         }
+
+
+        private void NameMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            modelNameTextBox.Text = product.GetModelName().ToString();
+            modelNameTextBox.Visibility = Visibility.Visible;
+            modelNameTextBox.HorizontalContentAlignment = HorizontalAlignment.Center;
+            modelNameTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+            modelNameLabel.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void modelNameTextBoxMouseLeave(object sender, MouseEventArgs e)
+        {
+            modelNameLabel.Content = modelNameTextBox.Text.ToString();
+            product.SetModelName(modelNameTextBox.Text.ToString());
+            modelNameTextBox.Visibility = Visibility.Collapsed;
+            modelNameLabel.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -85,7 +85,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid Name="standardFeautersGrid" Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition/>

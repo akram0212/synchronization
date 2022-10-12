@@ -63,6 +63,7 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+                InitializeStandardFeature();
                 cancelButton.IsEnabled = false;
                 finishButton.IsEnabled = false;
                 nextButton.IsEnabled = true;
@@ -454,6 +455,34 @@ namespace _01electronics_crm
                 Grid innerGrid = currentGrid.Children[i] as Grid;
                 Label header = innerGrid.Children[0] as Label;
                 header.Content = content + (i + 1).ToString();
+            }
+        }
+        void InitializeStandardFeature()
+        {
+            standardFeautersGrid.Children.Clear();
+            for (int i = 0; i < product.GetModelStandardFeatures().Count; i++)
+            {
+                RowDefinition row = new RowDefinition();
+
+                ColumnDefinition col1 = new ColumnDefinition();
+                ColumnDefinition col2 = new ColumnDefinition();
+                ColumnDefinition col3 = new ColumnDefinition();
+
+                Label standerlabel =new Label();
+                standerlabel.Content = "Feature #" + (i + 1);
+                standerlabel.Margin = new Thickness(30, 0, 0, 0);
+                standerlabel.HorizontalAlignment = HorizontalAlignment.Left;
+                standerlabel.Style = (Style)FindResource("labelStyle");
+                standerlabel.
+
+
+               
+                standardFeautersGrid.ColumnDefinitions.Add(col1);
+                standardFeautersGrid.ColumnDefinitions.Add(col2);
+                standardFeautersGrid.ColumnDefinitions.Add(col3);
+                standardFeautersGrid.RowDefinitions.Add(row);
+
+
             }
         }
     }
