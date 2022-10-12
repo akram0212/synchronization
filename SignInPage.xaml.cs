@@ -39,6 +39,7 @@ namespace _01electronics_crm
                 RememberMeCheckBox.IsChecked = true;
 
             }
+
             if (_01electronics_crm.Properties.Settings.Default.PassWord != null)
             {
                 employeePasswordTextBox.Password = _01electronics_crm.Properties.Settings.Default.PassWord;

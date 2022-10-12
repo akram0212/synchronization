@@ -586,7 +586,7 @@ namespace _01electronics_crm
         public void GetNewModelPhotoLocalPath()
         {
             modelPhotoLocalPath = String.Empty;
-            modelPhotoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID() + "\\" + GetModelID() + ".jpg";
+            modelPhotoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\"+GetProductID()+"\\"+GetBrandID()+"\\"+GetModelID()+".jpg";
         }
         public void GetNewModelPhotoServerPath()
         {
