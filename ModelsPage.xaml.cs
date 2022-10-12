@@ -105,19 +105,12 @@ namespace _01electronics_crm
                 ModelsGrid.Children.Add(productTitleLabel);
                 Grid.SetRow(productTitleLabel, 0);
 
-                ftpServer.ListFilesInFolder(selectedProduct.GetModelFolderServerPath(), ref modelsNames, ref returnMessage);
-
-                if (modelsNames.Count() == 0)
-                {
-                    string[] filesNames = Directory.GetFiles(selectedProduct.GetModelFolderLocalPath());
-                    foreach (string file in filesNames)
-                    {
-                        modelsNames.Add(file);
-                    }
-                    //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
-                }
+              
                 for (int i = 0; i < brandModels.Count(); i++)
                 {
+
+                    selectedProduct.SetModelID(brandModels[i].modelId);
+
 
                     if (brandModels[i].modelId != 0)
                     {
@@ -140,46 +133,46 @@ namespace _01electronics_crm
                         imageBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                         column1Grid.Children.Add(imageBorder);
 
-                        selectedProduct.SetModelID(brandModels[i].modelId);
 
+                        selectedProduct.GetNewModelPhotoLocalPath();
 
-                        if (modelsNames.Exists(modelName => modelName == selectedProduct.GetModelPhotoLocalPath() || modelsNames.Exists(modelName2 => modelName2 == (selectedProduct.GetModelID() + ".jpg"))))
+                       Image brandImage = new Image();
+                        BitmapImage src = new BitmapImage();
+                        src.BeginInit();
+                        src.UriSource = new Uri(selectedProduct.GetModelPhotoLocalPath(), UriKind.Relative);
+                        src.CacheOption = BitmapCacheOption.OnLoad;
+                      
+
+                        if (!File.Exists(selectedProduct.GetModelPhotoLocalPath()))
                         {
+
+
+
+                        }
+
+                        else {
+
                             try
                             {
-                                Image brandImage = new Image();
-                                BitmapImage src = new BitmapImage();
-                                src.BeginInit();
-                                src.UriSource = new Uri(selectedProduct.GetModelPhotoLocalPath(), UriKind.Relative);
-                                src.CacheOption = BitmapCacheOption.OnLoad;
                                 src.EndInit();
-                                brandImage.Source = src;
-                                brandImage.Height = 220;
-                                brandImage.Width = 190;
-                                //brandImage.MouseDown += ImageMouseDown;
-                                brandImage.Tag = brandModels[i].modelId.ToString();
-                                column1Grid.Children.Add(brandImage);
-                            }
-                            catch
-                            {
-                                if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetModelPhotoServerPath(),selectedProduct.GetModelPhotoLocalPath()))
-                                {
-                                    Image brandImage = new Image();
-                                    BitmapImage src = new BitmapImage();
-                                    src.BeginInit();
-                                    src.UriSource = new Uri(selectedProduct.GetModelPhotoLocalPath(), UriKind.Relative);
-                                    src.CacheOption = BitmapCacheOption.OnLoad;
-                                    src.EndInit();
-                                    brandImage.Source = src;
-                                    brandImage.Height = 220;
-                                    brandImage.Width = 190;
-                                    //brandImage.MouseDown += ImageMouseDown;
-                                    brandImage.Tag = brandModels[i].modelId.ToString();
-                                    column1Grid.Children.Add(brandImage);
-                                }
+
 
                             }
+
+                            catch { 
+                            
+                            
+                            
+                            }
+
                         }
+
+                        brandImage.Source = src;
+                        brandImage.Height = 220;
+                        brandImage.Width = 190;
+                        //brandImage.MouseDown += ImageMouseDown;
+                        brandImage.Tag = brandModels[i].modelId.ToString();
+                        column1Grid.Children.Add(brandImage);
 
                         Grid.SetColumn(column1Grid, 0);
 
