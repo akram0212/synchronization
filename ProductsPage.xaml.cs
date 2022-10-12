@@ -1,10 +1,11 @@
-
 using _01electronics_library;
 using _01electronics_windows_library;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -16,11 +17,17 @@ using System.Windows.Navigation;
 
 namespace _01electronics_crm
 {
+
     /// <summary>
     /// Interaction logic for ProductsPage.xaml
     /// </summary>
     public partial class ProductsPage : Page
     {
+
+        //BackgroundWorker background = new BackgroundWorker();
+
+
+        List<Image> productImages = new List<Image>();
         private Employee loggedInUser;
         private CommonQueries commonQueries;
         private List<COMPANY_WORK_MACROS.PRODUCT_STRUCT> products;
@@ -29,7 +36,6 @@ namespace _01electronics_crm
         protected SQLServer sqlDatabase;
         protected FTPServer ftpServer;
         protected Product selectedProduct;
-        protected List<String> productsNames;
         protected String returnMessage;
         private Expander currentExpander;
         private Expander previousExpander;
@@ -40,6 +46,8 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
+            //background.DoWork += Dd;
+
             loggedInUser = mLoggedInUser;
             mViewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
             commonQueries = new CommonQueries();
@@ -48,14 +56,14 @@ namespace _01electronics_crm
             products = new List<COMPANY_WORK_MACROS.PRODUCT_STRUCT>();
             productSummaryPoints = new List<string>();
             selectedProduct = mSelectedProduct;
-            productsNames = new List<String>();
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01Electronics_ERP/products");
-            
+
             InitializeProducts();
             InitializeProductSummaryPoints();
             SetUpPageUIElements();
 
         }
+        
+
         private void InitializeProducts()
         {
             if (!commonQueries.GetCompanyProducts(ref products, selectedProduct.GetCategoryID()))
@@ -73,21 +81,9 @@ namespace _01electronics_crm
             ProductsGrid.RowDefinitions.Clear();
             ProductsGrid.ColumnDefinitions.Clear();
 
-            ftpServer.ListFilesInFolder(selectedProduct.GetProductFolderServerPath(), ref productsNames, ref returnMessage);
-            selectedProduct.GetProductFolderLocalPath();
-
-            if (productsNames.Count() == 0)
-            {
-                string[] filesNames = Directory.GetFiles(selectedProduct.GetProductFolderLocalPath());
-                foreach (string file in filesNames)
-                {
-                    productsNames.Add(file);
-                }
-                //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
-            }
-
             for (int i = 0; i < products.Count(); i++)
             {
+                bool foundImage = true;
                 RowDefinition rowI = new RowDefinition();
                 ProductsGrid.RowDefinitions.Add(rowI);
 
@@ -97,127 +93,107 @@ namespace _01electronics_crm
                 RowDefinition imageRow = new RowDefinition();
                 gridI.RowDefinitions.Add(imageRow);
 
-                selectedProduct.SetProductID(products[i].typeId);
-                //String productLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + products[i].typeId + ".jpg";
+                selectedProduct.SetProductID(products[i].typeId);               
 
-                if (productsNames.Exists(modelName => modelName == selectedProduct.GetProductPhotoLocalPath() || productsNames.Exists(modelName2 => modelName2 == (products[i].typeId + ".jpg"))))
+                Image productImage = new Image();
+
+                BitmapImage src = new BitmapImage();
+
+                src.BeginInit();
+                src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
+
+                src.CacheOption = BitmapCacheOption.OnLoad;
+
+
+                if (!File.Exists(selectedProduct.GetProductPhotoLocalPath()))
                 {
-                    try
-                    {
-                        Image productImage = new Image();
+                    //productImages.Add(productImage);
+                    foundImage = false;
+                    Border border1 = new Border();
+                    border1.BorderThickness = new Thickness(0, 1, 0, 0);
+                    BrushConverter converter = new BrushConverter();
 
-                        //string src = String.Format(@"/01electronics_crm;component/photos/products/" + products[i].typeId + ".jpg");
+                    border1.Background = (Brush)converter.ConvertFrom("#EDEDED");
+                    border1.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    border1.VerticalAlignment = VerticalAlignment.Stretch;
 
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
-                        src.EndInit();
-                        productImage.Source = src;
-                        productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                        productImage.MouseDown += ImageMouseDown;
-                        productImage.Tag = products[i].typeId.ToString();
+                    border1.Height = 300;
+                    border1.BorderBrush = (Brush)converter.ConvertFrom("#105A97");
+                    border1.Tag = products[i].typeId.ToString();
+                    border1.MouseLeftButtonDown += BorderMouseLeftButtonDown;
+                    gridI.Children.Add(border1);
+                    Grid.SetRow(border1, 0);
 
-                        gridI.Children.Add(productImage);
-                        Grid.SetRow(productImage, 0);
-
-                        Expander expander = new Expander();
-                        expander.Tag = products[i].typeId.ToString();
-                        expander.ExpandDirection = ExpandDirection.Down;
-                        expander.VerticalAlignment = VerticalAlignment.Top;
-                        expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                        expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
-
-                        expander.Expanded += new RoutedEventHandler(OnExpandExpander);
-                        expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
-                        expander.Margin = new Thickness(12);
-
-                        StackPanel expanderStackPanel = new StackPanel();
-                        expanderStackPanel.Orientation = Orientation.Vertical;
-
-
-                        BrushConverter brushConverter = new BrushConverter();
-
-
-
-                        Button ViewButton = new Button();
-                        ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                        ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                        ViewButton.Click += OnBtnClickViewProduct;
-                        ViewButton.Content = "View";
-
-
-
-
-
-
-                        expanderStackPanel.Children.Add(ViewButton);
-
-                        expander.Content = expanderStackPanel;
-
-                        gridI.Children.Add(expander);
-                        //Grid.SetColumn(expander, 1);
-
-
-                    }
-                    catch
-                    {
-                        selectedProduct.SetProductPhotoServerPath(selectedProduct.GetProductFolderServerPath() + "/" + products[i].typeId + ".jpg");
-                        if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetProductPhotoServerPath(),selectedProduct.GetProductPhotoLocalPath()))
-                        {
-                            Image productImage = new Image();
-                            BitmapImage src = new BitmapImage();
-                            src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
-                            src.CacheOption = BitmapCacheOption.OnLoad;
-                            src.EndInit();
-                            productImage.Source = src;
-                            productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
-                            productImage.VerticalAlignment = VerticalAlignment.Stretch;
-                            productImage.MouseDown += ImageMouseDown;
-                            productImage.Tag = products[i].typeId.ToString();
-                            gridI.Children.Add(productImage);
-                            Grid.SetRow(productImage, 0);
-                            Expander expander = new Expander();
-                            expander.Tag = products[i].typeId.ToString();
-                            expander.ExpandDirection = ExpandDirection.Down;
-                            expander.VerticalAlignment = VerticalAlignment.Top;
-                            expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                            expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
-
-                            expander.Expanded += new RoutedEventHandler(OnExpandExpander);
-                            expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
-                            expander.Margin = new Thickness(12);
-
-                            StackPanel expanderStackPanel = new StackPanel();
-                            expanderStackPanel.Orientation = Orientation.Vertical;
-
-
-                            BrushConverter brushConverter = new BrushConverter();
-
-
-
-                            Button ViewButton = new Button();
-                            ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                            ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                            ViewButton.Click += OnBtnClickViewProduct;
-                            ViewButton.Content = "View";
-
-
-
-
-
-
-                            expanderStackPanel.Children.Add(ViewButton);
-
-                            expander.Content = expanderStackPanel;
-
-                            gridI.Children.Add(expander);
-                            //Grid.SetColumn(expander, 1);
-                        }
-                    }
                 }
+                else {
+                          try
+                          {
+                              src.EndInit();
+                          }
+                          catch (Exception c) {
+
+                        foundImage = false;
+                        Border border1 = new Border();
+                        border1.BorderThickness = new Thickness(0, 1, 0, 0);
+
+                        border1.Height = 300;
+
+                        border1.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        border1.VerticalAlignment = VerticalAlignment.Stretch;
+                        BrushConverter converter = new BrushConverter();
+                        border1.BorderBrush = (Brush)converter.ConvertFrom("#105A97");
+                        border1.Background = (Brush)converter.ConvertFrom("#EDEDED");
+                        border1.Tag= products[i].typeId.ToString();
+                            border1.MouseLeftButtonDown += BorderMouseLeftButtonDown;
+                            gridI.Children.Add(border1);
+                            Grid.SetRow(border1, 0);
+
+                          }
+                }
+
+                productImage.Tag = products[i].typeId.ToString();
+                productImage.Source = src;
+                productImage.HorizontalAlignment = HorizontalAlignment.Stretch;
+                productImage.VerticalAlignment = VerticalAlignment.Stretch;
+                productImage.MouseDown += ImageMouseDown;
+
+                if (foundImage == true) {
+
+                    gridI.Children.Add(productImage);
+                    Grid.SetRow(productImage, 0);
+
+                }
+              
+
+                Expander expander = new Expander();
+                expander.Tag = products[i].typeId.ToString();
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.VerticalAlignment = VerticalAlignment.Top;
+                expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
+
+                expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                expander.Margin = new Thickness(12);
+
+                StackPanel expanderStackPanel = new StackPanel();
+                expanderStackPanel.Orientation = Orientation.Vertical;
+
+                BrushConverter brushConverter = new BrushConverter();
+
+                Button ViewButton = new Button();
+                ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                ViewButton.Click += OnBtnClickViewProduct;
+                ViewButton.Content = "View";
+
+
+                expanderStackPanel.Children.Add(ViewButton);
+
+                expander.Content = expanderStackPanel;
+
+                gridI.Children.Add(expander);
+
                 Grid imageGrid = new Grid();
                 imageGrid.Background = new SolidColorBrush(Color.FromRgb(237, 237, 237));
                 imageGrid.Width = 350;
@@ -227,7 +203,7 @@ namespace _01electronics_crm
 
                 RowDefinition headerRow = new RowDefinition();
                 imageGrid.RowDefinitions.Add(headerRow);
-                headerRow.Height = new GridLength(40);
+                headerRow.Height = new GridLength(50);
 
 
                 RowDefinition pointsRow = new RowDefinition();
@@ -238,13 +214,13 @@ namespace _01electronics_crm
                 headerGrid.RowDefinitions.Add(headerGridRow);
                 Grid.SetRow(headerGrid, 0);
 
-                Label headerLabel = new Label();
+                TextBlock headerLabel = new TextBlock() { TextWrapping=TextWrapping.WrapWithOverflow};
                 headerLabel.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                 headerLabel.FontFamily = new FontFamily("Sans Serif");
                 headerLabel.FontSize = 17;
                 headerLabel.FontWeight = FontWeights.Bold;
                 headerLabel.Padding = new Thickness(10);
-                headerLabel.Content = products[i].typeName;
+                headerLabel.Text = products[i].typeName;
 
                 Grid.SetRow(headerLabel, 0);
                 headerGrid.Children.Add(headerLabel);
@@ -268,8 +244,17 @@ namespace _01electronics_crm
                 Grid.SetRow(imageGrid, 0);
                 ProductsGrid.Children.Add(gridI);
                 Grid.SetRow(gridI, i);
+
+
+                //if (i==products.Count-1&&productImages.Count!=0)
+                //{
+                //    if (background.IsBusy == false)
+                //        background.RunWorkerAsync();
+
+                //}
             }
-            if( loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
+
+            if(loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.ERP_SYSTEM_DEVELOPMENT_TEAM_ID ||
                 loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_TEAM_ID ||
                 ( loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION && loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID))
             {
@@ -277,12 +262,47 @@ namespace _01electronics_crm
             }
         }
 
-       
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //EXTERNAL TABS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+        //private void Dd(object sender,DoWorkEventArgs d) {
+
+
+        //    this.Dispatcher.Invoke(() =>
+        //    {
+
+        //        for (int i = 0; i < productImages.Count; i++)
+        //        {
+
+        //            selectedProduct.SetProductID(Convert.ToInt32(productImages[i].Tag));
+        //            if (!File.Exists(selectedProduct.GetProductPhotoLocalPath()))
+        //            {
+
+        //                i--;
+
+        //            }
+        //            else
+        //            {
+
+        //                BitmapImage img = new BitmapImage();
+        //                img.BeginInit();
+        //                img.UriSource = new Uri(selectedProduct.GetProductPhotoLocalPath(), UriKind.Relative);
+        //                productImages[0].Source = img;
+
+
+
+        //            }
+        //        }
+
+
+        //    });
+
+      
+        //}
         private void OnButtonClickedContacts(object sender, RoutedEventArgs e)
         {
             ContactsPage contacts = new ContactsPage(ref loggedInUser);
@@ -357,6 +377,26 @@ namespace _01electronics_crm
             //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
 
             Brand selectedBrand=new Brand();
+            selectedBrand.SetProductID(selectedProduct.GetProductID());
+            selectedBrand.SetCategoryID(selectedProduct.GetCategoryID());
+            selectedBrand.SetProductName(selectedProduct.GetProductName());
+            selectedBrand.SetCategoryName(selectedProduct.GetCategoryName());
+
+            BrandsPage brandsPage = new BrandsPage(ref loggedInUser, ref selectedBrand/* ref selectedProduct*/);
+            this.NavigationService.Navigate(brandsPage);
+        }
+
+
+        private void BorderMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Border currentBorder = sender as Border;
+            String tmp = currentBorder.Tag.ToString();
+
+            //Product selectedProduct = new Product();
+            selectedProduct.SetProductID(int.Parse(tmp));
+            //selectedProduct.SetCategoryID(selectedProduct.GetCategoryID());
+
+            Brand selectedBrand = new Brand();
             selectedBrand.SetProductID(selectedProduct.GetProductID());
             selectedBrand.SetCategoryID(selectedProduct.GetCategoryID());
             selectedBrand.SetProductName(selectedProduct.GetProductName());

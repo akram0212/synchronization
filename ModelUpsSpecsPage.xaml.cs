@@ -24,6 +24,7 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ModelUpsSpecsPage : Page
     {
+        IntegrityChecks IntegrityChecks;
         Employee loggedInUser;
         Model product;
         private CommonQueries commonQueriesObject;
@@ -44,6 +45,7 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
+            IntegrityChecks = new IntegrityChecks();
             product = mPrduct;
 
             loggedInUser = mLoggedInUser;
@@ -139,6 +141,8 @@ namespace _01electronics_crm
             Label header = new Label() { Content = "SPEC " + (mainGrid.Children.Count + 1), Style = (Style)FindResource("tableHeaderItem") };
             header.HorizontalAlignment = HorizontalAlignment.Left;
 
+            Card.Tag = cardCountGenset;
+
             if (cardCountGenset != 1)
             {
                 Image delete = new Image() { Margin= new Thickness(10, 0, 10, 0) };
@@ -159,13 +163,13 @@ namespace _01electronics_crm
 
             Header.Children.Add(header);
 
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(45, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
-            Card.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(60, GridUnitType.Pixel) });
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
+            Card.RowDefinitions.Add(new RowDefinition());
 
 
 
@@ -188,12 +192,12 @@ namespace _01electronics_crm
 
             Grid.SetRow(Header, 0);
 
-            Label ratedPowerLable = new Label() { Style = (Style)FindResource("labelStyle") };
+            Label ratedPowerLable = new Label() { Style = (Style)FindResource("labelStyle")};
             ratedPowerLable.Content = "Rated Power";
-            Label ratedPowerlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
+            Label ratedPowerlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle")};
             ratedPowerlabelInvisible.Visibility = Visibility.Collapsed;
 
-            TextBox RatedPowerText = new TextBox() { Style = (Style)FindResource("textBoxStyle"), Width = 253,TextWrapping=TextWrapping.Wrap };
+            TextBox RatedPowerText = new TextBox() { Style = (Style)FindResource("textBoxStyle"), Width = 235, TextWrapping=TextWrapping.Wrap };
 
             ComboBox ratedPowercombo = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90};
             rating.ForEach(a => ratedPowercombo.Items.Add(a.measure_unit));
@@ -208,13 +212,12 @@ namespace _01electronics_crm
 
             //Grid.SetRow(ratedPowerPanel, 1);
 
-      
             WrapPanel modelPanel = new WrapPanel();
 
             Label ModelLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             ModelLabel.Content = "SpecName";
 
-            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping=TextWrapping.Wrap, Width = 253 };
+            TextBox ModelText = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping=TextWrapping.Wrap, Width = 235 };
 
             Label ModellabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             ModellabelInvisible.Visibility = Visibility.Collapsed;
@@ -234,7 +237,7 @@ namespace _01electronics_crm
             Label ltbKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
             ltbKva50Label.Content = "LTB 50HZ";
 
-            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253};
+            TextBox kva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
             ComboBox Ltb50HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
             rating.ForEach(a => Ltb50HzComboBox.Items.Add(a.measure_unit));
 
@@ -258,7 +261,7 @@ namespace _01electronics_crm
             Label ltbKva60Label = new Label() { Style = (Style)FindResource("labelStyle") };
             ltbKva60Label.Content = "LTB 60HZ";
 
-            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox kva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
             ComboBox Ltb60HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
             rating.ForEach(a => Ltb60HzComboBox.Items.Add(a.measure_unit));
             Ltb60HzComboBox.SelectedItem = "KVA";
@@ -284,7 +287,7 @@ namespace _01electronics_crm
             Label prpKva50Label = new Label() { Style = (Style)FindResource("labelStyle") };
             prpKva50Label.Content = "PRP 50HZ";
 
-            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox prpkva50TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"),TextWrapping = TextWrapping.Wrap, Width = 235 };
 
             ComboBox Prp50HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
             rating.ForEach(a =>Prp50HzComboBox.Items.Add(a.measure_unit));
@@ -308,7 +311,7 @@ namespace _01electronics_crm
             Label prpKva60Label = new Label() { Style = (Style)FindResource("labelStyle")};
             prpKva60Label.Content = "PRP 60HZ";
 
-            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox prpkva60TextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
             ComboBox Prp60HzComboBox = new ComboBox() { Style = (Style)FindResource("comboBoxStyle"), Width = 90 };
             rating.ForEach(a => Prp60HzComboBox.Items.Add(a.measure_unit));
             Prp60HzComboBox.SelectedItem = "KVA";
@@ -335,7 +338,7 @@ namespace _01electronics_crm
             Label CoolingLabel = new Label() { Style = (Style)FindResource("labelStyle")};
             CoolingLabel.Content = "Cooling";
 
-            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox coolingTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
 
             Label coolinglabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             coolinglabelInvisible.Visibility = Visibility.Collapsed;
@@ -353,7 +356,7 @@ namespace _01electronics_crm
             Label TankLabel = new Label() { Style = (Style)FindResource("labelStyle") };
             TankLabel.Content = "TANK";
 
-            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox TankTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
 
 
             Label tanklabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -374,7 +377,7 @@ namespace _01electronics_crm
             Label LoadLabel = new Label() { Style = (Style)FindResource("labelStyle")};
             LoadLabel.Content = "Load";
 
-            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox loadTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
 
 
             Label loadlabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
@@ -392,7 +395,7 @@ namespace _01electronics_crm
             Label AlternatorLable = new Label() { Style = (Style)FindResource("labelStyle") };
             AlternatorLable.Content = "Alternator";
 
-            TextBox AlternatorTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 253 };
+            TextBox AlternatorTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
 
             AlternatorPanel.Children.Add(AlternatorLable);
             AlternatorPanel.Children.Add(AlternatorTextBox);
@@ -420,6 +423,8 @@ namespace _01electronics_crm
             Card.Children.Add(Header);
 
             Card.Children.Add(wrapPanel1);
+
+     
             //Card.Children.Add(ratedPowerPanel);
             //Card.Children.Add(modelPanel);
             //Card.Children.Add(LtbKva50Panel);
@@ -1893,37 +1898,133 @@ namespace _01electronics_crm
 
                 if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
                 {
-                    //List<BASIC_STRUCTS.GENSET_SPEC> GensetSpecs = new List<BASIC_STRUCTS.GENSET_SPEC>();
+                    List<BASIC_STRUCTS.GENSET_SPEC> GensetSpecs = new List<BASIC_STRUCTS.GENSET_SPEC>();
 
-                    //for (int i = 0; i < mainGrid.Children.Count; i++) {
+                    for (int i = 0; i < mainGrid.Children.Count; i++)
+                    {
 
-                    //    BASIC_STRUCTS.GENSET_SPEC gensetSpec;
+                        BASIC_STRUCTS.GENSET_SPEC gensetSpec=new BASIC_STRUCTS.GENSET_SPEC();
 
-                    //    Grid card = mainGrid.Children[i] as Grid;
-
-
-                    //   WrapPanel ratedPower=card.Children[1] as WrapPanel;
-
-                    //    TextBox RatedPower = ratedPower.Children[1] as TextBox;
-                    //   gensetSpec.RatedPower=int.Parse(RatedPower.Text);
-
-                    //    ComboBox RatedPowerCombo = ratedPower.Children[2] as ComboBox;
-
-                    //    gensetSpec.kva_name = RatedPowerCombo.SelectedItem.ToString();
-                    //    gensetSpec.kva_id = i + 1;
-
-                    //  WrapPanel enginePanel=card.Children[2] as WrapPanel;
-
-                    //   ComboBox engineCombo=enginePanel.Children[1] as ComboBox;
-
-                    //   gensetSpec.engine=engineCombo.SelectedItem.ToString();
-                    //    // engine id to set here after creating the database
+                        Grid card = mainGrid.Children[i] as Grid;
 
 
-                    //}
+                        WrapPanel wrap1 = card.Children[1] as WrapPanel;
+
+                        WrapPanel ratedPanel = wrap1.Children[0] as WrapPanel;
+
+                        TextBox ratedPower = ratedPanel.Children[1] as TextBox;
+                        gensetSpec.RatedPower = float.Parse(ratedPower.Text);
+
+                        ComboBox ratedPowerCombo = ratedPanel.Children[2] as ComboBox;
+
+                       gensetSpec.rating_unit_id=rating[ratedPowerCombo.SelectedIndex].measure_unit_id;
 
 
 
+                        WrapPanel modelPanel = wrap1.Children[1] as WrapPanel;
+
+                        TextBox modelTextBox = modelPanel.Children[1] as TextBox;
+                        gensetSpec.spec_name = modelTextBox.Text;
+                        gensetSpec.spec_id =  int.Parse(card.Tag.ToString());
+
+
+
+                        WrapPanel wrap2= card.Children[2] as WrapPanel;
+
+                        WrapPanel ltbKva50Panel = wrap2.Children[0] as WrapPanel;
+
+                        TextBox ltbKva50TextBox=ltbKva50Panel.Children[1] as TextBox;
+
+                        gensetSpec.ltb_50 = float.Parse(ltbKva50TextBox.Text);
+
+                        ComboBox ltbKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
+
+                        gensetSpec.ltb_50_unit = rating[ltbKva50ComboBox.SelectedIndex].measure_unit_id;
+
+
+                        WrapPanel ltbKva60Panel = wrap2.Children[1] as WrapPanel;
+
+                        TextBox ltbKva60TextBox = ltbKva60Panel.Children[1] as TextBox;
+
+                        gensetSpec.ltb_60 = float.Parse(ltbKva60TextBox.Text);
+
+                        ComboBox ltbKva60ComboBox = ltbKva60Panel.Children[2] as ComboBox;
+
+                        gensetSpec.ltb_60_unit = rating[ltbKva60ComboBox.SelectedIndex].measure_unit_id;
+
+
+
+                        WrapPanel wrap3 = card.Children[3] as WrapPanel;
+
+                        WrapPanel prpKva50Panel = wrap3.Children[0] as WrapPanel;
+
+                        TextBox prpKva50TextBox = prpKva50Panel.Children[1] as TextBox;
+
+                        gensetSpec.prp_50 = float.Parse(prpKva50TextBox.Text);
+
+                        ComboBox prpKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
+
+                        gensetSpec.prp_50_unit = rating[prpKva50ComboBox.SelectedIndex].measure_unit_id;
+
+
+                        WrapPanel prpKva60Panel = wrap3.Children[1] as WrapPanel;
+
+                        TextBox prpKva60TextBox = prpKva60Panel.Children[1] as TextBox;
+
+                        gensetSpec.prp_60 = float.Parse(prpKva60TextBox.Text);
+
+                        ComboBox prpKva60ComboBox = ltbKva50Panel.Children[2] as ComboBox;
+
+                        gensetSpec.prp_60_unit = rating[prpKva60ComboBox.SelectedIndex].measure_unit_id;
+
+
+
+
+                        WrapPanel wrap4 = card.Children[4] as WrapPanel;
+
+                        WrapPanel CoolingPanel = wrap4.Children[0] as WrapPanel;
+
+                        TextBox coolingTextBox = CoolingPanel.Children[1] as TextBox;
+
+                        gensetSpec.cooling = coolingTextBox.Text;
+
+
+                        WrapPanel tankPanel = wrap4.Children[1] as WrapPanel;
+
+                        TextBox tankTextBox = tankPanel.Children[1] as TextBox;
+
+                        gensetSpec.tank = tankTextBox.Text;
+
+
+                        WrapPanel wrap5 = card.Children[5] as WrapPanel;
+
+                        WrapPanel loadPanel = wrap5.Children[0] as WrapPanel;
+
+                        TextBox loadTextBox = loadPanel.Children[1] as TextBox;
+
+                        gensetSpec.load_percentage = loadTextBox.Text;
+
+
+                        WrapPanel alternatorPanel = wrap5.Children[1] as WrapPanel;
+
+                        TextBox alternatorTextBox = alternatorPanel.Children[1] as TextBox;
+
+                        gensetSpec.alternator = alternatorTextBox.Text;
+
+
+
+                        WrapPanel wrap6 = card.Children[6] as WrapPanel;
+
+                        WrapPanel datePanel = wrap6.Children[0] as WrapPanel;
+
+                        DatePicker dateTextBox = datePanel.Children[1] as DatePicker;
+
+                        gensetSpec.valid_Until = dateTextBox.SelectedDate;
+
+                        GensetSpecs.Add(gensetSpec);
+
+
+                    }
                 }
 
                 else

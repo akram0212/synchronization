@@ -60,17 +60,6 @@ namespace _01electronics_crm
             BrandsGrid.RowDefinitions.Clear();
             BrandsGrid.ColumnDefinitions.Clear();
 
-            ftpServer.ListFilesInFolder(selectedProduct.GetBrandFolderServerPath(), ref brandsNames, ref returnMessage);
-            selectedProduct.GetBrandFolderLocalPath();
-            if (brandsNames.Count() == 0)
-            {
-                string[] filesNames = Directory.GetFiles(selectedProduct.GetBrandFolderLocalPath());
-                foreach (string file in filesNames)
-                {
-                    brandsNames.Add(file);
-                }
-                //ftpServer.ListFilesInFolder(selectedProduct.GetFolderLocalPath(), ref modelsNames, ref returnMessage); 
-            }
             Label productTitleLabel = new Label();
             productTitleLabel.Content = selectedProduct.GetProductName();
             productTitleLabel.Content = productTitleLabel.Content.ToString().ToUpper();
@@ -81,199 +70,183 @@ namespace _01electronics_crm
             mainGrid.Children.Add(productTitleLabel);
             Grid.SetRow(productTitleLabel, 0);
 
+
+
             WrapPanel brandsWrapPanel = new WrapPanel();
             brandsWrapPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
             brandsWrapPanel.Margin = new Thickness(50, 0, 0, 0);
 
             for (int i = 0; i < brandsList.Count(); i++)
             {
-                Grid gridI = new Grid();
+                bool foundImage = true;
+                if (brandsList[i].brandId == 0)
+                    continue;
+                Grid brandGrid = new Grid();
 
                 selectedProduct.SetBrandID(brandsList[i].brandId);
-                //String brandLocalPath = selectedProduct.GetPhotoLocalPath() + "\\" + brandsList[i].brandId + ".jpg";
 
-                if (brandsNames.Exists(modelName => modelName == selectedProduct.GetBrandPhotoLocalPath()
-                || brandsNames.Exists(modelName2 => modelName2 == (brandsList[i].brandId + ".jpg"))))
+
+                Image brandLogo = new Image();
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri(selectedProduct.GetBrandPhotoLocalPath(), UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+
+
+                if (!File.Exists(selectedProduct.GetBrandPhotoLocalPath())) {
+
+                    brandGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(120) });
+                    brandGrid.RowDefinitions.Add(new RowDefinition());
+
+                    foundImage = false;
+          
+                    TextBlock label = new TextBlock();
+                    label.Text = $"{brandsList[i].brandName.ToUpper()}";
+                    BrushConverter converter = new BrushConverter();
+                    label.Foreground = (Brush)converter.ConvertFrom("#105A97");
+                    label.FontWeight = FontWeights.Bold;
+                    label.HorizontalAlignment = HorizontalAlignment.Center;
+                    label.VerticalAlignment = VerticalAlignment.Center;
+                    label.Padding = new Thickness(10);
+                    label.Height = 100;
+                    label.Width = 250;
+                    label.FontSize = 30;
+                    label.Tag = brandsList[i].brandId.ToString();
+                    label.Name= brandsList[i].brandName;
+                    label.MouseLeftButtonDown += brandTextBlock_MouseLeftButtonDown;
+
+
+                    brandGrid.Children.Add(label);
+                    Grid.SetRow(label, 1);
+
+
+                    brandGrid.Margin = new Thickness(0, 0, 20, 0);
+
+                    ScaleTransform myScaleTransform1 = new ScaleTransform();
+                    var e3 = new EventTrigger(UIElement.MouseEnterEvent);
+                    e3.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
+                    var e4 = new EventTrigger(UIElement.MouseLeaveEvent);
+                    e4.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+
+                    myScaleTransform1.ScaleY = 1;
+                    myScaleTransform1.ScaleX = 1;
+                    label.RenderTransform = myScaleTransform1;
+
+                    label.Triggers.Add(e3);
+                    label.Triggers.Add(e4);
+
+                }
+
+                else
                 {
                     try
                     {
-                        Image brandLogo = new Image();
-                        //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
-                        BitmapImage src = new BitmapImage();
-                        src.BeginInit();
-                        src.UriSource = new Uri(selectedProduct.GetBrandPhotoLocalPath(), UriKind.Relative);
-                        src.CacheOption = BitmapCacheOption.OnLoad;
                         src.EndInit();
-                        brandLogo.Source = src;
-                        brandLogo.Width = 300;
-                        brandLogo.MouseDown += ImageMouseDown;
-                        brandLogo.Margin = new Thickness(80, 100, 12, 12);
-                        brandLogo.Tag = brandsList[i].brandId.ToString();
-                        brandLogo.Name = brandsList[i].brandName;
-
-                        var e1 = new EventTrigger(UIElement.MouseEnterEvent);
-                        e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
-                        var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
-                        e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
-                        ScaleTransform myScaleTransform = new ScaleTransform();
-                        myScaleTransform.ScaleY = 1;
-                        myScaleTransform.ScaleX = 1;
-                        brandLogo.RenderTransform = myScaleTransform;
-
-                        brandLogo.Triggers.Add(e1);
-                        brandLogo.Triggers.Add(e2);
-
-                        gridI.Children.Add(brandLogo);
-
-                        //if(brandsList[i].brandId == 0)
-                        //{
-                        //    Label othersLabel = new Label();
-                        //    othersLabel.Content = brandsList[i].brandName;
-                        //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
-                        //    gridI.Children.Add(othersLabel);
-                        //}    
-
-
-
-                        Expander expander = new Expander();
-                        expander.Tag = brandsList[i].brandId.ToString();
-                        expander.ExpandDirection = ExpandDirection.Down;
-                        expander.VerticalAlignment = VerticalAlignment.Top;
-                        expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                        expander.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                        expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right;
-                        expander.VerticalContentAlignment = System.Windows.VerticalAlignment.Top;
-
-
-                        expander.Expanded += new RoutedEventHandler(OnExpandExpander);
-                        expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
-                        expander.Margin = new Thickness(12);
-
-                        StackPanel expanderStackPanel = new StackPanel();
-                        expanderStackPanel.Orientation = Orientation.Vertical;
-
-
-                        BrushConverter brushConverter = new BrushConverter();
-
-
-
-                        Button ViewButton = new Button();
-                        ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                        ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                        ViewButton.Click += OnBtnClickViewBrand;
-                        ViewButton.Content = "View";
-
-
-
-
-
-
-                        expanderStackPanel.Children.Add(ViewButton);
-
-                        expander.Content = expanderStackPanel;
-                        expander.Margin = new Thickness(0,75,0,0);
-
-                        gridI.Children.Add(expander);
-                        brandsWrapPanel.Children.Add(gridI);
-
                     }
-                    catch
+                    catch (Exception c)
                     {
+                        foundImage = false;
+                        TextBlock label = new TextBlock();
+                        label.Text = $"{brandsList[i].brandName.ToUpper()}";
+                        label.VerticalAlignment = VerticalAlignment.Stretch;
+                        label.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        BrushConverter converter = new BrushConverter();
+                        label.Foreground = (Brush)converter.ConvertFrom("#105A97");
+                        label.FontWeight = FontWeights.Bold;
+                        label.Margin = new Thickness(0, 0, 20, 20);
+                        label.Padding = new Thickness(10);
+                        label.Background = Brushes.White;
+                        label.FontSize = 30;
+                        label.Tag = brandsList[i].brandId.ToString();
+                        label.Name = brandsList[i].brandName;
+                        label.MouseLeftButtonDown += brandTextBlock_MouseLeftButtonDown;
 
-                        selectedProduct.SetBrandPhotoServerPath(selectedProduct.GetBrandFolderServerPath() + "/" + brandsList[i].brandId + ".jpg");
-                        if (selectedProduct.DownloadPhotoFromServer(selectedProduct.GetBrandPhotoServerPath(),selectedProduct.GetBrandPhotoLocalPath()))
-                        {
+                        brandGrid.Children.Add(label);
 
-                            Image brandLogo = new Image();
-                            //string src = String.Format(@"/01electronics_crm;component/photos/brands/" + brandsList[i].brandId + ".jpg
-                            BitmapImage src = new BitmapImage();
-                            src.BeginInit();
-                            src.UriSource = new Uri(selectedProduct.GetBrandPhotoLocalPath(), UriKind.Relative);
-                            src.CacheOption = BitmapCacheOption.OnLoad;
-                            src.EndInit();
-                            brandLogo.Source = src;
-                            brandLogo.Width = 300;
-                            brandLogo.MouseDown += ImageMouseDown;
-                            brandLogo.Margin = new Thickness(80, 100, 12, 12);
-                            brandLogo.Tag = brandsList[i].brandId.ToString();
-                            try
-                            {
-                                brandLogo.Name = brandsList[i].brandName;
-                            }
-                            catch
-                            {
-                                brandLogo.Name = "";
-                            }
-
-                            var e1 = new EventTrigger(UIElement.MouseEnterEvent);
-                            e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
-                            var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
-                            e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
-                            ScaleTransform myScaleTransform = new ScaleTransform();
-                            myScaleTransform.ScaleY = 1;
-                            myScaleTransform.ScaleX = 1;
-                            brandLogo.RenderTransform = myScaleTransform;
-
-                            brandLogo.Triggers.Add(e1);
-                            brandLogo.Triggers.Add(e2);
-
-                            gridI.Children.Add(brandLogo);
-
-                            //if(brandsList[i].brandId == 0)
-                            //{
-                            //    Label othersLabel = new Label();
-                            //    othersLabel.Content = brandsList[i].brandName;
-                            //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
-                            //    gridI.Children.Add(othersLabel);
-                            //}    
+                        Grid.SetRow(label, 1);
 
 
-                            
-
-                            Expander expander = new Expander();
-                            expander.Tag = brandsList[i].brandId.ToString();
-                            expander.ExpandDirection = ExpandDirection.Down;
-                            expander.VerticalAlignment = VerticalAlignment.Top;
-                            expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                            expander.VerticalAlignment= System.Windows.VerticalAlignment.Top;
-                            expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right;
-                            expander.VerticalContentAlignment = System.Windows.VerticalAlignment.Top;
-                        
-
-                            expander.Expanded += new RoutedEventHandler(OnExpandExpander);
-                            expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
-                            expander.Margin = new Thickness(12);
-
-                            StackPanel expanderStackPanel = new StackPanel();
-                            expanderStackPanel.Orientation = Orientation.Vertical;
-
-
-                            BrushConverter brushConverter = new BrushConverter();
-
-
-
-                            Button ViewButton = new Button();
-                            ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
-                            ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
-                            ViewButton.Click += OnBtnClickViewBrand;
-                            ViewButton.Content = "View";
-
-
-
-
-
-
-                            expanderStackPanel.Children.Add(ViewButton);
-
-                            expander.Content = expanderStackPanel;
-
-                            gridI.Children.Add(expander);
-                            brandsWrapPanel.Children.Add(gridI);
-
-                        }
                     }
                 }
+
+                brandLogo.Source = src;
+                brandLogo.Width = 300;
+                brandLogo.MouseDown += ImageMouseDown;
+                brandLogo.Margin = new Thickness(80, 100, 12, 12);
+                brandLogo.Tag = brandsList[i].brandId.ToString();
+                brandLogo.Name = brandsList[i].brandName;
+
+                var e1 = new EventTrigger(UIElement.MouseEnterEvent);
+                e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
+                var e2 = new EventTrigger(UIElement.MouseLeaveEvent);
+                e2.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("shrinkStoryboard") });
+                ScaleTransform myScaleTransform = new ScaleTransform();
+                myScaleTransform.ScaleY = 1;
+                myScaleTransform.ScaleX = 1;
+                brandLogo.RenderTransform = myScaleTransform;
+
+                brandLogo.Triggers.Add(e1);
+                brandLogo.Triggers.Add(e2);
+
+                //if(brandsList[i].brandId == 0)
+                //{
+                //    Label othersLabel = new Label();
+                //    othersLabel.Content = brandsList[i].brandName;
+                //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
+                //    gridI.Children.Add(othersLabel);
+                //}    
+
+
+
+                Expander expander = new Expander();
+                expander.Tag = brandsList[i].brandId.ToString();
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.VerticalAlignment = VerticalAlignment.Top;
+                expander.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                expander.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                expander.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right;
+                expander.VerticalContentAlignment = System.Windows.VerticalAlignment.Top;
+
+
+                expander.Expanded += new RoutedEventHandler(OnExpandExpander);
+                expander.Collapsed += new RoutedEventHandler(OnCollapseExpander);
+                expander.Margin = new Thickness(12);
+
+                StackPanel expanderStackPanel = new StackPanel();
+                expanderStackPanel.Orientation = Orientation.Vertical;
+
+
+                BrushConverter brushConverter = new BrushConverter();
+
+
+
+                Button ViewButton = new Button();
+                ViewButton.Background = (Brush)brushConverter.ConvertFrom("#FFFFFF");
+                ViewButton.Foreground = (Brush)brushConverter.ConvertFrom("#105A97");
+                ViewButton.Click += OnBtnClickViewBrand;
+                ViewButton.Content = "View";
+
+
+                expanderStackPanel.Children.Add(ViewButton);
+
+                expander.Content = expanderStackPanel;
+                expander.Margin = new Thickness(0, 75, 0, 0);
+
+                if (foundImage == true)
+                    brandGrid.Children.Add(brandLogo);
+
+
+
+
+                brandGrid.Children.Add(expander);
+
+                if(foundImage==false)
+                Grid.SetRow(expander, 0);
+                brandsWrapPanel.Children.Add(brandGrid);
+
+
             }
+
             if (brandsList.Count() == 0 || brandsList[0].brandId == 0)
             {
                 Image brandImage = new Image();
@@ -300,10 +273,37 @@ namespace _01electronics_crm
             }
         }
 
+        private void brandTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+
+            TextBlock brandTextBlock = sender as TextBlock;
+            String tmp = brandTextBlock.Tag.ToString();
+            String Name = brandTextBlock.Name.ToString();
+
+            selectedProduct.SetBrandID(int.Parse(tmp));
+            selectedProduct.SetBrandName(Name);
+
+            Model SelectedModel = new Model();
+
+            SelectedModel.SetProductID(selectedProduct.GetProductID());
+            SelectedModel.SetCategoryID(selectedProduct.GetCategoryID());
+            SelectedModel.SetBrandID(selectedProduct.GetBrandID());
+
+            SelectedModel.SetProductName(selectedProduct.GetProductName());
+            SelectedModel.SetBrandName(selectedProduct.GetBrandName());
+            SelectedModel.SetCategoryName(selectedProduct.GetCategoryName());
+
+            ModelsPage productsPage = new ModelsPage(ref loggedInUser, ref SelectedModel /*ref selectedProduct*/);
+            this.NavigationService.Navigate(productsPage);
+
+
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //QUERIES
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public bool QueryGetProductName()
         {
             String sqlQueryPart1 = @"select product_name
