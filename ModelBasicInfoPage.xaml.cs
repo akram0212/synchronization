@@ -130,7 +130,7 @@ namespace _01electronics_crm
 
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
-                File.Delete(product.GetModelPhotoLocalPath());
+               // File.Delete(product.GetModelPhotoLocalPath());
 
             }
 
@@ -328,7 +328,14 @@ namespace _01electronics_crm
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
-            summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
+            try
+            {
+                summeryPointsLabel.Text = product.GetModelSummaryPoints()[0];
+            }
+            catch(Exception ex)
+            {
+
+            }
 
 
 
@@ -1474,10 +1481,15 @@ namespace _01electronics_crm
 
         private void modelNameTextBoxMouseLeave(object sender, MouseEventArgs e)
         {
-            modelNameLabel.Content = modelNameTextBox.Text.ToString();
-            product.SetModelName(modelNameTextBox.Text.ToString());
-            modelNameTextBox.Visibility = Visibility.Collapsed;
-            modelNameLabel.Visibility = Visibility.Visible;
+
+            if(viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                modelNameLabel.Content = modelNameTextBox.Text.ToString();
+                product.SetModelName(modelNameTextBox.Text.ToString());
+                modelNameTextBox.Visibility = Visibility.Collapsed;
+                modelNameLabel.Visibility = Visibility.Visible;
+
+            }
         }
     }
 }

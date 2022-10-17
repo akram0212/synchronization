@@ -389,7 +389,7 @@ namespace _01electronics_crm
 
 
             String sqlQueryPart2 = " and model_standard_features.brand_id = ";
-            String sqlQueryPart3 = " and model_standard_features.model_id = ";
+            String sqlQueryPart3 = " and model_standard_features    .model_id = ";
             String sqlQueryPart4 = ";";
 
             sqlQuery = String.Empty;
@@ -874,7 +874,7 @@ namespace _01electronics_crm
             sqlQuery += comma;
             sqlQuery += GetBrandID();
             sqlQuery += comma;
-            sqlQuery += max + 1;
+            sqlQuery += GetModelID();
             sqlQuery += comma;
             sqlQuery += UPSSpecs[max].spec_id;
             sqlQuery += comma;

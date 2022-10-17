@@ -85,15 +85,16 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
-                            <Grid Name="standardFeautersGrid" Grid.Row="0">
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition/>
                                     <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Feature #1"  Margin="30,0,0,0" HorizontalAlignment="Left" Style="{StaticResource labelStyle}"/>
-                                <TextBox Grid.Column="1" Style="{StaticResource textBoxStyle}" Name="standardFeaturesTextBox1" TextWrapping="Wrap" />
+                                <TextBox  Grid.Column="1" Style="{StaticResource textBoxStyle}" Margin="80,0,0,0" Name="standardFeaturesTextBox1" TextWrapping="Wrap" />
                                 <Image Grid.Column="2" Source="Icons\plus_icon.jpg" Width="20" Height="20" Margin="10,0,10,0" MouseLeftButtonDown="onClickHandler"/>
+                                <Label Style="{StaticResource labelStyle}" Name="standardFeaturesLabel1" Grid.Column="1"  Visibility="Collapsed" Margin="80,0,0,0" HorizontalAlignment="Left" />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -117,7 +118,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" >
+                            <Grid Name="benifitsdFeautersGrid" Grid.Row="0" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition/>
