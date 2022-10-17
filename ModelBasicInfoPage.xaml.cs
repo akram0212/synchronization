@@ -116,10 +116,7 @@ namespace _01electronics_crm
 
             serverFolderPath = product.GetModelFolderServerPath();
             
-            
-            
-
-          
+           
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
@@ -130,6 +127,8 @@ namespace _01electronics_crm
 
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
+                //added by akram
+                if(File.Exists(product.GetModelPhotoLocalPath()))
                 File.Delete(product.GetModelPhotoLocalPath());
 
             }
@@ -240,6 +239,7 @@ namespace _01electronics_crm
         {
             modelAdditionalInfoPage.modelBasicInfoPage = this;
             modelAdditionalInfoPage.modelUpsSpecsPage = modelUpsSpecsPage;
+            product.SetModelName(modelNameTextBox.Text);
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
@@ -264,6 +264,8 @@ namespace _01electronics_crm
         {
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
+            product.SetModelName(modelNameTextBox.Text);
+
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
@@ -328,7 +330,8 @@ namespace _01electronics_crm
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
-            summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
+            if (product.GetModelSummaryPoints().Count != 0)
+                summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
 
 
 
@@ -1102,17 +1105,17 @@ namespace _01electronics_crm
             //});
 
 
-             if (!product.IssueNewModel())
-                 return;
+             //if (!product.IssueNewModel())
+             //    return;
 
-            if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+            //if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            //{
+            //    viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
 
-                ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+            //    ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
 
-                viewproduct.Show();
-            }
+            //    viewproduct.Show();
+            //}
 
 
         //NavigationWindow currentWindow = (NavigationWindow)this.Parent;

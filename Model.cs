@@ -680,6 +680,11 @@ namespace _01electronics_crm
                 return false;
             if (!InsertIntoModelSummaryPoints())
                 return false;
+            if (GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+                if (!InsertIntoGensetSpecs())
+                    return false;
+            }
+               else
             if (!InsertIntoUPSSpecs())
                 return false;
 
@@ -962,21 +967,17 @@ namespace _01electronics_crm
 
         public bool InsertIntoGensetSpecs() {
 
-            
+
             for (int i = 0; i < GENSETSpecs.Count; i++) {
-
-                string sqlQuery = $@"insert into genset_specs values ({GetCategoryID()},{GetProductID()},{GetBrandID()},{GetModelID()},{GENSETSpecs[i].spec_id},{GENSETSpecs[i].spec_name},{GENSETSpecs[i].RatedPower},{GENSETSpecs[i].rating_unit_id},{GENSETSpecs[i].ltb_50},{GENSETSpecs[i].ltb_50_unit},{GENSETSpecs[i].ltb_60},{GENSETSpecs[i].ltb_60_unit},{GENSETSpecs[i].prp_50},{GENSETSpecs[i].prp_50_unit},{GENSETSpecs[i].prp_60},{GENSETSpecs[i].prp_60_unit},{GENSETSpecs[i].cooling},{GENSETSpecs[i].tank},{GENSETSpecs[i].load_percentage},{GENSETSpecs[i].alternator},{GENSETSpecs[i].is_valid},{GENSETSpecs[i].valid_Until},{DateTime.Now})";
-
+                string sqlFormattedDate = GENSETSpecs[i].valid_Until.ToString("yyyy-MM-dd");
+                string Date = DateTime.Now.ToString("yyyy-MM-dd");
+         
+                string sqlQuery = $@"insert into erp_system.dbo.genset_specs values ({GetCategoryID()},{GetProductID()},{GetBrandID()},{GetModelID()},{GENSETSpecs[i].spec_id},'{GENSETSpecs[i].spec_name}',{GENSETSpecs[i].RatedPower},{GENSETSpecs[i].rating_unit_id},{GENSETSpecs[i].ltb_50},{GENSETSpecs[i].ltb_50_unit},{GENSETSpecs[i].ltb_60},{GENSETSpecs[i].ltb_60_unit},{GENSETSpecs[i].prp_50},{GENSETSpecs[i].prp_50_unit},{GENSETSpecs[i].prp_60},{GENSETSpecs[i].prp_60_unit},'{GENSETSpecs[i].cooling}','{GENSETSpecs[i].tank}','{GENSETSpecs[i].load_percentage}','{GENSETSpecs[i].alternator}',1,{sqlFormattedDate},{Date})";
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
-                    return false;
-                    
+                    return false;  
             }
-
             return true;
-
-
-
         }
 
 

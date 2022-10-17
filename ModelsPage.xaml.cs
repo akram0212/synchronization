@@ -28,7 +28,7 @@ namespace _01electronics_crm
 
         protected BackgroundWorker downloadBackground;
 
-        Frame frame;
+        //Frame frame;
         protected FTPServer ftpServer;
         protected List<String> modelsNames;
         protected String returnMessage;
@@ -55,10 +55,6 @@ namespace _01electronics_crm
             downloadBackground.ProgressChanged += OnDownloadProgressChanged;
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;
             downloadBackground.WorkerReportsProgress = true;
-
-            //  MainWindow mainWindow = new MainWindow();
-            //mainWindow.Navigated += OnNavigatingEventHandler;
-            //new WebBrowserNavigatingEventHandler(webBrowser1_Navigating);
 
             downloadProgressBar.Visibility = Visibility.Visible;
             downloadBackground.RunWorkerAsync();
@@ -108,7 +104,6 @@ namespace _01electronics_crm
               
                 for (int i = 0; i < brandModels.Count(); i++)
                 {
-
                     selectedProduct.SetModelID(brandModels[i].modelId);
 
 
@@ -143,28 +138,17 @@ namespace _01electronics_crm
                         src.CacheOption = BitmapCacheOption.OnLoad;
                       
 
-                        if (!File.Exists(selectedProduct.GetModelPhotoLocalPath()))
+                        if (File.Exists(selectedProduct.GetModelPhotoLocalPath()))
                         {
-
-
-
-                        }
-
-                        else {
-
                             try
                             {
                                 src.EndInit();
-
-
                             }
 
-                            catch { 
-                            
-                            
-                            
-                            }
+                            catch
+                            {
 
+                            }
                         }
 
                         brandImage.Source = src;
@@ -197,13 +181,6 @@ namespace _01electronics_crm
 
                         Grid row1Grid = new Grid();
 
-                        //ColumnDefinition headerColumn = new ColumnDefinition();
-                        //ColumnDefinition expanderColumn = new ColumnDefinition();
-                        //expanderColumn.Width = new GridLength(50);
-                        //
-                        //row1Grid.ColumnDefinitions.Add(headerColumn);
-                        //row1Grid.ColumnDefinitions.Add(expanderColumn);
-
                         row1Grid.Background = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                         TextBox modelTextBox = new TextBox();
                         modelTextBox.VerticalAlignment = VerticalAlignment.Center;
@@ -221,15 +198,12 @@ namespace _01electronics_crm
                         modelTextBox.TextWrapping = TextWrapping.Wrap;
                         Grid.SetRow(modelTextBox, 0);
                         Grid.SetColumn(modelTextBox, 0);
-                        //Grid.SetColumnSpan(row1Grid, 2);
-
 
 
                         Expander expander = new Expander();
                         expander.Tag = brandModels[i].modelId.ToString(); ;
                         expander.ExpandDirection = ExpandDirection.Down;
-                        //expander.VerticalAlignment = VerticalAlignment.Top;
-                        //expander.HorizontalAlignment = HorizontalAlignment.Right;
+
                         expander.VerticalAlignment = VerticalAlignment.Stretch;
                         expander.HorizontalAlignment = HorizontalAlignment.Left;
                         expander.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -240,9 +214,6 @@ namespace _01electronics_crm
 
                         StackPanel expanderStackPanel = new StackPanel();
                         expanderStackPanel.Orientation = Orientation.Vertical;
-                        //expanderStackPanel.MinHeight = 50;
-                        //expanderStackPanel.MinWidth= 50;
-
 
                         BrushConverter brushConverter = new BrushConverter();
 
@@ -298,7 +269,6 @@ namespace _01electronics_crm
                         scrollViewer2.VerticalAlignment = VerticalAlignment.Stretch;
                         scrollViewer2.Content = row2Grid;
                         Grid.SetRow(scrollViewer2, 1);
-                        //Grid.SetColumnSpan(scrollViewer2, 2);
 
                         if (!selectedProduct.InitializeModelSummaryPoints())
                             return;
@@ -361,6 +331,7 @@ namespace _01electronics_crm
 
                     }
                 }
+
                 if (brandModels.Count() == 0 || brandModels[0].modelId == 0)
                 {
                     Image brandImage = new Image();
