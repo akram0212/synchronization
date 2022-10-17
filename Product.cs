@@ -1079,7 +1079,7 @@ namespace _01electronics_crm
         //public void GetNewModelPhotoLocalPath()
         //{
         //    productphotoLocalPath = String.Empty;
-        //    productphotoServerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID() + "\\" + GetModelID() + ".jpg";
+        //    productphotoServerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\" + GetProductID() + "\\" + GetBrandID() + "\\" + GetModelID() + ".jpg";
         //}
         public String GetProductPhotoLocalPath()
         {
@@ -1090,13 +1090,13 @@ namespace _01electronics_crm
         //public String GetBrandPhotoLocalPath()
         //{
         //    photoLocalPath = String.Empty;
-        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\brands\\" + GetBrandID() + ".jpg";
+        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\brands\\" + GetBrandID() + ".jpg";
         //    return photoLocalPath;
         //}
         //public string GetModelFolderLocalPath()
         //{
         //    photoLocalPath = String.Empty;
-        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\" + GetProductID() + "\\" + GetBrandID();
+        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\" + GetProductID() + "\\" + GetBrandID();
         //    return photoLocalPath;
         //}
         public string GetProductFolderLocalPath()
@@ -1108,7 +1108,7 @@ namespace _01electronics_crm
         //public string GetBrandFolderLocalPath()
         //{
         //    photoLocalPath = String.Empty;
-        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01Electronics_ERP\\brands";
+        //    photoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\brands";
         //    return photoLocalPath;
         //}
 
