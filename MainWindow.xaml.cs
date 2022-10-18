@@ -143,9 +143,7 @@ namespace _01electronics_crm
                 }
                 else {
 
-                    canceled = true;
-                    this.Close();
-
+                    e.Cancel = false;
 
                 }
 
