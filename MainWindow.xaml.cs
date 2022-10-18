@@ -36,7 +36,7 @@ namespace _01electronics_crm
                 //ftpServer.GetModificationTime();
 
             }
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos");
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos");
 
 
             if (fileFound == false)
@@ -71,7 +71,7 @@ namespace _01electronics_crm
         private void BackgroundStart(object sender,DoWorkEventArgs e)
         {
             String errorMessage = String.Empty;
-            if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\", ref errorMessage))
+            if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos\\", ref errorMessage))
             {
                 return;
             }
