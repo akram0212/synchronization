@@ -47,7 +47,6 @@ namespace _01electronics_crm
             commonQueries = new CommonQueries();
             brandsList = new List<COMPANY_WORK_MACROS.BRAND_STRUCT>();
             brandsNames = new List<String>();
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01 Electronics/brands");
 
             QueryGetProductName();
             InitializeProductBrands();
