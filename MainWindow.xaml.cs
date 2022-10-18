@@ -27,12 +27,12 @@ namespace _01electronics_crm
 
             this.Closing += NavigationWindow_Closing;
 
-
+  
             InitializeComponent();
-            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\01electronics_crm\Track.txt"))
+            if (!File.Exists(Directory.GetCurrentDirectory() + "\\Track.txt"))
             {
                 fileFound = false;
-               File.Create(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\01electronics_crm\Track.txt").Close();
+               File.Create(Directory.GetCurrentDirectory() + "\\Track.txt").Close();
                 //ftpServer.GetModificationTime();
 
             }
