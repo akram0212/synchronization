@@ -15,6 +15,7 @@ namespace _01electronics_crm
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+        bool canceled = false;
         int progress = 0;
         bool closedWindow = false;
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
@@ -90,12 +91,9 @@ namespace _01electronics_crm
             if (closedWindow == true)
             {
                 CancelEventArgs cancelEventArgs = new CancelEventArgs();
-                cancelEventArgs.Cancel = false;
                 NavigationWindow_Closing(null, cancelEventArgs);
             }
 
-
-            Thread.CurrentThread.Suspend();
 
         }
 
@@ -119,6 +117,8 @@ namespace _01electronics_crm
 
         private void NavigationWindow_Closing(object sender, CancelEventArgs e)
         {
+            if (canceled == true)
+                return;
             closedWindow = true;
 
             this.Dispatcher.Invoke(() =>
@@ -130,7 +130,10 @@ namespace _01electronics_crm
                     if (progress == 100)
                     {
 
-                        e.Cancel = false;
+                        canceled = true;
+                        this.Close();
+
+
                     }
                     else
                     {
@@ -139,9 +142,13 @@ namespace _01electronics_crm
                     }
 
                 }
-                else
-                    e.Cancel = false;
-               
+                else {
+
+                    canceled = true;
+                    this.Close();
+
+
+                }
 
             });
            
@@ -149,7 +156,7 @@ namespace _01electronics_crm
 
         private void NavigationWindow_Closed(object sender, EventArgs e)
         {
-
+     
 
         }
     }
