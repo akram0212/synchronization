@@ -70,8 +70,6 @@ namespace _01electronics_crm
             mainGrid.Children.Add(productTitleLabel);
             Grid.SetRow(productTitleLabel, 0);
 
-
-
             WrapPanel brandsWrapPanel = new WrapPanel();
             brandsWrapPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
             brandsWrapPanel.Margin = new Thickness(50, 0, 0, 0);
@@ -79,6 +77,7 @@ namespace _01electronics_crm
             for (int i = 0; i < brandsList.Count(); i++)
             {
                 bool foundImage = true;
+
                 if (brandsList[i].brandId == 0)
                     continue;
                 Grid brandGrid = new Grid();
@@ -174,7 +173,21 @@ namespace _01electronics_crm
                 brandLogo.MouseDown += ImageMouseDown;
                 brandLogo.Margin = new Thickness(80, 100, 12, 12);
                 brandLogo.Tag = brandsList[i].brandId.ToString();
-                brandLogo.Name = brandsList[i].brandName;
+
+              //List<char> chars=brandsList[i].brandName.ToList();
+
+              //  for (int j = 0; j < chars.Count; j++) {
+
+              //      if (char.IsDigit(chars[j])||chars[j]==' ') {
+
+              //          chars.Remove(chars[j]);
+              //          j--;
+              //      }
+              //  }
+               
+              //brandLogo.Name = new string(chars.ToArray());
+
+                brandLogo.Name = brandsList[i].brandName; 
 
                 var e1 = new EventTrigger(UIElement.MouseEnterEvent);
                 e1.Actions.Add(new BeginStoryboard { Storyboard = (Storyboard)FindResource("expandStoryboard") });
@@ -187,16 +200,6 @@ namespace _01electronics_crm
 
                 brandLogo.Triggers.Add(e1);
                 brandLogo.Triggers.Add(e2);
-
-                //if(brandsList[i].brandId == 0)
-                //{
-                //    Label othersLabel = new Label();
-                //    othersLabel.Content = brandsList[i].brandName;
-                //    othersLabel.Style = (Style)FindResource("tableHeaderItem");
-                //    gridI.Children.Add(othersLabel);
-                //}    
-
-
 
                 Expander expander = new Expander();
                 expander.Tag = brandsList[i].brandId.ToString();

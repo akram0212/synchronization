@@ -307,7 +307,65 @@ namespace _01electronics_crm
             return true;
         }
 
+        public bool GetGensetSpecss() {
 
+            String sqlQuery = $@"select category_id,product_id,brand_id,model_id,spec_id,rating_unit,ltb_50_unit,ltb_60_unit,prp_50_unit,prp_60_unit,rated_power,ltb_50,ltb_60,prp_50,prp_60,valid_until,spec_name,ratedMeasure.measure_unit as ratedMeasure,ltb50measure.measure_unit as ltb50measure,ltb60measure.measure_unit as ltb60measure,prp50measure.measure_unit as prp50measure,prp60measure.measure_unit as prp60measure from genset_specs inner join measure_units as ratedMeasure on genset_specs.rating_unit=ratedMeasure.id
+inner join measure_units as ltb50measure on genset_specs.ltb_50_unit=ltb50measure.id
+inner join measure_units as ltb60measure on genset_specs.ltb_60_unit=ltb60measure.id
+inner join measure_units as prp50measure on genset_specs.prp_50_unit=prp50measure.id
+inner join measure_units as prp60measure on genset_specs.prp_60_unit=prp60measure.id
+where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id={GetBrandID()} and model_id={GetModelID()}";
+
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 10;
+            queryColumns.sql_money = 5;
+            queryColumns.sql_datetime = 1;
+            queryColumns.sql_string = 6;
+
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+                return false;
+
+            List<BASIC_STRUCTS.GENSET_SPEC> GensetSpecs = new List<BASIC_STRUCTS.GENSET_SPEC>();
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                BASIC_STRUCTS.GENSET_SPEC tempItem = new BASIC_STRUCTS.GENSET_SPEC();
+
+                tempItem.category = sqlDatabase.rows[i].sql_int[0];
+                tempItem.product = sqlDatabase.rows[i].sql_int[1];
+                tempItem.brand = sqlDatabase.rows[i].sql_int[2];
+                tempItem.model = sqlDatabase.rows[i].sql_int[3];
+                tempItem.spec_id = sqlDatabase.rows[i].sql_int[4];
+                tempItem.rating_unit_id = sqlDatabase.rows[i].sql_int[5];
+                tempItem.ltb_50_unit = sqlDatabase.rows[i].sql_int[6];
+                tempItem.ltb_60_unit = sqlDatabase.rows[i].sql_int[7];
+                tempItem.prp_50_unit = sqlDatabase.rows[i].sql_int[8];
+                tempItem.prp_60_unit = sqlDatabase.rows[i].sql_int[9];
+
+                tempItem.RatedPower = sqlDatabase.rows[i].sql_money[0];
+
+                tempItem.ltb_50 = sqlDatabase.rows[i].sql_money[1];
+                tempItem.ltb_60 = sqlDatabase.rows[i].sql_money[2];
+                tempItem.prp_50 = sqlDatabase.rows[i].sql_money[3];
+                tempItem.prp_60 = sqlDatabase.rows[i].sql_money[4];
+
+                tempItem.spec_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.rating_unit_name = sqlDatabase.rows[i].sql_string[1];
+                tempItem.ltb_50_unit_name = sqlDatabase.rows[i].sql_string[2];
+                tempItem.ltb_60_unit_name = sqlDatabase.rows[i].sql_string[3];
+                tempItem.prp_50_unit_name = sqlDatabase.rows[i].sql_string[4];
+                tempItem.prp_60_unit_name = sqlDatabase.rows[i].sql_string[5];
+                tempItem.valid_Until = sqlDatabase.rows[i].sql_datetime[0];
+
+                GensetSpecs.Add(tempItem);
+            }
+
+            GENSETSpecs = GensetSpecs;
+            return true;
+
+        }
 
         public bool InitializeModelApplications()
         {
@@ -422,8 +480,16 @@ namespace _01electronics_crm
             SetBrandID(mBrandID);
             SetModelID(mModelID);
 
-            if (!this.GetUPSSpecss())
-                return false;
+            if (GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            {
+                if (!GetGensetSpecss())
+                    return false;
+            }
+            else {
+                if (!this.GetUPSSpecss())
+                    return false;
+            }
+         
 
             if (!InitializeModelApplications())
                 return false;
@@ -432,111 +498,12 @@ namespace _01electronics_crm
             if (!InitializeModelFeatures())
                 return false;
 
-            //           String sqlQueryPart1 = @"	SELECT  
-            //	category_id
-            //	,ups_specs.product_id
-            //	,ups_specs.brand_id
-            //	,ups_specs.model_id
-            //	,spec_id
-            //	,io_phase
-            //	,rated_power
-            //	,rating
-            //	,backup_time_50
-            //	,backup_time_70
-            //	,backup_time_100
-            //	,input_power_factor
-            //	,thdi
-            //	,input_nominal_voltage
-            //	,input_voltage
-            //	,voltage_tolerance
-            //	,output_power_factor
-            //	,thdv
-            //	,output_nominal_voltage
-            //	,output_dc_voltage_range
-            //	,overload_capability
-            //	,efficiency
-            //	,input_connection_type
-            //	,front_panel
-            //	,max_power
-            //	,certificates
-            //	,safety
-            //	,emc
-            //	,environmental_aspects
-            //	,test_performance
-            //	,protection_degree
-            //	,transfer_voltage_limit
-            //	,marking
-            //	,is_valid
-            //	,valid_until
-            //	,erp_system.dbo.ups_specs.date_added
-
-            //	,models_summary_points.points_id
-            //	,models_summary_points.points
-
-            //	,model_applications.application_id
-            //	,model_applications.application
-
-            //	,model_benefits.benefit_id
-            //	,model_benefits.benefit
-
-            //	,model_standard_features.feature_id
-            //	,model_standard_features.feature
-
-            //	FROM erp_system.dbo.ups_specs
-
-            //left join erp_system.dbo.models_summary_points
-            //	on models_summary_points.product_id =ups_specs.product_id and  models_summary_points.brand_id = ups_specs.brand_id and models_summary_points.model_id =ups_specs.model_id
-
-            //left join erp_system.dbo.model_applications 
-            //	on model_applications.product_id =ups_specs.product_id and  model_applications.brand_id = ups_specs.brand_id and model_applications.model_id =ups_specs.model_id
-
-            //	left join erp_system.dbo.model_benefits
-            //	on model_benefits.product_id =ups_specs.product_id and  model_benefits.brand_id = ups_specs.brand_id and model_benefits.model_id =ups_specs.model_id
-
-            //left join erp_system.dbo.model_standard_features
-            //	on model_standard_features.product_id =ups_specs.product_id and  model_standard_features.brand_id = ups_specs.brand_id and model_standard_features.model_id =ups_specs.model_id
-            //where  ups_specs.product_id = ";
-            //           String sqlQueryPart2 = "and ups_specs.brand_id =";
-            //           String sqlQueryPart3 = "and ups_specs.model_id=";
-
-
-            //           sqlQuery = String.Empty;
-            //           sqlQuery += sqlQueryPart1;
-            //           sqlQuery += GetProductID();
-            //           sqlQuery += sqlQueryPart2;
-            //           sqlQuery += GetBrandID();
-            //           sqlQuery += sqlQueryPart3;
-            //           sqlQuery += GetModelID();
-
-            //           BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
-
-            //           queryColumns.sql_int=14;
-            //           queryColumns.sql_datetime=1;
-            //           queryColumns.sql_string = 27;
-
-            //           if (!sqlDatabase.GetRows(sqlQuery, queryColumns, BASIC_MACROS.SEVERITY_LOW))
-            //               return false;
-            //           for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            //           {
-            //               numberOfSavedModelSummaryPoints = sqlDatabase.rows[i].sql_int[5];
-
-            //               if (numberOfSavedModelSummaryPoints > 0)
-            //                   modelSummaryPoints.Add(sqlDatabase.rows[i].sql_string[23]);
-            //           }
-
-            //           for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            //           {
-            //              // number = sqlDatabase.rows[i].sql_int[5];
-
-            //               if (numberOfSavedModelSummaryPoints > 0)
-            //                   modelSummaryPoints.Add(sqlDatabase.rows[i].sql_string[23]);
-            //           }
-
             GetNewModelPhotoLocalPath();
             GetNewPhotoServerPath();
 
             return true;
         }
+
         public bool GetNewModelID()
         {
             String sqlQueryPart1 = @"select max(model_id)
@@ -680,6 +647,11 @@ namespace _01electronics_crm
                 return false;
             if (!InsertIntoModelSummaryPoints())
                 return false;
+            if (GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+                if (!InsertIntoGensetSpecs())
+                    return false;
+            }
+               else
             if (!InsertIntoUPSSpecs())
                 return false;
 
@@ -962,21 +934,17 @@ namespace _01electronics_crm
 
         public bool InsertIntoGensetSpecs() {
 
-            
+
             for (int i = 0; i < GENSETSpecs.Count; i++) {
-
-                string sqlQuery = $@"insert into genset_specs values ({GetCategoryID()},{GetProductID()},{GetBrandID()},{GetModelID()},{GENSETSpecs[i].spec_id},{GENSETSpecs[i].spec_name},{GENSETSpecs[i].RatedPower},{GENSETSpecs[i].rating_unit_id},{GENSETSpecs[i].ltb_50},{GENSETSpecs[i].ltb_50_unit},{GENSETSpecs[i].ltb_60},{GENSETSpecs[i].ltb_60_unit},{GENSETSpecs[i].prp_50},{GENSETSpecs[i].prp_50_unit},{GENSETSpecs[i].prp_60},{GENSETSpecs[i].prp_60_unit},{GENSETSpecs[i].cooling},{GENSETSpecs[i].tank},{GENSETSpecs[i].load_percentage},{GENSETSpecs[i].alternator},{GENSETSpecs[i].is_valid},{GENSETSpecs[i].valid_Until},{DateTime.Now})";
-
+                string sqlFormattedDate = GENSETSpecs[i].valid_Until.ToString("yyyy-MM-dd");
+                string Date = DateTime.Now.ToString("yyyy-MM-dd");
+         
+                string sqlQuery = $@"insert into erp_system.dbo.genset_specs values ({GetCategoryID()},{GetProductID()},{GetBrandID()},{GetModelID()},{GENSETSpecs[i].spec_id},'{GENSETSpecs[i].spec_name}',{GENSETSpecs[i].RatedPower},{GENSETSpecs[i].rating_unit_id},{GENSETSpecs[i].ltb_50},{GENSETSpecs[i].ltb_50_unit},{GENSETSpecs[i].ltb_60},{GENSETSpecs[i].ltb_60_unit},{GENSETSpecs[i].prp_50},{GENSETSpecs[i].prp_50_unit},{GENSETSpecs[i].prp_60},{GENSETSpecs[i].prp_60_unit},'{GENSETSpecs[i].cooling}','{GENSETSpecs[i].tank}','{GENSETSpecs[i].load_percentage}','{GENSETSpecs[i].alternator}',1,{sqlFormattedDate},{Date})";
 
                 if (!sqlDatabase.InsertRows(sqlQuery))
-                    return false;
-                    
+                    return false;  
             }
-
             return true;
-
-
-
         }
 
 

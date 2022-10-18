@@ -41,7 +41,7 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
-        private int viewAddCondition;
+        public int viewAddCondition;
 
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelUpsSpecsPage modelUpsSpecsPage;
@@ -116,10 +116,7 @@ namespace _01electronics_crm
 
             serverFolderPath = product.GetModelFolderServerPath();
             
-            
-            
-
-          
+           
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
@@ -130,7 +127,11 @@ namespace _01electronics_crm
 
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
-               // File.Delete(product.GetModelPhotoLocalPath());
+
+                //added by akram
+                if(File.Exists(product.GetModelPhotoLocalPath()))
+                File.Delete(product.GetModelPhotoLocalPath());
+
 
             }
 
@@ -240,6 +241,7 @@ namespace _01electronics_crm
         {
             modelAdditionalInfoPage.modelBasicInfoPage = this;
             modelAdditionalInfoPage.modelUpsSpecsPage = modelUpsSpecsPage;
+            product.SetModelName(modelNameTextBox.Text);
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelAdditionalInfoPage.modelUploadFilesPage = modelUploadFilesPage;
@@ -264,6 +266,8 @@ namespace _01electronics_crm
         {
             modelUpsSpecsPage.modelBasicInfoPage = this;
             modelUpsSpecsPage.modelAdditionalInfoPage = modelAdditionalInfoPage;
+            product.SetModelName(modelNameTextBox.Text);
+
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION) { 
                 modelUpsSpecsPage.modelUploadFilesPage = modelUploadFilesPage;
@@ -328,6 +332,7 @@ namespace _01electronics_crm
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
+
             try
             {
                 summeryPointsLabel.Text = product.GetModelSummaryPoints()[0];
@@ -1109,17 +1114,17 @@ namespace _01electronics_crm
             //});
 
 
-             if (!product.IssueNewModel())
-                 return;
+             //if (!product.IssueNewModel())
+             //    return;
 
-            if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-            {
-                viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+            //if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            //{
+            //    viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
 
-                ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+            //    ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
 
-                viewproduct.Show();
-            }
+            //    viewproduct.Show();
+            //}
 
 
         //NavigationWindow currentWindow = (NavigationWindow)this.Parent;

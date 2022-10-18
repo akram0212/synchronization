@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using _01electronics_library;
 
 namespace _01electronics_crm
@@ -22,7 +20,6 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ModelAdditionalInfoPage : Page
     {
-
         Employee loggedInUser;
         Model product;
         private CommonQueries commonQueriesObject;
@@ -41,10 +38,12 @@ namespace _01electronics_crm
         private List<String> modelStandardFeatures;
         private List<String> modelBenefits;
         private List<String> modelApplications;
-        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition)
+        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition, ModelUpsSpecsPage modelUpssSpecsPage = null, ModelBasicInfoPage ModelBasicInfo = null)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
+            modelBasicInfoPage = ModelBasicInfo;
+            modelUpsSpecsPage = modelUpssSpecsPage;
 
             sqlDatabase = new SQLServer();
 
@@ -88,15 +87,19 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
+
+            //modelBasicInfoPage.uploadBackground.RunWorkerAsync();
             modelStandardFeatures.Clear();
             modelBenefits.Clear();
             modelApplications.Clear();
 
-            for (int i = 0; i < standardFeaturesGrid.Children.Count; i ++)
+
+ 
+            for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
             {
                 Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
                 TextBox feature = innerGrid.Children[1] as TextBox;
-                if(feature.Text.ToString() != String.Empty)
+                if (feature.Text.ToString() != String.Empty)
                     modelStandardFeatures.Add(feature.Text.ToString());
             }
 
@@ -119,62 +122,99 @@ namespace _01electronics_crm
                     modelApplications.Add(feature.Text.ToString());
             }
             product.SetModelApplications(modelApplications);
-            if (product.GetModelName() == null)
-                System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetModelSummaryPoints().Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            //else if (product.GetUPSSpecs().Count() == 0)
-            //    System.Windows.Forms.MessageBox.Show("Model Specs must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].io_phase == null)
-                System.Windows.Forms.MessageBox.Show("Model IO Phase must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].rated_power == null)
-                System.Windows.Forms.MessageBox.Show("Model rated power must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].rating_id == null)
-                System.Windows.Forms.MessageBox.Show("Model rating must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_50 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_50 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_70 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_70 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].backup_time_100 == null)
-                System.Windows.Forms.MessageBox.Show("Model backup_time_100 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (product.GetUPSSpecs()[0].valid_until == null)
-                System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelStandardFeatures.Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelBenefits.Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else if (modelApplications.Count() == 0)
-                System.Windows.Forms.MessageBox.Show("Model Applications must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-            else
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
-                {
-                    modelBasicInfoPage.uploadBackground.RunWorkerAsync();
 
+                if (product.GetModelName() == null)
+                    System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (CheckGensetRequired() == false)
+                    return;
+                else if (product.GetModelSummaryPoints().Count() == 0)
+                    System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 
-                    if (!product.IssueNewModel())
-                        return;
-
-
-
-
-                    if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
-                    {
-                        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
-
-                        ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
-
-                        viewproduct.Show();
-                    }
-
-                }
                 else
                 {
-                    NavigationWindow currentWindow = (NavigationWindow)this.Parent;
-                    currentWindow.Close();
+                    if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+                    {
+                        if (!product.IssueNewModel())
+                            return;
+
+                        modelBasicInfoPage.uploadBackground.RunWorkerAsync();
+
+                        if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                        {
+                            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                            ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                            viewproduct.Show();
+                        }
+                    }
+                    else
+                    {
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
+                    }
+                }
+            }
+
+            else
+            {
+                if (product.GetModelName() == null)
+                    System.Windows.Forms.MessageBox.Show("Model Name must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetModelSummaryPoints().Count() == 0)
+                    System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                //else if (product.GetUPSSpecs().Count() == 0)
+                //    System.Windows.Forms.MessageBox.Show("Model Specs must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].io_phase == null)
+                    System.Windows.Forms.MessageBox.Show("Model IO Phase must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].rated_power == null)
+                    System.Windows.Forms.MessageBox.Show("Model rated power must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].rating_id == null)
+                    System.Windows.Forms.MessageBox.Show("Model rating must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].backup_time_50 == null)
+                    System.Windows.Forms.MessageBox.Show("Model backup_time_50 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].backup_time_70 == null)
+                    System.Windows.Forms.MessageBox.Show("Model backup_time_70 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].backup_time_100 == null)
+                    System.Windows.Forms.MessageBox.Show("Model backup_time_100 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (product.GetUPSSpecs()[0].valid_until == null)
+                    System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (modelStandardFeatures.Count() == 0)
+                    System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (modelBenefits.Count() == 0)
+                    System.Windows.Forms.MessageBox.Show("Model Benefits must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else if (modelApplications.Count() == 0)
+                    System.Windows.Forms.MessageBox.Show("Model Applications must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                else
+                {
+                    if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
+                    {
+
+
+                        if (!product.IssueNewModel())
+                            return;
+                        modelBasicInfoPage.uploadBackground.RunWorkerAsync();
+
+                        if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                        {
+                            viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+
+                            ModelsWindow viewproduct = new ModelsWindow(ref loggedInUser, ref product, viewAddCondition, true);
+
+                            viewproduct.Show();
+                        }
+
+                    }
+                    else
+                    {
+                        NavigationWindow currentWindow = (NavigationWindow)this.Parent;
+                        currentWindow.Close();
+                    }
+
 
                 }
-
 
             }
         }
@@ -237,7 +277,7 @@ namespace _01electronics_crm
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage; 
+                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
                 modelUploadFilesPage.modelUpsSpecsPage = modelUpsSpecsPage;
                 modelUploadFilesPage.modelAdditionalInfoPage = this;
 
@@ -293,8 +333,8 @@ namespace _01electronics_crm
         }
         private void AddNewStandardFeature(int index, String labelContent, Grid mainGrid, Grid parentGrid, int selectedGridiD, MouseButtonEventHandler onClickHandler)
         {
-            if(index != 0 && index != -1)
-                 if(index == 1 && viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            if (index != 0 && index != -1)
+                if (index == 1 && viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 {
                     parentGrid.Children.RemoveAt(2);
                 }
@@ -302,19 +342,20 @@ namespace _01electronics_crm
                 {
                     parentGrid.Children.RemoveAt(3);
                 }
-            else if(index == 0) { 
+            else if (index == 0)
+            {
                 if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
                 {
                     mainGrid.Children.Clear();
                 }
-                else 
-                { 
-                parentGrid.Children.RemoveAt(2);
+                else
+                {
+                    parentGrid.Children.RemoveAt(2);
                 }
             }
 
             parentGrid.Tag = selectedGridiD;
-            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count-1);
+            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count - 1);
 
             //Image removeIcon = new Image();
             //removeIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
@@ -334,7 +375,7 @@ namespace _01electronics_crm
 
             /////NEW FEATURE GRID
             Grid gridI = new Grid();
-            
+
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 Grid.SetRow(gridI, index);
@@ -410,14 +451,24 @@ namespace _01electronics_crm
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
 
+
                 
                 
                 if ((index > product.GetModelStandardFeatures().Count && selectedGridiD == standardFeatureId)|| (index > product.GetModelBenefits().Count && selectedGridiD == benefitId) || (index > product.GetModelApplications().Count && selectedGridiD == applicationId))
+
+
+                featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
+                featureNameLabel.Width = 200;
+                featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                featureNameLabel.Style = (Style)FindResource("labelStyle");
+                if (selectedGridiD == standardFeatureId)
+
                 {
 
                 }
                 else
                 {
+
                     featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
                     featureNameLabel.Width = 200;
                     featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
@@ -438,9 +489,10 @@ namespace _01electronics_crm
                     Grid.SetColumn(featureNameLabel, 1);
                     featureTextBox.Visibility = Visibility.Collapsed;
                 }
+
             }
-           
-            
+
+
 
             gridI.Children.Add(featureIdLabel);
             gridI.Children.Add(featureTextBox);
@@ -475,7 +527,7 @@ namespace _01electronics_crm
                 addVendorImage.Height = 20;
                 addVendorImage.Width = 20;
 
-                if(tagID == standardFeatureId)
+                if (tagID == standardFeatureId)
                     addVendorImage.MouseLeftButtonDown += onClickHandler;
                 else if (tagID == benefitId)
                     addVendorImage.MouseLeftButtonDown += OnClickBenefitsImage;
@@ -576,16 +628,53 @@ namespace _01electronics_crm
             }
             updateLabelIds(Content, outerGrid, index);
         }
-        void updateLabelIds(String content, Grid currentGrid, int index)
+        public void updateLabelIds(String content, Grid currentGrid, int index)
         {
-            for(int i = index; i < currentGrid.Children.Count; i++)
+            for (int i = index; i < currentGrid.Children.Count; i++)
             {
                 Grid innerGrid = currentGrid.Children[i] as Grid;
                 Label header = innerGrid.Children[0] as Label;
                 header.Content = content + (i + 1).ToString();
             }
         }
-        void InitializeStandardFeature()
+
+
+
+        public bool CheckGensetRequired()
+        {
+
+            for (int i = 0; i < modelUpsSpecsPage.mainGrid.Children.Count; i++)
+            {
+
+                Grid card = modelUpsSpecsPage.mainGrid.Children[i] as Grid;
+
+                WrapPanel wrap1 = card.Children[1] as WrapPanel;
+
+                WrapPanel ratedPanel = wrap1.Children[0] as WrapPanel;
+
+                TextBox ratedPower = ratedPanel.Children[1] as TextBox;
+                if (ratedPower.Text == "")
+                {
+                    System.Windows.Forms.MessageBox.Show("You have to enter the rated Power", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    return false;
+                }
+
+                WrapPanel modelPanel = wrap1.Children[1] as WrapPanel;
+
+                TextBox modelTextBox = modelPanel.Children[1] as TextBox;
+                if (modelTextBox.Text == "")
+                {
+
+                    System.Windows.Forms.MessageBox.Show("You have to enter the Spec Name", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    return false;
+
+                }
+
+            }
+            return true;
+        }
+
+        public void InitializeStandardFeature()
         {
 
             try
@@ -594,6 +683,7 @@ namespace _01electronics_crm
                 standardFeaturesTextBox1.Visibility = Visibility.Collapsed;
                 standardFeaturesLabel1.Visibility = Visibility.Visible;
              
+
 
                 for (int i = 1; i < product.GetModelStandardFeatures().Count; i++)
                 {
@@ -605,6 +695,7 @@ namespace _01electronics_crm
                 }
             }
             catch (Exception ex)
+
             {
 
             }
