@@ -74,18 +74,8 @@ namespace _01electronics_crm
         {
         }
 
-        private void BackgroundStart(object sender, DoWorkEventArgs e)
-        {
 
-            //ftpServer.CheckChangingTime(BASIC_MACROS.MODELS_PHOTOS_PATH);
-            String errorMessage = String.Empty;
-            if (!ftpServer.DownloadFolder(BASIC_MACROS.PRODUCTS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\products\\", ref errorMessage))
-            {
-                return;
-            }
-        }
-
-        private void BackgroundExecuteRest(object sender, RunWorkerCompletedEventArgs e)
+        private void BackgroundStart(object sender,DoWorkEventArgs e)
         {
             backgroundWorker.WorkerReportsProgress = true;
 
@@ -94,6 +84,7 @@ namespace _01electronics_crm
             {
                 return;
             }
+
 
             backgroundWorker.ReportProgress(100);
 
