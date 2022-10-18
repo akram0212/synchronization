@@ -82,7 +82,9 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
             {
+                oldMaintContract = new MaintenanceContract(sqlDatabase);
                 oldMaintContract.CopyMaintenanceContract(maintContract);
+                //oldMaintContract = maintContract;
 
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
