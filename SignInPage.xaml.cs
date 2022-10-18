@@ -80,7 +80,10 @@ namespace _01electronics_crm
             //    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //    return;
             //}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4e39778bacf13b210f1bd8e0b68e71e3265d206d
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
@@ -92,7 +95,10 @@ namespace _01electronics_crm
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
                 _01electronics_crm.Properties.Settings.Default.Save();
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4e39778bacf13b210f1bd8e0b68e71e3265d206d
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
