@@ -775,6 +775,18 @@ namespace _01electronics_crm
                 if (!maintenanceContract.UpdateMaintContractWarrantyPeriod())
                     return false;
 
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetContractAutomaticallyRenewed().Equals(maintenanceContract.GetContractAutomaticallyRenewed()))
+                if (!maintenanceContract.UpdateMaintContractAutomaticallyRenewed())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetContractIncreaseRate().Equals(maintenanceContract.GetContractIncreaseRate()))
+                if (!maintenanceContract.UpdateMaintContractIncreaseRate())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractNotes().Equals(maintenanceContract.GetMaintContractNotes()))
+                if (!maintenanceContract.UpdateMaintContractNotes())
+                    return false;
+
             return true;
         }
     }
