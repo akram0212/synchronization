@@ -33,7 +33,7 @@ namespace _01electronics_crm
             {
                 fileFound = false;
                File.Create(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\source\01electronics_crm\Track.txt").Close();
-                ftpServer.GetModificationTime();
+                //ftpServer.GetModificationTime();
 
             }
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos");
@@ -54,14 +54,14 @@ namespace _01electronics_crm
         }
 
  
-        private void OnTimerElapsed(object o, ElapsedEventArgs s)
-        {
-            if (ftpServer.CheckDateChanged() == false)
-                MessageBox.Show("Nothing Changed");
-            else {
-                ftpServer.GetFileParsing();     
-            }
-        }
+        //private void OnTimerElapsed(object o, ElapsedEventArgs s)
+        //{
+        //    if (ftpServer.CheckDateChanged() == false)
+        //        MessageBox.Show("Nothing Changed");
+        //    else {
+        //        ftpServer.GetFileParsing();     
+        //    }
+        //}
 
         public MainWindow()
         {

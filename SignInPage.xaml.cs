@@ -91,6 +91,17 @@ namespace _01electronics_crm
             //    _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
             //    _01electronics_crm.Properties.Settings.Default.Save();
             //}
+            if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
+            {
+                _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
+                _01electronics_crm.Properties.Settings.Default.PassWord = employeePasswordTextBox.Password;
+                _01electronics_crm.Properties.Settings.Default.Save();
+            }
+            else
+            {
+                _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
+                _01electronics_crm.Properties.Settings.Default.Save();
+            }
 
             MainWindow mainWindowOpen = new MainWindow(ref loggedInUser);
 

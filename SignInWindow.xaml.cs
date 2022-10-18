@@ -11,8 +11,8 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
-            SignInPage signIn = new SignInPage();
-            this.NavigationService.Navigate(signIn);
+            //SignInPage signIn = new SignInPage();
+            //this.NavigationService.Navigate(signIn);
         }
 
     }

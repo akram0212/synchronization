@@ -16,8 +16,8 @@ namespace _01electronics_crm
     {
         Employee loggedInUser;
         MaintenanceContract maintContract;
+        public MaintenanceContract oldMaintContract;
         MaintenanceOffer tmpMaintOffer;
-
 
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
@@ -53,6 +53,7 @@ namespace _01electronics_crm
             commonFunctionsObject = new CommonFunctions();
 
             maintContract = mMaintContracts;
+            oldMaintContract = new MaintenanceContract();
             //tmpMaintOffer = new MaintenanceOffer();
 
             InitializeComponent();
@@ -81,6 +82,8 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
             {
+                oldMaintContract.CopyMaintenanceContract(maintContract);
+
                 FillOffersList();
                 ConfigureUIElemenetsForAdd();
                 InitializeSalesPersonCombo();
