@@ -65,7 +65,8 @@ namespace _01electronics_crm
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
                 InitializeStandardFeature();
-                //InitializeBenifits();
+                InitializeBenifits();
+                InitializeApplications();
                 cancelButton.IsEnabled = false;
                 finishButton.IsEnabled = false;
                 nextButton.IsEnabled = true;
@@ -251,8 +252,14 @@ namespace _01electronics_crm
             parentGrid.Tag = standardFeatureId;
             int index = standardFeaturesGrid.Children.IndexOf(parentGrid);
 
-            AddNewStandardFeature(index, "Feature #", standardFeaturesGrid, parentGrid, standardFeatureId, onClickHandler);
-
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                AddNewStandardFeature(index+1, "Feature #", standardFeaturesGrid, parentGrid, standardFeatureId, onClickHandler);
+            }
+            else
+            {
+                AddNewStandardFeature(index, "Feature #", standardFeaturesGrid, parentGrid, standardFeatureId, onClickHandler);
+            }
         }
 
         private void OnClickBenefitsImage(object sender, MouseButtonEventArgs e)
@@ -262,7 +269,15 @@ namespace _01electronics_crm
             parentGrid.Tag = benefitId;
             int index = benefitsGrid.Children.IndexOf(parentGrid);
 
-            AddNewStandardFeature(index, "Benefit #", benefitsGrid, parentGrid, benefitId, OnClickBenefitsImage);
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                AddNewStandardFeature(index+1, "Benefit #", benefitsGrid, parentGrid, benefitId, OnClickBenefitsImage);
+            }
+            else
+            {
+                AddNewStandardFeature(index, "Benefit #", benefitsGrid, parentGrid, benefitId, OnClickBenefitsImage);
+            }
+            
 
         }
 
@@ -376,7 +391,18 @@ namespace _01electronics_crm
             addIcon.Width = 20;
             addIcon.Height = 20;
             addIcon.Margin = new Thickness(55, 0, 10, 0);
-            addIcon.MouseLeftButtonDown += onClickHandler;
+            if (selectedGridiD == standardFeatureId)
+            {
+                addIcon.MouseLeftButtonDown += onClickHandler;
+            }
+            else if (selectedGridiD == benefitId)
+            {
+                addIcon.MouseLeftButtonDown += OnClickBenefitsImage;
+            }
+            else
+            {
+                addIcon.MouseLeftButtonDown += OnClickApplicationsImage;
+            }
             //addIcon.Tag = selectedGridiD;
             //addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
             Grid.SetColumn(addIcon, 2);
@@ -385,25 +411,33 @@ namespace _01electronics_crm
             {
 
                 
-                featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
-                featureNameLabel.Width = 200;
-                featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
-                featureNameLabel.Style = (Style)FindResource("labelStyle");
-                if (selectedGridiD == standardFeatureId)
+                
+                if ((index > product.GetModelStandardFeatures().Count && selectedGridiD == standardFeatureId)|| (index > product.GetModelBenefits().Count && selectedGridiD == benefitId) || (index > product.GetModelApplications().Count && selectedGridiD == applicationId))
                 {
-                    featureNameLabel.Content = product.GetModelStandardFeatures()[index].ToString();
+
                 }
-                else if (selectedGridiD == benefitId)
+                else
                 {
-                    featureNameLabel.Content = product.GetModelBenefits()[index+1].ToString();
+                    featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
+                    featureNameLabel.Width = 200;
+                    featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                    featureNameLabel.Style = (Style)FindResource("labelStyle");
+                    if (selectedGridiD == standardFeatureId)
+                    {
+                        featureNameLabel.Content = product.GetModelStandardFeatures()[index].ToString();
+                    }
+                    else if (selectedGridiD == benefitId)
+                    {
+                        featureNameLabel.Content = product.GetModelBenefits()[index].ToString();
+                    }
+                    else if(selectedGridiD == applicationId)
+                    {
+                        featureNameLabel.Content = product.GetModelApplications()[index].ToString();
+                    }
+                    featureNameLabel.Visibility = Visibility.Visible;
+                    Grid.SetColumn(featureNameLabel, 1);
+                    featureTextBox.Visibility = Visibility.Collapsed;
                 }
-                else 
-                {
-                    featureNameLabel.Content = product.GetModelApplications()[index+1].ToString();
-                }
-                featureNameLabel.Visibility = Visibility.Visible;
-                Grid.SetColumn(featureNameLabel, 1);
-                featureTextBox.Visibility = Visibility.Collapsed;
             }
            
             
@@ -456,11 +490,35 @@ namespace _01electronics_crm
                 previousGrid.Children.Add(viewLabel);
                 Grid.SetColumn(addVendorImage, 2);
                 outerGrid.Children.Remove(innerGrid);
+                if ((Int32)outerGrid.Tag == standardFeatureId && product.GetModelStandardFeatures().Count > 1)
+                {
+                    product.GetModelStandardFeatures().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == benefitId && product.GetModelBenefits().Count > 1)
+                {
+                    product.GetModelBenefits().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == applicationId && product.GetModelApplications().Count > 1)
+                {
+                    product.GetModelApplications().RemoveAt(index);
+                }
                 outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
             }
             else if (index == outerGrid.Children.Count - 1 && outerGrid.Children.Count != 0)
             {
                 outerGrid.Children.Remove(innerGrid);
+                if ((Int32)outerGrid.Tag == standardFeatureId && product.GetModelStandardFeatures().Count > 1)
+                {
+                    product.GetModelStandardFeatures().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == benefitId && product.GetModelBenefits().Count > 1)
+                {
+                    product.GetModelBenefits().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == applicationId && product.GetModelApplications().Count > 1)
+                {
+                    product.GetModelApplications().RemoveAt(index);
+                }
                 outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
 
                 Grid previousInnerGrid = (Grid)outerGrid.Children[index - 1];
@@ -484,10 +542,21 @@ namespace _01electronics_crm
                         Grid.SetRow(innerGrid, outerGrid.RowDefinitions.Count - 1);
                     else
                         Grid.SetRow(outerGrid.Children[i], i - 1);
-
                 }
 
                 outerGrid.Children.Remove(innerGrid);
+                if ((Int32)outerGrid.Tag == standardFeatureId && product.GetModelStandardFeatures().Count>1)
+                {
+                    product.GetModelStandardFeatures().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == benefitId && product.GetModelBenefits().Count > 1)
+                {
+                    product.GetModelBenefits().RemoveAt(index);
+                }
+                else if ((Int32)outerGrid.Tag == applicationId && product.GetModelApplications().Count > 1)
+                {
+                    product.GetModelApplications().RemoveAt(index);
+                }
 
                 outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
             }
@@ -519,60 +588,75 @@ namespace _01electronics_crm
         void InitializeStandardFeature()
         {
 
-            //try {
-            standardFeaturesLabel1.Content = product.GetModelStandardFeatures()[0].ToString();
-            standardFeaturesTextBox1.Visibility = Visibility.Collapsed;
-            standardFeaturesLabel1.Visibility = Visibility.Visible;
-            //AddNewStandardFeature(0, "Feature #", standardFeaturesGrid, standardFeaturesGrid.Children[0] as Grid, standardFeatureId, onClickHandler);
+            try
+            {
+                standardFeaturesLabel1.Content = product.GetModelStandardFeatures()[0].ToString();
+                standardFeaturesTextBox1.Visibility = Visibility.Collapsed;
+                standardFeaturesLabel1.Visibility = Visibility.Visible;
+             
 
-            //standardFeautersGrid.Children.Clear();
-
-            for (int i = 1; i < product.GetModelStandardFeatures().Count; i++)
+                for (int i = 1; i < product.GetModelStandardFeatures().Count; i++)
                 {
 
                     standardFeaturesGrid.Tag = standardFeatureId;
-                        Grid Currentgrid = new Grid();
-                        Currentgrid = (Grid)standardFeaturesGrid.Children[i-1];
-                        AddNewStandardFeature(i , "Feature #", standardFeaturesGrid, Currentgrid, standardFeatureId, onClickHandler);
-
-                    //if(i > 1)
-                    //{
-
-                    //}
-                    //else
-                    //{
-                        //AddNewStandardFeature(i-1, "Feature #", standardFeaturesGrid, standardFeautersGrid, standardFeatureId, onClickHandler);
-
-                    //}
-
-
-
+                    Grid Currentgrid = new Grid();
+                    Currentgrid = (Grid)standardFeaturesGrid.Children[i - 1];
+                    AddNewStandardFeature(i, "Feature #", standardFeaturesGrid, Currentgrid, standardFeatureId, onClickHandler);
                 }
-           // standardFeaturesGrid.Children.RemoveAt(0);
-           // standardFeaturesGrid.RowDefinitions.RemoveAt(0);
-            //}
-
-            //catch(Exception ex) {
-                
-            //}
-        }
-
-        void InitializeBenifits()
-        {
-            //benifitsdFeautersGrid.Children.Clear();
-
-            
-
-            for (int i = 0; i < product.GetModelBenefits().Count; i++)
+            }
+            catch (Exception ex)
             {
 
-                benifitsdFeautersGrid.Tag = benefitId;
-                int index = benifitsdFeautersGrid.Children.IndexOf(benifitsdFeautersGrid);
-                AddNewStandardFeature(i, "Benefit #", benefitsGrid, benifitsdFeautersGrid, benefitId, OnClickBenefitsImage);
+            }
+        }
+        void InitializeBenifits()
+        {
+            try
+            {
+                benefitsLabel1.Content = product.GetModelBenefits()[0].ToString();
+                benefitsTextBox1.Visibility = Visibility.Collapsed;
+                benefitsLabel1.Visibility = Visibility.Visible;
 
 
+                for (int i = 1; i < product.GetModelBenefits().Count; i++)
+                {
+
+                    benefitsGrid.Tag = benefitId;
+                    Grid Currentgrid = new Grid();
+                    Currentgrid = (Grid)benefitsGrid.Children[i - 1];
+                    AddNewStandardFeature(i, "Benefit #", benefitsGrid, Currentgrid, benefitId, onClickHandler);
+                }
+            }
+            catch (Exception ex)
+            {
 
             }
+
+        }
+
+        void InitializeApplications()
+        {
+            //try
+            //{
+                applicationsLabel1.Content = product.GetModelBenefits()[0].ToString();
+                applicationsTextBox1.Visibility = Visibility.Collapsed;
+                applicationsLabel1.Visibility = Visibility.Visible;
+
+
+                for (int i = 1; i < product.GetModelApplications().Count; i++)
+                {
+
+                    applicationsGrid.Tag = applicationId;
+                    Grid Currentgrid = new Grid();
+                    Currentgrid = (Grid)applicationsGrid.Children[i - 1];
+                    AddNewStandardFeature(i, "Application #", applicationsGrid, Currentgrid, applicationId, onClickHandler);
+                }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+
         }
     }
 }
