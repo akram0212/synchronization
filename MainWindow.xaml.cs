@@ -26,7 +26,7 @@ namespace _01electronics_crm
         {
 
             this.Closing += NavigationWindow_Closing;
-
+            backgroundWorker.WorkerReportsProgress = true;
   
             InitializeComponent();
             if (!File.Exists(Directory.GetCurrentDirectory() + "\\Track.txt"))

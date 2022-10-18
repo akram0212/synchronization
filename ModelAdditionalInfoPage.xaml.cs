@@ -454,7 +454,7 @@ namespace _01electronics_crm
 
                 
                 
-                if ((index > product.GetModelStandardFeatures().Count && selectedGridiD == standardFeatureId)|| (index > product.GetModelBenefits().Count && selectedGridiD == benefitId) || (index > product.GetModelApplications().Count && selectedGridiD == applicationId))
+                if ((index+1 > product.GetModelStandardFeatures().Count && selectedGridiD == standardFeatureId)|| (index+1 > product.GetModelBenefits().Count && selectedGridiD == benefitId) || (index+1 > product.GetModelApplications().Count && selectedGridiD == applicationId))
 
 
                 featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
@@ -500,13 +500,6 @@ namespace _01electronics_crm
             gridI.Children.Add(addIcon);
             gridI.Children.Add(featureNameLabel);
 
-            //if (index != 0)
-            //{ 
-            //}
-
-            /////////////////////////////////////////////
-
-            //standardFeaturesGrid.Children.Add(gridI);
             mainGrid.Children.Add(gridI);
         }
 
@@ -729,7 +722,7 @@ namespace _01electronics_crm
         {
             //try
             //{
-                applicationsLabel1.Content = product.GetModelBenefits()[0].ToString();
+                applicationsLabel1.Content = product.GetModelApplications()[0].ToString();
                 applicationsTextBox1.Visibility = Visibility.Collapsed;
                 applicationsLabel1.Visibility = Visibility.Visible;
 
