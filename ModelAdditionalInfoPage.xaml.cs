@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,11 +38,11 @@ namespace _01electronics_crm
         private List<String> modelStandardFeatures;
         private List<String> modelBenefits;
         private List<String> modelApplications;
-        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition,ModelUpsSpecsPage modelUpssSpecsPage=null,ModelBasicInfoPage ModelBasicInfo=null)
+        public ModelAdditionalInfoPage(ref Employee mLoggedInUser, ref Model mPrduct, int mViewAddCondition, ModelUpsSpecsPage modelUpssSpecsPage = null, ModelBasicInfoPage ModelBasicInfo = null)
         {
             loggedInUser = mLoggedInUser;
             viewAddCondition = mViewAddCondition;
-            modelBasicInfoPage= ModelBasicInfo;
+            modelBasicInfoPage = ModelBasicInfo;
             modelUpsSpecsPage = modelUpssSpecsPage;
 
             sqlDatabase = new SQLServer();
@@ -58,6 +63,8 @@ namespace _01electronics_crm
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+                InitializeStandardFeature();
+                //InitializeBenifits();
                 cancelButton.IsEnabled = false;
                 finishButton.IsEnabled = false;
                 nextButton.IsEnabled = true;
@@ -70,7 +77,6 @@ namespace _01electronics_crm
             {
 
                 SpecsType.Content = "Genset Specs";
-
             }
         }
 
@@ -86,11 +92,13 @@ namespace _01electronics_crm
             modelBenefits.Clear();
             modelApplications.Clear();
 
-            for (int i = 0; i < standardFeaturesGrid.Children.Count; i ++)
+
+ 
+            for (int i = 0; i < standardFeaturesGrid.Children.Count; i++)
             {
                 Grid innerGrid = standardFeaturesGrid.Children[i] as Grid;
                 TextBox feature = innerGrid.Children[1] as TextBox;
-                if(feature.Text.ToString() != String.Empty)
+                if (feature.Text.ToString() != String.Empty)
                     modelStandardFeatures.Add(feature.Text.ToString());
             }
 
@@ -123,6 +131,7 @@ namespace _01electronics_crm
                     return;
                 else if (product.GetModelSummaryPoints().Count() == 0)
                     System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
                 else
                 {
                     if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
@@ -183,8 +192,8 @@ namespace _01electronics_crm
                     {
 
 
-                    if (!product.IssueNewModel())
-                        return;
+                        if (!product.IssueNewModel())
+                            return;
                         modelBasicInfoPage.uploadBackground.RunWorkerAsync();
 
                         if (viewAddCondition != COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
@@ -267,7 +276,7 @@ namespace _01electronics_crm
         {
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
-                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage; 
+                modelUploadFilesPage.modelBasicInfoPage = modelBasicInfoPage;
                 modelUploadFilesPage.modelUpsSpecsPage = modelUpsSpecsPage;
                 modelUploadFilesPage.modelAdditionalInfoPage = this;
 
@@ -309,13 +318,30 @@ namespace _01electronics_crm
         }
         private void AddNewStandardFeature(int index, String labelContent, Grid mainGrid, Grid parentGrid, int selectedGridiD, MouseButtonEventHandler onClickHandler)
         {
-            if(index != 0 && index != -1)
-                 parentGrid.Children.RemoveAt(3);
-            else if(index == 0)
-                parentGrid.Children.RemoveAt(2);
+            if (index != 0 && index != -1)
+                if (index == 1 && viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                {
+                    parentGrid.Children.RemoveAt(2);
+                }
+                else
+                {
+                    parentGrid.Children.RemoveAt(3);
+                }
+            else if (index == 0)
+            {
+                if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+                {
+                    mainGrid.Children.Clear();
+                }
+                else
+                {
+                    parentGrid.Children.RemoveAt(2);
+                }
+            }
 
             parentGrid.Tag = selectedGridiD;
-            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count-1);
+            Grid.SetRow(parentGrid, mainGrid.RowDefinitions.Count - 1);
+
             //Image removeIcon = new Image();
             //removeIcon.Source = new BitmapImage(new Uri(@"Icons\red_cross_icon.jpg", UriKind.Relative));
             //removeIcon.Width = 20;
@@ -334,7 +360,15 @@ namespace _01electronics_crm
 
             /////NEW FEATURE GRID
             Grid gridI = new Grid();
-            Grid.SetRow(gridI, index + 1);
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                Grid.SetRow(gridI, index);
+            }
+            else
+            {
+                Grid.SetRow(gridI, index + 1);
+            }
             gridI.Tag = selectedGridiD;
 
             ColumnDefinition labelColumn = new ColumnDefinition();
@@ -354,7 +388,14 @@ namespace _01electronics_crm
             featureIdLabel.Width = 200;
             featureIdLabel.HorizontalAlignment = HorizontalAlignment.Left;
             featureIdLabel.Style = (Style)FindResource("labelStyle");
-            featureIdLabel.Content = labelContent + (index + 2).ToString();
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                featureIdLabel.Content = labelContent + (index + 1).ToString();
+            }
+            else
+            {
+                featureIdLabel.Content = labelContent + (index + 2).ToString();
+            }
             //featureIdLabel.Content = "Feature #" + (index + 2).ToString();
             Grid.SetColumn(featureIdLabel, 0);
 
@@ -380,21 +421,39 @@ namespace _01electronics_crm
             //addIcon.Tag = selectedGridiD;
             //addIcon.MouseLeftButtonDown += OnClickStandardFeaturesImage;
             Grid.SetColumn(addIcon, 2);
+            Label featureNameLabel = new Label();
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
 
-            //Label featureNameLabel = new Label();
-            //featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
-            //featureNameLabel.Width = 200;
-            //featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
-            //featureNameLabel.Style = (Style)FindResource("labelStyle");
-            //featureNameLabel.Content = labelContent + (index + 2).ToString();
-            ////featureIdLabel.Content = "Feature #" + (index + 2).ToString();
-            //featureNameLabel.Visibility = Visibility.Collapsed;
-            //Grid.SetColumn(featureNameLabel, 1);
+
+                featureNameLabel.Margin = new Thickness(30, 0, 0, 0);
+                featureNameLabel.Width = 200;
+                featureNameLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                featureNameLabel.Style = (Style)FindResource("labelStyle");
+                if (selectedGridiD == standardFeatureId)
+                {
+                    featureNameLabel.Content = product.GetModelStandardFeatures()[index].ToString();
+                }
+                else if (selectedGridiD == benefitId)
+                {
+                    featureNameLabel.Content = product.GetModelBenefits()[index + 1].ToString();
+                }
+                else
+                {
+                    featureNameLabel.Content = product.GetModelApplications()[index + 1].ToString();
+                }
+                featureNameLabel.Visibility = Visibility.Visible;
+                Grid.SetColumn(featureNameLabel, 1);
+                featureTextBox.Visibility = Visibility.Collapsed;
+            }
+
+
 
             gridI.Children.Add(featureIdLabel);
             gridI.Children.Add(featureTextBox);
             gridI.Children.Add(deleteIcon);
             gridI.Children.Add(addIcon);
+            gridI.Children.Add(featureNameLabel);
 
             //if (index != 0)
             //{ 
@@ -423,7 +482,7 @@ namespace _01electronics_crm
                 addVendorImage.Height = 20;
                 addVendorImage.Width = 20;
 
-                if(tagID == standardFeatureId)
+                if (tagID == standardFeatureId)
                     addVendorImage.MouseLeftButtonDown += onClickHandler;
                 else if (tagID == benefitId)
                     addVendorImage.MouseLeftButtonDown += OnClickBenefitsImage;
@@ -432,7 +491,10 @@ namespace _01electronics_crm
 
                 Grid previousGrid = outerGrid.Children[0] as Grid;
 
+                Label viewLabel = previousGrid.Children[2] as Label;
+                previousGrid.Children.Remove(viewLabel);
                 previousGrid.Children.Add(addVendorImage);
+                previousGrid.Children.Add(viewLabel);
                 Grid.SetColumn(addVendorImage, 2);
                 outerGrid.Children.Remove(innerGrid);
                 outerGrid.RowDefinitions.RemoveAt(outerGrid.RowDefinitions.Count - 1);
@@ -444,9 +506,15 @@ namespace _01electronics_crm
 
                 Grid previousInnerGrid = (Grid)outerGrid.Children[index - 1];
                 Image plusIcon = (Image)innerGrid.Children[3];
+                Label viewLabel = previousInnerGrid.Children[3] as Label;
+                previousInnerGrid.Children.Remove(viewLabel);
+                previousInnerGrid.Children.Remove(plusIcon);
+                innerGrid.Children.Remove(viewLabel);
                 innerGrid.Children.Remove(plusIcon);
+
                 Grid.SetColumn(plusIcon, 2);
                 previousInnerGrid.Children.Add(plusIcon);
+                previousInnerGrid.Children.Add(viewLabel);
 
             }
             else
@@ -480,9 +548,9 @@ namespace _01electronics_crm
             }
             updateLabelIds(Content, outerGrid, index);
         }
-        void updateLabelIds(String content, Grid currentGrid, int index)
+        public void updateLabelIds(String content, Grid currentGrid, int index)
         {
-            for(int i = index; i < currentGrid.Children.Count; i++)
+            for (int i = index; i < currentGrid.Children.Count; i++)
             {
                 Grid innerGrid = currentGrid.Children[i] as Grid;
                 Label header = innerGrid.Children[0] as Label;
@@ -491,18 +559,22 @@ namespace _01electronics_crm
         }
 
 
-        public bool CheckGensetRequired() {
 
-            for (int i = 0; i < modelUpsSpecsPage.mainGrid.Children.Count; i++) {
+        public bool CheckGensetRequired()
+        {
 
-                Grid card =  modelUpsSpecsPage.mainGrid.Children[i] as Grid;
+            for (int i = 0; i < modelUpsSpecsPage.mainGrid.Children.Count; i++)
+            {
+
+                Grid card = modelUpsSpecsPage.mainGrid.Children[i] as Grid;
 
                 WrapPanel wrap1 = card.Children[1] as WrapPanel;
 
                 WrapPanel ratedPanel = wrap1.Children[0] as WrapPanel;
 
                 TextBox ratedPower = ratedPanel.Children[1] as TextBox;
-                if (ratedPower.Text == "") {
+                if (ratedPower.Text == "")
+                {
                     System.Windows.Forms.MessageBox.Show("You have to enter the rated Power", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                     return false;
                 }
@@ -510,14 +582,75 @@ namespace _01electronics_crm
                 WrapPanel modelPanel = wrap1.Children[1] as WrapPanel;
 
                 TextBox modelTextBox = modelPanel.Children[1] as TextBox;
-                if (modelTextBox.Text == "") {
+                if (modelTextBox.Text == "")
+                {
 
                     System.Windows.Forms.MessageBox.Show("You have to enter the Spec Name", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                     return false;
 
                 }
+
             }
             return true;
+        }
+
+        public void InitializeStandardFeature()
+        {
+
+            //try {
+            standardFeaturesLabel1.Content = product.GetModelStandardFeatures()[0].ToString();
+            standardFeaturesTextBox1.Visibility = Visibility.Collapsed;
+            standardFeaturesLabel1.Visibility = Visibility.Visible;
+            //AddNewStandardFeature(0, "Feature #", standardFeaturesGrid, standardFeaturesGrid.Children[0] as Grid, standardFeatureId, onClickHandler);
+
+            //standardFeautersGrid.Children.Clear();
+
+            for (int i = 1; i < product.GetModelStandardFeatures().Count; i++)
+            {
+
+                standardFeaturesGrid.Tag = standardFeatureId;
+                Grid Currentgrid = new Grid();
+                Currentgrid = (Grid)standardFeaturesGrid.Children[i - 1];
+                AddNewStandardFeature(i, "Feature #", standardFeaturesGrid, Currentgrid, standardFeatureId, onClickHandler);
+
+                //if(i > 1)
+                //{
+
+                //}
+                //else
+                //{
+                //AddNewStandardFeature(i-1, "Feature #", standardFeaturesGrid, standardFeautersGrid, standardFeatureId, onClickHandler);
+
+                //}
+
+
+
+            }
+            // standardFeaturesGrid.Children.RemoveAt(0);
+            // standardFeaturesGrid.RowDefinitions.RemoveAt(0);
+            //}
+
+            //catch(Exception ex) {
+
+            //}
+        }
+
+        public void InitializeBenifits()
+        {
+            //benifitsdFeautersGrid.Children.Clear();
+
+
+
+            for (int i = 0; i < product.GetModelBenefits().Count; i++)
+            {
+
+                benifitsdFeautersGrid.Tag = benefitId;
+                int index = benifitsdFeautersGrid.Children.IndexOf(benifitsdFeautersGrid);
+                AddNewStandardFeature(i, "Benefit #", benefitsGrid, benifitsdFeautersGrid, benefitId, OnClickBenefitsImage);
+
+
+
+            }
         }
     }
 }

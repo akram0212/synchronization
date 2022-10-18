@@ -67,18 +67,30 @@ namespace _01electronics_crm
 
             if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_ADD_CONDITION)
             {
-                
+                if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+                {
+                    SpecsLable.Content = "Genset Specs";
+                    InitializeNewCardGenset();
+                }
+
 
             }
+
             else if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
             {
+                if (COMPANY_WORK_MACROS.GENSET_CATEGORY_ID == product.GetCategoryID()) {
+
+                    for(int i=0;i<product.GetGensetSpecs().Count;i++)
+                    InitializeNewCardGenset(); 
+                }
+                else
              InitializeUIElements();
             }
 
-            //
-            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID) {
+
+            if (product.GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            {
                 SpecsLable.Content = "Genset Specs";
-                InitializeNewCardGenset();
             }
 
 
@@ -205,8 +217,8 @@ namespace _01electronics_crm
 
             ratedPowerPanel.Children.Add(ratedPowerLable);
             ratedPowerPanel.Children.Add(RatedPowerText);
-            ratedPowerPanel.Children.Add(ratedPowercombo);
             ratedPowerPanel.Children.Add(ratedPowerlabelInvisible);
+            ratedPowerPanel.Children.Add(ratedPowercombo);
 
 
             WrapPanel modelPanel = new WrapPanel();
@@ -241,15 +253,13 @@ namespace _01electronics_crm
 
             Ltb50HzComboBox.SelectedItem = "KVA";
 
-
-
             Label Kva50labelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
             Kva50labelInvisible.Visibility = Visibility.Collapsed;
 
             LtbKva50Panel.Children.Add(ltbKva50Label);
             LtbKva50Panel.Children.Add(kva50TextBox);
-            LtbKva50Panel.Children.Add(Ltb50HzComboBox);
             LtbKva50Panel.Children.Add(Kva50labelInvisible);
+            LtbKva50Panel.Children.Add(Ltb50HzComboBox);
 
             WrapPanel LTPkVA60HZPanel = new WrapPanel();
 
@@ -269,8 +279,8 @@ namespace _01electronics_crm
 
             LTPkVA60HZPanel.Children.Add(ltbKva60Label);
             LTPkVA60HZPanel.Children.Add(kva60TextBox);
-            LTPkVA60HZPanel.Children.Add(Ltb60HzComboBox);
             LTPkVA60HZPanel.Children.Add(Kva60labelInvisible);
+            LTPkVA60HZPanel.Children.Add(Ltb60HzComboBox);
 
             wrapPanel2.Children.Add(LtbKva50Panel);
             wrapPanel2.Children.Add(LTPkVA60HZPanel);
@@ -296,8 +306,8 @@ namespace _01electronics_crm
 
             PRPkVA50HZPanel.Children.Add(prpKva50Label);
             PRPkVA50HZPanel.Children.Add(prpkva50TextBox);
-            PRPkVA50HZPanel.Children.Add(Prp50HzComboBox);
             PRPkVA50HZPanel.Children.Add(prpKva50labelInvisible);
+            PRPkVA50HZPanel.Children.Add(Prp50HzComboBox);
 
             WrapPanel PRPkVA60HZPanel = new WrapPanel();
 
@@ -317,8 +327,8 @@ namespace _01electronics_crm
 
             PRPkVA60HZPanel.Children.Add(prpKva60Label);
             PRPkVA60HZPanel.Children.Add(prpkva60TextBox);
-            PRPkVA60HZPanel.Children.Add(Prp60HzComboBox);
             PRPkVA60HZPanel.Children.Add(prpKva60labelInvisible);
+            PRPkVA60HZPanel.Children.Add(Prp60HzComboBox);
 
 
             wrapPanel3.Children.Add(PRPkVA50HZPanel);
@@ -383,8 +393,12 @@ namespace _01electronics_crm
 
             TextBox AlternatorTextBox = new TextBox() { Style = (Style)FindResource("textBoxStyle"), TextWrapping = TextWrapping.Wrap, Width = 235 };
 
+            Label alternatorLabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
+            alternatorLabelInvisible.Visibility = Visibility.Collapsed;
+
             AlternatorPanel.Children.Add(AlternatorLable);
             AlternatorPanel.Children.Add(AlternatorTextBox);
+            AlternatorPanel.Children.Add(alternatorLabelInvisible);
 
             wrapPanel5.Children.Add(LOADPanel);
             wrapPanel5.Children.Add(AlternatorPanel);
@@ -395,9 +409,13 @@ namespace _01electronics_crm
             dateLabel.Content = "Valid Until";
             DatePicker dateField = new DatePicker() { Style = (Style)FindResource("datePickerStyle"),Width = 253,SelectedDate= new DateTime(2030,1,1)};
 
+
+            Label dateLabelInvisible = new Label() { Style = (Style)FindResource("labelStyle") };
+            dateLabelInvisible.Visibility = Visibility.Collapsed;
+
             datePanel.Children.Add(dateLabel);
             datePanel.Children.Add(dateField);
-
+            datePanel.Children.Add(dateLabelInvisible);
 
             wrapPanel6.Children.Add(datePanel);
 
@@ -417,9 +435,104 @@ namespace _01electronics_crm
             Card.Children.Add(wrapPanel6);
 
             mainGrid.Children.Add(Card);
+
+
+            if (viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+
+                ///to continue edit genset here
+                    RatedPowerText.Visibility = Visibility.Collapsed;
+                    ratedPowerlabelInvisible.Visibility = Visibility.Visible;
+                    ratedPowerlabelInvisible.Foreground = Brushes.Black;
+                ratedPowerlabelInvisible.MouseDoubleClick += RatedPowerlabelInvisible_MouseDoubleClick;
+                    ratedPowercombo.IsEnabled = false;
+                    ratedPowerlabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].RatedPower;
+
+                    ModelText.Visibility = Visibility.Collapsed;
+                    ModellabelInvisible.Visibility = Visibility.Visible;
+                    ModellabelInvisible.Foreground = Brushes.Black;
+                    ModellabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].spec_name;
+
+                    kva50TextBox.Visibility = Visibility.Collapsed;
+                    Kva50labelInvisible.Visibility = Visibility.Visible;
+                    Kva50labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].ltb_50;
+                    Kva50labelInvisible.Foreground = Brushes.Black;
+                    Ltb50HzComboBox.IsEnabled = false;
+                    Ltb50HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].ltb_50_unit_name;
+
+
+
+
+                    kva60TextBox.Visibility = Visibility.Collapsed;
+                    Kva60labelInvisible.Visibility = Visibility.Visible;
+                    Kva60labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].ltb_60;
+                    Kva60labelInvisible.Foreground = Brushes.Black;
+                    Ltb60HzComboBox.IsEnabled=false;
+                    Ltb60HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].ltb_60_unit_name;
+
+
+
+                    prpkva50TextBox.Visibility = Visibility.Collapsed;
+                    prpKva50labelInvisible.Visibility = Visibility.Visible;
+                    prpKva50labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].prp_50;
+                    prpKva50labelInvisible.Foreground= Brushes.Black;
+                    Prp50HzComboBox.IsEnabled = false;
+                    Prp50HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].prp_50_unit_name;
+
+
+
+                    prpkva60TextBox.Visibility = Visibility.Collapsed;
+                    prpKva60labelInvisible.Visibility = Visibility.Visible;
+                    prpKva60labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].prp_60;
+                    prpKva60labelInvisible.Foreground=Brushes.Black;
+                    Prp60HzComboBox.IsEnabled = false;
+                    Prp60HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].prp_60_unit_name;
+
+
+
+
+                    coolingTextBox.Visibility = Visibility.Collapsed;
+                    coolinglabelInvisible.Visibility = Visibility.Visible;
+                    coolinglabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].cooling;
+                    coolinglabelInvisible.Foreground = Brushes.Black;
+
+
+
+                    TankTextBox.Visibility = Visibility.Collapsed;
+                    tanklabelInvisible.Visibility = Visibility.Visible;
+                    tanklabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].tank;
+                    tanklabelInvisible.Foreground = Brushes.Black;
+
+
+                    loadTextBox.Visibility = Visibility.Collapsed;
+                    loadlabelInvisible.Visibility = Visibility.Visible;
+                    loadlabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].load_percentage;
+                    loadlabelInvisible.Foreground = Brushes.Black;
+
+
+
+                    AlternatorTextBox.Visibility = Visibility.Collapsed;
+                    alternatorLabelInvisible.Visibility = Visibility.Visible;
+                    alternatorLabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].alternator;
+                    alternatorLabelInvisible.Foreground = Brushes.Black;
+
+
+
+                    dateField.Visibility = Visibility.Collapsed;
+                    dateLabelInvisible.Visibility = Visibility.Visible;
+                    dateLabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].valid_Until;
+                    dateLabelInvisible.Foreground = Brushes.Black;
+            }
+
         }
-        
-      
+
+        private void RatedPowerlabelInvisible_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+            Label ratedLabel = sender as Label;
+  
+        }
+
         private void InitializeNewCard()
         {
             RowDefinition row = new RowDefinition();
@@ -1516,7 +1629,7 @@ namespace _01electronics_crm
                         if (ltbKva50TextBox.Text == "")
                             gensetSpec.ltb_50 = 0;
                         else
-                            gensetSpec.ltb_50 = float.Parse(ltbKva50TextBox.Text);
+                            gensetSpec.ltb_50 = decimal.Parse(ltbKva50TextBox.Text);
 
                         ComboBox ltbKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 
@@ -1530,7 +1643,7 @@ namespace _01electronics_crm
                         if (ltbKva60TextBox.Text == "")
                             gensetSpec.ltb_60 = 0;
                         else
-                            gensetSpec.ltb_60 = float.Parse(ltbKva60TextBox.Text);
+                            gensetSpec.ltb_60 = decimal.Parse(ltbKva60TextBox.Text);
 
                         ComboBox ltbKva60ComboBox = ltbKva60Panel.Children[2] as ComboBox;
 
@@ -1547,7 +1660,7 @@ namespace _01electronics_crm
                         if (prpKva50TextBox.Text == "")
                             gensetSpec.prp_50 = 0;
                         else
-                            gensetSpec.prp_50 = float.Parse(prpKva50TextBox.Text);
+                            gensetSpec.prp_50 = decimal.Parse(prpKva50TextBox.Text);
 
                         ComboBox prpKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 
@@ -1561,7 +1674,7 @@ namespace _01electronics_crm
                         if (prpKva60TextBox.Text == "")
                             gensetSpec.prp_60 = 0;
                         else
-                            gensetSpec.prp_60 = float.Parse(prpKva60TextBox.Text);
+                            gensetSpec.prp_60 = decimal.Parse(prpKva60TextBox.Text);
 
                         ComboBox prpKva60ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 
@@ -2056,7 +2169,7 @@ namespace _01electronics_crm
                         if (ltbKva50TextBox.Text == "")
                             gensetSpec.ltb_50 = 0;
                         else
-                        gensetSpec.ltb_50 = float.Parse(ltbKva50TextBox.Text);
+                        gensetSpec.ltb_50 = decimal.Parse(ltbKva50TextBox.Text);
 
                         ComboBox ltbKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 
@@ -2070,7 +2183,7 @@ namespace _01electronics_crm
                         if (ltbKva60TextBox.Text == "")
                             gensetSpec.ltb_60 = 0;
                         else
-                            gensetSpec.ltb_60 = float.Parse(ltbKva60TextBox.Text);
+                            gensetSpec.ltb_60 = decimal.Parse(ltbKva60TextBox.Text);
 
                         ComboBox ltbKva60ComboBox = ltbKva60Panel.Children[2] as ComboBox;
 
@@ -2087,7 +2200,7 @@ namespace _01electronics_crm
                         if (prpKva50TextBox.Text == "")
                             gensetSpec.prp_50 = 0;
                         else
-                            gensetSpec.prp_50 = float.Parse(prpKva50TextBox.Text);
+                            gensetSpec.prp_50 = decimal.Parse(prpKva50TextBox.Text);
 
                         ComboBox prpKva50ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 
@@ -2101,7 +2214,7 @@ namespace _01electronics_crm
                         if (prpKva60TextBox.Text == "")
                             gensetSpec.prp_60 = 0;
                         else
-                            gensetSpec.prp_60 = float.Parse(prpKva60TextBox.Text);
+                            gensetSpec.prp_60 = decimal.Parse(prpKva60TextBox.Text);
 
                         ComboBox prpKva60ComboBox = ltbKva50Panel.Children[2] as ComboBox;
 

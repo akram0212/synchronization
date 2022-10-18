@@ -6,6 +6,8 @@ using _01electronics_windows_library;
 using System.IO;
 using System.Windows;
 using System.Timers;
+using System.Threading;
+
 namespace _01electronics_crm
 {
     /// <summary>
@@ -17,6 +19,7 @@ namespace _01electronics_crm
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
         //Timer timer=new Timer(60000);
 
+        //SystemWatcher fileSystemWatcher = new SystemWatcher();
         FTPServer ftpServer = new FTPServer();
         bool fileFound = true;
         public MainWindow(ref Employee mLoggedInUser)
@@ -33,13 +36,12 @@ namespace _01electronics_crm
                 ftpServer.GetModificationTime();
 
             }
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\products");
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos");
 
 
             if (fileFound == false)
             {
                 backgroundWorker.DoWork += BackgroundStart;
-                backgroundWorker.RunWorkerCompleted += BackgroundExecuteRest;
                 backgroundWorker.RunWorkerAsync();
             }
 
@@ -50,6 +52,8 @@ namespace _01electronics_crm
             this.NavigationService.Navigate(statisticsPage);
 
         }
+
+ 
         private void OnTimerElapsed(object o, ElapsedEventArgs s)
         {
             if (ftpServer.CheckDateChanged() == false)
@@ -67,27 +71,40 @@ namespace _01electronics_crm
         private void BackgroundStart(object sender,DoWorkEventArgs e)
         {
             String errorMessage = String.Empty;
-            if (!ftpServer.DownloadFolder(BASIC_MACROS.PRODUCTS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\products\\", ref errorMessage))
+            if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\", ref errorMessage))
             {
                 return;
             }
-        }
 
-        private void BackgroundExecuteRest(object sender,RunWorkerCompletedEventArgs e)
-        {
-            String errorMessage = String.Empty;
-            if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\", ref errorMessage))
-            {
-                return;
-            }
 
             backgroundWorker.ReportProgress(100);
-            if (closedWindow == true) {
+            if (closedWindow == true)
+            {
                 CancelEventArgs cancelEventArgs = new CancelEventArgs();
                 cancelEventArgs.Cancel = false;
                 NavigationWindow_Closing(null, cancelEventArgs);
             }
+
+
         }
+
+        //private void BackgroundExecuteRest(object sender,RunWorkerCompletedEventArgs e)
+        //{
+        //    String errorMessage = String.Empty;
+        //    if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\", ref errorMessage))
+        //    {
+        //        return;
+        //    }
+
+        //    backgroundWorker.ReportProgress(100);
+        //    if (closedWindow == true) {
+        //        CancelEventArgs cancelEventArgs = new CancelEventArgs();
+        //        cancelEventArgs.Cancel = false;
+        //        NavigationWindow_Closing(null, cancelEventArgs);
+        //    }
+
+        //    Thread.CurrentThread.Suspend();
+        //}
 
         private void NavigationWindow_Closing(object sender, CancelEventArgs e)
         {

@@ -41,7 +41,7 @@ namespace _01electronics_crm
         private CommonQueries commonQueriesObject;
         private CommonFunctions commonFunctionsObject;
         private SQLServer sqlDatabase;
-        private int viewAddCondition;
+        public int viewAddCondition;
 
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelUpsSpecsPage modelUpsSpecsPage;
@@ -127,9 +127,11 @@ namespace _01electronics_crm
 
                 product.GetNewModelID();
                 product.GetNewModelPhotoLocalPath();
+
                 //added by akram
                 if(File.Exists(product.GetModelPhotoLocalPath()))
                 File.Delete(product.GetModelPhotoLocalPath());
+
 
             }
 
@@ -330,8 +332,15 @@ namespace _01electronics_crm
             modelNameLabel.Content = product.GetModelName();
             summeryPointsTextBox.Visibility= Visibility.Collapsed;
             summeryPointsLabel.Visibility=Visibility.Visible;
-            if (product.GetModelSummaryPoints().Count != 0)
-                summeryPointsLabel.Text= product.GetModelSummaryPoints()[0];
+
+            try
+            {
+                summeryPointsLabel.Text = product.GetModelSummaryPoints()[0];
+            }
+            catch(Exception ex)
+            {
+
+            }
 
 
 
@@ -1462,6 +1471,30 @@ namespace _01electronics_crm
                         Grid.SetRow(progressBar, 3);
 
                         uploadBackground.RunWorkerAsync();*/
+        }
+
+
+        private void NameMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            modelNameTextBox.Text = product.GetModelName().ToString();
+            modelNameTextBox.Visibility = Visibility.Visible;
+            modelNameTextBox.HorizontalContentAlignment = HorizontalAlignment.Center;
+            modelNameTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+            modelNameLabel.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void modelNameTextBoxMouseLeave(object sender, MouseEventArgs e)
+        {
+
+            if(viewAddCondition == COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION)
+            {
+                modelNameLabel.Content = modelNameTextBox.Text.ToString();
+                product.SetModelName(modelNameTextBox.Text.ToString());
+                modelNameTextBox.Visibility = Visibility.Collapsed;
+                modelNameLabel.Visibility = Visibility.Visible;
+
+            }
         }
     }
 }
