@@ -30,14 +30,13 @@ namespace _01electronics_crm
             this.Closing += NavigationWindow_Closing;
 
             InitializeComponent();
-            if (!File.Exists(Directory.GetCurrentDirectory() + "\\Track.txt"))
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics"))
             {
                 fileFound = false;
-               File.Create(Directory.GetCurrentDirectory() + "\\Track.txt").Close();
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos");
                 //ftpServer.GetModificationTime();
 
             }
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos");
 
 
             if (fileFound == false)
@@ -156,7 +155,8 @@ namespace _01electronics_crm
 
         private void NavigationWindow_Closed(object sender, EventArgs e)
         {
-     
+            //if (canceled == true)
+            //    return;
 
         }
     }
