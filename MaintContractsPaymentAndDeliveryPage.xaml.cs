@@ -38,7 +38,7 @@ namespace _01electronics_crm
         public MaintContractsProjectsPage maintContractsProjectsPage;
         public MaintContractsAdditionalInfoPage maintContractsAdditionalInfoPage;
         public MaintContractsUploadFilesPage maintContractsUploadFilesPage;
-
+        
         public MaintContractsPaymentAndDeliveryPage(ref Employee mLoggedInUser, ref MaintenanceContract mMaintOffer, int mViewAddCondition, ref MaintContractsAdditionalInfoPage mMaintOfferAdditionalInfoPage)
         {
             maintContractsAdditionalInfoPage = mMaintOfferAdditionalInfoPage;

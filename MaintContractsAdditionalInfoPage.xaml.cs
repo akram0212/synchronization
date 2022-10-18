@@ -118,6 +118,7 @@ namespace _01electronics_crm
         {
             maintenanceContract = mMaintContracts;
         }
+
         /////////////////////////////////////////////////////////////////////////////////////////
         ///CONFIGURE UI ELEMENTS FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +136,6 @@ namespace _01electronics_crm
         ///INITIALIZATION FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////
 
-
         private bool InitializeTimeUnitComboBoxes()
         {
             if (!commonQueriesObject.GetTimeUnits(ref timeUnits))
@@ -147,7 +147,6 @@ namespace _01electronics_crm
 
             return true;
         }
-
         private bool InitializeWarrantyPeriodFromWhenCombo()
         {
             if (!commonQueriesObject.GetConditionStartDates(ref conditionStartDates))
@@ -176,7 +175,6 @@ namespace _01electronics_crm
                 warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
 
         }
-
         public void SetWarrantyPeriodValuesFromOffer()
         {
             warrantyPeriodTextBox.Text = maintenanceContract.GetWarrantyPeriod().ToString();
@@ -227,14 +225,11 @@ namespace _01electronics_crm
         //SELECTION CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
         private void WarrantyPeriodComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (warrantyPeriodCombo.SelectedItem != null)
                 maintenanceContract.SetMaintContractWarrantyPeriodTimeUnit(timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnitId, timeUnits[warrantyPeriodCombo.SelectedIndex].timeUnit);
         }
-
         private void WarrantyPeriodFromWhenComboSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (warrantyPeriodFromWhenCombo.SelectedIndex != -1)
@@ -246,7 +241,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TEXT CHANGED HANDLERS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+        
         private void WarrantyPeriodTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(warrantyPeriodTextBox.Text, BASIC_MACROS.PHONE_STRING) && warrantyPeriodTextBox.Text != "")
@@ -260,7 +255,6 @@ namespace _01electronics_crm
                 warrantyPeriodTextBox.Text = null;
             }
         }
-
         private void AdditionalDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             if (additionalDescriptionTextBox.Text.Length <= COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE)
@@ -270,7 +264,6 @@ namespace _01electronics_crm
             counterLabel.Content = COMPANY_WORK_MACROS.MAX_NOTES_TEXTBOX_CHAR_VALUE - additionalDescriptionTextBox.Text.Length;
             maintenanceContract.SetMaintContractNotes(additionalDescriptionTextBox.Text);
         }
-
         private void OnTextChangedVisitsFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(visitsFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && visitsFrequencyTextBox.Text != "")
@@ -281,7 +274,6 @@ namespace _01electronics_crm
                 visitsFrequencyTextBox.Text = null;
             }
         }
-
         private void OnTextChangedEmergenciesFrequencyTextBox(object sender, TextChangedEventArgs e)
         {
             if (integrityChecks.CheckInvalidCharacters(emergenciesFrequencyTextBox.Text, BASIC_MACROS.PHONE_STRING) && emergenciesFrequencyTextBox.Text != "")
@@ -290,6 +282,17 @@ namespace _01electronics_crm
             {
                 maintenanceContract.SetMaintContractEmergenciesFrequency(0);
                 emergenciesFrequencyTextBox.Text = null;
+            }
+        }
+        private void OnTextChangedIncreaseRateTextBox(object sender, TextChangedEventArgs e)
+        {
+
+            if (integrityChecks.CheckInvalidCharacters(increaseRateTextBox.Text, BASIC_MACROS.PHONE_STRING) && increaseRateTextBox.Text != "")
+                maintenanceContract.SetContractIncreaseRate(Int32.Parse(increaseRateTextBox.Text));
+            else
+            {
+                maintenanceContract.SetContractIncreaseRate(0);
+                increaseRateTextBox.Text = null;
             }
         }
 
@@ -303,7 +306,11 @@ namespace _01electronics_crm
             warrantyPeriodCombo.IsEnabled = true;
             warrantyPeriodFromWhenCombo.IsEnabled = true;
         }
-
+        private void OnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintenanceContract.SetContractAutomaticallyRenewed(true);
+            increaseRateTextBox.IsEnabled = true;
+        }
         private void OnUnCheckWarrantyPeriod(object sender, RoutedEventArgs e)
         {
             warrantyPeriodTextBox.IsEnabled = false;
@@ -314,10 +321,18 @@ namespace _01electronics_crm
             warrantyPeriodCombo.SelectedIndex = warrantyPeriodCombo.Items.Count - 1;
             warrantyPeriodFromWhenCombo.SelectedIndex = warrantyPeriodFromWhenCombo.Items.Count - 1;
         }
+        private void OnUnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
+        {
+            maintenanceContract.SetContractAutomaticallyRenewed(false);
+            increaseRateTextBox.IsEnabled = false;
+            increaseRateTextBox.Text = null;
+
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///INTERNAL TABS
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
             maintContractsBasicInfoPage.maintContractsProductsPage = maintContractsProductsPage;
@@ -375,8 +390,6 @@ namespace _01electronics_crm
                 NavigationService.Navigate(maintContractsUploadFilesPage);
             }
         }
-
-
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///BUTTON CLICKED HANDLERS
@@ -516,7 +529,11 @@ namespace _01electronics_crm
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_REVISE_CONDITION)
                 {
-                    if (!maintenanceContract.ReviseMaintContract())
+
+                    //if (!maintenanceContract.ReviseMaintContract())
+                    //    return;
+
+                    if (!UpdateMaintContractInfo())
                         return;
 
                     if (viewAddCondition != COMPANY_WORK_MACROS.OUTGOING_QUOTATION_VIEW_CONDITION)
@@ -556,32 +573,9 @@ namespace _01electronics_crm
 
         }
 
-        private void OnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
-        {
-            maintenanceContract.SetContractAutomaticallyRenewed(true);
-            increaseRateTextBox.IsEnabled = true;
-        }
-
-        private void OnUnCheckAutomaticallyRenewedCheckBox(object sender, RoutedEventArgs e)
-        {
-            maintenanceContract.SetContractAutomaticallyRenewed(false);
-            increaseRateTextBox.IsEnabled = false;
-            increaseRateTextBox.Text = null;
-
-        }
-
-        private void OnTextChangedIncreaseRateTextBox(object sender, TextChangedEventArgs e)
-        {
-
-            if (integrityChecks.CheckInvalidCharacters(increaseRateTextBox.Text, BASIC_MACROS.PHONE_STRING) && increaseRateTextBox.Text != "")
-                maintenanceContract.SetContractIncreaseRate(Int32.Parse(increaseRateTextBox.Text));
-            else
-            {
-                maintenanceContract.SetContractIncreaseRate(0);
-                increaseRateTextBox.Text = null;
-            }
-        }
-        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///NEWLY ADDED FUNCTIONS
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         public void ShowModelsSerialsGrid(int index, int quantity)
         {
             Grid parentProductGrid =  ModelsSerialsWrapPanel.Children[index] as Grid;
@@ -589,7 +583,6 @@ namespace _01electronics_crm
             parentProductGrid.Visibility = Visibility.Visible;
             ScrollViewer bodyScrollViewer = currentProductGrid.Children[1] as ScrollViewer;
             Grid modelSerialGrid = bodyScrollViewer.Content as Grid;
-                //Grid modelSerialGrid = mainGrid.Children[0] as Grid;
                 
             for(int i = modelSerialGrid.RowDefinitions.Count-1 ; i >= 1 ; i--)
             {
@@ -599,8 +592,6 @@ namespace _01electronics_crm
 
             if (quantity != 0)
             {
-
-
                 if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                 {
                     ////// INITIALIZE FIRST GRID VALUES ///////
@@ -611,8 +602,10 @@ namespace _01electronics_crm
                     firstRowSerialTextBox.IsEnabled = false;
                     BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
                         (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
-
-                    firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+                    if (currentModelSerial2.model_serial_id != 0)
+                        firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+                    else
+                        firstRowGrid.Visibility = Visibility.Collapsed;
 
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
@@ -658,43 +651,18 @@ namespace _01electronics_crm
                     serialTextBox.TextWrapping = TextWrapping.Wrap;
                     Grid.SetColumn(serialTextBox, 1);
                     
-                    //Label serialLabel = new Label();
-                    //serialLabel.Style = (Style)FindResource("labelStyle");
-                    //serialLabel.Visibility = Visibility.Collapsed;
-                    //Grid.SetColumn(serialLabel, 1);
-
                     gridI.Children.Add(serialIdLabel);
                     gridI.Children.Add(serialTextBox);
-                    //gridI.Children.Add(serialLabel);
                     modelSerialGrid.Children.Add(gridI);
 
                     if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                     {
-                        //serialTextBox.Visibility = Visibility.Collapsed;
-                        //serialLabel.Visibility = Visibility.Visible;
-
                         serialTextBox.IsEnabled = false;
 
                         BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
                             (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
-
-                        //serialLabel.Content = currentModelSerial.model_serial;
+                    
                         serialTextBox.Text = currentModelSerial.model_serial;
-
-                        ////// INITIALIZE FIRST GRID VALUES ///////
-
-                        //Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
-                        //TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
-                        //Label firstRowSerialLabel = firstRowGrid.Children[2] as Label;
-
-                        //firstRowSerialTextBox.Visibility = Visibility.Collapsed;
-                        //firstRowSerialLabel.Visibility = Visibility.Visible;
-
-                        //firstRowSerialTextBox.IsEnabled = false;
-                        //BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
-                        //    (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
-                        //
-                        //firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
 
                     }
                     else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
@@ -704,15 +672,6 @@ namespace _01electronics_crm
 
                         serialTextBox.Text = currentModelSerial.model_serial;
 
-                        ////// INITIALIZE FIRST GRID VALUES ///////
-
-                        //Grid firstRowGrid = modelSerialGrid.Children[0] as Grid;
-                        //TextBox firstRowSerialTextBox = firstRowGrid.Children[1] as TextBox;
-                        //
-                        //BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial2 = maintenanceContract.GetMaintContractModelsSerialsList().Find
-                        //    (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
-                        //
-                        //firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
                     }
 
                 }
@@ -721,7 +680,6 @@ namespace _01electronics_crm
                 parentProductGrid.Visibility = Visibility.Collapsed;
 
         }     
-
         private bool FillModelSerialsList(int index, int quantity, Grid currentGrid)
         {
             for (int i = 0; i < currentGrid.RowDefinitions.Count; i++)
@@ -743,6 +701,80 @@ namespace _01electronics_crm
                     maintenanceContract.GetMaintContractModelsSerialsList().Add(currentSerialItem);
                 }
             }
+            return true;
+        }
+        private bool UpdateMaintContractInfo()
+        {
+            if (maintContractsBasicInfoPage.oldMaintContract.GetMaintOfferSerial() != maintenanceContract.GetMaintOfferSerial())
+                if (!maintenanceContract.UpdateMaintContractOffers())
+                    return false;
+
+            if ((maintContractsBasicInfoPage.oldMaintContract.GetSalesPersonId() != maintenanceContract.GetSalesPersonId()) ||
+                (maintContractsBasicInfoPage.oldMaintContract.GetAddressSerial() != maintenanceContract.GetAddressSerial()) ||
+                (maintContractsBasicInfoPage.oldMaintContract.GetContactId() != maintenanceContract.GetContactId()))
+                if (!maintenanceContract.UpdateMaintContractContactInfo())
+                    return false;
+
+            if (maintContractsBasicInfoPage.oldMaintContract.GetMaintContractIssueDate() != maintenanceContract.GetMaintContractIssueDate())
+                if (!maintenanceContract.UpdateMaintContractIssueDate())
+                    return false;
+
+            if (maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProjectSerial() != maintenanceContract.GetMaintContractProjectSerial())
+            {
+                if (!maintenanceContract.UpdateMaintContractProjectSerial())
+                    return false;
+                if (!maintenanceContract.UpdateMaintContractProjectLocations())
+                    return false;
+            }
+            else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProjectLocations().Equals(maintenanceContract.GetMaintContractProjectLocations()))
+                if (!maintenanceContract.UpdateMaintContractProjectLocations())
+                    return false;
+
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
+            {
+                if (!maintenanceContract.UpdateMaintContractProductInfo())
+                    return false;
+                if (!maintenanceContract.UpdateMaintContractProductSerial())
+                    return false;
+            }
+            else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
+                if (!maintenanceContract.UpdateMaintContractProductSerial())
+                    return false;
+
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractTotalPriceValue().Equals(maintenanceContract.GetMaintContractTotalPriceValue()))
+                if (!maintenanceContract.UpdateMaintContractTotalPrice())
+                    return false;
+
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractVATConditionID().Equals(maintenanceContract.GetMaintContractVATConditionID()))
+                if (!maintenanceContract.UpdateMaintContractVatCondition())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractSparePartsConditionID().Equals(maintenanceContract.GetMaintContractSparePartsConditionID()))
+                if (!maintenanceContract.UpdateMaintContractSparePartsCondition())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractBatteriesConditionID().Equals(maintenanceContract.GetMaintContractBatteriesConditionID()))
+                if (!maintenanceContract.UpdateMaintContractBatteriesCondition())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractVisitsFrequency().Equals(maintenanceContract.GetMaintContractVisitsFrequency()))
+                if (!maintenanceContract.UpdateMaintContractVisitsFrequency())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractPaymentsFrequency().Equals(maintenanceContract.GetMaintContractPaymentsFrequency()))
+                if (!maintenanceContract.UpdateMaintContractPaymentsFrequency())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractEmergenciesFrequency().Equals(maintenanceContract.GetMaintContractEmergenciesFrequency()))
+                if (!maintenanceContract.UpdateMaintContractEmergenciesFrequency())
+                    return false;
+
+            if ((maintContractsBasicInfoPage.oldMaintContract.GetMaintContractWarrantyPeriod() != maintenanceContract.GetMaintContractWarrantyPeriod()) ||
+                (maintContractsBasicInfoPage.oldMaintContract.GetMaintContractWarrantyPeriodTimeUnitId() != maintenanceContract.GetMaintContractWarrantyPeriodTimeUnitId()) ||
+                (maintContractsBasicInfoPage.oldMaintContract.GetMaintContractWarrantyPeriodConditionID() != maintenanceContract.GetMaintContractWarrantyPeriodConditionID()))
+                if (!maintenanceContract.UpdateMaintContractWarrantyPeriod())
+                    return false;
+
             return true;
         }
     }
