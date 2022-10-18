@@ -11,8 +11,6 @@ namespace _01electronics_crm
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
-
-        
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
         FTPServer ftpServer = new FTPServer();
 
@@ -36,7 +34,6 @@ namespace _01electronics_crm
         {
         }
 
-
         private void BackgroundStart(object sender, DoWorkEventArgs e)
         {
 
@@ -48,7 +45,6 @@ namespace _01electronics_crm
             }
         }
 
-
         private void BackgroundExecuteRest(object sender, RunWorkerCompletedEventArgs e)
         {
             String errorMessage = String.Empty;
@@ -56,7 +52,6 @@ namespace _01electronics_crm
             {
                 return;
             }
-
 
         }
 
