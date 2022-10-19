@@ -330,13 +330,20 @@ namespace _01electronics_crm
             else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
             {
                 COMPANY_WORK_MACROS.OUTGOING_QUOTATION_MAX_STRUCT tmp = outgoingQuotationsList.Find(x => x.offer_serial == maintContract.GetMaintOfferSerial());
+                if (maintContract.GetMaintOfferSerial() != 0)
+                {
+                    OfferSerialCombo.Items.Add(maintContract.GetMaintOfferID());
+                    offersAddedToComboList.Add(tmp);
 
-                OfferSerialCombo.Items.Add(maintContract.GetMaintOfferID());
-                offersAddedToComboList.Add(tmp);
+                    OfferCheckBox.IsEnabled = false;
+                    OfferCheckBox.IsChecked = true;
+                    OfferSerialCombo.IsEnabled = false;
+                }
+                else
+                {
+                    FillOfferSerialCombo();
 
-                OfferCheckBox.IsEnabled = false;
-                OfferCheckBox.IsChecked = true;
-                OfferSerialCombo.IsEnabled = false;
+                }
             }
 
         }
@@ -767,19 +774,57 @@ namespace _01electronics_crm
 
         private void OnUnCheckOfferCheckBox(object sender, RoutedEventArgs e)
         {
-            OfferSerialCombo.IsEnabled = false;
-            OfferSerialCombo.SelectedItem = null;
+            if (viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION && viewAddCondition != COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
+            {
+                OfferSerialCombo.IsEnabled = false;
+                OfferSerialCombo.SelectedItem = null;
 
-            companyNameCombo.SelectedItem = null;
-            companyAddressCombo.SelectedItem = null;
-            contactPersonNameCombo.SelectedItem = null;
+                companyNameCombo.SelectedItem = null;
+                companyAddressCombo.SelectedItem = null;
+                contactPersonNameCombo.SelectedItem = null;
 
 
-            //if (salesPersonCombo.SelectedItem == loggedInUser.GetEmployeeName())
-            //{
-            companyNameCombo.IsEnabled = true;
-            InitializeCompanyNameCombo();
-            //}
+                //if (salesPersonCombo.SelectedItem == loggedInUser.GetEmployeeName())
+                //{
+                companyNameCombo.IsEnabled = true;
+                InitializeCompanyNameCombo();
+                //}
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+            {
+                FillOffersList();
+                ConfigureUIElementsForView();
+                SetSalesPersonLabel();
+                SetOfferSerialLabel();
+                SetCompanyNameLabel();
+                SetCompanyAddressLabel();
+                SetContactPersonLabel();
+            }
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
+            {
+                FillOffersList();
+                ConfigureUIElemenetsForAdd();
+                InitializeSalesPersonCombo();
+                SetSalesPersonComboValue();
+
+                if (maintContract.GetMaintOfferID() != null)
+                {
+                    SetOfferSerialComboValue();
+                    OfferSerialCombo.IsEnabled = true;
+                }
+                else
+                {
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+
+                    companyNameCombo.IsEnabled = true;
+                    companyAddressCombo.IsEnabled = true;
+                    contactPersonNameCombo.IsEnabled = true;
+                }
+
+                DisableSalesPersonAndOfferCombo();
+
+            }
         }
 
     }
