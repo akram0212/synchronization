@@ -685,59 +685,65 @@ namespace _01electronics_crm
             newContact.InitializeBranchInfo(companyAddresses[companyBranchCombo.SelectedIndex].address_serial);
             newContact.SetContactDepartment(departments[departmentComboBox.SelectedIndex].department_id, departments[departmentComboBox.SelectedIndex].department_name);
 
-            WrapPanel businessPhoneWrap = (WrapPanel)contactPhoneWrapPanel.Children[0];
-            TextBox businessPhone = (TextBox)businessPhoneWrap.Children[3];
-
-            String inputString = businessPhone.Text.ToString();
-            String outputString = businessPhone.Text.ToString();
-
-            if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
+            if(contactPhoneWrapPanel.Children.Count !=0)
             {
-                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else
-            {
-                newContact.AddNewContactPhone(outputString);
-            }
-
-            if (contactPersonalPhoneWrapPanel.Children.Count > 0)
-            {
-                for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
+                WrapPanel businessPhoneWrap = (WrapPanel)contactPhoneWrapPanel.Children[0];
+                TextBox businessPhone = (TextBox)businessPhoneWrap.Children[3];
+    
+                String inputString = businessPhone.Text.ToString();
+                String outputString = businessPhone.Text.ToString();
+    
+                if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
                 {
-
-                    WrapPanel personalPhoneWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
-                    TextBox personalPhone = (TextBox)personalPhoneWrapPanel.Children[3];
-
-                    inputString = personalPhone.Text.ToString();
-                    outputString = personalPhone.Text.ToString();
-
-                    if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
+                    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else
+                {
+                    newContact.AddNewContactPhone(outputString);
+                }
+    
+                if (contactPersonalPhoneWrapPanel.Children.Count > 0)
+                {
+                    for (int i = 0; i < contactPersonalPhoneWrapPanel.Children.Count; i++)
                     {
-                        System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+    
+                        WrapPanel personalPhoneWrapPanel = (WrapPanel)contactPersonalPhoneWrapPanel.Children[i];
+                        TextBox personalPhone = (TextBox)personalPhoneWrapPanel.Children[3];
+    
+                        inputString = personalPhone.Text.ToString();
+                        outputString = personalPhone.Text.ToString();
+    
+                        if (!integrityChecks.CheckContactPhoneEditBox(inputString, ref outputString, companyAddresses[companyBranchCombo.SelectedIndex].address / 1000000, true, ref errorMessage))
+                        {
+                            System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        else
+                        {
+                            newContact.AddNewContactPhone(outputString);
+                        }
                     }
-                    else
+                }
+
+            }
+
+            if (businessEmailWrapPanel.Children.Count != 0)
+            {
+                WrapPanel businessEmailWrap = (WrapPanel)businessEmailWrapPanel.Children[0];
+                Label businessEmail = (Label)businessEmailWrap.Children[1];
+                newContact.SetContactBusinessEmail(businessEmail.Content.ToString());
+
+                if (personalEmailWrapPanel.Children.Count > 0)
+                {
+                    for (int i = 0; i < personalEmailWrapPanel.Children.Count; i++)
                     {
-                        newContact.AddNewContactPhone(outputString);
+                        WrapPanel personalEmailWrap = (WrapPanel)personalEmailWrapPanel.Children[i];
+                        Label personalEmail = (Label)personalEmailWrap.Children[1];
+                        newContact.AddNewContactEmail(personalEmail.Content.ToString());
                     }
                 }
             }
-
-            WrapPanel businessEmailWrap = (WrapPanel)businessEmailWrapPanel.Children[0];
-            Label businessEmail = (Label)businessEmailWrap.Children[1];
-            newContact.SetContactBusinessEmail(businessEmail.Content.ToString());
-
-            if (personalEmailWrapPanel.Children.Count > 0)
-            {
-                for (int i = 0; i < personalEmailWrapPanel.Children.Count; i++)
-                {
-                    WrapPanel personalEmailWrap = (WrapPanel)personalEmailWrapPanel.Children[i];
-                    Label personalEmail = (Label)personalEmailWrap.Children[1];
-                    newContact.AddNewContactEmail(personalEmail.Content.ToString());
-                }
-            }
-
 
             contact.EditContactInfo(newContact, assigneeChanged);
             this.Close();

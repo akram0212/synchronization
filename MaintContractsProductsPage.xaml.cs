@@ -33,6 +33,7 @@ namespace _01electronics_crm
         private List<BASIC_STRUCTS.CURRENCY_STRUCT> currencies = new List<BASIC_STRUCTS.CURRENCY_STRUCT>();
 
         private int viewAddCondition;
+        private int previousViewAddCondition;
         private int numberOfProductsAdded;
         private int quantity;
         private decimal priceQuantity;
@@ -60,8 +61,7 @@ namespace _01electronics_crm
             numberOfProductsAdded = 0;
 
             InitializeComponent();
-
-
+            previousViewAddCondition = viewAddCondition;
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION)
             {
@@ -69,8 +69,9 @@ namespace _01electronics_crm
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
+                viewAddCondition = COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION;
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
                 SetCategoryLabels();
@@ -83,7 +84,7 @@ namespace _01electronics_crm
 
                 cancelButton.IsEnabled = false;
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+            else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
             {
                 InitializeCategories();
                 InitializePriceCurrencyComboBoxes();
@@ -1145,6 +1146,8 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsBasicInfoPage.maintContractsProductsPage = this;
             maintContractsBasicInfoPage.maintContractsProjectInfoPage = maintContractsProjectsPage;
             maintContractsBasicInfoPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
@@ -1155,6 +1158,8 @@ namespace _01electronics_crm
         }
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsProjectsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsProjectsPage.maintContractsProductsPage = this;
             maintContractsProjectsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
@@ -1169,6 +1174,8 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsPaymentAndDeliveryPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProductsPage = this;
@@ -1179,6 +1186,8 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsAdditionalInfoPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsAdditionalInfoPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsAdditionalInfoPage.maintContractsProductsPage = this;
@@ -1190,6 +1199,8 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 maintContractsUploadFilesPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
@@ -1204,6 +1215,8 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsPaymentAndDeliveryPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProjectsPage = maintContractsProjectsPage;
             maintContractsPaymentAndDeliveryPage.maintContractsProductsPage = this;
@@ -1215,6 +1228,8 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousViewAddCondition;
+
             maintContractsProjectsPage.maintContractsBasicInfoPage = maintContractsBasicInfoPage;
             maintContractsProjectsPage.maintContractsProductsPage = this;
             maintContractsProjectsPage.maintContractsPaymentAndDeliveryPage = maintContractsPaymentAndDeliveryPage;
