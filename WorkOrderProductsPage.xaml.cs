@@ -15,6 +15,8 @@ namespace _01electronics_crm
     /// </summary>
     public partial class WorkOrderProductsPage : Page
     {
+        int previousAddCondition = 0;
+
         Employee loggedInUser;
         WorkOrder workOrder;
 
@@ -72,28 +74,42 @@ namespace _01electronics_crm
             {
                 InitializePriceCurrencyComboBoxes();
                 SetUpPageUIElements();
-                //SetCategoryLabels();
-                //SetTypeLabels();
-                //SetBrandLabels();
-                //SetModelLabels();
-                //SetQuantityTextBoxes();
-                //SetPriceTextBoxes();
+        
                 SetPriceComboBoxes();
 
                 cancelButton.IsEnabled = false;
             }
             else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
-                InitializeCategories();
-                InitializePriceCurrencyComboBoxes();
-                SetUpPageUIElements();
-                SetCategoryComboBoxes();
-                SetTypeComboBoxes();
-                SetBrandComboBoxes();
-                SetModelComboBoxes();
-                SetQuantityTextBoxes();
-                SetPriceTextBoxes();
-                SetPriceComboBoxes();
+               
+                //
+                if (workOrder.GetOrderStatusId() != 1)
+                {
+                    previousAddCondition = viewAddCondition;
+                    viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+                    InitializePriceCurrencyComboBoxes();
+                    SetUpPageUIElements();
+
+                    SetPriceComboBoxes();
+
+                    cancelButton.IsEnabled = false;
+
+                }
+                else {
+                    InitializeCategories();
+                    InitializePriceCurrencyComboBoxes();
+                    SetUpPageUIElements();
+                    SetCategoryComboBoxes();
+                    SetTypeComboBoxes();
+                    SetBrandComboBoxes();
+                    SetModelComboBoxes();
+                    SetQuantityTextBoxes();
+                    SetPriceTextBoxes();
+                    SetPriceComboBoxes();
+
+
+                }
+   
             }
             else
             {
@@ -1115,6 +1131,7 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition=previousAddCondition;
             workOrderBasicInfoPage.workOrderProductsPage = this;
             workOrderBasicInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -1125,6 +1142,7 @@ namespace _01electronics_crm
         }
         private void OnClickProjectInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
             workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProjectInfoPage.workOrderProductsPage = this;
             workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -1139,6 +1157,7 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = this;
@@ -1149,6 +1168,7 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderAdditionalInfoPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = this;
@@ -1160,6 +1180,8 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
@@ -1174,6 +1196,8 @@ namespace _01electronics_crm
 
         private void OnClickNextButton(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = this;
@@ -1185,6 +1209,8 @@ namespace _01electronics_crm
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
             workOrderProjectInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProjectInfoPage.workOrderProductsPage = this;
             workOrderProjectInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;

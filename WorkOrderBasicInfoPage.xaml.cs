@@ -15,7 +15,7 @@ namespace _01electronics_crm
     public partial class WorkOrderBasicInfoPage : Page
     {
         Employee loggedInUser;
-        WorkOrder workOrder;
+        WorkOrder workOrder ;
         public WorkOrder oldWorkOrder;
         Quotation tmpWorkOffer;
         private IntegrityChecks integrityChecks = new IntegrityChecks();
@@ -91,34 +91,78 @@ namespace _01electronics_crm
                 workOrderUploadFilesPage = new WorkOrderUploadFilesPage(ref loggedInUser, ref workOrder, viewAddCondition);
 
                 orderSerialTextBox.IsEnabled = false;
-                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
+                orderSerialTextBox.Text = workOrder.GetOrderSerial().ToString();
                 issueDatePicker.IsEnabled = false;
                 issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
             }
-            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            else 
+            if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
             {
+                workOrderSerialWrapPanel.Visibility = Visibility.Collapsed;
                 oldWorkOrder = new WorkOrder(sqlDatabase);
                 oldWorkOrder.CopyWorkOrder(workOrder);
 
-                FillOffersList();
-                ConfigureUIElemenetsForAdd();
-                InitializeSalesPersonCombo();
-                SetSalesPersonComboValue();
+                //if (!workOrder.checkCanEdit()) {
 
-                SetCompanyNameComboValue();
-                SetContactPersonComboValue();
+                //    FillOffersList();
+                //    ConfigureUIElemenetsForAdd();
+                //    InitializeSalesPersonCombo();
+                //    SetSalesPersonComboValue();
 
-                if (workOrder.GetOfferID() != null)
-                    SetOfferSerialComboValue();
+                //    SetCompanyNameComboValue();
+                //    SetContactPersonComboValue();
+                //    salesPersonCombo.IsEnabled = false;
+                //    companyAddressCombo.IsEnabled = false;
+                //    contactPersonNameCombo.IsEnabled = false;
+                //    companyNameCombo.IsEnabled = false;
+
+                //    orderSerialTextBox.Text = workOrder.orderSerial.ToString();
+                //    issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
+
+                //}
+
+                if (workOrder.GetOrderStatusId() != 1)
+                {
+
+                    FillOffersList();
+                    ConfigureUIElemenetsForAdd();
+                    InitializeSalesPersonCombo();
+                    SetSalesPersonComboValue();
+
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
+                    salesPersonCombo.IsEnabled = false;
+                    companyAddressCombo.IsEnabled = false;
+                    contactPersonNameCombo.IsEnabled = false;
+                    companyNameCombo.IsEnabled = false;
+                    orderSerialTextBox.IsReadOnly = true;
+
+                    orderSerialTextBox.Text = workOrder.GetOrderSerial().ToString();
+                    issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
+                }
+
                 else
-                    OfferCheckBox.IsEnabled = false;
-                companyAddressCombo.IsEnabled = true;
-                contactPersonNameCombo.IsEnabled = true;
+                {
+                    FillOffersList();
+                    ConfigureUIElemenetsForAdd();
+                    InitializeSalesPersonCombo();
+                    SetSalesPersonComboValue();
 
-                orderSerialTextBox.Text = workOrder.orderSerial.ToString();
-                issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
+                    SetCompanyNameComboValue();
+                    SetContactPersonComboValue();
 
-                //DisableSalesPersonAndOfferCombo();
+                    if (workOrder.GetOfferID() != null)
+                        SetOfferSerialComboValue();
+                    else
+                        OfferCheckBox.IsEnabled = false;
+                    companyAddressCombo.IsEnabled = true;
+                    contactPersonNameCombo.IsEnabled = true;
+
+                    orderSerialTextBox.Text = workOrder.GetOrderSerial().ToString();
+                    issueDatePicker.SelectedDate = DateTime.Parse(workOrder.GetOrderIssueDate().ToString("yyyy-MM-dd"));
+
+                    //DisableSalesPersonAndOfferCombo();
+                }
             }
             else
             {
@@ -637,6 +681,7 @@ namespace _01electronics_crm
             workOrderProjectInfoPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
             workOrderProjectInfoPage.workOrderUploadFilesPage = workOrderUploadFilesPage;
 
+            
 
             NavigationService.Navigate(workOrderProjectInfoPage);
 
