@@ -484,6 +484,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickFinish(object sender, RoutedEventArgs e)
         {
+            List<BASIC_STRUCTS.ADDRESS_STRUCT> Locations = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
+            workOrder.GetProjectLocations(ref Locations);
             //AN MAKE IT POP UP AS AN ERROR NOT MESSAGE
             if (workOrder.GetSalesPersonId() == 0)
                 System.Windows.Forms.MessageBox.Show("Sales person must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -505,15 +507,21 @@ namespace _01electronics_crm
                 System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (workOrder.GetOrderContractTypeId() == 0)
                 System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (workOrder.orderSerial == 0)
-                System.Windows.Forms.MessageBox.Show("Work order serial must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
             else if (workOrder.GetOrderIssueDate().ToString().Contains("1/1/0001"))
                 System.Windows.Forms.MessageBox.Show("Work order issue date must be specified.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+            
             else
             {
                 if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_ADD_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.OUTGOING_QUOTATION_RESOLVE_CONDITION)
                 {
+                    if (workOrder.GetprojectSerial() != 0)
+                    {
+                        if (Locations.Count == 0)
+                        {
+                            System.Windows.Forms.MessageBox.Show("You have to choose 1 location atleast", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                     if (!workOrder.IssueNewOrder())
                         return;
                     if (workOrder.GetOfferID() != null)
@@ -522,6 +530,14 @@ namespace _01electronics_crm
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
                 {
+                    if (workOrder.GetprojectSerial() != 0)
+                    {
+                        if (Locations.Count == 0)
+                        {
+                            System.Windows.Forms.MessageBox.Show("You have to choose 1 location atleast", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
                     if (!workOrder.EditWorkOrder(workOrderBasicInfoPage.oldWorkOrder))
                         return;
                 }

@@ -128,10 +128,8 @@ namespace _01electronics_crm
 
                     if (progress == 100)
                     {
-
                         canceled = true;
                         this.Close();
-
 
                     }
                     else
@@ -142,9 +140,7 @@ namespace _01electronics_crm
 
                 }
                 else {
-
                     e.Cancel = false;
-
                 }
 
             });
@@ -153,8 +149,6 @@ namespace _01electronics_crm
 
         private void NavigationWindow_Closed(object sender, EventArgs e)
         {
-            //if (canceled == true)
-            //    return;
 
         }
     }

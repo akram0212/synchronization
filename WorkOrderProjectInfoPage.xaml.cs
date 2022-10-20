@@ -1,5 +1,6 @@
 ﻿using _01electronics_library;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +13,8 @@ namespace _01electronics_crm
     /// </summary>
     public partial class WorkOrderProjectInfoPage : Page
     {
+        int previousAddCondition = 0;
+
 
         Employee loggedInUser;
         WorkOrder workOrder;
@@ -63,13 +66,46 @@ namespace _01electronics_crm
                 checkAllCheckBox.IsChecked = true;
                 checkAllCheckBox.IsEnabled = false;
             }
-            //else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
-            //{
-            //    workOrder.GetProjectLocations(ref orderProjectLocations);
-            //    projectCheckBox.IsChecked = true;
-            //    projectComboBox.SelectedItem = workOrder.GetprojectName();
-            //    InitializeProjectLocationsGridRevise();
-            //}
+            else if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+            {
+               
+                if (workOrder.GetOrderStatusId() != 1)
+                {
+                        previousAddCondition = viewAddCondition;
+                        viewAddCondition = COMPANY_WORK_MACROS.PRODUCT_VIEW_CONDITION;
+                        projectCheckBox.IsChecked = true;
+                        projectCheckBox.IsEnabled = false;
+                        projectComboBox.SelectedItem = workOrder.GetprojectName();
+                        projectComboBox.IsEnabled = false;
+                        checkAllCheckBox.IsChecked = true;
+                        checkAllCheckBox.IsEnabled = false;
+                }
+
+
+                //if (!workOrder.checkCanEdit())
+                //{
+
+                //    projectCheckBox.IsChecked = true;
+                //    projectCheckBox.IsEnabled = false;
+                //    projectComboBox.SelectedItem = workOrder.GetprojectName();
+                //    projectComboBox.IsEnabled = false;
+                //    checkAllCheckBox.IsChecked = true;
+                //    checkAllCheckBox.IsEnabled = false;
+
+                //}
+                else {
+                    workOrder.GetProjectLocations(ref orderProjectLocations);
+                    projectCheckBox.IsChecked = true;
+                    projectComboBox.IsEnabled = true;
+                    projectCheckBox.IsEnabled = true;
+                    projectComboBox.SelectedItem = workOrder.GetprojectName();
+                    InitializeProjectLocationsGridRevise();
+
+                }
+
+               
+            }
+
             else
             {
                 projectCheckBox.IsEnabled = true;
@@ -179,6 +215,8 @@ namespace _01electronics_crm
                         locationsGrid.Children.Add(checkBox);
                         Grid.SetRow(checkBox, i);
                     }
+
+                    
                 }
             }
         }
@@ -212,6 +250,10 @@ namespace _01electronics_crm
 
         private void OnUnCheckProject(object sender, RoutedEventArgs e)
         {
+            workOrder.GetProjectLocations().Clear();
+
+            workOrder.SetProjectSerial(0);
+
             projectComboBox.SelectedItem = null;
             projectComboBox.IsEnabled = false;
             locationsGrid.Children.Clear();
@@ -223,12 +265,24 @@ namespace _01electronics_crm
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Add(projectLocations[((int)currentCheckBox.Tag)]);
 
+            bool location;
+
+           location = workOrder.GetProjectLocations().Exists(a => a.location_id == addedLocations[addedLocations.Count - 1].location_id);
+
+           if(location==false)
+            workOrder.GetProjectLocations().Add(projectLocations[((int)currentCheckBox.Tag)]);
+
+
         }
 
         private void OnUnCheckProjectLocation(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
             addedLocations.Remove(projectLocations[((int)currentCheckBox.Tag)]);
+
+            workOrder.GetProjectLocations().Remove(workOrder.GetProjectLocations()[((int)currentCheckBox.Tag)]);
+
+
 
         }
 
@@ -237,6 +291,8 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
 
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
@@ -251,6 +307,7 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
 
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
@@ -265,6 +322,7 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
 
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
@@ -279,6 +337,7 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
 
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
@@ -293,6 +352,8 @@ namespace _01electronics_crm
         }
         private void OnClickUploadFiles(object sender, MouseButtonEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
 
             if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
             {
@@ -308,6 +369,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
 
@@ -322,6 +385,8 @@ namespace _01electronics_crm
 
         private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
+            viewAddCondition = previousAddCondition;
+
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
 

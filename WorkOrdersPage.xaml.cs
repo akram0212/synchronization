@@ -56,6 +56,7 @@ namespace _01electronics_crm
 
         public WorkOrdersPage(ref Employee mLoggedInUser)
         {
+
             InitializeComponent();
             loggedInUser = mLoggedInUser;
 
@@ -1587,6 +1588,7 @@ namespace _01electronics_crm
             int viewAddCondition = COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION;
 
             WorkOrder workOrder = new WorkOrder(sqlDatabase);
+
 
             workOrder.InitializeWorkOrderInfo(workOrdersAfterFiltering[workOrdersStackPanel.Children.IndexOf(currentGrid)].order_serial);
             WorkOrderWindow workOrderWindow = new WorkOrderWindow(ref loggedInUser, ref workOrder, viewAddCondition, false);
