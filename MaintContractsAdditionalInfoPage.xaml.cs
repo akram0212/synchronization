@@ -738,7 +738,7 @@ namespace _01electronics_crm
 
             if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
             {
-                if (!maintenanceContract.UpdateMaintContractProductInfo())
+                if (!maintenanceContract.UpdateMaintContractProductsInfoAndSerials())
                     return false;
             }
            // else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
