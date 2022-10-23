@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using _01electronics_procurement;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -18,9 +19,10 @@ namespace _01electronics_crm
 
         String employeeEmail;
         String employeePassword;
-
+        protected SQLServer sqlDatabase;
         Employee loggedInUser;
         protected String errorMessage;
+
 
         public SignInPage()
         {
@@ -144,5 +146,8 @@ namespace _01electronics_crm
             ForgetPasswordPage forgetPasswordMail = new ForgetPasswordPage(ref employeeEmail);
             this.NavigationService.Navigate(forgetPasswordMail);
         }
+
+     
+        
     }
 }

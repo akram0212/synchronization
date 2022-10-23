@@ -95,7 +95,7 @@ namespace _01electronics_crm
         public String GetBrandPhotoLocalPath()
         {
             BrandPhotoLocalPath = String.Empty;
-            BrandPhotoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\products_photos\\brands\\"+ GetBrandID()+".jpg";
+            BrandPhotoLocalPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos\\brands\\" + GetBrandID()+".jpg";
             return BrandPhotoLocalPath;
         }
 

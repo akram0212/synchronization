@@ -15,6 +15,8 @@ namespace _01electronics_crm
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+        bool canceled = false;
+        int progress = 0;
         bool closedWindow = false;
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
         //Timer timer=new Timer(60000);
@@ -26,22 +28,24 @@ namespace _01electronics_crm
         {
 
             this.Closing += NavigationWindow_Closing;
+
             backgroundWorker.WorkerReportsProgress = true;
   
+
             InitializeComponent();
-            if (!File.Exists(Directory.GetCurrentDirectory() + "\\Track.txt"))
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics"))
             {
                 fileFound = false;
-               File.Create(Directory.GetCurrentDirectory() + "\\Track.txt").Close();
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos");
                 //ftpServer.GetModificationTime();
 
             }
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos");
 
 
             if (fileFound == false)
             {
                 backgroundWorker.DoWork += BackgroundStart;
+                backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
                 backgroundWorker.RunWorkerAsync();
             }
 
@@ -53,7 +57,12 @@ namespace _01electronics_crm
 
         }
 
- 
+        private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progress = e.ProgressPercentage;
+        }
+
+
         //private void OnTimerElapsed(object o, ElapsedEventArgs s)
         //{
         //    if (ftpServer.CheckDateChanged() == false)
@@ -70,6 +79,8 @@ namespace _01electronics_crm
 
         private void BackgroundStart(object sender,DoWorkEventArgs e)
         {
+            backgroundWorker.WorkerReportsProgress = true;
+
             String errorMessage = String.Empty;
             if (!ftpServer.DownloadFolder(BASIC_MACROS.MODELS_PHOTOS_PATH,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\erp_system\\products_photos\\", ref errorMessage))
             {
@@ -78,10 +89,10 @@ namespace _01electronics_crm
 
 
             backgroundWorker.ReportProgress(100);
+
             if (closedWindow == true)
             {
                 CancelEventArgs cancelEventArgs = new CancelEventArgs();
-                cancelEventArgs.Cancel = false;
                 NavigationWindow_Closing(null, cancelEventArgs);
             }
 
@@ -108,19 +119,45 @@ namespace _01electronics_crm
 
         private void NavigationWindow_Closing(object sender, CancelEventArgs e)
         {
+            if (canceled == true)
+                return;
             closedWindow = true;
-            if (backgroundWorker.WorkerReportsProgress == true)
-                this.Close();
-            else
+
+            this.Dispatcher.Invoke(() =>
             {
-                e.Cancel = true;
-                this.Hide();
-           }
+
+                if (backgroundWorker.IsBusy == true)
+                {
+
+                    if (progress == 100)
+                    {
+
+                        canceled = true;
+                        this.Close();
+
+
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                        this.Hide();
+                    }
+
+                }
+                else {
+
+                    e.Cancel = false;
+
+                }
+
+            });
+           
         }
 
         private void NavigationWindow_Closed(object sender, EventArgs e)
         {
-
+            //if (canceled == true)
+            //    return;
 
         }
     }
