@@ -79,6 +79,7 @@ namespace _01electronics_crm
                 SetTypeLabels();
                 SetBrandLabels();
                 SetModelLabels();
+                SetModelSpecsLabels();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
@@ -94,6 +95,7 @@ namespace _01electronics_crm
                 SetTypeComboBoxes();
                 SetBrandComboBoxes();
                 SetModelComboBoxes();
+                SetModelSpecsComboBoxes();
                 SetQuantityTextBoxes();
                 SetPriceTextBoxes();
                 SetPriceComboBoxes();
@@ -312,14 +314,14 @@ namespace _01electronics_crm
                 {
                     ComboBox currentSpecNameCombo = new ComboBox();
                     currentSpecNameCombo.Style = (Style)FindResource("comboBoxStyle");
-                    //currentSpecNameCombo.SelectionChanged += new SelectionChangedEventHandler(SpecNameComboBoxesSelectionChanged);
-                    currentSpecNameCombo.IsEnabled = true;
+                    currentSpecNameCombo.SelectionChanged += new SelectionChangedEventHandler(SpecNameComboBoxesSelectionChanged);
+                    //currentSpecNameCombo.IsEnabled = true;
                     specNameWrapPanel.Children.Add(currentSpecNameCombo);
+                    currentSpecNameCombo.IsEnabled = false;
                 }
                 currentProductGrid.Children.Add(specNameWrapPanel);
                 Grid.SetRow(specNameWrapPanel, 5);
 
-                specNameWrapPanel.IsEnabled = false;
 
                 /////////////QUANTITY WRAPPANEL///////////////////////
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -543,6 +545,18 @@ namespace _01electronics_crm
                 currentModelComboBox.SelectedItem = maintContracts.GetMaintContractProductModel(i + 1);
             }
         }
+        
+        private void SetModelSpecsComboBoxes()
+        {
+            for (int i = 0; i < maintContracts.GetNoOfMaintContractSavedProducts(); i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                ComboBox currentModelComboBox = (ComboBox)currentModelWrapPanel.Children[1];
+
+                currentModelComboBox.SelectedItem = maintContracts.GetMaintContractProductSpec(i + 1);
+            }
+        }
 
         public void SetCategoryLabels()
         {
@@ -587,6 +601,16 @@ namespace _01electronics_crm
             }
         }
 
+        public void SetModelSpecsLabels()
+        {
+            for (int i = 0; i < numberOfProductsAdded; i++)
+            {
+                Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
+                WrapPanel currentModelWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                Label currentModelLabelValue = (Label)currentModelWrapPanel.Children[1];
+                currentModelLabelValue.Content = maintContracts.GetMaintContractProductSpec(i + 1);
+            }
+        }
         public void SetQuantityTextBoxes()
         {
             for (int i = 0; i < numberOfProductsAdded; i++)
@@ -809,8 +833,8 @@ namespace _01electronics_crm
 
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
-                    if (k != 0)
-                        currentProductCheckBox.IsChecked = false;
+                    //if (k != 0)
+                    //    currentProductCheckBox.IsChecked = false;
 
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductType(k + 1, 0, "Others");
@@ -929,15 +953,68 @@ namespace _01electronics_crm
                 {
                     currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
                 }
+
+
+                if (!commonQueriesObject.GetModelSpecsNames(categories[currentCategoryComboBox.SelectedIndex].categoryId, products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                    return;
+                InitializeSpecNameCombo(currentSpecNameComboBox);
+                currentSpecNameComboBox.IsEnabled = true;
+                //if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.UPS_CATEGORY_ID)
+                //{
+                //    if (!commonQueriesObject.GetUPSSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                //        return;
+                //    InitializeSpecNameCombo(currentSpecNameComboBox);
+                //
+                //
+                //}
+                //else if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+                //{
+                //    if (!commonQueriesObject.GetGensetSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                //        return;
+                //    InitializeSpecNameCombo(currentSpecNameComboBox);
+                //
+                //    //currentSpecNameWrapPanel.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    //currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
+                //}
             }
             else
             {
+                currentSpecNameComboBox.IsEnabled = false;
                 for (int k = 0; k < numberOfProductsAdded; k++)
                 {
                     if (currentProductGrid == mainWrapPanel.Children[k])
                         maintContracts.SetMaintContractProductModel(k + 1, 0, "Others");
                 }
-                currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
+                //currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+        
+        private void SpecNameComboBoxesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox currentSpecNameComboBox = (ComboBox)sender;
+            WrapPanel currentSpecNameWrapPanel = (WrapPanel)currentSpecNameComboBox.Parent;
+            Grid currentProductGrid = (Grid)currentSpecNameWrapPanel.Parent;
+
+            if (currentSpecNameComboBox.SelectedItem != null)
+            {
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        maintContracts.SetMaintContractProductSpec(k + 1, modelSpecs[currentSpecNameComboBox.SelectedIndex].spec_id, modelSpecs[currentSpecNameComboBox.SelectedIndex].spec_name);
+                }            
+            }
+            else
+            {
+                currentSpecNameComboBox.IsEnabled = false;
+                for (int k = 0; k < numberOfProductsAdded; k++)
+                {
+                    if (currentProductGrid == mainWrapPanel.Children[k])
+                        maintContracts.SetMaintContractProductSpec(k + 1, 0, "Others");
+                }
+                //currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
             }
         }
 
