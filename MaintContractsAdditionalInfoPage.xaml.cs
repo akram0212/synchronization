@@ -736,11 +736,11 @@ namespace _01electronics_crm
                 if (!maintenanceContract.UpdateMaintContractProjectLocations())
                     return false;
 
-           // if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
-           // {
-           //     if (!maintenanceContract.UpdateMaintContractProductsInfoAndSerials())
-           //         return false;
-           // }
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
+            {
+                if (!maintenanceContract.UpdateMaintContractProductInfo())
+                    return false;
+            }
            // else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
            //     if (!maintenanceContract.UpdateMaintContractProductSerial())
            //         return false;
