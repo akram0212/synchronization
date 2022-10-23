@@ -598,7 +598,7 @@ namespace _01electronics_crm
 
             if (quantity != 0)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                 {
                     ////// INITIALIZE FIRST GRID VALUES ///////
 
@@ -614,7 +614,7 @@ namespace _01electronics_crm
                         firstRowGrid.Visibility = Visibility.Collapsed;
 
                 }
-                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
                 {
                     ////// INITIALIZE FIRST GRID VALUES ///////
 
@@ -661,7 +661,7 @@ namespace _01electronics_crm
                     gridI.Children.Add(serialTextBox);
                     modelSerialGrid.Children.Add(gridI);
 
-                    if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                    if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                     {
                         serialTextBox.IsEnabled = false;
 
@@ -671,7 +671,7 @@ namespace _01electronics_crm
                         serialTextBox.Text = currentModelSerial.model_serial;
 
                     }
-                    else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                    else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
                     {
                         BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
                             (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
@@ -736,11 +736,11 @@ namespace _01electronics_crm
                 if (!maintenanceContract.UpdateMaintContractProjectLocations())
                     return false;
 
-           // if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
-           // {
-           //     if (!maintenanceContract.UpdateMaintContractProductsInfoAndSerials())
-           //         return false;
-           // }
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
+            {
+                if (!maintenanceContract.UpdateMaintContractProductInfo())
+                    return false;
+            }
            // else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
            //     if (!maintenanceContract.UpdateMaintContractProductSerial())
            //         return false;

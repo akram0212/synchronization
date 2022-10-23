@@ -319,7 +319,7 @@ namespace _01electronics_crm
                 currentProductGrid.Children.Add(specNameWrapPanel);
                 Grid.SetRow(specNameWrapPanel, 5);
 
-                specNameWrapPanel.Visibility = Visibility.Collapsed;
+                specNameWrapPanel.IsEnabled = false;
 
                 /////////////QUANTITY WRAPPANEL///////////////////////
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ namespace _01electronics_crm
                     currentQuantityTextBox.IsEnabled = false;
                 productQuantityWrapPanel.Children.Add(currentQuantityTextBox);
 
-                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                     currentQuantityTextBox.IsEnabled = false;
 
                 currentProductGrid.Children.Add(productQuantityWrapPanel);
@@ -914,7 +914,7 @@ namespace _01electronics_crm
                         return;
                     InitializeSpecNameCombo(currentSpecNameComboBox);
 
-                    currentSpecNameWrapPanel.Visibility = Visibility.Visible;
+                    currentSpecNameWrapPanel.IsEnabled = true;
 
                 }
                 else if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
@@ -1083,7 +1083,8 @@ namespace _01electronics_crm
 
             WrapPanel currentQuantitWrapPanel = (WrapPanel)currentProductGrid.Children[6];
             TextBox currentQuantityTextBox = (TextBox)currentQuantitWrapPanel.Children[1];
-            currentQuantityTextBox.IsEnabled = true;
+            if(viewAddCondition != COMPANY_WORK_MACROS.ORDER_REVISE_CONDITION)
+                currentQuantityTextBox.IsEnabled = true;
 
             WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[7];
             TextBox currentPriceTextBox = (TextBox)currentPriceWrapPanel.Children[1];
