@@ -50,7 +50,6 @@ namespace _01electronics_crm
             brandModels = new List<COMPANY_WORK_MACROS.MODEL_STRUCT>();
 
             downloadBackground = new BackgroundWorker();
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/01 Electronics/" + selectedProduct.GetProductID() + "/" + selectedProduct.GetBrandID());
             downloadBackground.DoWork += BackgroundDownload;
             downloadBackground.ProgressChanged += OnDownloadProgressChanged;
             downloadBackground.RunWorkerCompleted += OnDownloadBackgroundComplete;

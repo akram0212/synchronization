@@ -436,12 +436,12 @@ namespace _01electronics_crm
 
             if (AutomaticallyRenewedCheckBox.IsChecked == true && (increaseRateTextBox.Text == null || increaseRateTextBox.Text == String.Empty))
             {
-                MessageBox.Show("Increase Rate must be specified!");
+                System.Windows.Forms.MessageBox.Show("Increase Rate must be specified", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return;
             }
             if (maintenanceContract.GetMaintContractProposerId() == 0)
             {
-                MessageBox.Show("Contract Proposer must be specified!");
+                System.Windows.Forms.MessageBox.Show("Contract Proposer must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return;
             }
             if(maintenanceContract.GetMaintContractProduct1Quantity() != 0)
@@ -464,36 +464,42 @@ namespace _01electronics_crm
                 if(!FillModelSerialsList(4, maintenanceContract.GetMaintContractProduct4Quantity(), product4Grid))
                     return;
             }
-            //else if (maintenanceContract.GetCompanyName() == null)
-            //    MessageBox.Show("You need to choose a company before adding a work offer!");
-            //else if (maintenanceContract.GetAddressSerial() == 0)
-            //    MessageBox.Show("You need to choose company address before adding a work offer!");
-            //else if (maintenanceContract.GetContactId() == 0)
-            //    MessageBox.Show("You need to choose a contact before adding a work offer!");
-            if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
-            {
-                MessageBox.Show("Product 1 price must be specified!");
-                return;
-            }
-
+            if (maintenanceContract.GetSalesPersonId() == 0)
+                System.Windows.Forms.MessageBox.Show("Sales person must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetCompanyName() == null)
+                System.Windows.Forms.MessageBox.Show("Company must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetAddressSerial() == 0)
+                System.Windows.Forms.MessageBox.Show("Company address must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetContactId() == 0)
+                System.Windows.Forms.MessageBox.Show("Contact must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProduct1TypeId() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 1 must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 1 quantity must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProduct2TypeId() != 0 && maintenanceContract.GetMaintContractProduct2Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 2 quantity must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProduct3TypeId() != 0 && maintenanceContract.GetMaintContractProduct3Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 3 quantity must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProduct4TypeId() != 0 && maintenanceContract.GetMaintContractProduct4Quantity() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 4 quantity must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (maintenanceContract.GetMaintContractPercentDownPayment() + maintenanceContract.GetMaintContractPercentOnDelivery() + maintenanceContract.GetMaintContractPercentOnInstallation() != 100)
+            //    System.Windows.Forms.MessageBox.Show("Error in payment condition values", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            //else if (maintenanceContract.getmain() == 0)
+            //    System.Windows.Forms.MessageBox.Show("Contract type must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractIssueDate().ToString().Contains("1/1/0001"))
+                System.Windows.Forms.MessageBox.Show("Maintenance Contract issue date must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractProjectSerial() != 0 && maintenanceContract.GetMaintContractProjectLocations().Count() == 0)
+                System.Windows.Forms.MessageBox.Show("Project Location must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if(maintenanceContract.GetMaintContractProduct1TypeId() != 0 && maintenanceContract.GetMaintContractProduct1PriceValue() == 0)
+                System.Windows.Forms.MessageBox.Show("Product 1 price must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (maintenanceContract.GetMaintContractProduct2TypeId() != 0 && maintenanceContract.GetMaintContractProduct2PriceValue() == 0)
-            {
-                MessageBox.Show("Product 2 price must be specified!");
-                return;
-            }
-
+                System.Windows.Forms.MessageBox.Show("Product 2 price must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (maintenanceContract.GetMaintContractProduct3TypeId() != 0 && maintenanceContract.GetMaintContractProduct3PriceValue() == 0)
-            {
-                MessageBox.Show("Product 3 price must be specified!");
-                return;
-            }
-
+                System.Windows.Forms.MessageBox.Show("Product 3 price must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else if (maintenanceContract.GetMaintContractProduct4TypeId() != 0 && maintenanceContract.GetMaintContractProduct4PriceValue() == 0)
-            {
-                MessageBox.Show("Product 4 price must be specified!");
-                return;
-            }
-
+                System.Windows.Forms.MessageBox.Show("Product 4 price must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            else if (maintenanceContract.GetMaintContractCurrencyId() == 0)
+                System.Windows.Forms.MessageBox.Show("Price Currency must be specified.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             else
             {
                 if(AutomaticallyRenewedCheckBox.IsChecked == true)
@@ -592,7 +598,7 @@ namespace _01electronics_crm
 
             if (quantity != 0)
             {
-                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                 {
                     ////// INITIALIZE FIRST GRID VALUES ///////
 
@@ -608,7 +614,7 @@ namespace _01electronics_crm
                         firstRowGrid.Visibility = Visibility.Collapsed;
 
                 }
-                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
                 {
                     ////// INITIALIZE FIRST GRID VALUES ///////
 
@@ -655,7 +661,7 @@ namespace _01electronics_crm
                     gridI.Children.Add(serialTextBox);
                     modelSerialGrid.Children.Add(gridI);
 
-                    if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
+                    if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_VIEW_CONDITION)
                     {
                         serialTextBox.IsEnabled = false;
 
@@ -665,7 +671,7 @@ namespace _01electronics_crm
                         serialTextBox.Text = currentModelSerial.model_serial;
 
                     }
-                    else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION || viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
+                    else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
                     {
                         BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
                             (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
@@ -690,7 +696,7 @@ namespace _01electronics_crm
 
                 if (currentTextBox.Text == String.Empty)
                 {
-                    MessageBox.Show("Product " + index +  " Model Serial Number #" + (i + 1).ToString() + " Must Be Specified!");
+                    System.Windows.Forms.MessageBox.Show("Product " + index + " Model Serial Number #" + (i + 1).ToString() + " Must Be Specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                     return false;
                 }
                 else
@@ -734,12 +740,10 @@ namespace _01electronics_crm
             {
                 if (!maintenanceContract.UpdateMaintContractProductInfo())
                     return false;
-                if (!maintenanceContract.UpdateMaintContractProductSerial())
-                    return false;
             }
-            else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
-                if (!maintenanceContract.UpdateMaintContractProductSerial())
-                    return false;
+           // else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))
+           //     if (!maintenanceContract.UpdateMaintContractProductSerial())
+           //         return false;
 
             if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractTotalPriceValue().Equals(maintenanceContract.GetMaintContractTotalPriceValue()))
                 if (!maintenanceContract.UpdateMaintContractTotalPrice())
@@ -775,6 +779,25 @@ namespace _01electronics_crm
                 if (!maintenanceContract.UpdateMaintContractWarrantyPeriod())
                     return false;
 
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetContractAutomaticallyRenewed().Equals(maintenanceContract.GetContractAutomaticallyRenewed()))
+                if (!maintenanceContract.UpdateMaintContractAutomaticallyRenewed())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetContractIncreaseRate().Equals(maintenanceContract.GetContractIncreaseRate()))
+                if (!maintenanceContract.UpdateMaintContractIncreaseRate())
+                    return false;
+            
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractNotes().Equals(maintenanceContract.GetMaintContractNotes()))
+                if (!maintenanceContract.UpdateMaintContractNotes())
+                    return false;
+
+            if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractStatusId().Equals(maintenanceContract.GetMaintContractStatusId()))
+            {
+                if (!maintenanceContract.UpdateMaintContractStatus())
+                    return false;
+                //if (!maintenanceContract.UpdateAllPreviousMaintContractStatus(maintenanceContract.GetMaintContractVersion()))
+                //    return false;
+            }
             return true;
         }
     }

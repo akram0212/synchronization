@@ -30,7 +30,6 @@ namespace _01electronics_crm
             }
             if (openFilesPage)
             {
-
                 workOrderUploadFilesPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
                 workOrderUploadFilesPage.workOrderProjectInfoPage = workOrderProjectInfoPage;
                 workOrderUploadFilesPage.workOrderProductsPage = workOrderProjectInfoPage.workOrderProductsPage;
@@ -38,7 +37,6 @@ namespace _01electronics_crm
                 workOrderUploadFilesPage.workOrderAdditionalInfoPage = workOrderAdditionalInfoPage;
 
                 this.NavigationService.Navigate(workOrderUploadFilesPage);
-
             }
             else
             {

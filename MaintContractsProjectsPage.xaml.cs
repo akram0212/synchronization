@@ -62,7 +62,7 @@ namespace _01electronics_crm
                 checkAllCheckBox.IsEnabled = false;
                 projectCheckBox.IsChecked = true;
                 projectCheckBox.IsEnabled = false;
-                projectComboBox.SelectedItem = maintContract.GetprojectName();
+                projectComboBox.SelectedItem = maintContract.GetMaintContractProjectName();
                 projectComboBox.IsEnabled = false;
                 checkAllCheckBox.IsChecked = true;
 
@@ -72,7 +72,7 @@ namespace _01electronics_crm
                 projectCheckBox.IsEnabled = true;
                 projectCheckBox.IsChecked = true;
 
-                projectComboBox.SelectedItem = maintContract.GetprojectName();
+                projectComboBox.SelectedItem = maintContract.GetMaintContractProjectName();
 
                 checkAllCheckBox.IsEnabled = true;
             }
@@ -103,38 +103,41 @@ namespace _01electronics_crm
                 locationsGrid.Children.Clear();
                 locationsGrid.RowDefinitions.Clear();
 
-                maintContract.SetMaintContractProjectInfo(projects[projectComboBox.SelectedIndex].project_serial, projects[projectComboBox.SelectedIndex].project_name);
-
-
-                commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
-
-                List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
-
-                maintContract.GetProjectLocations(ref temp);
-
-
-                for (int i = 0; i < projectLocations.Count; i++)
+                if (projectComboBox.SelectedIndex != -1)
                 {
-                    CheckBox checkBox = new CheckBox();
-                    checkBox.Content = projectLocations[i].country.country_name + "," + projectLocations[i].city.city_name + "," + projectLocations[i].state_governorate.state_name + "," + projectLocations[i].district.district_name;
-                    checkBox.Tag = i;
-                    checkBox.Style = (Style)FindResource("checkBoxStyle");
-                    checkBox.Checked += OnCheckProjectLocation;
-                    checkBox.Unchecked += OnUnCheckProjectLocation;
-                    checkBox.Width = 500.0;
+                    maintContract.SetMaintContractProjectInfo(projects[projectComboBox.SelectedIndex].project_serial, projects[projectComboBox.SelectedIndex].project_name);
 
-                    if (temp.Exists(x1 => x1.location_id == projectLocations[i].location_id))
-                        checkBox.IsChecked = true;
 
-                    RowDefinition row = new RowDefinition();
-                    locationsGrid.RowDefinitions.Add(row);
+                    commonQueriesObject.GetProjectLocations(projects[projectComboBox.SelectedIndex].project_serial, ref projectLocations);
 
-                    locationsGrid.Children.Add(checkBox);
-                    Grid.SetRow(checkBox, i);
+                    List<BASIC_STRUCTS.ADDRESS_STRUCT> temp = new List<BASIC_STRUCTS.ADDRESS_STRUCT>();
 
+                    maintContract.GetProjectLocations(ref temp);
+
+
+                    for (int i = 0; i < projectLocations.Count; i++)
+                    {
+                        CheckBox checkBox = new CheckBox();
+                        checkBox.Content = projectLocations[i].country.country_name + "," + projectLocations[i].city.city_name + "," + projectLocations[i].state_governorate.state_name + "," + projectLocations[i].district.district_name;
+                        checkBox.Tag = i;
+                        checkBox.Style = (Style)FindResource("checkBoxStyle");
+                        checkBox.Checked += OnCheckProjectLocation;
+                        checkBox.Unchecked += OnUnCheckProjectLocation;
+                        checkBox.Width = 500.0;
+
+                        if (temp.Exists(x1 => x1.location_id == projectLocations[i].location_id))
+                            checkBox.IsChecked = true;
+
+                        RowDefinition row = new RowDefinition();
+                        locationsGrid.RowDefinitions.Add(row);
+
+                        locationsGrid.Children.Add(checkBox);
+                        Grid.SetRow(checkBox, i);
+
+                    }
+
+                    checkAllCheckBox.IsEnabled = true;
                 }
-
-                checkAllCheckBox.IsEnabled = true;
             }
             else
             {
@@ -192,6 +195,8 @@ namespace _01electronics_crm
             projectComboBox.SelectedItem = null;
             projectComboBox.IsEnabled = false;
             locationsGrid.Children.Clear();
+            maintContract.SetMaintContractProjectInfo(0, null);
+            maintContract.GetMaintContractProjectLocations().Clear();
         }
 
         private void OnCheckProjectLocation(object sender, RoutedEventArgs e)
@@ -323,7 +328,7 @@ namespace _01electronics_crm
 
         public void SetProjectComboBox()
         {
-            projectComboBox.SelectedItem = maintContract.GetprojectName();
+            projectComboBox.SelectedItem = maintContract.GetMaintContractProjectName();
             if (projectComboBox.SelectedItem != null)
             {
                 projectCheckBox.IsChecked = true;
