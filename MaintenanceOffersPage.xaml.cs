@@ -789,7 +789,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
         {
-            MaintenanceOffersPage maintOffers = new MaintenanceOffersPage(ref loggedInUser);
+            QuotationsPage maintOffers = new QuotationsPage(ref loggedInUser);
             this.NavigationService.Navigate(maintOffers);
         }
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
@@ -799,7 +799,7 @@ namespace _01electronics_crm
         }
         private void OnButtonClickedmaintOffers(object sender, RoutedEventArgs e)
         {
-            QuotationsPage maintOffers = new QuotationsPage(ref loggedInUser);
+            MaintenanceOffersPage maintOffers = new MaintenanceOffersPage(ref loggedInUser);
             this.NavigationService.Navigate(maintOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -839,6 +839,8 @@ namespace _01electronics_crm
         private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
         {
             MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            if (maintenanceOffersPage == null)
+                return;
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
 

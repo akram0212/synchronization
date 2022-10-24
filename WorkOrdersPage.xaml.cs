@@ -1449,6 +1449,8 @@ namespace _01electronics_crm
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
             WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            if (workOrders == null)
+                return;
             this.NavigationService.Navigate(workOrders);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
