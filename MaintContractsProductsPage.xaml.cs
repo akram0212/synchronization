@@ -932,6 +932,28 @@ namespace _01electronics_crm
                         maintContracts.SetMaintContractProductModel(k + 1, models[currentModelComboBox.SelectedIndex].modelId, models[currentModelComboBox.SelectedIndex].modelName);
                 }
 
+                if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.UPS_CATEGORY_ID)
+                {
+                    if (!commonQueriesObject.GetModelSpecsNames(categories[currentCategoryComboBox.SelectedIndex].categoryId,products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                        return;
+                    InitializeSpecNameCombo(currentSpecNameComboBox);
+
+                    currentSpecNameWrapPanel.IsEnabled = true;
+
+                }
+                else if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+                {
+                    if (!commonQueriesObject.GetModelSpecsNames(categories[currentCategoryComboBox.SelectedIndex].categoryId,products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                        return;
+                    InitializeSpecNameCombo(currentSpecNameComboBox);
+
+                    currentSpecNameWrapPanel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
+                }
+
 
                 if (!commonQueriesObject.GetModelSpecsNames(categories[currentCategoryComboBox.SelectedIndex].categoryId, products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
                     return;

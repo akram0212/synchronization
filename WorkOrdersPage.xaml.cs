@@ -59,6 +59,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
             loggedInUser = mLoggedInUser;
+           
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
