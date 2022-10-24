@@ -75,11 +75,13 @@ namespace _01electronics_crm
 
             employeePassword = employeePasswordTextBox.Password;
 
-            //if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
-            //{
-            //    System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
+            if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+
+            }
+            
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
