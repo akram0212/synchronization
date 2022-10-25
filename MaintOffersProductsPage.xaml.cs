@@ -310,7 +310,7 @@ namespace _01electronics_crm
             for (int i = 0; i < numberOfProductsAdded; i++)
             {
                 Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[5];
+                WrapPanel currentQuantityWrapPanel = (WrapPanel)currentProductGrid.Children[6];
                 TextBox currentQuantityTextBoxValue = (TextBox)currentQuantityWrapPanel.Children[1];
                 //  if (maintOffer.GetRFQProductQuantity(i + 1) != 0)
                 //    currentQuantityTextBoxValue.Text = maintOffer.GetRFQProductQuantity(i + 1).ToString();
@@ -324,7 +324,7 @@ namespace _01electronics_crm
                 if (maintOffer.GetProductPriceValue(i + 1) != 0)
                 {
                     Grid currentProductGrid = (Grid)mainWrapPanel.Children[i];
-                    WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[6];
+                    WrapPanel currentPriceWrapPanel = (WrapPanel)currentProductGrid.Children[7];
                     TextBox currentPriceTextBoxValue = (TextBox)currentPriceWrapPanel.Children[1];
                     int price = (int)maintOffer.GetProductPriceValue(i + 1);
                     currentPriceTextBoxValue.Text = price.ToString();

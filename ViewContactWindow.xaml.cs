@@ -672,6 +672,8 @@ namespace _01electronics_crm
             Contact newContact = new Contact();
             bool assigneeChanged = false;
 
+            bool companyChanged = false;
+
             newContact.SetContactName(employeeFirstNameLabel.Content.ToString());
             newContact.SetContactGender(contactGenderLabel.Content.ToString());
 
@@ -684,6 +686,9 @@ namespace _01electronics_crm
             newContact.InitializeCompanyInfo(companies[companyNameCombo.SelectedIndex].company_serial);
             newContact.InitializeBranchInfo(companyAddresses[companyBranchCombo.SelectedIndex].address_serial);
             newContact.SetContactDepartment(departments[departmentComboBox.SelectedIndex].department_id, departments[departmentComboBox.SelectedIndex].department_name);
+
+            if(newContact.GetCompanySerial()!=contact.GetCompanySerial())
+                companyChanged = true;
 
             if(contactPhoneWrapPanel.Children.Count !=0)
             {
@@ -745,7 +750,7 @@ namespace _01electronics_crm
                 }
             }
 
-            contact.EditContactInfo(newContact, assigneeChanged);
+            contact.EditContactInfo(newContact, assigneeChanged,companyChanged);
             this.Close();
         }
 

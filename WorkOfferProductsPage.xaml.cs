@@ -977,7 +977,7 @@ namespace _01electronics_crm
                 for (int i = 0; i < quotation.GetNoOfOfferSavedProducts(); i++)
                 {
                     Grid productGrid = (Grid)mainWrapPanel.Children[i];
-                    WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[6];
+                    WrapPanel priceWrapPanel = (WrapPanel)productGrid.Children[7];
                     ComboBox currencyComboBox = (ComboBox)priceWrapPanel.Children[2];
                     currencyComboBox.SelectedItem = currentPriceComboBox.SelectedItem;
                 }

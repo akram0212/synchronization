@@ -459,8 +459,13 @@ namespace _01electronics_crm
 
                 if (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID)
                 {
-                    if (maintOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId() || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
+                    if (maintOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId() || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION) {
+
+
+                        if(maintOffers[i].offer_status_id!=2)
                         listBox.Items.Add(reviseButton);
+
+                    }
 
                     if (maintOffers[i].offer_status_id == COMPANY_WORK_MACROS.PENDING_OUTGOING_QUOTATION && (maintOffers[i].offer_proposer_id == loggedInUser.GetEmployeeId() || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION))
                         listBox.Items.Add(confirmButton);
