@@ -18,6 +18,8 @@ namespace _01electronics_crm
     /// </summary>
     public partial class ViewCompanyWindow : Window
     {
+
+        int count = 0;
         protected Employee loggedInUser;
 
         protected CommonQueries commonQueries;
@@ -70,6 +72,8 @@ namespace _01electronics_crm
             previousSelectedItem = null;
 
             companyNameLabel.Content = company.GetCompanyName();
+            count = company.GetCompanyName().Length;
+            companyNameTextBox.MouseLeave += CompanyNameTextBox_MouseLeave;
             companyNameLabel.Tag = company.GetCompanySerial();
             companyNameTextBox.Tag = company.GetCompanySerial();
 
@@ -119,6 +123,7 @@ namespace _01electronics_crm
             companyNameLabel.Content = company.GetCompanyName();
             primaryWorkFieldLabel.Content = company.GetCompanyPrimaryField();
             secondaryWorkFieldLabel.Content = company.GetCompanySecondaryField();
+
             //primaryWorkFieldComboBox.Text = company.GetCompanyPrimaryField();
             // secondaryWorkFieldComboBox.Text = company.GetCompanySecondaryField();
 
@@ -128,6 +133,27 @@ namespace _01electronics_crm
             if (!InitializeBranchPhones())
                 return;
         }
+
+        private void CompanyNameTextBox_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+           companyNameTextBox.Visibility = Visibility.Collapsed;
+           companyNameLabel.Visibility = Visibility.Visible;
+            
+           TextBox NameTextBox=sender as TextBox;
+            BrushConverter converter = new BrushConverter();
+            companyNameLabel.Foreground = (Brush)converter.ConvertFrom("#105A97");
+            if (NameTextBox.Text.Length != count) {
+
+                companyNameLabel.Foreground = Brushes.Red;
+                companyNameLabel.Content= NameTextBox.Text;
+            
+            }
+            else
+                companyNameLabel.Content = NameTextBox.Text;
+
+
+        }
+
         private bool InitializeBranchesComboBox()
         {
             branchComboBox.Items.Clear();
