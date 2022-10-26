@@ -77,12 +77,12 @@
 
                 <WrapPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
                     <Label Content="Start Date" Style="{StaticResource labelStyle}" Width="125"/>
-                    <DatePicker Name="startDatePicker" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="150" Margin="10" SelectedDateChanged="OnSelChangedStartDate"/>
+                    <DatePicker Name="startDatePicker" Visibility="Visible" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="130" Margin="10" SelectedDateChanged="OnSelChangedStartDate"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center">
                     <Label Content="End Date" Style="{StaticResource labelStyle}" Width="125"/>
-                    <DatePicker Name="endDatePicker" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="150" Margin="10" SelectedDateChanged="OnSelChangedEndDate"/>
+                    <DatePicker Name="endDatePicker" Visibility="Visible" IsTodayHighlighted="True" Style="{StaticResource datePickerStyle}" Width="130" Margin="10" SelectedDateChanged="OnSelChangedEndDate"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">

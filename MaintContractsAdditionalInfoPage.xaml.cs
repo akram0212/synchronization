@@ -610,8 +610,11 @@ namespace _01electronics_crm
                         (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == 1);
                     if (currentModelSerial2.model_serial_id != 0)
                         firstRowSerialTextBox.Text = currentModelSerial2.model_serial;
+                    else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
+                        firstRowSerialTextBox.IsEnabled = true;
                     else
-                        firstRowGrid.Visibility = Visibility.Collapsed;
+                        firstRowSerialTextBox.Text = "NULL";
+                    //firstRowGrid.Visibility = Visibility.Collapsed;
 
                 }
                 else if (viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
@@ -668,7 +671,13 @@ namespace _01electronics_crm
                         BASIC_STRUCTS.MODEL_SERIAL_STRUCT currentModelSerial = maintenanceContract.GetMaintContractModelsSerialsList().Find
                             (tmpSerial => tmpSerial.product_id == index + 1 && tmpSerial.model_serial_id == i + 1);
                     
-                        serialTextBox.Text = currentModelSerial.model_serial;
+                        //serialTextBox.Text = currentModelSerial.model_serial;
+                        if (currentModelSerial.model_serial_id != 0)
+                            serialTextBox.Text = currentModelSerial.model_serial;
+                        else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_EDIT_CONDITION)
+                            serialTextBox.IsEnabled = true;
+                        else
+                            serialTextBox.Text = "NULL";
 
                     }
                     else if(viewAddCondition == COMPANY_WORK_MACROS.CONTRACT_RENEW_CONDITION)
@@ -738,7 +747,7 @@ namespace _01electronics_crm
 
             if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractProductsList().Equals(maintenanceContract.GetMaintContractProductsList()))
             {
-                if (!maintenanceContract.UpdateMaintContractProductInfo())
+                if (!maintenanceContract.UpdateMaintContractProductsInfoAndSerials())
                     return false;
             }
            // else if (!maintContractsBasicInfoPage.oldMaintContract.GetMaintContractModelsSerialsList().Equals(maintenanceContract.GetMaintContractModelsSerialsList()))

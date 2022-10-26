@@ -82,6 +82,10 @@ namespace _01electronics_crm
             {
                 System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 614f1909c932fe7ddda30d894ec59453c1cb6880
             }
 
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)

@@ -1044,6 +1044,8 @@ namespace _01electronics_crm
         private void OnButtonClickedWorkOffers(object sender, MouseButtonEventArgs e)
         {
             QuotationsPage workOffers = new QuotationsPage(ref loggedInUser);
+            if (workOffers == null)
+                return;
             this.NavigationService.Navigate(workOffers);
         }
         private void OnButtonClickedRFQs(object sender, RoutedEventArgs e)
@@ -1078,11 +1080,15 @@ namespace _01electronics_crm
         private void OnButtonClickedMaintenanceContracts(object sender, MouseButtonEventArgs e)
         {
             MaintenanceContractsPage maintenanceContractsPage = new MaintenanceContractsPage(ref loggedInUser);
+            if (maintenanceContractsPage == null)
+                return;
             this.NavigationService.Navigate(maintenanceContractsPage);
         }
         private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
         {
             MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            if (maintenanceOffersPage.Equals(null))
+                return;
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
         private void OnClosedMaintContractWindow(object sender, EventArgs e)

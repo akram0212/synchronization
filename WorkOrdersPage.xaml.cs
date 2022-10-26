@@ -59,6 +59,7 @@ namespace _01electronics_crm
 
             InitializeComponent();
             loggedInUser = mLoggedInUser;
+           
 
             sqlDatabase = new SQLServer();
             commonQueriesObject = new CommonQueries();
@@ -522,12 +523,12 @@ namespace _01electronics_crm
                 //listBox.Items.Add(addCollectionButton);
 
 
-                if (workOrders[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION))
+                if (workOrders[i].order_status_id != COMPANY_WORK_MACROS.CLOSED_WORK_ORDER && (loggedInUser.GetEmployeeTeamId() == COMPANY_ORGANISATION_MACROS.TECHNICAL_OFFICE_TEAM_ID || (loggedInUser.GetEmployeeDepartmentId() == COMPANY_ORGANISATION_MACROS.BUSINESS_DEVELOPMENT_DEPARTMENT_ID && loggedInUser.GetEmployeePositionId() == COMPANY_ORGANISATION_MACROS.MANAGER_POSTION)))
                 {
                     if (loggedInUser.GetEmployeeId() == workOrders[i].offer_proposer_id || loggedInUser.GetEmployeePositionId() <= COMPANY_ORGANISATION_MACROS.TEAM_LEAD_POSTION)
                     {
                         ListBoxItem confirmOrderButton = new ListBoxItem();
-                        confirmOrderButton.Content = "Confirm Order";
+                        confirmOrderButton.Content = "Close Order";
                         confirmOrderButton.Foreground = new SolidColorBrush(Color.FromRgb(16, 90, 151));
                         listBox.Items.Add(confirmOrderButton);
                     }
@@ -1448,6 +1449,8 @@ namespace _01electronics_crm
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
             WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            if (workOrders == null)
+                return;
             this.NavigationService.Navigate(workOrders);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
@@ -1559,7 +1562,7 @@ namespace _01electronics_crm
                 {
                     OnBtnClickViewOffer();
                 }
-                else if (currentItem.Content.ToString() == "Confirm Order")
+                else if (currentItem.Content.ToString() == "Close Order")
                 {
                     OnBtnClickConfirmOrder();
                 }

@@ -596,6 +596,8 @@ namespace _01electronics_crm
         private void OnButtonClickedWorkOrders(object sender, RoutedEventArgs e)
         {
             WorkOrdersPage workOrders = new WorkOrdersPage(ref loggedInUser);
+            if (workOrders == null)
+                return;
             this.NavigationService.Navigate(workOrders);
         }
         private void OnButtonClickedWorkOffers(object sender, RoutedEventArgs e)
@@ -643,6 +645,8 @@ namespace _01electronics_crm
         private void OnButtonClickedMaintenanceOffer(object sender, MouseButtonEventArgs e)
         {
             MaintenanceOffersPage maintenanceOffersPage = new MaintenanceOffersPage(ref loggedInUser);
+            if (maintenanceOffersPage == null)
+                return;
             this.NavigationService.Navigate(maintenanceOffersPage);
         }
 

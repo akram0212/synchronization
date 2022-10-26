@@ -101,9 +101,7 @@ namespace _01electronics_crm
                     projectComboBox.SelectedItem = workOrder.GetprojectName();
                     InitializeProjectLocationsGridRevise();
 
-                }
-
-               
+                }     
             }
 
             else
@@ -291,11 +289,11 @@ namespace _01electronics_crm
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void OnClickBasicInfo(object sender, MouseButtonEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
 
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -307,10 +305,10 @@ namespace _01electronics_crm
         }
         private void OnClickProductsInfo(object sender, MouseButtonEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -322,10 +320,10 @@ namespace _01electronics_crm
         }
         private void OnClickPaymentAndDeliveryInfo(object sender, MouseButtonEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderPaymentAndDeliveryPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderPaymentAndDeliveryPage.workOrderProductsPage = workOrderProductsPage;
@@ -337,10 +335,10 @@ namespace _01electronics_crm
         }
         private void OnClickAdditionalInfo(object sender, MouseButtonEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderAdditionalInfoPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderAdditionalInfoPage.workOrderProductsPage = workOrderProductsPage;
@@ -369,10 +367,10 @@ namespace _01electronics_crm
 
         private void OnBtnClickNext(object sender, RoutedEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderProductsPage.workOrderBasicInfoPage = workOrderBasicInfoPage;
             workOrderProductsPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
@@ -385,10 +383,10 @@ namespace _01electronics_crm
 
         private void OnBtnClickBack(object sender, RoutedEventArgs e)
         {
-            viewAddCondition = previousAddCondition;
-
             if (viewAddCondition != COMPANY_WORK_MACROS.ORDER_VIEW_CONDITION)
                 workOrder.SetProjectLocations(addedLocations);
+
+            viewAddCondition = previousAddCondition;
 
             workOrderBasicInfoPage.workOrderProductsPage = workOrderProductsPage;
             workOrderBasicInfoPage.workOrderPaymentAndDeliveryPage = workOrderPaymentAndDeliveryPage;
