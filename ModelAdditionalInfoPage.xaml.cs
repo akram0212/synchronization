@@ -167,19 +167,19 @@ namespace _01electronics_crm
                     System.Windows.Forms.MessageBox.Show("Model Summary Points must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 //else if (product.GetUPSSpecs().Count() == 0)
                 //    System.Windows.Forms.MessageBox.Show("Model Specs must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].io_phase == null)
+                else if (product.GetModelSpecs()[0].ups_io_phase == null)
                     System.Windows.Forms.MessageBox.Show("Model IO Phase must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].rated_power == null)
+                else if (product.GetModelSpecs()[0].ups_rated_power == null)
                     System.Windows.Forms.MessageBox.Show("Model rated power must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].rating_id == null)
+                else if (product.GetModelSpecs()[0].ups_rating == null)
                     System.Windows.Forms.MessageBox.Show("Model rating must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].backup_time_50 == null)
+                else if (product.GetModelSpecs()[0].ups_backup_time_50 == null)
                     System.Windows.Forms.MessageBox.Show("Model backup_time_50 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].backup_time_70 == null)
+                else if (product.GetModelSpecs()[0].ups_backup_time_70 == null)
                     System.Windows.Forms.MessageBox.Show("Model backup_time_70 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].backup_time_100 == null)
+                else if (product.GetModelSpecs()[0].ups_backup_time_100 == null)
                     System.Windows.Forms.MessageBox.Show("Model backup_time_100 must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                else if (product.GetUPSSpecs()[0].valid_until == null)
+                else if (product.GetModelSpecs()[0].valid_until == null)
                     System.Windows.Forms.MessageBox.Show("Model Valid Until must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 else if (modelStandardFeatures.Count() == 0)
                     System.Windows.Forms.MessageBox.Show("Model Standard Features must be specified!", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
@@ -720,8 +720,8 @@ namespace _01electronics_crm
 
         void InitializeApplications()
         {
-            //try
-            //{
+            try
+            {
                 applicationsLabel1.Content = product.GetModelApplications()[0].ToString();
                 applicationsTextBox1.Visibility = Visibility.Collapsed;
                 applicationsLabel1.Visibility = Visibility.Visible;
@@ -735,12 +735,12 @@ namespace _01electronics_crm
                     Currentgrid = (Grid)applicationsGrid.Children[i - 1];
                     AddNewStandardFeature(i, "Application #", applicationsGrid, Currentgrid, applicationId, onClickHandler);
                 }
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
-
         }
+            catch (Exception ex)
+            {
+
+            }
+
+}
     }
 }

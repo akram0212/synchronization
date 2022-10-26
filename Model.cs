@@ -26,13 +26,16 @@ namespace _01electronics_crm
         private List<String> modelBenefits;
         private List<String> modelSummaryPoints;
         private List<String> modelStandardFeatures;
-        private List<BASIC_STRUCTS.GENSET_SPEC> GENSETSpecs;
+        private List<BASIC_STRUCTS.MODEl_SPEC_STRUCT> modelSpecs;
 
         private List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+        private List<BASIC_STRUCTS.GENSET_SPEC> GENSETSpecs;
 
         public Model() {
 
+            modelSpecs = new List<BASIC_STRUCTS.MODEl_SPEC_STRUCT>();
             UPSSpecs = new List<BASIC_STRUCTS.UPS_SPECS_STRUCT>();
+            GENSETSpecs = new List<BASIC_STRUCTS.GENSET_SPEC>();
             modelSummaryPoints = new List<String>();
 
             modelApplications = new List<string>();
@@ -52,6 +55,10 @@ namespace _01electronics_crm
         public void SetUPSSpecs(BASIC_STRUCTS.UPS_SPECS_STRUCT mUPSSpecs)
         {
             UPSSpecs.Add(mUPSSpecs);
+        }     
+        public void SetModelSpecs(BASIC_STRUCTS.MODEl_SPEC_STRUCT mModelSpecs)
+        {
+            modelSpecs.Add(mModelSpecs);
         }
 
         public void SetGensetSpec(List<BASIC_STRUCTS.GENSET_SPEC> GensetSpecs)
@@ -156,13 +163,17 @@ namespace _01electronics_crm
             return modelStandardFeatures.Count;
         }
 
-        public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> GetUPSSpecs()
+        //public List<BASIC_STRUCTS.UPS_SPECS_STRUCT> GetUPSSpecs()
+        //{
+        //    return UPSSpecs;
+        //}
+        //public List<BASIC_STRUCTS.GENSET_SPEC> GetGensetSpecs()
+        //{
+        //    return GENSETSpecs;
+        //}        
+        public List<BASIC_STRUCTS.MODEl_SPEC_STRUCT> GetModelSpecs()
         {
-            return UPSSpecs;
-        }
-        public List<BASIC_STRUCTS.GENSET_SPEC> GetGensetSpecs()
-        {
-            return GENSETSpecs;
+            return modelSpecs;
         }
 
         public String GetModelPhotoLocalPath()
@@ -191,130 +202,131 @@ namespace _01electronics_crm
 
         public bool GetUPSSpecss()
         {
-            UPSSpecs.Clear();
-            String sqlQueryPart1 = @"SELECT  
-		category_id
-		,ups_specs.product_id
-		,ups_specs.brand_id
-		,ups_specs.model_id
-		,spec_id
-		,rating
-		,backup_time_50
-		,backup_time_70
-		,backup_time_100
-		
-		,rated_power
+        //    UPSSpecs.Clear();
+        //    String sqlQueryPart1 = @"SELECT  
+        //		category_id
+        //		,ups_specs.product_id
+        //		,ups_specs.brand_id
+        //		,ups_specs.model_id
+        //		,spec_id
+        //		,rating
+        //		,backup_time_50
+        //		,backup_time_70
+        //		,backup_time_100
 
-		,valid_until
-		
-		,io_phase
-		,measure_units.measure_unit
-		,input_power_factor
-		,thdi
-		,input_nominal_voltage
-		,input_voltage
-		,voltage_tolerance
-		,output_power_factor
-		,thdv
-		,output_nominal_voltage
-		,output_dc_voltage_range
-		,overload_capability
-		,efficiency
-		,input_connection_type
-		,front_panel
-		,max_power
-		,certificates
-		,safety
-		,emc
-		,environmental_aspects
-		,test_performance
-		,protection_degree
-		,transfer_voltage_limit
-		,marking
-		
-		FROM erp_system.dbo.ups_specs
-	left join erp_system.dbo.measure_units
-	on ups_specs.rating=measure_units.id
-	
-	where  ups_specs.product_id =";
+        //		,rated_power
 
-            String sqlQueryPart2 = " and ups_specs.brand_id = ";
-            String sqlQueryPart3 = " and ups_specs.model_id= ";
-            String sqlQueryPart4 = ";";
+        //		,valid_until
+
+        //		,io_phase
+        //		,measure_units.measure_unit
+        //		,input_power_factor
+        //		,thdi
+        //		,input_nominal_voltage
+        //		,input_voltage
+        //		,voltage_tolerance
+        //		,output_power_factor
+        //		,thdv
+        //		,output_nominal_voltage
+        //		,output_dc_voltage_range
+        //		,overload_capability
+        //		,efficiency
+        //		,input_connection_type
+        //		,front_panel
+        //		,max_power
+        //		,certificates
+        //		,safety
+        //		,emc
+        //		,environmental_aspects
+        //		,test_performance
+        //		,protection_degree
+        //		,transfer_voltage_limit
+        //		,marking
+
+        //		FROM erp_system.dbo.ups_specs
+        //	left join erp_system.dbo.measure_units
+        //	on ups_specs.rating=measure_units.id
+
+        //	where  ups_specs.product_id =";
+
+        //    String sqlQueryPart2 = " and ups_specs.brand_id = ";
+        //    String sqlQueryPart3 = " and ups_specs.model_id= ";
+        //    String sqlQueryPart4 = ";";
 
 
-            sqlQuery = String.Empty;
-            sqlQuery += sqlQueryPart1;
-            sqlQuery += GetProductID();
-            sqlQuery += sqlQueryPart2;
-            sqlQuery += GetBrandID();
-            sqlQuery += sqlQueryPart3;
-            sqlQuery += GetModelID();
-            sqlQuery += sqlQueryPart4;
+        //    sqlQuery = String.Empty;
+        //    sqlQuery += sqlQueryPart1;
+        //    sqlQuery += GetProductID();
+        //    sqlQuery += sqlQueryPart2;
+        //    sqlQuery += GetBrandID();
+        //    sqlQuery += sqlQueryPart3;
+        //    sqlQuery += GetModelID();
+        //    sqlQuery += sqlQueryPart4;
 
-            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+        //    BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
 
-            queryColumns.sql_int = 9;
-            queryColumns.sql_money = 1;
-            queryColumns.sql_datetime = 1;
-            queryColumns.sql_string = 24;
+        //    queryColumns.sql_int = 9;
+        //    queryColumns.sql_money = 1;
+        //    queryColumns.sql_datetime = 1;
+        //    queryColumns.sql_string = 24;
 
-            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
-                return false;
+        //    if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+        //        return false;
 
-            for (int i = 0; i < sqlDatabase.rows.Count; i++)
-            {
-                BASIC_STRUCTS.UPS_SPECS_STRUCT tempItem = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
-                tempItem.spec_id = sqlDatabase.rows[i].sql_int[4];
-                tempItem.rating_id = sqlDatabase.rows[i].sql_int[5];
-                tempItem.backup_time_50 = sqlDatabase.rows[i].sql_int[6];
-                tempItem.backup_time_70 = sqlDatabase.rows[i].sql_int[7];
-                tempItem.backup_time_100 = sqlDatabase.rows[i].sql_int[8];
+        //    for (int i = 0; i < sqlDatabase.rows.Count; i++)
+        //    {
+        //        BASIC_STRUCTS.UPS_SPECS_STRUCT tempItem = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
+        //        tempItem.spec_id = sqlDatabase.rows[i].sql_int[4];
+        //        tempItem.rating_id = sqlDatabase.rows[i].sql_int[5];
+        //        tempItem.backup_time_50 = sqlDatabase.rows[i].sql_int[6];
+        //        tempItem.backup_time_70 = sqlDatabase.rows[i].sql_int[7];
+        //        tempItem.backup_time_100 = sqlDatabase.rows[i].sql_int[8];
 
-                tempItem.rated_power = sqlDatabase.rows[i].sql_money[0];
+        //        tempItem.rated_power = sqlDatabase.rows[i].sql_money[0];
 
-                tempItem.valid_until = sqlDatabase.rows[i].sql_datetime[0];
+        //        tempItem.valid_until = sqlDatabase.rows[i].sql_datetime[0];
 
-                tempItem.io_phase = sqlDatabase.rows[i].sql_string[0];
-                tempItem.rating = sqlDatabase.rows[i].sql_string[1];
-                tempItem.input_power_factor = sqlDatabase.rows[i].sql_string[2];
-                tempItem.thdi = sqlDatabase.rows[i].sql_string[3];
-                tempItem.input_nominal_voltage = sqlDatabase.rows[i].sql_string[4];
-                tempItem.input_voltage = sqlDatabase.rows[i].sql_string[5];
-                tempItem.voltage_tolerance = sqlDatabase.rows[i].sql_string[6];
-                tempItem.output_power_factor = sqlDatabase.rows[i].sql_string[7];
-                tempItem.thdv = sqlDatabase.rows[i].sql_string[8];
-                tempItem.output_nominal_voltage = sqlDatabase.rows[i].sql_string[9];
-                tempItem.output_dc_voltage_range = sqlDatabase.rows[i].sql_string[10];
-                tempItem.overload_capability = sqlDatabase.rows[i].sql_string[11];
-                tempItem.efficiency = sqlDatabase.rows[i].sql_string[12];
-                tempItem.input_connection_type = sqlDatabase.rows[i].sql_string[13];
-                tempItem.front_panel = sqlDatabase.rows[i].sql_string[14];
-                tempItem.max_power = sqlDatabase.rows[i].sql_string[15];
-                tempItem.certificates = sqlDatabase.rows[i].sql_string[16];
-                tempItem.safety = sqlDatabase.rows[i].sql_string[17];
-                tempItem.emc = sqlDatabase.rows[i].sql_string[18];
-                tempItem.environmental_aspects = sqlDatabase.rows[i].sql_string[19];
-                tempItem.test_performance = sqlDatabase.rows[i].sql_string[20];
-                tempItem.protection_degree = sqlDatabase.rows[i].sql_string[21];
-                tempItem.transfer_voltage_limit = sqlDatabase.rows[i].sql_string[22];
-                tempItem.marking = sqlDatabase.rows[i].sql_string[23];
+        //        tempItem.io_phase = sqlDatabase.rows[i].sql_string[0];
+        //        tempItem.rating = sqlDatabase.rows[i].sql_string[1];
+        //        tempItem.input_power_factor = sqlDatabase.rows[i].sql_string[2];
+        //        tempItem.thdi = sqlDatabase.rows[i].sql_string[3];
+        //        tempItem.input_nominal_voltage = sqlDatabase.rows[i].sql_string[4];
+        //        tempItem.input_voltage = sqlDatabase.rows[i].sql_string[5];
+        //        tempItem.voltage_tolerance = sqlDatabase.rows[i].sql_string[6];
+        //        tempItem.output_power_factor = sqlDatabase.rows[i].sql_string[7];
+        //        tempItem.thdv = sqlDatabase.rows[i].sql_string[8];
+        //        tempItem.output_nominal_voltage = sqlDatabase.rows[i].sql_string[9];
+        //        tempItem.output_dc_voltage_range = sqlDatabase.rows[i].sql_string[10];
+        //        tempItem.overload_capability = sqlDatabase.rows[i].sql_string[11];
+        //        tempItem.efficiency = sqlDatabase.rows[i].sql_string[12];
+        //        tempItem.input_connection_type = sqlDatabase.rows[i].sql_string[13];
+        //        tempItem.front_panel = sqlDatabase.rows[i].sql_string[14];
+        //        tempItem.max_power = sqlDatabase.rows[i].sql_string[15];
+        //        tempItem.certificates = sqlDatabase.rows[i].sql_string[16];
+        //        tempItem.safety = sqlDatabase.rows[i].sql_string[17];
+        //        tempItem.emc = sqlDatabase.rows[i].sql_string[18];
+        //        tempItem.environmental_aspects = sqlDatabase.rows[i].sql_string[19];
+        //        tempItem.test_performance = sqlDatabase.rows[i].sql_string[20];
+        //        tempItem.protection_degree = sqlDatabase.rows[i].sql_string[21];
+        //        tempItem.transfer_voltage_limit = sqlDatabase.rows[i].sql_string[22];
+        //        tempItem.marking = sqlDatabase.rows[i].sql_string[23];
 
-                UPSSpecs.Add(tempItem);
+        //        UPSSpecs.Add(tempItem);
 
-            }
+        //    }
 
             return true;
         }
 
-        public bool GetGensetSpecss() {
+        public bool GetGensetSpecss()
+        {
 
             String sqlQuery = $@"select category_id,product_id,brand_id,model_id,spec_id,rating_unit,ltb_50_unit,ltb_60_unit,prp_50_unit,prp_60_unit,rated_power,ltb_50,ltb_60,prp_50,prp_60,valid_until,spec_name,ratedMeasure.measure_unit as ratedMeasure,ltb50measure.measure_unit as ltb50measure,ltb60measure.measure_unit as ltb60measure,prp50measure.measure_unit as prp50measure,prp60measure.measure_unit as prp60measure from genset_specs inner join measure_units as ratedMeasure on genset_specs.rating_unit=ratedMeasure.id
-inner join measure_units as ltb50measure on genset_specs.ltb_50_unit=ltb50measure.id
-inner join measure_units as ltb60measure on genset_specs.ltb_60_unit=ltb60measure.id
-inner join measure_units as prp50measure on genset_specs.prp_50_unit=prp50measure.id
-inner join measure_units as prp60measure on genset_specs.prp_60_unit=prp60measure.id
-where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id={GetBrandID()} and model_id={GetModelID()}";
+        inner join measure_units as ltb50measure on genset_specs.ltb_50_unit=ltb50measure.id
+        inner join measure_units as ltb60measure on genset_specs.ltb_60_unit=ltb60measure.id
+        inner join measure_units as prp50measure on genset_specs.prp_50_unit=prp50measure.id
+        inner join measure_units as prp60measure on genset_specs.prp_60_unit=prp60measure.id
+        where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id={GetBrandID()} and model_id={GetModelID()}";
 
 
             BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
@@ -365,6 +377,184 @@ where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id
             GENSETSpecs = GensetSpecs;
             return true;
 
+        }
+
+        public bool InitializeModelSpecs()
+        {
+            String sqlQuery = $@"SELECT  
+                                    added_by	
+		                            ,category_id
+		                            ,product_id
+		                            ,brand_id
+		                            ,model_id
+		                            ,spec_id
+		                            ,genset_rating_unit
+		                            ,genset_ltb_50_unit
+		                            ,genset_ltb_60_unit
+		                            ,genset_prp_50_unit
+		                            ,genset_prp_60_unit
+		                            ,ups_rating
+		                            ,ups_backup_time_50
+		                            ,ups_backup_time_70
+		                            ,ups_backup_time_100
+		
+		                            ,genset_ltb_50
+		                            ,genset_ltb_60
+		                            ,genset_prp_50
+		                            ,genset_prp_60
+									,genset_rated_power
+		                            ,ups_rated_power
+		
+		                            ,model_specs.date_added
+		                            ,valid_until
+
+		                            ,ups_rating_power.measure_unit as ups_rating_measure_unit
+		                            ,spec_name
+		                            ,genset_rating_power.measure_unit as genset_rating_measure_unit
+		                            ,ltb50measure.measure_unit as ltb50_measure_unit
+		                            ,ltb60measure.measure_unit as ltb60_measure_unit
+		                            ,prp50measure.measure_unit as prp50_measure_unit
+		                            ,prp60measure.measure_unit as prp60_measure_unit
+		                            ,genset_cooling
+		                            ,genset_tank
+		                            ,genset_load
+		                            ,genset_alternator		
+		                            ,ups_io_phase
+		                            ,ups_input_power_factor
+		                            ,ups_thdi
+		                            ,ups_input_nominal_voltage
+		                            ,ups_input_voltage
+		                            ,ups_voltage_tolerance
+		                            ,ups_output_power_factor
+		                            ,ups_thdv
+		                            ,ups_output_nominal_voltage
+		                            ,ups_output_dc_voltage_range
+		                            ,ups_overload_capability
+		                            ,ups_efficiency
+		                            ,ups_input_connection_type
+		                            ,ups_front_panel
+		                            ,ups_max_power
+		                            ,ups_certificates
+		                            ,ups_safety
+		                            ,ups_emc
+		                            ,ups_environmental_aspects
+		                            ,ups_test_performance
+		                            ,ups_protection_degree
+		                            ,ups_transfer_voltage_limit
+		                            ,ups_marking
+
+		                            ,is_valid
+    
+                                FROM erp_system.dbo.model_specs
+
+	                            left join erp_system.dbo.measure_units as ups_rating_power 
+	                            on model_specs.ups_rating=ups_rating_power.id
+	
+	                            left join erp_system.dbo.measure_units as genset_rating_power 
+	                            on model_specs.genset_ltb_50_unit=genset_rating_power.id
+	
+	                            left join erp_system.dbo.measure_units as ltb50measure 
+	                            on model_specs.genset_ltb_50_unit=ltb50measure.id
+	
+	                            left join erp_system.dbo.measure_units as ltb60measure 
+	                            on model_specs.genset_ltb_60_unit=ltb60measure.id
+    
+	                            left join erp_system.dbo.measure_units as prp50measure 
+	                            on model_specs.genset_prp_50_unit=prp50measure.id
+    
+	                            left join erp_system.dbo.measure_units as prp60measure 
+	                            on model_specs.genset_prp_60_unit=prp60measure.id
+
+	                            where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id={GetBrandID()} and model_id={GetModelID()}and spec_id >13";
+
+
+            BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT queryColumns = new BASIC_STRUCTS.SQL_COLUMN_COUNT_STRUCT();
+
+            queryColumns.sql_int = 15;
+            queryColumns.sql_money = 6;
+            queryColumns.sql_datetime = 2;
+            queryColumns.sql_string = 34;
+            queryColumns.sql_bit = 1;
+
+
+            if (!sqlDatabase.GetRows(sqlQuery, queryColumns))
+                return false;
+
+            for (int i = 0; i < sqlDatabase.rows.Count; i++)
+            {
+                BASIC_STRUCTS.MODEl_SPEC_STRUCT tempItem = new BASIC_STRUCTS.MODEl_SPEC_STRUCT();
+
+                tempItem.added_by = sqlDatabase.rows[i].sql_int[0];
+                tempItem.category_id = sqlDatabase.rows[i].sql_int[1];
+                tempItem.product_id = sqlDatabase.rows[i].sql_int[2];
+                tempItem.brand_id = sqlDatabase.rows[i].sql_int[3];
+                tempItem.model_id = sqlDatabase.rows[i].sql_int[4];
+                tempItem.spec_id = sqlDatabase.rows[i].sql_int[5];
+                tempItem.genset_rating_unit = sqlDatabase.rows[i].sql_int[6];
+                tempItem.genset_ltb_50_unit = sqlDatabase.rows[i].sql_int[7];
+                tempItem.genset_ltb_60_unit = sqlDatabase.rows[i].sql_int[8];
+                tempItem.genset_prp_50_unit = sqlDatabase.rows[i].sql_int[9];
+                tempItem.genset_prp_60_unit = sqlDatabase.rows[i].sql_int[10];
+                tempItem.ups_rating = sqlDatabase.rows[i].sql_int[11];
+                tempItem.ups_backup_time_50 = sqlDatabase.rows[i].sql_int[12];
+                tempItem.ups_backup_time_70 = sqlDatabase.rows[i].sql_int[13];
+                tempItem.ups_backup_time_100 = sqlDatabase.rows[i].sql_int[14];
+
+                tempItem.genset_ltb_50 = sqlDatabase.rows[i].sql_money[0];
+                tempItem.genset_ltb_60 = sqlDatabase.rows[i].sql_money[1];
+                tempItem.genset_prp_50 = sqlDatabase.rows[i].sql_money[2];
+                tempItem.genset_prp_60 = sqlDatabase.rows[i].sql_money[3];
+                tempItem.genset_rated_power = sqlDatabase.rows[i].sql_int[4];
+                tempItem.ups_rated_power = sqlDatabase.rows[i].sql_money[5];
+                
+                tempItem.date_added = sqlDatabase.rows[i].sql_datetime[0];
+                tempItem.valid_until = sqlDatabase.rows[i].sql_datetime[1];
+                
+                
+                tempItem.spec_name = sqlDatabase.rows[i].sql_string[0];
+                tempItem.genset_rating_measure_unit = sqlDatabase.rows[i].sql_string[1];
+                tempItem.genset_ltb50_measure_unit = sqlDatabase.rows[i].sql_string[2];
+                tempItem.genset_ltb60_measure_unit = sqlDatabase.rows[i].sql_string[3];
+                tempItem.genset_prp50_measure_unit = sqlDatabase.rows[i].sql_string[4];
+                tempItem.genset_prp60_measure_unit = sqlDatabase.rows[i].sql_string[5];
+                tempItem.genset_cooling = sqlDatabase.rows[i].sql_string[6];
+                tempItem.genset_tank = sqlDatabase.rows[i].sql_string[7];
+                tempItem.genset_load = sqlDatabase.rows[i].sql_string[8];
+                tempItem.genset_alternator = sqlDatabase.rows[i].sql_string[9];
+                tempItem.ups_io_phase = sqlDatabase.rows[i].sql_string[10];
+                tempItem.ups_rating_measure_unit = sqlDatabase.rows[i].sql_string[11];
+                tempItem.ups_input_power_factor = sqlDatabase.rows[i].sql_string[12];
+                tempItem.ups_thdi = sqlDatabase.rows[i].sql_string[13];
+                tempItem.ups_input_nominal_voltage = sqlDatabase.rows[i].sql_string[14];
+                tempItem.ups_input_voltage = sqlDatabase.rows[i].sql_string[15];
+                tempItem.ups_voltage_tolerance = sqlDatabase.rows[i].sql_string[16];
+                tempItem.ups_output_power_factor = sqlDatabase.rows[i].sql_string[17];
+                tempItem.ups_thdv = sqlDatabase.rows[i].sql_string[18];
+                tempItem.ups_output_nominal_voltage = sqlDatabase.rows[i].sql_string[19];
+                tempItem.ups_output_dc_voltage_range = sqlDatabase.rows[i].sql_string[20];
+                tempItem.ups_overload_capability = sqlDatabase.rows[i].sql_string[21];
+                tempItem.ups_efficiency = sqlDatabase.rows[i].sql_string[22];
+                tempItem.ups_input_connection_type = sqlDatabase.rows[i].sql_string[23];
+                tempItem.ups_front_panel = sqlDatabase.rows[i].sql_string[24];
+                tempItem.ups_max_power = sqlDatabase.rows[i].sql_string[25];
+                tempItem.ups_certificates = sqlDatabase.rows[i].sql_string[26];
+                tempItem.ups_safety = sqlDatabase.rows[i].sql_string[27];
+                tempItem.ups_emc = sqlDatabase.rows[i].sql_string[28];
+                tempItem.ups_environmental_aspects = sqlDatabase.rows[i].sql_string[29];
+                tempItem.ups_test_performance = sqlDatabase.rows[i].sql_string[30];
+                tempItem.ups_protection_degree = sqlDatabase.rows[i].sql_string[31];
+                tempItem.ups_transfer_voltage_limit = sqlDatabase.rows[i].sql_string[32];
+                tempItem.ups_marking = sqlDatabase.rows[i].sql_string[33];
+                
+                tempItem.is_valid = sqlDatabase.rows[i].sql_bit[0];
+
+
+
+                modelSpecs.Add(tempItem);
+            }
+
+            
+            return true;
         }
 
         public bool InitializeModelApplications()
@@ -480,17 +670,18 @@ where category_id={GetCategoryID()} and product_id={GetProductID()} and brand_id
             SetBrandID(mBrandID);
             SetModelID(mModelID);
 
-            if (GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
-            {
-                if (!GetGensetSpecss())
-                    return false;
-            }
-            else {
-                if (!this.GetUPSSpecss())
-                    return false;
-            }
-         
+            //if (GetCategoryID() == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
+            //{
+            //    //if (!GetGensetSpecss())
+            //        return false;
+            //}
+            //else {
+            //    //if (!this.GetUPSSpecss())
+            //        return false;
+            //}
 
+            if (!InitializeModelSpecs())
+                return false;
             if (!InitializeModelApplications())
                 return false;
             if (!InitializeModelBenefits())

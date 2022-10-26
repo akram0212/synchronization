@@ -910,7 +910,7 @@ namespace _01electronics_crm
 
                 if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.UPS_CATEGORY_ID)
                 {
-                    if (!commonQueriesObject.GetUPSSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                   // if (!commonQueriesObject.GetUPSSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
                         return;
                     InitializeSpecNameCombo(currentSpecNameComboBox);
 
@@ -919,7 +919,7 @@ namespace _01electronics_crm
                 }
                 else if (categories[currentCategoryComboBox.SelectedIndex].categoryId == COMPANY_WORK_MACROS.GENSET_CATEGORY_ID)
                 {
-                    if (!commonQueriesObject.GetGensetSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
+                  //  if (!commonQueriesObject.GetGensetSpecsNames(products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
                         return;
                     InitializeSpecNameCombo(currentSpecNameComboBox);
 
