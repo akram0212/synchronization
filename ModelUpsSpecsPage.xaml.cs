@@ -35,7 +35,7 @@ namespace _01electronics_crm
         public ModelAdditionalInfoPage modelAdditionalInfoPage;
         public ModelBasicInfoPage modelBasicInfoPage;
         public ModelUploadFilesPage modelUploadFilesPage;
-        protected List<BASIC_STRUCTS.UPS_SPECS_STRUCT> UPSSpecs;
+        protected List<BASIC_STRUCTS.MODEl_SPEC_STRUCT> modelSpecs;
         List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT> rating;
         protected int index = 0;
         int cardCountGenset = 0;
@@ -53,7 +53,7 @@ namespace _01electronics_crm
             viewAddCondition = mViewAddCondition;
 
             sqlDatabase = new SQLServer();
-            UPSSpecs = new List<BASIC_STRUCTS.UPS_SPECS_STRUCT>();
+            modelSpecs = new List<BASIC_STRUCTS.MODEl_SPEC_STRUCT>();
             rating = new List<PROCUREMENT_STRUCTS.MEASURE_UNITS_STRUCT>();
             commonQueriesObject = new CommonQueries();
             commonFunctionsObject = new CommonFunctions();
@@ -80,7 +80,7 @@ namespace _01electronics_crm
             {
                 if (COMPANY_WORK_MACROS.GENSET_CATEGORY_ID == product.GetCategoryID()) {
 
-                    for(int i=0;i<product.GetGensetSpecs().Count;i++)
+                    for(int i=0;i<product.GetModelSpecs().Count;i++)
                     InitializeNewCardGenset(); 
                 }
                 else
@@ -117,7 +117,7 @@ namespace _01electronics_crm
             mainGrid.RowDefinitions.Clear();
             mainGrid.ColumnDefinitions.Clear();
 
-            for (int i = 0; i < product.GetUPSSpecs().Count; i++)
+            for (int i = 0; i < product.GetModelSpecs().Count; i++)
             {
                 index = i;
                 InitializeNewCard();
@@ -444,83 +444,83 @@ namespace _01electronics_crm
                     RatedPowerText.Visibility = Visibility.Collapsed;
                     ratedPowerlabelInvisible.Visibility = Visibility.Visible;
                     ratedPowerlabelInvisible.Foreground = Brushes.Black;
-                ratedPowerlabelInvisible.MouseDoubleClick += RatedPowerlabelInvisible_MouseDoubleClick;
+                    ratedPowerlabelInvisible.MouseDoubleClick += RatedPowerlabelInvisible_MouseDoubleClick;
                     ratedPowercombo.IsEnabled = false;
-                    ratedPowerlabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].RatedPower;
+                    ratedPowerlabelInvisible.Content = product.GetModelSpecs()[cardCountGenset-1].genset_rated_power;
 
                     ModelText.Visibility = Visibility.Collapsed;
                     ModellabelInvisible.Visibility = Visibility.Visible;
                     ModellabelInvisible.Foreground = Brushes.Black;
-                    ModellabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].spec_name;
+                    ModellabelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].spec_name;
 
                     kva50TextBox.Visibility = Visibility.Collapsed;
                     Kva50labelInvisible.Visibility = Visibility.Visible;
-                    Kva50labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].ltb_50;
+                    Kva50labelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].genset_ltb_50;
                     Kva50labelInvisible.Foreground = Brushes.Black;
                     Ltb50HzComboBox.IsEnabled = false;
-                    Ltb50HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].ltb_50_unit_name;
+                    Ltb50HzComboBox.SelectedItem = product.GetModelSpecs()[cardCountGenset - 1].genset_ltb_50_unit;
 
 
 
 
                     kva60TextBox.Visibility = Visibility.Collapsed;
                     Kva60labelInvisible.Visibility = Visibility.Visible;
-                    Kva60labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].ltb_60;
+                    Kva60labelInvisible.Content = product.GetModelSpecs()[cardCountGenset-1].genset_ltb_60;
                     Kva60labelInvisible.Foreground = Brushes.Black;
                     Ltb60HzComboBox.IsEnabled=false;
-                    Ltb60HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].ltb_60_unit_name;
+                    Ltb60HzComboBox.SelectedItem = product.GetModelSpecs()[cardCountGenset - 1].genset_ltb_60_unit;
 
 
 
                     prpkva50TextBox.Visibility = Visibility.Collapsed;
                     prpKva50labelInvisible.Visibility = Visibility.Visible;
-                    prpKva50labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].prp_50;
+                    prpKva50labelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].genset_prp_50;
                     prpKva50labelInvisible.Foreground= Brushes.Black;
                     Prp50HzComboBox.IsEnabled = false;
-                    Prp50HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].prp_50_unit_name;
+                    Prp50HzComboBox.SelectedItem = product.GetModelSpecs()[cardCountGenset - 1].genset_prp_50_unit;
 
 
 
                     prpkva60TextBox.Visibility = Visibility.Collapsed;
                     prpKva60labelInvisible.Visibility = Visibility.Visible;
-                    prpKva60labelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].prp_60;
+                    prpKva60labelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].genset_prp_60;
                     prpKva60labelInvisible.Foreground=Brushes.Black;
                     Prp60HzComboBox.IsEnabled = false;
-                    Prp60HzComboBox.SelectedItem = product.GetGensetSpecs()[cardCountGenset - 1].prp_60_unit_name;
+                    Prp60HzComboBox.SelectedItem = product.GetModelSpecs()[cardCountGenset - 1].genset_prp_60_unit;
 
 
 
 
                     coolingTextBox.Visibility = Visibility.Collapsed;
                     coolinglabelInvisible.Visibility = Visibility.Visible;
-                    coolinglabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].cooling;
+                    coolinglabelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].genset_cooling;
                     coolinglabelInvisible.Foreground = Brushes.Black;
 
 
 
                     TankTextBox.Visibility = Visibility.Collapsed;
                     tanklabelInvisible.Visibility = Visibility.Visible;
-                    tanklabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].tank;
+                    tanklabelInvisible.Content = product.GetModelSpecs()[cardCountGenset-1].genset_tank;
                     tanklabelInvisible.Foreground = Brushes.Black;
 
 
                     loadTextBox.Visibility = Visibility.Collapsed;
                     loadlabelInvisible.Visibility = Visibility.Visible;
-                    loadlabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset - 1].load_percentage;
+                    loadlabelInvisible.Content = product.GetModelSpecs()[cardCountGenset - 1].genset_load;
                     loadlabelInvisible.Foreground = Brushes.Black;
 
 
 
                     AlternatorTextBox.Visibility = Visibility.Collapsed;
                     alternatorLabelInvisible.Visibility = Visibility.Visible;
-                    alternatorLabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].alternator;
+                    alternatorLabelInvisible.Content = product.GetModelSpecs()[cardCountGenset-1].genset_alternator;
                     alternatorLabelInvisible.Foreground = Brushes.Black;
 
 
 
                     dateField.Visibility = Visibility.Collapsed;
                     dateLabelInvisible.Visibility = Visibility.Visible;
-                    dateLabelInvisible.Content = product.GetGensetSpecs()[cardCountGenset-1].valid_Until;
+                    dateLabelInvisible.Content = product.GetModelSpecs()[cardCountGenset-1].valid_until;
                     dateLabelInvisible.Foreground = Brushes.Black;
             }
 
@@ -1423,146 +1423,146 @@ namespace _01electronics_crm
             {
                 IOPhaseTextBox.Visibility = Visibility.Collapsed;
                 IOPhaseLabel.Visibility = Visibility.Visible;
-                IOPhaseLabel.Content = product.GetUPSSpecs()[index].io_phase;
+                IOPhaseLabel.Content = product.GetModelSpecs()[index].ups_io_phase;
 
                 ratedPowerTextBox.Visibility = Visibility.Collapsed;
                 ratedPowerLabel.Visibility = Visibility.Visible;
-                ratedPowerLabel.Content = product.GetUPSSpecs()[index].rated_power;
+                ratedPowerLabel.Content = product.GetModelSpecs()[index].ups_rated_power;
 
                 ratingComboBox.Visibility = Visibility.Collapsed;
                 ratingLabel.Visibility = Visibility.Visible;
-                ratingLabel.Content = product.GetUPSSpecs()[index].rating;
+                ratingLabel.Content = product.GetModelSpecs()[index].ups_rating;
 
 
                 backupTime50TextBox.Visibility = Visibility.Collapsed;
                 backupTime50Label.Visibility = Visibility.Visible;
-                backupTime50Label.Content = product.GetUPSSpecs()[index].backup_time_50;
+                backupTime50Label.Content = product.GetModelSpecs()[index].ups_backup_time_50;
 
 
                 backupTime70TextBox.Visibility = Visibility.Collapsed;
                 backupTime70Label.Visibility = Visibility.Visible;
-                backupTime70Label.Content = product.GetUPSSpecs()[index].backup_time_70;
+                backupTime70Label.Content = product.GetModelSpecs()[index].ups_backup_time_70;
 
 
                 backupTime100TextBox.Visibility = Visibility.Collapsed;
                 backupTime100Label.Visibility = Visibility.Visible;
-                backupTime100Label.Content = product.GetUPSSpecs()[index].backup_time_100;
+                backupTime100Label.Content = product.GetModelSpecs()[index].ups_backup_time_100;
 
 
                 inputPowerFactorPhaseTextBox.Visibility = Visibility.Collapsed;
                 inputPowerFactorPhaseLabel.Visibility = Visibility.Visible;
-                inputPowerFactorPhaseLabel.Content = product.GetUPSSpecs()[index].input_power_factor;
+                inputPowerFactorPhaseLabel.Content = product.GetModelSpecs()[index].ups_input_power_factor;
 
 
                 THDITextBox.Visibility = Visibility.Collapsed;
                 THDILabel.Visibility = Visibility.Visible;
-                THDILabel.Content = product.GetUPSSpecs()[index].thdi;
+                THDILabel.Content = product.GetModelSpecs()[index].ups_thdi;
 
 
                 inputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
                 inputNominalVoltageLabel.Visibility = Visibility.Visible;
-                inputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].input_nominal_voltage;
+                inputNominalVoltageLabel.Content = product.GetModelSpecs()[index].ups_input_nominal_voltage;
 
 
                 inputVoltageTextBox.Visibility = Visibility.Collapsed;
                 inputVoltageLabel.Visibility = Visibility.Visible;
-                inputVoltageLabel.Content = product.GetUPSSpecs()[index].input_voltage;
+                inputVoltageLabel.Content = product.GetModelSpecs()[index].ups_input_voltage;
 
 
                 voltageToleranceTextBox.Visibility = Visibility.Collapsed;
                 voltageToleranceLabel.Visibility = Visibility.Visible;
-                voltageToleranceLabel.Content = product.GetUPSSpecs()[index].voltage_tolerance;
+                voltageToleranceLabel.Content = product.GetModelSpecs()[index].ups_voltage_tolerance;
 
 
                 outputPowerFactorTextBox.Visibility = Visibility.Collapsed;
                 outputPowerFactorLabel.Visibility = Visibility.Visible;
-                outputPowerFactorLabel.Content = product.GetUPSSpecs()[index].output_power_factor;
+                outputPowerFactorLabel.Content = product.GetModelSpecs()[index].ups_output_power_factor;
 
 
                 THDVTextBox.Visibility = Visibility.Collapsed;
                 THDVLabel.Visibility = Visibility.Visible;
-                THDVLabel.Content = product.GetUPSSpecs()[index].thdv;
+                THDVLabel.Content = product.GetModelSpecs()[index].ups_thdv;
 
 
                 outputNominalVoltageTextBox.Visibility = Visibility.Collapsed;
                 outputNominalVoltageLabel.Visibility = Visibility.Visible;
-                outputNominalVoltageLabel.Content = product.GetUPSSpecs()[index].output_nominal_voltage;
+                outputNominalVoltageLabel.Content = product.GetModelSpecs()[index].ups_output_nominal_voltage;
 
 
                 outputDCVoltageRangeTextBox.Visibility = Visibility.Collapsed;
                 outputDCVoltageRangeLabel.Visibility = Visibility.Visible;
-                outputDCVoltageRangeLabel.Content = product.GetUPSSpecs()[index].output_dc_voltage_range;
+                outputDCVoltageRangeLabel.Content = product.GetModelSpecs()[index].ups_output_dc_voltage_range;
 
 
                 overloadCapabilityTextBox.Visibility = Visibility.Collapsed;
                 overloadCapabilityLabel.Visibility = Visibility.Visible;
-                overloadCapabilityLabel.Content = product.GetUPSSpecs()[index].overload_capability;
+                overloadCapabilityLabel.Content = product.GetModelSpecs()[index].ups_overload_capability;
 
 
                 efficiencyTextBox.Visibility = Visibility.Collapsed;
                 efficiencyLabel.Visibility = Visibility.Visible;
-                efficiencyLabel.Content = product.GetUPSSpecs()[index].efficiency;
+                efficiencyLabel.Content = product.GetModelSpecs()[index].ups_efficiency;
 
 
                 inputConnectionTypeTextBox.Visibility = Visibility.Collapsed;
                 inputConnectionTypeLabel.Visibility = Visibility.Visible;
-                inputConnectionTypeLabel.Content = product.GetUPSSpecs()[index].input_connection_type;
+                inputConnectionTypeLabel.Content = product.GetModelSpecs()[index].ups_input_connection_type;
 
 
                 frontPanelTextBox.Visibility = Visibility.Collapsed;
                 frontPanelLabel.Visibility = Visibility.Visible;
-                frontPanelLabel.Content = product.GetUPSSpecs()[index].front_panel;
+                frontPanelLabel.Content = product.GetModelSpecs()[index].ups_front_panel;
 
 
                 maxPowerTextBox.Visibility = Visibility.Collapsed;
                 maxPowerLabel.Visibility = Visibility.Visible;
-                maxPowerLabel.Content = product.GetUPSSpecs()[index].max_power;
+                maxPowerLabel.Content = product.GetModelSpecs()[index].ups_max_power;
 
 
                 certificatesTextBox.Visibility = Visibility.Collapsed;
                 certificatesLabel.Visibility = Visibility.Visible;
-                certificatesLabel.Content = product.GetUPSSpecs()[index].certificates;
+                certificatesLabel.Content = product.GetModelSpecs()[index].ups_certificates;
 
 
                 safetyTextBox.Visibility = Visibility.Collapsed;
                 safetyLabel.Visibility = Visibility.Visible;
-                safetyLabel.Content = product.GetUPSSpecs()[index].safety;
+                safetyLabel.Content = product.GetModelSpecs()[index].ups_safety;
 
 
                 EMCTextBox.Visibility = Visibility.Collapsed;
                 EMCLabel.Visibility = Visibility.Visible;
-                EMCLabel.Content = product.GetUPSSpecs()[index].emc;
+                EMCLabel.Content = product.GetModelSpecs()[index].ups_emc;
 
 
                 environmentalAspectsTextBox.Visibility = Visibility.Collapsed;
                 environmentalAspectsLabel.Visibility = Visibility.Visible;
-                environmentalAspectsLabel.Content = product.GetUPSSpecs()[index].environmental_aspects;
+                environmentalAspectsLabel.Content = product.GetModelSpecs()[index].ups_environmental_aspects;
 
 
                 testPerformanceTextBox.Visibility = Visibility.Collapsed;
                 testPerformanceLabel.Visibility = Visibility.Visible;
-                testPerformanceLabel.Content = product.GetUPSSpecs()[index].test_performance;
+                testPerformanceLabel.Content = product.GetModelSpecs()[index].ups_test_performance;
 
 
 
                 protectionDegreeTextBox.Visibility = Visibility.Collapsed;
                 protectionDegreeLabel.Visibility = Visibility.Visible;
-                protectionDegreeLabel.Content = product.GetUPSSpecs()[index].protection_degree;
+                protectionDegreeLabel.Content = product.GetModelSpecs()[index].ups_protection_degree;
 
 
                 transferVoltageLimitTextBox.Visibility = Visibility.Collapsed;
                 transferVoltageLimitLabel.Visibility = Visibility.Visible;
-                transferVoltageLimitLabel.Content = product.GetUPSSpecs()[index].transfer_voltage_limit;
+                transferVoltageLimitLabel.Content = product.GetModelSpecs()[index].ups_transfer_voltage_limit;
 
 
                 markingTextBox.Visibility = Visibility.Collapsed;
                 markingLabel.Visibility = Visibility.Visible;
-                markingLabel.Content = product.GetUPSSpecs()[index].marking;
+                markingLabel.Content = product.GetModelSpecs()[index].ups_marking;
 
 
                 validUntilDatePicker.Visibility = Visibility.Collapsed;
                 validUntilLabel.Visibility = Visibility.Visible;
-                validUntilLabel.Content = product.GetUPSSpecs()[index].valid_until;
+                validUntilLabel.Content = product.GetModelSpecs()[index].valid_until;
 
 
 
@@ -1738,36 +1738,36 @@ namespace _01electronics_crm
                             BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
 
                             tempUPSSpecs.spec_id = 1;
-                            if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
+                            if (iOPhaseTextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_io_phase != null))
                             {
                                 tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
                             }
 
-                            if (ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rated_power != null))
+                            if (ratedPowerTextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_rated_power != null))
                             {
                                 tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
                             }
 
-                            if (ratingComboBox.SelectedIndex != -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
+                            if (ratingComboBox.SelectedIndex != -1 || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_rating != null))
                             {
                                 tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
                                 tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
                             }
 
 
-                            if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_50 != null))
+                            if (backupTime50TextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_backup_time_50  != null))
                             {
                                 tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
                             }
 
 
-                            if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_70 != null))
+                            if (backupTime70TextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_backup_time_70 != null))
                             {
                                 tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
                             }
 
 
-                            if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].backup_time_100 != null))
+                            if (backupTime100TextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_backup_time_100 != null))
                             {
                                 tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
                             }
@@ -1796,11 +1796,11 @@ namespace _01electronics_crm
                             tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                             tempUPSSpecs.marking = markingTextBox.Text.ToString();
                             tempUPSSpecs.is_valid = true;
-                            if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
+                            if (validUntilDatePicker.SelectedDate != null || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].valid_until != null))
                             {
                                 tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
                             }
-                            product.GetUPSSpecs().Clear();
+                            product.GetModelSpecs().Clear();
                             product.SetUPSSpecs(tempUPSSpecs);
                         }
                         else
@@ -2281,36 +2281,36 @@ namespace _01electronics_crm
                             BASIC_STRUCTS.UPS_SPECS_STRUCT tempUPSSpecs = new BASIC_STRUCTS.UPS_SPECS_STRUCT();
 
                             tempUPSSpecs.spec_id = 1;
-                            if (iOPhaseTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].io_phase != null))
+                            if (iOPhaseTextBox.Text != "" || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_io_phase != null))
                             {
                                 tempUPSSpecs.io_phase = iOPhaseTextBox.Text.ToString();
                             }
 
-                            if (ratedPowerTextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].rated_power != null*/))
+                            if (ratedPowerTextBox.Text != "" || (product.GetModelSpecs().Count > 0 /*&& product.GetModelSpecs()[0].rated_power != null*/))
                             {
                                 tempUPSSpecs.rated_power = decimal.Parse(ratedPowerTextBox.Text.ToString());
                             }
 
-                            if (ratingComboBox.SelectedIndex != -1 || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].rating != null))
+                            if (ratingComboBox.SelectedIndex != -1 || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].ups_rating != null))
                             {
                                 tempUPSSpecs.rating = ratingComboBox.SelectedItem.ToString();
                                 tempUPSSpecs.rating_id = ratingComboBox.SelectedIndex + 1;
                             }
 
 
-                            if (backupTime50TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_50 != null*/))
+                            if (backupTime50TextBox.Text != "" || (product.GetModelSpecs().Count > 0 /*&& product.GetModelSpecs()[0].backup_time_50 != null*/))
                             {
                                 tempUPSSpecs.backup_time_50 = int.Parse(backupTime50TextBox.Text.ToString());
                             }
 
 
-                            if (backupTime70TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_70 != null*/))
+                            if (backupTime70TextBox.Text != "" || (product.GetModelSpecs().Count > 0 /*&& product.GetModelSpecs()[0].backup_time_70 != null*/))
                             {
                                 tempUPSSpecs.backup_time_70 = int.Parse(backupTime70TextBox.Text.ToString());
                             }
 
 
-                            if (backupTime100TextBox.Text != "" || (product.GetUPSSpecs().Count > 0 /*&& product.GetUPSSpecs()[0].backup_time_100 != null*/))
+                            if (backupTime100TextBox.Text != "" || (product.GetModelSpecs().Count > 0 /*&& product.GetModelSpecs()[0].backup_time_100 != null*/))
                             {
                                 tempUPSSpecs.backup_time_100 = int.Parse(backupTime100TextBox.Text.ToString());
                             }
@@ -2339,11 +2339,11 @@ namespace _01electronics_crm
                             tempUPSSpecs.transfer_voltage_limit = transferVoltageLimitTextBox.Text.ToString();
                             tempUPSSpecs.marking = markingTextBox.Text.ToString();
                             tempUPSSpecs.is_valid = true;
-                            if (validUntilDatePicker.SelectedDate != null || (product.GetUPSSpecs().Count > 0 && product.GetUPSSpecs()[0].valid_until != null))
+                            if (validUntilDatePicker.SelectedDate != null || (product.GetModelSpecs().Count > 0 && product.GetModelSpecs()[0].valid_until != null))
                             {
                                 tempUPSSpecs.valid_until = (DateTime)validUntilDatePicker.SelectedDate;
                             }
-                            product.GetUPSSpecs().Clear();
+                            product.GetModelSpecs().Clear();
                             product.SetUPSSpecs(tempUPSSpecs);
                         }
                         else

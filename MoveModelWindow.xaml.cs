@@ -81,7 +81,7 @@ namespace _01electronics_crm
 
             newModel.SetModelsummaryPoints(currentModell.GetModelSummaryPoints());
 
-            currentModell.GetUPSSpecs().ForEach(a => newModel.SetUPSSpecs(a));
+            currentModell.GetModelSpecs().ForEach(a => newModel.SetModelSpecs(a));
             newModel.SetModelApplications(currentModell.GetModelApplications());
 
             newModel.SetModelBenefits(currentModell.GetModelBenefits());

@@ -1,6 +1,7 @@
 ﻿using _01electronics_library;
 using _01electronics_procurement;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -18,16 +19,18 @@ namespace _01electronics_crm
 
         String employeeEmail;
         String employeePassword;
-
+        protected SQLServer sqlDatabase;
         Employee loggedInUser;
         protected String errorMessage;
+
+       
+      
 
         public SignInPage()
         {
             InitializeComponent();
 
             loggedInUser = new Employee();
-
 
             if (_01electronics_crm.Properties.Settings.Default.Email != null)
             {
@@ -82,6 +85,13 @@ namespace _01electronics_crm
 
             //}
 
+            if (!integrityChecker.CheckEmployeePasswordEditBox(employeePassword, loggedInUser.GetEmployeeId(), ref errorMessage))
+            {
+                System.Windows.Forms.MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+
+            }
+
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
@@ -93,6 +103,7 @@ namespace _01electronics_crm
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
                 _01electronics_crm.Properties.Settings.Default.Save();
             }
+
             if (_01electronics_crm.Properties.Settings.Default.PassWordCheck)
             {
                 _01electronics_crm.Properties.Settings.Default.Email = employeeEmailTextBox.Text;
@@ -144,5 +155,7 @@ namespace _01electronics_crm
             ForgetPasswordPage forgetPasswordMail = new ForgetPasswordPage(ref employeeEmail);
             this.NavigationService.Navigate(forgetPasswordMail);
         }
+
+       
     }
 }

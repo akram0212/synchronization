@@ -933,6 +933,8 @@ namespace _01electronics_crm
                 }
 
 
+
+
                 if (!commonQueriesObject.GetModelSpecsNames(categories[currentCategoryComboBox.SelectedIndex].categoryId, products[currentTypeComboBox.SelectedIndex].typeId, brands[currentBrandComboBox.SelectedIndex].brandId, models[currentModelComboBox.SelectedIndex].modelId, ref modelSpecs))
                     return;
                 InitializeSpecNameCombo(currentSpecNameComboBox);
@@ -957,6 +959,7 @@ namespace _01electronics_crm
                 //{
                 //    //currentSpecNameWrapPanel.Visibility = Visibility.Collapsed;
                 //}
+
             }
             else
             {

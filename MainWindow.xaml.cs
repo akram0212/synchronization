@@ -29,6 +29,9 @@ namespace _01electronics_crm
 
             this.Closing += NavigationWindow_Closing;
 
+            backgroundWorker.WorkerReportsProgress = true;
+  
+
             InitializeComponent();
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics"))
             {
