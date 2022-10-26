@@ -539,7 +539,6 @@ namespace _01electronics_crm
                 ////////////////////////////
 
                 WrapPanel specsWrapPanel = new WrapPanel();
-
                 Label currentSpecLabel = new Label();
                 currentSpecLabel.Content = "Spec Name";
                 currentSpecLabel.Style = (Style)FindResource("labelStyle");
