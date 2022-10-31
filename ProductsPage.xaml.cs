@@ -26,6 +26,8 @@ namespace _01electronics_crm
 
         //BackgroundWorker background = new BackgroundWorker();
 
+        BackgroundWorker Sync = new BackgroundWorker();
+
 
         List<Image> productImages = new List<Image>();
         private Employee loggedInUser;
@@ -46,6 +48,10 @@ namespace _01electronics_crm
         {
             InitializeComponent();
 
+            //Sync.DoWork += Sync_DoWork;
+            //Sync.RunWorkerAsync();
+
+
             //background.DoWork += Dd;
 
             loggedInUser = mLoggedInUser;
@@ -62,7 +68,12 @@ namespace _01electronics_crm
             SetUpPageUIElements();
 
         }
-        
+
+        private void Sync_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ftpServer.upload();
+
+        }
 
         private void InitializeProducts()
         {

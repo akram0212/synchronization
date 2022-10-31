@@ -15,17 +15,23 @@ namespace _01electronics_crm
     /// </summary>
     public partial class MainWindow : NavigationWindow
     {
+
+        BackgroundWorker syncWorker = new BackgroundWorker();
         bool canceled = false;
         int progress = 0;
         bool closedWindow = false;
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
+
+
         //Timer timer=new Timer(60000);
 
-        //SystemWatcher fileSystemWatcher = new SystemWatcher();
         FTPServer ftpServer = new FTPServer();
         bool fileFound = true;
         public MainWindow(ref Employee mLoggedInUser)
         {
+            SystemWatcher watcher = new SystemWatcher();
+
+            syncWorker.DoWork += SyncWorker_DoWork;
 
             this.Closing += NavigationWindow_Closing;
 
@@ -42,6 +48,50 @@ namespace _01electronics_crm
             }
 
 
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\Upload"))
+            {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\01 Electronics\\Upload");
+                //ftpServer.GetModificationTime();
+
+            }
+
+            if (!File.Exists(Directory.GetCurrentDirectory() + "\\LastInstruction.txt")) {
+
+                File.Create(Directory.GetCurrentDirectory() + "\\LastInstruction.txt").Close();
+            }
+
+
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Client")) {
+
+               Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Client");
+
+            }
+
+
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Server"))
+            {
+
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Server");
+
+            }
+
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Client.txt")) {
+
+                 File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Client.txt");
+            
+            }
+
+
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Server.txt"))
+            {
+
+                 File.Create(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Server.txt");
+
+            }
+
+            ftpServer.upload();
+
+
             if (fileFound == false)
             {
                 backgroundWorker.DoWork += BackgroundStart;
@@ -54,6 +104,21 @@ namespace _01electronics_crm
 
             StatisticsPage statisticsPage = new StatisticsPage(ref mLoggedInUser);
             this.NavigationService.Navigate(statisticsPage);
+
+        }
+
+        public void c(string old,string path) {
+
+
+            //this.Dispatcher.Invoke(() =>
+            //{
+            //    this.Close();
+            //});
+
+        }
+
+        private void SyncWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
 
         }
 
